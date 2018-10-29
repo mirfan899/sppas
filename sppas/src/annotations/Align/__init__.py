@@ -28,50 +28,52 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align
-    ~~~~~~~~~~~~~~~~~~~~~
+    annotations.Align.__init__.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    This package includes the SPPAS implementation of the Alignment annotation.
+This package includes the implementation of the Alignment annotation.
 
-    Alignment is the process of aligning speech with its corresponding
-    transcription at the phone level.
+Alignment is the process of aligning speech with its corresponding
+transcription at the phone level.
+This phonetic segmentation problem consists in a time-matching between a
+given speech unit along with a phonetic representation of the unit.
+The goal is to generate an alignment between the speech signal and its
+phonetic representation.
 
-    The phonetic segmentation problem consists in a time-matching between a
-    given speech unit along with a phonetic representation of the unit.
-    The goal is to generate an alignment between the speech signal and its
-    phonetic representation.
-
-    Alignment is based on the Julius Speech Recognition Engine (SRE) for 3
-    reasons:
-        1. it is  easy to install which is important for users;
-        2. it is also easy to use then easy to integrate in SPPAS;
-        3. its performances correspond to the state-of-the-art of HMM-based
+By default, alignment is based on the Julius Speech Recognition Engine (SRE)
+for 3 reasons:
+    1. it is  easy to install which is important for users;
+    2. it is also easy to use then was easy to integrate in SPPAS;
+    3. its performances correspond to the state-of-the-art of HMM-based
     systems and are quite good.
-    The HTK command "HVite" can also be used.
 
-    To perform alignment, a finite state grammar that describes sentence
-    patterns to be recognized and an acoustic model are needed. A grammar
-    essentially defines constraints on what the SRE can expect as input.
-    It is a list of words that the SRE listens to. Each word has a set of
-    associated list of phonemes, extracted from the dictionary.
-    When given a speech input, Julius searches for the most likely word
-    sequence under constraint of the given grammar.
+The HTK command "HVite" can also be used to perform Alignment.
 
-    Speech Alignment also requires an Acoustic Model in order to align
-    speech. An acoustic model is a file that contains statistical
-    representations of each of the distinct sounds of one language.
-    Each phoneme is represented by one of these statistical representations.
-    SPPAS is based on the use of HTK-ASCII acoustic models.
+A finite state grammar that describes sentence patterns to be recognized and
+an acoustic model are needed. A grammar essentially defines constraints on
+what the SRE can expect as input. It is a list of words that the SRE listens
+to. Each word has a set of associated list of phonemes, extracted from the
+dictionary. When given a speech input, Julius searches for the most likely
+word sequence under constraint of the given grammar.
+
+Speech Alignment also requires an Acoustic Model in order to align
+speech. An acoustic model is a file that contains statistical
+representations of each of the distinct sounds of one language.
+Each phoneme is represented by one of these statistical representations.
+SPPAS is based on the use of HTK-ASCII acoustic models.
 
 """
-from .activity import sppasActivity
-from .alignio import AlignIO
-from .aligntrack import AlignTrack
+from .aligners import sppasAligners
+from .tracksgmt import TrackSegmenter
+from .tracksio import TracksReaderWriter
 from .sppasalign import sppasAlign
 
-__all__ = [
-    'sppasActivity',
-    'AlignIO',
-    'AlignTrack',
-    'sppasAlign'
-]
+from .activity import sppasActivity
+
+__all__ = (
+    'sppasAligners',
+    'TrackSegmenter',
+    'TracksReaderWriter',
+    'sppasAlign',
+    'sppasActivity'
+)

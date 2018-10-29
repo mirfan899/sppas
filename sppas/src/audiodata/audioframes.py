@@ -53,7 +53,7 @@ class sppasAudioFrames(object):
     TODO: There's no unittests of this class.
 
     """
-    def __init__(self, frames="", sampwidth=2, nchannels=1):
+    def __init__(self, frames=b"", sampwidth=2, nchannels=1):
         """Create an sppasAudioFrames instance.
 
         :param frames: (str) input frames.
@@ -62,7 +62,7 @@ class sppasAudioFrames(object):
 
         """
         # Check the type and if values are appropriate
-        frames = str(frames)
+        # frames = str(frames)
         if sampwidth not in [1, 2, 4]:
             raise SampleWidthError
         nchannels = int(nchannels)
@@ -170,19 +170,21 @@ class sppasAudioFrames(object):
 
     def rms(self):
         """Return the root mean square of the frames."""
-
         if self._nchannels == 1:
             return audioop.rms(self._frames, self._sampwidth)
-        else:
-            rms_sum = 0
-            for i in range(self._nchannels):
-                new_frames = ""
-                for j in range(i*self._sampwidth, len(self._frames), self._sampwidth*self._nchannels):
-                    for k in range(self._sampwidth):
-                        new_frames = new_frames + self._frames[j+k]
-                rms_sum += audioop.rms(new_frames, self._sampwidth)
 
-            return int(rms_sum/self._nchannels)
+        rms_sum = 0
+        for i in range(self._nchannels):
+            new_frames = b""
+            for j in range(i*self._sampwidth,
+                           len(self._frames),
+                           self._sampwidth*self._nchannels):
+
+                for k in range(self._sampwidth):
+                    new_frames += self._frames[j+k]
+            rms_sum += audioop.rms(new_frames, self._sampwidth)
+
+        return int(rms_sum/self._nchannels)
 
     # -----------------------------------------------------------------------
 

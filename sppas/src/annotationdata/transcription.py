@@ -143,7 +143,10 @@ class Transcription(MetaObject):
                 new_begin = TimePoint(begin.get_midpoint(), r)
                 if is_point is False:
                     end = ann.get_highest_localization()
-                    new_end = TimePoint(end.get_midpoint(), end.get_radius())
+                    r = 0.
+                    if end.get_radius() is not None:
+                        r = 0.
+                    new_end = TimePoint(end.get_midpoint(), r)
                     localization = TimeInterval(new_begin, new_end)
                 else:
                     localization = new_begin

@@ -28,8 +28,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.aligners.basealigner.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    annotations.Align.aligners.basealigner.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import os
@@ -38,68 +38,72 @@ import random
 from datetime import date
 
 from sppas.src.models.acm.tiedlist import sppasTiedList
-from sppas.src.utils.makeunicode import sppasUnicode, u
+from sppas.src.utils.makeunicode import sppasUnicode
 
 # ---------------------------------------------------------------------------
 
 
 class BaseAligner(object):
-    """
+    """Base class for any automatic alignment system.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Base class for any automatic alignment system.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A base class for a system to perform phonetic speech segmentation.
+    Base class for a system to perform phonetic speech segmentation.
 
     """
-    def __init__(self, modeldir):
-        """Creates a BaseAligner instance.
 
-        :param modeldir: (str) the acoustic model directory name
+    def __init__(self, model_dir=None):
+        """Create a BaseAligner instance.
+
+        :param model_dir: (str) the acoustic model directory name
 
         """
-        if modeldir is not None:
-            modeldir = str(modeldir)
-            if os.path.exists(modeldir) is False:
-                raise IOError("Not a valid acoustic model directory.")
+        if model_dir is not None:
+            if os.path.exists(model_dir) is False:
+                raise IOError("{:s} is not a valid acoustic model directory."
+                              "".format(model_dir))
 
-        self._model = modeldir
-        self._infersp = False
-        self._outext = ""  # output file name extension
-        self._phones = ""  # string of the phonemes to time-align
-        self._tokens = ""  # string of the tokens to time-align
+        # members
+        self._model = model_dir
+        self._name = ""
+        self._extensions = list()
+
+        # alignment options
+        self._infersp = False   # automatically infers short pauses
+        self._outext = ""       # output file name extension
+        self._phones = ""       # string of the phonemes to time-align
+        self._tokens = ""       # string of the tokens to time-align
+
+    # ------------------------------------------------------------------------
+    # members
+    # ------------------------------------------------------------------------
+
+    def extensions(self):
+        """Return the list of supported file name extensions."""
+        return self._extensions
 
     # -----------------------------------------------------------------------
 
-    def get_outext(self):
-        """Return the extension for output files.
+    def name(self):
+        """Return the identifier name of the aligner."""
+        return self._name
 
-        :returns: str
+    # -----------------------------------------------------------------------
 
-        """
+    def outext(self):
+        """Return the extension of output files."""
         return self._outext
 
     # -----------------------------------------------------------------------
-
-    def set_outext(self, ext):
-        """Set the extension for output files.
-
-        :param ext:
-
-        """
-        raise NotImplementedError
-
+    # alignment options
     # -----------------------------------------------------------------------
 
     def get_infersp(self):
-        """Return the infersp option value.
-
-        :returns: (bool)
-
-        """
+        """Return the infersp option value."""
         return self._infersp
 
     # -----------------------------------------------------------------------
@@ -122,7 +126,10 @@ class BaseAligner(object):
     def add_tiedlist(self, entries):
         """Add missing triphones/biphones in the tiedlist of the model.
 
+        Backup the initial file if entries were added.
+
         :param entries: (list) List of missing entries into the tiedlist.
+        :returns: list of entries really added
 
         """
         tied_file = os.path.join(self._model, "tiedlist")
@@ -131,17 +138,13 @@ class BaseAligner(object):
 
         tie = sppasTiedList()
         tie.read(tied_file)
-        add_entries = []
-        for entry in entries:
-            if tie.is_observed(entry) is False and tie.is_tied(entry) is False:
-                ret = tie.add_tied(entry)
-                if ret is True:
-                    add_entries.append(entry)
-
+        add_entries = tie.add_to_tie(entries)
         if len(add_entries) > 0:
             today = str(date.today())
             rand_val = str(int(random.random()*10000))
-            backup_tied_file = os.path.join(self._model, "tiedlist." + today + "." + rand_val)
+            backup_tied_file = os.path.join(
+                self._model,
+                "tiedlist." + today + "." + rand_val)
             shutil.copy(tied_file, backup_tied_file)
             tie.save(tied_file)
 
@@ -155,7 +158,7 @@ class BaseAligner(object):
         :param phones: (str) Phonetization
 
         """
-        phones = str(phones)
+        phones = sppasUnicode(phones).unicode()
         self._phones = phones
 
     # ------------------------------------------------------------------------
@@ -184,25 +187,30 @@ class BaseAligner(object):
         tokens = sppasUnicode(self._tokens).to_strip().split()
         if len(tokens) != len(phones):
             message = "Tokens alignment disabled: " \
-                      "not the same number of tokens in tokenization (%d) " \
-                      "and phonetization (%d)."\
-                      % (len(self._tokens), len(self._phones))
-            self._tokens = " ".join(["w_"+str(i) for i in range(len(self._phones))])
+                      "not the same number of tokens in tokenization ({:d}) " \
+                      "and phonetization ({:d}).".format(len(self._tokens),
+                                                         len(self._phones))
+            # assign a "w_" to each phone
+            self._tokens = " ".join(["w_" + str(i)
+                                     for i in range(len(phones))])
             return message
 
         return ""
 
     # -----------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, outputalign):
-        """Execute an external program to perform forced-alignment.
+    def run_alignment(self, input_wav, output_align):
+        """Perform forced-alignment.
+
         It is expected that the alignment is performed on a file with a size
         less or equal to a sentence (sentence/IPUs/segment/utterance).
 
-        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param outputalign: (str) the output file name
+        The audio file must be of type PCM-WAV 16000 Hz, 16 bits, like in the
+        model.
 
-        :returns: (str) A message of the external program.
+        :param input_wav: (str) the audio input file name
+        :param output_align: (str) the output file name
+        :returns: (str) A message of the aligner
 
         """
         raise NotImplementedError

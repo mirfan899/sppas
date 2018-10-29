@@ -76,9 +76,11 @@ class sppasTiedList(object):
                     elif len(tab) == 2:
                         self.add_tied(tab[0].strip(), tab[1].strip())
                     else:
-                        raise ValueError('Unexpected entry at line %d: %r' % (nbl, tab))
+                        raise ValueError('Unexpected entry at line %d: %r'
+                                         '' % (nbl, tab))
                 except Exception as e:
-                    raise IOError("Read file failed due to the following error at line %d: %s" % (nbl, str(e)))
+                    raise IOError("Read file failed due to the following "
+                                  "error at line %d: %s" % (nbl, str(e)))
 
     # -----------------------------------------------------------------------
 
@@ -127,6 +129,7 @@ class sppasTiedList(object):
 
     def add_tied(self, tied, observed=None):
         """Add an entry into the tiedlist.
+
         If observed is None, an heuristic will assign one.
 
         :param tied: (str) the biphone/triphone to add,
@@ -151,6 +154,24 @@ class sppasTiedList(object):
 
     # -----------------------------------------------------------------------
 
+    def add_to_tie(self, entries):
+        """Add several un-observed entries in the tiedlist.
+
+        :param entries: (list)
+        :returns: list of entries really added into the tiedlist
+
+        """
+        add_entries = list()
+        for entry in entries:
+            if self.is_observed(entry) is False and \
+                    self.is_tied(entry) is False:
+                ret = self.add_tied(entry)
+                if ret is True:
+                    add_entries.append(entry)
+        return add_entries
+
+    # -----------------------------------------------------------------------
+
     def add_observed(self, entry):
         """Add an observed entry.
 
@@ -172,8 +193,9 @@ class sppasTiedList(object):
 
         """
         if isinstance(other, sppasTiedList) is False:
-            raise TypeError('A sppasTiedList can only be merged with another sppasTiedList. '
-                            'Got %s.' % type(other))
+            raise TypeError('A sppasTiedList can only be merged with '
+                            'another sppasTiedList. '
+                            'Got {:s}.'.format(type(other)))
 
         for obs in other.observed:
             self.add_observed(obs)

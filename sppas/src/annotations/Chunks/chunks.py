@@ -94,7 +94,6 @@ class Chunks(object):
         else:
             self._mapping = sppasMapping()
 
-        self._alignerio = AlignerIO()
         self._spkrate = SpeakerRate()
         self._radius = 0.005
 
@@ -386,7 +385,7 @@ class Chunks(object):
         self._aligner.run_alignment(fna, fnw, N)
 
         # get the tokens time-aligned by the ASR engine
-        wordalign = self._alignerio.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
+        wordalign = AlignerIO.read_aligned(fnw)[1]  # (starttime,endtime,label,score)
         wordalign = Chunks._adjust_asr_result(wordalign, from_time, 0.2)
 
         # ignore the last word: we can't know if the word is entire or was cut

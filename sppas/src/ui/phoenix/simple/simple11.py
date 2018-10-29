@@ -1,5 +1,4 @@
 import wx
-import json
 import logging
 import os.path
 from argparse import ArgumentParser
@@ -126,12 +125,12 @@ class WxAppSettings(object):
                 fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
                 bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
                 title_height=64,
-                title_fg_color=wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE),
-                title_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
-                title_text_font=title_font,
-                button_text_font=button_font,
-                button_fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
-                button_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
+                header_fg_color=wx.Colour(65, 65, 60, alpha=wx.ALPHA_OPAQUE),
+                header_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
+                header_text_font=title_font,
+                action_text_font=button_font,
+                action_fg_color=wx.Colour(250, 250, 240, alpha=wx.ALPHA_OPAQUE),
+                action_bg_color=wx.Colour(45, 45, 40, alpha=wx.ALPHA_OPAQUE),
             )
 
         
@@ -204,9 +203,9 @@ class myTitleText(wx.StaticText):
         # Fix Look&Feel
         settings = wx.GetApp().settings
 
-        self.SetFont(settings.title_text_font)
+        self.SetFont(settings.header_text_font)
         self.SetBackgroundColour(parent.GetBackgroundColour())
-        self.SetForegroundColour(settings.title_fg_color)
+        self.SetForegroundColour(settings.header_fg_color)
 
 # ---------------------------------------------------------------------------
 
@@ -226,9 +225,9 @@ class myButton(wx.Button):
         # Fix Look&Feel
         settings = wx.GetApp().settings
 
-        self.SetForegroundColour(settings.button_fg_color)
-        self.SetBackgroundColour(settings.button_bg_color)
-        self.SetFont(settings.button_text_font)
+        self.SetForegroundColour(settings.action_fg_color)
+        self.SetBackgroundColour(settings.action_bg_color)
+        self.SetFont(settings.action_text_font)
 
 # ---------------------------------------------------------------------------
 
@@ -363,7 +362,7 @@ class myMenuPanel(wx.Panel):
 
         # Fix Look&Feel
         settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.title_bg_color)
+        self.SetBackgroundColour(settings.header_bg_color)
         self.SetMinSize((-1, settings.title_height))
 
         menu_sizer = wx.BoxSizer(wx.HORIZONTAL)
@@ -434,7 +433,7 @@ class myActionPanel(wx.Panel):
         self.SetMinSize((-1, 32))
 
         settings = wx.GetApp().settings
-        self.SetBackgroundColour(settings.title_bg_color)
+        self.SetBackgroundColour(settings.header_bg_color)
 
         exit_btn = myButton(self, "Exit", name="exit")
         open_btn = myButton(self, "Open", name="open")

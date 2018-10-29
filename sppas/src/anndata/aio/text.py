@@ -32,7 +32,7 @@
     src.anndata.aio.text.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
-    Text readers and writers for raw text, column-based text, csv.
+Text readers and writers for raw text, column-based text, csv.
 
 """
 import codecs
@@ -72,6 +72,7 @@ class sppasBaseText(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBaseText instance.
 
@@ -271,7 +272,6 @@ class sppasBaseText(sppasBaseIO):
     @staticmethod
     def serialize_header_software():
         """Serialize the header of a file with SPPAS information."""
-
         comment = ";; \n"
         comment += ";; software_name={:s}\n".format(sg.__name__)
         comment += ";; software_version={:s}\n".format(sg.__version__)
@@ -290,8 +290,8 @@ class sppasBaseText(sppasBaseIO):
     @staticmethod
     def serialize_metadata(meta_object):
         """Serialize the metadata of an object in a multi-lines comment."""
-
-        meta_keys = ["file_write_date", "file_writer", "file_name", "file_path", "file_ext"]
+        meta_keys = ["file_write_date", "file_writer",
+                     "file_name", "file_path", "file_ext"]
         comment = ""
         for meta in meta_object.get_meta_keys():
             if "software" not in meta and meta not in meta_keys:
@@ -342,7 +342,9 @@ class sppasBaseText(sppasBaseIO):
 
         for separator in COLUMN_SEPARATORS:
             columns = sppasBaseText.split_lines(lines, separator)
-            if columns is not None and len(columns) > 0 and len(columns[0]) > nb_col:
+            if columns is not None and \
+                    len(columns) > 0 and \
+                    len(columns[0]) > nb_col:
                 sep = separator
         if sep is not None:
             columns = sppasBaseText.split_lines(lines, sep)
@@ -377,8 +379,10 @@ class sppasRawText(sppasBaseText):
     RawText supports comments: such lines are starting with ';;'.
 
     """
+
     @staticmethod
     def detect(filename):
+        """Detect if file is text."""
         # Open and load the content.
         try:
             with codecs.open(filename, 'r', sg.__encoding__) as fp:
@@ -429,7 +433,6 @@ class sppasRawText(sppasBaseText):
 
     def _parse_lines(self, lines):
         """Fill the transcription from the lines of the TXT file."""
-
         columns = sppasBaseText.get_lines_columns(lines)
 
         if columns is None:
@@ -489,7 +492,6 @@ class sppasRawText(sppasBaseText):
     @staticmethod
     def _create_annotation(tier, rank, utterance):
         """Add the annotation corresponding to data of a line."""
-
         labels = format_labels(utterance)
         location = sppasLocation(sppasPoint(rank))
         tier.create_annotation(location, labels)
@@ -587,6 +589,7 @@ class sppasCSV(sppasBaseText):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of CSV format or not.
@@ -648,6 +651,7 @@ class sppasCSV(sppasBaseText):
 
     def format_columns_lines(self, lines):
         """Append lines content into self.
+
         The algorithm doesn't suppose that the file is sorted by tiers
 
         :param lines: (list)
@@ -665,7 +669,8 @@ class sppasCSV(sppasBaseText):
                 col1 = sppasBaseText.format_quotation_marks(row[0])
                 col2 = sppasBaseText.format_quotation_marks(row[1])
                 col3 = sppasBaseText.format_quotation_marks(row[2])
-                content = sppasBaseText.format_quotation_marks(" ".join(row[3:]))
+                content = sppasBaseText.format_quotation_marks(
+                    " ".join(row[3:]))
 
                 if sppasType.is_number(col1):  # and sppasType.is_number(col2):
                     begin = col1
@@ -723,12 +728,16 @@ class sppasCSV(sppasBaseText):
                 point = tier.is_point()
 
                 for ann in tier:
-                    content = ann.serialize_labels(separator=" ", empty="", alt=True)
+                    content = ann.serialize_labels(separator=" ",
+                                                   empty="",
+                                                   alt=True)
                     if point:
                         mp = ann.get_lowest_localization().get_midpoint()
-                        fp.write('"{}",{},,"{}"\n'.format(name, mp, content))
+                        fp.write('"{}",{},,"{}"\n'
+                                 ''.format(name, mp, content))
                     else:
                         b = ann.get_lowest_localization().get_midpoint()
                         e = ann.get_highest_localization().get_midpoint()
-                        fp.write('"{}",{},{},"{}"\n'.format(name, b, e, content))
+                        fp.write('"{}",{},{},"{}"\n'
+                                 ''.format(name, b, e, content))
             fp.close()

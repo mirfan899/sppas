@@ -216,7 +216,8 @@ class AnnotationCtrl(wx.Window):
         else:
             raise NotImplemented('Disjoint intervals are not supported yet!')
 
-        self._labelctrl = LabelCtrl(self, id=-1, label=ann.serialize_labels())
+        l = ann.serialize_labels(separator=" ", empty="", alt=True)
+        self._labelctrl = LabelCtrl(self, id=-1, label=l)
         self._ann = ann
 
     # ------------------------------------------------------------------------

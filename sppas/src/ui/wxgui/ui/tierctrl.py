@@ -497,7 +497,8 @@ class TierCtrl(spControl):
             self._pointsctrl.append(p2)
 
         logging.debug(" ... ... create the label control")
-        label = LabelCtrl(self, id=-1, label=ann.serialize_labels())
+        l = ann.serialize_labels(separator=" ", empty="", alt=True)
+        label = LabelCtrl(self, id=-1, label=l)
         self._labelsctrl.append(label)
         logging.debug(" ... ... label control successfully created")
 
@@ -536,7 +537,8 @@ class TierCtrl(spControl):
             p = PointCtrl(self, id=-1, point=tp)
             self._pointsctrl.append(p)
 
-        label = LabelCtrl(self, id=-1, label=ann.serialize_labels())
+        l = ann.serialize_labels(separator=" ", empty="", alt=True)
+        label = LabelCtrl(self, id=-1, label=l)
         self._labelsctrl.append(label)
 
         self._anns[ann] = [label, p, None]

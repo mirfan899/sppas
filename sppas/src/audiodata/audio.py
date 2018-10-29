@@ -52,7 +52,10 @@
 """
 from .audioframes import sppasAudioFrames
 from .audioconvert import sppasAudioConverter
-from .audiodataexc import AudioError, AudioDataError, ChannelIndexError, MixChannelError
+from .audiodataexc import AudioError
+from .audiodataexc import AudioDataError
+from .audiodataexc import ChannelIndexError
+from .audiodataexc import MixChannelError
 from .channel import sppasChannel
 from .channelsmixer import sppasChannelMixer
 
@@ -60,13 +63,13 @@ from .channelsmixer import sppasChannelMixer
 
 
 class sppasAudioPCM(object):
-    """
+    """An audio manager.
+
     :author:       Nicolas Chazeau, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      An audio reader/writer utility class.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     These variables are user gettable through appropriate methods:
         - nchannels -- the number of audio channels
@@ -76,7 +79,7 @@ class sppasAudioPCM(object):
         - params    -- parameters of the wave file
         - filename  -- the name of the wave file
 
-    The audiofp member is assigned by the IO classes, as WaveIO, AifIO, SunauIO.
+    The audiofp member is assigned by the IO classes (WaveIO, AifIO, SunauIO).
     It is expected that it can access the following methods:
         - readframes()
         - writeframes()
@@ -89,9 +92,9 @@ class sppasAudioPCM(object):
         - rewind()
 
     """
-    def __init__(self):
-        """Creates a new sppasAudioPCM instance."""
 
+    def __init__(self):
+        """Create a new sppasAudioPCM instance."""
         super(sppasAudioPCM, self).__init__()
 
         # The audio file pointer
@@ -196,8 +199,9 @@ class sppasAudioPCM(object):
     # ----------------------------------------------------------------------
 
     def extract_channel(self, index=0):
-        """Extract a channel from the Audio File Pointer,
-         and append it into the list of channels.
+        """Extract a channel from the Audio File Pointer.
+
+        Append the channel into the list of channels.
 
         Frames are stored into a sppasChannel() instance.
         Index of the channel in the audio file:
@@ -225,22 +229,27 @@ class sppasAudioPCM(object):
             raise ChannelIndexError(index)
 
         if nc == 1:
-            channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), data)
+            channel = sppasChannel(self.get_framerate(),
+                                   self.get_sampwidth(),
+                                   data)
             return self.append_channel(channel)
 
-        frames = ""
+        frames = b""
         sw = self.get_sampwidth()
         for i in range(index*sw, len(data), nc*sw):
             frames += data[i:i+sw]
-        channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), frames)
+        channel = sppasChannel(self.get_framerate(),
+                               self.get_sampwidth(),
+                               frames)
 
         return self.append_channel(channel)
 
     # ----------------------------------------------------------------------
 
     def extract_channels(self):
-        """Extract all channels from the Audio File Pointer,
-         and append them to the list of channels.
+        """Extract all channels from the Audio File Pointer.
+
+        Append the extracted channels to the list of channels.
 
         """
         if self._audio_fp is None:
@@ -255,10 +264,12 @@ class sppasAudioPCM(object):
             raise AudioDataError
 
         for index in range(nc):
-            frames = ""
+            frames = b""
             for i in range(index*sw, len(data), nc*sw):
                 frames = frames + data[i:i+sw]
-            channel = sppasChannel(self.get_framerate(), self.get_sampwidth(), frames)
+            channel = sppasChannel(self.get_framerate(),
+                                   self.get_sampwidth(),
+                                   frames)
             self.append_channel(channel)
 
     # ----------------------------------------------------------------------
@@ -395,7 +406,9 @@ class sppasAudioPCM(object):
         """
         pos = self.tell()
         self.seek(0)
-        a = sppasAudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth(), self.get_nchannels())
+        a = sppasAudioFrames(self.read_frames(self.get_nframes()),
+                             self.get_sampwidth(),
+                             self.get_nchannels())
         self.seek(pos)
 
         return a.rms()
@@ -413,7 +426,8 @@ class sppasAudioPCM(object):
         """
         pos = self.tell()
         self.seek(0)
-        a = sppasAudioFrames(self.read_frames(self.get_nframes()), self.get_sampwidth())
+        a = sppasAudioFrames(self.read_frames(self.get_nframes()),
+                             self.get_sampwidth())
         self.seek(pos)
 
         return a.clipping_rate(factor)
@@ -450,7 +464,6 @@ class sppasAudioPCM(object):
 
     def rewind(self):
         """Set reader position at the beginning of the file."""
-
         if self._audio_fp is None:
             raise AudioError
 
@@ -486,27 +499,29 @@ class sppasAudioPCM(object):
     def open(self, filename):
         """Open an audio file."""
         name = self.__class__.__name__
-        raise NotImplementedError("%s does not support open()." % name)
+        raise NotImplementedError("{:s} does not support open()."
+                                  "".format(name))
 
     # ------------------------------------------------------------------------
 
     def save(self, filename):
         """Save an audio file."""
         name = self.__class__.__name__
-        raise NotImplementedError("%s does not support save()." % name)
+        raise NotImplementedError("{:s} does not support save()."
+                                  "".format(name))
 
     # ------------------------------------------------------------------------
 
     def save_fragments(self, filename):
         """Save a fragment of an audio file."""
         name = self.__class__.__name__
-        raise NotImplementedError("%s does not support save_fragments()." % name)
+        raise NotImplementedError("{:s} does not support save_fragments()."
+                                  "".format(name))
 
     # ------------------------------------------------------------------------
 
     def close(self):
         """Close the audio file."""
-
         if self._audio_fp is None:
             raise AudioError
 

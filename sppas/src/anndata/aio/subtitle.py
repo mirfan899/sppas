@@ -32,6 +32,16 @@
     src.anndata.aio.subtitle.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+SubViewer is a utility for adding and synchronizing subtitles to video
+content. It was created by David Dolinski in 1999.
+Precision in time is 10ms.
+
+SubRip is a free software program for Windows which "rips" (extracts)
+subtitles and their timings from video. It is free software, released
+under the GNU GPL. SubRip is also the name of the widely used and broadly
+compatible subtitle text file format created by this software.
+Precision in time is 1ms.
+
 """
 import codecs
 import datetime
@@ -60,6 +70,7 @@ class sppasBaseSubtitles(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBaseSubtitles instance.
 
@@ -90,7 +101,6 @@ class sppasBaseSubtitles(sppasBaseIO):
     @staticmethod
     def _parse_time(time_string):
         """Convert a time in "%H:%M:%S,%m" format into seconds."""
-
         time_string = time_string.strip()
         dt = (datetime.datetime.strptime(time_string, '%H:%M:%S,%f') -
               datetime.datetime.strptime('', ''))
@@ -101,7 +111,6 @@ class sppasBaseSubtitles(sppasBaseIO):
     @staticmethod
     def _format_time(second_count):
         """Convert a time in seconds into "%H:%M:%S" format."""
-
         dt = datetime.datetime.utcfromtimestamp(second_count)
         return dt.strftime('%H:%M:%S,%f')[:-3]
 
@@ -110,7 +119,6 @@ class sppasBaseSubtitles(sppasBaseIO):
     @staticmethod
     def make_point(midpoint):
         """In subtitles, the localization is a time value, so a float."""
-
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -122,7 +130,6 @@ class sppasBaseSubtitles(sppasBaseIO):
     @staticmethod
     def _format_text(text):
         """Remove HTML tags, etc."""
-
         text = text.replace('<b>', '')
         text = text.replace('<B>', '')
         text = text.replace('</b>', '')
@@ -150,25 +157,32 @@ class sppasBaseSubtitles(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_location(ann):
-        """Extract location to serialize the timestamps."""
+    def _serialize_location(ann, precision=3):
+        """Extract location to serialize the timestamps.
 
+        :param ann: (sppasAnnotation)
+        :param precision: (int) precision in time (expected value is 2 or 3)
+
+        """
         if ann.location_is_point() is False:
             begin = sppasBaseSubtitles._format_time(
-                ann.get_lowest_localization().get_midpoint())
+                round(ann.get_lowest_localization().get_midpoint(),
+                      precision))
             end = sppasBaseSubtitles._format_time(
-                ann.get_highest_localization().get_midpoint())
+                round(ann.get_highest_localization().get_midpoint(),
+                      precision))
 
         else:
             # SubRip does not support point based annotation
             # so we'll make a 1 second subtitle
             begin = sppasBaseSubtitles._format_time(
-                ann.get_lowest_localization().get_midpoint())
+                round(ann.get_lowest_localization().get_midpoint(),
+                      precision))
             end = sppasBaseSubtitles._format_time(
-                ann.get_highest_localization().get_midpoint() + 1.)
+                round(ann.get_highest_localization().get_midpoint(),
+                      precision) + 1.)
 
         return '{:s} --> {:s}\n'.format(begin, end)
-
 
 # ---------------------------------------------------------------------------
 
@@ -191,11 +205,15 @@ class sppasSubRip(sppasBaseSubtitles):
 
         - first line of a subtitle is an index (starting from 1);
         - the second line is a timestamp interval,
-          in the format %H:%M:%S,%m and the start and end of the range separated by -->;
-        - optionally: a specific positioning by pixels, in the form X1:number Y1:number X2:number Y2:number;
-        - the third line is the label. The HTML <b>, <i>, <u>, and <font> tags are allowed.
+          in the format %H:%M:%S,%m and the start and end of
+          the range separated by -->;
+        - optionally: a specific positioning by pixels, in the form
+          X1:number Y1:number X2:number Y2:number;
+        - the third line is the label.
+          The HTML <b>, <i>, <u>, and <font> tags are allowed.
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasSubRip instance.
 
@@ -244,8 +262,8 @@ class sppasSubRip(sppasBaseSubtitles):
     def _parse_subtitle(lines):
         """Parse a single subtitle.
 
-        The subtitle can be written on several lines. In this case, one sppasLabel()
-        is created for each line.
+        The subtitle can be written on several lines. In this case, one
+        sppasLabel() is created for each line.
 
         :param lines: (list) the lines of a subtitle (index, timestamps, label)
 
@@ -254,7 +272,8 @@ class sppasSubRip(sppasBaseSubtitles):
             return None
 
         # time stamps
-        start, stop = map(sppasBaseSubtitles._parse_time, lines[1].split('-->'))
+        start, stop = map(sppasBaseSubtitles._parse_time,
+                          lines[1].split('-->'))
         time = sppasInterval(sppasBaseSubtitles.make_point(start),
                              sppasBaseSubtitles.make_point(stop))
 
@@ -298,7 +317,9 @@ class sppasSubRip(sppasBaseSubtitles):
                 last = len(self[0])
                 for ann in self[0]:
 
-                    text = ann.serialize_labels(separator="\n", empty="", alt=True)
+                    text = ann.serialize_labels(separator="\n",
+                                                empty="",
+                                                alt=True)
 
                     # no label defined, or empty label -> no subtitle!
                     if len(text) == 0:
@@ -308,7 +329,9 @@ class sppasSubRip(sppasBaseSubtitles):
                     # first line: the number of the annotation
                     subtitle += str(number) + "\n"
                     # 2nd line: the timestamps
-                    subtitle += sppasBaseSubtitles._serialize_location(ann)
+                    subtitle += sppasBaseSubtitles._serialize_location(
+                        ann,
+                        precision=3)
                     # 3rd line: optionally the position on screen
                     subtitle += sppasSubRip._serialize_metadata(ann)
                     # the text
@@ -328,7 +351,6 @@ class sppasSubRip(sppasBaseSubtitles):
     @staticmethod
     def _serialize_metadata(ann):
         """Extract metadata to serialize the position on screen."""
-
         text = ""
         if ann.is_meta_key("position_pixel_X1"):
             x1 = ann.get_meta("position_pixel_X1")
@@ -358,6 +380,7 @@ class sppasSubViewer(sppasBaseSubtitles):
     save subtitles of videos.
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBaseSubtitles instance.
 
@@ -487,7 +510,9 @@ class sppasSubViewer(sppasBaseSubtitles):
                         continue
 
                     # the timestamps
-                    subtitle = sppasBaseSubtitles._serialize_location(ann)
+                    subtitle = sppasBaseSubtitles._serialize_location(
+                        ann,
+                        precision=2)
                     subtitle = subtitle.replace(",", ".")
                     subtitle = subtitle.replace(" --> ", ",")
                     # the text

@@ -71,24 +71,26 @@ class TestChannel(unittest.TestCase):
         self._sample_1.rewind()
         cidx = self._sample_1.extract_channel(0)
         channel = self._sample_1.get_channel(cidx)
-        self.assertEqual(len(frames)/self._sample_1.get_sampwidth(), channel.get_nframes())
+        self.assertEqual(len(frames)/self._sample_1.get_sampwidth(),
+                         channel.get_nframes())
         self.assertEqual(frames, channel.get_frames())
         self.assertEqual(frames, channel.get_frames(channel.get_nframes()))
 
         frames = self._sample_2.read_frames(self._sample_2.get_nframes())
-        frameschannel = ""
+        frames_channel = b""
+        sw = self._sample_2.get_sampwidth()
         # we are going to extract the channel number 2,
         # so we have to skip all frames which belong to the channel number 1
-        for i in range(self._sample_2.get_sampwidth(), len(frames), self._sample_2.get_sampwidth()*self._sample_2.get_nchannels()):
-            for j in range(self._sample_2.get_sampwidth()):
-                frameschannel += frames[i+j]
+        for i in range(sw, len(frames),
+                       sw * self._sample_2.get_nchannels()):
+            frames_channel += frames[i:i+sw]
         self._sample_2.rewind()
         # Channel number 2 has index 1
         cidx = self._sample_2.extract_channel(1)
         channel = self._sample_2.get_channel(cidx)
-        self.assertEqual(len(frameschannel)/self._sample_2.get_sampwidth(), channel.get_nframes())
-        self.assertEqual(frameschannel, channel.get_frames())
-        self.assertEqual(frameschannel, channel.get_frames(channel.get_nframes()))
+        self.assertEqual(len(frames_channel)/self._sample_2.get_sampwidth(), channel.get_nframes())
+        self.assertEqual(frames_channel, channel.get_frames())
+        self.assertEqual(frames_channel, channel.get_frames(channel.get_nframes()))
 
     def test_GetFrames(self):
         self._sample_1.seek(1000)
@@ -112,9 +114,9 @@ class TestChannel(unittest.TestCase):
 
         self._sample_1.rewind()
         frames = self._sample_1.read_frames(self._sample_1.get_nframes())
-        savedframes = savedaudio.read_frames(self._sample_1.get_nframes())
-        self.assertEqual(len(frames), len(savedframes))
-        self.assertEqual(frames, savedframes)
+        saved_frames = savedaudio.read_frames(self._sample_1.get_nframes())
+        self.assertEqual(len(frames), len(saved_frames))
+        self.assertEqual(frames, saved_frames)
 
         savedaudio.close()
         os.remove(sample_new)

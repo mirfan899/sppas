@@ -32,6 +32,16 @@
     anndata.aio.anvil.py
     ~~~~~~~~~~~~~~~~~~~~
 
+ANVIL is a free video annotation tool.
+
+| Kipp, M. (2012)
+| Multimedia Annotation, Querying and Analysis in ANVIL.
+| In: M. Maybury (ed.) Multimedia Information Extraction,
+| Chapter 21, John Wiley & Sons, pp: 351-368.
+
+BE AWARE that the support of anvil files by SPPAS has to be verified,
+tested and extended!!!
+
 """
 import xml.etree.cElementTree as ET
 
@@ -55,11 +65,8 @@ class sppasAnvil(sppasBaseIO):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Support of the native format of ANVIL annotation tool.
-
-    BE AWARE THAT: this support has to be verified, tested and extended!!!
-
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of ANVIL format or not.
@@ -83,7 +90,6 @@ class sppasAnvil(sppasBaseIO):
     @staticmethod
     def make_point(midpoint):
         """The localization is a time value, so always a float."""
-
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -163,9 +169,9 @@ class sppasAnvil(sppasBaseIO):
 
     def _read_primary_track(self, track_root):
         """Read a primary track (primary or primarypoint).
-        
-        :param track_root: 
-        
+
+        :param track_root:
+
         """
         # Create tiers of the primary track.
         self.__create_tier_from_attribute(track_root)
@@ -183,11 +189,11 @@ class sppasAnvil(sppasBaseIO):
 
                 localization = sppasInterval(sppasAnvil.make_point(begin),
                                              sppasAnvil.make_point(end))
-                
+
             elif track_root.attrib['type'] == 'primarypoint':
                 time = float(el_root.attrib['time'])
                 localization = sppasAnvil.make_point(time)
-                
+
             else:
                 raise Exception('unknown primary track type')
 
@@ -196,7 +202,6 @@ class sppasAnvil(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _read_singleton_track(self, track_root, body_root):
-
         # find ref
         ref_root = body_root.find(
             "track[@name='%s']" %
@@ -205,11 +210,11 @@ class sppasAnvil(sppasBaseIO):
         self.__create_tier_from_attribute(track_root)
 
         for el_root in track_root.findall('el'):
-            
+
             ref_el = ref_root.find(
                 "el[@index='%s']" %
                 el_root.attrib['ref'])
-            
+
             begin = float(ref_el.attrib['start'])
             end = float(ref_el.attrib['end'])
             if begin > end:
@@ -233,7 +238,7 @@ class sppasAnvil(sppasBaseIO):
         self.__create_tier_from_attribute(track_root)
 
         for el_root in track_root.findall('el'):
-            
+
             begin_ref = el_root.attrib['start']
             end_ref = el_root.attrib['end']
             begin_el = ref_root.find(
@@ -242,7 +247,7 @@ class sppasAnvil(sppasBaseIO):
             end_el = ref_root.find(
                 "el[@index='%s']" %
                 end_ref)
-            
+
             begin = float(begin_el.attrib['start'])
             end = float(end_el.attrib['end'])
             if begin > end:
@@ -252,7 +257,7 @@ class sppasAnvil(sppasBaseIO):
 
             localization = sppasInterval(sppasAnvil.make_point(begin),
                                          sppasAnvil.make_point(end))
-            
+
             self.__create_annotation_from_el(track_root, el_root, localization)
 
     # -----------------------------------------------------------------------
@@ -266,7 +271,7 @@ class sppasAnvil(sppasBaseIO):
         self.__create_tier_from_attribute(track_root)
 
         for el_group_root in track_root.findall('el-group'):
-            
+
             ref_el = ref_root.find(
                 "el[@index='%s']" %
                 el_group_root.attrib['ref'])
@@ -289,14 +294,16 @@ class sppasAnvil(sppasBaseIO):
                 localization = sppasInterval(sppasAnvil.make_point(begin),
                                              sppasAnvil.make_point(end))
 
-                self.__create_annotation_from_el(track_root, el_root, localization)
+                self.__create_annotation_from_el(track_root,
+                                                 el_root,
+                                                 localization)
 
     # -----------------------------------------------------------------------
-    
+
     def __create_tier_from_attribute(self, track_root):
         """Create a set of tiers from 'attribute' of 'track'.
 
-        :param track_root: 
+        :param track_root:
 
         """
         for attribute_node in track_root.iter('attribute'):
@@ -308,20 +315,21 @@ class sppasAnvil(sppasBaseIO):
 
     def __create_annotation_from_el(self, track_root, el_root, localization):
         """Create a set of annotations from 'attribute' of 'el'.
-        
-        :param track_root: 
-        :param el_root: 
-        :param localization: 
+
+        :param track_root:
+        :param el_root:
+        :param localization:
 
         """
         for attribute_node in el_root.findall('attribute'):
             labels = format_labels(attribute_node.text)
-            tier = self.find(sppasAnvil.__fix_tier_name(track_root, attribute_node))
-            tier.create_annotation(sppasLocation(localization), 
+            tier = self.find(sppasAnvil.__fix_tier_name(track_root,
+                                                        attribute_node))
+            tier.create_annotation(sppasLocation(localization),
                                    labels)
 
     # -----------------------------------------------------------------------
-    
+
     @staticmethod
     def __fix_tier_name(track_root, attribute_node):
         return track_root.attrib['name'] + \

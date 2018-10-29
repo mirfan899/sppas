@@ -191,7 +191,7 @@ class sppasDictRepl(object):
 
     # -----------------------------------------------------------------------
 
-    def get(self, entry, substitution=None):
+    def get(self, entry, substitution=""):
         """Return the value of a key of the dictionary or substitution.
 
         :param entry: (str) A token to find in the dictionary

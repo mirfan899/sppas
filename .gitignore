@@ -1,3 +1,4 @@
+./private/
 .idea
 .idea/*
 .settings
@@ -6,7 +7,4 @@
 *.pyc
 .DS_Store
 *.dump
-./Packager/web/manual
-./Packager/sphinx-doc/_static
-./Packager/sphinx-doc/_modules
-./Packager/sphinx-doc/_build
+tierdlist.*

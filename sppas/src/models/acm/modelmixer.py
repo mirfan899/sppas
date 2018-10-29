@@ -40,13 +40,13 @@ from .readwrite import sppasACMRW
 
 
 class sppasModelMixer(object):
-    """
+    """Mix two acoustic models.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Mix two acoustic models.
 
     Create a mixed monophones model.
     Typical use is to create an acoustic model of a non-native speaker.

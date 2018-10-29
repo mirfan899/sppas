@@ -93,7 +93,7 @@ class SunauIO(sppasAudioPCM):
         else:
             self.verify_channels()
 
-            frames = ""
+            frames = b""
             sp = self._channels[0].get_sampwidth()
             for i in range(0, self._channels[0].get_nframes()*sp, sp):
                 for j in range(len(self._channels)):

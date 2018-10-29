@@ -463,7 +463,7 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def serialize_labels(self, separator="\n", empty="", alt=True):
-        """Convert labels into a string.
+        """Return labels serialized into a string.
 
         :param separator: (str) String to separate labels.
         :param empty: (str) The text to return if a tag is empty or not set.
@@ -599,10 +599,14 @@ class sppasAnnotation(sppasMetaData):
                                                    str(self.__location),
                                                    str(self.__labels))
 
+    # -----------------------------------------------------------------------
+
     def __str__(self):
         return "{:s} {:s} {:s}".format(self.get_meta('id'),
                                        str(self.__location),
                                        str(self.__labels))
+
+    # -----------------------------------------------------------------------
 
     def __hash__(self):
         # use the hashcode of self identifier since that is used
@@ -610,7 +614,15 @@ class sppasAnnotation(sppasMetaData):
         # not required by Python 2.7 but necessary for Python 3.4+
         return hash(self.get_meta("id"))
 
+    # -----------------------------------------------------------------------
+
     def __eq__(self, other):
+        if other is None:
+            return False
+
+        if isinstance(other, sppasAnnotation) is False:
+            return False
+
         if self.__score != other.get_score():
             return False
 
@@ -625,6 +637,8 @@ class sppasAnnotation(sppasMetaData):
                 return False
 
         return True
+
+    # -----------------------------------------------------------------------
 
     def __ne__(self, other):
         return not self == other

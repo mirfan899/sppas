@@ -3,11 +3,12 @@
 
 import unittest
 
-from sppas.src.annotationdata.annotation import Annotation
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.ptime.interval import TimeInterval
-from sppas.src.annotationdata.ptime.point import TimePoint
-from sppas.src.annotationdata.tier import Tier
+from sppas.src.anndata import sppasAnnotation
+from sppas.src.anndata import sppasLabel, sppasTag
+from sppas.src.anndata import sppasLocation
+from sppas.src.anndata import sppasInterval
+from sppas.src.anndata import sppasPoint
+from sppas.src.anndata import sppasTier
 
 from ..tierstats import TierStats
 
@@ -15,17 +16,32 @@ from ..tierstats import TierStats
 
 
 class TestStatistics(unittest.TestCase):
+    """Estimate descriptive statistics of annotations of a tier."""
 
     def setUp(self):
-        self.x = Annotation(TimeInterval(TimePoint(1, 0.), TimePoint(2, 0.01)), Label('toto'))
-        self.y = Annotation(TimeInterval(TimePoint(3, 0.01), TimePoint(4, 0.01)), Label('titi'))
-        self.a = Annotation(TimeInterval(TimePoint(5, 0.01), TimePoint(6.5, 0.005)), Label('toto'))
-        self.b = Annotation(TimeInterval(TimePoint(6.5, 0.005), TimePoint(9.5, 0.)), Label('toto'))
-        self.tier = Tier()
-        self.tier.Append(self.x)
-        self.tier.Append(self.y)
-        self.tier.Append(self.a)
-        self.tier.Append(self.b)
+        self.x = sppasAnnotation(
+            sppasLocation(sppasInterval(sppasPoint(1., 0.),
+                                        sppasPoint(2., 0.01))),
+            sppasLabel(sppasTag('toto')))
+        self.y = sppasAnnotation(
+            sppasLocation(sppasInterval(sppasPoint(3., 0.01),
+                                        sppasPoint(4., 0.01))),
+            sppasLabel(sppasTag('titi')))
+        self.a = sppasAnnotation(
+            sppasLocation(sppasInterval(sppasPoint(5., 0.01),
+                                        sppasPoint(6.5, 0.005))),
+            sppasLabel(sppasTag('toto')))
+        self.b = sppasAnnotation(
+            sppasLocation(sppasInterval(sppasPoint(6.5, 0.005),
+                                        sppasPoint(9.5, 0.))),
+            sppasLabel(sppasTag('toto')))
+        self.tier = sppasTier()
+        self.tier.append(self.x)
+        self.tier.append(self.y)
+        self.tier.append(self.a)
+        self.tier.append(self.b)
+
+    # -----------------------------------------------------------------------
 
     def test_TierStats(self):
         t = TierStats(self.tier)

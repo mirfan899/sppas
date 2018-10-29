@@ -3,7 +3,7 @@
 import unittest
 
 from sppas.src.config import symbols
-from sppas.src.annotationdata import Transcription
+from sppas.src.anndata import sppasTranscription
 from ..Align.activity import sppasActivity
 
 # ---------------------------------------------------------------------------
@@ -33,14 +33,14 @@ class TestActivity(unittest.TestCase):
 
     def test_get_tier(self):
         a = sppasActivity()
-        trs = Transcription()
+        trs = sppasTranscription()
 
         # No tokensTier
         with self.assertRaises(IOError):
             a.get_tier(trs)
 
         # Test with an empty Tokens tier
-        trs.NewTier('TokensAlign')
+        trs.create_tier('TokensAlign')
         tier = a.get_tier(trs)
         self.assertEqual(len(tier), 0)
 

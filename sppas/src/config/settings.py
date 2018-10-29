@@ -32,9 +32,6 @@
     ~~~~~~~~~~~~~~~~~~
 
 """
-import json
-
-# ---------------------------------------------------------------------------
 
 
 class sppasBaseSettings(object):
@@ -53,44 +50,16 @@ class sppasBaseSettings(object):
         >>>    print(settings.newKey)
 
     """
+
     def __init__(self):
-        """Create the dictionary of settings."""
+        """Create the dictionary and load config file if any."""
         self.__dict__ = dict()
+        self.load()
+
+    # -----------------------------------------------------------------------
 
     def __enter__(self):
         return self
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        """to be overridden."""
-        pass
-
-# ---------------------------------------------------------------------------
-
-
-class sppasBaseModifiableSettings(sppasBaseSettings):
-    """A dictionary of settings stored in a file.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
-    A configuration file is loaded when init and saved when exit.
-
-    """
-
-    # _config_location = "settings.json"
-
-    def __init__(self, _config_location):
-        """Create the dictionary."""
-        super(sppasBaseModifiableSettings, self).__init__()
-
-        self._config_location = _config_location
-        try:
-            self.load()
-        except:
-            self.__dict__ = dict()
 
     # -----------------------------------------------------------------------
 
@@ -100,21 +69,11 @@ class sppasBaseModifiableSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def load(self):
-        """Load the dictionary of settings from a json file.
-
-        To override if necessary (for example when the data of the
-        dict can't be loaded from a json file, like 'wx' objects).
-
-        """
-        self.__dict__ = json.load(open(self._config_location))
+        """Load the dictionary of settings from a file."""
+        pass
 
     # -----------------------------------------------------------------------
 
     def save(self):
-        """Save the dictionary of settings in a json file.
-
-        To override if necessary (for example when the data of the
-        dict can't be saved into a json file, like 'wx' objects).
-
-        """
-        json.dump(self.__dict__, open(self._config_location, 'w'))
+        """Save the dictionary of settings in a file."""
+        pass

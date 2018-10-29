@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:08+02:00" format="1.4" name="Text Normalization">
+<Document author="SPPAS 1.9.9 (C) Brigitte Bigi" date="2018-10-22T10:43:30+02:00" format="1.4" name="Text Normalization">
 	<Metadata>
-		<Entry key="id">0b104f1b-0f39-4f59-9ae6-3645bc7a198f</Entry>
+		<Entry key="id">169283ea-f1d9-4e31-b044-e0904be5b867</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.7</Entry>
+		<Entry key="software_version">1.9.9</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
-		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_contact">contact@sppas.org</Entry>
 		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
 		<Entry key="language_iso">iso639-3</Entry>
 		<Entry key="language_code_0">fra</Entry>
@@ -14,18 +14,17 @@
 		<Entry key="language_url_0">https://iso639-3.sil.org/code/fra</Entry>
 		<Entry key="file_license_text_0">GNU GPL V3</Entry>
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
-		<Entry key="text_normalization_result_of">E:\bigi\Workspace\sppas\samples\samples-fra\EB_track_0641.TextGrid</Entry>
-		<Entry key="text_normalization_vocab">E:\bigi\Workspace\sppas\resources\vocab\fra.vocab</Entry>
+		<Entry key="text_normalization_result_of">E:\bigi\Projets\sppas\samples\samples-fra\EB_track_0641.TextGrid</Entry>
+		<Entry key="text_normalization_vocab">E:\bigi\Projets\sppas\resources\vocab\fra.vocab</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">EB_track_0641-token.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Projets\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-20-18 12:20</Entry>
+		<Entry key="file_write_date">2018-10-22T10:43:30+02:00</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="2a475a9f-2e29-0f79-0ca0-3104ac1f001c" tiername="Tokens">
+	<Tier id="999569bb-c790-464c-9822-14501dfd10a7" tiername="Tokens">
 		<Metadata>
 			<Entry key="language">0</Entry>
 			<Entry key="text_normalization_enable_action_replace">true</Entry>
@@ -34,7 +33,7 @@
 			<Entry key="text_normalization_enable_action_lower">true</Entry>
 			<Entry key="text_normalization_enable_action_punct">true</Entry>
 		</Metadata>
-		<Annotation id="9c264f6d-2c56-2d53-0aa7-9458bf9d487a">
+		<Annotation id="ac41bb1f-27b5-49f5-a0f9-bf79243bf089">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.0" radius="0.0" />

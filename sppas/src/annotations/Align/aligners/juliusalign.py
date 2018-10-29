@@ -31,6 +31,31 @@
     src.annotations.Align.aligners.juliusalign.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+http://julius.sourceforge.jp/en_index.php
+
+`Julius` is a high-performance, two-pass large vocabulary continuous
+speech recognition (LVCSR) decoder software for speech-related researchers
+and developers. Based on word N-gram and context-dependent HMM, it can
+perform almost real-time decoding on most current PCs in 60k word dictation
+task. Major search techniques are fully incorporated such as tree lexicon,
+N-gram factoring, cross-word context dependency handling, enveloped beam
+search, Gaussian pruning, Gaussian selection, etc.
+Besides search efficiency, it is also modularized carefully to be independent
+from model structures, and various HMM types are supported such as
+shared-state triphones and tied-mixture models, with any number of mixtures,
+states, or phones. Standard formats are adopted to cope with other free
+modeling toolkit such as HTK, CMU-Cam SLM toolkit, etc.
+
+The main platform is Linux and other Unix workstations, and also works on
+Windows. Most recent version is developed on Linux and Windows (cygwin /
+mingw), and also has Microsoft SAPI version. Julius is distributed with
+open license together with source codes.
+
+Julius has been developed as a research software for Japanese LVCSR since
+1997, and the work was continued under IPA Japanese dictation toolkit
+project (1997-2000), Continuous Speech Recognition Consortium, Japan (CSRC)
+(2000-2003) and currently Interactive Speech Technology Consortium (ISTC).
+
 """
 import os
 import codecs
@@ -41,99 +66,77 @@ from sppas.src.config import symbols
 from sppas.src.models.slm.ngramsmodel import sppasNgramsModel
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.models.slm.ngramsmodel import START_SENT_SYMBOL, END_SENT_SYMBOL
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.dictpron import sppasDictPron
 
 from .basealigner import BaseAligner
 
 # ----------------------------------------------------------------------------
 
-JULIUS_EXT_OUT = ["palign", "walign"]
-DEFAULT_EXT_OUT = JULIUS_EXT_OUT[0]
-SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
+SIL_PHON = \
+    list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ----------------------------------------------------------------------------
 
 
 class JuliusAligner(BaseAligner):
-    """
+    """Julius automatic alignment system.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Julius automatic alignment system.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    http://julius.sourceforge.jp/en_index.php
+    JuliusAligner is able to align one audio segment that can be:
+        - an inter-pausal unit,
+        - an utterance,
+        - a sentence...
+    no longer than a few seconds.
 
-    `Julius` is a high-performance, two-pass large vocabulary continuous
-    speech recognition (LVCSR) decoder software for speech-related researchers
-    and developers. Based on word N-gram and context-dependent HMM, it can
-    perform almost real-time decoding on most current PCs in 60k word dictation
-    task. Major search techniques are fully incorporated such as tree lexicon,
-    N-gram factoring, cross-word context dependency handling, enveloped beam
-    search, Gaussian pruning, Gaussian selection, etc.
-    Besides search efficiency, it is also modularized carefully to be independent
-    from model structures, and various HMM types are supported such as
-    shared-state triphones and tied-mixture models, with any number of mixtures,
-    states, or phones. Standard formats are adopted to cope with other free
-    modeling toolkit such as HTK, CMU-Cam SLM toolkit, etc.
+    Things needed to run JuliusAligner:
 
-    The main platform is Linux and other Unix workstations, and also works on
-    Windows. Most recent version is developed on Linux and Windows (cygwin /
-    mingw), and also has Microsoft SAPI version. Julius is distributed with
-    open license together with source codes.
+    To perform speech segmentation with Julius, three "models" have to be
+    prepared. The models should define the linguistic property of the
+    language: recognition unit, audio properties of the unit and the
+    linguistic constraint for the connection between the units.
+    Typically the unit should be a word, and you should give Julius these
+    models below:
 
-    Julius has been developed as a research software for Japanese LVCSR since
-    1997, and the work was continued under IPA Japanese dictation toolkit
-    project (1997-2000), Continuous Speech Recognition Consortium, Japan (CSRC)
-    (2000-2003) and currently Interactive Speech Technology Consortium (ISTC).
+    1. "Acoustic model", which is a stochastic model of input waveform
+    patterns, typically per phoneme. Format is HTK-ASCII model.
+
+    2. "Word dictionary", which defines vocabulary.
+
+    3. "Language model", which defines syntax level rules that defines the
+    connection constraint between words. It should give the constraint for
+    the acceptable or preferable sentence patterns. It can be:
+        * either a rule-based grammar,
+        * or probabilistic N-gram model.
+
+    This class automatically construct the word dictionary and the language
+    model from both:
+        - the tokenization of speech,
+        - the phonetization of speech.
+
+    If outext is set to "palign", JuliusAligner will use a grammar and
+    it will produce both phones and words alignments.
+    If outext is set to "walign", JuliusAligner will use a slm and will
+    produce words alignments only.
 
     """
-    def __init__(self, modeldir):
+
+    def __init__(self, model_dir=None):
         """Create a JuliusAligner instance.
 
-        JuliusAligner is able to align one audio segment that can be:
-            - an inter-pausal unit,
-            - an utterance,
-            - a sentence...
-        no longer than a few seconds.
-
-        Things needed to run JuliusAligner:
-
-        To perform speech segmentation with Julius, three "models" have to be
-        prepared. The models should define the linguistic property of the
-        language: recognition unit, audio properties of the unit and the
-        linguistic constraint for the connection between the units.
-        Typically the unit should be a word, and you should give Julius these
-        models below:
-
-        1. "Acoustic model", which is a stochastic model of input waveform
-        patterns, typically per phoneme. Format is HTK-ASCII model.
-
-        2. "Word dictionary", which defines vocabulary.
-
-        3. "Language model", which defines syntax level rules that defines the
-        connection constraint between words. It should give the constraint for
-        the acceptable or preferable sentence patterns. It can be:
-            * either a rule-based grammar,
-            * or probabilistic N-gram model.
-
-        This class automatically construct the word dictionary and the language
-        model from both:
-            - the tokenization of speech,
-            - the phonetization of speech.
-
-        If outext is set to "palign", JuliusAligner will use a grammar and
-        it will produce both phones and words alignments.
-        If outext is set to "walign", JuliusAligner will use a slm and will
-        produce words alignments only.
-
-        :param modeldir: (str) Name of the directory of the acoustic model
+        :param model_dir: (str) Name of the directory of the acoustic model
 
         """
-        super(JuliusAligner, self).__init__(modeldir)
-        self._outext = DEFAULT_EXT_OUT
+        super(JuliusAligner, self).__init__(model_dir)
+
+        self._extensions = ["palign", "walign"]
+        self._outext = self._extensions[0]
+        self._name = "julius"
 
     # ------------------------------------------------------------------------
 
@@ -144,8 +147,9 @@ class JuliusAligner(BaseAligner):
 
         """
         ext = ext.lower()
-        if ext not in JULIUS_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for JuliusAligner" % ext)
+        if ext not in self._extensions:
+            raise ValueError("{:s} is not a valid file extension for "
+                             "JuliusAligner".format(ext))
 
         self._outext = ext
 
@@ -154,12 +158,12 @@ class JuliusAligner(BaseAligner):
     def gen_slm_dependencies(self, basename, N=3):
         """Generate the dependencies (slm, dictionary) for julius.
 
-        :param basename: (str) the base name of the slm file and of the dictionary file
+        :param basename: (str) base name of the slm and dictionary files
         :param N: (int) Language model N-gram length.
 
         """
-        dictname = basename + ".dict"
-        slmname  = basename + ".arpa"
+        dict_name = basename + ".dict"
+        slm_name = basename + ".arpa"
 
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
@@ -173,9 +177,9 @@ class JuliusAligner(BaseAligner):
         if dictpron.is_unk(START_SENT_SYMBOL) is True:
             dictpron.add_pron(START_SENT_SYMBOL, SIL_PHON)
         if dictpron.is_unk(END_SENT_SYMBOL) is True:
-            dictpron.add_pron( END_SENT_SYMBOL, SIL_PHON)
+            dictpron.add_pron(END_SENT_SYMBOL, SIL_PHON)
 
-        dictpron.save_as_ascii(dictname, False)
+        dictpron.save_as_ascii(dict_name, False)
 
         # Write the SLM
         model = sppasNgramsModel(N)
@@ -183,64 +187,72 @@ class JuliusAligner(BaseAligner):
         probas = model.probabilities(method="logml")
         arpaio = sppasArpaIO()
         arpaio.set(probas)
-        arpaio.save(slmname)
+        arpaio.save(slm_name)
 
     # ------------------------------------------------------------------------
 
     def gen_grammar_dependencies(self, basename):
         """Generate the dependencies (grammar, dictionary) for julius.
 
-        :param basename: (str) the base name of the grammar file and of the dictionary file
+        :param basename: (str) base name of the grammar and dictionary files
 
         """
-        dictname = basename + ".dict"
-        grammarname = basename + ".dfa"
+        dict_name = basename + ".dict"
+        grammar_name = basename + ".dfa"
 
         phoneslist = self._phones.split()
         tokenslist = self._tokens.split()
 
-        tokenidx = 0
-        nbtokens = len(tokenslist)-1
+        token_idx = 0
+        nb_tokens = len(tokenslist)-1
 
-        with codecs.open(grammarname, 'w', sg.__encoding__) as fdfa,\
-                codecs.open(dictname, 'w', sg.__encoding__) as fdict:
+        with codecs.open(grammar_name, 'w', sg.__encoding__) as fdfa,\
+                codecs.open(dict_name, 'w', sg.__encoding__) as fdict:
 
             for token, pron in zip(tokenslist, phoneslist):
 
                 # dictionary:
                 for variant in pron.split("|"):
-                    fdict.write(str(tokenidx))
+                    fdict.write(str(token_idx))
                     fdict.write(" ["+token+"] ")
                     fdict.write(variant.replace("-", " ")+"\n")
 
                 # grammar:
-                if tokenidx == 0:
-                    fdfa.write("0 %s 1 0 1\n" % nbtokens)
+                if token_idx == 0:
+                    fdfa.write("0 {:d} 1 0 1\n".format(nb_tokens))
                 else:
-                    fdfa.write(str(tokenidx) + " "+str(nbtokens) + " " + str(tokenidx+1) + " 0 0\n")
+                    fdfa.write(str(token_idx) + " " +
+                               str(nb_tokens) + " " +
+                               str(token_idx+1) + " 0 0\n")
 
-                tokenidx += 1
-                nbtokens -= 1
+                token_idx += 1
+                nb_tokens -= 1
 
             # last line of the grammar
-            fdfa.write("%s -1 -1 1 0\n" % tokenidx)
+            fdfa.write("{:d} -1 -1 1 0\n".format(token_idx))
 
     # ------------------------------------------------------------------------
 
     def run_julius(self, inputwav, basename, outputalign):
         """Perform the speech segmentation.
+
         System call to the command `julius`.
 
-        :param inputwav: (str) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param basename: (str) the base name of the grammar file and of the dictionary file
-        :param outputalign: (str) the output file name
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param inputwav: (str) audio input file name
+        :param basename: (str) base name of grammar and dictionary files
+        :param outputalign: (str) output file name
 
         """
         # Fix file names
         tiedlist = os.path.join(self._model, "tiedlist")
         config = os.path.join(self._model, "config")
         # Fix file names and protect special characters.
-        hmmdefs = '"' + os.path.join(self._model, "hmmdefs").replace('"', '\\"') + '"'
+        hmmdefs = '"' + \
+                  os.path.join(self._model, "hmmdefs").replace('"', '\\"') + \
+                  '"'
         output = '"' + outputalign.replace('"', '\\"') + '"'
         dictionary = '"' + basename.replace('"', '\\"') + ".dict" + '"'
         grammar = '"' + basename.replace('"', '\\"') + ".dfa" + '"'
@@ -292,12 +304,14 @@ class JuliusAligner(BaseAligner):
         line = p.communicate()
 
         # Julius not installed
-        if len(line[0]) > 0 and "not found" in line[0]:
-            raise OSError("julius is not properly installed. See installation instructions for details.")
+        if len(line[0]) > 0 and u("not found") in u(line[0]):
+            raise OSError("julius is not properly installed. "
+                          "See installation instructions for details.")
 
         # Bad command
-        if len(line[0]) > 0 and "-help" in line[0]:
-            raise OSError("julius command failed:%s" % line)
+        if len(line[0]) > 0 and u("-help") in u(line[0]):
+            msg = u(" ".join(line))
+            raise OSError("julius command failed: {:s}".format(msg))
 
         # Check output file
         if os.path.isfile(outputalign) is False:
@@ -305,7 +319,7 @@ class JuliusAligner(BaseAligner):
 
     # ------------------------------------------------------------------------
 
-    def run_alignment(self, inputwav, outputalign, N=3):
+    def run_alignment(self, input_wav, output_align, N=3):
         """Execute the external program `julius` to align.
 
         The data related to the unit to time-align need to be previously
@@ -314,31 +328,36 @@ class JuliusAligner(BaseAligner):
             - set_phones(str)
             - set_tokens(str)
 
-        :param inputwav: (str - IN) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits
-        :param outputalign: (str - OUT) the output file name
-        :param N: (int) N value of N-grams, used only if SLM (i.e. outext=walign)
+        Given audio file must match the ones we used to train the acoustic
+        model: PCM-WAV 16000 Hz, 16 bits
+
+        :param input_wav: (str) the audio input file name
+        :param output_align: (str) the output file name
+        :param N: (int) for N-grams, used only if SLM (i.e. outext=walign)
 
         :returns: (str) A message of `julius`.
 
         """
-        outputalign = outputalign + "." + self._outext
+        output_align = output_align + "." + self._outext
 
-        basename = os.path.splitext(inputwav)[0]
+        basename = os.path.splitext(input_wav)[0]
         if self._outext == "palign":
             self.gen_grammar_dependencies(basename)
         else:
             self.gen_slm_dependencies(basename)
 
-        self.run_julius(inputwav, basename, outputalign)
-        with codecs.open(outputalign, 'r', sg.__encoding__) as f:
+        self.run_julius(input_wav, basename, output_align)
+        with codecs.open(output_align, 'r', sg.__encoding__) as f:
             lines = f.readlines()
+            f.close()
 
-        errorlines = ""
+        error_lines = ""
         message = ""
 
         entries = []
         for line in lines:
-            if line.find("Error: voca_load_htkdict") > -1 and line.find("not found") > -1:
+            if line.find("Error: voca_load_htkdict") > -1 \
+                    and line.find("not found") > -1:
                 line = sppasUnicode(line).to_strip()
                 line = line[line.find('"')+1:]
                 line = line[:line.find('"')]
@@ -349,20 +368,23 @@ class JuliusAligner(BaseAligner):
             added = self.add_tiedlist(entries)
             if len(added) > 0:
                 message = "The acoustic model was modified. " \
-                          "The following entries were successfully added into the tiedlist: "
+                          "The following entries were successfully added " \
+                          "into the tiedlist: "
                 message = message + " ".join(added) + "\n"
-                self.run_julius(inputwav, basename, outputalign)
-                with codecs.open(outputalign, 'r', sg.__encoding__) as f:
+                self.run_julius(input_wav, basename, output_align)
+                with codecs.open(output_align, 'r', sg.__encoding__) as f:
                     lines = f.readlines()
 
         for line in lines:
-            if (line.startswith("Error:") or line.startswith("ERROR:")) and " line " not in line:
-                errorlines = errorlines + line
+            if (line.startswith("Error:") or line.startswith("ERROR:")) \
+                    and " line " not in line:
+                error_lines = error_lines + line
             if "search failed" in line:
-                message = "Julius search has failed to find the transcription in the audio file. "
-                errorlines = "Search error. " + errorlines
+                message = "Julius has failed to find the transcription " \
+                          "in the audio file. "
+                error_lines = "Search error. " + error_lines
 
-        if len(errorlines) > 0:
-            raise Exception(message + errorlines)
+        if len(error_lines) > 0:
+            raise Exception(message + error_lines)
 
         return message

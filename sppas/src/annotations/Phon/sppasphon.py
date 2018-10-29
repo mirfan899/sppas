@@ -82,6 +82,7 @@ class sppasPhon(sppasBaseAnnotation):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, dict_filename, map_filename=None, logfile=None):
         """Create a sppasPhon instance.
 
@@ -176,7 +177,7 @@ class sppasPhon(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def phonetize(self, entry, idx=0):
+    def phonetize(self, entry):
         """Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
@@ -184,11 +185,10 @@ class sppasPhon(sppasBaseAnnotation):
         (from dict or from phonunk) or the unk stamp.
 
         :param entry: (str) The string to be phonetized.
-        :param idx: (int) number to communicate in the error/warning message. \
-                    0=disabled
         :returns: phonetization of the given entry
 
         """
+        unk = symbols.unk
         tab = self.phonetizer.get_phon_tokens(entry.split(),
                                               phonunk=self._options['phonunk'])
         tab_phones = list()
@@ -197,7 +197,7 @@ class sppasPhon(sppasBaseAnnotation):
             if s == annots.error:
                 message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
                 self.print_message(message, indent=3, status=s)
-                return symbols.unk
+                return [unk]
             else:
                 if s == annots.warning:
                     message = MSG_MISSING.format(tex)
@@ -205,7 +205,7 @@ class sppasPhon(sppasBaseAnnotation):
                         message = message + MSG_PHONETIZED.format(p)
                     else:
                         message = message + MSG_NOT_PHONETIZED
-                        p = symbols.unk
+                        p = unk
                 tab_phones.append(p)
 
             if message:
@@ -243,7 +243,7 @@ class sppasPhon(sppasBaseAnnotation):
                         phonetizations.append(SIL)
 
                     elif text.is_empty() is False:
-                        phones = self.phonetize(text.get_content(), i)
+                        phones = self.phonetize(text.get_content())
                         for p in phones:
                             phonetizations.extend(p.split(separators.variants))
 

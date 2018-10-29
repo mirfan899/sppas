@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import logging
 from .audioframes import sppasAudioFrames
 from .basevolume import sppasBaseVolume
 
@@ -40,13 +41,13 @@ from .basevolume import sppasBaseVolume
 
 
 class sppasChannelVolume(sppasBaseVolume):
-    """
+    """Estimate stats of the volume of an audio channel.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2016  Brigitte Bigi
-    :summary:      A class to estimates stats of the volume of an audio channel.
 
     The volume is the estimation of RMS values, sampled with a window of 10ms.
 
@@ -67,14 +68,19 @@ class sppasChannelVolume(sppasBaseVolume):
         channel.rewind()
 
         # Constants
-        nbframes = int(win_len * channel.get_framerate())
-        nbvols = int(channel.get_duration()/win_len) + 1
-        self._volumes = [0]*nbvols
+        nb_frames = int(win_len * channel.get_framerate())
+        nb_vols = int(channel.get_duration()/win_len) + 1
+        self._volumes = [0] * nb_vols
 
-        for i in range(nbvols):
-            frames = channel.get_frames(nbframes)
+        for i in range(nb_vols):
+            frames = channel.get_frames(nb_frames)
             a = sppasAudioFrames(frames, channel.get_sampwidth(), 1)
-            self._volumes[i] = a.rms()
+            rms = a.rms()
+            if rms > 0:  # provide negative values of corrupted audio files
+                self._volumes[i] = a.rms()
+            elif rms < 0:
+                logging.warning("Corrupted audio? "
+                                "The RMS is a negative value {:d}".format(rms))
 
         if self._volumes[-1] == 0:
             self._volumes.pop()

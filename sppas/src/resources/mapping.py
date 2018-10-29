@@ -39,7 +39,7 @@ from .dictrepl import sppasDictRepl
 
 # ----------------------------------------------------------------------------
 
-DEFAULT_SEP = (";", ",", " ", ".", "|", "+", "-")
+DEFAULT_SEP = (";", ",", "\n", " ", ".", "|", "+", "-")
 
 # ----------------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ class sppasMapping(sppasDictRepl):
 
         if self._reverse is False:
             if self.is_key(entry):
-                return self.replace(entry)
+                return self.get(entry)
         else:
             s = self.replace_reversed(entry)
             if len(s) > 0:

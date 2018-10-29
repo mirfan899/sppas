@@ -100,10 +100,10 @@ class WaveIO(sppasAudioPCM):
         else:
             self.verify_channels()
             sw = self._channels[0].get_sampwidth()
-            frames = ""
+            frames = b""
             for i in range(0, self._channels[0].get_nframes()*sw, sw):
                 for j in range(len(self._channels)):
-                    frames = frames + self._channels[j].get_frames(sw)
+                    frames += self._channels[j].get_frames(sw)
 
             f = wave.Wave_write(u(filename))
             f.setnchannels(len(self._channels))

@@ -32,6 +32,13 @@
     src.anndata.aio.elan.py
     ~~~~~~~~~~~~~~~~~~~~~~~
 
+ELAN is a professional tool for the creation of complex annotations on
+video and audio resources.
+
+| Brugman, H., Russel, A. (2004).
+| Annotating Multimedia/ Multi-modal resources with ELAN.
+| In: Proceedings of LREC 2004, Fourth International Conference on
+| Language Resources and Evaluation.
 
 """
 import xml.etree.cElementTree as ET
@@ -78,8 +85,9 @@ CONSTRAINTS = {
     'Symbolic_Subdivision': 'Symbolic subdivision of a parent annotation. '
     'Annotations refering to the same parent are ordered',
     'Symbolic_Association': '1-1 association with a parent annotation',
-    'Included_In': 'Time alignable annotations within the parent annotation\'s '
-                   'time interval, gaps are allowed'}
+    'Included_In':
+        'Time alignable annotations within the parent annotation\'s '
+        'time interval, gaps are allowed'}
 
 MIMES = {'wav': 'audio/x-wav',
          'mpg': 'video/mpeg',
@@ -99,6 +107,7 @@ class sppasEAF(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of EAF format or not.
@@ -259,18 +268,22 @@ class sppasEAF(sppasBaseIO):
 
         """
         if "DATE" in document_root.attrib:
-            self.set_meta('file_created_date', document_root.attrib['DATE'])
+            self.set_meta('file_created_date',
+                          document_root.attrib['DATE'])
 
         if "VERSION" in document_root.attrib:
-            self.set_meta('file_created_format_version', document_root.attrib['VERSION'])
+            self.set_meta('file_created_format_version',
+                          document_root.attrib['VERSION'])
 
         if "AUTHOR" in document_root.attrib:
-            self.set_meta('file_created_author', document_root.attrib['AUTHOR'])
+            self.set_meta('file_created_author',
+                          document_root.attrib['AUTHOR'])
 
     # -----------------------------------------------------------------------
 
     def _parse_license(self, license_root, idx=0):
         """Get an element 'LICENSE'.
+
         The current version of ELAN does not yet provide a means to edit
         or view the contents of the license.
 
@@ -278,17 +291,21 @@ class sppasEAF(sppasBaseIO):
         :param idx: (int) Index of the license
 
         """
-        self.set_meta('file_license_text_%d' % idx, license_root.text)
+        self.set_meta('file_license_text_%d' % idx,
+                      license_root.text)
 
         if "LICENSE_URL" in license_root.attrib:
-            self.set_meta('file_license_url_%d' % idx, license_root.attrib['LICENSE_URL'])
+            self.set_meta('file_license_url_%d' % idx,
+                          license_root.attrib['LICENSE_URL'])
         else:
-            self.set_meta('file_license_url_%d' % idx, "")
+            self.set_meta('file_license_url_%d' % idx,
+                          "")
 
     # -----------------------------------------------------------------------
 
     def _parse_header(self, header_root):
         """Get the element 'HEADER'.
+
         There should be exactly one HEADER element. It can contain sequences
         of three elements and has two attributes.
 
@@ -298,15 +315,20 @@ class sppasEAF(sppasBaseIO):
         # Fix the time unit
         unit_string = header_root.attrib['TIME_UNITS']
         if unit_string == 'seconds':
-            # it should never happen if the EAF file was generated with Elan software
+            # it should never happen if the EAF file was generated
+            # with Elan software
             self.unit = 1.0
 
         for media_root in header_root.findall('MEDIA_DESCRIPTOR'):
-            media = sppasEAF._parse_media_descriptor(media_root, header_root)
+            media = sppasEAF._parse_media_descriptor(
+                media_root,
+                header_root)
             self.add_media(media)
 
         for linked_root in header_root.findall('LINKED_FILE_DESCRIPTOR'):
-            media = sppasEAF._parse_linked_file_descriptor(linked_root, header_root)
+            media = sppasEAF._parse_linked_file_descriptor(
+                linked_root,
+                header_root)
             self.add_media(media)
 
         for property_root in header_root.findall('PROPERTY'):
@@ -317,6 +339,7 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _parse_media_descriptor(media_root, header_root):
         """Get the elements 'MEDIA_DESCRIPTOR'.
+
         This element describes one primary media source.
         Create a sppasMedia instance and add it.
 
@@ -347,6 +370,7 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _parse_linked_file_descriptor(linked_root, header_root):
         """Get the elements 'LINKED_FILE_DESCRIPTOR'.
+
         This element describes a “secondary”, additional source.
         Create a sppasMedia instance and add it.
 
@@ -376,8 +400,8 @@ class sppasEAF(sppasBaseIO):
 
     def _parse_property(self, property_root):
         """Get the elements 'PROPERTY' -> sppasMetadata().
-        This is a general purpose element for storing key-value pairs.
 
+        This is a general purpose element for storing key-value pairs.
         This method store all metadata except the identifiers (media, tier...).
 
         :param property_root: (ET) Property root element.
@@ -398,12 +422,16 @@ class sppasEAF(sppasBaseIO):
         :param idx: (int) Index of the locale
 
         """
-        self.set_meta('locale_code_%d' % idx, locale_root.attrib['LANGUAGE_CODE'])
+        self.set_meta('locale_code_%d' % idx,
+                      locale_root.attrib['LANGUAGE_CODE'])
 
         if "COUNTRY_CODE" in locale_root.attrib:
-            self.set_meta('locale_country_%d' % idx, locale_root.attrib['COUNTRY_CODE'])
+            self.set_meta('locale_country_%d' % idx,
+                          locale_root.attrib['COUNTRY_CODE'])
+
         if "VARIANT" in locale_root.attrib:
-            self.set_meta('locale_variant_%d' % idx, locale_root.attrib['VARIANT'])
+            self.set_meta('locale_variant_%d' % idx,
+                          locale_root.attrib['VARIANT'])
 
     # -----------------------------------------------------------------------
 
@@ -413,7 +441,8 @@ class sppasEAF(sppasBaseIO):
         Extracted information are:
             - language iso639-3 code,
             - language name,
-            - language url, except if cdb.iso.org which is wrong (changed to the SIL one).
+            - language url, except if cdb.iso.org which is wrong
+            (changed to the SIL one).
 
         :param language_root: (ET) Language element.
         :param idx: (int) Index of the language
@@ -423,7 +452,8 @@ class sppasEAF(sppasBaseIO):
         self.set_meta('language_code_%d' % idx, iso)
 
         if "LANG_LABEL" in language_root.attrib:
-            self.set_meta('language_name_%d' % idx, language_root.attrib['LANG_LABEL'])
+            self.set_meta('language_name_%d' % idx,
+                          language_root.attrib['LANG_LABEL'])
 
         url = 'http://iso639-3.sil.org/code/'+iso
         if "LANG_DEF" in language_root.attrib:
@@ -437,6 +467,7 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _parse_time_order(time_order_root):
         """Get the elements 'TIME_ORDER'.
+
         The TIME_ORDER element is a container for ordered TIME_SLOT elements.
 
         :param time_order_root: (ET) Time order root element.
@@ -475,7 +506,8 @@ class sppasEAF(sppasBaseIO):
             if descr_node.text is not None:
                 ctrl_vocab.set_description(descr_node.text)
             if 'LANG_REF' in descr_node.attrib:
-                ctrl_vocab.set_meta('language_code_0', descr_node.attrib['LANG_REF'])
+                ctrl_vocab.set_meta('language_code_0',
+                                    descr_node.attrib['LANG_REF'])
 
         # Add the list of entries
         # if Elan eaf format < 2.8
@@ -520,21 +552,28 @@ class sppasEAF(sppasBaseIO):
             if linguistic_type == tier.get_meta('LINGUISTIC_TYPE_REF'):
 
                 # Add linguistic type info in the metadata of the tier
-                for key in ['CONSTRAINTS', 'GRAPHIC_REFERENCES', 'TIME_ALIGNABLE']:
+                for key in ['CONSTRAINTS',
+                            'GRAPHIC_REFERENCES',
+                            'TIME_ALIGNABLE']:
                     if key in linguistic_root.attrib:
                         tier.set_meta(key, linguistic_root.attrib[key])
 
                 # Associate tier with a controlled vocabulary
                 if 'CONTROLLED_VOCABULARY_REF' in linguistic_root.attrib:
-                    ctrl_vocab_name = sppasCtrlVocab(linguistic_root.attrib['CONTROLLED_VOCABULARY_REF']).get_name()
+                    ctrl_vocab_name = sppasCtrlVocab(
+                        linguistic_root.attrib['CONTROLLED_VOCABULARY_REF']).get_name()
                     ctrl_vocab = self.get_ctrl_vocab_from_name(ctrl_vocab_name)
                     if ctrl_vocab is not None:
                         try:
                             tier.set_ctrl_vocab(ctrl_vocab)
                         except CtrlVocabContainsError as e:
-                            # There's a bug in Elan: accepts non-controlled text in controlled tier
-                            tier.set_meta("controlled_vocabulary", ctrl_vocab.get_meta('id'))
-                            logging.info(str(CtrlVocabSetTierError(ctrl_vocab.get_name(), tier.get_name())))
+                            # There's a bug in Elan:
+                            # accepts non-controlled text in controlled tier
+                            tier.set_meta("controlled_vocabulary",
+                                          ctrl_vocab.get_meta('id'))
+                            logging.info(str(CtrlVocabSetTierError(
+                                ctrl_vocab.get_name(),
+                                tier.get_name())))
                         # todo: CtrlVocab <-> Tier must deal with the locale...
                 found = True
 
@@ -571,7 +610,8 @@ class sppasEAF(sppasBaseIO):
             if sppasEAF.__is_alignable_tier(tier_root) == 0:
                 self._parse_tier(tier_root, time_slots, removed_annotations)
 
-        # We have to re-organize tiers: we restore the original rank of each tier
+        # We have to re-organize tiers:
+        # we restore the original rank of each tier
         for i, tier_root in enumerate(root.findall('TIER')):
             tier_name = tier_root.attrib['TIER_ID']
             self.set_tier_index(tier_name, i)
@@ -597,9 +637,14 @@ class sppasEAF(sppasBaseIO):
 
         # get annotations
         if sppasEAF.__is_alignable_tier(tier_root) > 0:
-            self._parse_alignable_tier(tier_root, tier, time_slots, removed_annotations)
+            self._parse_alignable_tier(tier_root,
+                                       tier,
+                                       time_slots,
+                                       removed_annotations)
         else:
-            self._parse_ref_tier(tier_root, tier, removed_annotations)
+            self._parse_ref_tier(tier_root,
+                                 tier,
+                                 removed_annotations)
 
         # hierarchy
         if 'PARENT_REF' in tier_root.attrib:
@@ -610,13 +655,17 @@ class sppasEAF(sppasBaseIO):
 
     # -----------------------------------------------------------------------
 
-    def _parse_alignable_tier(self, tier_root, tier, time_slots, removed_annotations=dict()):
+    def _parse_alignable_tier(self, tier_root, tier, time_slots,
+                              removed_annotations=dict()):
         """Get the elements 'TIER' -> sppasTier().
 
         :param tier_root: (ET) Tier root.
         :param tier: (sppasTier) The tier to add the annotation
         :param time_slots: (dict)
-        :param removed_annotations: (dict) Alignable annotations without time values.
+        :param removed_annotations: (dict) Alignable annotations
+        without time values. key=id of the removed annotation,
+        value=id of the aligned-annotation for which the removed one
+        is attached (in the same tier).
 
         """
         # Some time slots don't have a time value, so some annotations do not
@@ -630,9 +679,13 @@ class sppasEAF(sppasBaseIO):
         for annotation_root in tier_root.findall('ANNOTATION'):
 
             # In an alignable tier, we expect only alignable annotations
-            align_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'ALIGNABLE_ANNOTATION')
+            align_ann_root = sppasEAF.__get_ann_root(
+                annotation_root,
+                tier,
+                'ALIGNABLE_ANNOTATION')
 
-            # The (only) 'annotation value' in Elan is a text of a tag of a 'label' in SPPAS.
+            # The (only) 'annotation value' in Elan is a text of a tag
+            # of a 'label' in SPPAS.
             # Store in a list of labels.
             value_node = align_ann_root.find('ANNOTATION_VALUE')
             if value_node.text is not None:
@@ -650,7 +703,8 @@ class sppasEAF(sppasBaseIO):
             if begin_time is not None and end_time is not None:
                 ann = self.__add_ann_in_tier(begin_time, end_time, text, tier)
                 if len(removed) > 0:
-                    # the first removed annotation is the one we use to store metadata
+                    # the first removed annotation is the one
+                    # we use to store metadata
                     sppasEAF.__add_meta_in_ann(removed[0], ann)
                     removed.pop(0)
                     removed.append(align_ann_root)
@@ -659,8 +713,8 @@ class sppasEAF(sppasBaseIO):
 
                 # update
                 for a in removed:
-                    ann_id = a.attrib['ANNOTATION_ID']
-                    removed_annotations[ann_id] = ann.get_meta('id')
+                    a_id = a.attrib['ANNOTATION_ID']
+                    removed_annotations[a_id] = ann.get_meta('id')
 
                 # prepare for the next annotation
                 begin_time = None
@@ -670,8 +724,10 @@ class sppasEAF(sppasBaseIO):
 
             else:
                 removed.append(align_ann_root)
-                logging.info('No time value for the annotation {:s} in an alignable tier {:s}'
-                             ''.format(align_ann_root.attrib['ANNOTATION_ID'], tier.get_name()))
+                logging.info('No time value for the annotation {:s} '
+                             'in an alignable tier {:s}'
+                             ''.format(align_ann_root.attrib['ANNOTATION_ID'],
+                                       tier.get_name()))
 
     # -----------------------------------------------------------------
 
@@ -707,7 +763,6 @@ class sppasEAF(sppasBaseIO):
 
     def __fix_tiers_hierarchy(self, tier, parent_tier):
         """Try to link tier/parent_tier into a hierarchy."""
-
         linked = False
         link_type = sppasHierarchy.infer_hierarchy_type(tier, parent_tier)
 
@@ -745,33 +800,63 @@ class sppasEAF(sppasBaseIO):
         parent_tier_ref = tier_root.attrib['PARENT_REF']
         parent_tier = self.find(parent_tier_ref)
         if parent_tier is None:
-            raise AioFormatError('tier:{:s} parent:{:s}'.format(tier.get_name(), parent_tier_ref))
+            raise AioFormatError('tier:{:s} parent:{:s}'
+                                 ''.format(tier.get_name(), parent_tier_ref))
 
         # while we have the aligned parent, we can fill the child tier
         for i, annotation_root in enumerate(tier_root.findall('ANNOTATION')):
 
-            ref_ann_root = sppasEAF.__get_ann_root(annotation_root, tier, 'REF_ANNOTATION')
-            ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']
+            ref_ann_root = sppasEAF.__get_ann_root(
+                annotation_root,
+                tier,
+                'REF_ANNOTATION')
+            ann_id = ref_ann_root.attrib['ANNOTATION_ID']  # this new ann id
+            ann_ref_id = ref_ann_root.attrib['ANNOTATION_REF']  # parent ann id
 
-            ann_ref = parent_tier.get_annotation(removed_annotations.get(ann_ref_id, ann_ref_id))
+            ann_ref = parent_tier.get_annotation(
+                removed_annotations.get(ann_ref_id, ann_ref_id))
             if ann_ref is None:
-                raise AioFormatError('tier:{:s} annotation:{:s}'.format(tier.get_name(), ann_ref_id))
-            label = sppasLabel(sppasTag(ref_ann_root.find('ANNOTATION_VALUE').text))
+                raise AioFormatError('tier:{:s} annotation:{:s}'
+                                     ''.format(tier.get_name(), ann_ref_id))
+            label = sppasLabel(sppasTag(
+                ref_ann_root.find('ANNOTATION_VALUE').text))
+            location = ann_ref.get_location().copy()
 
             if ann_ref_id in removed_annotations:
-                # we append the label like it's done into the reference, instead of
-                # creating a new annotation. We suppose that the annotation to be
-                # appended is the last alignable annotation that we previously saved
-                # (because annotations are time-sorted)... is it a strong hypothesis?
+                # we append the label like it's done into the reference,
+                # instead of creating a new annotation. We suppose that the
+                # annotation to be appended is the last alignable annotation
+                # that we previously saved (because annotations are
+                # time-sorted)... is it a strong hypothesis?
                 # to be verified.
                 tier[-1].append_label(label)
                 logging.info('Label {:s} appended to annotation {:s}.'
-                             ''.format(label.get_best().get_content(), tier[-1].get_meta('id')))
+                             ''.format(label.get_best().get_content(),
+                                       tier[-1].get_meta('id')))
+                removed_annotations[ann_id] = tier[-1].get_meta('id')
+
             else:
-                location = ann_ref.get_location().copy()
-                new_ann = sppasAnnotation(location, label)
-                tier.append(new_ann)
-                sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
+                # several annotation references can share the same parent!
+                # perhaps we already have add such annotation
+                if 'PREVIOUS_ANNOTATION' in ref_ann_root.attrib:
+                    tier[-1].append_label(label)
+                    logging.info('Label {:s} appended to annotation {:s}.'
+                                 ''.format(label.get_best().get_content(),
+                                           tier[-1].get_meta('id')))
+                    removed_annotations[ann_id] = tier[-1].get_meta('id')
+
+                else:
+                    new_ann = sppasAnnotation(location, label)
+                    new_ann.set_meta('ann_parent_ref', ann_ref_id)
+                    try:
+                        tier.append(new_ann)
+                    except:
+                        logging.error('Tier: {:s}, ann_id={:s}, ann_ref_id: {:s}'
+                                      ''.format(tier.get_name(), ann_id, ann_ref_id))
+                        logging.error('Previous ann: {:s}'.format(tier[-1]))
+                        logging.error('New ann: {:s}'.format(new_ann))
+                        raise
+                    sppasEAF.__add_meta_in_ann(ref_ann_root, new_ann)
 
     # -----------------------------------------------------------------------
     # writer
@@ -839,7 +924,6 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _format_document():
         """Create a root element tree for EAF format."""
-
         root = ET.Element('ANNOTATION_DOCUMENT')
         author = sg.__name__ + " " + sg.__version__ + " (C) " + sg.__author__
 
@@ -915,7 +999,6 @@ class sppasEAF(sppasBaseIO):
 
     def _format_header(self, root):
         """Add 'HEADER' into the ElementTree."""
-
         header_root = ET.SubElement(root, 'HEADER')
         header_root.set('TIME_UNITS', 'milliseconds')
 
@@ -991,13 +1074,15 @@ class sppasEAF(sppasBaseIO):
         for key in meta_object.get_meta_keys():
             if key == 'id':
                 if isinstance(meta_object, sppasMedia):
-                    sppasEAF.__add_property(header_root,
-                                            "media_id_"+meta_object.get_filename(),
-                                            meta_object.get_meta('id'))
+                    sppasEAF.__add_property(
+                        header_root,
+                        "media_id_" + meta_object.get_filename(),
+                        meta_object.get_meta('id'))
                 elif isinstance(meta_object, sppasTier):
-                    sppasEAF.__add_property(header_root,
-                                            "tier_id_" + meta_object.get_name(),
-                                            meta_object.get_meta('id'))
+                    sppasEAF.__add_property(
+                        header_root,
+                        "tier_id_" + meta_object.get_name(),
+                        meta_object.get_meta('id'))
                 # we can't preserve the 'id' of other objects
             else:
                 # ignore the metadata that are interpreted by other methods.
@@ -1006,7 +1091,9 @@ class sppasEAF(sppasBaseIO):
                     key.startswith('file_license_')) \
                         and key[-1].isdigit():
                     continue
-                sppasEAF.__add_property(header_root, key, meta_object.get_meta(key))
+                sppasEAF.__add_property(header_root,
+                                        key,
+                                        meta_object.get_meta(key))
 
     # -----------------------------------------------------------------------
 
@@ -1055,10 +1142,14 @@ class sppasEAF(sppasBaseIO):
                     if not exists:
                         # create it:
                         default_root = ET.SubElement(root, 'LINGUISTIC_TYPE')
-                        default_root.set('LINGUISTIC_TYPE_ID', linguistic_type_id)
-                        default_root.set('TIME_ALIGNABLE', 'true')
-                        default_root.set('GRAPHIC_REFERENCES', 'false')
-                        default_root.set('CONTROLLED_VOCABULARY_REF', ctrl_vocab.get_name())
+                        default_root.set('LINGUISTIC_TYPE_ID',
+                                         linguistic_type_id)
+                        default_root.set('TIME_ALIGNABLE',
+                                         'true')
+                        default_root.set('GRAPHIC_REFERENCES',
+                                         'false')
+                        default_root.set('CONTROLLED_VOCABULARY_REF',
+                                         ctrl_vocab.get_name())
 
             # alignable tiers with a parent
             elif is_alignable == 1:
@@ -1075,7 +1166,8 @@ class sppasEAF(sppasBaseIO):
                 default_root.set('TIME_ALIGNABLE', 'false')
                 default_root.set('GRAPHIC_REFERENCES', 'false')
                 if ctrl_vocab is not None:
-                    default_root.set('CONTROLLED_VOCABULARY_REF', ctrl_vocab.get_name())
+                    default_root.set('CONTROLLED_VOCABULARY_REF',
+                                     ctrl_vocab.get_name())
 
     # -----------------------------------------------------------------------
 
@@ -1147,9 +1239,12 @@ class sppasEAF(sppasBaseIO):
         for i, tag in enumerate(ctrl_vocab):
             entry_root = ET.SubElement(ctrl_root, 'CV_ENTRY_ML')
             entry_value_root = ET.SubElement(entry_root, 'CVE_VALUE')
-            entry_value_root.set('CVE_ID', "cveid%d" % i)
-            entry_value_root.set('DESCRIPTION', ctrl_vocab.get_tag_description(tag))
-            entry_value_root.set('LANG_REF', language)
+            entry_value_root.set('CVE_ID',
+                                 "cveid%d" % i)
+            entry_value_root.set('DESCRIPTION',
+                                 ctrl_vocab.get_tag_description(tag))
+            entry_value_root.set('LANG_REF',
+                                 language)
             entry_value_root.text = tag.get_content()
 
     # -----------------------------------------------------------------------
@@ -1158,7 +1253,8 @@ class sppasEAF(sppasBaseIO):
         """Fill the TIME_ORDER element with time slots.
 
         :param time_order_root: (ET)
-        :param time_slots: (dict) The link between time values/tier and time slots.
+        :param time_slots: (dict) The link between time values/tier and
+        time slots.
 
         """
         for (time_value, rank, tier) in time_slots:
@@ -1191,6 +1287,7 @@ class sppasEAF(sppasBaseIO):
 
     def _format_alignable_tiers(self, root, alignable_tiers):
         """Add the elements 'TIER' into the ElementTree (if any).
+
         Only for alignable tiers.
 
         :param root: (ElementTree)
@@ -1234,16 +1331,21 @@ class sppasEAF(sppasBaseIO):
         for tier in new_alignable_tiers:
             for tier_root in root.findall('TIER'):
                 if tier_root.attrib['TIER_ID'] == tier.get_name():
-                    sppasEAF._format_alignable_annotations(tier_root, tier, time_values)
+                    sppasEAF._format_alignable_annotations(tier_root,
+                                                           tier,
+                                                           time_values)
 
         # assign time slots to annotations
         time_slots = sppasEAF._fix_time_slots(time_values)
 
-        # then, we can assign the time slots to annotations, instead of time values
+        # then, we can assign the time slots to annotations,
+        # instead of time values
         for tier in new_alignable_tiers:
             for tier_root in root.findall('TIER'):
                 if tier_root.attrib['TIER_ID'] == tier.get_name():
-                    sppasEAF._re_format_alignable_annotations(tier_root, tier, time_slots)
+                    sppasEAF._re_format_alignable_annotations(tier_root,
+                                                              tier,
+                                                              time_slots)
 
         # restore the hierarchy...
         self._hierarchy = hierarchy_backup
@@ -1255,6 +1357,7 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _format_alignable_annotations(tier_root, tier, time_values):
         """Add the elements 'ANNOTATION' into the ElementTree (if any).
+
         Only for alignable tiers.
 
         Attention: we assign time values instead of time slots. An annotation
@@ -1269,8 +1372,11 @@ class sppasEAF(sppasBaseIO):
         for ann in tier:
 
             # create an ANNOTATION for each label.
-            # specific time slots will have to be generated for un-aligned annotations.
-            created_anns = sppasEAF._create_alignable_annotation_element(ann, tier_root)
+            # specific time slots will have to be generated for
+            # un-aligned annotations.
+            created_anns = sppasEAF._create_alignable_annotation_element(
+                ann,
+                tier_root)
 
             for align_ann_root in created_anns:
                 b = align_ann_root.attrib['TIME_SLOT_REF1']
@@ -1302,7 +1408,8 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _create_alignable_annotation_element(ann, tier_root):
         """Create ANNOTATION in ElementTree.
-        Returns the list of created nodes of 'ALIGNABLE_ANNOTATION'.
+
+        Return the list of created nodes of 'ALIGNABLE_ANNOTATION'.
 
         """
         begin = round(ann.get_lowest_localization().get_midpoint(), 4)
@@ -1324,20 +1431,24 @@ class sppasEAF(sppasBaseIO):
             align_ann_root.set('TIME_SLOT_REF1', '%s_none_%d' % (begin, j))
             align_ann_root.set('TIME_SLOT_REF2', '%s_none_%d' % (begin, j + 1))
             if j > 0:
-                align_ann_root.set('ANNOTATION_ID', ann.get_meta('id') + "_" + str(j+1))
+                align_ann_root.set('ANNOTATION_ID',
+                                   ann.get_meta('id') + "_" + str(j+1))
             else:
-                align_ann_root.set('ANNOTATION_ID', ann.get_meta('id'))
+                align_ann_root.set('ANNOTATION_ID',
+                                   ann.get_meta('id'))
+
             for attrib in ['SVG_REF', 'EXT_REF', 'LANG_REF', 'CVE_REF']:
                 if ann.is_meta_key(attrib):
                     align_ann_root.set(attrib, ann.get_meta(attrib))
 
             # Assign the label
             label_ann_root = ET.SubElement(align_ann_root, 'ANNOTATION_VALUE')
-            label_ann_root.text = label.serialize(empty="", alt=True)  # get_best().get_content()
+            label_ann_root.text = label.serialize(empty="", alt=True)
 
             created_anns.append(align_ann_root)
 
-        # Override the begin/end to the first/last created alignable annotations
+        # Override the begin/end to the first/last created
+        # alignable annotations
         created_anns[0].set('TIME_SLOT_REF1', str(begin))
         created_anns[-1].set('TIME_SLOT_REF2', str(end))
 
@@ -1347,11 +1458,12 @@ class sppasEAF(sppasBaseIO):
 
     @staticmethod
     def _re_format_alignable_annotations(tier_root, tier, time_slots):
-        """Replace time values instead of time slots in 'ANNOTATION' elements.
+        """Replace time values instead of time slots in 'ANNOTATION' elts.
 
         :param root: (ElementTree)
         :param tier: (sppasTier)
-        :param time_slots: (dict) The link between (time values/tier) and time slots.
+        :param time_slots: (dict) The link between (time values/tier) and
+        time slots.
 
         """
         for ann_root in tier_root.findall('ANNOTATION'):
@@ -1363,14 +1475,22 @@ class sppasEAF(sppasBaseIO):
 
             # fix the appropriate time slot
             if "_none_" not in begin:
-                ts_begin = time_slots[(float(begin), 0, tier)]
+                ts_begin = time_slots[(float(begin),
+                                       0,
+                                       tier)]
             else:
-                ts_begin = time_slots[(float(begin.split('_')[0]), int(begin.split('_')[2]), tier)]
+                ts_begin = time_slots[(float(begin.split('_')[0]),
+                                       int(begin.split('_')[2]),
+                                       tier)]
 
             if "_none_" not in end:
-                ts_end = time_slots[(float(end), 0, tier)]
+                ts_end = time_slots[(float(end),
+                                     0,
+                                     tier)]
             else:
-                ts_end = time_slots[(float(end.split('_')[0]), int(end.split('_')[2]), tier)]
+                ts_end = time_slots[(float(end.split('_')[0]),
+                                     int(end.split('_')[2]),
+                                     tier)]
 
             # replace by the time slot in the tree
             align_ann_root.set('TIME_SLOT_REF1', ts_begin)
@@ -1379,20 +1499,25 @@ class sppasEAF(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     def _fix_alignable_tiers(self):
-        """Return the list of tiers to be aligned in time (without annotation ref)."""
+        """Return the list of tiers to be aligned in time.
 
+        (without annotation ref).
+
+        """
         alignable = list()
 
         for tier in self:
             is_alignable = False
 
-            # check labels (if several labels in an annotation => alignable tier)
+            # check labels
+            # (if several labels in an annotation => alignable tier)
             for ann in tier:
                 if len(ann.get_labels()) > 1:
                     is_alignable = True
                     break
 
-            # check hierarchy (if child in a TimeAssociation => reference tier)
+            # check hierarchy
+            # (if child in a TimeAssociation => reference tier)
             if is_alignable is False:
                 is_alignable = True
                 parent_tier = self.get_hierarchy().get_parent(tier)
@@ -1410,6 +1535,7 @@ class sppasEAF(sppasBaseIO):
 
     def _format_reference_tiers(self, root, alignable_tiers):
         """Add the elements 'TIER' into the ElementTree (if any).
+
         Only for reference tiers (annotations are not aligned but reference).
 
         :param root: (ElementTree)
@@ -1445,8 +1571,10 @@ class sppasEAF(sppasBaseIO):
                 parent_ann = parent_tier.find(begin_value, end_value)
 
                 if len(parent_ann) != 1:
-                    logging.info("Failed to find one annotation reference for {:s}. "
-                                 "Found: {:s}.".format(ann, parent_ann))
+                    logging.info("Failed to find one annotation reference "
+                                 "for {:s}. "
+                                 "Found: {:s}."
+                                 "".format(ann, parent_ann))
                     raise AioFormatError(ann)
                 parent_id = parent_ann[0].get_meta('id')
 
@@ -1456,7 +1584,8 @@ class sppasEAF(sppasBaseIO):
                 ref_ann_root.set('ANNOTATION_REF', parent_id)
 
                 # Assign the label
-                label_ann_root = ET.SubElement(ref_ann_root, 'ANNOTATION_VALUE')
+                label_ann_root = ET.SubElement(ref_ann_root,
+                                               'ANNOTATION_VALUE')
                 label_ann_root.text = ann.serialize_labels()
 
     # -----------------------------------------------------------------------
@@ -1466,7 +1595,6 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def _fix_time_slots(time_values):
         """Time values is a list of (float, int, sppasTier)."""
-
         # sort by time values and assign the 'ts<num>' id
         time_slots = OrderedDict()
         i = 0
@@ -1482,14 +1610,14 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def __is_alignable_tier(tier_root):
         """Return 0/False if the tier is not time-alignable at all."""
-
         if 'PARENT_REF' in tier_root.attrib:
             for annotation_root in tier_root.findall('ANNOTATION'):
                 if annotation_root.find('REF_ANNOTATION') is None:
                     # a time-alignable tier with a parent.
                     return 1
                 else:
-                    # a reference tier with a parent, not directly time-alignable.
+                    # a reference tier with a parent,
+                    # not directly time-alignable.
                     return 0
 
         # a time-alignable tier, without parent.
@@ -1500,6 +1628,7 @@ class sppasEAF(sppasBaseIO):
     @staticmethod
     def indent(elem, level=0):
         """Pretty indent.
+
         http://effbot.org/zone/element-lib.htm#prettyprint
 
         """

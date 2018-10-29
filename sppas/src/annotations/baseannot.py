@@ -33,11 +33,12 @@
 
 """
 import logging
-import os.path
+import os
 
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 from sppas.src.utils.makeunicode import u
+from sppas.src.utils.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
 
@@ -196,3 +197,30 @@ class sppasBaseAnnotation(object):
                                        status=None)
                 else:
                     logging.info("    - {!s:s}: {!s:s}".format(fn, m))
+
+    # -----------------------------------------------------------------------
+
+    def print_newline(self):
+        """Print an empty line."""
+        if self.logfile:
+            self.logfile.print_newline()
+
+    # ------------------------------------------------------------------------
+
+    def _get_filename(self, filename, extensions):
+        """Return a filename corresponding to one of the extensions.
+
+        :param filename: input file name
+        :param extensions: the list of expected extension
+        :returns: a file name of the first existing file with an expected
+        extension or None
+
+        """
+        for ext in extensions:
+
+            ext_filename = os.path.splitext(filename)[0] + ext
+            new_filename = sppasFileUtils(ext_filename).exists()
+            if new_filename is not None and os.path.isfile(new_filename):
+                return new_filename
+
+        return None

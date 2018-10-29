@@ -32,6 +32,15 @@
     src.anndata.aio.transcriber.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Transcriber is a tool for assisting the manual annotation of speech signals.
+It provides a graphical user interface for segmenting long duration speech
+recordings, transcribing them, and labeling speech turns, topic changes and
+acoustic conditions.
+It is more specifically designed for the annotation of broadcast news
+recordings.
+
+http://trans.sourceforge.net
+
 """
 import codecs
 import xml.etree.cElementTree as ET
@@ -96,6 +105,7 @@ class sppasTRS(sppasBaseIO):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of TRS format or not.
@@ -121,7 +131,6 @@ class sppasTRS(sppasBaseIO):
     @staticmethod
     def make_point(midpoint):
         """The localization is a time value, so a float."""
-
         try:
             midpoint = float(midpoint)
         except ValueError:
@@ -211,11 +220,17 @@ class sppasTRS(sppasBaseIO):
                             label.get_best().set_content(new_content)
 
         # Create the hierarchy
-        self.add_hierarchy_link("TimeAlignment", self.find('Turns'), self.find('Sections'))
-        self.add_hierarchy_link("TimeAlignment", self.find('Sections'), self.find('Episodes'))
-        self.add_hierarchy_link("TimeAlignment", self.find('Sections'), self.find('Topics'))
+        self.add_hierarchy_link("TimeAlignment",
+                                self.find('Turns'),
+                                self.find('Sections'))
+        self.add_hierarchy_link("TimeAlignment",
+                                self.find('Sections'),
+                                self.find('Episodes'))
+        self.add_hierarchy_link("TimeAlignment",
+                                self.find('Sections'),
+                                self.find('Topics'))
         # TurnRecordingQuality, TurnElocutionMode and TurnChannel should be
-        # "TimeAssociation" of Turns but... sparse data (?) !
+        # "TimeAssociation" of Turns but... if sparse data (?) !
 
         # Remove empty tiers.
         for i in reversed(range(len(self))):
@@ -227,6 +242,7 @@ class sppasTRS(sppasBaseIO):
     @staticmethod
     def __format_tag(tag):
         """Reformat tokens in tags.
+
         Remove specific markers of the transcription convention of
         Transcriber.
 
@@ -237,7 +253,9 @@ class sppasTRS(sppasBaseIO):
         for token in tokens:
             if token.startswith("^^"):
                 token = token[2:]
-            if len(token) > 1 and (token.startswith("*") or token.startswith('?')):
+            if len(token) > 1 and \
+                    (token.startswith("*") or
+                     token.startswith('?')):
                 token = token[1:]
             if "()" in token:
                 token = token.replace("()", "")
@@ -323,33 +341,41 @@ class sppasTRS(sppasBaseIO):
 
                 # Speaker name: CDATA
                 if "name" in spk_node.attrib:
-                    tier.set_meta("speaker_name", spk_node.attrib['name'])
+                    tier.set_meta("speaker_name",
+                                  spk_node.attrib['name'])
 
                 # Speaker type: male/female/child/unknown
                 if "type" in spk_node.attrib:
-                    tier.set_meta("speaker_type", spk_node.attrib['type'])
+                    tier.set_meta("speaker_type",
+                                  spk_node.attrib['type'])
 
-                # "spelling checked" for speakers whose name has been checked: yes/no
+                # "spelling checked" for speakers whose name
+                # has been checked: yes/no
                 if "check" in spk_node.attrib:
-                    tier.set_meta("speaker_check", spk_node.attrib['check'])
+                    tier.set_meta("speaker_check",
+                                  spk_node.attrib['check'])
 
                 # Speaker dialect: native/nonnative
                 if "dialect" in spk_node.attrib:
-                    tier.set_meta("speaker_dialect", spk_node.attrib['dialect'])
+                    tier.set_meta("speaker_dialect",
+                                  spk_node.attrib['dialect'])
 
                 # Speaker accent: CDATA
                 if "accent" in spk_node.attrib:
-                    tier.set_meta("speaker_accent", spk_node.attrib['accent'])
+                    tier.set_meta("speaker_accent",
+                                  spk_node.attrib['accent'])
 
                 # Speaker scope: local/global
                 if "scope" in spk_node.attrib:
-                    tier.set_meta("speaker_scope", spk_node.attrib['scope'])
+                    tier.set_meta("speaker_scope",
+                                  spk_node.attrib['scope'])
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_topics(topic_root, topic_tier):
         """Read the <Topics> element and create a tier.
+
         The topics and their description are stored in a controlled
         vocabulary.
 
@@ -461,7 +487,8 @@ class sppasTRS(sppasBaseIO):
         self.__parse_topic_in_section(section_root, location)
 
         # Add the section in the tier
-        section_tier.create_annotation(location, sppasLabel(sppasTag(section_type)))
+        section_tier.create_annotation(location,
+                                       sppasLabel(sppasTag(section_type)))
 
     # -----------------------------------------------------------------------
 
@@ -550,25 +577,35 @@ class sppasTRS(sppasBaseIO):
                 # Update the begin value
                 begin = sppasTRS.make_point(node.attrib['time'])
 
-                # Update the end of the previous annotation to the current value
+                # Update the end of the previous annotation
+                # to the current value
                 if prev_ann is not None:
                     prev_ann.get_location().get_best().set_end(begin)
 
                 # create new annotation covering the rest of the turn.
                 # will eventually be reduced by the rest of the turn content.
                 if len(tiers) == 1:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, "")
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        "")
                     tier.add(prev_ann)
 
             elif node.tag == 'Background':
                 if prev_ann is None:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, node.tail)
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        node.tail)
                     tier.add(prev_ann)
                 sppasTRS.__append_background_in_label(node, prev_ann)
 
             elif node.tag == 'Comment':
                 if prev_ann is None:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, node.tail)
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        node.tail)
                     tier.add(prev_ann)
                 sppasTRS.__append_comment_in_label(node, prev_ann)
 
@@ -577,7 +614,10 @@ class sppasTRS(sppasBaseIO):
                 tier_index = int(node.attrib['nb']) - 1
                 tier = tiers[tier_index]
                 if len(tiers) > 1:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, "")
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        "")
                     tier.add(prev_ann)
 
             elif node.tag == 'Vocal':
@@ -586,7 +626,10 @@ class sppasTRS(sppasBaseIO):
 
             elif node.tag == 'Event':
                 if prev_ann is None:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, node.tail)
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        node.tail)
                     tier.add(prev_ann)
                 sppasTRS.__append_event_in_label(node, prev_ann)
 
@@ -594,7 +637,10 @@ class sppasTRS(sppasBaseIO):
             # PCDATA: handle text directly inside the Turn
             if node.tail.strip() != "":
                 if prev_ann is None:
-                    prev_ann = sppasTRS.__create_annotation(begin, turn_end, node.tail)
+                    prev_ann = sppasTRS.__create_annotation(
+                        begin,
+                        turn_end,
+                        node.tail)
                     tier.add(prev_ann)
 
                 sppasTRS.__append_text_in_label(prev_ann, node.tail)
@@ -620,7 +666,8 @@ class sppasTRS(sppasBaseIO):
         # convert the Background node into a comment of SPPAS.
         txt = "{background_type=" + node_event.attrib['type']
         if "level" in node_event.attrib:
-            txt += " ; background_level=" + node_event.attrib['level'].replace(',', '_')
+            txt += " ; background_level=" + \
+                   node_event.attrib['level'].replace(',', '_')
         txt += '}'
         # append to the label of the transcription.
         sppasTRS.__append_text_in_label(annotation, txt)
@@ -661,16 +708,19 @@ class sppasTRS(sppasBaseIO):
                   else '')
 
         if description+"_"+extent in NOISE_EVENTS:
-            sppasTRS.__append_text_in_label(annotation,
-                                            NOISE_EVENTS[description+"_"+extent])
+            sppasTRS.__append_text_in_label(
+                annotation,
+                NOISE_EVENTS[description+"_"+extent])
 
         elif description in NOISE_EVENTS:
-            sppasTRS.__append_text_in_label(annotation,
-                                            NOISE_EVENTS[description])
+            sppasTRS.__append_text_in_label(
+                annotation,
+                NOISE_EVENTS[description])
 
         else:
-            sppasTRS.__append_text_in_label(annotation,
-                                            '{%s}' % description.replace(' ', '_'))
+            sppasTRS.__append_text_in_label(
+                annotation,
+                '{%s}' % description.replace(' ', '_'))
 
     # -----------------------------------------------------------------------
 
@@ -697,7 +747,6 @@ class sppasTRS(sppasBaseIO):
     @staticmethod
     def __parse_type_in_section(section_root):
         """Extract the type of a section."""
-
         if "type" in section_root.attrib:
             return section_root.attrib['type']
         return "undefined"
@@ -706,7 +755,6 @@ class sppasTRS(sppasBaseIO):
 
     def __parse_topic_in_section(self, section_root, location):
         """Extract the topic of a section."""
-
         try:
             section_topic = section_root.attrib['topic']
         except KeyError:
@@ -714,13 +762,13 @@ class sppasTRS(sppasBaseIO):
 
         # Append this section in the Topics tier
         topics = self.find('Topics')
-        topics.create_annotation(location, sppasLabel(sppasTag(section_topic)))
+        topics.create_annotation(location,
+                                 sppasLabel(sppasTag(section_topic)))
 
     # -----------------------------------------------------------------------
 
     def __parse_mode_in_turn(self, turn_root, location):
         """Extract the mode of a turn."""
-
         try:
             mode = turn_root.attrib['mode']
         except KeyError:
@@ -734,13 +782,13 @@ class sppasTRS(sppasBaseIO):
             ctrl.add(sppasTag('planned'))
             mode_tier.set_ctrl_vocab(ctrl)
 
-        mode_tier.create_annotation(location, sppasLabel(sppasTag(mode)))
+        mode_tier.create_annotation(location,
+                                    sppasLabel(sppasTag(mode)))
 
     # -----------------------------------------------------------------------
 
     def __parse_fidelity_in_turn(self, turn_root, location):
         """Extract the fidelity of a turn."""
-
         try:
             fidelity = turn_root.attrib['fidelity']
         except KeyError:
@@ -755,13 +803,13 @@ class sppasTRS(sppasBaseIO):
             ctrl.add(sppasTag('low'))
             fidelity_tier.set_ctrl_vocab(ctrl)
 
-        fidelity_tier.create_annotation(location, sppasLabel(sppasTag(fidelity)))
+        fidelity_tier.create_annotation(location,
+                                        sppasLabel(sppasTag(fidelity)))
 
     # -----------------------------------------------------------------------
 
     def __parse_channel_in_turn(self, turn_root, location):
         """Extract the channel of a turn."""
-
         try:
             channel = turn_root.attrib['channel']
         except KeyError:

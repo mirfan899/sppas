@@ -392,6 +392,7 @@ class TestPhonetization(unittest.TestCase):
 
     def test_samples(self):
         """... Compare the current result is the same as the existing one."""
+        # Test the automatic annotation with its default parameters only.
 
         # the place where are the samples to be tested.
         samples_path = os.path.join(paths.samples, "annotation-results")

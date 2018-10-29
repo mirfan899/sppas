@@ -72,20 +72,21 @@ def setup_logging(log_level=15, filename=None):
 
     # Setup logging to file if filename is specified
     if filename is not None:
-        file_handler = logging.FileHandler(filename, "a+")
-        file_handler.setFormatter(logging.Formatter(formatmsg))
-        file_handler.setLevel(log_level)
-        logging.getLogger().addHandler(file_handler)
+        handler = logging.FileHandler(filename, "a+")
     else:
         # Setup logging to stderr
-        console_handler = logging.StreamHandler()
-        console_handler.setFormatter(logging.Formatter(formatmsg))
-        console_handler.setLevel(log_level)
-        logging.getLogger().addHandler(console_handler)
+        handler = logging.StreamHandler()
 
+    handler.setFormatter(logging.Formatter(formatmsg))
+    handler.setLevel(log_level)
+    logging.getLogger().addHandler(handler)
     logging.getLogger().setLevel(log_level)
-    logging.info("Logging set up level={:d}, "
-                 "filename={:s}".format(log_level, filename))
+
+    if filename is not None:
+        logging.info("Logging set up level={:d}, "
+                     "filename={:s}".format(log_level, filename))
+    else:
+        logging.info("Logging set up level={:d}".format(log_level))
 
 # ----------------------------------------------------------------------------
 

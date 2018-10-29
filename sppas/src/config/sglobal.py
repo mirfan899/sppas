@@ -54,17 +54,19 @@ class sppasGlobalSettings(sppasBaseSettings):
         super(sppasGlobalSettings, self).__init__()
 
         self.__dict__ = dict(
-            __version__="1.9.8",
+            __version__="1.9.9",
             __author__="Brigitte Bigi",
             __contact__="contact@sppas.org",
             __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
             __license__="GNU Public License, version 3",
             __docformat__='reStructedText en',
             __name__="SPPAS",
+            __longname__="SPPAS: the automatic annotation and analysis of speech",
             __url__="http://www.sppas.org/",
-            __summary__="SPPAS produces automatically annotations\n\
-        from a recorded speech sound and its transcription\n\
-        and performs the analysis of any annotated data.",
+            __summary__=""
+"   SPPAS produces automatically annotations\n\
+from a recorded speech sound and its transcription\n\
+and performs the analysis of any annotated data.",
             __title__="the automatic annotation and analysis of speech",
             __encoding__="utf-8",
         )
@@ -98,7 +100,8 @@ class sppasPathSettings(sppasBaseSettings):
             src=os.path.join(sppas_dir, "src"),
             plugins=os.path.join(os.path.dirname(sppas_dir), "plugins"),
             resources=os.path.join(os.path.dirname(sppas_dir), "resources"),
-            samples=os.path.join(os.path.dirname(sppas_dir), "samples")
+            samples=os.path.join(os.path.dirname(sppas_dir), "samples"),
+            logs=os.path.join(os.path.dirname(sppas_dir), "logs")
         )
 
 # ---------------------------------------------------------------------------

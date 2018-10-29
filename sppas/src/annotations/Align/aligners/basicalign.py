@@ -28,129 +28,134 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.aligners.basicalign.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    annotations.Align.aligners.basicalign.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import sppas.src.audiodata.aio
 
+from sppas.src.config import separators
 from .basealigner import BaseAligner
-from .alignerio import AlignerIO
+from .alignerio import palign
 
 # ---------------------------------------------------------------------------
 
-BASIC_EXT_OUT = ["palign"]
-DEFAULT_EXT_OUT = BASIC_EXT_OUT[0]
-
-# ----------------------------------------------------------------------------
-
 
 class BasicAligner(BaseAligner):
-    """
+    """Basic automatic alignment system.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Basic automatic alignment system.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This segmentation assign the same duration to each phoneme.
     In case of phonetic variants, the first shortest pronunciation is
     selected.
 
     """
-    def __init__(self, modeldir):
+
+    def __init__(self, model_dir=None):
         """Create a BasicAligner instance.
 
-        This class allows to align one inter-pausal unit with the same
-        duration for each phoneme. It selects the shortest in case of variants.
+        This class allows to align one unit assigning the same duration to
+        each phoneme. It selects the shortest sequence in case of variants.
 
-        :param modeldir: (str) Name of the directory of the acoustic model
+        :param model_dir: (str) Ignored.
 
         """
-        super(BasicAligner, self).__init__(modeldir)
-        self._outext = DEFAULT_EXT_OUT
+        super(BasicAligner, self).__init__()
+
+        self._extensions = [palign().extension]
+        self._outext = palign().extension
+        self._name = "basic"
 
     # -----------------------------------------------------------------------
 
-    def set_outext(self, ext):
-        """Set the extension for output files.
-
-        :param ext: (str)
-
-        """
-        ext = ext.lower()
-        if not ext in BasicAligner.BASIC_EXT_OUT:
-            raise ValueError("%s is not a valid file extension for BasicAligner" % ext)
-
-        self._outext = ext
-
-    # -----------------------------------------------------------------------
-
-    def run_alignment(self, inputwav, outputalign):
+    def run_alignment(self, input_wav, output_align):
         """Perform the speech segmentation.
+
         Assign the same duration to each phoneme.
 
-        :param inputwav: (str or float) the audio input file name, of type PCM-WAV 16000 Hz, 16 bits; or its duration
-        :param outputalign: (str) the output file name
+        :param input_wav: (str/float) audio input file name, or its duration
+        :param output_align: (str) the output file name
 
         :returns: Empty string.
 
         """
-        if isinstance(inputwav, float) is True:
-            duration = inputwav
+        if isinstance(input_wav, float) is True:
+            duration = input_wav
         else:
             try:
-                wavspeech = sppas.src.audiodata.aio.open(inputwav)
-                duration = wavspeech.get_duration()
-            except Exception:
+                wav_speech = sppas.src.audiodata.aio.open(input_wav)
+                duration = wav_speech.get_duration()
+            except:
                 duration = 0.
 
-        self.run_basic(duration, outputalign)
+        self.run_basic(duration, output_align)
 
         return ""
 
     # ------------------------------------------------------------------------
 
-    def run_basic(self, duration, outputalign=None):
+    def run_basic(self, duration, output_align=None):
         """Perform the speech segmentation.
+
         Assign the same duration to each phoneme.
 
         :param duration: (float) the duration of the audio input
-        :param outputalign: (str) the output file name
+        :param output_align: (str) the output file name
 
         :returns: the List of tuples (begin, end, phone)
 
         """
-        # Remove variants: Select the first-shorter pronunciation of each token
-        phoneslist = []
+        # Remove variants:
+        # Select the first-shorter pronunciation of each token
+        phones_list = []
         phonetization = self._phones.strip().split()
-        tokenization  = self._tokens.strip().split()
-        selectphonetization = []
+        tokenization = self._tokens.strip().split()
+        select_phonetization = []
         delta = 0.
         for pron in phonetization:
             token = BasicAligner.select_shortest(pron)
-            phoneslist.extend(token.split("-"))
-            selectphonetization.append(token.replace("-", " "))
+            phones_list.extend(
+                token.split(separators.phonemes))
+            select_phonetization.append(
+                token.replace(separators.phonemes, " "))
 
         # Estimate the duration of a phone (in centi-seconds)
-        if len(phoneslist) > 0:
-            delta = (duration / float(len(phoneslist))) * 100.
+        if len(phones_list) > 0:
+            delta = (duration / float(len(phones_list))) * 100.
 
         # Generate the result
-        if delta < 1. or len(selectphonetization) == 0:
-            return self.gen_alignment([], [], [], int(duration*100.), outputalign)
+        if delta < 1. or len(select_phonetization) == 0:
+            return self.__gen_alignment([],
+                                        [],
+                                        [],
+                                        int(duration*100.),
+                                        output_align)
 
-        return self.gen_alignment(selectphonetization, tokenization, phoneslist, int(delta), outputalign)
+        return self.__gen_alignment(select_phonetization,
+                                    tokenization,
+                                    phones_list,
+                                    int(delta),
+                                    output_align)
 
     # ------------------------------------------------------------------------
+    # private
+    # ------------------------------------------------------------------------
 
-    def gen_alignment(self, phonetization, tokenization, phoneslist, phonesdur, outputalign=None):
+    def __gen_alignment(self,
+                        phonetization,
+                        tokenization,
+                        phoneslist,
+                        phonesdur,
+                        output_align=None):
         """Write an alignment in an output file.
 
         :param phonetization: (list) phonetization of each token
         :param tokenization: (list) each token
-
         :param phoneslist: (list) each phone
         :param phonesdur: (int) the duration of each phone in centi-seconds
         :param outputalign: (str) the output file name
@@ -167,15 +172,13 @@ class BasicAligner(BaseAligner):
         if len(alignments) == 0:
             alignments = [(0, int(phonesdur), "")]
 
-        if outputalign is not None:
-            outputalign = outputalign + "." + self._outext
-            alignio = AlignerIO()
-            alignio.write_palign(phonetization, tokenization, alignments, outputalign)
+        if output_align is not None:
+            output_align = output_align + "." + self._outext
+            palign().write(phonetization, tokenization,
+                           alignments, output_align)
 
         return alignments
 
-    # ------------------------------------------------------------------------
-    # Private
     # ------------------------------------------------------------------------
 
     @staticmethod
@@ -184,20 +187,20 @@ class BasicAligner(BaseAligner):
 
         :param pron: (str) The phonetization of a token
         :returns: (str) pronunciation
-        
+
         """
         if len(pron) == 0:
             return ""
 
-        tab = pron.split("|")
+        tab = pron.split(separators.variants)
         if len(tab) == 1:
-            return pron
+            return pron.strip()
 
         i = 0
-        m = len(tab[0])
+        m = len(tab[0].strip())
         for n, p in enumerate(tab):
-            if len(p) < m:
+            if len(p.strip()) < m:
                 i = n
-                m = len(p)
+                m = len(p.strip())
 
         return tab[i].strip()

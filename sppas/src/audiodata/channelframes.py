@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas.src.utils.makeunicode import b
 from .audioframes import sppasAudioFrames
 
 # ---------------------------------------------------------------------------
@@ -47,7 +48,7 @@ class sppasChannelFrames(object):
     :summary:      An utility for frames of one channel only.
 
     """
-    def __init__(self, frames=""):
+    def __init__(self, frames=b""):
         """Create a sppasChannelFrames instance.
 
         :param frames: (str) Frames that must be MONO ONLY.
@@ -87,7 +88,7 @@ class sppasChannelFrames(object):
         if nframes <= 0:
             return False
 
-        self._frames += " \x00"*nframes
+        self._frames += b(" \x00") * nframes
         return True
 
     # ----------------------------------------------------------------------------
@@ -102,7 +103,7 @@ class sppasChannelFrames(object):
         if nframes <= 0:
             return False
 
-        self._frames = " \x00"*nframes + self._frames
+        self._frames = b(" \x00") * nframes + self._frames
         return True
 
     # ----------------------------------------------------------------------------

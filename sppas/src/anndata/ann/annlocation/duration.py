@@ -92,7 +92,6 @@ class sppasDuration(object):
 
     def get_value(self):
         """Return the duration value (float)."""
-
         return self.__value
 
     # -----------------------------------------------------------------------
@@ -115,7 +114,6 @@ class sppasDuration(object):
 
     def get_margin(self):
         """Return the vagueness of the duration (float)."""
-
         return self.__margin
 
     # -----------------------------------------------------------------------
@@ -138,7 +136,6 @@ class sppasDuration(object):
 
     def copy(self):
         """Return a deep copy of self."""
-
         t = self.__value
         r = self.__margin
         return sppasDuration(t, r)

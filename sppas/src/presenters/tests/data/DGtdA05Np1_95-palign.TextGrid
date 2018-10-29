@@ -99,7 +99,7 @@ item []:
         intervals [22]:
             xmin = 2.325
             xmax = 2.435
-            text = "#"
+            text = "+"
         intervals [23]:
             xmin = 2.435
             xmax = 2.545
@@ -267,7 +267,7 @@ item []:
         intervals [64]:
             xmin = 6.965
             xmax = 7.075
-            text = "#"
+            text = "+"
         intervals [65]:
             xmin = 7.075
             xmax = 7.185

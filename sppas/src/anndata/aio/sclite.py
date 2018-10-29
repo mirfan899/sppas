@@ -32,21 +32,21 @@
     src.anndata.aio.sclite.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Sclite readers and writers: ctm, stm file formats.
-    The program sclite is a tool for scoring and evaluating the output of
-    speech recognition systems.
+Sclite readers and writers: ctm, stm file formats.
+The program sclite is a tool for scoring and evaluating the output of
+speech recognition systems.
 
-    Sclite is part of the NIST SCTK Scoring Tookit:
-    https://www.nist.gov/itl/iad/mig/tools
+Sclite is part of the NIST SCTK Scoring Tookit:
+https://www.nist.gov/itl/iad/mig/tools
 
-    File formats description:
-    http://www1.icsi.berkeley.edu/Speech/docs/sctk-1.2/infmts.htm#ctm_fmt_name_0
+File formats description:
+http://www1.icsi.berkeley.edu/Speech/docs/sctk-1.2/infmts.htm#ctm_fmt_name_0
 
-    Remark:
-    =======
+Remark:
+=======
 
-    Because comments are possible, this class uses this function as an
-    opportunity to store metadata.
+Because comments are possible, this class uses this function as an
+opportunity to store metadata.
 
 """
 import codecs
@@ -84,6 +84,7 @@ class sppasBaseSclite(sppasBaseText):
     * * * * * Current version does not fully support alternations. * * * * *
 
     """
+
     def __init__(self, name=None):
         """Initialize a new sppasBaseSclite instance.
 
@@ -186,6 +187,7 @@ class sppasCTM(sppasBaseSclite):
         5555 A * * <ALT_END>
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of CTM format or not.
@@ -269,6 +271,7 @@ class sppasCTM(sppasBaseSclite):
 
     def get_tier(self, line):
         """Return the tier related to the given line.
+
         Find the tier or create it.
 
         :param line: (str)
@@ -313,6 +316,7 @@ class sppasCTM(sppasBaseSclite):
 
     def read(self, filename):
         """Read a ctm file and fill the Transcription.
+
         It creates a tier for each media-channel observed in the file.
 
         :param filename: (str)
@@ -325,7 +329,6 @@ class sppasCTM(sppasBaseSclite):
 
     def _parse_lines(self, lines):
         """Fill the transcription from the lines of the CTM file."""
-
         # the number of the current alternation
         in_alt = 0
         # the annotations of the alternations
@@ -398,13 +401,13 @@ class sppasCTM(sppasBaseSclite):
     @staticmethod
     def _create_annotation(begin, duration, word, score):
         """Return the annotation corresponding to data of a line."""
-
         word = sppasUnicode(word).clear_whitespace()
         label = sppasLabel(sppasTag(word), score)
         begin = float(begin)
         end = begin + float(duration)
-        location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
-                                               sppasBaseSclite.make_point(end)))
+        location = sppasLocation(
+            sppasInterval(sppasBaseSclite.make_point(begin),
+                          sppasBaseSclite.make_point(end)))
         return sppasAnnotation(location, label)
 
     # -----------------------------------------------------------------------
@@ -427,7 +430,8 @@ class sppasCTM(sppasBaseSclite):
                 # fix the name of the waveform (for 1st column)
                 waveform = "waveform-"+str(i)
                 if tier.get_media() is not None:
-                    waveform = os.path.basename(tier.get_media().get_filename())
+                    waveform = os.path.basename(
+                        tier.get_media().get_filename())
 
                 # fix the name of the channel (for 2nd column)
                 channel = "A"
@@ -438,7 +442,9 @@ class sppasCTM(sppasBaseSclite):
                 for ann in tier:
                     if ann.get_location().is_point():
                         raise AioLocationTypeError('Sclite CTM', 'points')
-                    fp.write(sppasCTM._serialize_annotation(ann, waveform, channel))
+                    fp.write(sppasCTM._serialize_annotation(ann,
+                                                            waveform,
+                                                            channel))
 
                 # write the metadata of this tier
                 fp.write(sppasBaseText.serialize_metadata(tier))
@@ -460,11 +466,16 @@ class sppasCTM(sppasBaseSclite):
         """
         # fix location information
         begin = ann.get_location().get_best().get_begin().get_midpoint()
-        duration = ann.get_location().get_best().get_end().get_midpoint() - begin
+        duration = ann.get_location().get_best().get_end().get_midpoint() - \
+                   begin
 
         # no label
         if len(ann.get_labels()) == 0:
-            content = sppasCTM._serialize_tag(waveform, channel, begin, duration, sppasTag(""))
+            content = sppasCTM._serialize_tag(waveform,
+                                              channel,
+                                              begin,
+                                              duration,
+                                              sppasTag(""))
         else:
             content = ""
             # all labels will have the same begin/duration.
@@ -475,14 +486,26 @@ class sppasCTM(sppasBaseSclite):
                 if len(label) == 1:
                     tag = ann.get_best_tag()
                     score = label.get_score(tag)
-                    content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
+                    content += sppasCTM._serialize_tag(waveform,
+                                                       channel,
+                                                       begin,
+                                                       duration,
+                                                       tag,
+                                                       score)
 
                 # label with alternation tags
                 else:
-                    content = "{:s} {:s} * * <ALT_BEGIN>\n".format(waveform, channel)
+                    content = "{:s} {:s} * * <ALT_BEGIN>\n".format(waveform,
+                                                                   channel)
                     for tag, score in label:
-                        content += sppasCTM._serialize_tag(waveform, channel, begin, duration, tag, score)
-                        content += "{:s} {:s} * * <ALT>\n".format(waveform, channel)
+                        content += sppasCTM._serialize_tag(waveform,
+                                                           channel,
+                                                           begin,
+                                                           duration,
+                                                           tag,
+                                                           score)
+                        content += "{:s} {:s} * * <ALT>\n".format(waveform,
+                                                                  channel)
                     content = content[:-2]
                     content += "_END>\n"
 
@@ -493,7 +516,6 @@ class sppasCTM(sppasBaseSclite):
     @staticmethod
     def _serialize_tag(waveform, channel, begin, duration, tag, score=None):
         """Convert a tag with its score into a line for CTM files."""
-
         if tag.is_empty():
             tag_content = "@"
         else:
@@ -501,7 +523,11 @@ class sppasCTM(sppasBaseSclite):
 
         # serialize the content
         content = "{:s} {:s} {:s} {:s} {:s}" \
-                  "".format(waveform, channel, str(begin), str(duration), tag_content)
+                  "".format(waveform,
+                            channel,
+                            str(begin),
+                            str(duration),
+                            tag_content)
         if score is not None:
             content += " {:s}" \
                        "".format(str(score))
@@ -555,6 +581,7 @@ class sppasSTM(sppasBaseSclite):
     Blank lines are also ignored.
 
     """
+
     @staticmethod
     def detect(filename):
         """Check whether a file is of STM format or not.
@@ -589,6 +616,7 @@ class sppasSTM(sppasBaseSclite):
     @staticmethod
     def check_line(line, line_number=0):
         """Check whether a line is an annotation or not.
+
         Raises AioLineFormatError() or ValueError() in case of a
         malformed line.
 
@@ -635,6 +663,7 @@ class sppasSTM(sppasBaseSclite):
 
     def get_tier(self, line):
         """Return the tier related to the given line.
+
         Find the tier or create it.
 
         :param line: (str)
@@ -660,6 +689,7 @@ class sppasSTM(sppasBaseSclite):
 
     def read(self, filename):
         """Read a ctm file and fill the Transcription.
+
         It creates a tier for each media-channel observed in the file.
 
         :param filename: (str)
@@ -672,7 +702,6 @@ class sppasSTM(sppasBaseSclite):
 
     def _parse_lines(self, lines):
         """Fill the transcription from the lines of the STM file."""
-
         # the current tier to fill
         tier = None
 
@@ -705,11 +734,11 @@ class sppasSTM(sppasBaseSclite):
     @staticmethod
     def _create_annotation(begin, end, utterance, tier):
         """Add into the tier the annotation corresponding to data of a line."""
-
         utterance = sppasUnicode(utterance).to_strip()
         labels = format_labels(utterance)
-        location = sppasLocation(sppasInterval(sppasBaseSclite.make_point(begin),
-                                               sppasBaseSclite.make_point(end)))
+        location = sppasLocation(
+            sppasInterval(sppasBaseSclite.make_point(begin),
+                          sppasBaseSclite.make_point(end)))
         tier.create_annotation(location, labels)
 
     # -----------------------------------------------------------------------
@@ -732,7 +761,8 @@ class sppasSTM(sppasBaseSclite):
                 # fix the name of the waveform (for 1st column)
                 waveform = "waveform-"+str(i)
                 if tier.get_media() is not None:
-                    waveform = os.path.basename(tier.get_media().get_filename())
+                    waveform = os.path.basename(
+                        tier.get_media().get_filename())
 
                 # fix the name of the channel (for 2nd column)
                 channel = "A"
@@ -750,7 +780,10 @@ class sppasSTM(sppasBaseSclite):
                 for ann in tier:
                     if ann.get_location().is_point():
                         raise AioLocationTypeError('Sclite STM', 'points')
-                    fp.write(sppasSTM._serialize_annotation(ann, waveform, channel, speaker))
+                    fp.write(sppasSTM._serialize_annotation(ann,
+                                                            waveform,
+                                                            channel,
+                                                            speaker))
 
                 # write the metadata of this tier
                 fp.write(sppasBaseText.serialize_metadata(tier))

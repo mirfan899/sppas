@@ -1119,7 +1119,7 @@ class IPUData:
         Return the IPU label(string).
         """
         ann = self.trs[self.tier_idx][self.ann_idx]
-        return ann.serialize_labels()
+        return ann.serialize_labels(separator=" ", empty="", alt=True)
 
     # -------------------------------------------------------------------------
 

@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Brigitte Bigi <contact@sppas.org>\n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
@@ -159,6 +159,9 @@ msgstr "Align each interval: "
 msgid ":INFO 1254: "
 msgstr "Merge interval's:"
 
+msgid ":INFO 1256: "
+msgstr "Create activity tier:"
+
 msgid ":INFO 1260: "
 msgstr "Tokens alignment disabled."
 
@@ -173,9 +176,6 @@ msgstr "{tiername} tier generation: {message}"
 
 msgid ":INFO 1280: "
 msgstr "The working directory is {dirname}."
-
-msgid ":ERROR 4014: "
-msgstr "Missing section {section_name} in the configuration file."
 
 msgid ":ERROR 1010: "
 msgstr "Unknown option with key {key}."
@@ -206,3 +206,6 @@ msgstr "The directory {dirname} does not exist."
 
 msgid ":ERROR 1220: "
 msgstr "The directory {dirname} does not contain relevant data."
+
+msgid ":ERROR 4014: "
+msgstr "Missing section {section_name} in the configuration file."

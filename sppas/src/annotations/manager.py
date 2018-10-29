@@ -46,7 +46,8 @@ from sppas.src.annotations.log import sppasLog
 
 from sppas.src.annotations.Momel.sppasmomel import sppasMomel
 from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
-from sppas.src.annotations.IPUs.sppasipusseg import sppasIPUseg
+from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
@@ -243,13 +244,16 @@ class sppasAnnotationsManager(Thread):
 
             # Indicate the file to be processed
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-            if self._logfile is not None:
-                self._logfile.print_message(stepname+" of file " + f, indent=1)
 
             # Get the input file
             inname = self._get_filename(f, [".hz", ".PitchTier"])
-            if inname is not None:
-
+            if inname is None:
+                if self._logfile is not None:
+                    self._logfile.print_message("File " + f, indent=1)
+                    self._logfile.print_message("Failed to find a file with pitch values. "
+                                                "Read the documentation for details.",
+                                                indent=2, status=2)
+            else:
                 # Fix output file names
                 outname = os.path.splitext(f)[0]+"-momel.PitchTier"
                 textgridoutname = os.path.splitext(f)[0] + \
@@ -266,11 +270,6 @@ class sppasAnnotationsManager(Thread):
                     if self._logfile is not None:
                         self._logfile.print_message(textgridoutname+": %s" % str(e),
                                                     indent=2, status=-1)
-            else:
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with pitch values. "
-                                                "Read the documentation for details.",
-                                                indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -310,11 +309,11 @@ class sppasAnnotationsManager(Thread):
             intsint = sppasIntsint(self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message("%s\n"%str(e), indent=1,status=1)
+                self._logfile.print_message("%s\n" % str(e), indent=1,status=1)
             return 0
 
         # Execute annotation for each file in the list
-        for i,f in enumerate(filelist):
+        for i, f in enumerate(filelist):
 
             # Indicate the file to be processed
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
@@ -325,7 +324,13 @@ class sppasAnnotationsManager(Thread):
                 ext.append('-momel'+e)
 
             inname = self._get_filename(f, ext)
-            if inname is not None:
+            if inname is None:
+                if self._logfile is not None:
+                    self._logfile.print_message("File " + f, indent=1)
+                    self._logfile.print_message("Failed to find a file with anchors. "
+                                                "Read the documentation for details.", indent=2, status=2)
+
+            else:
 
                 # Fix output file names
                 outname = os.path.splitext(f)[0] + '-intsint' + self.parameters.get_output_format()
@@ -337,10 +342,6 @@ class sppasAnnotationsManager(Thread):
                 except Exception as e:
                     if self._logfile is not None:
                         self._logfile.print_message(outname+": %s" % str(e), indent=2, status=-1)
-            else:
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with anchors. "
-                                                "Read the documentation for details.", indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -355,11 +356,37 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def run_ipusegmentation(self, stepidx):
-        """
-        Execute the SPPAS-IPUSegmentation program.
+    def run_searchipus(self, stepidx):
+        """Execute the SearchIPUs automatic annotation.
 
-        @return number of files processed successfully
+        :param stepidx: (int) Index of this annotation
+        :returns: number of files processed successfully
+
+        """
+        file_list = self.set_filelist(".wav")
+        if len(file_list) == 0:
+            return 0
+
+        try:
+            seg = sppasSearchIPUs(self._logfile)
+            seg.fix_options(self.parameters.get_step(stepidx).get_options())
+            n = seg.batch_processing(
+                file_list, self._progress, self.parameters.get_output_format())
+        except Exception as e:
+            if self._logfile is not None:
+                self._logfile.print_message(
+                    "{:s}\n".format(str(e)), indent=1, status=4)
+            return 0
+
+        return n
+
+    # ------------------------------------------------------------------------
+
+    def run_fillipus(self, stepidx):
+        """Execute the FillIPUs automatic annotation.
+
+        :param stepidx: (int) Index of this annotation
+        :returns: number of files processed successfully
 
         """
         # Initializations
@@ -367,7 +394,7 @@ class sppasAnnotationsManager(Thread):
         stepname = self.parameters.get_step_name(stepidx)
         files_processed_success = 0
         self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        self._progress.update(0, "")
 
         # Get the list of input file names, with the ".wav" extension
         filelist = self.set_filelist(".wav")
@@ -375,89 +402,67 @@ class sppasAnnotationsManager(Thread):
             return 0
         total = len(filelist)
 
-        # Create annotation instance, and fix options
-        try:
-            seg = sppasIPUseg(self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n"%str(e), indent=1,status=4)
-            return 0
-
         # Execute the annotation for each file in the list
-        for i,f in enumerate(filelist):
-
-            # fix the default values
-            seg.reset()
-            seg.fix_options(step.get_options())
+        for i, f in enumerate(filelist):
 
             # Indicate the file to be processed
-            if self._logfile is not None:
-                self._logfile.print_message(stepname+" of file "+f, indent=1)
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
             # Fix input/output file name
+            txtname = os.path.splitext(f)[0] + ".txt"
             outname = os.path.splitext(f)[0] + self.parameters.get_output_format()
 
-            # Is there already an existing IPU-seg (in any format)!
-            ext = []
-            for e in sppas.src.anndata.aio.extensions_in:
-                if not e in ['.txt','.hz', '.PitchTier']:
-                    ext.append(e)
-            existoutname = self._get_filename(f, ext)
-
-            # it's existing... but not in the expected format: convert!
-            if existoutname is not None and existoutname != outname:
-                # just copy the file!
+            # Is there already an existing transcription
+            if os.path.exists(txtname) is False:
                 if self._logfile is not None:
-                    self._logfile.print_message('Export '+existoutname, indent=2)
-                    self._logfile.print_message('into '+outname, indent=2)
-                try:
-                    parser = sppasRW(existoutname)
-                    t = parser.read()
-                    parser.set_filename(outname)
-                    parser.write(t)
-                    # OK, now outname is as expected! (or not...)
-                except Exception:
-                    pass
-
-            # Execute annotation
-            tgfname = sppasFileUtils(outname).exists()
-            if tgfname is None:
-                # No already existing IPU seg., but perhaps a txt.
-                txtfile = self._get_filename(f, [".txt"])
-                if self._logfile is not None:
-                    if txtfile:
-                        self._logfile.print_message("A transcription was found, "
-                                                    "perform Silence/Speech segmentation "
-                                                    "time-aligned with a transcription "
-                                                    "%s" % txtfile, indent=2, status=3)
-                    else:
-                        self._logfile.print_message("No transcription was found, "
-                                                    "perform Silence/Speech segmentation only."
-                                                    "", indent=2,status=3)
-                try:
-                    seg.run(f, trsinputfile=txtfile, ntracks=None, diroutput=None, tracksext=None, trsoutput=outname)
-                    files_processed_success += 1
-                    if self._logfile is not None:
-                        self._logfile.print_message(outname, indent=2,status=0)
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2,status=-1)
+                    self._logfile.print_message("File " + f, indent=1)
+                    self._logfile.print_message(
+                        "This annotation expects a file with name {:s}. File not found."
+                        "".format(txtname), indent=2, status=4)
+                    self._logfile.print_message(
+                        "No annotation was done.", indent=2, status=3)
             else:
-                if seg.get_option('dirtracks') is True:
-                    self._logfile.print_message("A time-aligned transcription was found, "
-                                                "split into multiple files", indent=2, status=3)
+                # Is there already an existing IPU-seg (in any format)!
+                ext = []
+                for e in sppas.src.anndata.aio.extensions_in:
+                    if e not in ('.txt', '.hz', '.PitchTier'):
+                        ext.append(e)
+                existoutname = self._get_filename(f, ext)
+
+                # it's existing... but not in the expected format: convert!
+                if existoutname is not None:
+                    self._logfile.print_message("File " + f, indent=1)
+                    self._logfile.print_message(
+                        "A file with name {:s} is already existing."
+                        "".format(existoutname), indent=2)
+                    if existoutname != outname:
+                        try:
+                            parser = sppasRW(existoutname)
+                            t = parser.read()
+                            parser.set_filename(outname)
+                            parser.write(t)
+                            # OK, it's done!
+                            # just copy the file!
+                            if self._logfile is not None:
+                                self._logfile.print_message(
+                                    'It was exported to {:s}'.format(outname), indent=2)
+                        except Exception:
+                            pass
+                    self._logfile.print_message(
+                        "No annotation was done.", indent=2, status=3)
+                else:
+                    # Create annotation instance, fix options, run.
                     try:
-                        seg.run(f, trsinputfile=tgfname, ntracks=None, diroutput=None, tracksext=None, trsoutput=None)
+                        seg = sppasFillIPUs(self._logfile)
+                        seg.fix_options(step.get_options())
+                        seg.run(f, txtname, outname)
                         files_processed_success += 1
                         if self._logfile is not None:
-                            self._logfile.print_message(tgfname, indent=2,status=0)
+                            self._logfile.print_message(outname, indent=2, status=0)
                     except Exception as e:
                         if self._logfile is not None:
-                            self._logfile.print_message("%s for file %s\n" % (str(e), tgfname), indent=2, status=-1)
-                else:
-                    if self._logfile is not None:
-                        self._logfile.print_message("because a previous segmentation is existing.", indent=2, status=2)
+                            self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
+                        return 0
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -465,7 +470,11 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success, total))
+        self._progress.update(
+            1,
+            "Completed ({:d} files successfully over {:d} files).\n"
+            "".format(files_processed_success, total)
+        )
         self._progress.set_header("")
 
         return files_processed_success
@@ -473,10 +482,9 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_tokenization(self, stepidx):
-        """
-        Execute the SPPAS-Tokenization program.
+        """Execute the SPPAS Text normalization program.
 
-        @return number of files processed successfully
+        :returns: number of files processed successfully
 
         """
         # Initializations
@@ -526,6 +534,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with transcription. "
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -603,6 +612,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with toketization. "
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -679,6 +689,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message(outname, indent=2, status=0)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a raw file with phonetization/tokenization."
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -757,6 +768,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (stre, outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with phonetization. "
                                                 "Read the documentation for details.",
@@ -829,6 +841,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with time-aligned phonemes. "
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -894,6 +907,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with time-aligned syllables. "
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -969,6 +983,7 @@ class sppasAnnotationsManager(Thread):
                         self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
 
             else:
+                self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
                     self._logfile.print_message("Failed to find a file with time-aligned tokens. "
                                                 "Read the documentation for details.", indent=2, status=2)
@@ -1114,8 +1129,10 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_momel(i)
                 elif self.parameters.get_step_key(i) == "intsint":
                     nbruns[i] = self.run_intsint(i)
-                elif self.parameters.get_step_key(i) == "ipus":
-                    nbruns[i] = self.run_ipusegmentation(i)
+                elif self.parameters.get_step_key(i) == "searchipus":
+                    nbruns[i] = self.run_searchipus(i)
+                elif self.parameters.get_step_key(i) == "fillipus":
+                    nbruns[i] = self.run_fillipus(i)
                 elif self.parameters.get_step_key(i) == "textnorm":
                     nbruns[i] = self.run_tokenization(i)
                 elif self.parameters.get_step_key(i) == "phon":

@@ -34,14 +34,14 @@
 """
 from sppas.src.config import symbols
 
-from sppas.src.annotationdata.tier import Tier
-from sppas.src.annotationdata.ptime.interval import TimeInterval
-from sppas.src.annotationdata.annotation import Annotation
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.aio.utils import fill_gaps, unfill_gaps
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasInterval
+from sppas.src.anndata import sppasLocation
+from sppas.src.anndata import sppasLabel, sppasTag
+from sppas.src.anndata.aio.aioutils import fill_gaps, unfill_gaps
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from ..searchtier import sppasSearchTier
+from ..searchtier import sppasFindTier
 
 # ---------------------------------------------------------------------------
 
@@ -56,9 +56,9 @@ class sppasActivity(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
         """Create a sppasActivity instance with the default symbols."""
-
         self._activities = dict()
         self.set_activities()
 
@@ -92,56 +92,93 @@ class sppasActivity(object):
 
         sp = sppasUnicode(activity)
         activity = sp.to_strip()
-        
+
         if token not in self._activities:
             self._activities[token] = activity
+
+    # -----------------------------------------------------------------------
+
+    def fix_activity(self, annotation):
+        """Return the activity name of an annotation."""
+        if annotation.is_labelled() is False:
+            text_content = symbols.unk
+        else:
+            text_content = annotation.serialize_labels()
+        return self._activities.get(text_content, "speech")
 
     # -----------------------------------------------------------------------
 
     def get_tier(self, trs):
         """Create and return the activity tier.
 
-        :param trs: (Transcription) a Transcription containing a tier
+        :param trs: (sppasTranscription) a Transcription containing a tier
         with exactly the name 'TokensAlign'.
-        :returns: Tier
+        :returns: sppasTier
         :raises: NoInputError
 
         """
-        tokens_tier = sppasSearchTier.aligned_tokens(trs)
-        tokens = fill_gaps(tokens_tier, trs.GetMinTime(), trs.GetMaxTime())
-
-        new_tier = Tier('Activity')
+        new_tier = sppasTier('Activity')
         activity = "<INIT>"  # initial activity
 
+        tokens_tier = sppasFindTier.aligned_tokens(trs)
+        if tokens_tier.is_empty():
+            return new_tier
+        tokens = fill_gaps(tokens_tier, trs.get_min_loc(), trs.get_max_loc())
+
+        if len(tokens) == 0:
+            return new_tier
+
+        if len(tokens) == 1:
+            new_tier.create_annotation(
+                tokens[0].get_location().copy(),
+                sppasLabel(sppasTag(self.fix_activity(tokens[0]))))
+            return new_tier
+
         for ann in tokens:
-
-            # Fix the activity name of this new token
-            if ann.GetLabel().IsEmpty():
-                l = symbols.unk
-            else:
-                l = ann.GetLabel().GetValue()
-            new_activity = self._activities.get(l, "speech")
-
+            new_activity = self.fix_activity(ann)
             # The activity has changed
             if activity != new_activity and activity != "<INIT>":
-                new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(),
-                                                        ann.GetLocation().GetBegin()),
-                                           Label(activity)))
+                if len(new_tier) == 0:
+                    begin = tokens.get_first_point().copy()
+                else:
+                    begin = new_tier.get_last_point().copy()
+
+                new_tier.create_annotation(
+                    sppasLocation(
+                        sppasInterval(
+                            begin,
+                            ann.get_lowest_localization())),
+                    sppasLabel(sppasTag(activity)))
 
             # In any case, update current activity
             activity = new_activity
 
-        # Last interval
-        if new_tier.GetEnd() < tokens.GetEnd():
-            new_tier.Append(Annotation(TimeInterval(new_tier.GetEnd(), tokens.GetEnd()),
-                                       Label(activity)))
+        # last registered activity (we ignored it)
 
-        return unfill_gaps(new_tier)
+        if len(new_tier) == 0:
+            # we observed only one activity...
+            new_tier.create_annotation(
+                sppasLocation(sppasInterval(
+                    tokens.get_first_point(),
+                    tokens.get_last_point())),
+                sppasLabel(sppasTag(activity)))
+
+        else:
+            if new_tier.get_last_point() < tokens.get_last_point():
+                new_tier.create_annotation(
+                    sppasLocation(sppasInterval(
+                        new_tier.get_last_point(),
+                        tokens.get_last_point())),
+                    sppasLabel(sppasTag(activity)))
+
+        new_tier = unfill_gaps(new_tier)
+        new_tier.set_name('Activity')
+        return new_tier
 
     # -----------------------------------------------------------------------
     # overloads
     # -----------------------------------------------------------------------
-    
+
     def __str__(self):
         return str(self._activities)
 
