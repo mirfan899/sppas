@@ -72,10 +72,6 @@ class sppasPhoneSet(sppasVocabulary):
         for key in symbols.phone:
             if symbols.phone[key] != "pause":
                 self.add(key)
-        # self.add("laugh")
-        # self.add("dummy")
-        # self.add("noise")
-        # self.add("sil")
 
     # -----------------------------------------------------------------------
 
@@ -99,6 +95,7 @@ class sppasPhoneSet(sppasVocabulary):
     @staticmethod
     def check_as_htk_phone(phone):
         """Check if a phone is correct to be used with HTK toolkit.
+
         A phone can't start by a digit nor '-' nor '+', and must be ASCII.
 
         :param phone: (str) Phone to be checked

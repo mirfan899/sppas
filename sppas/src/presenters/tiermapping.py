@@ -67,6 +67,7 @@ class sppasMappingTier(sppasMapping):
         """
         super(sppasMappingTier, self).__init__(dict_name)
         self._delimiters = DEFAULT_SEP
+        self._map_symbols = False
 
     # -----------------------------------------------------------------------
 
@@ -92,6 +93,16 @@ class sppasMappingTier(sppasMapping):
 
         # Set the delimiters as Iterable() and not as List()
         self._delimiters = tuple(delimit_list)
+
+    # -----------------------------------------------------------------------
+
+    def set_map_symbols(self, value):
+        """Define if symbols has to be mapped or not.
+
+        :param value: (bool)
+
+        """
+        self._map_symbols = value
 
     # -----------------------------------------------------------------------
 
@@ -180,7 +191,7 @@ class sppasMappingTier(sppasMapping):
         # only non-empty strings can me mapped
         if tag.get_type() == 'str' and tag.is_empty() is False:
             # only speech can be mapped, not the symbols.
-            if tag.is_speech() is True:
+            if tag.is_speech() is True or self._map_symbols is True:
 
                 result = list()
                 content = tag.get_content()

@@ -45,8 +45,10 @@
         TEXT :== tag content | empty
 
 """
-from sppas.src.config import sg
 import codecs
+
+from sppas.src.config import sg
+from sppas.src.config import symbols
 
 from ..tier import sppasTier
 from ..ann.annotation import sppasAnnotation
@@ -57,6 +59,10 @@ from ..ann.annlabel import sppasLabel
 from ..ann.annlabel import sppasTag
 from ..anndataexc import AioError
 from ..anndataexc import AioEncodingError
+
+# ---------------------------------------------------------------------------
+
+SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -497,5 +503,43 @@ def point2interval(tier, radius=0.001):
             if key != 'id':
                 new_ann.set_meta(key, ann.get_meta(key))
         new_tier.append(new_ann)
+
+    return new_tier
+
+# ------------------------------------------------------------------------
+
+
+def unalign(aligned_tier, ipus_separators=[SIL_ORTHO, 'dummy']):
+    """Convert a time-aligned tier into a non-aligned tier.
+
+    :param aligned_tier: (sppasTier)
+    :param ipus_separators: (list)
+    :returns: (Tier)
+
+    """
+    new_tier = sppasTier("Un-aligned")
+    b = aligned_tier.get_first_point()
+    e = b
+    l = ""
+    for a in aligned_tier:
+        label = a.serialize_labels()
+        if label in ipus_separators or len(label) == 0:
+            if e > b:
+                loc = sppasLocation(sppasInterval(b, e))
+                new_tier.create_annotation(loc, sppasLabel(sppasTag(l)))
+            new_tier.add(a)
+            b = a.get_location().get_best().get_end()
+            e = b
+            l = ""
+        else:
+            e = a.get_location().get_best().get_end()
+            label = label.replace('.', ' ')
+            l += " " + label
+
+    if e > b:
+        a = aligned_tier[-1]
+        e = a.get_location().get_best().get_end()
+        loc = sppasLocation(sppasInterval(b, e))
+        new_tier.create_annotation(loc, sppasLabel(sppasTag(l)))
 
     return new_tier
