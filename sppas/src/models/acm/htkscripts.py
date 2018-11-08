@@ -40,13 +40,13 @@ import logging
 
 
 class sppasHtkScripts(object):
-    """
+    """HTK-ASCII scripts reader/writer.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      HTK-ASCII scripts reader/writer.
 
     This class is able to write all scripts of the VoxForge tutorial.
     They are used to train acoustic models thanks to the HTK toolbox.
@@ -54,9 +54,9 @@ class sppasHtkScripts(object):
     For details, refer to: http://www.voxforge.org/
 
     """
+
     def __init__(self):
         """Create a sppasHtkScripts instance."""
-        
         self.configfile = ""
         self.globalfile = ""
         self.mkphones0file = ""
@@ -68,8 +68,9 @@ class sppasHtkScripts(object):
     # -----------------------------------------------------------------------
 
     def write_all(self, dirname):
-        """Write all scripts at once, with their default name, in the given
-        directory.
+        """Write all scripts at once.
+
+        Write scripts with their default name, in the given directory.
 
         :param dirname: (str) a directory name (existing or to be created).
 

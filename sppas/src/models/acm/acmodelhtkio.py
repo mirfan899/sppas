@@ -57,13 +57,13 @@ def _to_ordered_dict(ast):
 
 
 class sppasHtkIO(sppasBaseIO):
-    """
+    """HTK-ASCII acoustic models reader/writer.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      HTK-ASCII acoustic models reader/writer.
 
     This class is able to load and save HMM-based acoustic models from
     HTK-ASCII files.
@@ -72,6 +72,7 @@ class sppasHtkIO(sppasBaseIO):
     @staticmethod
     def detect(folder):
         """Return True if the folder contains the HTK-ASCII file(s) of an ACM.
+
         Expected files of this reader is mainly "hmmdefs".
 
         """
@@ -107,7 +108,8 @@ class sppasHtkIO(sppasBaseIO):
 
             - hmmdefs for an HTK-ASCII acoustic model;
             - macros for a separated macro description;
-            - vFloors for a separated description allowing to construct the macro;
+            - vFloors for a separated description allowing to construct
+              the macro;
             - tiedlist for triphone models;
             - monophones.repl to map between phoneme representations.
 
@@ -170,7 +172,9 @@ class sppasHtkIO(sppasBaseIO):
         with open(filename, 'w') as f:
             if self._macros is not None:
                 if len(self._hmms) > 0:
-                    f.write(sppasHtkIO._serialize_macros(self._macros, variance=False, mean=False))
+                    f.write(sppasHtkIO._serialize_macros(self._macros,
+                                                         variance=False,
+                                                         mean=False))
                 else:
                     f.write(sppasHtkIO._serialize_macros(self._macros))
 
@@ -223,8 +227,8 @@ class sppasHtkIO(sppasBaseIO):
     def write_hmm_proto(proto_size, proto_filename):
         """Write a `proto` file. The proto is based on a 5-states HMM.
 
-        :param proto_size: (int) Number of mean and variance values. It's commonly
-        either 25 or 39, it depends on the MFCC parameters.
+        :param proto_size: (int) Number of mean and variance values. It's
+        commonly either 25 or 39, it depends on the MFCC parameters.
         :param proto_filename: (str) Full name of the prototype to write.
 
         """
@@ -295,7 +299,9 @@ class sppasHtkIO(sppasBaseIO):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def _serialize_macros(macros, options=True, transition=True, variance=True, mean=True, state=True, duration=True):
+    def _serialize_macros(macros, options=True, transition=True,
+                          variance=True, mean=True, state=True,
+                          duration=True):
         """Serialize macros into a string, in HTK-ASCII standard format.
 
         :param macros: (OrderedDict) Macros to save
@@ -598,10 +604,10 @@ class sppasHtkIO(sppasBaseIO):
 
 
 class HtkModelSemantics(object):
-    """
+    """Part of the Inspire package: https://github.com/rikrd/inspire.
+
     :author: Ricard Marxer.
     :license: GPL, v2
-    :summary: Part of the Inspire package: https://github.com/rikrd/inspire.
 
     """
     def __init__(self):

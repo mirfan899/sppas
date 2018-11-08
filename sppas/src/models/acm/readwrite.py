@@ -49,13 +49,13 @@ from .acmodelhtkio import sppasHtkIO
 
 
 class sppasACMRW(object):
-    """
+    """Generic reader and writer for acoustic models.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Generic reader and writer for acoustic models.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Currently, only HTK-ASCII is supported.
 
@@ -63,9 +63,10 @@ class sppasACMRW(object):
     in a -- far -- future.
 
     """
+
     ACM_TYPES = OrderedDict()
     ACM_TYPES["hmmdefs"] = sppasHtkIO
-    
+
     # -----------------------------------------------------------------------
 
     def __init__(self, folder):
@@ -77,18 +78,16 @@ class sppasACMRW(object):
         self.__folder = u(folder)
 
     # -----------------------------------------------------------------------
-    
+
     @staticmethod
     def get_formats():
         """Return the list of accepted formats for acoustic models."""
-        
         return sppasACMRW.ACM_TYPES.keys()
-    
+
     # -----------------------------------------------------------------------
 
     def get_folder(self):
         """Return the name of the folder of the acoustic model."""
-
         return self.__folder
 
     # -----------------------------------------------------------------------
@@ -105,8 +104,8 @@ class sppasACMRW(object):
 
     def read(self):
         """Read an acoustic model from the folder.
-        
-         :returns: sppasAcModel() 
+
+        :returns: sppasAcModel()
 
         """
         try:
@@ -118,7 +117,7 @@ class sppasACMRW(object):
             raise
 
         return acm
-     
+
     # -----------------------------------------------------------------------
 
     def get_reader(self):
@@ -131,9 +130,9 @@ class sppasACMRW(object):
             try:
                 if file_reader.detect(self.__folder) is True:
                     return file_reader()
-            except Exception:
+            except:
                 continue
-                
+
         raise MioFolderError(self.__folder)
 
     # -----------------------------------------------------------------------
@@ -147,7 +146,7 @@ class sppasACMRW(object):
         """
         if format not in sppasACMRW.ACM_TYPES:
             raise MioFileFormatError(format)
-        
+
         acm_rw = sppasACMRW.ACM_TYPES[format]()
         acm_rw.set(acmodel)
         try:

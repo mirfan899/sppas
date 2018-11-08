@@ -1166,8 +1166,8 @@ class sppasHTKModelInitializer(object):
                 stdout=open(log_file, 'ab+'),
                 stderr=open(error_file, 'ab+'))
         except subprocess.CalledProcessError as e:
-            logging.error("HInit failed with error:\n"
-                          "{:s}".format(str(e)))
+            logging.warning("HInit failed with message:\n"
+                            "{:s}".format(str(e)))
             return
 
     # -----------------------------------------------------------------------
@@ -1462,6 +1462,8 @@ class sppasHTKModelTrainer(object):
 
             alignerdir = os.path.join(self.corpus.datatrainer.workdir,
                                       "alignerio")
+            if os.path.exists(alignerdir) is False:
+                os.mkdir(alignerdir)
 
         except Exception as e:
             logging.info('Error while creating automatic annotations: {:s}'
@@ -1500,7 +1502,7 @@ class sppasHTKModelTrainer(object):
                              "Text normalization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
+
             try:
                 phones_tier = phonetizer.convert(tokens_faked)
             except Exception as e:
@@ -1508,7 +1510,7 @@ class sppasHTKModelTrainer(object):
                              "Phonetization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
+
             try:
                 tier_phn, tier_tok, tier_pron = \
                     aligner.convert(phones_tier, None, audio_work_file, alignerdir)
@@ -1517,7 +1519,6 @@ class sppasHTKModelTrainer(object):
                              "Alignment error failed file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
 
             # Get only the phonetization from the time-alignment
             if len(tier_phn) == 0:
@@ -1531,7 +1532,7 @@ class sppasHTKModelTrainer(object):
                              "".format(trs_workfile))
                 return False
 
-            tier = self.corpus.map_phonemes(tier_phn, unkstamp=symbols.unk)
+            tier = self.corpus.phonemap.map_tier(tier_phn)
             tier = tierutils.unalign(tier)
             trs = sppasTranscription()
             trs.append(tier)

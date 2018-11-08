@@ -1,7 +1,7 @@
 ~o <StreamInfo> 1 25
 <VecSize> 25
 <nulld>
-<mfcc_0_D_N_Z>
+<mfcc_D_N_Z_0>
 <diagc>
 ~h "@"
 <BeginHMM>

@@ -111,7 +111,7 @@ class TestMIO(unittest.TestCase):
         sp = sppasCompare()
 
         # Compare original and copy
-        self.assertEqual(len(acmodel.get_hmms()),len(acmodel_copy.get_hmms()))
+        self.assertEqual(len(acmodel.get_hmms()), len(acmodel_copy.get_hmms()))
         for hmm, hmmcopy in zip(acmodel.get_hmms(), acmodel_copy.get_hmms()):
             self.assertEqual(hmm.get_name(), hmmcopy.get_name())
             self.assertTrue(sp.equals(hmm.get_definition(), hmmcopy.get_definition()))

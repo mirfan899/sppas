@@ -39,22 +39,23 @@ from sppas.src.config import sg
 
 
 class sppasTiedList(object):
-    """
+    """Tiedlist of an acoustic model.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Tiedlist of an acoustic model.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    This class is used to manage the tiedlist of a triphone acoustic model, i.e:
+    This class is used to manage the tiedlist of a triphone acoustic model,
+    i.e:
         - the list of observed phones, biphones, triphones,
         - a list of biphones or triphones to tie.
 
     """
+
     def __init__(self):
         """Create a sppasTiedList instance."""
-
         self.observed = list()
         self.tied = dict()
 
@@ -101,8 +102,7 @@ class sppasTiedList(object):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
-        """Return True if the sppasTiedList() is empty."""
-
+        """Return True if the tiedlist is empty."""
         return len(self.observed) == 0 and len(self.tied) == 0
 
     # -----------------------------------------------------------------------

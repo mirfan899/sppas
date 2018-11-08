@@ -57,12 +57,14 @@ class sppasPhoneSet(sppasVocabulary):
         - check if a phone string is valid to be used with HTK toolkit.
 
     """
+
     def __init__(self, filename=None):
         """Create a sppasPhoneSet instance.
 
         Add events to the list: laugh, dummy, noise, silence.
 
-        :param filename (str) A file with 1 column containing the list of phonemes.
+        :param filename (str) A file with 1 column containing
+        the list of phonemes.
 
         """
         super(sppasPhoneSet, self).__init__(filename,
@@ -78,7 +80,7 @@ class sppasPhoneSet(sppasVocabulary):
     def add_from_dict(self, dict_filename):
         """Add the list of phones from a pronunciation dictionary.
 
-        :param dict_filename: (str) Name of an HTK-ASCII pronunciation dictionary
+        :param dict_filename: (str) Name of an HTK-ASCII pronunciation dict
 
         """
         d = sppasDictPron(dict_filename)
