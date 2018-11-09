@@ -32,11 +32,11 @@
     src.annotations.TGA.__init_.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:author:       Brigitte Bigi
-:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-:contact:      contact@sppas.org
-:license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 TGA: Time Group Analyzer is an online tool for speech annotation mining
 written by Dafydd Gibbon, emeritus professor of English and General
@@ -54,7 +54,6 @@ For details, read the following reference:
 See also: <http://wwwhomes.uni-bielefeld.de/gibbon/TGA/>
 
 """
-
 from .timegroupanalysis import TimeGroupAnalysis
 from .sppastga import sppasTGA
 

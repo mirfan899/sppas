@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import os
 
 import sppas.src.audiodata.aio
 import sppas.src.annotationdata.aio
@@ -145,14 +145,20 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
     def _set_meta(self, filler, tier):
         """Set meta values to the tier."""
-        tier.set_meta('threshold_volume', str(filler.get_vol_threshold()))
-        tier.set_meta('minimum_silence_duration', str(filler.get_min_sil_dur()))
-        tier.set_meta('minimum_ipus_duration', str(filler.get_min_ipu_dur()))
+        tier.set_meta('threshold_volume',
+                      str(filler.get_vol_threshold()))
+        tier.set_meta('minimum_silence_duration',
+                      str(filler.get_min_sil_dur()))
+        tier.set_meta('minimum_ipus_duration',
+                      str(filler.get_min_ipu_dur()))
 
         self.print_message("Information: ", indent=2)
-        m1 = "Threshold volume value:     {:d}".format(filler.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}".format(filler.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}".format(filler.get_min_ipu_dur())
+        m1 = "Threshold volume value:     {:d}" \
+             "".format(filler.get_vol_threshold())
+        m2 = "Threshold silence duration: {:.3f}" \
+             "".format(filler.get_min_sil_dur())
+        m3 = "Threshold speech duration:  {:.3f}" \
+             "".format(filler.get_min_ipu_dur())
         for m in (m1, m2, m3):
             self.print_message(m, indent=3)
 

@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.tests.test_normalize.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.tests.test_ipus.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -41,15 +41,9 @@
 
 """
 import unittest
-import os.path
 import struct
-import sys
 
-from sppas.src.config import paths
-
-from sppas.src.anndata import sppasTranscription
 from sppas.src.annotations.SearchIPUs.silences import sppasSilences
-
 from sppas.src.audiodata import sppasChannel
 
 # ---------------------------------------------------------------------------

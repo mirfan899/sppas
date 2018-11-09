@@ -83,7 +83,7 @@ class sppasDAGPhonetizer(object):
 
         """
         tabpron = pron.split()
-        graph = DAG()        # the Graph, used to store segments and to get all paths
+        graph = DAG()        # the Graph: store segments and get all paths
         prongraph = list()   # the pronunciation of each segment
 
         # A Start node (required if the 1st segment has variants)
@@ -124,7 +124,7 @@ class sppasDAGPhonetizer(object):
     # -----------------------------------------------------------------------
 
     def DAG2phon(self, graph, pron_graph):
-        """Convert a DAG into a dictionary including all pronunciation variants.
+        """Convert a DAG into a dict, including all pronunciation variants.
 
         :param graph:
         :param pron_graph:
@@ -136,7 +136,7 @@ class sppasDAGPhonetizer(object):
         pron = dict()
         for variant in pathslist:
             p = ""
-            for i in variant[1:len(variant)-1]:  # do not include Start and End nodes
+            for i in variant[1:len(variant)-1]:  # ignore Start and End nodes
                 p = p + separators.phonemes + pron_graph[i]
             p = re.sub('^.', "", p)
             pron[p] = len(p.split(separators.phonemes))
@@ -190,5 +190,5 @@ class sppasDAGPhonetizer(object):
             return min(pron.items(), key=lambda x: x[1])[0]
 
         # Other number of variants: choose shorters
-        l = sorted(pron.items(), key=lambda x: x[1])[:self.variants]
-        return v.join(list(zip(*l))[0])
+        ll = sorted(pron.items(), key=lambda x: x[1])[:self.variants]
+        return v.join(list(zip(*ll))[0])

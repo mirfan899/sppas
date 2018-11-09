@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -8,7 +9,7 @@
            \  |     |     |   |    \             analysis
         ___/  |     |     |   | ___/              of speech
 
-        http://www.sg.org/
+        http://www.sppas.org/
 
         Use of this software is governed by the GNU Public License, version 3.
 
@@ -40,7 +41,6 @@
     :summary:      Run any or all automatic annotations.
 
 """
-
 import sys
 import os
 from argparse import ArgumentParser

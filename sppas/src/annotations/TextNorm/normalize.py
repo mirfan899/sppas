@@ -58,6 +58,7 @@ class DictReplUTF8(sppasDictRepl):
     TODO: This class should read an external replacement file...
 
     """
+
     def __init__(self):
         super(DictReplUTF8, self).__init__(None, nodump=True)
 
@@ -77,13 +78,13 @@ class DictReplUTF8(sppasDictRepl):
 
 
 class TextNormalizer(object):
-    """
+    """Multilingual text normalization
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Multilingual text normalization
 
     """
     def __init__(self, vocab=None, lang="und"):
@@ -105,14 +106,14 @@ class TextNormalizer(object):
         self.lang = lang
         self.delimiter = ' '
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_vocab_filename(self):
         return self.vocab.get_filename()
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Options
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_delim(self, delim):
         """Set the delimiter, used to separate tokens.
@@ -122,7 +123,7 @@ class TextNormalizer(object):
         """
         self.delimiter = delim
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_vocab(self, vocab):
         """Set the lexicon.
@@ -134,7 +135,7 @@ class TextNormalizer(object):
 
         self.vocab = vocab
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_repl(self, repl):
         """Set the dictionary of replacements.
@@ -146,7 +147,7 @@ class TextNormalizer(object):
 
         self.repl = repl
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_punct(self, punct):
         """Set the list of punctuation.
@@ -158,22 +159,23 @@ class TextNormalizer(object):
 
         self.punct = punct
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_lang(self, lang):
         """Set the language.
 
-        :param lang: (str) the language code in iso639-3 (fra, eng, vie, cmn...).
+        :param lang: (str) the language code in iso639-3 (fra, eng, vie...).
 
         """
         self.lang = lang
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Language independent modules (or not!)
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def replace(self, utt):
         """Examine tokens and performs some replacements.
+
         A dictionary with symbols contains the replacements to operate.
 
         :param utt: (list) the utterance
@@ -182,8 +184,10 @@ class TextNormalizer(object):
         """
         # Specific case of float numbers
         sent = ' '.join(utt)
-        sent = re.sub(u('([0-9])\.([0-9])'), u(r'\1 NUMBER_SEP_POINT \2'), sent)
-        sent = re.sub(u('([0-9])\,([0-9])'), u(r'\1 NUMBER_SEP \2'), sent)
+        sent = re.sub(u('([0-9])\.([0-9])'),
+                      u(r'\1 NUMBER_SEP_POINT \2'), sent)
+        sent = re.sub(u('([0-9])\,([0-9])'),
+                      u(r'\1 NUMBER_SEP \2'), sent)
         sent = sppasUnicode(sent).to_strip()
         _utt = sent.split()
 
@@ -196,7 +200,7 @@ class TextNormalizer(object):
 
         return _result
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def tokenize(self, utt):
         """Tokenize is the text segmentation, ie segment into tokens.
@@ -223,7 +227,7 @@ class TextNormalizer(object):
 
         return bind_result
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def numbers(self, utt):
         """Convert numbers to their written form.
@@ -243,7 +247,7 @@ class TextNormalizer(object):
 
         return _result
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def lower(self, utt):
         """Lower a list of strings.
@@ -261,10 +265,11 @@ class TextNormalizer(object):
 
         return _utt
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def remove(self, utt, wlist):
         """Remove data of an utterance if included in a dictionary.
+
         Only used to remove punctuation.
 
         :param utt: (list)
@@ -274,14 +279,16 @@ class TextNormalizer(object):
         _utt = []
         for tok in utt:
             tok = sppasUnicode(tok).to_strip()
-            if wlist.is_unk(tok) is True and "gpd_" not in tok and "ipu_" not in tok:
+            if wlist.is_unk(tok) is True \
+                    and "gpd_" not in tok \
+                    and "ipu_" not in tok:
                 _utt.append(tok)
 
         return _utt
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # The main normalizer is HERE!
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def normalize(self, entry, actions=[]):
         """Tokenize an utterance.

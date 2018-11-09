@@ -46,13 +46,13 @@ from .language import sppasLangISO
 
 
 class sppasSimpleSplitter(object):
-    """
+    """Utterance splitter
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Utterance splitter
 
     Split an utterance into tokens using whitespace or characters.
 
@@ -75,7 +75,7 @@ class sppasSimpleSplitter(object):
         else:
             self.__repl = sppasDictRepl(None)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def split_characters(self, utt):
         """Split an utterance by characters.
@@ -99,10 +99,11 @@ class sppasSimpleSplitter(object):
 
         return sstr
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def split(self, utt):
         """Split an utterance using whitespace.
+
         If the language is character-based, split each character.
 
         :param utt: (str) an utterance of a transcription, a sentence, ...

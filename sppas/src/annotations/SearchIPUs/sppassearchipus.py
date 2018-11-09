@@ -107,7 +107,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             - min_ipu: minimum duration of an ipu
             - shift_start: start boundary shift value.
             - shift_end: end boundary shift value.
-        
+
         :param options: (sppasOption)
 
         """
@@ -116,10 +116,10 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             key = opt.get_key()
             if "threshold" == key:
                 self.set_threshold(opt.get_value())
-                
+
             elif "win_length" == key:
                 self.set_win_length(opt.get_value())
-            
+
             elif "min_sil" == key:
                 self.set_min_sil(opt.get_value())
 
@@ -284,17 +284,26 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
     def _set_meta(self, tier):
         """Set meta values to the tier."""
-        tier.set_meta('threshold_volume', str(self.__searcher.get_vol_threshold()))
-        tier.set_meta('minimum_silence_duration', str(self.__searcher.get_min_sil_dur()))
-        tier.set_meta('minimum_ipus_duration', str(self.__searcher.get_min_ipu_dur()))
-        tier.set_meta('shift_ipus_start', str(self.__searcher.get_shift_start()))
-        tier.set_meta('shift_ipus_end', str(self.__searcher.get_shift_end()))
+        tier.set_meta('threshold_volume',
+                      str(self.__searcher.get_vol_threshold()))
+        tier.set_meta('minimum_silence_duration',
+                      str(self.__searcher.get_min_sil_dur()))
+        tier.set_meta('minimum_ipus_duration',
+                      str(self.__searcher.get_min_ipu_dur()))
+        tier.set_meta('shift_ipus_start',
+                      str(self.__searcher.get_shift_start()))
+        tier.set_meta('shift_ipus_end',
+                      str(self.__searcher.get_shift_end()))
 
         self.print_message("Information: ", indent=2)
-        m1 = "Threshold volume value:     {:d}".format(self.__searcher.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}".format(self.__searcher.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}".format(self.__searcher.get_min_ipu_dur())
-        m4 = "Number of IPUs found:       {:s}".format(tier.get_meta("number_of_ipus"))
+        m1 = "Threshold volume value:     {:d}" \
+             "".format(self.__searcher.get_vol_threshold())
+        m2 = "Threshold silence duration: {:.3f}" \
+             "".format(self.__searcher.get_min_sil_dur())
+        m3 = "Threshold speech duration:  {:.3f}" \
+             "".format(self.__searcher.get_min_ipu_dur())
+        m4 = "Number of IPUs found:       {:s}" \
+             "".format(tier.get_meta("number_of_ipus"))
         for m in (m4, m1, m2, m3):
             self.print_message(m, indent=3)
 
@@ -329,7 +338,8 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         trs_output.append(tier)
 
         extm = os.path.splitext(input_filename)[1].lower()[1:]
-        media = sppasMedia(os.path.abspath(input_filename), mime_type="audio/"+extm)
+        media = sppasMedia(os.path.abspath(input_filename),
+                           mime_type="audio/"+extm)
         tier.set_media(media)
 
         # Save in a file
@@ -361,7 +371,8 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         for i, f in enumerate(file_names):
 
             # Indicate the file to be processed
-            progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+            progress.set_text(os.path.basename(f) +
+                              " ("+str(i+1)+"/"+str(total)+")")
             self.print_filename(f)
             self.print_diagnosis(f)
 

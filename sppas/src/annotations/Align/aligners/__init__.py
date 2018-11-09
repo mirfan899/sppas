@@ -31,6 +31,12 @@
     annotations.Align.aligners.__init__.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      develop@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018 Brigitte Bigi
+
 How to get the list of supported aligner names?
 
 >>> a = sppasAligners()
@@ -56,4 +62,3 @@ __all__ = (
     'HviteAligner',
     'BasicAligner'
 )
-

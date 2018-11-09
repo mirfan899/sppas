@@ -43,13 +43,13 @@ from sppas.src.utils.makeunicode import sppasUnicode
 
 
 class sppasTokenSegmenter(object):
-    """
+    """Create words from tokens on the basis of a lexicon.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Create words from tokens on the basis of a lexicon.
 
     This is a totally language independent method, based on a longest
     matching algorithm to aggregate tokens into words. Words of a lexicon
@@ -67,6 +67,7 @@ class sppasTokenSegmenter(object):
         - rock'n roll -> rock'n_roll
 
     """
+
     SEPARATOR = "_"
     STICK_MAX = 7
 
@@ -85,7 +86,8 @@ class sppasTokenSegmenter(object):
     # -------------------------------------------------------------------------
 
     def set_aggregate_max(self, value=STICK_MAX):
-        """Fix the maximum number of words to stick. 
+        """Fix the maximum number of words to stick.
+
         This is a language dependant value. For French, it's 5 with the word:
         "au fur et à mesure". But it can be more to stick phrases instead of
         words for example.
@@ -120,6 +122,7 @@ class sppasTokenSegmenter(object):
 
     def __stick_longest_lr(self, phrase, separator):
         """Return the longest first word of a phrase.
+
         A longest matching algorithm is applied from left to right.
 
         :param phrase: (str)
@@ -148,7 +151,7 @@ class sppasTokenSegmenter(object):
         # the first real token is the first given token
         return i, sppasUnicode(token).to_strip()
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def bind(self, utt):
         """Bind tokens of an utterance using a specific character.

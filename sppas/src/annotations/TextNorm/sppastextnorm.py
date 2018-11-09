@@ -71,13 +71,13 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 
 
 class sppasTextNorm(sppasBaseAnnotation):
-    """
+    """Text normalization automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Text normalization automatic annotation.
 
     """
     def __init__(self, vocab, lang="und", logfile=None):
@@ -247,12 +247,18 @@ class sppasTextNorm(sppasBaseAnnotation):
         if tier_custom is not None:
             trs_output.append(tier_custom)
 
-        trs_output.set_meta('text_normalization_result_of', input_filename)
-        trs_output.set_meta('text_normalization_vocab', self.normalizer.get_vocab_filename())
-        trs_output.set_meta('language_iso', "iso639-3")
-        trs_output.set_meta('language_code_0', self.normalizer.lang)
-        trs_output.set_meta('language_name_0', "Undetermined")
-        trs_output.set_meta('language_url_0', "https://iso639-3.sil.org/code/"+self.normalizer.lang)
+        trs_output.set_meta('text_normalization_result_of',
+                            input_filename)
+        trs_output.set_meta('text_normalization_vocab',
+                            self.normalizer.get_vocab_filename())
+        trs_output.set_meta('language_iso',
+                            "iso639-3")
+        trs_output.set_meta('language_code_0',
+                            self.normalizer.lang)
+        trs_output.set_meta('language_name_0',
+                            "Undetermined")
+        trs_output.set_meta('language_url_0',
+                            "https://iso639-3.sil.org/code/"+self.normalizer.lang)
 
         # Save in a file
         if output_filename is not None:
@@ -265,9 +271,9 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         return trs_output
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private: some workers...
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __convert(self, tier, actions):
         """Normalize all tags of all labels of an annotation.
@@ -292,7 +298,8 @@ class sppasTextNorm(sppasBaseAnnotation):
                         tokens = self.normalizer.normalize(text.get_content(), actions)
                     except Exception as e:
                         tokens = list()
-                        message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
+                        message = "Error while normalizing interval {:d}: " \
+                                  "{:s}".format(i, str(e))
                         self.print_message(message, indent=3)
 
                 elif text.is_silence():

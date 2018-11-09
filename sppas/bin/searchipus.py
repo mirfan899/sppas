@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -56,84 +56,86 @@ from sppas.src.utils.fileutils import setup_logging
 # Verify and extract args:
 # ---------------------------------------------------------------------------
 
-w = sppasSearchIPUs()
+if __name__ == "__main__":
 
-parser = ArgumentParser(usage="{:s} -w file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Search for IPUs automatic annotation.")
+    w = sppasSearchIPUs()
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input wav file name')
+    parser = ArgumentParser(usage="{:s} -w file [options]"
+                                  "".format(os.path.basename(PROGRAM)),
+                            description="Search for IPUs automatic annotation.")
 
-# Silence/Speech segmentation options:
-parser.add_argument("-r", "--winrms",
-                    type=float,
-                    default=w.get_win_length(),
-                    help='Window size to estimate rms, in seconds '
-                         '(default: {:f})'.format(w.get_win_length()))
+    parser.add_argument("-w",
+                        metavar="file",
+                        required=True,
+                        help='Input wav file name')
 
-parser.add_argument("-m",
-                    "--minipu",
-                    type=float,
-                    default=w.get_min_ipu(),
-                    help='Drop speech shorter than m seconds long '
-                         '(default: {:f})'.format(w.get_min_ipu()))
+    # Silence/Speech segmentation options:
+    parser.add_argument("-r", "--winrms",
+                        type=float,
+                        default=w.get_win_length(),
+                        help='Window size to estimate rms, in seconds '
+                             '(default: {:f})'.format(w.get_win_length()))
 
-parser.add_argument("-s",
-                    "--minsil",
-                    type=float,
-                    default=w.get_min_sil(),
-                    help='Drop silences shorter than s seconds long '
-                         '(default: {:f})'.format(w.get_min_sil()))
+    parser.add_argument("-m",
+                        "--minipu",
+                        type=float,
+                        default=w.get_min_ipu(),
+                        help='Drop speech shorter than m seconds long '
+                             '(default: {:f})'.format(w.get_min_ipu()))
 
-parser.add_argument("-v",
-                    "--minrms",
-                    type=int,
-                    default=w.get_threshold(),
-                    help='Assume everything with a rms lower than v is a silence. 0=automatic adjust.'
-                         '(default: {:d})'.format(w.get_threshold()))
+    parser.add_argument("-s",
+                        "--minsil",
+                        type=float,
+                        default=w.get_min_sil(),
+                        help='Drop silences shorter than s seconds long '
+                             '(default: {:f})'.format(w.get_min_sil()))
 
-# Other options:
-parser.add_argument("-d",
-                    "--shiftstart",
-                    type=float,
-                    default=w.get_shift_start(),
-                    help='Shift-left the start boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_start()))
+    parser.add_argument("-v",
+                        "--minrms",
+                        type=int,
+                        default=w.get_threshold(),
+                        help='Assume everything with a rms lower than v is a silence. 0=automatic adjust.'
+                             '(default: {:d})'.format(w.get_threshold()))
 
-parser.add_argument("-D",
-                    "--shiftend",
-                    type=float,
-                    default=w.get_shift_end(),
-                    help='Shift-right the end boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_end()))
+    # Other options:
+    parser.add_argument("-d",
+                        "--shiftstart",
+                        type=float,
+                        default=w.get_shift_start(),
+                        help='Shift-left the start boundary of IPUs '
+                             '(default: {:f})'.format(w.get_shift_start()))
 
-# Output options:
-parser.add_argument("-o",
-                    metavar="file",
-                    help='Annotated file with silences/units segmentation '
-                         '(default: None)')
+    parser.add_argument("-D",
+                        "--shiftend",
+                        type=float,
+                        default=w.get_shift_end(),
+                        help='Shift-right the end boundary of IPUs '
+                             '(default: {:f})'.format(w.get_shift_end()))
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    # Output options:
+    parser.add_argument("-o",
+                        metavar="file",
+                        help='Annotated file with silences/units segmentation '
+                             '(default: None)')
 
-args = parser.parse_args()
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-log_level = 1
-log_file = None
-setup_logging(log_level, log_file)
+    args = parser.parse_args()
 
-# ----------------------------------------------------------------------------
-# Automatic IPUs segmentation is here:
-# ----------------------------------------------------------------------------
+    log_level = 1
+    log_file = None
+    setup_logging(log_level, log_file)
 
-w.set_shift_start(args.shiftstart)
-w.set_shift_end(args.shiftend)
-w.set_min_ipu(args.minipu)
-w.set_min_sil(args.minsil)
-w.set_threshold(args.minrms)
-w.set_win_length(args.winrms)
+    # ----------------------------------------------------------------------------
+    # Automatic IPUs segmentation is here:
+    # ----------------------------------------------------------------------------
 
-trs_out = w.run(args.w, args.o)
+    w.set_shift_start(args.shiftstart)
+    w.set_shift_end(args.shiftend)
+    w.set_min_ipu(args.minipu)
+    w.set_min_sil(args.minsil)
+    w.set_threshold(args.minrms)
+    w.set_win_length(args.winrms)
+
+    trs_out = w.run(args.w, args.o)

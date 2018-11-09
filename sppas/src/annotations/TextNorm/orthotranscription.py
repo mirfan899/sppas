@@ -45,13 +45,13 @@ from sppas.src.utils.makeunicode import u, sppasUnicode
 
 
 class sppasOrthoTranscription(object):
-    """
+    """Manager of an orthographic transcription.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Manager of an orthographic transcription.
 
     This is a totally language-independent class. It supports the orthographic
     transcription defined into SPPAS software tool.
@@ -78,11 +78,12 @@ class sppasOrthoTranscription(object):
     def __init__(self):
         pass
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def clean_toe(entry):
         """Clean Enriched Orthographic Transcription.
+
         The convention includes information that must be removed.
 
         :param entry: (str)
@@ -90,7 +91,8 @@ class sppasOrthoTranscription(object):
 
         """
         # Proper names: $ name ,P\$
-        entry = re.sub(u(',\s?[PTS]+\s?[\\/\\\]+\s?\\$'), r'', entry, re.UNICODE)
+        entry = re.sub(u(',\s?[PTS]+\s?[\\/\\\]+\s?\\$'), r'',
+                       entry, re.UNICODE)
         entry = re.sub(u('\$'), r'', entry, re.UNICODE)
 
         # Tags of the activity
@@ -103,11 +105,12 @@ class sppasOrthoTranscription(object):
         entry = re.sub(u('^\([\w\xaa-\xff]+\)\s+'), ' ', entry, re.UNICODE)
         entry = re.sub(u('\s+\([\w\xaa-\xff]+\)$'), ' ', entry, re.UNICODE)
 
-        entry = re.sub(u('\s*\[([^,]+),([^,]+)\]'), sppasOrthoTranscription.__replace, entry, re.UNICODE)
+        entry = re.sub(u('\s*\[([^,]+),([^,]+)\]'),
+                       sppasOrthoTranscription.__replace, entry, re.UNICODE)
 
         return " ".join(entry.split())
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def toe_spelling(entry, std=False):
@@ -220,7 +223,7 @@ class sppasOrthoTranscription(object):
 
         return " ".join(s)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __replace(obj):

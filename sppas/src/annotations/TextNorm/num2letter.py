@@ -44,13 +44,13 @@ from sppas.src.utils.makeunicode import u
 
 
 class sppasNum(object):
-    """
+    """Numerical conversion using a multilingual algorithm.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Numerical conversion using a multilingual algorithm.
 
     The language names used in this class are based on iso639-3.
 
@@ -78,7 +78,8 @@ class sppasNum(object):
         1000000000 milliard
 
     """
-    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por", "pcm"]
+    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm",
+                 "vie", "jpn", "pol", "por", "pcm"]
 
     ZERO = dict()
     ZERO["und"] = u("0")
@@ -403,7 +404,8 @@ class sppasNum(object):
         if self._lang == "und":
             return str(number)
 
-        raise ValueError("Unknown language {:s} to convert numbers".format(self._lang))
+        raise ValueError("Unknown language {:s} to convert numbers"
+                         "".format(self._lang))
 
     # -------------------------------------------------------------------------
     # Numbers from 10 to 99
@@ -1450,8 +1452,9 @@ class sppasNum(object):
 
 # ------------------------------------------------------------------
 
+
 if __name__ == '__main__':
-    import os.path
+    import os
     import sys
     from argparse import ArgumentParser
     PROGRAM = os.path.abspath(__file__)
@@ -1462,6 +1465,6 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
     args = parser.parse_args()
-    nb = sppasNum( args.lang )
+    nb = sppasNum(args.lang)
     for line in sys.stdin:
-        print(nb.convert( line ).encode('utf8'))
+        print(nb.convert(line).encode('utf8'))

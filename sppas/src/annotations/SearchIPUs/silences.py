@@ -273,7 +273,7 @@ class sppasSilences(object):
         inside = False
         idx_begin = 0
         nframes = self.__volume_stats.get_winlen() * \
-                  self._channel.get_framerate()
+                    self._channel.get_framerate()
 
         i = 0
         for v in self.__volume_stats:

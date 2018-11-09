@@ -114,7 +114,9 @@ class sppasPhon(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - unk
             - usesstdtokens
@@ -218,7 +220,7 @@ class sppasPhon(sppasBaseAnnotation):
     def convert(self, tier):
         """Phonetize annotations of a tokenized tier.
 
-        :param tier: (Tier) the orthographic transcription previously tokenized.
+        :param tier: (Tier) the ortho transcription previously tokenized.
         :returns: (Tier) phonetized tier with name "Phones"
 
         """
@@ -287,8 +289,10 @@ class sppasPhon(sppasBaseAnnotation):
         if tier_phon is not None:
             trs_output.append(tier_phon)
 
-        trs_output.set_meta('text_phonetization_result_of', input_filename)
-        trs_output.set_meta('text_phonetization_dict', self.phonetizer.get_dict_filename())
+        trs_output.set_meta('text_phonetization_result_of',
+                            input_filename)
+        trs_output.set_meta('text_phonetization_dict',
+                            self.phonetizer.get_dict_filename())
 
         # Save in a file
         if output_filename is not None:

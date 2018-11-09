@@ -81,6 +81,7 @@ class sppasDictPhonetizer(object):
     the pronunciation of unseen words purely by analogy.
 
     """
+
     def __init__(self, pdict, maptable=None):
         """Create a sppasDictPhonetizer instance.
 
@@ -192,7 +193,9 @@ class sppasDictPhonetizer(object):
 
     def get_phon_tokens(self, tokens, phonunk=True):
         """Return the phonetization of a list of tokens, with the status.
-        Unknown entries are automatically phonetized if `phonunk` is set to True.
+
+        Unknown entries are automatically phonetized if `phonunk` is set
+        to True.
 
         :param tokens: (list) The list of tokens to be phonetized.
         :param phonunk: (bool) Phonetize unknown words (or not).
@@ -213,7 +216,8 @@ class sppasDictPhonetizer(object):
             # entry can be already in SAMPA.
             if entry.startswith("/") is True and entry.endswith("/") is True:
                 phon = entry.strip("/")
-                # It must use X-SAMPA, including minus character to separate phonemes.
+                # It must use X-SAMPA,
+                # including minus character to separate phonemes.
 
             else:
 
@@ -224,13 +228,16 @@ class sppasDictPhonetizer(object):
 
                     # A missing compound word?
                     if "-" in entry or "'" in entry or "_" in entry:
-                        _tabpron = [self.get_phon_entry(w) for w in re.split("[-'_]", entry)]
+                        _tabpron = [self.get_phon_entry(w)
+                                    for w in re.split("[-'_]", entry)]
 
                         # OK, finally the entry is in the dictionary?
                         if self._pdict.get_unkstamp() not in _tabpron:
-                            # ATTENTION: each part can have variants! must be decomposed.
+                            # ATTENTION: each part can have variants!
+                            # must be decomposed.
                             self._dag_phon.variants = 4
-                            phon = sppasUnicode(self._dag_phon.decompose(" ".join(_tabpron))).to_strip()
+                            phon = sppasUnicode(
+                                self._dag_phon.decompose(" ".join(_tabpron))).to_strip()
                             status = annots.warning
 
                     if phon == self._pdict.get_unkstamp() and phonunk is True:
@@ -283,7 +290,8 @@ class sppasDictPhonetizer(object):
         if self._map_table.is_empty() is True:
             return phonentry
 
-        tab = [self._map_variant(v) for v in phonentry.split(separators.variants)]
+        tab = [self._map_variant(v)
+               for v in phonentry.split(separators.variants)]
 
         return separators.variants.join(tab)
 
@@ -306,7 +314,8 @@ class sppasDictPhonetizer(object):
                 subs.append(p)
 
         self._dag_phon.variants = 0
-        phon = sppasUnicode(self._dag_phon.decompose(" ".join(subs))).to_strip()
+        phon = sppasUnicode(
+            self._dag_phon.decompose(" ".join(subs))).to_strip()
 
         # Remove un-pronounced phonemes!!!
         # By convention, they are represented by an underscore in the
@@ -348,7 +357,6 @@ class sppasDictPhonetizer(object):
 
     def __longestlr(self, tabentry):
         """Select the longest map of an entry."""
-
         i = len(tabentry)
         while i > 0:
             # Find in the map table a substring from 0 to i
