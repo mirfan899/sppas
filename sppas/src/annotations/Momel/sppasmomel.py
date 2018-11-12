@@ -41,9 +41,12 @@ from sppas.src.annotationdata.ptime.point import TimePoint
 from sppas.src.annotationdata.label.label import Label
 import sppas.src.annotationdata.aio
 
+from sppas.src.anndata import sppasRW
+
 from ..baseannot import sppasBaseAnnotation
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
+from ..annotationsexc import NoInputError
 
 from .momel import Momel
 
@@ -126,14 +129,28 @@ class sppasMomel(sppasBaseAnnotation):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def set_pitch(input_filename):
+    def fix_pitch(input_filename):
         """Load pitch values from a file.
+
+        It is supposed that the given file contains a tier with name "Pitch"
+        with a pitch value every 10ms, or a tier with name "PitchTier".
 
         :returns: A list of pitch values (one value each 10 ms).
 
         """
-        pitch = sppas.src.annotationdata.aio.read(input_filename)
-        pitch_list = pitch.get_pitch_list()
+        parser = sppasRW(input_filename)
+        trs = parser.read()
+        pitch_tier = trs.find("Pitch")
+        if pitch_tier is None:
+            pitch_tier = trs.find("PitchTier")
+            if pitch_tier is not None:
+                pitch_list = trs.to_pitch()
+            else:
+                raise NoInputError
+        else:
+            pitch_list = [round(a.get_best_tag().get_typed_content(), 6)
+                          for a in pitch_tier]
+
         if len(pitch_list) == 0:
             raise EmptyInputError(name="Pitch")
 
@@ -199,7 +216,7 @@ class sppasMomel(sppasBaseAnnotation):
         self.print_diagnosis(input_filename)
 
         # Get pitch values from the input
-        pitch = self.set_pitch(input_filename)
+        pitch = self.fix_pitch(input_filename)
         # Selected values (Target points) for this set of pitch values
         targets = []
 

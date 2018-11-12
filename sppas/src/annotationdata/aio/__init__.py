@@ -154,31 +154,14 @@ def read(filename):
 
     """
     ext = get_extension(filename).lower()
-    if ext in ['intensitytier', 'pitchtier', 'hz']:
-        try:
-            transcription = NewTrs(ext)
-            transcription.read(unicode(filename))
-        except IOError:
-            raise
-        except KeyError:
-            raise
-        except UnicodeError as e:
-            raise UnicodeError('The file %r contains non-UTF-8 characters: %s' % (filename, e))
 
-        # Each reader has its own solution to assign min and max, anyway
-        # take care, if one missed to assign the values!
-        if transcription.GetMinTime() is None:
-            transcription.SetMinTime(transcription.GetBegin())
-        if transcription.GetMaxTime() is None:
-            transcription.SetMaxTime(transcription.GetEnd())
-    else:
-        # Use anndata reader
-        parser = sppasRW(filename)
-        trs = parser.read()
+    # Use anndata reader
+    parser = sppasRW(filename)
+    trs = parser.read()
 
-        # Convert anndata.sppasTranscription() into annotationdata.Transcription()
-        transcription = Transcription()
-        transcription.SetFromAnnData(trs)
+    # Convert anndata.sppasTranscription() into annotationdata.Transcription()
+    transcription = Transcription()
+    transcription.SetFromAnnData(trs)
 
     return transcription
 
