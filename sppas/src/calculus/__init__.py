@@ -39,9 +39,10 @@ calculus: perform some math on data.
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
-from sppas.src.calculus.stats.descriptivesstats import sppasDescriptiveStatistics
-from sppas.src.calculus.scoring.kappa import sppasKappa
+from .stats.descriptivesstats import sppasDescriptiveStatistics
+from .scoring.kappa import sppasKappa
 from .geometry.distances import squared_euclidian, euclidian, manathan, minkowski, chi_squared
+from .geometry.linear_fct import linear_fct, linear_values, slope, intercept
 from .stats.central import fsum, fmult, fmin, fmax, fmean, fgeometricmean, fharmonicmean
 from .stats.frequency import freq, percent, percentile, quantile
 from .stats.linregress import tga_linear_regression, tansey_linear_regression
@@ -61,6 +62,10 @@ __all__ = (
     "manathan",
     "minkowski",
     "chi_squared",
+    "linear_fct",
+    "linear_values",
+    "slope",
+    "intercept",
     "fsum",
     "fmult",
     "fmin",

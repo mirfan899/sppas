@@ -128,7 +128,7 @@ def linear_fct(x, a, b):
 # ---------------------------------------------------------------------------
 
 
-def linear_values(delta, p1, p2):
+def linear_values(delta, p1, p2, rounded=6):
     """Estimate the values between 2 points, step-by-step.
 
     Two different points p1=(x1,y1) and p2=(x2,y2) determine a line. It is
@@ -143,7 +143,8 @@ def linear_values(delta, p1, p2):
     :param delta: (float) Step range between values.
     :param p1: (tuple) first point as (x1, y1)
     :param p2: (tuple) second point as (x2, y2)
-    :returns: list of float values
+    :param rounded: (int) round floats
+    :returns: list of float values including p1 and p2
     :raises: MemoryError could be raised if too many values have to be \
     returned.
 
@@ -154,21 +155,22 @@ def linear_values(delta, p1, p2):
 
     x1 = float(p1[0])
     x2 = float(p2[0])
+    d = round((x2-x1), rounded)   # hack
 
     # number of values to add in the array
-    steps = int(math.ceil((x2-x1) / delta)) + 1
+    steps = int(math.ceil(d / delta)) + 1
     array = [0.] * steps
 
     # values to add in the array, from p1 to previous-p2
     for step in range(1, steps):
         x = (step*delta) + x1
         y = linear_fct(x, a, b)
-        array[step] = y
+        array[step] = round(y, rounded)
 
     # first and last values (i.e. p1 and p2)
     y = linear_fct(x1, a, b)
-    array[0] = y
+    array[0] = round(y, rounded)
     y = linear_fct(x2, a, b)
-    array[-1] = y
+    array[-1] = round(y, rounded)
 
     return array

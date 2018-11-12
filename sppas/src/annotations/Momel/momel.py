@@ -56,25 +56,25 @@
 """
 import math
 
-from .st_cib import Targets
+from .anchor import Anchor
 from .momelutil import quicksortcib
 
 # ----------------------------------------------------------------------------
 
 
 class Momel(object):
-    """
-    :author:       Tatsuya Watanabe, Brigitte Bigi
+    """Implements Momel.
+
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Implements Momel.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
         """Create a new Momel instance."""
-
         # Constants
         self.SEUILV = 50.
         self.FSIGMA = 1.
@@ -116,10 +116,7 @@ class Momel(object):
     # -------------------------------------------------------------------
 
     def initialize(self):
-        """Set some variables to their default values.
-            Parameters: None
-            Return:     None
-        """
+        """Set some variables to their default values."""
         # Array of pitch values
         self.hzptr = []
         self.nval = 0
@@ -167,10 +164,10 @@ class Momel(object):
 
     def elim_glitch(self):
         """Eliminate Glitch of the pitch values array.
-            Set a current pith value to 0 if left and right values
-            are greater than 5% more than the current value.
-            Parameters: None
-            Return:     None
+
+        Set a current pith value to 0 if left and right values
+        are greater than 5% more than the current value.
+
         """
         _delta = 1.0 + self.RAPP_GLITCH
         for i in range(1, self.nval-1):
@@ -183,8 +180,11 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def calcrgp(self, pond, dpx, fpx):
-        """
-        From inputs, estimates: a0, a1, a2.
+        """From inputs, estimates: a0, a1, a2.
+
+        :param pond:
+        :param dpx:
+        :param fpx:
 
         """
         pn = 0.
@@ -229,10 +229,7 @@ class Momel(object):
     # ------------------------------------------------------------------
 
     def cible(self):
-        """
-        Find momel target points.
-
-        """
+        """Find momel target points."""
         if len(self.hzptr) == 0:
             raise IOError('Empty pitch array')
         if self.hzsup < self.hzinf:
@@ -299,17 +296,14 @@ class Momel(object):
                         xc = vxc
                         yc = vyc
 
-            c = Targets()
+            c = Anchor()
             c.set(xc, yc)
             self.cib.append(c)
 
     # ------------------------------------------------------------------
 
     def reduc(self):
-        """
-        First target reduction of too close points.
-
-        """
+        """First target reduction of too close points."""
         # initialisations
         # ---------------
         xdist = []
@@ -465,7 +459,7 @@ class Momel(object):
 
             # Reduit la liste des cibles
             if n > 0:
-                cibred_cour = Targets()
+                cibred_cour = Anchor()
                 cibred_cour.set(sx/n, sy/n, n)
                 ncibr = len(self.cibred) - 1
 
@@ -489,7 +483,9 @@ class Momel(object):
 
     def reduc2(self):
         """reduc2.
-            2eme filtrage des cibles trop proches en t [et Hz]
+
+        2eme filtrage des cibles trop proches en t [et Hz]
+
         """
         # classe ordre temporel croissant les cibred
         c = quicksortcib(self.cibred)
@@ -517,17 +513,19 @@ class Momel(object):
 
     def borne(self):
         """borne.
-            Principes:
-            calcul borne G (D)  si 1ere (derniere) cible est
-            ( > (debut_voisement+halo) )
-            ( < (fin_voisement -halo)  )
-            ce pt de debut(fin) voisement  == frontiere
-            cible extremite == ancre
-            regression quadratique sur Hz de  [frontiere ancre]
+
+        Principes:
+        calcul borne G (D)  si 1ere (derniere) cible est
+        ( > (debut_voisement+halo) )
+        ( < (fin_voisement -halo)  )
+        ce pt de debut(fin) voisement  == frontiere
+        cible extremite == ancre
+        regression quadratique sur Hz de  [frontiere ancre]
+
         """
         halo = self.HALO_BORNE_TRAME
-        ancre = Targets()
-        borne = Targets()
+        ancre = Anchor()
+        borne = Anchor()
 
         # Borne gauche
         # ------------

@@ -47,6 +47,7 @@ from sppas.src.utils.makeunicode import u
 
 from ..anndataexc import AioLineFormatError
 from ..anndataexc import AioEmptyTierError
+from ..anndataexc import AioNoTiersError
 
 from ..aio.praat import sppasBasePraat
 from ..aio.praat import sppasTextGrid
@@ -713,3 +714,28 @@ class TestPitchTier(unittest.TestCase):
                 self.assertTrue(sppasPitchTier.detect(f))
             else:
                 self.assertFalse(sppasPitchTier.detect(f))
+
+    def test_to_pitch(self):
+        p = sppasPitchTier()
+        with self.assertRaises(AioNoTiersError):
+            p.to_pitch()
+        p.create_tier("toto")
+        with self.assertRaises(AioNoTiersError):
+            p.to_pitch()
+        t = p.find('toto')
+        t.set_name('PitchTier')
+        with self.assertRaises(AioEmptyTierError):
+            p.to_pitch()
+
+        t.create_annotation(sppasLocation(sppasPoint(0.20440625000000007, 0.005)),
+                            sppasLabel(sppasTag(172.05311434014578, "float")))
+        t.create_annotation(sppasLocation(sppasPoint(0.24440625000000007, 0.005)),
+                            sppasLabel(sppasTag(531.0482270311373, "float")))
+        t.create_annotation(sppasLocation(sppasPoint(0.26440625000000006, 0.005)),
+                            sppasLabel(sppasTag(526.6646688488254, "float")))
+
+        result = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+                  0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 172.053114,
+                  261.801893, 351.550671, 441.299449,
+                  531.048227, 528.856448, 526.664669]
+        self.assertEqual(result, p.to_pitch())

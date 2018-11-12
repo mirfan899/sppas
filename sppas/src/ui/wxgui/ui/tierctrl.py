@@ -57,7 +57,7 @@ class TierCtrl(spControl):
         """Constructor.
 
         Non-wxpython related parameter:
-            - tier (Tier) the Tier to draw (see annotationdata library for details).
+            - tier (Tier) the Tier to draw.
 
         """
         self._tier = tier

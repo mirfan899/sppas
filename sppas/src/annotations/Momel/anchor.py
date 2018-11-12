@@ -29,31 +29,33 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Momel.st_cib.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.Momel.anchor.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 
-class Targets(object):
-    """
-    :author:       Tatsuya Watanabe, Brigitte Bigi
+class Anchor(object):
+    """Data structure to store a selected anchor.
+    
+    :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      A class to store one selected target.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    A target is made of 2 or 3 values:
+    An anchor was initially called a "target". Daniel Hirst changed the name
+    in 2017.
+    
+    An anchor is made of 2 or 3 values:
         - x: float ; required
         - y: float ; required
         - p: int   ; optional
-    Use getters and setters to manipulate x, y and p
 
     """
-    def __init__(self):
-        """Create a new Targets instance with default values."""
 
+    def __init__(self):
+        """Create a new Anchor instance with default values."""
         self.__x = 0.
         self.__y = 0.
         self.__p = 0
@@ -61,7 +63,7 @@ class Targets(object):
     # ------------------------------------------------------------------
 
     def set(self, x, y, p=0):
-        """Set new values to a target.
+        """Set new values to an anchor.
 
         :param x: (float)
         :param y: (float)
@@ -74,54 +76,64 @@ class Targets(object):
 
     # ------------------------------------------------------------------
 
+    def get_x(self):
+        """Return the x value of an anchor."""
+        return self.__x
+
+    # ------------------------------------------------------------------
+
     def set_x(self, x):
-        """Set a new x value to a target.
+        """Set a new x value to an anchor.
 
         :param x: (float)
+        :raises: TypeError
 
         """
         self.__x = float(x)
 
     # ------------------------------------------------------------------
 
+    def get_y(self):
+        """Return the y value of an anchor."""
+        return self.__y
+
+    # ------------------------------------------------------------------
+
     def set_y(self, y):
-        """Set a new y value to a target.
+        """Set a new y value to an anchor.
 
         :param y: (float)
+        :raises: TypeError
 
         """
         self.__y = float(y)
 
     # ------------------------------------------------------------------
 
+    def get_p(self):
+        """Return the p value of an anchor."""
+        return self.__p
+
+    # ------------------------------------------------------------------
+
     def set_p(self, p):
-        """Set a new p value to a target.
+        """Set a new p value to an anchor.
 
         :param p: (int)
+        :raises: TypeError
 
         """
         self.__p = int(p)
 
     # ------------------------------------------------------------------
 
-    def get_x(self):
-        """Return the x value of a target."""
-        return self.__x
+    x = property(get_x, set_x)
+    y = property(get_y, set_y)
+    p = property(get_p, set_p)
 
     # ------------------------------------------------------------------
-
-    def get_y(self):
-        """Return the y value of a target."""
-        return self.__y
-
+    # overload
     # ------------------------------------------------------------------
 
-    def get_p(self):
-        """Return the p value of a target."""
-        return self.__p
-
-    # ------------------------------------------------------------------
-
-    def print_cib(self, output, pas_x=1, pas_y=1):
-        to_print = str(self.__x * pas_x) + " " + str(self.__y * pas_y)
-        output.write(to_print + "\n")
+    def __str__(self):
+        return "(" + str(self.__x) + ", " + str(self.__y) + ")"

@@ -31,8 +31,8 @@
 
     src.annotations.Momel.sppasmomel.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-"""
 
+"""
 import sys
 
 from sppas.src.annotationdata.transcription import Transcription
@@ -51,13 +51,13 @@ from .momel import Momel
 
 
 class sppasMomel(sppasBaseAnnotation):
-    """
+    """SPPAS integration of Momel.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS integration of Momel.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, logfile=None):
@@ -76,7 +76,9 @@ class sppasMomel(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - lfen1
             - hzinf
@@ -96,35 +98,27 @@ class sppasMomel(sppasBaseAnnotation):
 
             if "lfen1" == key:
                 self.momel.set_option_win1(opt.get_value())
-                self._options['lfen1'] = opt.get_value()
 
             elif "hzinf" == key:
                 self.momel.set_option_lo(opt.get_value())
-                self._options['hzinf'] = opt.get_value()
 
             elif "hzsup" == key:
                 self.momel.set_option_hi(opt.get_value())
-                self._options['hzsup'] = opt.get_value()
 
             elif "maxec" == opt.get_key():
                 self.momel.set_option_maxerr(opt.get_value())
-                self._options['maxec'] = opt.get_value()
 
             elif "lfen2" == opt.get_key():
                 self.momel.set_option_win2(opt.get_value())
-                self._options['lfen2'] = opt.get_value()
 
             elif "seuildiff_x" == opt.get_key():
                 self.momel.set_option_mind(opt.get_value())
-                self._options['seuildiff_x'] = opt.get_value()
 
             elif "seuildiff_y" == opt.get_key():
                 self.momel.set_option_minr(opt.get_value())
-                self._options['seuildiff_y'] = opt.get_value()
 
             elif "glitch" == opt.get_key():
                 self.momel.set_option_elim_glitch(opt.get_value())
-                self._options['glitch'] = opt.get_value()
 
             else:
                 raise AnnotationOptionError(key)

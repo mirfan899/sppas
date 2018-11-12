@@ -36,7 +36,6 @@
 import os
 
 import sppas.src.audiodata.aio
-import sppas.src.annotationdata.aio
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasMedia
