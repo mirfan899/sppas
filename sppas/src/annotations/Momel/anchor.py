@@ -37,7 +37,7 @@
 
 class Anchor(object):
     """Data structure to store a selected anchor.
-    
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
@@ -46,10 +46,10 @@ class Anchor(object):
 
     An anchor was initially called a "target". Daniel Hirst changed the name
     in 2017.
-    
+
     An anchor is made of 2 or 3 values:
-        - x: float ; required
-        - y: float ; required
+        - x: float : the number of the frame ; required
+        - y: float ; the pitch value ; required
         - p: int   ; optional
 
     """

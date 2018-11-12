@@ -119,7 +119,13 @@ if args.minr:
 if args.nonglitch:
     melodie.momel.set_option_elim_glitch(False)
 
-melodie.run(args.i, args.o, outputfile=None)
+trs_result = melodie.run(args.i, args.o)
+if not args.o:
+    for ann in trs_result[0]:
+        print("{:f} {:f}"
+              "".format(
+            ann.get_lowest_localization().get_midpoint(),
+            ann.get_best_tag().get_typed_content()))
 
 if args.O:
     intsint = sppasIntsint()

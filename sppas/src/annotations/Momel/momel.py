@@ -32,14 +32,24 @@
     src.annotations.Momel.momel.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    https://en.wikipedia.org/wiki/Momel
+
     Different versions of the Momel algorithm have been developed
     in the LPL in Aix en Provence over the last twenty years and have been
     used for the phonetic modelling and symbolic coding of the intonation
     patterns of a number of languages (including English, French, Italian,
     Catalan, etc).
+
     The last implementation is presented as a Praat plugin. The modelling
     and coding algorithms have been implemented as a set of Praat scripts,
     each corresponding to a specific step in the process.
+
+    See:
+        | Hirst, Daniel. (2007).
+        | A Praat plugin for Momel and INTSINT with improved algorithms
+        | for modelling and coding intonation.
+        | Proceedings of the 16th International Congress of Phonetic Sciences.
+
 
     The quality of the F0 modelling crucially depends on the quality of
     the F0 detected.
@@ -84,7 +94,7 @@ class Momel(object):
 
         # Array of pitch values
         self.hzptr = []
-        self.nval  = 0
+        self.nval = 0
         self.delta = 0.01
 
         # Output of cible:
@@ -94,17 +104,21 @@ class Momel(object):
         # Output of reduc2:
         self.cibred2 = []
 
-        # cible window length (lfen1 est en pointes echantillon, pas milliseconds)
+        # cible window length (lfen1 est en pointes echantillon,
+        # pas milliseconds)
         self.lfen1 = 30
         # f0 threshold
         self.hzinf = 50
-        # f0 ceiling (Hirst, Di Cristo et Espesser : hzsup est calcule automatiquement)
+        # f0 ceiling (Hirst, Di Cristo et Espesser :
+        # hzsup est calcule automatiquement)
         self.hzsup = 600
         # maximum error (Maxec est 1+Delta en Hirst, Di Cristo et Espesser)
         self.maxec = 1.04
-        # reduc window length (lfen2 est en pointes echantillon, pas milliseconds)
+        # reduc window length (lfen2 est en pointes echantillon,
+        # pas milliseconds)
         self.lfen2 = 20
-        # minimal distance (seuildiff_x est en pointes echantillon, pas milliseconds)
+        # minimal distance (seuildiff_x est en pointes echantillon,
+        # pas milliseconds)
         self.seuildiff_x = 5
         # minimal frequency ratio
         self.seuilrapp_y = 0.05
@@ -281,9 +295,12 @@ class Momel(object):
                 else:
                     # Estimate hzes
                     for ix2 in range(dpx, fpx):
-                        hzes[ix2] = self.a0 + (self.a1 + self.a2 * float(ix2)) * float(ix2)
+                        hzes[ix2] = self.a0 + \
+                                    (self.a1 + self.a2 * float(ix2)) * \
+                                    float(ix2)
                     for x in range(dpx, fpx):
-                        if self.hzptr[x] == 0. or (hzes[x] / self.hzptr[x]) > self.maxec:
+                        if self.hzptr[x] == 0. or \
+                                (hzes[x] / self.hzptr[x]) > self.maxec:
                             nsup += 1
                             pondloc[x] = 0.
 
@@ -332,18 +349,18 @@ class Momel(object):
             sxg = syg = 0.
             ng = 0
             for j in range(j1, i+1):
-                if self.cib[j].get_y() > self.SEUILV:
-                    sxg = sxg + self.cib[j].get_x()
-                    syg = syg + self.cib[j].get_y()
+                if self.cib[j].y > self.SEUILV:
+                    sxg = sxg + self.cib[j].x
+                    syg = syg + self.cib[j].y
                     ng += 1
 
             # right (d means right)
             sxd = syd = 0.
             nd = 0
             for j in range(i+1, j2):
-                if self.cib[j].get_y() > self.SEUILV:
-                    sxd = sxd + self.cib[j].get_x()
-                    syd = syd + self.cib[j].get_y()
+                if self.cib[j].y > self.SEUILV:
+                    sxd = sxd + self.cib[j].x
+                    syd = syd + self.cib[j].y
                     nd += 1
 
             # xdist[i] and ydist[i] evaluations
@@ -356,7 +373,8 @@ class Momel(object):
         # end for
 
         if np == 0 or xds == 0. or yds == 0.:
-            raise ValueError('Not enough targets with a value more than '+str(self.SEUILV)+' hz \n')
+            raise ValueError('Not enough values more than ' +
+                             str(self.SEUILV) + ' hz \n')
 
         # dist estimation (on pondere par la distance moyenne)
         # ----------------------------------------------------
@@ -410,11 +428,11 @@ class Momel(object):
             # moyenne sigma
             for j in range(parinf, parsup):
                 # sur la pop d'une partition
-                if self.cib[j].get_y() > 0.:
-                    sx += self.cib[j].get_x()
-                    sx2 += self.cib[j].get_x() * self.cib[j].get_x()
-                    sy += self.cib[j].get_y()
-                    sy2 += self.cib[j].get_y() * self.cib[j].get_y()
+                if self.cib[j].y > 0.:
+                    sx += self.cib[j].x
+                    sx2 += self.cib[j].x * self.cib[j].x
+                    sy += self.cib[j].y
+                    sy2 += self.cib[j].y * self.cib[j].y
                     n += 1
 
             # pour la variance
@@ -439,22 +457,22 @@ class Momel(object):
 
                 #  Elimination (set cib to 0)
                 for j in range(parinf, parsup):
-                    if self.cib[j].get_y() > 0. and \
-                            (self.cib[j].get_x() < seuilbx or
-                             self.cib[j].get_x() > seuilhx or
-                             self.cib[j].get_y() < seuilby or
-                             self.cib[j].get_y() > seuilhy):
-                        self.cib[j].set_x(0.)
-                        self.cib[j].set_y(0.)
+                    if self.cib[j].y > 0. and \
+                            (self.cib[j].x < seuilbx or
+                             self.cib[j].x > seuilhx or
+                             self.cib[j].y < seuilby or
+                             self.cib[j].y > seuilhy):
+                        self.cib[j].x = 0.
+                        self.cib[j].y = 0.
 
             # Recalcule moyennes
             # ------------------
             sx = sy = 0.
             n = 0
             for j in range(parinf, parsup):
-                if self.cib[j].get_y() > 0.:
-                    sx += self.cib[j].get_x()
-                    sy += self.cib[j].get_y()
+                if self.cib[j].y > 0.:
+                    sx += self.cib[j].x
+                    sy += self.cib[j].y
                     n += 1
 
             # Reduit la liste des cibles
@@ -469,15 +487,17 @@ class Momel(object):
                 else:
                     # si les cibred[].x ne sont pas strictement croissants
                     # on ecrase  la cible ayant le poids le moins fort
-                    if cibred_cour.get_x() > self.cibred[ncibr].get_x():
+                    if cibred_cour.x > self.cibred[ncibr].x:
                         # 1 cibred en +  car t croissant
                         ncibr += 1
                         self.cibred.append(cibred_cour)
                     else:
                         # t <= precedent
-                        if cibred_cour.get_p() > self.cibred[ncibr].get_p():
+                        if cibred_cour.p > self.cibred[ncibr].p:
                             # si p courant >, ecrase la precedente
-                            self.cibred[ncibr].set(cibred_cour.get_x(), cibred_cour.get_y(), cibred_cour.get_p())
+                            self.cibred[ncibr].set(cibred_cour.x,
+                                                   cibred_cour.y,
+                                                   cibred_cour.p)
 
     # ------------------------------------------------------------------
 
@@ -496,15 +516,23 @@ class Momel(object):
         assert(self.seuilrapp_y > 0.)
         ncibr_brut = len(self.cibred)
         for i in range(1, ncibr_brut):
-            delta_x = self.cibred[i].get_x() - self.cibred2[pnred2].get_x()
+
+            delta_x = self.cibred[i].x - self.cibred2[pnred2].x
+
             if float(delta_x) < float(self.seuildiff_x):
-                if math.fabs(float((self.cibred[i].get_y() - self.cibred2[pnred2].get_y())) / self.cibred2[pnred2].get_y()) < self.seuilrapp_y:
-                    self.cibred2[pnred2].set_x((self.cibred2[pnred2].get_x() + self.cibred[i].get_x()) / 2.)
-                    self.cibred2[pnred2].set_y((self.cibred2[pnred2].get_y() + self.cibred[i].get_y()) / 2.)
-                    self.cibred2[pnred2].set_p((self.cibred2[pnred2].get_p() + self.cibred[i].get_p()))
+                if math.fabs(float((self.cibred[i].y - self.cibred2[pnred2].y)) /
+                             self.cibred2[pnred2].y) < self.seuilrapp_y:
+                    self.cibred2[pnred2].x = (self.cibred2[pnred2].x +
+                                              self.cibred[i].x) / 2.
+                    self.cibred2[pnred2].y = (self.cibred2[pnred2].y +
+                                              self.cibred[i].y) / 2.
+                    self.cibred2[pnred2].p = (self.cibred2[pnred2].p +
+                                              self.cibred[i].p)
                 else:
-                    if self.cibred2[pnred2].get_p() < self.cibred[i].get_p():
-                        self.cibred2[pnred2].set(self.cibred[i].get_x(), self.cibred[i].get_y(), self.cibred[i].get_p())
+                    if self.cibred2[pnred2].p < self.cibred[i].p:
+                        self.cibred2[pnred2].set(self.cibred[i].x,
+                                                 self.cibred[i].y,
+                                                 self.cibred[i].p)
             else:
                 pnred2 += 1
                 self.cibred2.append(self.cibred[i])
@@ -531,11 +559,12 @@ class Momel(object):
         # ------------
 
         # Recherche 1er voise
-        premier_voise=0
-        while premier_voise < self.nval and self.hzptr[premier_voise] < self.SEUILV:
+        premier_voise = 0
+        while premier_voise < self.nval and \
+                self.hzptr[premier_voise] < self.SEUILV:
             premier_voise += 1
 
-        if int(self.cibred2[0].get_x()) > (premier_voise + halo):
+        if int(self.cibred2[0].x) > (premier_voise + halo):
             # origine des t : ancre.x, et des y : ancre.y
             ancre = self.cibred2[0]
 
@@ -543,10 +572,10 @@ class Momel(object):
             sx4 = 0.
 
             j = 0
-            for i in range(int(ancre.get_x()), 0):
+            for i in range(int(ancre.x), 0):
                 if self.hzptr[i] > self.SEUILV:
                     x2 = float(j) * float(j)
-                    sx2y += (x2 * (self.hzptr[i] - ancre.get_y()))
+                    sx2y += (x2 * (self.hzptr[i] - ancre.y))
                     sx4 += (x2 * x2)
                 j += 1
 
@@ -555,8 +584,9 @@ class Momel(object):
             if sx4 > 0.:
                 a = sx2y / sx4
 
-            borne.set_x(frontiere - (ancre.get_x() - frontiere))
-            borne.set_y(ancre.get_y() + (2 * a * (ancre.get_x() - frontiere)*(ancre.get_x() - frontiere)))
+            borne.x = frontiere - (ancre.x - frontiere)
+            borne.y = ancre.y + \
+                      (2 * a * (ancre.x - frontiere) * (ancre.x - frontiere))
 
         # recherche dernier voisement
         dernier_voise = self.nval - 1
@@ -566,26 +596,27 @@ class Momel(object):
         # ################################################################## #
 
         # nred2 = len(self.cibred2)
-        # if( int(self.cibred2[nred2-1].get_x()) < (dernier_voise - halo)):
+        # if( int(self.cibred2[nred2-1].x) < (dernier_voise - halo)):
             # origine des t : ancre.x, et des y : ancre.y
             # ancre = self.cibred2[nred2-1]
 
             # sx2y = 0.
             # sx4 = 0.
             # j = 0
-            # for i in range( int(ancre.get_x()),self.nval):
+            # for i in range( int(ancre.x),self.nval):
                 # if self.hzptr[i] > self.SEUILV:
                     # x2 = float(j) * float(j)
-                    # sx2y += (x2 * (self.hzptr[i] - ancre.get_y()))
+                    # sx2y += (x2 * (self.hzptr[i] - ancre.y))
                     # sx4 += (x2*x2)
                 # j += 1
             # frontiere = float(dernier_voise)
             # a = 0.
             # if (sx4 > 0.):
-                # a = sx2y / sx4
+            #     a = sx2y / sx4
 
-            # borne.set_x( frontiere + (frontiere - ancre.get_x()) )
-            # borne.set_y( ancre.get_y() + (2. * a * (ancre.get_x() - frontiere)*(ancre.get_x() - frontiere)) )
+            # borne.set_x( frontiere + (frontiere - ancre.x) )
+            # borne.set_y( ancre.y +
+            #      (2. * a * (ancre.x - frontiere) * (ancre.x - frontiere)) )
 
     # ------------------------------------------------------------------
 
@@ -606,11 +637,13 @@ class Momel(object):
         self.cible()
         self.reduc()
         if len(self.cibred) == 0:
-            raise Exception("No left point after the first pass of point reduction.\n")
+            raise Exception("No left point after the first pass of point "
+                            "reduction.\n")
 
         self.reduc2()
         if len(self.cibred2) == 0:
-            raise Exception("No left point after the second pass of point reduction.\n")
+            raise Exception("No left point after the second pass of point "
+                            "reduction.\n")
 
         self.borne()
 

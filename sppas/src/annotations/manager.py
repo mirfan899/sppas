@@ -255,14 +255,13 @@ class sppasAnnotationsManager(Thread):
                                                 indent=2, status=2)
             else:
                 # Fix output file names
-                outname = os.path.splitext(f)[0]+"-momel.PitchTier"
                 textgridoutname = os.path.splitext(f)[0] + \
                                   '-momel' + \
                                   self.parameters.get_output_format()
 
                 # Execute annotation
                 try:
-                    m.run(inname, trsoutput=textgridoutname, outputfile=outname)
+                    m.run(inname, textgridoutname)
                     files_processed_success += 1
                     if self._logfile is not None:
                         self._logfile.print_message(textgridoutname, indent=2, status=0)
