@@ -47,8 +47,8 @@ from sppas.src.plugins import *
 from sppas.src.resources import *
 from sppas.src.structs import *
 from sppas.src.utils import *
-
-from sppas.src.config import sg
+from sppas.src.exc import *
+from sppas.src.config import *
 
 __version__ = sg.__version__
 __name__ = sg.__name__
