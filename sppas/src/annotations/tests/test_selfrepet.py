@@ -41,6 +41,7 @@ import codecs
 from ..SelfRepet.datastructs import DataRepetition
 from ..SelfRepet.datastructs import Entry
 from ..SelfRepet.datastructs import DataSpeaker
+from ..SelfRepet.rules import SelfRules
 
 # ---------------------------------------------------------------------------
 
@@ -122,6 +123,8 @@ class TestDataSpeaker(unittest.TestCase):
         d = DataSpeaker([])
         self.assertEqual(len(d), 0)
 
+    # -----------------------------------------------------------------------
+
     def test_entries(self):
         d = DataSpeaker(["tok1", "tok2"])
         self.assertEqual(len(d), 2)
@@ -130,17 +133,20 @@ class TestDataSpeaker(unittest.TestCase):
         d = DataSpeaker(["    é  tok1 \t "])
         self.assertEqual(d[0], "é tok1")
 
-    def test_get_next_token(self):
+    # -----------------------------------------------------------------------
+
+    def test_get_next_word(self):
         d = DataSpeaker(["tok1", "tok2"])
-        self.assertEqual(d.get_next_token(0), 1)
-        self.assertEqual(d.get_next_token(1), -1)
+        self.assertEqual(d.get_next_word(0), 1)
+        self.assertEqual(d.get_next_word(1), -1)
         d = DataSpeaker(["tok1", "*", "tok2"])
-        self.assertEqual(d.get_next_token(0), 2)
-        self.assertEqual(d.get_next_token(1), 2)
+        self.assertEqual(d.get_next_word(0), 2)
+        self.assertEqual(d.get_next_word(1), 2)
+
         with self.assertRaises(IndexError):
-            d.get_next_token(-1)
+            d.get_next_word(-1)
         with self.assertRaises(IndexError):
-            d.get_next_token(3)
+            d.get_next_word(3)
 
     # -----------------------------------------------------------------------
 
@@ -155,8 +161,69 @@ class TestDataSpeaker(unittest.TestCase):
 
     def test_is_token_repeated(self):
         d = DataSpeaker(["tok1", "tok2", "tok1"])
-        self.assertEqual(d.is_token_repeated(0, 1, d), 2)
-        self.assertEqual(d.is_token_repeated(1, 2, d), -1)
+        self.assertEqual(d.is_word_repeated(0, 1, d), 2)
+        self.assertEqual(d.is_word_repeated(1, 2, d), -1)
 
 # ---------------------------------------------------------------------------
 
+
+class TestSelfRules(unittest.TestCase):
+
+    def test_is_relevant(self):
+        # without stop-words
+        r = SelfRules()
+        self.assertTrue(r.is_relevant(0, DataSpeaker(["word"])))
+        self.assertFalse(r.is_relevant(0, DataSpeaker(["*"])))
+
+        # with stop-words
+        r = SelfRules(["toto"])
+        self.assertTrue(r.is_relevant(0, DataSpeaker(["word"])))
+        self.assertFalse(r.is_relevant(0, DataSpeaker(["#"])))
+        self.assertFalse(r.is_relevant(0, DataSpeaker(["toto"])))
+
+    def test_count_relevant(self):
+        # without stop-words
+        r = SelfRules()
+        self.assertEqual(0, r.count_relevant_tokens(0, 0, DataSpeaker(["#"])))
+        self.assertEqual(1, r.count_relevant_tokens(0, 0, DataSpeaker(["word"])))
+        self.assertEqual(1, r.count_relevant_tokens(0, 1, DataSpeaker(["word", "#"])))
+        self.assertEqual(0, r.count_relevant_tokens(0, 0, DataSpeaker(["*", "word"])))
+
+        # with stop-words
+        r = SelfRules(["toto"])
+        self.assertEqual(1, r.count_relevant_tokens(0, 2, DataSpeaker(["word", "#", "toto"])))
+        self.assertEqual(0, r.count_relevant_tokens(0, 1, DataSpeaker(["#", "toto", "word"])))
+
+        r = SelfRules(['euh'])
+        d = DataSpeaker(["tok1", "euh", "tok1", "*"])
+        self.assertEqual(2, r.count_relevant_tokens(0, 3, d))
+
+    def test_rule_one_token(self):
+        # no list of stop words
+        r = SelfRules()
+        d = DataSpeaker(["tok1", "tok2", "tok1"])
+        self.assertTrue(r.rule_one_token(0, d))
+        self.assertFalse(r.rule_one_token(1, d))
+        r = SelfRules()
+        d = DataSpeaker(["tok1", "*", "tok1", "*"])
+        self.assertTrue(r.rule_one_token(0, d))
+        self.assertFalse(r.rule_one_token(1, d))
+
+        # with a list of stop words
+        r = SelfRules(['euh'])
+        d = DataSpeaker(["tok1", "euh", "tok1", "euh"])
+        self.assertTrue(r.rule_one_token(0, d))
+        self.assertFalse(r.rule_one_token(1, d))
+
+        r = SelfRules(["toto"])
+        self.assertFalse(r.rule_one_token(0, DataSpeaker(["#"])))
+        self.assertFalse(r.rule_one_token(0, DataSpeaker(["toto"])))
+        self.assertFalse(r.rule_one_token(0, DataSpeaker(["word"])))
+        self.assertFalse(r.rule_one_token(0, DataSpeaker(["#", "#"])))
+        self.assertFalse(r.rule_one_token(0, DataSpeaker(["toto", "toto"])))
+        self.assertTrue(r.rule_one_token(0, DataSpeaker(["word", "word"])))
+
+    def test_rule_syntagme(self):
+        r = SelfRules(['euh'])
+        d = DataSpeaker(["tok1", "euh", "tok1", "*"])
+        self.assertTrue(r.rule_syntagme(0, 3, d))
