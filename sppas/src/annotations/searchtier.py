@@ -195,7 +195,7 @@ class sppasFindTier(object):
 
     @staticmethod
     def aligned_tokens(trs):
-        """Return the tier with time-aligned phonemes.
+        """Return the tier with time-aligned tokens.
 
         :param trs: (sppasTranscription)
 
@@ -224,6 +224,21 @@ class sppasFindTier(object):
         # for backward compatibility:
         for tier in trs:
             if tier.get_name() == "Syllables":
+                return tier
+
+        raise NoInputError
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def aligned_lemmas(trs):
+        """Return the tier with time-aligned lemmas.
+
+        :param trs: (sppasTranscription)
+
+        """
+        for tier in trs:
+            if "lemma" in tier.get_name().lower():
                 return tier
 
         raise NoInputError

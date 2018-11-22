@@ -28,11 +28,11 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Repet.datastructs.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.SelfRepet.datastructs.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Data structures to store repetitions.
-    
+
 """
 import re
 
@@ -41,7 +41,7 @@ from sppas import sppasUnicode
 from sppas import RangeBoundsException
 from sppas import IndexRangeException
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class DataRepetition(object):
@@ -153,7 +153,8 @@ class DataRepetition(object):
     # -----------------------------------------------------------------------
 
     def __str__(self):
-        print("source: ({:d}, {:d})".format(self.__source[0], self.__source[1]))
+        print("source: ({:d}, {:d})"
+              "".format(self.__source[0], self.__source[1]))
         print("echos: ")
         for rep in self.__echos:
             print("  ({:d}, {:d}) ".format(rep[0], rep[1]))
@@ -173,7 +174,7 @@ class Entry(object):
     """
 
     def __init__(self, entry):
-        """Creates an Entry instance.
+        """Create an Entry instance.
 
         :param entry: (str, unicode)
 
@@ -201,9 +202,9 @@ class Entry(object):
             self.__entry = sppasUnicode(entry).to_strip()
         self.__clean()
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __clean(self):
         """Remove some punctuations (they can be due to the EOT)."""
@@ -230,7 +231,7 @@ class DataSpeaker(object):
 
     def __init__(self, tokens):
         """Create a DataSpeaker instance.
-        
+
         :param tokens: (list) List of tokens.
 
         """
@@ -270,38 +271,18 @@ class DataSpeaker(object):
 
     # -----------------------------------------------------------------------
 
-    def get_entry(self, idx):
-        """Return the formatted "token" at the given index.
+    def get_next_word(self, current):
+        """Ask for the index of the next word in entries.
 
-        Return None if index is wrong.
-
-        :param idx: (int) Index of the entry to get
-        :returns: (str) unicode formatted entry, or None
-
-        """
-        if idx < 0:
-            return None
-        if idx >= len(self.__entries):
-            return None
-
-        return self.__entries[idx]
-
-    # ------------------------------------------------------------------
-
-    def get_next_token(self, current):
-        """Ask for the index of the next token in entries.
-
-        Return -1 if no next token can be found.
-
-        :param current (int) Current position to search for the next token
-        :returns: (int)
+        :param current (int) Current position to search for the next word
+        :returns: (int) Index of the next word or -1 if no next word can
+        be found.
 
         """
-        if current < 0:
-            raise IndexRangeException(current, 0, len(self.__entries))
-        if current >= len(self.__entries):
-            raise IndexRangeException(current, 0, len(self.__entries))
+        # check if current is a correct value
+        self.__get_entry(current)
 
+        # search for the next word after the current index
         c_next = current + 1
         while c_next < len(self.__entries):
             if self.is_word(c_next) is True:
@@ -310,10 +291,10 @@ class DataSpeaker(object):
 
         return -1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def is_token_repeated(self, current, other_current, other_speaker):
-        """Ask for a token to be repeated by the other speaker.
+    def is_word_repeated(self, current, other_current, other_speaker):
+        """Ask for a token to be a repeated word.
 
         :param current: (int) From index, in current speaker
         :param other_current: (int) From index, in the other speaker
@@ -321,25 +302,44 @@ class DataSpeaker(object):
         :returns: index of the echo or -1
 
         """
-        # Does the current entry is a token?
+        # Does the current entry is a word?
         if self.is_word(current) is False:
             return -1
 
-        # the token to search
-        __c1 = self.__entries[current]
+        # Search for this word in the other speaker data
+        word = self.__entries[current]
         while 0 <= other_current < len(other_speaker):
-            # the other token
-            __c2 = other_speaker.get_entry(other_current)
-            if __c1 == __c2:
+            other_token = other_speaker[other_current]
+            if word == other_token:
                 return other_current
-            # try next one
-            other_current = other_speaker.get_next_token(other_current)
+            # not found. try next one
+            other_current = other_speaker.get_next_word(other_current)
 
         return -1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def __get_entry(self, idx):
+        """Return the formatted "token" at the given index.
+
+        Raise exception if index is wrong.
+
+        :param idx: (int) Index of the entry to get
+        :returns: (str) unicode formatted entry
+
+        """
+        if idx < 0:
+            raise IndexRangeException(idx, 0, len(self.__entries))
+        if idx >= len(self.__entries):
+            raise IndexRangeException(idx, 0, len(self.__entries))
+
+        return self.__entries[idx]
+
+    # -----------------------------------------------------------------------
     # Overloads
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __str__(self):
         return " ".join([e for e in self.__entries])
@@ -349,7 +349,7 @@ class DataSpeaker(object):
             yield a
 
     def __getitem__(self, i):
-        return self.get_entry(i)
+        return self.__get_entry(i)
 
     def __len__(self):
         return len(self.__entries)

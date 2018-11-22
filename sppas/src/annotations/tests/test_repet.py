@@ -5,8 +5,7 @@ import unittest
 
 from sppas.src.config import paths
 
-from ..Repet.datastructs import DataRepetition, Entry, DataSpeaker
-from ..Repet.rules import Rules
+from ..Repet.datastructs import DataSpeaker
 from ..Repet.detectrepet import Repetitions
 from ..Repet.sppasrepet import sppasRepet
 
@@ -15,64 +14,21 @@ from ..Repet.sppasrepet import sppasRepet
 STOP_LIST = ["ah", "aller", "alors", "après", "avec", "avoir", "bon", "ce", "comme", "c'est", "dans", "de", "de+le", "dire", "donc", "eeh", "eh", "en", "en_fait", "et", "etc", "euh", "hein", "heu", "hum", "hm", "il", "le", "lui", "là", "mais", "meuh", "mh", "mhmh", "mmh", "moi", "mon", "ne", "non", "null", "on", "ou", "ouais", "oui", "où", "pas", "peu", "pf", "pff", "plus", "pour", "quand", "que", "qui", "quoi", "se", "si", "sur", "tout", "très", "un", "voilà", "voir", "y", "à", "ça", "être"]
 STOP_LIST_FRA = os.path.join(paths.resources, "vocab", "fra.stp")
 
-# ---------------------------------------------------------------------------
-
-
-class TestRules(unittest.TestCase):
-
-    def test_is_relevant(self):
-        # no list of stop words
-        r = Rules()
-        self.assertTrue(r.is_relevant_token("token"))
-        self.assertFalse(r.is_relevant_token("*"))
-        self.assertTrue(r.is_relevant_token("euh"))
-        # with a list of stop words
-        r = Rules(['euh'])
-        self.assertTrue(r.is_relevant_token("token"))
-        self.assertFalse(r.is_relevant_token("*"))
-        self.assertFalse(r.is_relevant_token("euh"))
-
-    def test_apply_rules_one_token(self):
-        # no list of stop words
-        r = Rules()
-        d = DataSpeaker(["tok1", "tok2", "tok1"])
-        self.assertTrue(r.apply_rules_one_token(0, d))
-        self.assertFalse(r.apply_rules_one_token(1, d))
-        r = Rules()
-        d = DataSpeaker(["tok1", "*", "tok1", "*"])
-        self.assertTrue(r.apply_rules_one_token(0, d))
-        self.assertFalse(r.apply_rules_one_token(1, d))
-
-        # with a list of stop words
-        r = Rules(['euh'])
-        d = DataSpeaker(["tok1", "euh", "tok1", "euh"])
-        self.assertTrue(r.apply_rules_one_token(0, d))
-        self.assertFalse(r.apply_rules_one_token(1, d))
-
-    def test_count_relevant_tokens(self):
-        r = Rules(['euh'])
-        d = DataSpeaker(["tok1", "euh", "tok1", "*"])
-        self.assertEqual(r.count_relevant_tokens(0, 3, d), 2)
-
-    def test_apply_rules_syntagme(self):
-        r = Rules(['euh'])
-        d = DataSpeaker(["tok1", "euh", "tok1", "*"])
-        self.assertTrue(r.apply_rules_syntagme(0, 3, d))
-
-    def test_apply_rules_strict(self):
-        r = Rules(['euh'])
-        d1 = DataSpeaker(["tok1", "tok2", "tok3", "euh", "ok"])
-        d2 = DataSpeaker(["bla", "tok1", "tok2"])
-        d3 = DataSpeaker(["bla", "tok1", "tok2", "tok3"])
-        d4 = DataSpeaker(["tok1", "euh", "tok2", "tok3"])
-        self.assertFalse(r.apply_rules_strict(0, 1, d1, d2))
-        self.assertFalse(r.apply_rules_strict(0, 2, d1, d2))
-        self.assertTrue(r.apply_rules_strict(0, 2, d1, d3))
-        self.assertFalse(r.apply_rules_strict(0, 2, d1, d4))
 
 # ---------------------------------------------------------------------------
 
-
+#
+# def test_rule_strict(self):
+#     r = OtherRules(['euh'])
+#     d1 = DataSpeaker(["tok1", "tok2", "tok3", "euh", "ok"])
+#     d2 = DataSpeaker(["bla", "tok1", "tok2"])
+#     d3 = DataSpeaker(["bla", "tok1", "tok2", "tok3"])
+#     d4 = DataSpeaker(["tok1", "euh", "tok2", "tok3"])
+#     self.assertFalse(r.apply_rules_strict(0, 1, d1, d2))
+#     self.assertFalse(r.apply_rules_strict(0, 2, d1, d2))
+#     self.assertTrue(r.apply_rules_strict(0, 2, d1, d3))
+#     self.assertFalse(r.apply_rules_strict(0, 2, d1, d4))
+#
 class TestRepetitions(unittest.TestCase):
 
     def test_longest(self):
@@ -142,7 +98,8 @@ class TestRepetitions(unittest.TestCase):
         self.assertTrue((3, 3) in r.get_echos())
         self.assertTrue((5, 5) in r.get_echos())
 
-        d = DataSpeaker(["sur", "la", "bouffe", "#", "après", "etc", "la", "etc", "#", "etc", "bouffe", "etc"])
+        d = DataSpeaker(["sur", "la", "bouffe", "#", "après", "etc", "la",
+                         "etc", "#", "etc", "bouffe", "etc"])
         r = Repetitions(STOP_LIST)
         r.detect(d, limit=3)
         self.assertEqual(r.get_source(), (1, 2))
@@ -151,7 +108,10 @@ class TestRepetitions(unittest.TestCase):
 
         r = Repetitions(STOP_LIST)
         s_AB = "le petit feu de artifice ouais ce être le tout petit truc là"
-        s_CM = "le feu # ah le petit machin de ouais ouais ouais ouais ouais d'accord ouais + ouais ouais ouais ouais + hum hum ouais hum hum @@ # ouais # ouais ouais ouais ouais + hum # ouais oui oui ce être pas le le ouais ah ouais ouais @@"
+        s_CM = "le feu # ah le petit machin de ouais ouais ouais ouais ouais " \
+               "d'accord ouais + ouais ouais ouais ouais + hum hum ouais hum " \
+               "hum @@ # ouais # ouais ouais ouais ouais + hum # ouais oui " \
+               "oui ce être pas le le ouais ah ouais ouais @@"
         d_AB = DataSpeaker(s_AB.split())
         d_CM = DataSpeaker(s_CM.split())
         r.detect(d_AB, 15, d_CM)
@@ -160,14 +120,16 @@ class TestRepetitions(unittest.TestCase):
         self.assertTrue((1, 1) in r.get_echos())  # feu
         self.assertTrue((7, 7) in r.get_echos())  # de
 
-        s_AB = "ils voulaient qu'on fasse un feu d'artifice en_fait dans un voy- un foyer un foyer catho un foyer de bonnes soeurs"
+        s_AB = "ils voulaient qu'on fasse un feu d'artifice en_fait dans un " \
+               "voy- un foyer un foyer catho un foyer de bonnes soeurs"
         s_CM = "un feu d'artifice # dans un foyer de bonnes soeurs"
         d_AB = DataSpeaker(s_AB.split())
         d_CM = DataSpeaker(s_CM.split())
         r.detect(d_AB, 10, d_CM)
         self.assertEqual(r.get_source(), (4, 6))
 
-        s_AB = "en_fait dans un voy- un foyer un foyer catho un foyer de bonnes soeurs"
+        s_AB = "en_fait dans un voy- un foyer un foyer catho un foyer " \
+               "de bonnes soeurs"
         s_CM = "un feu d'artifice # dans un foyer de bonnes soeurs"
         d_AB = DataSpeaker(s_AB.split())
         d_CM = DataSpeaker(s_CM.split())
