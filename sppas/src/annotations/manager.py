@@ -54,7 +54,7 @@ from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
 from sppas.src.annotations.TGA.sppastga import sppasTGA
-from sppas.src.annotations.Repet.sppasrepet import sppasRepet
+from sppas.src.annotations.SelfRepet.sppasrepet import sppasSelfRepet
 
 from .annotationsexc import AnnotationOptionError
 
@@ -68,7 +68,7 @@ class sppasAnnotationsManager(Thread):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     Process a directory full of files or a single file, and report on a
     progress.
@@ -925,7 +925,7 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def run_repetition(self, stepidx):
+    def run_self_repetition(self, stepidx):
         """
         Execute the automatic repetitions detection.
 
@@ -946,10 +946,10 @@ class sppasAnnotationsManager(Thread):
         # Create annotation instance
         try:
             self._progress.set_text("Loading resources...")
-            r = sppasRepet(step.get_langresource(), self._logfile)
+            r = sppasSelfRepet(step.get_langresource(), self._logfile)
         except Exception as e:
             if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1,status=4)
+                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
             return 0
 
         for i, f in enumerate(filelist):
@@ -958,7 +958,8 @@ class sppasAnnotationsManager(Thread):
             r.fix_options(step.get_options())
 
             # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+            self._progress.set_text(os.path.basename(f)+
+                                    " ("+str(i+1)+"/"+str(total)+")")
 
             # Get the input file
             ext = ['-palign'+self.parameters.get_output_format()]
@@ -969,23 +970,29 @@ class sppasAnnotationsManager(Thread):
             if inname is not None:
 
                 # Fix output file name
-                outname = os.path.splitext(f)[0] + '-ralign' + self.parameters.get_output_format()
+                outname = os.path.splitext(f)[0] + '-sralign' + \
+                          self.parameters.get_output_format()
 
                 # Execute annotation
                 try:
-                    r.run(inname, None, outname)
+                    r.run(inname, outname)
                     files_processed_success += 1
                     if self._logfile is not None:
-                        self._logfile.print_message(outname, indent=2, status=0)
+                        self._logfile.print_message(outname,
+                                                    indent=2, status=0)
                 except Exception as e:
                     if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
+                        self._logfile.print_message(
+                            "%s for file %s\n" % (str(e), outname),
+                            indent=2, status=-1)
 
             else:
                 self._logfile.print_message("File " + f, indent=1)
                 if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with time-aligned tokens. "
-                                                "Read the documentation for details.", indent=2, status=2)
+                    self._logfile.print_message(
+                        "Failed to find a file with time-aligned tokens/lemmas. "
+                        "Read the documentation for details.",
+                        indent=2, status=2)
 
             # Indicate progress
             self._progress.set_fraction(float((i+1))/float(total))
@@ -993,8 +1000,9 @@ class sppasAnnotationsManager(Thread):
                 self._logfile.print_newline()
 
         # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files)."
-                                 "\n" % (files_processed_success, total))
+        self._progress.update(
+            1, "Completed ({:d} files successfully over {:d} files)."
+               "\n".format(files_processed_success, total))
         self._progress.set_header("")
 
         return files_processed_success
@@ -1055,7 +1063,7 @@ class sppasAnnotationsManager(Thread):
             nbfiles += self.__add_trs(trs, basef + "-chunks" + output_format)   # ChunckAlign
             nbfiles += self.__add_trs(trs, basef + "-palign" + output_format)   # PhonAlign, TokensAlign
             nbfiles += self.__add_trs(trs, basef + "-salign" + output_format)   # SyllAlign
-            nbfiles += self.__add_trs(trs, basef + "-ralign" + output_format)   # Repetitions
+            nbfiles += self.__add_trs(trs, basef + "-sralign" + output_format)  # SelfRepetitions
             nbfiles += self.__add_trs(trs, basef + "-momel" + output_format)    # Momel
             nbfiles += self.__add_trs(trs, basef + "-intsint" + output_format)  # INTSINT
             nbfiles += self.__add_trs(trs, basef + "-tga" + output_format)      # TGA
@@ -1144,11 +1152,12 @@ class sppasAnnotationsManager(Thread):
                     nbruns[i] = self.run_syllabification(i)
                 elif self.parameters.get_step_key(i) == "tga":
                     nbruns[i] = self.run_tga(i)
-                elif self.parameters.get_step_key(i) == "repet":
-                    nbruns[i] = self.run_repetition(i)
+                elif self.parameters.get_step_key(i) == "selfrepet":
+                    nbruns[i] = self.run_self_repetition(i)
                 elif self._logfile is not None:
-                    self._logfile.print_message('Unrecognized annotation step:'
-                                                '%s' % self.parameters.get_step_name(i))
+                    self._logfile.print_message(
+                        'Unrecognized annotation step:'
+                        '{:s}'.format(self.parameters.get_step_name(i)))
 
         if self._logfile is not None:
             self._logfile.print_separator()

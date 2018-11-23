@@ -89,14 +89,14 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         # List of options to configure this automatic annotation
         self._options = dict()
-        self._options['lemmas'] = True
-        self._options['stopwords'] = True
-        self._options['span'] = 5
-        self._options['alpha'] = 0.5
+        self._options['lemmas'] = False    # is better but not produced by SPPAS
+        self._options['span'] = 3          # never tested if it's appropriate
+        self._options['stopwords'] = True  # is better
+        self._options['alpha'] = 0.5       # validated for OR's
 
-        self.__stop_filename = resource_file
         self.__stop_words = sppasVocabulary()
-        self.set_use_stopwords(True)
+        if resource_file is not None:
+            self.load_stop_words(resource_file)
 
     # -----------------------------------------------------------------------
 
@@ -113,10 +113,10 @@ class sppasSelfRepet(sppasBaseAnnotation):
             if "stopwords" == key:
                 self.set_use_stopwords(opt.get_value())
 
-            elif "lemmatize" == key:
+            elif "lemmas" == key:
                 self.set_use_lemmatize(opt.get_value())
 
-            elif "empan" == key:
+            elif "span" == key:
                 self.set_span(opt.get_value())
 
             elif "alpha" == key:
@@ -124,6 +124,28 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
             else:
                 raise AnnotationOptionError(key)
+
+    # -----------------------------------------------------------------------
+
+    def load_stop_words(self, filename):
+        """Load or re-load a list of stop-words from a file.
+
+        Erase the existing list...
+
+        :param filename: (str) File with 1 column.
+
+        """
+        self.__stop_words = sppasVocabulary()
+
+        try:
+            self.__stop_words.load_from_ascii(filename)
+            self.print_message("The initial list contains {:d} stop-words"
+                               "".format(len(self.__stop_words)),
+                               indent=2, status=3)
+        except Exception as e:
+            self.__stop_words = sppasVocabulary()
+            self.print_message("No stop-words loaded: {:s}"
+                               "".format(str(e)), indent=2, status=1)
 
     # -----------------------------------------------------------------------
     # Getters and Setters
@@ -152,21 +174,6 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         """
         self._options['stopwords'] = bool(use_stopwords)
-
-        # Load the list of stop words from a file
-        if self._options['stopwords'] is True:
-            try:
-                self.__stop_filename.load_from_ascii(self.__stop_filename)
-                self.print_message("The initial list contains {:d} stop-words"
-                                   "".format(len(self.__stop_words)),
-                                   indent=2, status=3)
-            except Exception as e:
-                self._options['stopwords'] = False
-                self.print_message("No stop-words loaded: {:s}"
-                                   "".format(str(e)), indent=2, status=1)
-
-        if self._options['stopwords'] is False:
-            self.__stop_words = sppasVocabulary()
 
     # -----------------------------------------------------------------------
 
@@ -315,7 +322,7 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
             # Detect the first self-repetition in these data
             limit = tok_search - tok_start
-            repetition.detect(speaker, limit, None)
+            repetition.detect(speaker, limit)
 
             # Save the repetition (if any)
             shift = 1

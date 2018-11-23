@@ -35,13 +35,28 @@
 """
 import unittest
 import os
-import shutil
-import codecs
+
+from sppas import paths
 
 from ..SelfRepet.datastructs import DataRepetition
 from ..SelfRepet.datastructs import Entry
 from ..SelfRepet.datastructs import DataSpeaker
 from ..SelfRepet.rules import SelfRules
+from ..SelfRepet.detectrepet import SelfRepetition
+from ..SelfRepet.sppasrepet import sppasSelfRepet
+
+# ---------------------------------------------------------------------------
+
+STOP_LIST = ["ah", "aller", "alors", "après", "avec", "avoir", "bon", "ce",
+             "comme", "c'est", "dans", "de", "de+le", "dire", "donc", "eeh",
+             "eh", "en", "en_fait", "et", "etc", "euh", "hein", "heu", "hum",
+             "hm", "il", "le", "lui", "là", "mais", "meuh", "mh", "mhmh",
+             "mmh", "moi", "mon", "ne", "non", "null", "on", "ou", "ouais",
+             "oui", "où", "pas", "peu", "pf", "pff", "plus", "pour", "quand",
+             "que", "qui", "quoi", "se", "si", "sur", "tout", "très", "un",
+             "voilà", "voir", "y", "à", "ça", "être"]
+
+STOP_LIST_FRA = os.path.join(paths.resources, "vocab", "fra.stp")
 
 # ---------------------------------------------------------------------------
 
@@ -227,3 +242,89 @@ class TestSelfRules(unittest.TestCase):
         r = SelfRules(['euh'])
         d = DataSpeaker(["tok1", "euh", "tok1", "*"])
         self.assertTrue(r.rule_syntagme(0, 3, d))
+
+# ---------------------------------------------------------------------------
+
+
+class TestSelfRepetition(unittest.TestCase):
+
+    def test_longest(self):
+        r = SelfRepetition(['euh'])
+        d1 = DataSpeaker(["tok1", "tok2", "tok1"])
+        self.assertEqual(r.get_longest(0, d1), 0)   # tok1 is repeated
+        self.assertEqual(r.get_longest(1, d1), -1)  # tok2 is not repeated
+        d1 = DataSpeaker(["tok1", "tok2", "tok2"])
+        self.assertEqual(r.get_longest(0, d1), -1)  # tok1 is repeated
+        self.assertEqual(r.get_longest(1, d1), 1)   # tok2 is repeated
+        d1 = DataSpeaker(["tok1", "tok2", "tok2", "tok2", "euh", "tok1", "euh"])
+        self.assertEqual(r.get_longest(0, d1), 2)   # tok1 & tok2 & tok2 are repeated
+        self.assertEqual(r.get_longest(1, d1), 2)   # tok2 & tok2 are repeated
+        self.assertEqual(r.get_longest(2, d1), 2)   # tok2 is repeated
+        self.assertEqual(r.get_longest(3, d1), -1)  # tok2 is not repeated
+        self.assertEqual(r.get_longest(4, d1), 4)   # euh is repeated
+        self.assertEqual(r.get_longest(5, d1), -1)  # tok1 is not repeated
+        d1 = DataSpeaker(["tok1", "*", "tok2", "tok1"])
+        self.assertEqual(r.get_longest(0, d1), 0)   # tok1 is repeated
+
+    def test_select(self):
+        r = SelfRepetition(['euh'])
+        d1 = DataSpeaker(["tok1", "tok2", "tok1"])
+        self.assertIsNone(r.get_source())
+        self.assertEqual(r.select(0, 0, d1), 1)  # tok1 is stored
+        self.assertEqual(r.get_source(), (0, 0))
+
+        r = SelfRepetition(['euh'])
+        d1 = DataSpeaker(["tok1", "tok2", "tok2", "tok2", "euh", "tok1", "euh"])
+        n = r.get_longest(0, d1)  # n=2
+        self.assertEqual(r.select(0, n, d1), 3)   # "tok1 tok2 tok2" is a source
+        self.assertEqual(r.get_source(), (0, 2))
+        n = r.get_longest(4, d1)  # n=4
+        self.assertEqual(r.select(4, n, d1), 5)   # "euh" is not accepted as source
+        self.assertEqual(r.get_source(), (0, 2))
+
+        r = SelfRepetition(['euh'])
+        d1 = DataSpeaker(["tok1", "euh", "euh", "euh", "tok2", "euh", "*", "tok1"])
+        n = r.get_longest(0, d1)  # n=3
+        self.assertEqual(r.select(0, n, d1), 4)  # "tok1 euh euh euh" is a source
+        self.assertEqual(r.get_source(), (0, 3))
+
+        r = SelfRepetition(['euh'])
+        d1 = DataSpeaker(["tok1", "euh", "euh", "euh", "tok2", "euh"])
+        n = r.get_longest(1, d1)  # n=3
+        self.assertEqual(r.select(1, n, d1), 4)  # "euh euh euh" is not accepted as source
+        self.assertIsNone(r.get_source())
+
+    def test_find_echos(self):
+        pass
+        # TODO
+
+    def test_detect_sr(self):
+        d = DataSpeaker(["tok1", "tok2", "tok2", "tok2", "euh", "tok1", "euh"])
+        r = SelfRepetition(['euh'])
+        r.detect(d)
+        self.assertEqual(r.get_source(), (0, 2))
+        self.assertEqual(len(r.get_echos()), 2)
+        self.assertTrue((3, 3) in r.get_echos())
+        self.assertTrue((5, 5) in r.get_echos())
+
+        d = DataSpeaker(["sur", "la", "bouffe", "#", "après", "etc", "la",
+                         "etc", "#", "etc", "bouffe", "etc"])
+        r = SelfRepetition(STOP_LIST)
+        r.detect(d, limit=3)
+        self.assertEqual(r.get_source(), (1, 2))
+
+# ---------------------------------------------------------------------------
+
+
+class TestsppasSelfRepet(unittest.TestCase):
+
+    def test_set_options(self):
+        s = sppasSelfRepet()
+        with self.assertRaises(IndexError):
+            s.set_span(0)
+        with self.assertRaises(IndexError):
+            s.set_span(30)
+        with self.assertRaises(IndexError):
+            s.set_alpha(-2)
+        with self.assertRaises(IndexError):
+            s.set_alpha(10)
