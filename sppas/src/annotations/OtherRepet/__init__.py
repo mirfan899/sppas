@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -28,9 +29,28 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Repet.repetexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.OtherRepet
+    ~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Exceptions for the automatic annotation: Repet.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      develop@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+Reference:
+
+    Brigitte Bigi, Roxane Bertrand, Mathilde Guardiola (2014).
+    Automatic detection of other-repetition occurrences:
+    application to French conversational speech,
+    9th International conference on Language Resources and
+    Evaluation (LREC), Reykjavik (Iceland), pp. 2648-2652.
+    ISBN: 978-2-9517408-8-4.
 
 """
+from .rules import OtherRules
+
+__all__ = (
+    "OtherRules",
+)
+

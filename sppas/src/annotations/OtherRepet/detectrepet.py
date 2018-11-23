@@ -28,49 +28,47 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Repet.detectrepet.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.annotations.OtherRepet.detectrepet.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .datastructs import DataRepetition
-from .rules import Rules
+from ..SelfRepet.datastructs import DataRepetition
+from .rules import OtherRules
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class Repetitions(DataRepetition):
-    """
+class OtherRepetition(DataRepetition):
+    """Other-Repetition automatic detection.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Repetition automatic detection.
-    
-    DETECT THE SOURCE, then find where are the echos.
+
+    Search for the sources, then find where are the echos.
 
     """
     def __init__(self, stop_list=None):
         """Create a new Repetitions instance.
 
-        :param stop_list: (Vocabulary) List of un-relevant tokens.
+        :param stop_list: (sppasVocabulary) List of un-relevant tokens.
 
         """
-        super(Repetitions, self).__init__()
-        self.__rules = Rules(stop_list)
+        super(OtherRepetition, self).__init__()
+        self.__rules = OtherRules(stop_list)
 
     # -----------------------------------------------------------------------
     # Detect sources
     # -----------------------------------------------------------------------
 
-    def detect(self, speaker1, limit=10, speaker2=None):
-        """Detect repetitions in tokens.
-        Detect self-repetitions if speaker2 is None and other-repetitions if
-        speaker2 is set.
+    def detect(self, speaker1, speaker2, limit=10):
+        """Search for the first other-repetition in tokens.
 
         :param speaker1: (DataSpeaker) Entries of speaker 1
-        :param limit: (int) Go no longer than 'limit' entries of speaker 1 to find repetitions
-        :param speaker2: (DataSpeaker) Entries of speaker 2 (or None for self-repetitions).
+        :param speaker2: (DataSpeaker) Entries of speaker 2
+        :param limit: (int) Go no longer than 'limit' entries of speaker 1
 
         """
         self.reset()
@@ -78,32 +76,23 @@ class Repetitions(DataRepetition):
         current_spk1 = 0
         next_spk1 = self.get_longest(current_spk1, speaker1, speaker2)
 
-        while current_spk1 < len(speaker1) and current_spk1 < limit and self.get_source() is None:
+        while current_spk1 < len(speaker1) and current_spk1 < limit and \
+                self.get_source() is None:
 
-            # No source detected
             if next_spk1 == -1:
                 current_spk1 += 1
-
-            # A source is detected
             else:
+                current_spk1 = self.select(current_spk1, next_spk1,
+                                           speaker1, speaker2)
 
-                if speaker2 is None:
-                    current_spk1 = self.select_self_repetition(current_spk1, next_spk1, speaker1)
-                else:
-                    current_spk1 = self.select_other_repetition(current_spk1, next_spk1, speaker1, speaker2)
+            next_spk1 = OtherRepetition.get_longest(current_spk1,
+                                                    speaker1, speaker2)
 
-            # in all cases:
-            next_spk1 = self.get_longest(current_spk1, speaker1, speaker2)
+    # -----------------------------------------------------------------------
 
-    # ------------------------------------------------------------------
-
-    def get_longest(self, current1, speaker1, speaker2=None):
-        """Return the index of the last token of the longest repeated
-        string, or -1.
-
-        For self-repetitions, current2 must be None, speaker2 is ignored.
-        For other-repetitions, speaker1 is the source and speaker2 is
-        the echo. Both current2 and speaker2 must be fixed.
+    @staticmethod
+    def get_longest(current1, speaker1, speaker2):
+        """Return the index of the last token of the longest repeated string.
 
         :param current1: (int) Current index in entries of speaker 1
         :param speaker1: (DataSpeaker) Entries of speaker 1
@@ -115,56 +104,21 @@ class Repetitions(DataRepetition):
         # Get the longest string
         for t in range(current1, len(speaker1)):
 
-            # for self repetition or other-repetition:
-            if speaker2 is None:
-                param2 = speaker1.get_next_token(t)
-                spk = speaker1
-            else:
-                param2 = 0
-                spk = speaker2
+            param2 = 0
+            spk = speaker2
 
             # search
-            repet_idx = speaker1.is_token_repeated(t, param2, spk)
+            repet_idx = speaker1.is_word_repeated(t, param2, spk)
             if repet_idx > -1:
-                if speaker2 is None and repet_idx == t:
-                    return t
                 last_token = t
             else:
                 break
 
         return last_token
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def select_self_repetition(self, start, end, speaker1):
-        """Append (or not) a self-repetition.
-
-        :param start: (int) start index of the entry of the source (speaker1)
-        :param end: (int) end index of the entry of the source (speaker1)
-        :param speaker1: (DataSpeaker) Entries of speaker 1
-
-        """
-        source_len = end - start
-
-        if source_len == 0:
-            keep_me = self.__rules.apply_rules_one_token(start, speaker1)
-            if keep_me is True:
-                self.set_source(start, start)
-                self.find_echos(start, start, speaker1)
-            current = start + 1
-
-        else:
-            keep_me = self.__rules.apply_rules_syntagme(start, end, speaker1)
-            if keep_me is True:
-                self.set_source(start, end)
-                self.find_echos(start, end, speaker1)
-            current = end + 1
-
-        return current
-
-    # ------------------------------------------------------------------
-
-    def select_other_repetition(self, start, end, speaker1, speaker2):
+    def select(self, start, end, speaker1, speaker2):
         """Append (or not) an other-repetition.
 
         :param start: (int) start index of the entry of the source (speaker1)
@@ -174,10 +128,10 @@ class Repetitions(DataRepetition):
 
         """
         # Rule 1: keep any repetition containing at least 1 relevant token
-        keep_me = self.__rules.apply_rules_syntagme(start, end, speaker1)
+        keep_me = self.__rules.rule_syntagme(start, end, speaker1)
         if keep_me is False:
             # Rule 2: keep any repetition if N>2 AND strict echo
-            keep_me = self.__rules.apply_rules_strict(start, end, speaker1, speaker2)
+            keep_me = self.__rules.rule_strict(start, end, speaker1, speaker2)
 
         if keep_me is True:
             self.set_source(start, end)
@@ -186,11 +140,11 @@ class Repetitions(DataRepetition):
 
         return start + 1
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Search for echos (for a given source)
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def find_echos(self, start, end, speaker1, speaker2=None):
+    def find_echos(self, start, end, speaker1, speaker2):
         """Find all echos of a source.
         
         :param start: (int) start index of the entry of the source (speaker1)
@@ -207,17 +161,11 @@ class Repetitions(DataRepetition):
         i = start
         while i <= end:
             repeats.append(list())
-            if speaker2 is None:
-                idx2 = speaker1.is_token_repeated(i, end+1, speaker1)
-            else:
-                idx2 = speaker1.is_token_repeated(i, 0, speaker2)
+            idx2 = speaker1.is_word_repeated(i, 0, speaker2)
 
             while idx2 != -1:
                 repeats[ridx].append(idx2)
-                if speaker2 is None:
-                    idx2 = speaker1.is_token_repeated(i, idx2+1, speaker1)
-                else:
-                    idx2 = speaker1.is_token_repeated(i, idx2+1, speaker2)
+                idx2 = speaker1.is_word_repeated(i, idx2+1, speaker2)
             i += 1
             ridx += 1
 
@@ -227,11 +175,11 @@ class Repetitions(DataRepetition):
         else:
             i = 0
             while i < len(repeats):
-                repeated = Repetitions.__get_longest_repeated(i, repeats)
+                repeated = OtherRepetition.__get_longest_repeated(i, repeats)
                 self.add_echo(repeated[0], repeated[-1])
                 i += len(repeated)
 
-    # ------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def __get_longest_repeated(start, repeats):

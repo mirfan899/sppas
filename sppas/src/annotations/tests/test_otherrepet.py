@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -29,24 +29,28 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.SelfRepet
-    ~~~~~~~~~~~~~~~~~~~~~~~~
-
-:author:       Brigitte Bigi
-:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-:contact:      develop@sppas.org
-:license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    src.annotations.tests.test_otherrepet.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .rules import SelfRules
-from .datastructs import DataSpeaker
-from .detectrepet import SelfRepetition
-from .sppasrepet import sppasSelfRepet
+import unittest
 
-__all__ = (
-    "DataSpeaker",
-    "SelfRules",
-    "SelfRepetition",
-    "sppasSelfRepet"
-)
+from ..SelfRepet.datastructs import DataSpeaker
+from ..OtherRepet.rules import OtherRules
+
+# ---------------------------------------------------------------------------
+
+
+class TestOtherRules(unittest.TestCase):
+
+    def test_rule_strict(self):
+        r = OtherRules(['euh'])
+        d1 = DataSpeaker(["tok1", "tok2", "tok3", "euh", "ok"])
+        d2 = DataSpeaker(["bla", "tok1", "tok2"])
+        d3 = DataSpeaker(["bla", "tok1", "tok2", "tok3"])
+        d4 = DataSpeaker(["tok1", "euh", "tok2", "tok3"])
+        self.assertFalse(r.rule_strict(0, 1, d1, d2))
+        self.assertFalse(r.rule_strict(0, 2, d1, d2))
+        self.assertTrue(r.rule_strict(0, 2, d1, d3))
+        self.assertFalse(r.rule_strict(0, 2, d1, d4))
+

@@ -40,7 +40,7 @@ from sppas.src.utils.makeunicode import sppasUnicode
 # ----------------------------------------------------------------------------
 
 
-class Rules(object):
+class SyllRules(object):
     """Manager of a set of rules for syllabification.
 
     :author:       Brigitte Bigi
@@ -63,7 +63,7 @@ class Rules(object):
     # -----------------------------------------------------------------------
 
     def __init__(self, filename=None):
-        """Create a new Rules instance.
+        """Create a new SyllRules instance.
 
         :param filename: (str) Name of the file with the rules.
 
@@ -95,7 +95,7 @@ class Rules(object):
 
         self.phonclass = dict()  # list of tuple (phoneme, class)
         for phone in symbols.all:
-            self.phonclass[phone] = Rules.BREAK_SYMBOL
+            self.phonclass[phone] = SyllRules.BREAK_SYMBOL
 
     # ------------------------------------------------------------------------
 
@@ -142,7 +142,7 @@ class Rules(object):
         :returns: class of the phoneme or break symbol
 
         """
-        return self.phonclass.get(phoneme, Rules.BREAK_SYMBOL)
+        return self.phonclass.get(phoneme, SyllRules.BREAK_SYMBOL)
 
     # ------------------------------------------------------------------------
 

@@ -34,7 +34,7 @@
 
 """
 from sppas.src.config import separators
-from .rules import Rules
+from .rules import SyllRules
 
 # ----------------------------------------------------------------------------
 
@@ -59,7 +59,7 @@ class Syllabifier(object):
         :param rules_filename: (str) Name of the file with the list of rules.
 
         """
-        self.rules = Rules(rules_filename)
+        self.rules = SyllRules(rules_filename)
 
     # -----------------------------------------------------------------------
 
@@ -188,7 +188,7 @@ class Syllabifier(object):
         for i in reversed(range(end_previous, nucleus)):
             if i == -1:
                 return 0
-            if classes[i] in ("V", "W", Rules.BREAK_SYMBOL):
+            if classes[i] in ("V", "W", SyllRules.BREAK_SYMBOL):
                 return i+1
 
         # no break nor vowel between the end of the previous syllable
@@ -228,7 +228,7 @@ class Syllabifier(object):
 
         """
         for i in range(from_index, len(classes)):
-            if classes[i] == Rules.BREAK_SYMBOL:
+            if classes[i] == SyllRules.BREAK_SYMBOL:
                 return i
         return -1
 

@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.SelfRepet.sppasrepet.py
+    src.annotations.OtherRepet.sppasrepet.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -49,8 +49,9 @@ from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyOutputError
 
-from .detectrepet import SelfRepetition
-from .datastructs import DataSpeaker
+from ..SelfRepet.datastructs import DataSpeaker
+
+from .detectrepet import OtherRepetition
 
 # ---------------------------------------------------------------------------
 
@@ -59,8 +60,8 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 # ---------------------------------------------------------------------------
 
 
-class sppasSelfRepet(sppasBaseAnnotation):
-    """SPPAS Automatic Self-Repetition Detection.
+class sppasOtherRepet(sppasBaseAnnotation):
+    """SPPAS Automatic Other-Repetition Detection.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -68,31 +69,31 @@ class sppasSelfRepet(sppasBaseAnnotation):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Detect self-repetitions. The result has never been validated by an expert.
-    This annotation is performed on the basis of time-aligned tokens or lemmas.
-    The output is made of 2 tiers with sources and echos.
+    Detect automatically other-repetitions. Result must be re-filtered by an
+    expert. This annotation is performed on the basis of time-aligned tokens
+    or lemmas. The output is made of 2 tiers with sources and echos.
 
     """
 
-    MAX_SPAN = 8
+    MAX_SPAN = 12
     MAX_ALPHA = 4.
 
     # -----------------------------------------------------------------------
 
     def __init__(self, resource_file=None, logfile=None):
-        """Create a new sppasRepetition instance.
+        """Create a new sppasOtherRepet instance.
 
         :param resource_file: (str) File with the list of stop-words.
 
         """
-        super(sppasSelfRepet, self).__init__(logfile, "SelfRepetitions")
+        super(sppasOtherRepet, self).__init__(logfile, "OtherRepetitions")
 
         # List of options to configure this automatic annotation
         self._options = dict()
         self._options['lemmas'] = False    # is better but not produced by SPPAS
-        self._options['span'] = 3          # never tested if it's appropriate
-        self._options['stopwords'] = True  # is better
-        self._options['alpha'] = 0.5       # validated for OR's
+        self._options['span'] = 5          # never tested if it's appropriate
+        self._options['stopwords'] = True  #
+        self._options['alpha'] = 0.5       #
 
         self.__stop_words = sppasVocabulary()
         if resource_file is not None:
@@ -167,7 +168,7 @@ class sppasSelfRepet(sppasBaseAnnotation):
     def set_use_stopwords(self, use_stopwords):
         """Fix the use_stopwords option.
 
-        If use_stopwords is set to True, sppasRepetition() will add specific
+        If use_stopwords is set to True, sppasOtherRepet() will add specific
         stopwords to the stopwords list (deducted from the input text).
 
         :param use_stopwords: (bool)
@@ -187,10 +188,10 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         """
         span = int(span)
-        if 0 < span <= sppasSelfRepet.MAX_SPAN:
+        if 0 < span <= sppasOtherRepet.MAX_SPAN:
             self._options['span'] = span
         else:
-            raise IndexRangeException(span, 0, sppasSelfRepet.MAX_SPAN)
+            raise IndexRangeException(span, 0, sppasOtherRepet.MAX_SPAN)
 
     # -----------------------------------------------------------------------
 
@@ -203,10 +204,10 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         """
         alpha = float(alpha)
-        if 0. < alpha < sppasSelfRepet.MAX_ALPHA:
+        if 0. < alpha < sppasOtherRepet.MAX_ALPHA:
             self._options['alpha'] = alpha
         else:
-            raise IndexRangeException(alpha, 0, sppasSelfRepet.MAX_ALPHA)
+            raise IndexRangeException(alpha, 0, sppasOtherRepet.MAX_ALPHA)
 
     # -----------------------------------------------------------------------
 
@@ -262,79 +263,80 @@ class sppasSelfRepet(sppasBaseAnnotation):
     # Automatic Detection search
     # -----------------------------------------------------------------------
 
-    @staticmethod
-    def __find_next_break(tier, start, span):
-        """Return the index of the next interval representing a break.
+    def other_detection(self, inputtier1, inputtier2):
+        """Other-Repetition detection.
 
-        It depends on the 'span' value.
-
-        :param tier: (sppasTier)
-        :param start: (int) the position of the token where the search will start
-        :param span: (int)
-        :returns: (int) index of the next interval corresponding to the span
+        :param inputtier1: (Tier)
+        :param inputtier2: (Tier)
 
         """
-        nb_breaks = 0
-        for i in range(start, len(tier)):
-            if tier[i].serialize_labels() == SIL_ORTHO:
-                nb_breaks += 1
-                if nb_breaks == span:
-                    return i
-        return len(tier) - 1
-
-    # -----------------------------------------------------------------------
-
-    def __fix_indexes(self, tier, tok_start, shift):
-        tok_start += shift
-        tok_search = sppasSelfRepet.__find_next_break(
-            tier, tok_start + 1, span=1)
-        tok_end = sppasSelfRepet.__find_next_break(
-            tier, tok_start + 1, span=self._options['span'])
-
-        return tok_start, tok_search, tok_end
-
-    # -----------------------------------------------------------------------
-
-    def self_detection(self, tier):
-        """Self-Repetition detection.
-
-        :param tier: (sppasTier)
-
-        """
-        # Use the appropriate stop-list
-        stop_words = self.fix_stop_list(tier)
-        # Create a data structure to detect and store a source/echos
-        repetition = SelfRepetition(stop_words)
+        inputtier1.set_radius(0.04)
+        inputtier2.set_radius(0.04)
+        # Use the appropriate stop-list: add un-relevant tokens of the echoing speaker
+        stop_words = self.fix_stop_list(inputtier2)
+        # Create repeat objects
+        repetition = OtherRepetition(stop_words)
         # Create output data
-        src_tier = sppasTier("SR-Source")
-        echo_tier = sppasTier("SR-Echo")
+        src_tier = sppasTier("OR-Source")
+        echo_tier = sppasTier("OR-Echo")
 
-        # Initialization of the indexes to work with tokens
-        tok_start, tok_search, tok_end = self.__fix_indexes(tier, 0, 0)
+        # Initialization of tok_start, and tok_end
+        tok_start_src = 0
+        tok_end_src = min(20, len(inputtier1)-1)  # 20 is the max nb of tokens in a src
+        tok_start_echo = 0
 
+        tokens2 = list()
+        speaker2 = DataSpeaker(tokens2)
         # Detection is here:
-        while tok_start < tok_end:
+        # detect() is applied work by word, from tok_start to tok_end
+        while tok_start_src < tok_end_src:
 
             # Build an array with the tokens
-            tokens = [tier[i].serialize_labels()
-                      for i in range(tok_start, tok_end+1)]
-            speaker = DataSpeaker(tokens)
+            print(tok_start_src)
+            print(tok_end_src)
+            tokens1 = [inputtier1[i].serialize_labels()
+                       for i in range(tok_start_src, tok_end_src+1)]
+            speaker1 = DataSpeaker(tokens1)
 
-            # Detect the first self-repetition in these data
-            limit = tok_search - tok_start
-            repetition.detect(speaker, limit)
+            # Create speaker2
+            # re-create only if different of the previous step...
+            src_begin = inputtier1[tok_start_src].get_lowest_localization().get_midpoint()
+            echo_begin = inputtier2[tok_start_echo].get_lowest_localization().get_midpoint()
+            if len(tokens2) == 0 or echo_begin < src_begin:
+                tokens2 = list()
+                nb_breaks = 0
+                old_tok_start_echo = tok_start_echo
 
-            # Save the repetition (if any)
+                for i in range(old_tok_start_echo, len(inputtier2)):
+                    ann = inputtier2[i]
+                    label = ann.serialize_labels()
+                    if ann.get_lowest_localization().get_midpoint() >= src_begin:
+                        if tok_start_echo == old_tok_start_echo:
+                            tok_start_echo = i
+                        if label == SIL_ORTHO:
+                            nb_breaks += 1
+                        if nb_breaks == self._options['span']:
+                            break
+                        tokens2.append(label)
+                speaker2 = DataSpeaker(tokens2)
+
+            # We can't go too further due to the required time-alignment of
+            # tokens between src/echo
+            # Check only if the first token is the first token of a source!!
+            repetition.detect(speaker1, speaker2, 1)
+
+            # Save repeats
             shift = 1
             if repetition.get_source() is not None:
-                sppasSelfRepet.__add_repetition(repetition, tier, tok_start,
-                                                src_tier, echo_tier)
-                (src_start, src_end) = repetition.get_source()
-                shift = src_end + 1
+                s, e = repetition.get_source()
+                saved = sppasOtherRepet.__add_repetition(
+                    repetition, inputtier1, inputtier2, tok_start_src,
+                    tok_start_echo, src_tier, echo_tier)
+                if saved is True:
+                    shift = e + 1
 
-            # Fix indexes for the next search
-            tok_start, tok_search, tok_end = self.__fix_indexes(
-                tier, tok_start, shift)
+            tok_start_src = min(tok_start_src + shift, len(inputtier1)-1)
+            tok_end_src = min(tok_start_src + 20, len(inputtier1)-1)
 
         return src_tier, echo_tier
 
@@ -342,32 +344,45 @@ class sppasSelfRepet(sppasBaseAnnotation):
     # Run
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
+    def run(self, input_filename1, input_filename2, output_filename=None):
         """Run the Repetition Automatic Detection annotation.
 
-        :param input_filename: (str) File with time-aligned tokens or lemmas
+        :param input_filename1: (str) File with time-aligned tokens or lemmas
+        :param input_filename2: (str) File with time-aligned tokens or lemmas
         :param output_filename:(str) Name of the file to save the result
 
         """
-        self.print_filename(input_filename)
+        self.print_filename(input_filename1)
+        self.print_filename(input_filename2)
         self.print_options()
-        self.print_diagnosis(input_filename)
+        self.print_diagnosis(input_filename1)
+        self.print_diagnosis(input_filename2)
 
         # Get the tier to be used
-        parser = sppasRW(input_filename)
-        trs_input = parser.read()
+        parser = sppasRW(input_filename1)
+        trs_input1 = parser.read()
 
         if self._options['lemmas'] is True:
-            tier_input = sppasFindTier.aligned_lemmas(trs_input)
+            tier_input1 = sppasFindTier.aligned_lemmas(trs_input1)
         else:
-            tier_input = sppasFindTier.aligned_tokens(trs_input)
+            tier_input1 = sppasFindTier.aligned_tokens(trs_input1)
+
+        # Get the tier to be used
+        parser = sppasRW(input_filename2)
+        trs_input2 = parser.read()
+
+        if self._options['lemmas'] is True:
+            tier_input2 = sppasFindTier.aligned_lemmas(trs_input2)
+        else:
+            tier_input2 = sppasFindTier.aligned_tokens(trs_input2)
 
         # Repetition Automatic Detection
-        (src_tier, echo_tier) = self.self_detection(tier_input)
+        (src_tier, echo_tier) = self.other_detection(tier_input1, tier_input2)
 
         # Create the transcription result
-        trs_output = sppasTranscription("SelfRepetition")
-        trs_output.set_meta('self_repetition_result_of', input_filename)
+        trs_output = sppasTranscription("OtherRepetition")
+        trs_output.set_meta('other_repetition_result_of_src', input_filename1)
+        trs_output.set_meta('other_repetition_result_of_echo', input_filename2)
         trs_output.append(src_tier)
         trs_output.append(echo_tier)
 
@@ -385,23 +400,26 @@ class sppasSelfRepet(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __add_repetition(repetition, spk_tier, start_idx, src_tier, echo_tier):
+    def __add_repetition(repetition, spk1_tier, spk2_tier, start_idx1, start_idx2, src_tier, echo_tier):
         """Add a repetition - source and echos - in tiers.
 
         :param repetition: (DataRepetition)
-        :param spk_tier: (sppasTier) The tier of the speaker (to detect sources)
-        :param start_idx: (int) start index of the interval in spk_tier
-        :param src_tier: (sppasTier) The resulting tier with sources
-        :param echo_tier: (sppasTier) The resulting tier with echos
+        :param spk1_tier: (Tier) The tier of speaker 1 (to detect sources)
+        :param spk2_tier: (Tier) The tier of speaker 2 (to detect echos)
+        :param start_idx1: start index of the interval in spk1_tier
+        :param start_idx2: start index of the interval in spk2_tier
+        :param src_tier: (Tier) The resulting tier with sources
+        :param echo_tier: (Tier) The resulting tier with echos
         :returns: (bool) the repetition was added or not
+
 
         """
         index = len(src_tier)
 
         # Source
         s, e = repetition.get_source()
-        src_begin = spk_tier[start_idx + s].get_lowest_localization()
-        src_end = spk_tier[start_idx + e].get_highest_localization()
+        src_begin = spk1_tier[start_idx1 + s].get_lowest_localization()
+        src_end = spk1_tier[start_idx1 + e].get_highest_localization()
         time = sppasInterval(src_begin.copy(), src_end.copy())
         try:
             a = src_tier.create_annotation(
@@ -413,12 +431,12 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         # Echos
         for (s, e) in repetition.get_echos():
-            rep_begin = spk_tier[start_idx + s].get_lowest_localization()
-            rep_end = spk_tier[start_idx + e].get_highest_localization()
+            rep_begin = spk2_tier[start_idx2 + s].get_lowest_localization()
+            rep_end = spk2_tier[start_idx2 + e].get_highest_localization()
             time = sppasInterval(rep_begin.copy(), rep_end.copy())
             a = echo_tier.create_annotation(
                 sppasLocation(time),
                 sppasLabel(sppasTag("R" + str(index + 1))))
-            a.set_meta('is_self_repetition_of', src_id)
+            a.set_meta('is_other_repetition_of', src_id)
 
         return True

@@ -18,16 +18,7 @@ STOP_LIST_FRA = os.path.join(paths.resources, "vocab", "fra.stp")
 # ---------------------------------------------------------------------------
 
 #
-# def test_rule_strict(self):
-#     r = OtherRules(['euh'])
-#     d1 = DataSpeaker(["tok1", "tok2", "tok3", "euh", "ok"])
-#     d2 = DataSpeaker(["bla", "tok1", "tok2"])
-#     d3 = DataSpeaker(["bla", "tok1", "tok2", "tok3"])
-#     d4 = DataSpeaker(["tok1", "euh", "tok2", "tok3"])
-#     self.assertFalse(r.apply_rules_strict(0, 1, d1, d2))
-#     self.assertFalse(r.apply_rules_strict(0, 2, d1, d2))
-#     self.assertTrue(r.apply_rules_strict(0, 2, d1, d3))
-#     self.assertFalse(r.apply_rules_strict(0, 2, d1, d4))
+
 #
 class TestRepetitions(unittest.TestCase):
 

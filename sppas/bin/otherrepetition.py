@@ -29,15 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    bin.repetition.py
-    ~~~~~~~~~~~~~~~~
+    bin.otherrepetition.py
+    ~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Repetitions (self- and other-) automatic annotation.
+    :summary:      Other-Repetitions automatic annotation.
 
 """
 import sys
@@ -48,31 +48,58 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations.Repet.sppasrepet import sppasRepet
+from sppas.src.annotations.OtherRepet.sppasrepet import sppasOtherRepet
+from sppas.src.utils.fileutils import setup_logging
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
+p = sppasOtherRepet()
+dft_span = p.get_option('span')
+dft_alpha = p.get_option('alpha')
+
 parser = ArgumentParser(usage="{:s} -i file [options]"
                               "".format(os.path.basename(PROGRAM)),
-                        description="Self- and Other- repetitions detection.")
+                        description="Automatic other-repetitions detection.")
 
 parser.add_argument("-i", metavar="file",
                     required=True,
-                    help='Input file name with time-aligned tokens '
+                    help='Input file name with time-aligned tokens or lemmas '
                          'of the main speaker')
 
-parser.add_argument("-r", metavar="file",
-                    help='Either the lemma dictionary or '
-                         'the list of stop-words')
-
 parser.add_argument("-I", metavar="file",
-                    help='Input file name with time-aligned tokens of '
-                         'the echoing-speaker (if ORs)')
+                    required=True,
+                    help='Input file name with time-aligned tokens or lemmas '
+                         'of the echoing speaker')
+
+parser.add_argument("-r", metavar="file",
+                    help='List of stop-words')
+
+parser.add_argument("--lemmas",
+                    action='store_true',
+                    help="Use time-aligned lemmas instead of tokens")
+
+parser.add_argument("--span",
+                    type=int, default=dft_span,
+                    help="Span window length in number of IPUs "
+                         "(default: {:d}).".format(dft_span))
+
+parser.add_argument("--stopwords",
+                    action='store_true',
+                    help='Add stop-words estimated from the given data (advised)')
+
+parser.add_argument("--alpha",
+                    type=int, default=dft_alpha,
+                    help="Coefficient to add specific stop-words in the list "
+                         "(default: {:f}).".format(dft_alpha))
 
 parser.add_argument("-o", metavar="file",
                     help='Output file name')
+
+parser.add_argument("--quiet",
+                    action='store_true',
+                    help="Disable verbose.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -80,8 +107,37 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
+
+if not args.quiet:
+    setup_logging(0, None)
+else:
+    setup_logging(30, None)
+
+# ----------------------------------------------------------------------------
 # Automatic detection is here:
 # ----------------------------------------------------------------------------
 
-p = sppasRepet(args.r)
-p.run(args.i, args.I, args.o)
+if args.r:
+    p = sppasOtherRepet(args.r)
+
+p.set_alpha(args.alpha)
+p.set_span(args.span)
+if args.stopwords:
+    p.set_use_stopwords(True)
+else:
+    p.set_use_stopwords(False)
+if args.lemmas:
+    p.set_use_lemmatize(True)
+else:
+    p.set_use_lemmatize(False)
+
+trs_result = p.run(args.i, args.I, args.o)
+
+# print result
+if not args.o and not args.quiet:
+    print("Sources:")
+    for s in trs_result.find("OR-Source"):
+        print(s)
+    print("Echos:")
+    for s in trs_result.find("OR-Echo"):
+        print(s)
