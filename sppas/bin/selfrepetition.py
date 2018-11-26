@@ -65,15 +65,10 @@ parser = ArgumentParser(usage="{:s} -i file [options]"
 
 parser.add_argument("-i", metavar="file",
                     required=True,
-                    help='Input file name with time-aligned tokens or lemmas '
-                         'of the main speaker')
+                    help='Input file name with time-aligned tokens')
 
 parser.add_argument("-r", metavar="file",
                     help='List of stop-words')
-
-parser.add_argument("--lemmas",
-                    action='store_true',
-                    help="Use time-aligned lemmas instead of tokens")
 
 parser.add_argument("--span",
                     type=int, default=dft_span,
@@ -121,18 +116,12 @@ if args.stopwords:
     p.set_use_stopwords(True)
 else:
     p.set_use_stopwords(False)
-if args.lemmas:
-    p.set_use_lemmatize(True)
-else:
-    p.set_use_lemmatize(False)
 
 trs_result = p.run(args.i, args.o)
 
 # print result
 if not args.o and not args.quiet:
-    print("Sources:")
-    for s in trs_result.find("SR-Source"):
-        print(s)
-    print("Echos:")
-    for s in trs_result.find("SR-Echo"):
-        print(s)
+    for tier in trs_result:
+        print(tier.get_name())
+        for s in tier:
+            print(s)

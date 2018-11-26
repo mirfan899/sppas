@@ -32,6 +32,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
+
 from sppas import IndexRangeException
 from sppas import symbols
 from sppas import sppasRW
@@ -42,6 +44,7 @@ from sppas import sppasLocation
 from sppas import sppasLabel
 from sppas import sppasTag
 from sppas import sppasVocabulary
+from sppas import sppasWordStrain
 from sppas import sppasUnigram
 
 from ..baseannot import sppasBaseAnnotation
@@ -89,14 +92,14 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
         # List of options to configure this automatic annotation
         self._options = dict()
-        self._options['lemmas'] = False    # is better but not produced by SPPAS
         self._options['span'] = 3          # never tested if it's appropriate
-        self._options['stopwords'] = True  # is better
-        self._options['alpha'] = 0.5       # validated for OR's
+        self._options['stopwords'] = True  # validated for OR's
+        self._options['alpha'] = 0.5       #
 
+        self.__word_strain = sppasWordStrain()
         self.__stop_words = sppasVocabulary()
         if resource_file is not None:
-            self.load_stop_words(resource_file)
+            self.load_resources(resource_file)
 
     # -----------------------------------------------------------------------
 
@@ -113,9 +116,6 @@ class sppasSelfRepet(sppasBaseAnnotation):
             if "stopwords" == key:
                 self.set_use_stopwords(opt.get_value())
 
-            elif "lemmas" == key:
-                self.set_use_lemmatize(opt.get_value())
-
             elif "span" == key:
                 self.set_span(opt.get_value())
 
@@ -127,21 +127,26 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def load_stop_words(self, filename):
-        """Load or re-load a list of stop-words from a file.
+    def load_resources(self, filename):
+        """Load a list of stop-words from a file and replacements (if any).
 
-        Erase the existing list...
+        Erase the existing lists...
 
         :param filename: (str) File with 1 column.
 
         """
         self.__stop_words = sppasVocabulary()
+        self.__word_strain = sppasWordStrain()
 
         try:
             self.__stop_words.load_from_ascii(filename)
             self.print_message("The initial list contains {:d} stop-words"
                                "".format(len(self.__stop_words)),
                                indent=2, status=3)
+            fn, fe = os.path.splitext(filename)
+            repl = fn + ".lem"
+            if os.path.exists(repl):
+                self.__word_strain.load(repl)
         except Exception as e:
             self.__stop_words = sppasVocabulary()
             self.print_message("No stop-words loaded: {:s}"
@@ -149,19 +154,6 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
     # Getters and Setters
-    # -----------------------------------------------------------------------
-
-    def set_use_lemmatize(self, use_lemmatize):
-        """Fix the use_lemmatize option.
-
-        If use_lemmatize is set to True, sppasRepetition() will use a tier
-        with lemmas. Instead, it uses a tier with tokens.
-
-        :param use_lemmatize: (bool)
-
-        """
-        self._options['lemmas'] = bool(use_lemmatize)
-
     # -----------------------------------------------------------------------
 
     def set_use_stopwords(self, use_stopwords):
@@ -339,6 +331,46 @@ class sppasSelfRepet(sppasBaseAnnotation):
         return src_tier, echo_tier
 
     # -----------------------------------------------------------------------
+
+    def make_word_strain(self, tier):
+        """Return a tier with modified tokens.
+
+        :param tier: (sppasTier) Time-aligned tokens.
+
+        """
+        if len(self.__word_strain) == 0:
+            return tier
+
+        self.print_message("Words strain enabled.", indent=2, status=2)
+        lems_tier = sppasTier('TokenStrain')
+        for ann in tier:
+            token = ann.serialize_labels()
+            lem = self.__word_strain.get(token, token)
+            lems_tier.create_annotation(
+                ann.get_location().copy(),
+                sppasLabel(sppasTag(lem))
+            )
+        return lems_tier
+
+    # -----------------------------------------------------------------------
+
+    def make_top_words(self, tier):
+        """Return a tier indicating if entries are stop-words.
+
+        :param tier: (sppasTier) Time-aligned tokens.
+
+        """
+        stp_tier = sppasTier('StopWords')
+        for ann in tier:
+            token = ann.serialize_labels()
+            stp = self.__stop_words.is_in(token)
+            stp_tier.create_annotation(
+                ann.get_location().copy(),
+                sppasLabel(sppasTag(stp, tag_type="bool"))
+            )
+        return stp_tier
+
+    # -----------------------------------------------------------------------
     # Run
     # -----------------------------------------------------------------------
 
@@ -357,10 +389,8 @@ class sppasSelfRepet(sppasBaseAnnotation):
         parser = sppasRW(input_filename)
         trs_input = parser.read()
 
-        if self._options['lemmas'] is True:
-            tier_input = sppasFindTier.aligned_lemmas(trs_input)
-        else:
-            tier_input = sppasFindTier.aligned_tokens(trs_input)
+        tier_tokens = sppasFindTier.aligned_tokens(trs_input)
+        tier_input = self.make_word_strain(tier_tokens)
 
         # Repetition Automatic Detection
         (src_tier, echo_tier) = self.self_detection(tier_input)
@@ -368,6 +398,10 @@ class sppasSelfRepet(sppasBaseAnnotation):
         # Create the transcription result
         trs_output = sppasTranscription("SelfRepetition")
         trs_output.set_meta('self_repetition_result_of', input_filename)
+        if len(self.__word_strain) > 0:
+            trs_output.append(tier_input)
+        if self._options['stopwords'] is True:
+            trs_output.append(self.make_top_words(tier_input))
         trs_output.append(src_tier)
         trs_output.append(echo_tier)
 

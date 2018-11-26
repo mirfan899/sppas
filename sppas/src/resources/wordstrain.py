@@ -35,7 +35,7 @@
 """
 import codecs
 
-from sppas import sg
+from sppas.src.config import sg
 from .dictrepl import sppasDictRepl
 from .resourcesexc import FileUnicodeError
 

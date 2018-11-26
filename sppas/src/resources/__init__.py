@@ -42,6 +42,7 @@ resources: access and manage linguistic resources like lexicons, etc.
 from .dictpron import sppasDictPron
 from .dictrepl import sppasDictRepl
 from .mapping import sppasMapping
+from .wordstrain import sppasWordStrain
 from .patterns import sppasPatterns
 from .unigram import sppasUnigram
 from .vocab import sppasVocabulary
@@ -53,6 +54,7 @@ __all__ = (
     "sppasMapping",
     "sppasDictRepl",
     "sppasDictPron",
+    "sppasWordStrain",
     "sppasPatterns",
     "sppasUnigram",
     "sppasVocabulary",
