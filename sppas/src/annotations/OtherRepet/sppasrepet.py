@@ -40,12 +40,13 @@ from sppas import sppasInterval
 from sppas import sppasLocation
 from sppas import sppasLabel
 from sppas import sppasTag
+from sppas.src.anndata.anndataexc import TierAddError
 
 from ..searchtier import sppasFindTier
 from ..annotationsexc import EmptyOutputError
-
 from ..SelfRepet.datastructs import DataSpeaker
 from ..SelfRepet.sppasbaserepet import sppasBaseRepet
+
 from .detectrepet import OtherRepetition
 
 # ---------------------------------------------------------------------------
@@ -116,8 +117,6 @@ class sppasOtherRepet(sppasBaseRepet):
         while tok_start_src < tok_end_src:
 
             # Build an array with the tokens
-            print(tok_start_src)
-            print(tok_end_src)
             tokens1 = [inputtier1[i].serialize_labels()
                        for i in range(tok_start_src, tok_end_src+1)]
             speaker1 = DataSpeaker(tokens1)
@@ -192,7 +191,7 @@ class sppasOtherRepet(sppasBaseRepet):
                     sppasLocation(time),
                     sppasLabel(sppasTag("S" + str(index + 1))))
             src_id = a.get_meta('id')
-        except:
+        except TierAddError:
             return False
 
         # Echos
@@ -200,10 +199,15 @@ class sppasOtherRepet(sppasBaseRepet):
             rep_begin = spk2_tier[start_idx2 + s].get_lowest_localization()
             rep_end = spk2_tier[start_idx2 + e].get_highest_localization()
             time = sppasInterval(rep_begin.copy(), rep_end.copy())
-            a = echo_tier.create_annotation(
-                sppasLocation(time),
-                sppasLabel(sppasTag("R" + str(index + 1))))
-            a.set_meta('is_other_repetition_of', src_id)
+            try:
+                r = sppasLabel(sppasTag("R" + str(index + 1)))
+                a = echo_tier.create_annotation(
+                    sppasLocation(time), r)
+                a.set_meta('is_other_repetition_of', src_id)
+            except TierAddError:
+                a = echo_tier.find(rep_begin, rep_end)
+                if len(a) > 0:
+                    a[0].append_label(r)
 
         return True
 
@@ -230,12 +234,14 @@ class sppasOtherRepet(sppasBaseRepet):
         trs_input1 = parser.read()
         tier_tokens = sppasFindTier.aligned_tokens(trs_input1)
         tier_input1 = self.make_word_strain(tier_tokens)
+        tier_input1.set_name(tier_input1.get_name() + "-source")
 
         # Get the tier to be used
         parser = sppasRW(input_filename2)
         trs_input2 = parser.read()
         tier_tokens = sppasFindTier.aligned_tokens(trs_input2)
         tier_input2 = self.make_word_strain(tier_tokens)
+        tier_input2.set_name(tier_input2.get_name() + "-echo")
 
         # Repetition Automatic Detection
         (src_tier, echo_tier) = self.other_detection(tier_input1, tier_input2)
