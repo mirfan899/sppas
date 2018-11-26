@@ -274,6 +274,18 @@ class sppasDictRepl(object):
 
     # -----------------------------------------------------------------------
 
+    def pop(self, entry):
+        """Remove an entry, as key.
+
+        :param entry: (str) unicode string of the entry to remove
+
+        """
+        s = sppasDictRepl.format_token(entry)
+        if s in self._dict:
+            self._dict.pop(s)
+
+    # -----------------------------------------------------------------------
+
     def remove(self, entry):
         """Remove an entry, as key or value.
 

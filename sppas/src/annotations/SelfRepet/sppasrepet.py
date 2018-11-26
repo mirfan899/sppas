@@ -354,20 +354,21 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def make_top_words(self, tier):
+    def make_stop_words(self, tier):
         """Return a tier indicating if entries are stop-words.
 
         :param tier: (sppasTier) Time-aligned tokens.
 
         """
-        stp_tier = sppasTier('StopWords')
+        stp_tier = sppasTier('StopWord')
         for ann in tier:
             token = ann.serialize_labels()
-            stp = self.__stop_words.is_in(token)
-            stp_tier.create_annotation(
-                ann.get_location().copy(),
-                sppasLabel(sppasTag(stp, tag_type="bool"))
-            )
+            if token not in symbols.all:
+                stp = self.__stop_words.is_in(token)
+                stp_tier.create_annotation(
+                    ann.get_location().copy(),
+                    sppasLabel(sppasTag(stp, tag_type="bool"))
+                )
         return stp_tier
 
     # -----------------------------------------------------------------------
@@ -401,7 +402,7 @@ class sppasSelfRepet(sppasBaseAnnotation):
         if len(self.__word_strain) > 0:
             trs_output.append(tier_input)
         if self._options['stopwords'] is True:
-            trs_output.append(self.make_top_words(tier_input))
+            trs_output.append(self.make_stop_words(tier_input))
         trs_output.append(src_tier)
         trs_output.append(echo_tier)
 

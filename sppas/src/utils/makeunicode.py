@@ -176,14 +176,15 @@ class sppasUnicode(object):
         """
         # Remove multiple whitespace
         e = self.unicode()
-        __str = re.sub("[\s]+", r" ", e)
+        self._entry = re.sub("[\s]+", r" ", e)
 
         # Remove whitespace at beginning and end
-        __str = re.sub("^[ ]+", r"", __str)
-        __str = re.sub("[ ]+$", r"", __str)
-        __str = re.sub("\ufeff", r"", __str)
-
-        self._entry = __str
+        if self._entry.startswith(' '):
+            self._entry = re.sub("^[ ]+", r"", self._entry)
+        if self._entry.endswith(' '):
+            self._entry = re.sub("[ ]+$", r"", self._entry)
+        if "\ufeff" in self._entry:
+            self._entry = re.sub("\ufeff", r"", self._entry)
 
         return self._entry
 

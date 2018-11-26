@@ -35,6 +35,8 @@
 """
 import codecs
 
+from sppas.src.utils.datatype import sppasTime
+
 from sppas.src.config import sg
 from .dictrepl import sppasDictRepl
 from .resourcesexc import FileUnicodeError
@@ -126,7 +128,7 @@ class sppasWordStrain(sppasDictRepl):
                 if freq > frequency[key]:
                     # replace the old one by the new one
                     frequency[key] = freq
-                    self.remove(key)
+                    self.pop(key)
                     self.add(key, value)
             else:
                 # add the new entry
