@@ -47,11 +47,11 @@ from sppas import sppasVocabulary
 from sppas import sppasWordStrain
 from sppas import sppasUnigram
 
-from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyOutputError
 
+from .sppasbaserepet import sppasBaseRepet
 from .detectrepet import SelfRepetition
 from .datastructs import DataSpeaker
 
@@ -62,7 +62,7 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 # ---------------------------------------------------------------------------
 
 
-class sppasSelfRepet(sppasBaseAnnotation):
+class sppasSelfRepet(sppasBaseRepet):
     """SPPAS Automatic Self-Repetition Detection.
 
     :author:       Brigitte Bigi
@@ -77,178 +77,14 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
     """
 
-    MAX_SPAN = 8
-    MAX_ALPHA = 4.
-
-    # -----------------------------------------------------------------------
-
     def __init__(self, resource_file=None, logfile=None):
         """Create a new sppasRepetition instance.
 
         :param resource_file: (str) File with the list of stop-words.
 
         """
-        super(sppasSelfRepet, self).__init__(logfile, "SelfRepetitions")
-
-        # List of options to configure this automatic annotation
-        self._options = dict()
-        self._options['span'] = 3          # never tested if it's appropriate
-        self._options['stopwords'] = True  # validated for OR's
-        self._options['alpha'] = 0.5       #
-
-        self.__word_strain = sppasWordStrain()
-        self.__stop_words = sppasVocabulary()
-        if resource_file is not None:
-            self.load_resources(resource_file)
-
-    # -----------------------------------------------------------------------
-
-    def fix_options(self, options):
-        """Fix all options.
-
-        :param options: list of sppasOption instances
-
-        """
-        for opt in options:
-
-            key = opt.get_key()
-
-            if "stopwords" == key:
-                self.set_use_stopwords(opt.get_value())
-
-            elif "span" == key:
-                self.set_span(opt.get_value())
-
-            elif "alpha" == key:
-                self.set_alpha(opt.get_value())
-
-            else:
-                raise AnnotationOptionError(key)
-
-    # -----------------------------------------------------------------------
-
-    def load_resources(self, filename):
-        """Load a list of stop-words from a file and replacements (if any).
-
-        Erase the existing lists...
-
-        :param filename: (str) File with 1 column.
-
-        """
-        self.__stop_words = sppasVocabulary()
-        self.__word_strain = sppasWordStrain()
-
-        try:
-            self.__stop_words.load_from_ascii(filename)
-            self.print_message("The initial list contains {:d} stop-words"
-                               "".format(len(self.__stop_words)),
-                               indent=2, status=3)
-            fn, fe = os.path.splitext(filename)
-            repl = fn + ".lem"
-            if os.path.exists(repl):
-                self.__word_strain.load(repl)
-        except Exception as e:
-            self.__stop_words = sppasVocabulary()
-            self.print_message("No stop-words loaded: {:s}"
-                               "".format(str(e)), indent=2, status=1)
-
-    # -----------------------------------------------------------------------
-    # Getters and Setters
-    # -----------------------------------------------------------------------
-
-    def set_use_stopwords(self, use_stopwords):
-        """Fix the use_stopwords option.
-
-        If use_stopwords is set to True, sppasRepetition() will add specific
-        stopwords to the stopwords list (deducted from the input text).
-
-        :param use_stopwords: (bool)
-
-        """
-        self._options['stopwords'] = bool(use_stopwords)
-
-    # -----------------------------------------------------------------------
-
-    def set_span(self, span):
-        """Fix the span option.
-
-        Span is the maximum number of IPUs to search for repetitions.
-        A value of 1 means to search only in the current IPU.
-
-        :param span: (int)
-
-        """
-        span = int(span)
-        if 0 < span <= sppasSelfRepet.MAX_SPAN:
-            self._options['span'] = span
-        else:
-            raise IndexRangeException(span, 0, sppasSelfRepet.MAX_SPAN)
-
-    # -----------------------------------------------------------------------
-
-    def set_alpha(self, alpha):
-        """Fix the alpha option.
-
-        Alpha is a coefficient to add specific stop-words in the list.
-
-        :param alpha: (float)
-
-        """
-        alpha = float(alpha)
-        if 0. < alpha < sppasSelfRepet.MAX_ALPHA:
-            self._options['alpha'] = alpha
-        else:
-            raise IndexRangeException(alpha, 0, sppasSelfRepet.MAX_ALPHA)
-
-    # -----------------------------------------------------------------------
-
-    def fix_stop_list(self, tier=None):
-        """Return the expected list of stop-words.
-
-        It is either:
-
-            - the current stop-list or,
-            - this list + un-relevant tokens, estimated on the given tier.
-
-        A token 'w' is relevant for the speaker if its probability is
-        less than a threshold:
-
-            | P(w) <= 1 / (alpha * V)
-
-        where 'alpha' is an empirical coefficient and 'V' is the vocabulary
-        size of the speaker.
-
-        :param tier: (sppasTier) A tier with entries to be analyzed.
-        :returns: (sppasVocabulary) List of stop-words
-
-        """
-        if self._options['stopwords'] is False:
-            return sppasVocabulary()
-
-        if tier is None or len(tier) < 5:
-            return self.__stop_words.copy()
-
-        # Create the sppasUnigram and put data
-        u = sppasUnigram()
-        for a in tier:
-            content = a.serialize_labels()
-            if content not in symbols.all:
-                u.add(content)
-
-        # Estimate values for relevance
-        _v = float(len(u))
-        threshold = 1. / (self._options["alpha"] * _v)
-
-        # Estimate if a token is relevant; if not: put it in the stop-list
-        stop_list = self.__stop_words.copy()
-        for token in u.get_tokens():
-            p_w = float(u.get_count(token)) / float(u.get_sum())
-            if p_w > threshold:
-                stop_list.add(token)
-                self.print_message('Add in the stop-list: {:s}'
-                                   ''.format(token), indent=3)
-
-        return stop_list
+        super(sppasSelfRepet, self).__init__(resource_file, logfile,
+                                             "SelfRepetitions")
 
     # -----------------------------------------------------------------------
     # Automatic Detection search
@@ -332,93 +168,6 @@ class sppasSelfRepet(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def make_word_strain(self, tier):
-        """Return a tier with modified tokens.
-
-        :param tier: (sppasTier) Time-aligned tokens.
-
-        """
-        if len(self.__word_strain) == 0:
-            return tier
-
-        self.print_message("Words strain enabled.", indent=2, status=2)
-        lems_tier = sppasTier('TokenStrain')
-        for ann in tier:
-            token = ann.serialize_labels()
-            lem = self.__word_strain.get(token, token)
-            lems_tier.create_annotation(
-                ann.get_location().copy(),
-                sppasLabel(sppasTag(lem))
-            )
-        return lems_tier
-
-    # -----------------------------------------------------------------------
-
-    def make_stop_words(self, tier):
-        """Return a tier indicating if entries are stop-words.
-
-        :param tier: (sppasTier) Time-aligned tokens.
-
-        """
-        stp_tier = sppasTier('StopWord')
-        for ann in tier:
-            token = ann.serialize_labels()
-            if token not in symbols.all:
-                stp = self.__stop_words.is_in(token)
-                stp_tier.create_annotation(
-                    ann.get_location().copy(),
-                    sppasLabel(sppasTag(stp, tag_type="bool"))
-                )
-        return stp_tier
-
-    # -----------------------------------------------------------------------
-    # Run
-    # -----------------------------------------------------------------------
-
-    def run(self, input_filename, output_filename=None):
-        """Run the Repetition Automatic Detection annotation.
-
-        :param input_filename: (str) File with time-aligned tokens or lemmas
-        :param output_filename:(str) Name of the file to save the result
-
-        """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
-        # Get the tier to be used
-        parser = sppasRW(input_filename)
-        trs_input = parser.read()
-
-        tier_tokens = sppasFindTier.aligned_tokens(trs_input)
-        tier_input = self.make_word_strain(tier_tokens)
-
-        # Repetition Automatic Detection
-        (src_tier, echo_tier) = self.self_detection(tier_input)
-
-        # Create the transcription result
-        trs_output = sppasTranscription("SelfRepetition")
-        trs_output.set_meta('self_repetition_result_of', input_filename)
-        if len(self.__word_strain) > 0:
-            trs_output.append(tier_input)
-        if self._options['stopwords'] is True:
-            trs_output.append(self.make_stop_words(tier_input))
-        trs_output.append(src_tier)
-        trs_output.append(echo_tier)
-
-        # Save in a file
-        if output_filename is not None:
-            if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
-                parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
-            else:
-                raise EmptyOutputError
-
-        return trs_output
-
-    # -----------------------------------------------------------------------
-
     @staticmethod
     def __add_repetition(repetition, spk_tier, start_idx, src_tier, echo_tier):
         """Add a repetition - source and echos - in tiers.
@@ -457,3 +206,49 @@ class sppasSelfRepet(sppasBaseAnnotation):
             a.set_meta('is_self_repetition_of', src_id)
 
         return True
+
+    # -----------------------------------------------------------------------
+    # Run
+    # -----------------------------------------------------------------------
+
+    def run(self, input_filename, output_filename=None):
+        """Run the Repetition Automatic Detection annotation.
+
+        :param input_filename: (str) File with time-aligned tokens or lemmas
+        :param output_filename:(str) Name of the file to save the result
+
+        """
+        self.print_filename(input_filename)
+        self.print_options()
+        self.print_diagnosis(input_filename)
+
+        # Get the tier to be used
+        parser = sppasRW(input_filename)
+        trs_input = parser.read()
+
+        tier_tokens = sppasFindTier.aligned_tokens(trs_input)
+        tier_input = self.make_word_strain(tier_tokens)
+
+        # Repetition Automatic Detection
+        (src_tier, echo_tier) = self.self_detection(tier_input)
+
+        # Create the transcription result
+        trs_output = sppasTranscription("SelfRepetition")
+        trs_output.set_meta('self_repetition_result_of', input_filename)
+        if len(self._word_strain) > 0:
+            trs_output.append(tier_input)
+        if self._options['stopwords'] is True:
+            trs_output.append(self.make_stop_words(tier_input))
+        trs_output.append(src_tier)
+        trs_output.append(echo_tier)
+
+        # Save in a file
+        if output_filename is not None:
+            if len(trs_output) > 0:
+                parser = sppasRW(output_filename)
+                parser.write(trs_output)
+                self.print_filename(output_filename, status=0)
+            else:
+                raise EmptyOutputError
+
+        return trs_output
