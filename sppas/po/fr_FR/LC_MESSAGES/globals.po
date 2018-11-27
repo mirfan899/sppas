@@ -1,4 +1,4 @@
-# English translation for SPPAS
+# French translation for SPPAS
 # Copyright (c) 2011-2018 Brigitte Bigi
 # This file is distributed under the same license as the SPPAS package.
 # Brigitte Bigi <contact@sppas.org>
@@ -18,10 +18,10 @@ msgstr ""
 "X-Generator: Poedit 2.1.1\n"
 
 msgid ":ERROR 010: "
-msgstr "Expected a positive value. Got {value}."
+msgstr "Une valeur positive était attendue, alors que {value} a été donnée."
 
 msgid ":ERROR 012: "
-msgstr "Min value {min_value} is bigger than max value {max_value}."
+msgstr "La valeur minimale donnée {min_value} est supérieur à la valeur maximale donnée {max_value}."
 
 msgid ":ERROR 014: "
-msgstr "List index {value} out of range [{min_value},{max_value}]"
+msgstr "La valeur {value} est en dehors de l'intervalle [{min_value},{max_value}]."
