@@ -36,33 +36,33 @@
 import shutil
 import os
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.aio.utils import gen_id
-from sppas.src.annotationdata.media import Media
-from sppas.src.annotations.baseannot import sppasBaseAnnotation
-from sppas.src.annotations.Chunks.chunks import Chunks
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasMedia
 
+from ..baseannot import sppasBaseAnnotation
 from ..annutils import fix_audioinput, fix_workingdir
 from ..annotationsexc import AnnotationOptionError
-from ..searchtier import sppasSearchTier
+from ..searchtier import sppasFindTier
+
+from .chunks import Chunks
 
 # ----------------------------------------------------------------------------
 
 
 class sppasChunks(sppasBaseAnnotation):
-    """
+    """SPPAS integration of the Chunk Alignment automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      SPPAS integration of the Chunk Alignment automatic annotation.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, model, logfile=None):
         """Create a new sppasChunks instance.
 
-        :param model: (str) the acoustic model directory name of the language of the text
+        :param model: (str) the acoustic model directory
         :param logfile: (sppasLog)
 
         """
@@ -80,12 +80,14 @@ class sppasChunks(sppasBaseAnnotation):
         self._options['windelaymin'] = self.chunks.get_windelay_min()
         self._options['chunksize'] = self.chunks.get_chunk_maxsize()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Methods to fix options
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options. Available options are:
+        """Fix all options.
+
+        Available options are:
 
             - clean
             - silences
@@ -137,7 +139,7 @@ class sppasChunks(sppasBaseAnnotation):
             else:
                 raise AnnotationOptionError(key)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_clean(self, clean):
         """Fix the clean option.
@@ -148,7 +150,7 @@ class sppasChunks(sppasBaseAnnotation):
         """
         self._options['clean'] = clean
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def get_phonestier(trs_input):
@@ -158,10 +160,10 @@ class sppasChunks(sppasBaseAnnotation):
         :returns: (tier)
 
         """
-        if trs_input.GetSize() == 1 and trs_input[0].GetName().lower() == "rawtranscription":
+        if len(trs_input) == 1 and trs_input[0].get_name().lower() == "rawtranscription":
             return trs_input[0]
-        if trs_input.GetSize() == 1 and trs_input[0].GetName().lower() == "phonetization":
-            if trs_input[0].IsTimeInterval():
+        if len(trs_input) == 1 and trs_input[0].get_name().lower() == "phonetization":
+            if trs_input[0].is_interval():
                 return None
             return trs_input[0]
 
@@ -169,7 +171,7 @@ class sppasChunks(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def run(self, phonesname, tokensname, audioname, outputfilename):
+    def run(self, phonesname, tokensname, audioname, outputfilename=None):
         """Execute SPPAS Chunks alignment.
 
         :param phonesname (str) file containing the phonetization
@@ -177,7 +179,7 @@ class sppasChunks(sppasBaseAnnotation):
         :param audioname (str) Audio file name
         :param outputfilename (str) the file name with the result
 
-        :returns: Transcription
+        :returns: sppasTranscription
 
         """
         self.print_filename(audioname)
@@ -185,64 +187,73 @@ class sppasChunks(sppasBaseAnnotation):
         self.print_diagnosis(audioname, phonesname, tokensname)
 
         # Get the tiers to be time-aligned
-        # ---------------------------------------------------------------
+        # -------------------------------------------------------------------
 
-        trs_input = sppas.src.annotationdata.aio.read(phonesname)
+        parser = sppasRW(phonesname)
+        trs_input = parser.read(phonesname)
         phontier = sppasChunks.get_phonestier(trs_input)
         if phontier is None:
             raise IOError("No tier with the raw phonetization was found.")
 
         try:
-            trs_inputtok = sppas.src.annotationdata.aio.read(tokensname)
-            toktier = sppasSearchTier.tokenization(trs_inputtok)
+            parser.set_filename(tokensname)
+            trs_inputtok = parser.read(tokensname)
+            toktier = sppasFindTier.tokenization(trs_inputtok)
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
 
         # Prepare data
-        # -------------------------------------------------------------
+        # -------------------------------------------------------------------
 
         inputaudio = fix_audioinput(audioname)
         workdir = fix_workingdir(inputaudio)
         if self._options['clean'] is False:
-            self.print_message("The working directory is: %s" % workdir, indent=3, status=None)
+            self.print_message("Working directory is {:s}".format(workdir),
+                               indent=3, status=None)
 
         # Processing...
-        # ---------------------------------------------------------------
+        # -------------------------------------------------------------------
 
         try:
-            trsoutput = self.chunks.create_chunks(inputaudio, phontier, toktier, workdir)
+            trsoutput = self.chunks.create_chunks(
+                inputaudio, phontier, toktier, workdir)
         except Exception as e:
             self.print_message(str(e))
-            self.print_message("WORKDIR=%s" % workdir)
+            self.print_message("WORKDIR: {:s}".format(workdir))
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
             raise
 
         # Set media
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------
 
         extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = Media(gen_id(), audioname, "audio/"+extm)
-        trsoutput.AddMedia(media)
+        media = sppasMedia(audioname, None, "audio/"+extm)
+        trsoutput.add_media(media)
         for tier in trsoutput:
             tier.SetMedia(media)
 
         # Save results
-        # --------------------------------------------------------------
-        try:
-            self.print_message("Save automatic chunk alignment: ", indent=3)
-            # Save in a file
-            sppas.src.annotationdata.aio.write(outputfilename, trsoutput)
-        except Exception:
-            if self._options['clean'] is True:
-                shutil.rmtree(workdir)
-            raise
+        # -------------------------------------------------------------------
+        if outputfilename is not None:
+            try:
+                self.print_message("Save automatic chunk alignment: ",
+                                   indent=3)
+                parser = sppasRW(outputfilename)
+                # Save in a file
+                parser.write(trsoutput)
+            except Exception:
+                if self._options['clean'] is True:
+                    shutil.rmtree(workdir)
+                raise
 
         # Clean!
-        # --------------------------------------------------------------
+        # -------------------------------------------------------------------
         # if the audio file was converted.... remove the tmpaudio
         if inputaudio != audioname:
             os.remove(inputaudio)
         # Remove the working directory we created
         if self._options['clean'] is True:
             shutil.rmtree(workdir)
+
+        return trsoutput

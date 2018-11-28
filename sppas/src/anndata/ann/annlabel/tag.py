@@ -76,6 +76,7 @@ class sppasTag(object):
         >>> t7 = sppasTag(0, tag_type="bool")       # False (bool)
 
     """
+
     TAG_TYPES = ("str", "float", "int", "bool")
 
     # ------------------------------------------------------------------------

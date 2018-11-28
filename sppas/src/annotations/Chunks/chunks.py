@@ -38,20 +38,21 @@ import logging
 
 from sppas.src.config import symbols
 
-import sppas.src.annotationdata.aio
 import sppas.src.audiodata.autils as autils
-from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.annotationdata.tier import Tier
-from sppas.src.annotationdata.ptime.interval import TimeInterval
-from sppas.src.annotationdata.ptime.point import TimePoint
-from sppas.src.annotationdata.annotation import Annotation
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.label.text import Text
+from sppas.src.anndata import sppasRW
+from sppas.src.anndata import sppasTranscription
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasLocation
+from sppas.src.anndata import sppasInterval
+from sppas.src.anndata import sppasPoint
+from sppas.src.anndata import sppasLabel
+from sppas.src.anndata import sppasTag
+
 from sppas.src.resources.patterns import sppasPatterns
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.makeunicode import sppasUnicode
 
-import sppas.src.annotations.Align.aligners as aligners
+from ..Align.aligners import sppasAligners
 
 from ..Align.aligners.alignerio import AlignerIO
 from .spkrate import SpeakerRate
@@ -61,7 +62,7 @@ from .anchors import AnchorTier
 
 SIL_PHON = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class Chunks(object):
@@ -71,7 +72,7 @@ class Chunks(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, model):
@@ -80,7 +81,7 @@ class Chunks(object):
         :param model: Acoustic model
 
         """
-        self._aligner = aligners.instantiate(model, "julius")
+        self._aligner = sppasAligners().instantiate(model, "julius")
         self._aligner.set_infersp(False)
         self._aligner.set_outext("walign")
 
@@ -89,7 +90,7 @@ class Chunks(object):
         if os.path.isfile(mappingfilename):
             try:
                 self._mapping = sppasMapping(mappingfilename)
-            except Exception:
+            except:
                 self._mapping = sppasMapping()
         else:
             self._mapping = sppasMapping()
@@ -105,9 +106,9 @@ class Chunks(object):
         self.ANCHORS = True    # Append anchors into the result
         self.SILENCES = False  # Search automatically silences before anchors
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_ngram_init(self):
         return self.N
@@ -130,9 +131,9 @@ class Chunks(object):
     def get_silences(self):
         return self.SILENCES
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Setters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_ngram_init(self, n):
         if n < 2 or n > 20:
@@ -165,9 +166,9 @@ class Chunks(object):
     def set_silences(self, value):
         self.SILENCES = bool(value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Workers
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def create_chunks(self, inputaudio, phontier, toktier, diralign):
         """Create time-aligned tiers from raw intput tiers.
@@ -178,7 +179,7 @@ class Chunks(object):
         :param diralign: (str) the working directory to store temporary data.
 
         """
-        trsoutput = Transcription("Chunks")
+        trsoutput = sppasTranscription("Chunks")
 
         # Extract the audio channel
         channel = autils.extract_audio_channel(inputaudio, 0)
@@ -189,7 +190,8 @@ class Chunks(object):
         toklist = self._tier2raw(toktier, map=False).split()
         if len(pronlist) != len(toklist):
             raise IOError("Inconsistency between the number of items in "
-                          "phonetization %d and tokenization %d." % (len(pronlist), len(toklist)))
+                          "phonetization {:d} and tokenization {:d}."
+                          "".format(len(pronlist), len(toklist)))
 
         # At a first stage, we'll find anchors.
         anchor_tier = AnchorTier()
@@ -197,7 +199,7 @@ class Chunks(object):
         anchor_tier.set_ext_delay(1.)
         anchor_tier.set_out_delay(0.5)
 
-        # Search silences and use them as anchors.
+        # Search for silences and use them as anchors.
         if self.SILENCES is True:
             anchor_tier.append_silences(channel)
 
@@ -205,28 +207,30 @@ class Chunks(object):
         self._spkrate.eval_from_duration(channel.get_duration(), len(toklist))
 
         # Multi-pass ASR to find anchors
-        nb_anchors = -1      # number of anchors in the preceding pass
-        ngram = self.N  # decreasing N-gram value
+        nb_anchors = -1      # number of anchors in the previous pass
+        ngram = self.N       # decreasing N-gram value
         win_length = self.W  # decreasing window length
 
-        while nb_anchors != anchor_tier.GetSize() and anchor_tier.check_holes_ntokens(self.NBT) is False:
+        while nb_anchors != len(anchor_tier) \
+                and anchor_tier.check_holes_ntokens(self.NBT) is False:
 
             anchor_tier.set_win_delay(win_length)
-            nb_anchors = anchor_tier.GetSize()
+            nb_anchors = len(anchor_tier)
 
             logging.debug(" =========================================================== ")
-            logging.debug(" Number of anchors: %d" % nb_anchors)
-            logging.debug(" N-gram:   %d" % ngram)
-            logging.debug(" W-length: %d" % win_length)
+            logging.debug(" Number of anchors: {:d}".format(nb_anchors))
+            logging.debug(" N-gram:   {:d}".format(ngram))
+            logging.debug(" W-length: {:d}".format(win_length))
 
             # perform ASR and append new anchors in the anchor tier (if any)
             self._asr(toklist, pronlist, anchor_tier, channel, diralign, ngram)
 
             # append the anchor tier as intermediate result
-            if self.ANCHORS is True and nb_anchors != anchor_tier.GetSize():
+            if self.ANCHORS is True and nb_anchors != len(anchor_tier):
                 Chunks._append_tier(anchor_tier, trsoutput)
-                out_name = os.path.join(diralign, "ANCHORS-%d.xra" % anchor_tier.GetSize())
-                sppas.src.annotationdata.aio.write(out_name, trsoutput)
+                out_name = os.path.join(diralign, "ANCHORS-{:d}.xra".format(len(anchor_tier)))
+                parser = sppasRW(out_name)
+                parser.write(trsoutput)
 
             # prepare next pass
             win_length = max(win_length-1., self.WMIN)
@@ -234,34 +238,35 @@ class Chunks(object):
 
         # Then, anchors are exported as tracks.
         tiert = anchor_tier.export(toklist)
-        tiert.SetName("Chunks-Tokenized")
+        tiert.set_name("Chunks-Tokenized")
         tierp = anchor_tier.export(pronlist)
-        tierp.SetName("Chunks-Phonetized")
-        trsoutput.Append(tiert)
-        trsoutput.Append(tierp)
+        tierp.set_name("Chunks-Phonetized")
+        trsoutput.append(tiert)
+        trsoutput.append(tierp)
 
         return trsoutput
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _append_tier(tier, trs):
         """Append a copy of Tier in trs.
 
         """
-        copy_tier = Tier("Anchors-"+str(tier.GetSize()))
+        copy_tier = sppasTier("Anchors-"+str(len(tier)))
         for a in tier:
-            ac = a.Copy()
+            ac = a.copy()
             try:
-                copy_tier.Append(ac)
-            except Exception:
-                logging.debug("Append of annotation in tier failed: %s" % ac)
+                copy_tier.append(ac)
+            except:
+                logging.debug("Append of annotation in tier failed: {:s}"
+                              "".format(ac))
 
-        trs.Append(copy_tier)
+        trs.append(copy_tier)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _asr(self, toklist, pronlist, anchor_tier, channel, diralign, N):
         """Windowing on the audio to perform ASR and find anchors.
@@ -283,7 +288,8 @@ class Chunks(object):
                 if to_time > max_time:
                     to_time = max_time
                 if from_time >= to_time:
-                    logging.debug('Stop windowing: %f %f.' % (from_time, to_time))
+                    logging.debug('Stop windowing: {:f} {:f}.'
+                                  ''.format(from_time, to_time))
                     break
 
                 # Fix token range of this window...
@@ -292,9 +298,12 @@ class Chunks(object):
                     break
 
                 logging.debug(" ... ... window: ")
-                logging.debug("... ... ... time  from %.4f to %.4f." % (from_time, to_time))
-                logging.debug("... ... ... token from %d to %d." % (from_token, to_token))
-                logging.debug("... ... ... REF: %s" % (" ".join(toklist[from_token:to_token])))
+                logging.debug("... ... ... time  from %.4f to %.4f."
+                              "" % (from_time, to_time))
+                logging.debug("... ... ... token from %d to %d."
+                              "" % (from_token, to_token))
+                logging.debug("... ... ... REF: %s"
+                              "" % (" ".join(toklist[from_token:to_token])))
                 logging.debug("... ... ... HYP: ")
 
                 # Fix anchors of this window
@@ -317,14 +326,14 @@ class Chunks(object):
                     from_time = to_time
                     logging.debug("... ... ... No anchor found.")
 
-            except Exception:
+            except:
                 # try your luck in the next window...
                 import traceback
-                logging.info("%s" % str(traceback.format_exc()))
+                logging.info("{:s}".format(str(traceback.format_exc())))
                 from_time = to_time
                 fails += 1
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _fix_trans_interval(self, from_time, to_time, toklist, anchor_tier):
         """Fix the window on the transcript.
@@ -339,18 +348,18 @@ class Chunks(object):
         ntokens = self._spkrate.ntokens(wdelay)+1
 
         # an anchor is not too far away before
-        if af is not None and af.GetLocation().GetEnd() >= (from_time-wdelay):
+        if af is not None and af.get_highest_localization() >= (from_time-wdelay):
             # we have an exact position in the token list
-            from_token = af.GetLabel().GetTypedValue() + 1
+            from_token = af.get_best_tag().get_typed_content() + 1
             fexact = True
         else:
             # we approximate with the speaking rate
             from_token = max(0, self._spkrate.ntokens(from_time) - ntokens)
 
         # an anchor is not too far away after
-        if at is not None and at.GetLocation().GetBegin() <= (to_time+wdelay):
+        if at is not None and at.get_lowest_localization() <= (to_time+wdelay):
             # we have an exact position in the token list
-            to_token = at.GetLabel().GetTypedValue() - 1
+            to_token = at.get_best_tag().get_typed_content() - 1
         else:
             # we approximate with the speaking rate
             if fexact is True:
@@ -365,11 +374,12 @@ class Chunks(object):
 
         return from_token, to_token
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def _fix_window_asr(self, from_time, to_time, from_token, to_token, channel, pronlist, toklist, diralign, N):
-        """
-        Fix asr result in a window.
+    def _fix_window_asr(self, from_time, to_time, from_token, to_token, 
+                        channel, pronlist, toklist, diralign, N):
+        """Fix asr result in a window.
+        
         Return the list of anchors the ASR found in that window.
 
         """
@@ -381,7 +391,7 @@ class Chunks(object):
 
         # call the ASR engine to recognize tokens of this track
         self._aligner.set_phones(" ".join(pronlist[from_token:to_token]))
-        self._aligner.set_tokens(" ".join( toklist[from_token:to_token]))
+        self._aligner.set_tokens(" ".join(toklist[from_token:to_token]))
         self._aligner.run_alignment(fna, fnw, N)
 
         # get the tokens time-aligned by the ASR engine
@@ -410,12 +420,11 @@ class Chunks(object):
 
         return anchors
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _adjust_asr_result(wordsalign, from_time, silence):
-        """
-        Adapt wordsalign: remove <s> and </s> then adjust time values.
+        """Adapt wordsalign: remove <s> and </s> then adjust time values.
 
         """
         # shift all time values of "silence" delta
@@ -442,7 +451,8 @@ class Chunks(object):
         for i in range(len(wordsalign)):
             wordsalign[i][0] = wordsalign[i][0] + from_time
             wordsalign[i][1] = wordsalign[i][1] + from_time
-            logging.debug("... ... ... ... %s - %f" % (wordsalign[i][2], wordsalign[i][3]))
+            logging.debug("... ... ... ... {:s} - {:f}"
+                          "".format(wordsalign[i][2], wordsalign[i][3]))
 
         return wordsalign
 
@@ -504,57 +514,57 @@ class Chunks(object):
             return
 
         logging.debug('... ... ... Anchors:')
-        for (s,e,i) in anchorlist:
+        for (s, e, i) in anchorlist:
 
             # provide overlaps with a previous anchor
-            previ = anchor_tier.Near(s, -1)
+            previ = anchor_tier.near(s, -1)
             if previ != -1:
                 prevann = anchor_tier[previ]
-                if prevann.GetLocation().GetEnd().GetMidpoint() > s:
-                    if prevann.GetLabel().IsSilence():
-                        prevann.GetLocation().GetEnd().SetMidpoint(s)
-                        if prevann.GetLocation().GetEnd() < prevann.GetLocation().GetBegin():
-                            anchor_tier.Pop(previ)
+                if prevann.get_highest_localization().get_midpoint() > s:
+                    if prevann.get_best_tag().get_typed_content() == AnchorTier.SIL:
+                        prevann.get_highest_localization().set_midpoint(s)
+                        if prevann.get_highest_localization() < prevann.get_lowest_localization():
+                            anchor_tier.pop(previ)
                     else:
-                        s = prevann.GetLocation().GetEnd().SetMidpoint(s)
+                        s = prevann.get_highest_localization().set_midpoint(s)
 
             # provide overlaps with a following anchor
             nexti = anchor_tier.Near(e, 1)
             if nexti != -1:
                 nextann = anchor_tier[nexti]
-                if nextann.GetLocation().GetBegin().GetMidpoint() < e:
-                    if nextann.GetLabel().IsSilence():
-                        nextann.GetLocation().GetBegin().SetMidpoint(e)
-                        if nextann.GetLocation().GetEnd() < nextann.GetLocation().GetBegin():
-                            anchor_tier.Pop(nexti)
+                if nextann.get_lowest_localization().get_midpoint() < e:
+                    if nextann.get_best_tag().get_typed_content() == AnchorTier.SIL:
+                        nextann.get_lowest_localization().set_midpoint(e)
+                        if nextann.get_highest_localization() < nextann.get_lowest_localization():
+                            anchor_tier.pop(nexti)
                     else:
-                        e = nextann.GetLocation().GetBegin().SetMidpoint(e)
+                        e = nextann.get_lowest_localization().set_midpoint(e)
 
             valid = True
             # previous index must be lesser
             p = anchor_tier.near_indexed_anchor(s, -1)
             if p is not None:
-                pidx = p.GetLabel().GetTypedValue()
+                pidx = p.get_best_tag().get_typed_content()
                 if i <= pidx:
                     valid = False
                 else:
                     # solve a small amount of issues...
                     # duration between the previous and the one we want to add
-                    deltatime = s-p.GetLocation().GetEnd().GetMidpoint()
+                    deltatime = s-p.get_highest_localization().get_midpoint()
                     if deltatime < 0.2:
                         if (i-10) > pidx:
                             valid = False
 
             # next index must be higher
             n = anchor_tier.near_indexed_anchor(e, 1)
-            if n is not None and i >= n.GetLabel().GetTypedValue():
+            if n is not None and i >= n.get_best_tag().get_typed_content():
                 valid = False
 
             # add the anchor
             if valid is True:
-                time = TimeInterval(TimePoint(s), TimePoint(e))
-                label = Label(Text(i, data_type="int"))
-                anchor_tier.Add(Annotation(time, label))
+                time = sppasInterval(sppasPoint(s), sppasPoint(e))
+                label = sppasLabel(sppasTag(i, "int"))
+                anchor_tier.create_annotation(sppasLocation(time), label)
                 logging.debug("... ... ... ... Add: %f %f %d" % (s, e, i))
             else:
                 logging.debug("... ... ... ... ... Ignore: %f %f %d" % (s, e, i))
@@ -574,11 +584,11 @@ class Chunks(object):
 
         raw = ""
         for i, ann in enumerate(tier):
-            if ann.GetLabel().IsEmpty() is True:
+            if ann.is_labelled() is False:
                 logging.info("WARNING: Found an empty annotation label at index %d" % i)
                 raw = raw + " sil"
-            else:  # if ann.GetLabel().IsSilence() is False:
-                besttext = ann.GetLabel().GetValue()
+            else:  # if ann.get_best_tag().is_silence() is False:
+                besttext = ann.get_best_tag().get_content()
                 if mapp is True:
                     besttext = self._mapping.map(besttext)
 

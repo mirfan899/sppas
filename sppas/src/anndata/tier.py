@@ -387,7 +387,6 @@ class sppasTier(sppasMetaData):
 
     def get_all_points(self):
         """Return the list of all points of the tier."""
-
         if len(self.__ann) == 0:
             return []
 
@@ -401,7 +400,6 @@ class sppasTier(sppasMetaData):
 
     def get_first_point(self):
         """Return the first point of the first annotation."""
-
         if len(self.__ann) == 0:
             return None
 
@@ -411,7 +409,6 @@ class sppasTier(sppasMetaData):
 
     def get_last_point(self):
         """Return the last point of the last location."""
-
         if len(self.__ann) == 0:
             return None
 
@@ -728,8 +725,10 @@ class sppasTier(sppasMetaData):
     # ------------------------------------------------------------------------
 
     def near(self, moment, direction=1):
-        """Return the index of the annotation whose localization is closest
-        to the given moment for a given direction.
+        """Search for the annotation whose localization is closest.
+
+        Search for the nearest localization to the given moment into a
+        given direction.
 
         :param moment: (sppasPoint)
         :param direction: (int)
@@ -743,7 +742,7 @@ class sppasTier(sppasMetaData):
         if len(self.__ann) == 1:
             return 0
 
-        index = self.__find(moment, direction)
+        index = self.__find(moment)
         if index == -1:
             return -1
 
@@ -751,7 +750,7 @@ class sppasTier(sppasMetaData):
 
         # forward
         if direction == 1:
-            if moment < a.get_lowest_localization():
+            if moment <= a.get_lowest_localization():
                 return index
             if index + 1 < len(self.__ann):
                 return index + 1
@@ -759,7 +758,7 @@ class sppasTier(sppasMetaData):
 
         # backward
         elif direction == -1:
-            if moment > a.get_highest_localization():
+            if moment >= a.get_highest_localization():
                 return index
             if index-1 >= 0:
                 return index-1
@@ -1068,17 +1067,26 @@ class sppasTier(sppasMetaData):
     # Private
     # -----------------------------------------------------------------------
 
-    def __find(self, x, direction=1):
+    def __find(self, x):
         """Return the index of the annotation whose moment value contains x.
 
         :param x: (sppasPoint)
 
         """
+        if len(self.__ann) == 0:
+            return -1
+        if len(self.__ann) == 1:
+            return 0
+        if x > self.__ann[-1].get_highest_localization():
+            return len(self.__ann) - 1
+
         is_point = self.is_point()
         lo = 0
         hi = len(self.__ann)  # - 1
         mid = (lo + hi) // 2
+
         while lo < hi:
+
             mid = (lo + hi) // 2
             a = self.__ann[mid]
             if is_point is True:
@@ -1092,29 +1100,20 @@ class sppasTier(sppasMetaData):
             else:  # Interval or Disjoint
                 b = a.get_lowest_localization()
                 e = a.get_highest_localization()
-                if b == x or b < x < e:
-                    # print("FOUND: mid="+str(mid))
-                    # if direction != 1:
-                    #     # We go back to look at the previous localizations until they are greater.
-                    #     while mid >= 0 and self.__ann[mid].get_lowest_localization() >= x:
-                    #         mid -= 1
-                    #
-                    # else:
-                    #     # We go further to look at the next localizations until they are lowest.
-                    #     while mid + 1 < len(self.__ann) and self.__ann[mid + 1].get_highest_localization() <= x:
-                    #         mid += 1
-                    #
+                if b <= x < e:
                     return mid
+
                 if x < e:
                     hi = mid
                 else:
                     lo = mid + 1
 
+        # direction was previously used by near...
         # We failed to find an annotation at time=x. return the closest...
-        if direction == 1:
-            return min(hi, len(self.__ann) - 1)
-        if direction == -1:
-            return lo
+        # if direction == 1:
+        #     return min(hi, len(self.__ann) - 1)
+        # if direction == -1:
+        #     return lo
         return mid
 
     # -----------------------------------------------------------------------

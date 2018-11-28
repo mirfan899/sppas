@@ -36,13 +36,13 @@
 
 
 class SpeakerRate(object):
-    """
+    """Speaker speech rate evaluator.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Speaker speech rate evaluator.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     The average speaking rate will vary across languages and situations.
     In conversational English, the average rate of speech for men is 125
@@ -60,20 +60,20 @@ class SpeakerRate(object):
     default, i.e. 12 tokens/second.
 
     """
+
     DEFAULT_SPK_RATE = 12.
     
     def __init__(self):
         """Create a new SpeakerRate instance."""
-        
         self._spk_rate = SpeakerRate.DEFAULT_SPK_RATE
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_value(self):
         """Return the speaking rate."""
         return self._spk_rate
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_value(self, value):
         """Set the speaking rate.
@@ -83,10 +83,11 @@ class SpeakerRate(object):
         """
         value = float(value)
         if value <= 0. or value >= 100.:
-            raise ValueError('Expected a reasonable value of speaking rate. Got: %f' % value)
+            raise ValueError('Expected a reasonable value of speaking rate. '
+                             'Got: {:f}'.format(value))
         self._spk_rate = value
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def mul(self, coef):
         """Multiply the speaking rate.
@@ -97,7 +98,7 @@ class SpeakerRate(object):
         coef = float(coef)
         self.set_value(self._spk_rate * coef)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def div(self, coef):
         """Divide the speaking rate.
@@ -108,7 +109,7 @@ class SpeakerRate(object):
         coef = float(coef)
         self.set_value(self._spk_rate / coef)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def eval_from_duration(self, duration, ntokens):
         """Set the speaking rate in number of tokens per seconds.
@@ -121,7 +122,7 @@ class SpeakerRate(object):
         duration = float(duration)
         self.set_value(ntokens / duration)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def eval_from_tracks(self, tracks_times, ntokens):
         """Set the speaking rate in number of tokens per seconds.
@@ -133,7 +134,7 @@ class SpeakerRate(object):
         duration = sum([(e-s) for (s, e) in tracks_times])
         self.eval_from_duration(duration, ntokens)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def ntokens(self, duration):
         """Return the number of expected tokens for a given duration.
@@ -144,7 +145,7 @@ class SpeakerRate(object):
         """
         return int(duration * self._spk_rate)
 
-# ----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
     def duration(self, ntokens):
         """Return expected duration for a given number of tokens.
