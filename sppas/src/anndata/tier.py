@@ -792,7 +792,6 @@ class sppasTier(sppasMetaData):
 
     def is_string(self):
         """All label tags are string or unicode or None."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -806,7 +805,6 @@ class sppasTier(sppasMetaData):
 
     def is_float(self):
         """All label tags are float values or None."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -820,7 +818,6 @@ class sppasTier(sppasMetaData):
 
     def is_int(self):
         """All label tags are integer values or None."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -834,7 +831,6 @@ class sppasTier(sppasMetaData):
 
     def is_bool(self):
         """All label tags are boolean values or None."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -843,6 +839,19 @@ class sppasTier(sppasMetaData):
                 return ann.label_is_bool()
 
         return False
+
+    # -----------------------------------------------------------------------
+
+    def get_labels_type(self):
+        """Return the current type of labels, or an empty string."""
+        if len(self.__ann) == 0:
+            return ""
+
+        for ann in self.__ann:
+            if ann.is_labelled() is True:
+                return ann.get_label_type()
+
+        return ""
 
     # -----------------------------------------------------------------------
 
@@ -941,18 +950,8 @@ class sppasTier(sppasMetaData):
         # check if the current label has the same tag type than
         # the already defined ones.
         if label.is_tagged():
-
-            if label.is_string() is True and self.is_string() is False:
-                raise AnnDataTypeError(label, "str")
-
-            if label.is_float() is True and self.is_float() is False:
-                raise AnnDataTypeError(label, "float")
-
-            if label.is_int() is True and self.is_int() is False:
-                raise AnnDataTypeError(label, "int")
-
-            if label.is_bool() is True and self.is_bool() is False:
-                raise AnnDataTypeError(label, "bool")
+            if label.get_type() != self.get_labels_type():
+                raise AnnDataTypeError(label, self.get_labels_type())
 
     # -----------------------------------------------------------------------
 

@@ -67,7 +67,7 @@ class sppasAnnotation(sppasMetaData):
     """
 
     def __init__(self, location, labels=list()):
-        """Creates a new sppasAnnotation instance.
+        """Create a new sppasAnnotation instance.
 
         :param location: (sppasLocation) the location(s) where the annotation\
         happens
@@ -75,7 +75,6 @@ class sppasAnnotation(sppasMetaData):
         annotation, or a list of them.
 
         """
-
         super(sppasAnnotation, self).__init__()
 
         # Check location instance.
@@ -93,25 +92,19 @@ class sppasAnnotation(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def get_score(self):
-        """Return the score of this annotation or None if no score is set.
-
-        :returns: score: (float)
-
-        """
+        """Return the score of this annotation or None if no score is set."""
         return self.__score
 
     # -----------------------------------------------------------------------
 
     def get_location(self):
         """Return the sppasLocation() of this annotation."""
-
         return self.__location
 
     # -----------------------------------------------------------------------
 
     def get_labels(self):
         """Return the list of sppasLabel() of this annotation."""
-
         return self.__labels
 
     # -----------------------------------------------------------------------
@@ -251,7 +244,6 @@ class sppasAnnotation(sppasMetaData):
 
     def is_labelled(self):
         """Return True if at least a sppasTag exists and is not None."""
-
         if len(self.__labels) == 0:
             return False
 
@@ -261,6 +253,20 @@ class sppasAnnotation(sppasMetaData):
                     return True
 
         return False
+
+    # -----------------------------------------------------------------------
+
+    def get_label_type(self):
+        """Return the current type of tags, or an empty string."""
+        if len(self.__labels) == 0:
+            return ""
+
+        for label in self.__labels:
+            if label is not None:
+                if label.is_tagged() is True:
+                    return label.get_type()
+
+        return ""
 
     # -----------------------------------------------------------------------
 
@@ -277,7 +283,6 @@ class sppasAnnotation(sppasMetaData):
 
     def get_labels_best_tag(self):
         """Return a list with the best tag of each label."""
-
         tags = list()
         for label in self.__labels:
             best = label.get_best()
@@ -397,7 +402,6 @@ class sppasAnnotation(sppasMetaData):
 
     def label_is_filled(self):
         """Return True if at least one BEST tag is filled."""
-
         for label in self.__labels:
             if label is not None:
                 if label.is_tagged() is True:
@@ -409,7 +413,6 @@ class sppasAnnotation(sppasMetaData):
 
     def label_is_string(self):
         """Return True if the type of the labels is 'str'."""
-
         if len(self.__labels) == 0:
             return False
 
@@ -423,7 +426,6 @@ class sppasAnnotation(sppasMetaData):
 
     def label_is_float(self):
         """Return True if the type of the labels is 'float'."""
-
         if len(self.__labels) == 0:
             return False
 
@@ -436,7 +438,6 @@ class sppasAnnotation(sppasMetaData):
 
     def label_is_int(self):
         """Return True if the type of the labels is 'int'."""
-
         if len(self.__labels) == 0:
             return False
 
@@ -450,7 +451,6 @@ class sppasAnnotation(sppasMetaData):
 
     def label_is_bool(self):
         """Return True if the type of the labels is 'bool'."""
-
         if len(self.__labels) == 0:
             return False
 
@@ -506,28 +506,24 @@ class sppasAnnotation(sppasMetaData):
 
     def location_is_point(self):
         """Return True if the location is made of sppasPoint locs."""
-
         return self.__location.is_point()
 
     # -----------------------------------------------------------------------
 
     def location_is_interval(self):
         """Return True if the location is made of sppasInterval locs."""
-
         return self.__location.is_interval()
 
     # -----------------------------------------------------------------------
 
     def location_is_disjoint(self):
         """Return True if the location is made of sppasDisjoint locs."""
-
         return self.__location.is_disjoint()
 
     # -----------------------------------------------------------------------
 
     def get_highest_localization(self):
         """Return a copy of the sppasPoint with the highest loc."""
-
         if self.__location.is_point():
             max_localization = max([l[0] for l in self.__location])
         else:
@@ -540,7 +536,6 @@ class sppasAnnotation(sppasMetaData):
 
     def get_lowest_localization(self):
         """Return a copy of the sppasPoint with the lowest localization."""
-
         if self.__location.is_point():
             min_localization = min([l[0] for l in self.__location])
         else:
@@ -553,8 +548,8 @@ class sppasAnnotation(sppasMetaData):
 
     def get_all_points(self):
         """Return the list of a copy of all points of this annotation."""
-
         points = list()
+
         if self.__location.is_point():
             for localization, score in self.__location:
                 points.append(localization.copy())
@@ -576,7 +571,6 @@ class sppasAnnotation(sppasMetaData):
 
     def contains_localization(self, localization):
         """Return True if the given localization is in the location."""
-
         return self.__location.contains(localization)
 
     # -----------------------------------------------------------------------
