@@ -552,6 +552,7 @@ class sppasTier(sppasMetaData):
 
     def index(self, moment):
         """Return the index of the moment (int), or -1.
+
         Only for tier with points.
 
         :param moment: (sppasPoint)
@@ -585,9 +586,9 @@ class sppasTier(sppasMetaData):
     def lindex(self, moment):
         """Return the index of the interval starting at a given moment, or -1.
 
+        Only for tier with intervals or disjoint.
         If the tier contains more than one annotation starting at the same
         moment, the method returns the first one.
-        Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
 
@@ -626,9 +627,9 @@ class sppasTier(sppasMetaData):
     def mindex(self, moment, bound=0):
         """Return the index of the interval containing the given moment, or -1.
 
+        Only for tier with intervals or disjoint.
         If the tier contains more than one annotation at the same moment,
         the method returns the first one (i.e. the one which started at first).
-        Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
         :param bound: (int)
@@ -664,9 +665,10 @@ class sppasTier(sppasMetaData):
 
     def rindex(self, moment):
         """Return the index of the interval ending at the given moment.
+
+        Only for tier with intervals or disjoint.
         If the tier contains more than one annotation ending at the same moment,
         the method returns the last one.
-        Only for tier with intervals or disjoint.
 
         :param moment: (sppasPoint)
 

@@ -30,7 +30,7 @@
 
         ---------------------------------------------------------------------
 
-    scripts.tierinfo.py
+    scripts.tieradjustbounds.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
@@ -43,6 +43,7 @@
 """
 import sys
 import os
+import math
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -66,10 +67,20 @@ parser.add_argument("-i",
                     help='Input annotated file name')
 
 parser.add_argument("-t",
+                    required=True,
+                    metavar="adjust",
+                    help='Name of the tier to be adjusted')
+
+parser.add_argument("-T",
+                    required=True,
+                    metavar="bounds",
+                    help='Name of the tier to adjust bounds on')
+
+parser.add_argument("-d",
                     metavar="value",
-                    default=1,
-                    type=int,
-                    help='Tier number (default: 1)')
+                    default=0.04,
+                    type=float,
+                    help='Maximum time diff to adjust a bound (default: 0.04)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -81,29 +92,25 @@ args = parser.parse_args()
 parser = sppasRW(args.i)
 trs_input = parser.read()
 
-if args.t <= 0 or args.t > len(trs_input):
-    print('Error: Bad tier number.\n')
-    sys.exit(1)
-tier = trs_input[args.t-1]
+tier = trs_input.find(args.t)
+ref = trs_input.find(args.T)
 
-# Get the tier type
-tier_type = "Unknown"
-if tier.is_point() is True:
-    tier_type = "Point"
-elif tier.is_interval() is True:
-    tier_type = "Interval"
-elif tier.is_disjoint() is True:
-    tier_type = "DisjointIntervals"
+for ann in tier:
+    location = ann.get_location()
+    for l, s in location:
+        time = l.get_midpoint()
+        a = ref.near(l, direction=0)
+        # the nearest point is either begin or end of a
+        a_begin = a.get_lowest_localization()
+        a_end = a.get_highest_localization()
+        delta_begin = math.fabs(a_begin.get_midpoint() - time)
+        delta_end = math.fabs(a_end.get_midpoint() - time)
+        if delta_begin < delta_end:
+            l.set_midpoint(a_begin)
+            l.set_radius(delta_begin)
+        else:
+            l.set_midpoint(a_end)
+            l.set_radius(delta_end)
 
-print('Tier number {:d} of file {:s}:'.format(args.t, args.i))
-print(" - name: {:s}".format(tier.get_name()))
-print(" - type: {:s}".format(tier_type))
-print(" - number of annotations: {:d}".format(len(tier)))
-if len(tier) > 1:
-    print(" - from time: {:.4f}".format(tier.get_first_point().get_midpoint()))
-    print(" - to time: {:.4f} ".format(tier.get_last_point().get_midpoint()))
+    print("New ann: {:s}".format(ann))
 
-    loc_silences = [a.get_location() for a in tier if a.get_best_tag().is_silence()]
-    dur_silence = sum(a.get_best().duration().get_value() for a in loc_silences)
-    print(" - number of silences: {:d}".format(len(loc_silences)))
-    print(" - total silence duration: {:.3f}".format(dur_silence))
