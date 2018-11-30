@@ -208,6 +208,8 @@ class sppasPatterns(object):
         alignment = []
 
         (nman, nasr) = self._create_ngrams(ref, hyp)
+        print(nman)
+        print(nasr)
 
         lastidxa = len(nasr)
         lastidxm = len(nman)

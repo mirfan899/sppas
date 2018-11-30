@@ -295,8 +295,9 @@ class TestTracksAlign(unittest.TestCase):
 
     def test_matching(self):
         filename = os.path.join(DATA, "track_000000")
-        wordalign = AlignerIO.read_aligned(filename)[1]
+        wordalign = AlignerIO.read_aligned(filename)
         self.assertEqual(21, len(wordalign))
+        self.assertEqual((0.21, 0.38, '感', '0.306'), wordalign[1])
 
         ref = [u"好", u"感", u"啦 @", u"好似", u"梁", u"安", u"琪", u"咁", u"係",
                u"啦", u"係", u"我", u"以前", u"都", u"聽", u"過", u"佢", u"",
@@ -305,6 +306,7 @@ class TestTracksAlign(unittest.TestCase):
         hyp = [(token, score) for (start, end, token, score) in wordalign]
 
         pattern = sppasPatterns()
+        pattern.set_score(1.0)
         pattern.set_ngram(3)
         m3 = pattern.ngram_matches(ref, hyp)
 
@@ -317,16 +319,15 @@ class TestTracksAlign(unittest.TestCase):
         newhyp = hyp[minh:maxh+1]
 
         pattern = sppasPatterns()
+        pattern.set_score(1.)
         pattern.set_ngram(3)
         newm3 = pattern.ngram_alignments(newref, newhyp)
-
-        newm3 = [(v[0]+minr, v[1]+minh) for v in newm3]
-
-        self.assertEqual(newm3, [(5, 5), (6, 6), (7, 7), (17, 16), (18, 17), (19, 18)])
+        newm_3 = [(v[0]+minr, v[1]+minh) for v in newm3]
+        self.assertEqual([(5, 5), (6, 6), (7, 7), (17, 16), (18, 17), (19, 18)], newm_3)
 
         pattern = sppasPatterns()
         pattern.set_score(0.6)
         pattern.set_ngram(1)
         m1 = pattern.ngram_alignments(newref, newhyp)
         newm1 = [(v[0]+minr, v[1]+minh) for v in m1]
-        self.assertEqual(newm1, [(6, 6)])
+        self.assertEqual([(6, 6)], newm1)
