@@ -46,20 +46,6 @@ from sppas.src.ui.wxgui.structs.cthemes import all_themes
 from sppas.src.ui.wxgui.cutils.textutils import TextAsNumericValidator
 from sppas.src.ui.wxgui.cutils.textutils import TextAsPercentageValidator
 
-# Demos...
-from sppas.src.ui.wxgui.demo.wizardDisplayDemo import WizardDisplayDemo
-from sppas.src.ui.wxgui.demo.PointCtrlDemo     import PointCtrlFrame
-from sppas.src.ui.wxgui.demo.LabelCtrlDemo     import LabelCtrlFrame
-from sppas.src.ui.wxgui.demo.TierCtrlDemo      import TierCtrlFrame
-from sppas.src.ui.wxgui.demo.TrsCtrlDemo       import TrsCtrlFrame
-from sppas.src.ui.wxgui.demo.WaveCtrlDemo      import WaveCtrlFrame
-from sppas.src.ui.wxgui.demo.DisplayCtrlDemo   import DisplayCtrlFrame
-
-from sppas.src.ui.wxgui.demo.wizardZoomDemo    import WizardZoomDemo
-from sppas.src.ui.wxgui.demo.wizardScrollDemo  import WizardScrollDemo
-from sppas.src.ui.wxgui.demo.wizardSoundDemo   import WizardSoundDemo
-from sppas.src.ui.wxgui.demo.wizardTrsDemo     import WizardTrsDemo
-
 from sppas.src.ui.wxgui.sp_icons import SPPASEDIT_APP_ICON
 
 from .baseframe import ComponentFrame
@@ -128,44 +114,6 @@ class SppasEditFrame(ComponentFrame):
         # DISABLED SINCE SPPAS-1.8.0
 
         return
-        menubar = self.GetMenuBar()
-        menus = menubar.GetMenus()
-
-        # Menu Demo
-        demomainMenu = wx.Menu()
-        demomainMenu.Append(DEMO_DISPLAY_WIZARD_ID, 'Main Demo', '')
-        demomainMenu.Append(DEMO_POINT_ID,  'Boundaries', 'Demo of time points')
-        demomainMenu.Append(DEMO_LABEL_ID,  'Labels',     'Demo of labels')
-        demomainMenu.Append(DEMO_TIER_ID,   'Tiers',      'Demo of tiers')
-        demomainMenu.Append(DEMO_TRS_ID,    'Transcription file', 'Demo of a whole annotated file')
-        demomainMenu.Append(DEMO_WAVE_ID,   'Wave file', 'Demo of a wave file')
-        demomainMenu.Append(DEMO_DISPLAY_ID, 'Display files', 'Demo of the display window')
-
-        demozoomMenu   = wx.Menu()
-        demozoomMenu.Append(DEMO_ZOOM_WIZARD_ID, 'Zooming Demo', '')
-
-        demoscrollMenu = wx.Menu()
-        demoscrollMenu.Append(DEMO_SCROLL_WIZARD_ID, 'Scrolling Demo', '')
-
-        demowaveMenu   = wx.Menu()
-        demowaveMenu.Append(DEMO_SOUND_WIZARD_ID, 'Speech sound Demo', '')
-
-        demotrsMenu    = wx.Menu()
-        demotrsMenu.Append(DEMO_TRS_WIZARD_ID, 'Ann. Files Demo', '')
-
-        demoMenu = wx.Menu()
-        demoMenu.AppendMenu(wx.ID_ANY, 'Displaying',  demomainMenu)
-        demoMenu.AppendMenu(wx.ID_ANY, 'Zooming',     demozoomMenu)
-        demoMenu.AppendMenu(wx.ID_ANY, 'Scrolling',   demoscrollMenu)
-        demoMenu.AppendMenu(wx.ID_ANY, 'Wave Speech', demowaveMenu)
-        demoMenu.AppendMenu(wx.ID_ANY, 'Ann. Files',  demotrsMenu)
-
-        menubar.Insert(pos=1, menu=demoMenu, title='&Demo' )
-
-        # Events
-        eventslist = [ DEMO_DISPLAY_WIZARD_ID, DEMO_POINT_ID, DEMO_LABEL_ID, DEMO_TIER_ID, DEMO_TRS_ID, DEMO_WAVE_ID, DEMO_DISPLAY_ID, DEMO_ZOOM_WIZARD_ID, DEMO_SCROLL_WIZARD_ID, DEMO_SOUND_WIZARD_ID, DEMO_TRS_WIZARD_ID ]
-        for event in eventslist:
-            wx.EVT_MENU(self, event, self.SppasEditProcessEvent)
 
     # ------------------------------------------------------------------------
 
@@ -174,141 +122,7 @@ class SppasEditFrame(ComponentFrame):
 
         return SppasEditClient(parent,prefsIO)
 
-    # ------------------------------------------------------------------------
-
-    def SppasEditProcessEvent(self, event):
-        """
-        Processes an event, searching event tables and calling zero or more
-        suitable event handler function(s).  Note that the ProcessEvent
-        method is called from the wxPython docview framework directly since
-        wxPython does not have a virtual ProcessEvent function.
-        """
-        id = event.GetId()
-
-        if id == DEMO_DISPLAY_WIZARD_ID:
-            self.OnDemoDisplayWizard(event)
-        elif id == DEMO_POINT_ID:
-            self.OnDemoPoint(event)
-        elif id == DEMO_LABEL_ID:
-            self.OnDemoLabel(event)
-        elif id == DEMO_TIER_ID:
-            self.OnDemoTier(event)
-        elif id == DEMO_TRS_ID:
-            self.OnDemoTrs(event)
-        elif id == DEMO_WAVE_ID:
-            self.OnDemoWave(event)
-        elif id == DEMO_DISPLAY_ID:
-            self.OnDemoDisplay(event)
-        elif id == DEMO_ZOOM_WIZARD_ID:
-            self.OnDemoZoomWizard(event)
-        elif id == DEMO_SCROLL_WIZARD_ID:
-            self.OnDemoScrollWizard(event)
-        elif id == DEMO_SOUND_WIZARD_ID:
-            self.OnDemoSoundWizard(event)
-        elif id == DEMO_TRS_WIZARD_ID:
-            self.OnDemoTrsWizard(event)
-
     # -------------------------------------------------------------------------
-    # Demo... Callbacks
-    # -------------------------------------------------------------------------
-
-    def OnDemoDisplayWizard(self, event):
-        """
-        The whole Display demo.
-        """
-        logging.info('Demo.')
-        WizardDisplayDemo(self)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoPoint(self, event):
-        """
-        TimePoint demo.
-        """
-        frame = PointCtrlFrame(self, -1, 'Time Point Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoLabel(self, event):
-        """
-        Label demo.
-        """
-        frame = LabelCtrlFrame(self, -1, 'Label Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoTier(self, event):
-        """
-        Tier demo.
-        """
-        frame = TierCtrlFrame(self, -1, 'Tier Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoTrs(self, event):
-        """
-        Transcription demo.
-        """
-        frame = TrsCtrlFrame(self, -1, 'Transcription Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoWave(self, event):
-        """
-        Wave demo.
-        """
-        frame = WaveCtrlFrame(self, -1, 'Wave Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoDisplay(self, event):
-        """
-        Display demo.
-        """
-        frame = DisplayCtrlFrame(self, -1, 'Display Demo')
-        frame.Show(True)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoZoomWizard(self, event):
-        """
-        The whole Zoom demo.
-        """
-        logging.info('Demo: Zoom.')
-        WizardZoomDemo(self)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoScrollWizard(self, event):
-        """
-        The whole Scroll demo.
-        """
-        logging.info('Demo: Scroll.')
-        WizardScrollDemo(self)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoSoundWizard(self, event):
-        """
-        The whole Sound demo.
-        """
-        logging.info('Demo: Sound.')
-        WizardSoundDemo(self)
-
-    # -------------------------------------------------------------------------
-
-    def OnDemoTrsWizard(self, event):
-        """
-        The whole Ann. files demo.
-        """
-        logging.info('Demo: Ann. files.')
-        WizardTrsDemo(self)
-
     # -------------------------------------------------------------------------
 
     def OnSettings(self, event):

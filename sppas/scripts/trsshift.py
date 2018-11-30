@@ -42,7 +42,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -116,6 +116,9 @@ try:
 except AnnDataTypeError:
     trs_input.shift(int(args.d))
 
+shifted_trs_start_point = trs_input.get_min_loc().copy()
+shifted_trs_end_point = trs_input.get_max_loc().copy()
+
 # ----------------------------------------------------------------------------
 # Write
 
@@ -127,13 +130,13 @@ if sppasRW.create_trs_from_extension(args.o).gaps_support() is False and \
             continue
         else:
             if args.d > 0:
-                loc = sppasInterval(trs_start_point,
-                                    trs_input.get_min_loc().copy())
-            else:
-                loc = sppasInterval(trs_input.get_max_loc().copy(),
-                                    trs_end_point)
-
-        tier.create_annotation(sppasLocation(loc))
+                tier.create_annotation(
+                    sppasLocation(sppasInterval(trs_start_point,
+                                  shifted_trs_start_point)))
+            elif args.d < 0:
+                tier.create_annotation(
+                    sppasLocation(sppasInterval(shifted_trs_end_point,
+                                                trs_end_point)))
 
 if args.quiet is False:
     print("Write output: {:s}".format(args.o))
