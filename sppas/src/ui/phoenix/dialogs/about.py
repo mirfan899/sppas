@@ -50,6 +50,7 @@ MSG_HEADER_ABOUT = ui_translation.gettext("About")
 
 # ----------------------------------------------------------------------------
 
+
 class sppasBaseAbout(sppasScrolledPanel):
     """An about base panel to include main information about a software.
 
@@ -282,6 +283,7 @@ class sppasAboutDialog(sppasDialog):
 
         w = self.GetFont().GetPixelSize()[1]
         self.SetSize((w*50, -1))
+        self.FadeIn(deltaN=-8)
 
 # ------------------------------------------------------------------------
 
@@ -310,6 +312,7 @@ class sppasAboutPluginDialog(sppasDialog):
 
         w = self.GetFont().GetPixelSize()[1]
         self.SetSize((w*50, -1))
+        self.FadeIn(deltaN=-8)
 
 # -------------------------------------------------------------------------
 

@@ -57,6 +57,7 @@ MSG_ACTIONS = ui_translation.gettext("Bottom")
 
 # ---------------------------------------------------------------------------
 
+
 def GetColour(parent):
     """Return the color choose by the user.
 
@@ -118,6 +119,7 @@ class sppasSettingsDialog(sppasDialog):
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
         self.LayoutComponents()
         self.CenterOnParent()
+        self.FadeIn(deltaN=-8)
 
     # -----------------------------------------------------------------------
 
@@ -454,5 +456,5 @@ def Settings(parent):
     """
     dialog = sppasSettingsDialog(parent)
     response = dialog.ShowModal()
-    dialog.Destroy()
+    dialog.DestroyFadeOut()
     return response

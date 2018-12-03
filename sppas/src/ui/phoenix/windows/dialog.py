@@ -86,15 +86,12 @@ class sppasDialog(wx.Dialog):
         """
         super(sppasDialog, self).__init__(*args, **kw)
         self._init_infos()
-
-        #------------
-
-        # Attributes.
         self.SetAutoLayout(True)
+
+        # To fade-in and fade-out the opacity
         self.opacity_in = 0
         self.opacity_out = 255
-        self.deltaN = -4
-        self.delta = wx.Point(0, 0)
+        self.deltaN = -10
 
     # -----------------------------------------------------------------------
 
@@ -122,24 +119,24 @@ class sppasDialog(wx.Dialog):
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
 
-    #-----------------------------------------------------------------------
-    # Fade-in at start-up and Fadou-out at close
-    #-----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Fade-in at start-up and Fade-out at close
+    # -----------------------------------------------------------------------
 
-    def FadeIn(self):
+    def FadeIn(self, deltaN=-10):
         """Fade-in opacity."""
-        self.SetTransparent(0)
+        self.deltaN = int(deltaN)
+        self.SetTransparent(self.opacity_in)
         self.timer1 = wx.Timer(self, -1)
         self.timer1.Start(1)
         self.Bind(wx.EVT_TIMER, self.__alpha_cycle_in, self.timer1)
 
-
-    def DestroyFadeOut(self):
+    def DestroyFadeOut(self, deltaN=-10):
         """Destroy with a fade-out opacity."""
+        self.deltaN = int(deltaN)
         self.timer2 = wx.Timer(self, -1)
         self.timer2.Start(1)
         self.Bind(wx.EVT_TIMER, self.__alpha_cycle_out, self.timer2)
-
 
     # -----------------------------------------------------------------------
     # Override existing but un-useful methods
@@ -219,16 +216,16 @@ class sppasDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def SetContent(self, object):
+    def SetContent(self, window):
         """Assign the content window to this dialog.
 
         :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
 
         """
-        object.SetName("content")
-        object.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        object.SetForegroundColour(wx.GetApp().settings.fg_color)
-        object.SetFont(wx.GetApp().settings.text_font)
+        window.SetName("content")
+        window.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        window.SetForegroundColour(wx.GetApp().settings.fg_color)
+        window.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
