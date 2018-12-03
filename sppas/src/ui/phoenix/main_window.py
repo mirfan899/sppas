@@ -109,7 +109,8 @@ class sppasMainWindow(sppasDialog):
         # Fix this frame properties
         self.Enable()
         self.SetFocus()
-        self.CenterOnScreen()
+        self.CenterOnScreen(wx.BOTH)
+        self.FadeIn()
         self.Show(True)
 
     # ------------------------------------------------------------------------
@@ -288,7 +289,8 @@ class sppasMainWindow(sppasDialog):
         self.log_window.redirect_logging(False)
         # Terminate all frames
         self.DestroyChildren()
-        self.Destroy()
+        # self.Destroy()
+        self.DestroyFadeOut()
 
     # -----------------------------------------------------------------------
 

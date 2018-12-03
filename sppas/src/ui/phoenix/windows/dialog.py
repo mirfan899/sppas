@@ -86,7 +86,15 @@ class sppasDialog(wx.Dialog):
         """
         super(sppasDialog, self).__init__(*args, **kw)
         self._init_infos()
+
+        #------------
+
+        # Attributes.
         self.SetAutoLayout(True)
+        self.opacity_in = 0
+        self.opacity_out = 255
+        self.deltaN = -4
+        self.delta = wx.Point(0, 0)
 
     # -----------------------------------------------------------------------
 
@@ -113,6 +121,25 @@ class sppasDialog(wx.Dialog):
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+
+    #-----------------------------------------------------------------------
+    # Fade-in at start-up and Fadou-out at close
+    #-----------------------------------------------------------------------
+
+    def FadeIn(self):
+        """Fade-in opacity."""
+        self.SetTransparent(0)
+        self.timer1 = wx.Timer(self, -1)
+        self.timer1.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_in, self.timer1)
+
+
+    def DestroyFadeOut(self):
+        """Destroy with a fade-out opacity."""
+        self.timer2 = wx.Timer(self, -1)
+        self.timer2.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_out, self.timer2)
+
 
     # -----------------------------------------------------------------------
     # Override existing but un-useful methods
@@ -336,7 +363,6 @@ class sppasDialog(wx.Dialog):
 
     # ---------------------------------------------------------------------------
     # Private
-    # ---------------------------------------------------------------------------
 
     def __create_button(self, parent, flag):
         """Create a button from a flag and return it.
@@ -372,3 +398,38 @@ class sppasDialog(wx.Dialog):
             btn.SetDefault()
 
         return btn
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_in(self, *args):
+        """Fade-in opacity of the dialog."""
+        self.opacity_in += self.deltaN
+        if self.opacity_in <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 0
+
+        if self.opacity_in >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 255
+            self.timer1.Stop()
+
+        self.SetTransparent(self.opacity_in)
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_out(self, *args):
+        """Fade-out opacity of the dialog."""
+        self.opacity_out += self.deltaN
+        if self.opacity_out >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_out = 255
+
+            self.timer2.Stop()
+
+        if self.opacity_out <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_out = 0
+            wx.CallAfter(self.Destroy)
+
+        self.SetTransparent(self.opacity_out)
+
