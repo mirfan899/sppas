@@ -51,10 +51,46 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sppasRW
+from sppas import sppasPoint
+from sppas.src.anndata.anndataexc import IntervalBoundsError
+
+# ----------------------------------------------------------------------------
+
+
+def round_time(tier, r):
+    """Round to r digits all time values of tier."""
+    for a in tier:
+        loc = a.get_location()
+        for l, s in loc:
+            b = l.get_begin()
+            b.set_midpoint(round(b.get_midpoint(), r))
+            e = l.get_end()
+            e.set_midpoint(round(e.get_midpoint(), r))
+    return tier
+
+# ----------------------------------------------------------------------------
+
+
+def adjust(time_point, ref):
+
+    i = ref.near(time_point, direction=0)
+    a = ref[i]
+    l = a.get_location().get_best()
+
+    # which point of 'a' is the closest?
+    a_begin = l.get_begin()
+    delta_begin = math.fabs(a_begin.get_midpoint() - time_point)
+    a_end = l.get_end()
+    delta_end = math.fabs(a_end.get_midpoint() - time_point)
+
+    if delta_begin < delta_end:
+        return sppasPoint(a_begin.get_midpoint(), delta_begin)
+    return sppasPoint(a_end.get_midpoint(), delta_end)
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
+
 
 parser = ArgumentParser(usage="{:s} -i file [options]"
                               "".format(os.path.basename(PROGRAM)),
@@ -88,29 +124,46 @@ if len(sys.argv) <= 1:
 args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
+# do the job
+# ----------------------------------------------------------------------------
 
 parser = sppasRW(args.i)
 trs_input = parser.read()
 
-tier = trs_input.find(args.t)
+tier_orig = trs_input.find(args.t)
 ref = trs_input.find(args.T)
 
-for ann in tier:
-    location = ann.get_location()
-    for l, s in location:
-        time = l.get_midpoint()
-        a = ref.near(l, direction=0)
-        # the nearest point is either begin or end of a
-        a_begin = a.get_lowest_localization()
-        a_end = a.get_highest_localization()
-        delta_begin = math.fabs(a_begin.get_midpoint() - time)
-        delta_end = math.fabs(a_end.get_midpoint() - time)
-        if delta_begin < delta_end:
-            l.set_midpoint(a_begin)
-            l.set_radius(delta_begin)
-        else:
-            l.set_midpoint(a_end)
-            l.set_radius(delta_end)
+if tier_orig.is_interval() is False:
+    print('Only interval tiers are supported.')
+    sys.exit(1)
+if ref.is_interval() is False:
+    print('Only interval tiers are supported.')
+    sys.exit(1)
 
-    print("New ann: {:s}".format(ann))
+# reformat time values
+tier_orig = round_time(tier_orig, 4)
+ref = round_time(ref, 4)
 
+# ------------------------
+
+tier = tier_orig.copy()
+tier.set_name('TokensAlign-Adjust')
+
+for i in range(1, len(tier)-1):
+    ann = tier[i]
+    loc = ann.get_location().get_best()
+
+    current = loc.get_end()
+    adjusted = adjust(current.get_midpoint(), ref)
+    ann_next = tier[i+1]
+    loc_next = ann_next.get_location().get_best()
+
+    try:
+        loc.set_end(adjusted)
+        loc_next.set_begin(adjusted.copy())
+    except IntervalBoundsError:
+        loc.set_end(current)
+        print('Can not adjust {:s} to {:s}.'.format(current, adjusted))
+
+trs_input.append(tier)
+parser.write(trs_input)
