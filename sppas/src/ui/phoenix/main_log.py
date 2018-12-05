@@ -666,6 +666,9 @@ class sppasMessageTextCtrl(wx.TextCtrl):
 
         self.ResetStyles()
 
+        if wx.Platform == "__WXMAC__":
+            self.MacCheckSpelling(False)
+
     # -----------------------------------------------------------------------
 
     def ResetStyles(self):

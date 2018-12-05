@@ -84,6 +84,8 @@ class sppasApp(wx.App):
 
         self.SetAppName(sg.__name__)
         self.SetAppDisplayName(self.cfg.name)
+        wx.SystemOptions.SetOption("mac.window-plain-transition", 1)
+        wx.SystemOptions.SetOption("msw.font.no-proof-quality", 0)
 
         # Fix language and translation
         lang = wx.LANGUAGE_DEFAULT
