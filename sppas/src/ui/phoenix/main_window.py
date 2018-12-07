@@ -84,6 +84,7 @@ class sppasMainWindow(sppasDialog):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     This class:
+
         - does not inherit of wx.TopLevelWindow because we need EVT_CLOSE
         - does not inherit of wx.Frame because we don't need neither a
         status bar, nor a toolbar, nor a menu.
@@ -100,7 +101,7 @@ class sppasMainWindow(sppasDialog):
         self._init_infos()
 
         # Create the log window of the application and show it.
-        self.log_window = sppasLogWindow(self, wx.GetApp().cfg.log_level)
+        self.log_window = sppasLogWindow(self, wx.GetApp().GetAppLogLevel())
 
         # Fix this frame content
         self._create_content()
@@ -234,7 +235,7 @@ class sppasMainWindow(sppasDialog):
             self.on_settings()
 
         elif event_name in ("home", "files", "annotate", "analyze", "plugins"):
-            self.show_page("page_"+event_name)
+            self.show_page("page_" + event_name)
 
         else:
             event.Skip()

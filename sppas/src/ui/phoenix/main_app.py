@@ -75,15 +75,15 @@ class sppasApp(wx.App):
         Create the application for the GUI of SPPAS based on Phoenix.
 
         """
-        self.cfg = WxAppConfig()
+        self.__cfg = WxAppConfig()
         wx.App.__init__(self,
                         redirect=False,
-                        filename=self.cfg.log_file,
+                        filename=self.__cfg.log_file,
                         useBestVisual=True,
                         clearSigInt=True)
 
         self.SetAppName(sg.__name__)
-        self.SetAppDisplayName(self.cfg.name)
+        self.SetAppDisplayName(self.__cfg.name)
         wx.SystemOptions.SetOption("mac.window-plain-transition", 1)
         wx.SystemOptions.SetOption("msw.font.no-proof-quality", 0)
 
@@ -91,11 +91,21 @@ class sppasApp(wx.App):
         lang = wx.LANGUAGE_DEFAULT
         self.locale = wx.Locale(lang)
 
-        # Fix logging. Settings will be fixed at 'run'.
+        # Fix logging. Notice that Settings will be fixed at 'run'.
         self.settings = None
         self.process_command_line_args()
         self.setup_python_logging()
 
+    # -----------------------------------------------------------------------
+    # Public methods
+    # -----------------------------------------------------------------------
+
+    def GetAppLogLevel(self):
+        """Return the log level."""
+        return self.__cfg.log_level
+
+    # -----------------------------------------------------------------------
+    # Methods to configure and starts the app
     # -----------------------------------------------------------------------
 
     def process_command_line_args(self):
@@ -106,22 +116,31 @@ class sppasApp(wx.App):
         """
         # create a parser for the command-line arguments
         parser = ArgumentParser(
-            usage="{:s}".format(path.basename(__file__)),
+            usage="{:s} [options]".format(path.basename(__file__)),
             description="... " + sg.__longname__)
 
         # add arguments here
         parser.add_argument("-l", "--log_level",
                             required=False,
                             type=int,
-                            default=self.cfg.log_level,
+                            default=self.__cfg.log_level,
                             help='Log level (default={:d}).'
-                                 ''.format(self.cfg.log_level))
+                                 ''.format(self.__cfg.log_level))
+
+        # add arguments here
+        parser.add_argument("-s", "--splash_delay",
+                            required=False,
+                            type=int,
+                            default=self.__cfg.splash_delay,
+                            help='Splash delay (default={:d}).'
+                                 ''.format(self.__cfg.splash_delay))
 
         # then parse
         args = parser.parse_args()
 
         # and do things with arguments
-        self.cfg.set('log_level', args.log_level)
+        self.__cfg.set('log_level', args.log_level)
+        self.__cfg.set('splash_delay', args.splash_delay)
 
     # -----------------------------------------------------------------------
 
@@ -132,19 +151,19 @@ class sppasApp(wx.App):
 
         handler = logging.StreamHandler()
         handler.setFormatter(logging.Formatter(format_msg))
-        handler.setLevel(self.cfg.log_level)
+        handler.setLevel(self.__cfg.log_level)
         logging.getLogger().addHandler(handler)
-        logging.getLogger().setLevel(self.cfg.log_level)
+        logging.getLogger().setLevel(self.__cfg.log_level)
 
         # Show a welcome message on the console!
         logging.info("{:s} logging set up level={:d}"
-                     "".format(self.GetAppDisplayName(), self.cfg.log_level))
+                     "".format(self.GetAppDisplayName(), self.__cfg.log_level))
 
     # -----------------------------------------------------------------------
 
     def show_splash_screen(self):
         """Create and show the splash image."""
-        delay = self.cfg.splash_delay
+        delay = self.__cfg.splash_delay
         if delay <= 0:
             return
 

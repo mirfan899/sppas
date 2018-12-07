@@ -273,6 +273,11 @@ class sppasLogWindow(wx.TopLevelWindow):
             title='{:s} Log'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
+        # To fade-in and fade-out the opacity
+        self.opacity_in = 0
+        self.opacity_out = 255
+        self.deltaN = -3
+
         # Members
         self.handler = sppasHandlerToWx(self)
         self.txt = None
@@ -284,6 +289,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         self._setup_wx_logging(log_level)
         self._setup_events()
         self.SetAutoLayout(True)
+        self._fade_in()
         self.Show(True)
 
     # ------------------------------------------------------------------------
@@ -381,6 +387,31 @@ class sppasLogWindow(wx.TopLevelWindow):
         logging.info('This is how an information message looks like.')
         logging.warning('This is how a warning message looks like.')
         logging.error('This is how an error message looks like.')
+
+    # -----------------------------------------------------------------------
+
+    def _fade_in(self):
+        """Fade-in opacity."""
+        self.SetTransparent(self.opacity_in)
+        self.timer1 = wx.Timer(self, -1)
+        self.timer1.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_in, self.timer1)
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_in(self, *args):
+        """Fade-in opacity of the dialog."""
+        self.opacity_in += self.deltaN
+        if self.opacity_in <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 0
+
+        if self.opacity_in >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 255
+            self.timer1.Stop()
+
+        self.SetTransparent(self.opacity_in)
 
     # -----------------------------------------------------------------------
     # Events
@@ -646,6 +677,7 @@ class sppasMessageTextCtrl(wx.TextCtrl):
     Font, foreground and background are taken from the application settings.
 
     """
+
     text_style = wx.TAB_TRAVERSAL | \
                  wx.TE_MULTILINE | \
                  wx.TE_READONLY | \

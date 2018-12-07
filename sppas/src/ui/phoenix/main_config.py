@@ -49,9 +49,11 @@ class WxAppConfig(sppasBaseSettings):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Config is represented in the dictionary of the class
+    Config is represented in the dictionary of the class.
+    Inherited of sppasBaseSettings which allows to load and save settings.
 
     """
+
     def __init__(self):
         """Create the dictionary of key/value configuration."""
         super(WxAppConfig, self).__init__()
@@ -82,6 +84,7 @@ class WxAppSettings(sppasBaseSettings):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self):
         """Create the dictionary of settings."""
         super(WxAppSettings, self).__init__()
