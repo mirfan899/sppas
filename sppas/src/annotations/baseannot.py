@@ -44,13 +44,9 @@ from .diagnosis import sppasDiagnosis
 
 # ---------------------------------------------------------------------------
 
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_OPTIONS = _(":INFO 1050: ")
-MSG_DIAGNOSIS = _(":INFO 1052: ")
-MSG_ANN_FILE = (_(":INFO 1056: "))
+MSG_OPTIONS = annotations_translation.gettext(":INFO 1050: ")
+MSG_DIAGNOSIS = annotations_translation.gettext(":INFO 1052: ")
+MSG_ANN_FILE = (annotations_translation.gettext(":INFO 1056: "))
 
 # ---------------------------------------------------------------------------
 
@@ -81,11 +77,8 @@ class sppasBaseAnnotation(object):
         # List of options to configure the automatic annotation
         self._options = dict()
 
-        # A file diagnostician
-        self.diagnosis = sppasDiagnosis()
-
     # -----------------------------------------------------------------------
-    # Methods to fix options
+    # Shared methods to fix options and to annotate
     # -----------------------------------------------------------------------
 
     def get_option(self, key):
@@ -102,11 +95,26 @@ class sppasBaseAnnotation(object):
     def fix_options(self, options):
         """Fix all options.
 
-        :param options: (list)
+        :param options: (list of sppasOption)
+
+        """
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def batch_processing(self, file_names, progress=None, output_format=annots.extension):
+        """Perform the annotation on a set of files.
+
+        :param file_names: (list of str) List of file to annotate
+        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
+        :param output_format: (str) Output file extension (starting with a dot)
+        :returns: (int) Number of files processed with success
 
         """
         raise NotImplementedError
 
+    # -----------------------------------------------------------------------
+    # To communicate with the interface:
     # -----------------------------------------------------------------------
 
     def print_message(self, message, indent=3, status=None):
@@ -129,10 +137,16 @@ class sppasBaseAnnotation(object):
             else:
                 if status == annots.info:
                     logging.info(message)
+
                 elif status == annots.warning:
                     logging.warning(message)
+
                 elif status == annots.error:
                     logging.error(message)
+
+                elif status == annots.ok:
+                    logging.info(message)
+
                 else:
                     logging.debug(message)
 
@@ -165,12 +179,11 @@ class sppasBaseAnnotation(object):
             logging.info(MSG_OPTIONS)
 
         for k, v in self._options.items():
+            msg = " - {!s:s}: {!s:s}".format(k, v)
             if self.logfile:
-                self.print_message(" - {!s:s}: {!s:s}".format(k, v),
-                                   indent=3,
-                                   status=None)
+                self.print_message(msg, indent=3, status=None)
             else:
-                logging.info("    - {!s:s}: {!s:s}".format(k, v))
+                logging.info(msg)
 
     # -----------------------------------------------------------------------
 
@@ -180,23 +193,15 @@ class sppasBaseAnnotation(object):
         :param filenames: (list) List of files.
 
         """
-        if self.logfile:
-            self.print_message(MSG_DIAGNOSIS + ": ",
-                               indent=2,
-                               status=None)
-        else:
-            logging.info(MSG_DIAGNOSIS)
-
         for filename in filenames:
             if filename is not None:
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
+                msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
                 if self.logfile:
-                    self.print_message(" - {!s:s}: {!s:s}".format(fn, m),
-                                       indent=3,
-                                       status=None)
+                    self.print_message(msg, indent=1, status=None)
                 else:
-                    logging.info("    - {!s:s}: {!s:s}".format(fn, m))
+                    logging.info(msg)
 
     # -----------------------------------------------------------------------
 
@@ -216,9 +221,9 @@ class sppasBaseAnnotation(object):
         extension or None
 
         """
+        base_name = os.path.splitext(filename)[0]
         for ext in extensions:
-
-            ext_filename = os.path.splitext(filename)[0] + ext
+            ext_filename = base_name + ext
             new_filename = sppasFileUtils(ext_filename).exists()
             if new_filename is not None and os.path.isfile(new_filename):
                 return new_filename

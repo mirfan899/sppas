@@ -32,11 +32,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import logging
+import os
 
 from sppas.src.config import paths
 from sppas.src.config import annots
-from sppas.src.annotations.cfgparser import sppasAnnotationConfigParser
+from sppas.src.anndata.aio import extensions_out
+
+from .cfgparser import sppasAnnotationConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -253,14 +256,14 @@ class sppasParam(object):
     # sppas input (file name or directory)
     def set_sppasinput(self, inputlist):
         self.sppasinput = inputlist
-        self.logfilename = self.sppasinput[0]+".log"
+        self.logfilename = self.sppasinput[0] + ".log"
 
     def get_sppasinput(self):
         return self.sppasinput
 
     def add_sppasinput(self, inputfilename):
         self.sppasinput.append(inputfilename)
-        self.logfilename = self.sppasinput[0]+".log"
+        self.logfilename = self.sppasinput[0] + ".log"
 
     def clear_sppasinput(self):
         del self.sppasinput
@@ -332,15 +335,34 @@ class sppasParam(object):
     def get_options(self, step):
         return self.annotations[step].get_options()
 
+    # -----------------------------------------------------------------------
+
     def get_output_format(self):
         return self.output_format
 
     def set_output_format(self, output_format):
+        """Fix the output format of the annotations.
+
+        :param output_format: (str) File extension (with or without a dot)
+
+        """
+        # Force to contain the dot
+        if not output_format.startswith("."):
+            output_format = "." + output_format
+
+        # Check if this extension is know. If not, set to the default.
+        # Instead we could raise an exception... is it appropriate to do that?
+        extensions = [e.lower() for e in extensions_out]
+        if not output_format.lower() in extensions:
+            logging.warning("Unknown extension: {:s}. Extension is set to default."
+                            "".format(output_format))
+            output_format = annots.extension
+
         self.output_format = output_format
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Continue: everything is ok?
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_continue(self, status):
         self.continuer = status

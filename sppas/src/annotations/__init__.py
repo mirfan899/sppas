@@ -40,21 +40,20 @@ annotations: SPPAS Automatic annotations.
 
 """
 # from .Align import sppasAlign
-# from .Intsint import sppasIntsint
-#
 
 from .TextNorm import sppasTextNorm
 from .Phon import sppasPhon
 from .Syll import sppasSyll
 from .TGA import sppasTGA
+from .Intsint import sppasIntsint
 
 # ---------------------------------------------------------------------------
 #
 __all__ = (
 #     'sppasAlign',
-#     'sppasIntsint',
-      'sppasPhon',
-      'sppasSyll',
-      'sppasTGA',
-      'sppasTextNorm'
+    'sppasIntsint',
+    'sppasPhon',
+    'sppasSyll',
+    'sppasTGA',
+    'sppasTextNorm'
 )

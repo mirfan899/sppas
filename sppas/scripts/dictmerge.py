@@ -36,9 +36,8 @@
     ... a script to merge dictionaries.
 
 """
-import logging
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)

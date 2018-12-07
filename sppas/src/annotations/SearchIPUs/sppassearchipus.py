@@ -48,6 +48,7 @@ from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasRW
+from sppas.src.config import annots
 
 from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
@@ -308,9 +309,11 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             self.print_message(m, indent=3)
 
     # -----------------------------------------------------------------------
+    # Apply the annotation on one or several given files
+    # -----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """Perform the search of IPUs process.
+        """Perform the search of IPUs on a single file.
 
         :param input_filename: (str) Input audio file
         :param output_filename: (str) Resulting annotated file with IPUs
@@ -346,18 +349,18 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         if output_filename is not None:
             parser = sppasRW(output_filename)
             parser.write(trs_output)
-            self.print_filename(output_filename, status=0)
 
         return trs_output
 
     # -----------------------------------------------------------------------
 
     def batch_processing(self, file_names, progress, output_format):
-        """
+        """Perform the annotation on a set of files.
 
-        :param file_names:
+        :param file_names: (list of str)
         :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
-        :return:
+        :param output_format: (str)
+        :return: (int) Number of files processed with success
 
         """
         if len(file_names) == 0:
@@ -371,9 +374,9 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         for i, f in enumerate(file_names):
 
             # Indicate the file to be processed
+            annotation_done = False
             progress.set_text(os.path.basename(f) +
                               " ("+str(i+1)+"/"+str(total)+")")
-            self.print_filename(f)
             self.print_diagnosis(f)
 
             # Fix input/output file name
@@ -390,33 +393,36 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             if exist_out_name is not None:
                 self.print_message(
                     "A file with name {:s} is already existing."
-                    "".format(exist_out_name), indent=2)
+                    "".format(exist_out_name), indent=2, status=annots.info)
                 if exist_out_name != out_name:
                     try:
                         parser = sppasRW(exist_out_name)
                         t = parser.read()
                         parser.set_filename(out_name)
                         parser.write(t)
-                        # OK, it's done! just copy the file!
                         self.print_message(
-                            'It was converted automatically to {:s}'
-                            ''.format(out_name), indent=2)
-                    except Exception:
+                            'The file was exported to {:s}'
+                            ''.format(out_name), indent=2, status=annots.info)
+                    except:
                         pass
-                self.print_message("No automatic annotation was done."
-                                   "", indent=2, status=3)
             else:
                 try:
                     # Execute annotation
                     self.run(f, out_name)
-                    files_processed_success += 1
+                    annotation_done = True
                 except Exception as e:
                     self.print_message(
                         "{:s} for file {:s}\n".format(str(e), out_name),
                         indent=2, status=-1)
 
             # Indicate progress
-            progress.set_fraction(float((i+1))/float(total))
+            if annotation_done is False:
+                self.print_message(
+                    "No annotation was done.", indent=2, status=annots.ignore)
+            else:
+                files_processed_success += 1
+                self.print_message(out_name, indent=2, status=annots.ok)
+            progress.set_fraction(round(float((i+1))/float(total), 2))
             self.print_newline()
 
         # Indicate completed!
