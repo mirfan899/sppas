@@ -33,7 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import sys
 
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
@@ -98,28 +97,28 @@ class sppasMomel(sppasBaseAnnotation):
 
             key = opt.get_key()
 
-            if "lfen1" == key:
+            if "win1" == key:
                 self.momel.set_option_win1(opt.get_value())
 
-            elif "hzinf" == key:
+            elif "lo" == key:
                 self.momel.set_option_lo(opt.get_value())
 
-            elif "hzsup" == key:
+            elif "hi" == key:
                 self.momel.set_option_hi(opt.get_value())
 
-            elif "maxec" == opt.get_key():
+            elif "maxerr" == opt.get_key():
                 self.momel.set_option_maxerr(opt.get_value())
 
-            elif "lfen2" == opt.get_key():
+            elif "win2" == opt.get_key():
                 self.momel.set_option_win2(opt.get_value())
 
-            elif "seuildiff_x" == opt.get_key():
+            elif "mind" == opt.get_key():
                 self.momel.set_option_mind(opt.get_value())
 
-            elif "seuildiff_y" == opt.get_key():
+            elif "minr" == opt.get_key():
                 self.momel.set_option_minr(opt.get_value())
 
-            elif "glitch" == opt.get_key():
+            elif "elim_glitch" == opt.get_key():
                 self.momel.set_option_elim_glitch(opt.get_value())
 
             else:

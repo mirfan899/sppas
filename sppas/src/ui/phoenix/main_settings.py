@@ -28,48 +28,13 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.main_config.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    ui.phoenix.main_settings.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 
-from sppas.src.config import sg
 from sppas.src.config import sppasBaseSettings
-
-# ---------------------------------------------------------------------------
-
-
-class WxAppConfig(sppasBaseSettings):
-    """Manage the application global configuration.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
-    Config is represented in the dictionary of the class.
-    Inherited of sppasBaseSettings which allows to load and save settings.
-
-    """
-
-    def __init__(self):
-        """Create the dictionary of key/value configuration."""
-        super(WxAppConfig, self).__init__()
-
-        self.__dict__ = dict(
-            name=sg.__name__ + " " + sg.__version__,
-            log_level=15,
-            log_file=None,
-            splash_delay=3,
-        )
-
-    # -----------------------------------------------------------------------
-
-    def set(self, key, value):
-        """Set a new value to a key."""
-        setattr(self, key, value)
 
 # ---------------------------------------------------------------------------
 

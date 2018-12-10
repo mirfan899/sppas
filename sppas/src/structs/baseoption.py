@@ -66,6 +66,14 @@ class sppasBaseOption(object):
 
     """
 
+    type_mappings = {
+        'float': float,
+        'int': int,
+        'bool': bool,
+        'str': str,
+        'file': str
+    }
+
     def __init__(self, option_type, option_value=""):
         """Create a sppasBaseOption instance.
 

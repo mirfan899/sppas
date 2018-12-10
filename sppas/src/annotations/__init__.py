@@ -39,21 +39,22 @@ annotations: SPPAS Automatic annotations.
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
-# from .Align import sppasAlign
 
+from .Momel import sppasMomel
+from .Intsint import sppasIntsint
 from .TextNorm import sppasTextNorm
 from .Phon import sppasPhon
 from .Syll import sppasSyll
 from .TGA import sppasTGA
-from .Intsint import sppasIntsint
+# from .Align import sppasAlign
 
 # ---------------------------------------------------------------------------
 #
 __all__ = (
-#     'sppasAlign',
+    'sppasMomel',
     'sppasIntsint',
+    'sppasTextNorm',
     'sppasPhon',
     'sppasSyll',
     'sppasTGA',
-    'sppasTextNorm'
 )

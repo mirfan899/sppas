@@ -29,15 +29,15 @@
 
         ---------------------------------------------------------------------
 
-    bin.intsint.py
-    ~~~~~~~~~~~~~~
+    bin.momel.py
+    ~~~~~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Run the intsint automatic annotation
+    :summary:      Run the momel automatic annotations
 
 """
 import sys
@@ -49,7 +49,7 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.config.ui import sppasAppConfig
-from sppas import sppasIntsint
+from sppas import sppasMomel
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.config import annots
 
@@ -57,55 +57,51 @@ from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.utils.fileutils import setup_logging
 
-
 # ------------------------------------------------------------------------
 # Fix initial annotation parameters
 # ------------------------------------------------------------------------
 
-parameters = sppasParam("intsint")
-intsint_step_idx = parameters.activate_annotation("intsint")
-intsint_options = parameters.get_options(intsint_step_idx)
+parameters = sppasParam("momel")
+momel_step_idx = parameters.activate_annotation("momel")
+momel_options = parameters.get_options(momel_step_idx)
 
 
-# ---------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 # Verify and extract args:
-# ---------------------------------------------------------------------------
-
+# ------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="{:s} ..."
                               "".format(os.path.basename(PROGRAM)),
-                        description="INTSINT automatic annotations.")
+                        description="Momel automatic annotations.")
+
 
 # Add arguments for input/output of the annotations
 # -------------------------------------------------
 
 parser.add_argument("-i",
-                    required=False,
                     metavar="file",
-                    help='Input file name with anchors.')
+                    help='Input file name (extension: .hz or .PitchTier)')
 
 parser.add_argument("-o",
-                    required=False,
                     metavar="file",
-                    help="Intsint output file name of -i option (default: stdout)")
+                    help="Momel output file name (default: stdout)")
 
 parser.add_argument("-I",
-                    required=False,
                     action='append',
                     metavar="file",
-                    help='Input file name with anchors.')
+                    help='Input file name with pitch.')
 
 parser.add_argument("-e",
                     default=annots.extension,
-                    metavar="extension",
                     choices=extensions_out,
+                    metavar="extension",
                     help='Output file extension. One of: {:s}'
                          ''.format(" ".join(extensions_out)))
 
 # Add arguments from the options of the annotation
 # ------------------------------------------------
 
-for opt in intsint_options:
+for opt in momel_options:
     parser.add_argument(
         "--" + opt.get_key(),
         type=opt.type_mappings[opt.get_type()],
@@ -133,22 +129,23 @@ args = parser.parse_args()
 arguments = vars(args)
 for a in arguments:
     if a not in ('i', 'o', 'I', 'e', 'quiet'):
-        parameters.set_option_value(intsint_step_idx, a, arguments[a])
+        parameters.set_option_value(momel_step_idx, a, arguments[a])
 
 # Perform the annotation on a single file
 # ---------------------------------------
 if args.i:
-    intsint = sppasIntsint(logfile=None)
-    intsint.fix_options(parameters.get_options(intsint_step_idx))
+    melodie = sppasMomel(logfile=None)
+    melodie.fix_options(parameters.get_options(momel_step_idx))
     if args.o:
-        intsint.run(args.i, args.o)
+        melodie.run(args.i, args.o)
     else:
-        trs = intsint.run(args.i, None)
+        trs = melodie.run(args.i, None)
         for ann in trs[0]:
-            print("{:f} {:s}".format(
+            print("{:f} {:f}".format(
                 ann.get_lowest_localization().get_midpoint(),
                 ann.get_best_tag().get_typed_content()))
     sys.exit(0)
+
 
 # Perform the annotation on a set of files
 # ----------------------------------------

@@ -5,7 +5,7 @@ PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM)))))
 sys.path.append(SPPAS)
 
-from sppas.src.ui.phoenix.main_config import WxAppSettings
+from sppas.src.ui.phoenix.main_settings import WxAppSettings
 
 app = wx.App()
 

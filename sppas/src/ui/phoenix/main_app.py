@@ -51,7 +51,8 @@ except ImportError:
 
 from sppas.src.config import sg
 
-from .main_config import WxAppConfig, WxAppSettings
+from sppas.src.config.ui import sppasAppConfig
+from .main_settings import WxAppSettings
 from .main_window import sppasMainWindow
 from .tools import sppasSwissKnife
 
@@ -75,7 +76,7 @@ class sppasApp(wx.App):
         Create the application for the GUI of SPPAS based on Phoenix.
 
         """
-        self.__cfg = WxAppConfig()
+        self.__cfg = sppasAppConfig()
         wx.App.__init__(self,
                         redirect=False,
                         filename=self.__cfg.log_file,
