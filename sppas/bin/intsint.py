@@ -48,130 +48,132 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config.ui import sppasAppConfig
 from sppas import sppasIntsint
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.config import annots
-
 from sppas.src.annotations.param import sppasParam
+from sppas.src.config.ui import sppasAppConfig
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.utils.fileutils import setup_logging
 
+if __name__ == "__main__":
+    
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
+    
+    parameters = sppasParam("intsint")
+    ann_step_idx = parameters.activate_annotation("intsint")
+    ann_options = parameters.get_options(ann_step_idx)
+    
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
+    
+    parser = ArgumentParser(usage="{:s} ..."
+                                  "".format(os.path.basename(PROGRAM)),
+                            description="INTSINT automatic annotation.")
+    
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-# ------------------------------------------------------------------------
-# Fix initial annotation parameters
-# ------------------------------------------------------------------------
+    input_group = parser.add_mutually_exclusive_group()
 
-parameters = sppasParam("intsint")
-intsint_step_idx = parameters.activate_annotation("intsint")
-intsint_options = parameters.get_options(intsint_step_idx)
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input file name with anchors.')
 
-
-# ---------------------------------------------------------------------------
-# Verify and extract args:
-# ---------------------------------------------------------------------------
-
-
-parser = ArgumentParser(usage="{:s} ..."
-                              "".format(os.path.basename(PROGRAM)),
-                        description="INTSINT automatic annotations.")
-
-# Add arguments for input/output of the annotations
-# -------------------------------------------------
-
-parser.add_argument("-i",
-                    required=False,
-                    metavar="file",
-                    help='Input file name with anchors.')
-
-parser.add_argument("-o",
-                    required=False,
-                    metavar="file",
-                    help="Intsint output file name of -i option (default: stdout)")
-
-parser.add_argument("-I",
-                    required=False,
-                    action='append',
-                    metavar="file",
-                    help='Input file name with anchors.')
-
-parser.add_argument("-e",
-                    default=annots.extension,
-                    metavar="extension",
-                    choices=extensions_out,
-                    help='Output file extension. One of: {:s}'
-                         ''.format(" ".join(extensions_out)))
-
-# Add arguments from the options of the annotation
-# ------------------------------------------------
-
-for opt in intsint_options:
     parser.add_argument(
-        "--" + opt.get_key(),
-        type=opt.type_mappings[opt.get_type()],
-        default=opt.get_value(),
-        help=opt.get_text()+" (default: {:s})".format(opt.get_untypedvalue()))
+        "-o",
+        metavar="file",
+        help="Output file name (default: stdout)")
 
-# Add quiet and help arguments
-# ----------------------------
-
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Print only warnings and errors.")
-
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
-
-args = parser.parse_args()
-
-# ---------------------------------------------------------------------------
-# The automatic annotation is here:
-# ---------------------------------------------------------------------------
-
-# get options from arguments
-# --------------------------
-arguments = vars(args)
-for a in arguments:
-    if a not in ('i', 'o', 'I', 'e', 'quiet'):
-        parameters.set_option_value(intsint_step_idx, a, arguments[a])
-
-# Perform the annotation on a single file
-# ---------------------------------------
-if args.i:
-    intsint = sppasIntsint(logfile=None)
-    intsint.fix_options(parameters.get_options(intsint_step_idx))
-    if args.o:
-        intsint.run(args.i, args.o)
-    else:
-        trs = intsint.run(args.i, None)
-        for ann in trs[0]:
-            print("{:f} {:s}".format(
-                ann.get_lowest_localization().get_midpoint(),
-                ann.get_best_tag().get_typed_content()))
-    sys.exit(0)
-
-# Perform the annotation on a set of files
-# ----------------------------------------
-
-# Fix the output file extension
-parameters.set_output_format(args.e)
-
-# Fix input files
-files = list()
-if args.I:
-    for f in args.I:
-        parameters.add_sppasinput(os.path.abspath(f))
-if args.i:
-    parameters.add_sppasinput(os.path.abspath(args.i))
-
-# Redirect all messages to logging.
-with sppasAppConfig() as cg:
-    parameters.set_logfilename(cg.log_file)
-    if not args.quiet:
-            setup_logging(cg.log_level, None)
-    else:
-        setup_logging(cg.quiet_log_level, None)
-
-# Perform the annotation
-process = sppasAnnotationsManager(parameters)
-process.run_intsint()
+    input_group.add_argument(
+        "-I",
+        action='append',
+        metavar="file",
+        help='Input file name with anchors (append).')
+    
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
+    
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
+    
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text()+" (default: {:s})"
+                                "".format(opt.get_untypedvalue()))
+    
+    # Add quiet and help arguments
+    # ----------------------------
+    
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
+    
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+    
+    args = parser.parse_args()
+    
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+    
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'I', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, arguments[a])
+    
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+        intsint = sppasIntsint(logfile=None)
+        intsint.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            intsint.run(args.i, args.o)
+        else:
+            trs = intsint.run(args.i, None)
+            for ann in trs[0]:
+                print("{:f} {:s}".format(
+                    ann.get_location().get_best().get_midpoint(),
+                    ann.get_best_tag().get_typed_content()))
+        sys.exit(0)
+    
+    # Perform the annotation on a set of files
+    # ----------------------------------------
+    
+    # Fix the output file extension
+    parameters.set_output_format(args.e)
+    
+    # Fix input files
+    files = list()
+    if args.I:
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+    if args.i:
+        parameters.add_sppasinput(os.path.abspath(args.i))
+    
+    # Redirect all messages to logging.
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+                setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+    
+    # Perform the annotation
+    process = sppasAnnotationsManager(parameters)
+    process.run_intsint()

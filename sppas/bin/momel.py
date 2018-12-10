@@ -40,6 +40,7 @@
     :summary:      Run the momel automatic annotations
 
 """
+
 import sys
 import os
 from argparse import ArgumentParser
@@ -48,127 +49,131 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config.ui import sppasAppConfig
 from sppas import sppasMomel
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.config import annots
-
 from sppas.src.annotations.param import sppasParam
+from sppas.src.config.ui import sppasAppConfig
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.utils.fileutils import setup_logging
 
-# ------------------------------------------------------------------------
-# Fix initial annotation parameters
-# ------------------------------------------------------------------------
+if __name__ == "__main__":
+    
+    # ------------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # ------------------------------------------------------------------------
+    
+    parameters = sppasParam("momel")
+    ann_step_idx = parameters.activate_annotation("momel")
+    ann_options = parameters.get_options(ann_step_idx)
+    
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # ------------------------------------------------------------------------
+    
+    parser = ArgumentParser(usage="{:s} ..."
+                                  "".format(os.path.basename(PROGRAM)),
+                            description="Momel automatic annotation.")
+    
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parameters = sppasParam("momel")
-momel_step_idx = parameters.activate_annotation("momel")
-momel_options = parameters.get_options(momel_step_idx)
+    input_group = parser.add_mutually_exclusive_group()
 
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input file name (extension: .hz or .PitchTier)')
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ------------------------------------------------------------------------
-
-parser = ArgumentParser(usage="{:s} ..."
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Momel automatic annotations.")
-
-
-# Add arguments for input/output of the annotations
-# -------------------------------------------------
-
-parser.add_argument("-i",
-                    metavar="file",
-                    help='Input file name (extension: .hz or .PitchTier)')
-
-parser.add_argument("-o",
-                    metavar="file",
-                    help="Momel output file name (default: stdout)")
-
-parser.add_argument("-I",
-                    action='append',
-                    metavar="file",
-                    help='Input file name with pitch.')
-
-parser.add_argument("-e",
-                    default=annots.extension,
-                    choices=extensions_out,
-                    metavar="extension",
-                    help='Output file extension. One of: {:s}'
-                         ''.format(" ".join(extensions_out)))
-
-# Add arguments from the options of the annotation
-# ------------------------------------------------
-
-for opt in momel_options:
     parser.add_argument(
-        "--" + opt.get_key(),
-        type=opt.type_mappings[opt.get_type()],
-        default=opt.get_value(),
-        help=opt.get_text()+" (default: {:s})".format(opt.get_untypedvalue()))
+        "-o",
+        metavar="file",
+        help="Output file name (default: stdout)")
 
-# Add quiet and help arguments
-# ----------------------------
-
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Print only warnings and errors.")
-
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
-
-args = parser.parse_args()
-
-# ---------------------------------------------------------------------------
-# The automatic annotation is here:
-# ---------------------------------------------------------------------------
-
-# get options from arguments
-# --------------------------
-arguments = vars(args)
-for a in arguments:
-    if a not in ('i', 'o', 'I', 'e', 'quiet'):
-        parameters.set_option_value(momel_step_idx, a, arguments[a])
-
-# Perform the annotation on a single file
-# ---------------------------------------
-if args.i:
-    melodie = sppasMomel(logfile=None)
-    melodie.fix_options(parameters.get_options(momel_step_idx))
-    if args.o:
-        melodie.run(args.i, args.o)
-    else:
-        trs = melodie.run(args.i, None)
-        for ann in trs[0]:
-            print("{:f} {:f}".format(
-                ann.get_lowest_localization().get_midpoint(),
-                ann.get_best_tag().get_typed_content()))
-    sys.exit(0)
-
-
-# Perform the annotation on a set of files
-# ----------------------------------------
-
-# Fix the output file extension
-parameters.set_output_format(args.e)
-
-# Fix input files
-files = list()
-if args.I:
-    for f in args.I:
-        parameters.add_sppasinput(os.path.abspath(f))
-if args.i:
-    parameters.add_sppasinput(os.path.abspath(args.i))
-
-# Redirect all messages to logging.
-with sppasAppConfig() as cg:
-    parameters.set_logfilename(cg.log_file)
-    if not args.quiet:
-            setup_logging(cg.log_level, None)
-    else:
-        setup_logging(cg.quiet_log_level, None)
-
-# Perform the annotation
-process = sppasAnnotationsManager(parameters)
-process.run_intsint()
+    input_group.add_argument(
+        "-I",
+        action='append',
+        metavar="file",
+        help='Input file name with pitch (append).')
+    
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        choices=extensions_out,
+        metavar="extension",
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
+    
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
+    
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text()+" (default: {:s})".format(opt.get_untypedvalue()))
+    
+    # Add quiet and help arguments
+    # ----------------------------
+    
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
+    
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+    
+    args = parser.parse_args()
+    
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+    
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'I', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, arguments[a])
+    
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+        melodie = sppasMomel(logfile=None)
+        melodie.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            melodie.run(args.i, args.o)
+        else:
+            trs = melodie.run(args.i, None)
+            for ann in trs[0]:
+                print("{:f} {:f}".format(
+                    ann.get_location().get_best().get_midpoint(),
+                    ann.get_best_tag().get_typed_content()))
+        sys.exit(0)
+    
+    # Perform the annotation on a set of files
+    # ----------------------------------------
+    
+    # Fix the output file extension
+    parameters.set_output_format(args.e)
+    
+    # Fix input files
+    files = list()
+    if args.I:
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+    if args.i:
+        parameters.add_sppasinput(os.path.abspath(args.i))
+    
+    # Redirect all messages to logging.
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+                setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+    
+    # Perform the annotation
+    process = sppasAnnotationsManager(parameters)
+    process.run_intsint()

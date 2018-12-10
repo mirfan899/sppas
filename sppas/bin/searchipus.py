@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     bin.searchipus.py
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -50,92 +50,133 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
+from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.utils.fileutils import setup_logging
-
-# ---------------------------------------------------------------------------
-# Verify and extract args:
-# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
 
-    w = sppasSearchIPUs()
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="{:s} -w file [options]"
+    parameters = sppasParam("searchipus")
+    ann_step_idx = parameters.activate_annotation("searchipus")
+    ann_options = parameters.get_options(ann_step_idx)
+
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
+
+    parser = ArgumentParser(usage="{:s} ..."
                                   "".format(os.path.basename(PROGRAM)),
                             description="Search for IPUs automatic annotation.")
 
-    parser.add_argument("-w",
-                        metavar="file",
-                        required=True,
-                        help='Input wav file name')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-    # Silence/Speech segmentation options:
-    parser.add_argument("-r", "--winrms",
-                        type=float,
-                        default=w.get_win_length(),
-                        help='Window size to estimate rms, in seconds '
-                             '(default: {:f})'.format(w.get_win_length()))
+    input_group = parser.add_mutually_exclusive_group()
 
-    parser.add_argument("-m",
-                        "--minipu",
-                        type=float,
-                        default=w.get_min_ipu(),
-                        help='Drop speech shorter than m seconds long '
-                             '(default: {:f})'.format(w.get_min_ipu()))
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-    parser.add_argument("-s",
-                        "--minsil",
-                        type=float,
-                        default=w.get_min_sil(),
-                        help='Drop silences shorter than s seconds long '
-                             '(default: {:f})'.format(w.get_min_sil()))
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Annotated file with silences/units segmentation '
+             '(default: None)')
 
-    parser.add_argument("-v",
-                        "--minrms",
-                        type=int,
-                        default=w.get_threshold(),
-                        help='Assume everything with a rms lower than v is a silence. 0=automatic adjust.'
-                             '(default: {:d})'.format(w.get_threshold()))
+    parser.add_argument(
+        "-I",
+        action='append',
+        metavar="file",
+        help='Input wav file name (append).')
 
-    # Other options:
-    parser.add_argument("-d",
-                        "--shiftstart",
-                        type=float,
-                        default=w.get_shift_start(),
-                        help='Shift-left the start boundary of IPUs '
-                             '(default: {:f})'.format(w.get_shift_start()))
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-    parser.add_argument("-D",
-                        "--shiftend",
-                        type=float,
-                        default=w.get_shift_end(),
-                        help='Shift-right the end boundary of IPUs '
-                             '(default: {:f})'.format(w.get_shift_end()))
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-    # Output options:
-    parser.add_argument("-o",
-                        metavar="file",
-                        help='Annotated file with silences/units segmentation '
-                             '(default: None)')
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
+
+    # Add quiet and help arguments
+    # ----------------------------
+
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
 
     args = parser.parse_args()
 
-    log_level = 1
-    log_file = None
-    setup_logging(log_level, log_file)
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-    # ----------------------------------------------------------------------------
-    # Automatic IPUs segmentation is here:
-    # ----------------------------------------------------------------------------
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'I', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, arguments[a])
 
-    w.set_shift_start(args.shiftstart)
-    w.set_shift_end(args.shiftend)
-    w.set_min_ipu(args.minipu)
-    w.set_min_sil(args.minsil)
-    w.set_threshold(args.minrms)
-    w.set_win_length(args.winrms)
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+        ann = sppasSearchIPUs(logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for ann in trs[0]:
+                print("{:f} {:f} {:s}".format(
+                    ann.get_location().get_best().get_begin().get_midpoint(),
+                    ann.get_location().get_best().get_end().get_midpoint(),
+                    ann.get_best_tag().get_typed_content()))
+        sys.exit(0)
 
-    trs_out = w.run(args.w, args.o)
+    # Perform the annotation on a set of files
+    # ----------------------------------------
+
+    # Fix the output file extension
+    parameters.set_output_format(args.e)
+
+    # Fix input files
+    files = list()
+    if args.I:
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+    if args.i:
+        parameters.add_sppasinput(os.path.abspath(args.i))
+
+    # Redirect all messages to logging.
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Perform the annotation
+    process = sppasAnnotationsManager(parameters)
+    process.run_searchipus()

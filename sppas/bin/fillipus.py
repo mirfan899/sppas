@@ -50,61 +50,111 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
 
-# ---------------------------------------------------------------------------
-# Verify and extract args:
-# ---------------------------------------------------------------------------
+if __name__ == "__main__":
 
-w = sppasFillIPUs()
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -w file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Fill in IPUs automatic annotation.")
+    parameters = sppasParam("fillipus")
+    ann_step_idx = parameters.activate_annotation("fillipus")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input wav file name')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-t",
-                    metavar="file",
-                    required=True,
-                    help='Input transcription file name')
+    parser = ArgumentParser(usage="{:s} ..."
+                                  "".format(os.path.basename(PROGRAM)),
+                            description="Fill in IPUs automatic annotation.")
 
-parser.add_argument("-m",
-                    "--minipu",
-                    type=float,
-                    default=w.get_min_ipu(),
-                    help='Initial value to drop units shorter than m seconds long '
-                         '(default: {:f})'.format(w.get_min_ipu()))
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("-s",
-                    "--minsil",
-                    type=float,
-                    default=w.get_min_sil(),
-                    help='Initial value to drop silences shorter than s seconds long '
-                         '(default: {:f})'.format(w.get_min_sil()))
+    input_group = parser.add_mutually_exclusive_group()
 
-# Output options:
-parser.add_argument("-o",
-                    metavar="file",
-                    help='Annotated file with silences/units segmentation '
-                         '(default: None)')
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    parser.add_argument(
+        "-t",
+        metavar="file",
+        help='Input transcription file name.')
 
-args = parser.parse_args()
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Annotated file with filled IPUs ')
 
-log_level = 1
-log_file = None
-setup_logging(log_level, log_file)
+    # input_group.add_argument(
+    #     "-I",
+    #     action='append',
+    #     metavar="file",
+    #     help='Input wav file name (append).')
 
-# ----------------------------------------------------------------------------
-# Automatic IPUs segmentation is here:
-# ----------------------------------------------------------------------------
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-w.set_min_ipu(args.minipu)
-w.set_min_sil(args.minsil)
-trs_out = w.run(args.w, args.t, args.o)
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
+
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
+
+    # Add quiet and help arguments
+    # ----------------------------
+
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
+
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 't', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, arguments[a])
+
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+        if not args.t:
+            print("argparse.py: error: option -t is required with option -i")
+            sys.exit(1)
+        ann = sppasFillIPUs(logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.t, args.o)
+        else:
+            trs = ann.run(args.i, args.t, None)
+            for ann in trs[0]:
+                print("{:f} {:f} {:s}".format(
+                    ann.get_location().get_best().get_begin().get_midpoint(),
+                    ann.get_location().get_best().get_end().get_midpoint(),
+                    ann.get_best_tag().get_typed_content()))
+        sys.exit(0)
