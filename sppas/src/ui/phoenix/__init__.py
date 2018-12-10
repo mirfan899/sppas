@@ -34,10 +34,8 @@
 """
 from .main_app import sppasApp
 from .main_settings import WxAppSettings
-from .main_settings import WxAppConfig
 
 __all__ = (
     'sppasApp',
     'WxAppSettings',
-    'WxAppConfig'
 )
