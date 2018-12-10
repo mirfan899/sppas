@@ -68,16 +68,16 @@ if __name__ == "__main__":
     # Verify and extract args:
     # -----------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="{:s} ..."
-                                  "".format(os.path.basename(PROGRAM)),
-                            description="Fill in IPUs automatic annotation.")
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
     # Add arguments for input/output of the annotations
     # -------------------------------------------------
 
-    input_group = parser.add_mutually_exclusive_group()
-
-    input_group.add_argument(
+    parser.add_argument(
         "-i",
         metavar="file",
         help='Input wav file name.')
@@ -91,12 +91,6 @@ if __name__ == "__main__":
         "-o",
         metavar="file",
         help='Annotated file with filled IPUs ')
-
-    # input_group.add_argument(
-    #     "-I",
-    #     action='append',
-    #     metavar="file",
-    #     help='Input wav file name (append).')
 
     parser.add_argument(
         "-e",

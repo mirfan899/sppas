@@ -71,9 +71,11 @@ if __name__ == "__main__":
     # Verify and extract args:
     # -----------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="{:s} ..."
-                                  "".format(os.path.basename(PROGRAM)),
-                            description="Search for IPUs automatic annotation.")
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
     # Add arguments for input/output of the annotations
     # -------------------------------------------------

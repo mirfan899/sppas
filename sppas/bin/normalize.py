@@ -41,6 +41,7 @@
     :summary:      Text normalization automatic annotation.
 
 """
+
 import sys
 import os
 from argparse import ArgumentParser
@@ -54,95 +55,134 @@ from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
-from sppas.src.utils.fileutils import setup_logging
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
 
-parser = ArgumentParser(usage="{:s} -r vocab [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        prog=PROGRAM,
-                        description="Text normalization command line.")
+if __name__ == "__main__":
 
-parser.add_argument("-r", "--vocab",
-                    required=True,
-                    help='Vocabulary file name')
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=False,
-                    help='Input file name')
+    parameters = sppasParam("textnorm")
+    ann_step_idx = parameters.activate_annotation("textnorm")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=False,
-                    help='Output file name (required only if -i is fixed)')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("--nofaked",
-                    action='store_true',
-                    help="Do not add the tier with faked orthography "
-                         "(available only if -i is fixed)")
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("--std",
-                    action='store_true',
-                    help="Add a tier with the standard orthography "
-                         "(available only if -i is fixed)")
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("--custom",
-                    action='store_true',
-                    help="Add a customized text normalization "
-                         "(available only if -i is fixed)")
+    input_group = parser.add_mutually_exclusive_group()
 
-parser.add_argument("--quiet",  action='store_true', help="Disable verbose.")
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input transcription file name.')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Annotated file with filled IPUs ')
 
-args = parser.parse_args()
+    parser.add_argument(
+        "-r", "--vocab",
+        required=True,
+        help='Vocabulary file name')
 
-# ----------------------------------------------------------------------------
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-# ----------------------------------------------------------------------------
-# Automatic Text Normalization is here:
-# ----------------------------------------------------------------------------
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-base = os.path.basename(args.vocab)
-lang = base[:3]
+    # Add quiet and help arguments
+    # ----------------------------
 
-if args.i:
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
-    p = sppasTextNorm(args.vocab, lang)
-    if args.nofaked:
-        p.set_faked(False)
-    if args.std:
-        p.set_std(True)
-    if args.custom:
-        p.set_custom(True)
-    p.run(args.i, args.o)
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-else:
+    args = parser.parse_args()
 
-    vocab = sppasVocabulary(args.vocab)
-    normalizer = TextNormalizer(vocab, lang)
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-    replace_file = os.path.join(paths.resources, "repl", lang + ".repl")
-    if os.path.exists(replace_file):
-        repl = sppasDictRepl(replace_file, nodump=True)
-        normalizer.set_repl(repl)
+    base = os.path.basename(args.vocab)
+    lang = base[:3]
 
-    punct_file = os.path.join(paths.resources, "vocab", "Punctuations.txt")
-    if os.path.exists(punct_file):
-        punct = sppasVocabulary(punct_file, nodump=True)
-        normalizer.set_punct(punct)
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'vocab', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
-    # Will output the faked orthography
-    for line in sys.stdin:
-        tokens = normalizer.normalize(line)
-        for token in tokens:
-            print("{!s:s}".format(token))
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+
+        ann = sppasTextNorm(vocab=args.vocab, lang=lang, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for ann in tier:
+                    print("{:f} {:f} {:s}".format(
+                        ann.get_location().get_best().get_begin().get_midpoint(),
+                        ann.get_location().get_best().get_end().get_midpoint(),
+                        ann.serialize_labels(" ")))
+
+    # Perform the annotation on stdin
+    # -------------------------------
+    else:
+
+        vocab = sppasVocabulary(args.vocab)
+        normalizer = TextNormalizer(vocab, lang)
+
+        replace_file = os.path.join(paths.resources, "repl", lang + ".repl")
+        if os.path.exists(replace_file):
+            repl = sppasDictRepl(replace_file, nodump=True)
+            normalizer.set_repl(repl)
+
+        punct_file = os.path.join(paths.resources, "vocab", "Punctuations.txt")
+        if os.path.exists(punct_file):
+            punct = sppasVocabulary(punct_file, nodump=True)
+            normalizer.set_punct(punct)
+
+        # Will output the faked orthography
+        for line in sys.stdin:
+            tokens = normalizer.normalize(line)
+            for token in tokens:
+                print("{!s:s}".format(token))

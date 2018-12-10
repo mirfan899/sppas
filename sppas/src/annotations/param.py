@@ -215,7 +215,8 @@ class annotationParam(object):
             if key == opt.get_key():
                 opt.set_value(value)
                 return
-        raise KeyError("Unknown option {:s} in annotation parameters.".format(key))
+        raise KeyError("Unknown option {:s} in annotation parameters."
+                       "".format(key))
 
 # ---------------------------------------------------------------------------
 

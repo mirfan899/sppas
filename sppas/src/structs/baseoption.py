@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
+from distutils.util import strtobool
 from sppas.src.utils.makeunicode import u, text_type, binary_type
 
 # ----------------------------------------------------------------------------
@@ -69,7 +70,7 @@ class sppasBaseOption(object):
     type_mappings = {
         'float': float,
         'int': int,
-        'bool': bool,
+        'bool': lambda x: bool(strtobool(x)),
         'str': str,
         'file': str
     }

@@ -54,79 +54,129 @@ from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.utils.fileutils import setup_logging
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
 
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+if __name__ == "__main__":
 
-parser = ArgumentParser(usage="{:s} -r dict [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        prog=PROGRAM,
-                        description="Phonetization automatic annotation.")
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-r", "--dict",
-                    required=True,
-                    help='Pronunciation dictionary (HTK-ASCII format).')
+    parameters = sppasParam("phon")
+    ann_step_idx = parameters.activate_annotation("phon")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-m", "--map",
-                    required=False,
-                    help='Pronunciation mapping table. '
-                         'It is used to generate new pronunciations by '
-                         'mapping phonemes of the dictionary.')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=False,
-                    help='Input file name')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=False,
-                    help='Output file name (required only if -i is fixed)')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("--nounk",
-                    action='store_true',
-                    help="Disable unknown word phonetization.")
+    input_group = parser.add_mutually_exclusive_group()
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable verbose.")
+    input_group.add_argument(
+        "-i",
+        metavar="file",
+        help='Input transcription file name.')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Annotated file with filled IPUs ')
 
-args = parser.parse_args()
+    parser.add_argument(
+        "-r", "--dict",
+        required=True,
+        help='Pronunciation dictionary (HTK-ASCII format).')
 
-# ----------------------------------------------------------------------------
+    parser.add_argument(
+        "-m", "--map",
+        required=False,
+        help='Pronunciation mapping table. '
+             'It is used to generate new pronunciations by '
+             'mapping phonemes of the dictionary.')
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-# ----------------------------------------------------------------------------
-# Automatic Phonetization is here:
-# ----------------------------------------------------------------------------
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-unkopt = True
-if args.nounk:
-    unkopt = False
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-mapfile = None
-if args.map:
-    mapfile = args.map
+    # Add quiet and help arguments
+    # ----------------------------
 
-if args.i:
-    p = sppasPhon(args.dict, mapfile)
-    p.set_unk(unkopt)
-    p.set_usestdtokens(False)
-    p.run(args.i, args.o)
-else:
-    pdict = sppasDictPron(args.dict, nodump=False)
-    maptable = sppasMapping()
-    if mapfile is not None:
-        maptable = sppasMapping(mapfile)
-    phonetizer = sppasDictPhonetizer(pdict, maptable)
-    for line in sys.stdin:
-        print("{:s}".format(phonetizer.phonetize(line, unkopt)))
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
+
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'dict', 'map', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
+
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
+
+        ann = sppasPhon(args.dict, map_filename=args.map, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for ann in tier:
+                    print("{:f} {:f} {:s}".format(
+                        ann.get_location().get_best().get_begin().get_midpoint(),
+                        ann.get_location().get_best().get_end().get_midpoint(),
+                        ann.serialize_labels(" ")))
+
+    # Perform the annotation on stdin
+    # an argument 'unk' must exists.
+    # -------------------------------
+    else:
+
+        pdict = sppasDictPron(args.dict, nodump=False)
+        mapping = sppasMapping()
+        if args.map:
+            map_table = sppasMapping(args.map)
+        phonetizer = sppasDictPhonetizer(pdict, mapping)
+        for line in sys.stdin:
+            print("{:s}".format(phonetizer.phonetize(line, args.unk)))
