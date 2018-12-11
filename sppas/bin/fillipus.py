@@ -137,9 +137,11 @@ if __name__ == "__main__":
     # Perform the annotation on a single file
     # ---------------------------------------
     if args.i:
+
         if not args.t:
             print("argparse.py: error: option -t is required with option -i")
             sys.exit(1)
+
         ann = sppasFillIPUs(logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:

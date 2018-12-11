@@ -146,9 +146,10 @@ if __name__ == "__main__":
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
-    # Perform the annotation on a single file
-    # ---------------------------------------
     if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
 
         ann = sppasTextNorm(vocab=args.vocab, lang=lang, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
@@ -164,9 +165,10 @@ if __name__ == "__main__":
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))
 
-    # Perform the annotation on stdin
-    # -------------------------------
     else:
+
+        # Perform the annotation on stdin
+        # -------------------------------
 
         vocab = sppasVocabulary(args.vocab)
         normalizer = TextNormalizer(vocab, lang)

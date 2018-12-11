@@ -165,11 +165,8 @@ if __name__ == "__main__":
 
         # Fix input files
         files = list()
-        if args.I:
-            for f in args.I:
-                parameters.add_sppasinput(os.path.abspath(f))
-        if args.i:
-            parameters.add_sppasinput(os.path.abspath(args.i))
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
 
         # Redirect all messages to logging.
         with sppasAppConfig() as cg:

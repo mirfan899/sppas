@@ -146,9 +146,10 @@ if __name__ == "__main__":
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
-    # Perform the annotation on a single file
-    # ---------------------------------------
     if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
 
         ann = sppasPhon(args.dict, map_filename=args.map, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
@@ -164,10 +165,11 @@ if __name__ == "__main__":
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))
 
-    # Perform the annotation on stdin
-    # an argument 'unk' must exists.
-    # -------------------------------
     else:
+
+        # Perform the annotation on stdin
+        # an argument 'unk' must exists.
+        # -------------------------------
 
         pdict = sppasDictPron(args.dict, nodump=False)
         mapping = sppasMapping()

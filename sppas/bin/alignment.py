@@ -48,10 +48,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations.Align import sppasAligners
 from sppas.src.annotations.Align import sppasAlign
-from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config import annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.param import sppasParam
 
 if __name__ == "__main__":
@@ -60,8 +59,8 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam("phon")
-    ann_step_idx = parameters.activate_annotation("phon")
+    parameters = sppasParam("align")
+    ann_step_idx = parameters.activate_annotation("align")
     ann_options = parameters.get_options(ann_step_idx)
 
     # -----------------------------------------------------------------------
@@ -115,7 +114,6 @@ if __name__ == "__main__":
         help='Output file extension. One of: {:s}'
              ''.format(" ".join(extensions_out)))
 
-
     # Add arguments from the options of the annotation
     # ------------------------------------------------
 
@@ -147,13 +145,18 @@ if __name__ == "__main__":
     # --------------------------
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'r', 'R', 'e', 'quiet'):
+        if a not in ('i', 'o', 'p', 't', 'r', 'R', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
-    # Perform the annotation on a single file
-    # ---------------------------------------
     if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        if not args.p:
+            print("argparse.py: error: option -p is required with option -i")
+            sys.exit(1)
 
         ann = sppasAlign(args.r, args.R, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
@@ -168,3 +171,8 @@ if __name__ == "__main__":
                         a.get_location().get_best().get_begin().get_midpoint(),
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

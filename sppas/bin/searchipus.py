@@ -141,9 +141,11 @@ if __name__ == "__main__":
         if a not in ('i', 'o', 'I', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, arguments[a])
 
-    # Perform the annotation on a single file
-    # ---------------------------------------
     if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
         ann = sppasSearchIPUs(logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
@@ -155,30 +157,33 @@ if __name__ == "__main__":
                     ann.get_location().get_best().get_begin().get_midpoint(),
                     ann.get_location().get_best().get_end().get_midpoint(),
                     ann.get_best_tag().get_typed_content()))
-        sys.exit(0)
 
-    # Perform the annotation on a set of files
-    # ----------------------------------------
+    elif args.I:
 
-    # Fix the output file extension
-    parameters.set_output_format(args.e)
+        # Perform the annotation on a set of files
+        # ----------------------------------------
 
-    # Fix input files
-    files = list()
-    if args.I:
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+
+        # Fix input files
+        files = list()
         for f in args.I:
             parameters.add_sppasinput(os.path.abspath(f))
-    if args.i:
-        parameters.add_sppasinput(os.path.abspath(args.i))
 
-    # Redirect all messages to logging.
-    with sppasAppConfig() as cg:
-        parameters.set_logfilename(cg.log_file)
+        # Redirect all messages to logging.
+        with sppasAppConfig() as cg:
+            parameters.set_logfilename(cg.log_file)
+            if not args.quiet:
+                setup_logging(cg.log_level, None)
+            else:
+                setup_logging(cg.quiet_log_level, None)
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_searchipus()
+
+    else:
+
         if not args.quiet:
-            setup_logging(cg.log_level, None)
-        else:
-            setup_logging(cg.quiet_log_level, None)
-
-    # Perform the annotation
-    process = sppasAnnotationsManager(parameters)
-    process.run_searchipus()
+            print("No file was given to be annotated. Nothing to do!")
