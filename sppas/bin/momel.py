@@ -138,44 +138,52 @@ if __name__ == "__main__":
     for a in arguments:
         if a not in ('i', 'o', 'I', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, arguments[a])
-    
-    # Perform the annotation on a single file
-    # ---------------------------------------
+
     if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
         melodie = sppasMomel(logfile=None)
         melodie.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             melodie.run(args.i, args.o)
         else:
             trs = melodie.run(args.i, None)
-            for ann in trs[0]:
+            for a in trs[0]:
                 print("{:f} {:f}".format(
-                    ann.get_location().get_best().get_midpoint(),
-                    ann.get_best_tag().get_typed_content()))
-        sys.exit(0)
-    
-    # Perform the annotation on a set of files
-    # ----------------------------------------
-    
-    # Fix the output file extension
-    parameters.set_output_format(args.e)
-    
-    # Fix input files
-    files = list()
-    if args.I:
-        for f in args.I:
-            parameters.add_sppasinput(os.path.abspath(f))
-    if args.i:
-        parameters.add_sppasinput(os.path.abspath(args.i))
-    
-    # Redirect all messages to logging.
-    with sppasAppConfig() as cg:
-        parameters.set_logfilename(cg.log_file)
+                    a.get_location().get_best().get_midpoint(),
+                    a.get_best_tag().get_typed_content()))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+
+        # Fix input files
+        files = list()
+        if args.I:
+            for f in args.I:
+                parameters.add_sppasinput(os.path.abspath(f))
+        if args.i:
+            parameters.add_sppasinput(os.path.abspath(args.i))
+
+        # Redirect all messages to logging.
+        with sppasAppConfig() as cg:
+            parameters.set_logfilename(cg.log_file)
+            if not args.quiet:
+                    setup_logging(cg.log_level, None)
+            else:
+                setup_logging(cg.quiet_log_level, None)
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_intsint()
+
+    else:
+
         if not args.quiet:
-                setup_logging(cg.log_level, None)
-        else:
-            setup_logging(cg.quiet_log_level, None)
-    
-    # Perform the annotation
-    process = sppasAnnotationsManager(parameters)
-    process.run_intsint()
+            print("No file was given to be annotated. Nothing to do!")

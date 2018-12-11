@@ -158,11 +158,11 @@ if __name__ == "__main__":
             trs = ann.run(args.i, None)
             for tier in trs:
                 print(tier.get_name())
-                for ann in tier:
+                for a in tier:
                     print("{:f} {:f} {:s}".format(
-                        ann.get_location().get_best().get_begin().get_midpoint(),
-                        ann.get_location().get_best().get_end().get_midpoint(),
-                        ann.serialize_labels(" ")))
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
 
     # Perform the annotation on stdin
     # -------------------------------

@@ -36,7 +36,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :summary:      Run the alignment automatic annotation
 
 """
@@ -51,119 +51,120 @@ sys.path.append(SPPAS)
 from sppas.src.annotations.Align import sppasAligners
 from sppas.src.annotations.Align import sppasAlign
 from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+if __name__ == "__main__":
 
-parser = ArgumentParser(usage="{:s} -w file -i file -r dir -o file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Alignment automatic annotation.")
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input audio file name')
+    parameters = sppasParam("phon")
+    ann_step_idx = parameters.activate_annotation("phon")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=True,
-                    help='Input file name with the phonetization')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-I",
-                    metavar="file",
-                    required=False,
-                    help='Input file name with the tokenization')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("-r",
-                    metavar="file",
-                    required=True,
-                    help='Directory of the acoustic model '
-                         'of the language of the text')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("-R",
-                    metavar="file",
-                    required=False,
-                    help='Directory of the acoustic model of '
-                         'the mother language of the speaker')
+    parser.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=True,
-                    help='Output file name with estimated alignments')
+    parser.add_argument(
+        "-p",
+        metavar="file",
+        help='Input file name with the phonetization.')
 
-parser.add_argument("-a",
-                    metavar="name",
-                    required=False,
-                    choices=sppasAligners().names(),
-                    default="julius",
-                    help='Speech automatic aligner system: '
-                         'julius, hvite, basic (default: julius)')
+    parser.add_argument(
+        "-t",
+        metavar="file",
+        help='Input file name with the tokenization.')
 
-parser.add_argument("--basic",
-                    action='store_true',
-                    help="Perform basic alignment if the aligner fails")
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with estimated alignments.')
 
-parser.add_argument("--noclean",
-                    action='store_true',
-                    help="Do not remove working directory")
+    parser.add_argument(
+        "-r",
+        required=True,
+        help='Directory of the acoustic model of the language of the text')
 
-parser.add_argument("--noactivity",
-                    action='store_true',
-                    help="Do not generate Activity tier")
+    parser.add_argument(
+        "-R",
+        metavar="file",
+        help='Directory of the acoustic model of the mother language of the speaker')
 
-parser.add_argument("--activitydur",
-                    action='store_true',
-                    help="Generates the Activity Duration tier")
+    parser.add_argument(
+        "-e",
+        default=annots.extension,
+        metavar="extension",
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable verbose.")
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-args = parser.parse_args()
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-# ----------------------------------------------------------------------------
+    # Add quiet and help arguments
+    # ----------------------------
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
-# ----------------------------------------------------------------------------
-# Automatic alignment is here:
-# ----------------------------------------------------------------------------
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-# Fix resources
+    args = parser.parse_args()
 
-# Acoustic model of the language of the text (required)
-modelText = args.r
-# Acoustic model of the mother language of the speaker (optional)
-modelSpk = args.R
-# Create aligner
-a = sppasAlign(modelText, modelSpk)
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-# Fix options
+    # get options from arguments
+    # --------------------------
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'r', 'R', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
-a.set_clean(True)
-if args.noclean:
-    a.set_clean(False)
+    # Perform the annotation on a single file
+    # ---------------------------------------
+    if args.i:
 
-a.set_basic(False)
-if args.basic:
-    a.set_basic(True)
-
-a.set_activity_tier(True)
-if args.noactivity:
-    a.set_activity_tier(False)
-
-a.set_activity_duration_tier(False)
-if args.activitydur:
-    a.set_activity_duration_tier(True)
-
-a.set_aligner(args.a)
-
-# Run speech segmentation
-a.run(args.i, args.I, args.w, args.o)
+        ann = sppasAlign(args.r, args.R, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.p, args.t, args.i, args.o)
+        else:
+            trs = ann.run(args.p, args.t, args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))

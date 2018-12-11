@@ -146,9 +146,8 @@ if __name__ == "__main__":
             ann.run(args.i, args.t, args.o)
         else:
             trs = ann.run(args.i, args.t, None)
-            for ann in trs[0]:
+            for a in trs[0]:
                 print("{:f} {:f} {:s}".format(
-                    ann.get_location().get_best().get_begin().get_midpoint(),
-                    ann.get_location().get_best().get_end().get_midpoint(),
-                    ann.get_best_tag().get_typed_content()))
-        sys.exit(0)
+                    a.get_location().get_best().get_begin().get_midpoint(),
+                    a.get_location().get_best().get_end().get_midpoint(),
+                    a.get_best_tag().get_typed_content()))

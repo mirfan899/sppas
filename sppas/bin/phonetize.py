@@ -42,7 +42,7 @@
 
 """
 import sys
-import os.path
+import os
 from argparse import ArgumentParser
 
 PROGRAM = os.path.abspath(__file__)
@@ -53,7 +53,6 @@ from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
-from sppas.src.utils.fileutils import setup_logging
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
@@ -82,12 +81,10 @@ if __name__ == "__main__":
     # Add arguments for input/output of the annotations
     # -------------------------------------------------
 
-    input_group = parser.add_mutually_exclusive_group()
-
-    input_group.add_argument(
+    parser.add_argument(
         "-i",
         metavar="file",
-        help='Input transcription file name.')
+        help='Input tokenization file name.')
 
     parser.add_argument(
         "-o",
@@ -137,7 +134,6 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
@@ -162,11 +158,11 @@ if __name__ == "__main__":
             trs = ann.run(args.i, None)
             for tier in trs:
                 print(tier.get_name())
-                for ann in tier:
+                for a in tier:
                     print("{:f} {:f} {:s}".format(
-                        ann.get_location().get_best().get_begin().get_midpoint(),
-                        ann.get_location().get_best().get_end().get_midpoint(),
-                        ann.serialize_labels(" ")))
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
 
     # Perform the annotation on stdin
     # an argument 'unk' must exists.
