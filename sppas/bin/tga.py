@@ -50,48 +50,112 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.TGA import sppasTGA
+from sppas.src.config import annots
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.annotations.param import sppasParam
+from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -r config [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        prog=PROGRAM,
-                        description="TGA automatic annotation.")
+if __name__ == "__main__":
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=True,
-                    help='Input file name (time-aligned syllables)')
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=True,
-                    help='Output file name')
+    parameters = sppasParam(["TGA.ini"])
+    ann_step_idx = parameters.activate_annotation("tga")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-s",
-                    metavar="string",
-                    required=False,
-                    help='Time groups prefix label')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("--original", dest="original", action='store_true')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-args = parser.parse_args()
+    parser.add_argument(
+        "-i",
+        metavar="file",
+        help='Input time-aligned syllables file name.')
 
-# ----------------------------------------------------------------------------
-# Automatic TGA is here:
-# ----------------------------------------------------------------------------
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with TGA.')
 
-tga = sppasTGA()
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-if args.original:
-    tga.set_intercept_slope_original(True)
-    tga.set_intercept_slope_annotationpro(False)
-if args.s:
-    tga.set_tg_prefix_label(args.s)
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-tga.run(args.i, args.o)
+    # Add quiet and help arguments
+    # ----------------------------
+
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
+
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
+    # --------------------------
+
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'r', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        ann = sppasTGA(logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

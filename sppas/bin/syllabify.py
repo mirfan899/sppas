@@ -41,6 +41,7 @@
     :summary:      Syllabification automatic annotation.
 
 """
+
 import sys
 import os
 from argparse import ArgumentParser
@@ -50,70 +51,116 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
+from sppas.src.config import annots
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.annotations.param import sppasParam
+from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
 
+if __name__ == "__main__":
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -r config [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        prog=PROGRAM,
-                        description="Syllabification automatic annotation.")
+    parameters = sppasParam(["Syll.ini"])
+    ann_step_idx = parameters.activate_annotation("syll")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-r",
-                    "--config",
-                    required=True,
-                    help='Rules configuration file name')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=True,
-                    help='Input file name (time-aligned phonemes)')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=True,
-                    help='Output file name')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("-t",
-                    metavar="string",
-                    required=False,
-                    help='Reference tier name to syllabify between intervals')
+    parser.add_argument(
+        "-i",
+        metavar="file",
+        help='Input time-aligned phonemes file name.')
 
-parser.add_argument("--nophn",
-                    action='store_true',
-                    help="Disable the output of the result that does not "
-                         "use the reference tier")
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with syllables.')
 
-parser.add_argument("--noclass",
-                    action='store_true',
-                    help="Disable the creation of the tier with syllable "
-                         "classes")
+    parser.add_argument(
+        "-r",
+        required=True,
+        help='Configuration file with syllabification rules')
 
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-args = parser.parse_args()
+    # Add quiet and help arguments
+    # ----------------------------
 
-if args.nophn and not args.t:
-    print("Warning. The option --nophn will not have any effect! "
-          "It must be used with -t option.")
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-# ----------------------------------------------------------------------------
-# Automatic Syllabification is here:
-# ----------------------------------------------------------------------------
+    args = parser.parse_args()
 
-syll = sppasSyll(args.config)
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-if args.t:
-    syll.set_usesintervals(True)
-    syll.set_tiername(args.t)
-    if args.noclass:
-        syll.set_create_tier_classes(False)
-    if args.nophn:
-        syll.set_usesphons(False)
+    # Redirect all messages to logging
+    # --------------------------------
 
-syll.run(args.i, args.o)
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
+    # --------------------------
+
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'r', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        ann = sppasSyll(args.r, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

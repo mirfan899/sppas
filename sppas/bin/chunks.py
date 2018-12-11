@@ -49,71 +49,131 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
+from sppas.src.config import annots
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+if __name__ == "__main__":
 
-parser = ArgumentParser(usage="{:s} -w file -i file -r dir -o file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Speech segmentation at chunks level.")
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input audio file name')
+    parameters = sppasParam(["Chunks.ini"])
+    ann_step_idx = parameters.activate_annotation("chunks")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=True,
-                    help='Input file name with raw phonetization')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-I",
-                    metavar="file",
-                    required=False,
-                    help='Input file name with raw tokenization')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("-r",
-                    metavar="file",
-                    required=True,
-                    help='Directory of the acoustic model of the '
-                         'language of the text')
+    # Add arguments for input/output of the annotations
+    # -------------------------------------------------
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=True,
-                    help='Output file name with estimated chunks alignments')
+    parser.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-parser.add_argument("--noclean",
-                    action='store_true',
-                    help="Do not remove working directory")
+    parser.add_argument(
+        "-p",
+        metavar="file",
+        help='Input file name with the raw phonetization.')
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable verbose.")
+    parser.add_argument(
+        "-t",
+        metavar="file",
+        help='Input file name with the raw tokenization.')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with estimated chunks.')
 
-args = parser.parse_args()
+    parser.add_argument(
+        "-r",
+        required=True,
+        help='Directory of the acoustic model of the language of the text')
 
-# ----------------------------------------------------------------------------
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-# ----------------------------------------------------------------------------
-# Automatic alignment is here:
-# ----------------------------------------------------------------------------
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-a = sppasChunks(args.r)
+    # Add quiet and help arguments
+    # ----------------------------
 
-# Fix options
-a.set_clean(True)
-if args.noclean:
-    a.set_clean(False)
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
-a.run(args.i, args.I, args.w, args.o)
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
+    # --------------------------
+
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'p', 't', 'r', 'e', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        if not args.p:
+            print("argparse.py: error: option -p is required with option -i")
+            sys.exit(1)
+
+        ann = sppasChunks(args.r, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.p, args.t, args.i, args.o)
+        else:
+            trs = ann.run(args.p, args.t, args.i, None)
+            for tier in trs:
+                print(tier.get_name())
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

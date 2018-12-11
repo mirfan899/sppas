@@ -63,7 +63,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # ------------------------------------------------------------------------
     
-    parameters = sppasParam("momel")
+    parameters = sppasParam(["Momel.ini"])
     ann_step_idx = parameters.activate_annotation("momel")
     ann_options = parameters.get_options(ann_step_idx)
     
@@ -131,9 +131,20 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
-    
-    # get options from arguments
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
     # --------------------------
+
     arguments = vars(args)
     for a in arguments:
         if a not in ('i', 'o', 'I', 'e', 'quiet'):
@@ -167,14 +178,6 @@ if __name__ == "__main__":
         files = list()
         for f in args.I:
             parameters.add_sppasinput(os.path.abspath(f))
-
-        # Redirect all messages to logging.
-        with sppasAppConfig() as cg:
-            parameters.set_logfilename(cg.log_file)
-            if not args.quiet:
-                    setup_logging(cg.log_level, None)
-            else:
-                setup_logging(cg.quiet_log_level, None)
 
         # Perform the annotation
         process = sppasAnnotationsManager(parameters)

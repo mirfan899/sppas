@@ -250,14 +250,14 @@ class sppasParam(object):
 
         # Annotation steps
         self.annotations = []
-        self.parse_config_file(annotation_keys)
+        self.load_annotations(annotation_keys)
 
     # ------------------------------------------------------------------------
 
-    def parse_config_file(self, annotation_keys=None):
+    def parse_config_file(self):
         """Parse the sppas.conf file to get the list of annotations.
 
-        :param annotation_keys: (list) List of annotations to load. None=ALL.
+        :param annotation_files: (list) List of annotations to load. None=ALL.
 
         """
         with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
@@ -268,11 +268,25 @@ class sppasParam(object):
             line = line.strip()
             if line.lower().startswith("annotation:") is True:
                 data = line.split(":")
-                if annotation_keys is None or\
-                   (annotation_keys and data[1].strip() in annotation_keys):
-                    cfg_file = data[2].strip()
-                    a = annotationParam(os.path.join(paths.etc, cfg_file))
-                    self.annotations.append(a)
+                cfg_file = data[1].strip()
+                a = annotationParam(os.path.join(paths.etc, cfg_file))
+                self.annotations.append(a)
+
+    # ------------------------------------------------------------------------
+
+    def load_annotations(self, annotation_files=None):
+        """Load annotations configurations from a list of .ini files.
+
+        :param annotation_files: (list) List of annotations to load. None=ALL.
+
+        """
+        if len(annotation_files) == 0:
+            self.parse_config_file()
+
+        else:
+            for cfg_file in annotation_files:
+                a = annotationParam(os.path.join(paths.etc, cfg_file))
+                self.annotations.append(a)
 
     # -----------------------------------------------------------------------
     # input file name or directory, i.e. entry to annotate

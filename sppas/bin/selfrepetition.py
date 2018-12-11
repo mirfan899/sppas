@@ -49,79 +49,111 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.annotations.SelfRepet.sppasrepet import sppasSelfRepet
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+if __name__ == "__main__":
 
-p = sppasSelfRepet()
-dft_span = p.get_option('span')
-dft_alpha = p.get_option('alpha')
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -i file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Automatic self-repetitions detection.")
+    parameters = sppasParam(["SelfRepet.ini"])
+    ann_step_idx = parameters.activate_annotation("selfrepet")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-i", metavar="file",
-                    required=True,
-                    help='Input file name with time-aligned tokens')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-r", metavar="file",
-                    help='List of stop-words')
+    parser = ArgumentParser(
+        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        description=
+        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
+        parameters.get_step_descr(ann_step_idx))
 
-parser.add_argument("--span",
-                    type=int, default=dft_span,
-                    help="Span window length in number of IPUs "
-                         "(default: {:d}).".format(dft_span))
+    parser.add_argument(
+        "-i",
+        metavar="file",
+        help='Input time-aligned tokens file name.')
 
-parser.add_argument("--stopwords",
-                    action='store_true',
-                    help='Add stop-words estimated from the given data (advised)')
+    parser.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with syllables.')
 
-parser.add_argument("--alpha",
-                    type=int, default=dft_alpha,
-                    help="Coefficient to add specific stop-words in the list "
-                         "(default: {:f}).".format(dft_alpha))
+    parser.add_argument(
+        "-r",
+        help='List of stop-words')
 
-parser.add_argument("-o", metavar="file",
-                    help='Output file name')
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable verbose.")
+    for opt in ann_options:
+        parser.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    # Add quiet and help arguments
+    # ----------------------------
 
-args = parser.parse_args()
+    parser.add_argument("--quiet",
+                        action='store_true',
+                        help="Print only warnings and errors.")
 
-# ----------------------------------------------------------------------------
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    args = parser.parse_args()
 
-# ----------------------------------------------------------------------------
-# Automatic detection is here:
-# ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-if args.r:
-    p = sppasSelfRepet(args.r)
+    # Redirect all messages to logging
+    # --------------------------------
 
-p.set_alpha(args.alpha)
-p.set_span(args.span)
-if args.stopwords:
-    p.set_use_stopwords(True)
-else:
-    p.set_use_stopwords(False)
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
 
-trs_result = p.run(args.i, args.o)
+    # Get options from arguments
+    # --------------------------
 
-# print result
-if not args.o and not args.quiet:
-    for tier in trs_result:
-        print(tier.get_name())
-        for s in tier:
-            print(s)
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'r', 'quiet'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        ann = sppasSelfRepet(args.r, logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run(args.i, args.o)
+        else:
+            trs = ann.run(args.i, None)
+            for tier in trs:
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.get_best_tag().get_content()))
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

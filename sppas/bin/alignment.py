@@ -52,6 +52,8 @@ from sppas.src.annotations.Align import sppasAlign
 from sppas.src.config import annots
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.param import sppasParam
+from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
 
 if __name__ == "__main__":
 
@@ -59,7 +61,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam("align")
+    parameters = sppasParam(["Align.ini"])
     ann_step_idx = parameters.activate_annotation("align")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -106,14 +108,6 @@ if __name__ == "__main__":
         metavar="file",
         help='Directory of the acoustic model of the mother language of the speaker')
 
-    parser.add_argument(
-        "-e",
-        default=annots.extension,
-        metavar="extension",
-        choices=extensions_out,
-        help='Output file extension. One of: {:s}'
-             ''.format(" ".join(extensions_out)))
-
     # Add arguments from the options of the annotation
     # ------------------------------------------------
 
@@ -141,8 +135,19 @@ if __name__ == "__main__":
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
 
-    # get options from arguments
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        parameters.set_logfilename(cg.log_file)
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
     # --------------------------
+
     arguments = vars(args)
     for a in arguments:
         if a not in ('i', 'o', 'p', 't', 'r', 'R', 'e', 'quiet'):
