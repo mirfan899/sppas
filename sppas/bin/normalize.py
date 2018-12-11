@@ -94,7 +94,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-o",
         metavar="file",
-        help='Annotated file with filled IPUs ')
+        help='Annotated file with normalized tokens.')
 
     parser.add_argument(
         "-r", "--vocab",

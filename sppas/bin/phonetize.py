@@ -91,7 +91,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "-o",
         metavar="file",
-        help='Annotated file with filled IPUs ')
+        help='Annotated file with phonetization')
 
     parser.add_argument(
         "-r", "--dict",
