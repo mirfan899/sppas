@@ -30,15 +30,15 @@
 
         ---------------------------------------------------------------------
 
-    bin.trsconvert.py
-    ~~~~~~~~~~~~~~~~~
+    bin.trsmerge.py
+    ~~~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      develop@sppas.org
 :license:      GPL, v3
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-:summary:      a program to export annotation files based on anndata API.
+:summary:      a script to merge annotated data files.
 
 """
 
@@ -54,8 +54,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg
-from sppas import sppasRW
 from sppas import sppasTranscription
+from sppas import sppasRW
 from sppas.src.anndata.aio import sppasXRA
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 
     parser = ArgumentParser(
         usage="%(prog)s [files] [options]",
-        description="... a program to export annotated files.",
+        description="... a program to merge annotated data files.",
         add_help=True,
         epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
                "author at: {:s}".format(sg.__name__, sg.__version__,
@@ -95,36 +95,14 @@ if __name__ == "__main__":
     group_io.add_argument(
         "-i",
         metavar="file",
+        action='append',
         required=True,
-        help='Input annotated file name.')
+        help='Input annotated file name (as many as wanted)')
 
     group_io.add_argument(
         "-o",
         metavar="file",
-        help='Output annotated file name.')
-
-    # Add arguments for the options
-    # -----------------------------
-
-    group_opt = parser.add_argument_group('Options')
-
-    group_opt.add_argument(
-        "-t",
-        metavar="value",
-        required=False,
-        action='append',
-        type=int,
-        help='A tier number (use as many -t options as wanted). '
-             'Positive or negative value: '
-             '1=first tier, -1=last tier.')
-
-    group_opt.add_argument(
-        "-n",
-        metavar="tiername",
-        required=False,
-        action='append',
-        type=str,
-        help='A tier name (use as many -n options as wanted).')
+        help='Output annotated file name')
 
     # Force to print help if no argument is given then parse
     # ------------------------------------------------------
@@ -150,80 +128,44 @@ if __name__ == "__main__":
     # Read
     # -----------------------------------------------------------------------
 
-    logging.info("Read {:s}".format(args.i))
+    trs_output = sppasTranscription("Merged")
 
-    start_time = time.time()
-    parser = sppasRW(args.i)
-    trs_input = parser.read()
-    end_time = time.time()
+    for file_idx, trs_input_file in enumerate(args.i):
 
-    # General information
-    # -------------------
-    logging.debug(
-        "Elapsed time for reading: {:f} seconds"
-        "".format(end_time - start_time))
-    pickle_string = pickle.dumps(trs_input)
-    logging.debug(
-        "Memory usage of the transcription: {:d} bytes"
-        "".format(sys.getsizeof(pickle_string)))
+        logging.info("Read {:s}".format(args.i))
 
-    # -----------------------------------------------------------------------
-    # Select tiers
-    # -----------------------------------------------------------------------
+        start_time = time.time()
+        parser = sppasRW(trs_input_file)
+        trs_input = parser.read()
+        end_time = time.time()
 
-    # Take all tiers or specified tiers
-    tier_numbers = []
-    if not args.t and not args.n:
-        tier_numbers = range(1, (len(trs_input) + 1))
-    elif args.t:
-        tier_numbers = args.t
+        # General information
+        # -------------------
+        logging.debug(
+            "Elapsed time for reading: {:f} seconds"
+            "".format(end_time - start_time))
+        pickle_string = pickle.dumps(trs_input)
+        logging.debug(
+            "Memory usage of the transcription: {:d} bytes"
+            "".format(sys.getsizeof(pickle_string)))
 
-    # Select tiers to create output
-    trs_output = sppasTranscription("Converted")
+        # Copy all media/ctrl vocab
+        # -------------------------
+        trs_output.set_media_list(trs_input.get_media_list())
+        trs_output.set_ctrl_vocab_list(trs_input.get_ctrl_vocab_list())
 
-    # Add selected tiers into output
-    for i in tier_numbers:
-        if i > 0:
-            idx = i-1
-        elif i < 0:
-            idx = i
-        else:
-            idx = len(trs_input)
-        if idx < len(trs_input):
-            trs_output.append(trs_input[idx])
+        # Copy all tiers (keep original ids)
+        # ----------------------------------
+        for i, tier in enumerate(trs_input):
             logging.info("  - Tier {:d}: {:s}. Selected."
-                         "".format(i, trs_input[idx].get_name()))
-        else:
-            logging.error("  - Tier {:d}: Wrong tier number. Ignored"
-                          "".format(i))
+                         "".format(i, tier.get_name()))
+            trs_output.append(tier)
 
-    if args.n:
-        for n in args.n:
-            t = trs_input.find(n, case_sensitive=False)
-            if t is not None:
-                trs_output.append(t)
-            else:
-                logging.error("  - Tier {:s}: Wrong tier name. Ignored"
-                              "".format(n))
-
-    # Set the other members
-    for key in trs_input.get_meta_keys():
-        trs_output.set_meta(key, trs_input.get_meta(key))
-
-    # Copy relevant hierarchy links
-    for child_tier in trs_input:
-        parent_tier = trs_input.get_hierarchy().get_parent(child_tier)
-        if parent_tier is not None:
-            output_child_tier = trs_output.find(child_tier.get_name())
-            output_parent_tier = trs_output.find(parent_tier.get_name())
-            if output_child_tier is not None and output_parent_tier is not None:
-                link_type = trs_input.get_hierarchy().get_hierarchy_type(child_tier)
-                trs_output.add_hierarchy_link(link_type,
-                                              output_parent_tier,
-                                              output_child_tier)
-
-    # Copy all media
-    trs_output.set_media_list(trs_input.get_media_list())
+        # Metadata
+        # --------
+        trs_output.set_meta(
+            "merge_with_file_{:d}".format(file_idx),
+            trs_input_file)
 
     # -----------------------------------------------------------------------
     # Write
@@ -240,9 +182,9 @@ if __name__ == "__main__":
             "Elapsed time for writing: {:f} seconds"
             "".format(end_time - start_time))
 
-        logging.info("Done.")
-
     else:
         x = sppasXRA()
         x.set(trs_output)
         x.write(sys.stdout)
+
+    logging.info("Done.")
