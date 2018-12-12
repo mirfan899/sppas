@@ -30,17 +30,18 @@
 
         ---------------------------------------------------------------------
 
-    scripts.trsconvert.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    bin.trsconvert.py
+    ~~~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      develop@sppas.org
 :license:      GPL, v3
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-:summary:      a script to export annotations files based on anndata API.
+:summary:      a program to export annotation files based on anndata API.
 
 """
+
 import logging
 import sys
 import os.path
@@ -73,10 +74,17 @@ if __name__ == "__main__":
                "author at: {:s}".format(sg.__name__, sg.__version__,
                                         sg.__copyright__, sg.__contact__))
 
-    parser.add_argument(
+    group_verbose = parser.add_mutually_exclusive_group()
+
+    group_verbose.add_argument(
         "--quiet",
         action='store_true',
         help="Disable the verbosity")
+
+    group_verbose.add_argument(
+        "--debug",
+        action='store_true',
+        help="Highest level of verbosity")
 
     # Add arguments for input/output files
     # ------------------------------------
@@ -126,30 +134,42 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    # ----------------------------------------------------------------------------
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            if args.debug:
+                setup_logging(0, None)
+            else:
+                setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # -----------------------------------------------------------------------
     # Read
+    # -----------------------------------------------------------------------
 
-    parser = sppasRW(args.i)
-
-    if args.quiet is False:
-        print("Read input:")
+    logging.info("Read {:s}".format(args.i))
 
     start_time = time.time()
+    parser = sppasRW(args.i)
     trs_input = parser.read()
     end_time = time.time()
 
-    if args.quiet is False:
-        print("  - elapsed time for reading: {:f} seconds"
-              "".format(end_time - start_time))
-        pickle_string = pickle.dumps(trs_input)
-        print("  - memory usage of the transcription: {:d} bytes"
-              "".format(sys.getsizeof(pickle_string)))
+    # General information
+    # -------------------
+    logging.debug(
+        "Elapsed time for reading: {:f} seconds"
+        "".format(end_time - start_time))
+    pickle_string = pickle.dumps(trs_input)
+    logging.debug(
+        "Memory usage of the transcription: {:d} bytes"
+        "".format(sys.getsizeof(pickle_string)))
 
-    # ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Select tiers
-
-    if args.quiet is False:
-        print("Tier selection:")
+    # -----------------------------------------------------------------------
 
     # Take all tiers or specified tiers
     tier_numbers = []
@@ -163,8 +183,6 @@ if __name__ == "__main__":
 
     # Add selected tiers into output
     for i in tier_numbers:
-        if args.quiet is False:
-            sys.stdout.write("  - Tier " + str(i) + ": ")
         if i > 0:
             idx = i-1
         elif i < 0:
@@ -173,11 +191,11 @@ if __name__ == "__main__":
             idx = len(trs_input)
         if idx < len(trs_input):
             trs_output.append(trs_input[idx])
-            if args.quiet is False:
-                print("{:s}.".format(trs_input[idx].get_name()))
+            logging.info("  - Tier {:d}: {:s}. Selected."
+                         "".format(i, trs_input[idx].get_name()))
         else:
-            if not args.quiet:
-                print("Ignored. Wrong tier number {:d}.".format(i))
+            logging.error("  - Tier {:d}: Wrong tier number. Ignored"
+                          "".format(i))
 
     if args.n:
         for n in args.n:
@@ -185,14 +203,14 @@ if __name__ == "__main__":
             if t is not None:
                 trs_output.append(t)
             else:
-                if not args.quiet:
-                    print("Ignored. Wrong tier name {:s}.".format(n))
+                logging.error("  - Tier {:s}: Wrong tier name. Ignored"
+                              "".format(n))
 
     # Set the other members
     for key in trs_input.get_meta_keys():
         trs_output.set_meta(key, trs_input.get_meta(key))
 
-    # copy relevant hierarchy links
+    # Copy relevant hierarchy links
     for child_tier in trs_input:
         parent_tier = trs_input.get_hierarchy().get_parent(child_tier)
         if parent_tier is not None:
@@ -204,21 +222,21 @@ if __name__ == "__main__":
                                               output_parent_tier,
                                               output_child_tier)
 
-    # copy all media
+    # Copy all media
     trs_output.set_media_list(trs_input.get_media_list())
 
-    # ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Write
+    # -----------------------------------------------------------------------
 
+    logging.info("Write {:s}".format(args.o))
     parser = sppasRW(args.o)
-    if args.quiet is False:
-        print("Write output file:")
-
     start_time = time.time()
     parser.write(trs_output)
     end_time = time.time()
 
-    if args.quiet is False:
-        print("  - elapsed time for writing: {:f} seconds"
-              "".format(end_time - start_time))
-        print("Done.")
+    logging.debug(
+        "Elapsed time for writing: {:f} seconds"
+        "".format(end_time - start_time))
+
+    logging.info("Done.")
