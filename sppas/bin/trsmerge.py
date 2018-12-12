@@ -31,7 +31,7 @@
         ---------------------------------------------------------------------
 
     bin.trsmerge.py
-    ~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -68,7 +68,7 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
 
     parser = ArgumentParser(
-        usage="%(prog)s [files] [options]",
+        usage="%(prog)s [files]",
         description="... a program to merge annotated data files.",
         add_help=True,
         epilog="This program is part of {:s} version {:s}. {:s}. Contact the "

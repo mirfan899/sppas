@@ -109,22 +109,22 @@ if __name__ == "__main__":
     group_opt = parser.add_argument_group('Options')
 
     group_opt.add_argument(
-        "-t",
+        "-n",
         metavar="value",
         required=False,
         action='append',
         type=int,
-        help='A tier number (use as many -t options as wanted). '
+        help='Number of a tier (use as many -n options as wanted). '
              'Positive or negative value: '
              '1=first tier, -1=last tier.')
 
     group_opt.add_argument(
-        "-n",
+        "-t",
         metavar="tiername",
         required=False,
         action='append',
         type=str,
-        help='A tier name (use as many -n options as wanted).')
+        help='Name of a tier (use as many -t options as wanted).')
 
     # Force to print help if no argument is given then parse
     # ------------------------------------------------------
@@ -175,8 +175,8 @@ if __name__ == "__main__":
     tier_numbers = []
     if not args.t and not args.n:
         tier_numbers = range(1, (len(trs_input) + 1))
-    elif args.t:
-        tier_numbers = args.t
+    elif args.n:
+        tier_numbers = args.n
 
     # Select tiers to create output
     trs_output = sppasTranscription("Converted")
@@ -197,8 +197,8 @@ if __name__ == "__main__":
             logging.error("  - Tier {:d}: Wrong tier number. Ignored"
                           "".format(i))
 
-    if args.n:
-        for n in args.n:
+    if args.t:
+        for n in args.t:
             t = trs_input.find(n, case_sensitive=False)
             if t is not None:
                 trs_output.append(t)
