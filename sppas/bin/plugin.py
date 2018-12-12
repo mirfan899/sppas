@@ -33,26 +33,26 @@
     bin.plugin.py
     ~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Main script to work with SPPAS plugins.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:summary:      Main script to work with SPPAS plugins.
 
-    Examples:
+Examples:
 
-    Install a plugin:
-    >>> ./sppas/bin/plugin.py --install -p sppas/src/plugins/tests/data/soxplugin.zip
+Install a plugin:
+>>> ./sppas/bin/plugin.py --install -p sppas/src/plugins/tests/data/soxplugin.zip
 
-    Use a plugin on a file:
-    >>> ./sppas/bin/plugin.py --apply -p soxplugin -i samples/samples-eng/oriana1.wav -o resampled.wav
+Use a plugin on a file:
+>>> ./sppas/bin/plugin.py --apply -p soxplugin -i samples/samples-eng/oriana1.wav -o resampled.wav
 
-    Remove a plugin:
-    >>> ./sppas/bin/plugin.py --remove -p soxplugin
+Remove a plugin:
+>>> ./sppas/bin/plugin.py --remove -p soxplugin
 
-    An "all-in-one" solution:
-    >>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
+An "all-in-one" solution:
+>>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
 
 """
 import sys
@@ -63,7 +63,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config import sg
+from sppas import sg
 from sppas.src.ui.term.terminalcontroller import TerminalController
 from sppas.src.plugins import sppasPluginsManager
 
@@ -74,43 +74,59 @@ if __name__ == "__main__":
     # Verify and extract args:
     # -----------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="{:s} [actions] [options]"
-                                  "".format(os.path.basename(PROGRAM)),
-                            prog=PROGRAM,
-                            description="Plugin command line interface.")
+    parser = ArgumentParser(
+        usage="%(prog)s [actions] [files]",
+        description="Plugin command line interface.",
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
-    parser.add_argument(
+    # Add arguments for actions
+    # -------------------------
+
+    group_act = parser.add_argument_group('Actions')
+
+    group_act.add_argument(
         "--install",
         action='store_true',
         help="Install a new plugin from a plugin package.")
 
-    parser.add_argument(
+    group_act.add_argument(
         "--remove",
         action='store_true',
         help="Remove an existing plugin.")
 
-    parser.add_argument(
+    group_act.add_argument(
         "--apply",
         action='store_true',
         help="Apply a plugin on a file.")
 
-    parser.add_argument(
+    # Add arguments for input/output files
+    # ------------------------------------
+
+    group_io = parser.add_argument_group('Files')
+
+    group_io.add_argument(
         "-p",
         metavar="string",
         required=True,
         help="Plugin (either an identifier, or an archive file).")
 
-    parser.add_argument(
+    group_io.add_argument(
         "-i",
         metavar="string",
         required=False,
         help="Input file to apply a plugin on it.")
 
-    parser.add_argument(
+    group_io.add_argument(
         "-o",
         metavar="string",
         required=False,
         help="Output file, ie the result of the plugin.")
+
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
 
     if len(sys.argv) <= 1:
         sys.argv.append('-h')

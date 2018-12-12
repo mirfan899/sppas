@@ -33,12 +33,12 @@
     bin.normalize.py
     ~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Text normalization automatic annotation.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      Text normalization automatic annotation.
 
 """
 
@@ -50,13 +50,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config import paths
+from sppas import sg, paths
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
-from sppas.src.anndata.aio import extensions_out
-from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
@@ -76,48 +74,50 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
 
     parser = ArgumentParser(
-        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        usage="%(prog)s [files] [options]",
         description=
-        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
-        parameters.get_step_descr(ann_step_idx))
+        parameters.get_step_name(ann_step_idx) + ": " +
+        parameters.get_step_descr(ann_step_idx),
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__))
 
-    # Add arguments for input/output of the annotations
-    # -------------------------------------------------
+    # Add arguments for input/output files
+    # ------------------------------------
 
-    input_group = parser.add_mutually_exclusive_group()
+    group_io = parser.add_argument_group('Files')
 
-    input_group.add_argument(
+    group_io.add_argument(
         "-i",
         metavar="file",
         help='Input transcription file name.')
 
-    parser.add_argument(
+    group_io.add_argument(
         "-o",
         metavar="file",
         help='Annotated file with normalized tokens.')
 
-    parser.add_argument(
-        "-r", "--vocab",
+    group_io.add_argument(
+        "-r",
+        metavar="vocab",
         required=True,
         help='Vocabulary file name')
 
     # Add arguments from the options of the annotation
     # ------------------------------------------------
 
+    group_opt = parser.add_argument_group('Options')
+
     for opt in ann_options:
-        parser.add_argument(
+        group_opt.add_argument(
             "--" + opt.get_key(),
             type=opt.type_mappings[opt.get_type()],
             default=opt.get_value(),
             help=opt.get_text() + " (default: {:s})"
                                   "".format(opt.get_untypedvalue()))
 
-    # Add quiet and help arguments
-    # ----------------------------
-
-    parser.add_argument("--quiet",
-                        action='store_true',
-                        help="Print only warnings and errors.")
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
 
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
@@ -128,7 +128,7 @@ if __name__ == "__main__":
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
 
-    base = os.path.basename(args.vocab)
+    base = os.path.basename(args.r)
     lang = base[:3]
 
     # Redirect all messages to logging
@@ -146,7 +146,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'vocab', 'e', 'quiet'):
+        if a not in ('i', 'o', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -155,7 +155,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasTextNorm(vocab=args.vocab, lang=lang, logfile=None)
+        ann = sppasTextNorm(vocab=args.r, lang=lang, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.o)

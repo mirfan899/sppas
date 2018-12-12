@@ -32,17 +32,17 @@
     bin.pluginbuild.py
     ~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Main script to build a plugin for SPPAS.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      Main script to build a plugin for SPPAS.
 
-    In SPPAS, a plugin is a ZIP archive of a directory content.
-    This directory must contain a configuration file with extension ".ini".
-    This directory should contain an icon, a README.txt file and a license
-    in PDF format.
+In SPPAS, a plugin is a ZIP archive of a directory content.
+This directory must contain a configuration file with extension ".ini".
+This directory should contain an icon, a README.txt file and a license
+in PDF format.
 
 """
 
@@ -56,6 +56,7 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas import sg
 from sppas.src.plugins import sppasPluginConfigParser
 from sppas.src.utils import sppasDirUtils
 from sppas.src.utils.fileutils import setup_logging
@@ -67,10 +68,13 @@ if __name__ == "__main__":
     # Verify and extract args:
     # ----------------------------------------------------------------------------
 
-    parser = ArgumentParser(usage="{:s} [actions] [options]"
-                                  "".format(os.path.basename(PROGRAM)),
-                            prog=PROGRAM,
-                            description="Build a plugin archive.")
+    parser = ArgumentParser(
+        usage="%(prog)s [actions] [options]",
+        description="Build a plugin archive.",
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
     parser.add_argument(
         "-i",

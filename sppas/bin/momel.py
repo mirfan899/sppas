@@ -32,12 +32,12 @@
     bin.momel.py
     ~~~~~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Run the momel automatic annotations
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      Run the momel automatic annotations
 
 """
 
@@ -49,9 +49,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas import sg, annots
 from sppas import sppasMomel
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.config.ui import sppasAppConfig
 from sppas.src.annotations.manager import sppasAnnotationsManager
@@ -72,62 +72,78 @@ if __name__ == "__main__":
     # ------------------------------------------------------------------------
     
     parser = ArgumentParser(
-        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        usage="%(prog)s [files] [options]",
         description=
-        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
-        parameters.get_step_descr(ann_step_idx))
+        parameters.get_step_name(ann_step_idx) + ": " +
+        parameters.get_step_descr(ann_step_idx),
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
-    # Add arguments for input/output of the annotations
-    # -------------------------------------------------
+    parser.add_argument(
+        "--quiet",
+        action='store_true',
+        help="Disable the verbosity")
 
-    input_group = parser.add_mutually_exclusive_group()
+    # Add arguments for input/output files
+    # ------------------------------------
 
-    input_group.add_argument(
+    group_io = parser.add_argument_group('Files')
+
+    group_io.add_argument(
         "-i",
         metavar="file",
         help='Input file name (extension: .hz or .PitchTier)')
 
-    parser.add_argument(
+    group_io.add_argument(
         "-o",
         metavar="file",
         help="Output file name (default: stdout)")
 
-    input_group.add_argument(
+    group_io.add_argument(
         "-I",
-        action='append',
         metavar="file",
+        action='append',
         help='Input file name with pitch (append).')
-    
-    parser.add_argument(
+
+    group_io.add_argument(
         "-e",
+        metavar=".ext",
         default=annots.extension,
         choices=extensions_out,
-        metavar="extension",
         help='Output file extension. One of: {:s}'
              ''.format(" ".join(extensions_out)))
-    
+
     # Add arguments from the options of the annotation
     # ------------------------------------------------
-    
+
+    group_opt = parser.add_argument_group('Options')
+
     for opt in ann_options:
-        parser.add_argument(
+        group_opt.add_argument(
             "--" + opt.get_key(),
             type=opt.type_mappings[opt.get_type()],
             default=opt.get_value(),
             help=opt.get_text()+" (default: {:s})".format(opt.get_untypedvalue()))
     
-    # Add quiet and help arguments
-    # ----------------------------
-    
-    parser.add_argument("--quiet",
-                        action='store_true',
-                        help="Print only warnings and errors.")
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
     
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
     
     args = parser.parse_args()
-    
+
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------

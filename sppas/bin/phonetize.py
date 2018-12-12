@@ -33,12 +33,12 @@
     bin.phonetize.py
     ~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Phonetization automatic annotation.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      Phonetization automatic annotation.
 
 """
 import sys
@@ -49,12 +49,11 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas import sg
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.mapping import sppasMapping
-from sppas.src.anndata.aio import extensions_out
-from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
@@ -75,53 +74,64 @@ if __name__ == "__main__":
     # -----------------------------------------------------------------------
 
     parser = ArgumentParser(
-        usage="{:s} ...".format(os.path.basename(PROGRAM)),
+        usage="%(prog)s [files] [options]",
         description=
-        parameters.get_step_name(ann_step_idx) + " automatic annotation: " +
-        parameters.get_step_descr(ann_step_idx))
-
-    # Add arguments for input/output of the annotations
-    # -------------------------------------------------
+        parameters.get_step_name(ann_step_idx) + ": " +
+        parameters.get_step_descr(ann_step_idx),
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
     parser.add_argument(
+        "--quiet",
+        action='store_true',
+        help="Disable the verbosity")
+
+    # Add arguments for input/output files
+    # ------------------------------------
+
+    group_io = parser.add_argument_group('Files')
+
+    group_io.add_argument(
         "-i",
         metavar="file",
         help='Input tokenization file name.')
 
-    parser.add_argument(
+    group_io.add_argument(
         "-o",
         metavar="file",
         help='Annotated file with phonetization')
 
-    parser.add_argument(
-        "-r", "--dict",
+    group_io.add_argument(
+        "-r",
+        metavar="dict",
         required=True,
         help='Pronunciation dictionary (HTK-ASCII format).')
 
-    parser.add_argument(
-        "-m", "--map",
+    group_io.add_argument(
+        "-m",
+        metavar="map_file",
         required=False,
         help='Pronunciation mapping table. '
              'It is used to generate new pronunciations by '
              'mapping phonemes of the dictionary.')
 
-    # Add arguments from the options of the annotation
-    # ------------------------------------------------
+    # Add arguments for the options
+    # -----------------------------
+
+    group_opt = parser.add_argument_group('Options')
 
     for opt in ann_options:
-        parser.add_argument(
+        group_opt.add_argument(
             "--" + opt.get_key(),
             type=opt.type_mappings[opt.get_type()],
             default=opt.get_value(),
             help=opt.get_text() + " (default: {:s})"
                                   "".format(opt.get_untypedvalue()))
 
-    # Add quiet and help arguments
-    # ----------------------------
-
-    parser.add_argument("--quiet",
-                        action='store_true',
-                        help="Print only warnings and errors.")
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
 
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
@@ -147,7 +157,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'dict', 'map', 'e', 'quiet'):
+        if a not in ('i', 'o', 'r', 'map', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -156,7 +166,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasPhon(args.dict, map_filename=args.map, logfile=None)
+        ann = sppasPhon(args.r, map_filename=args.map, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.o)
@@ -176,7 +186,7 @@ if __name__ == "__main__":
         # an argument 'unk' must exists.
         # -------------------------------
 
-        pdict = sppasDictPron(args.dict, nodump=False)
+        pdict = sppasDictPron(args.r, nodump=False)
         mapping = sppasMapping()
         if args.map:
             map_table = sppasMapping(args.map)
