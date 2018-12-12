@@ -280,7 +280,7 @@ class sppasParam(object):
         :param annotation_files: (list) List of annotations to load. None=ALL.
 
         """
-        if len(annotation_files) == 0:
+        if not annotation_files or len(annotation_files) == 0:
             self.parse_config_file()
 
         else:
