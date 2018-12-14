@@ -63,12 +63,12 @@ from sppas.src.config.ui import sppasAppConfig
 # ----------------------------------------------------------------------------
 
 modes_help = "Stat to estimate, in:\n"
-modes_help += "  0 = ALL,\n"
-modes_help += "  1 = Occurrences,\n"
-modes_help += '  2 = Total duration,\n'
-modes_help += '  3 = Average duration,\n'
-modes_help += '  4 = Median duration,\n'
-modes_help += '  5 = Standard deviation duration.'
+modes_help += "  0 = Summary of all files (default),\n"
+modes_help += "  1 = Occurrences in each file,\n"
+modes_help += '  2 = Total duration in each file,\n'
+modes_help += '  3 = Average duration in each file,\n'
+modes_help += '  4 = Median duration in each file,\n'
+modes_help += '  5 = Standard deviation duration in each file.'
 
 if __name__ == "__main__":
 
@@ -129,7 +129,7 @@ if __name__ == "__main__":
         "-s",
         metavar="stat",
         type=int,
-        action="append",
+        default=0,
         help=modes_help)
 
     group_opt.add_argument(
@@ -139,6 +139,21 @@ if __name__ == "__main__":
         type=int,
         help='Value of N of the Ngram sequences (default: 1; Max: 5)')
 
+    group_opt.add_argument(
+        "--addradius",
+        action='store_true',
+        help="Add the Radius to the estimation of the duration (default is to use midpoint)")
+
+    group_opt.add_argument(
+        "--deductradius",
+        action='store_true',
+        help="Deduct the Radius to the estimation of the duration (default is to use midpoint)")
+
+    group_opt.add_argument(
+        "--withalt",
+        action='store_true',
+        help="Include also alternative tags (default is to ignore them)")
+
     # Force to print help if no argument is given then parse
     # ------------------------------------------------------
 
@@ -146,6 +161,16 @@ if __name__ == "__main__":
         sys.argv.append('-h')
 
     args = parser.parse_args()
+
+    # Mutual exclusion of radius
+    # --------------------------
+
+    if args.addradius and args.deductradius:
+        parser.print_usage()
+        print("{:s}: error: argument --addradius: "
+              "not allowed with argument --deductradius"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
 
     # Redirect all messages to logging
     # --------------------------------
@@ -160,17 +185,14 @@ if __name__ == "__main__":
             setup_logging(cg.quiet_log_level, None)
 
     # -----------------------------------------------------------------------
-    # Check args. Set variables: modes, ngram, tier_name
+    # Check args.
+    # Set variables: modes, ngram, tier_name, with_alt, with_radius
     # -----------------------------------------------------------------------
 
-    if args.s:
-        modes = args.s
-        for mode in args.s:
-            if mode not in range(6):
-                logging.error("Unknown stat: {}".format(mode))
-                sys.exit(1)
-    else:
-        modes = [0]
+    mode = args.s
+    if mode not in range(6):
+        logging.error("Unknown stats mode: {}".format(mode))
+        sys.exit(1)
 
     ngram = 1
     if args.n:
@@ -183,15 +205,24 @@ if __name__ == "__main__":
     tier_name = args.t
     tier_name = tier_name.replace(' ', '_')
 
+    with_alt = False
+    if args.withalt:
+        with_alt = True
+
+    with_radius = 0
+    if args.addradius:
+        with_radius = 1
+    if args.deductradius:
+        with_radius = -1
+
     # -----------------------------------------------------------------------
     # Read data
     # -----------------------------------------------------------------------
 
-    tiers = list()
-    files = list()
+    tiers = dict()
     for file_input in args.i:
 
-        logging.info("Read {:s}".format(args.i))
+        logging.info("Read {:s}".format(file_input))
         start_time = time.time()
         parser = sppasRW(file_input)
         trs_input = parser.read()
@@ -211,77 +242,84 @@ if __name__ == "__main__":
         # -----------------
         tier = trs_input.find(args.t, case_sensitive=False)
         if tier is not None:
-            tiers.append(tier)
-            files.append(file_input)
+            tiers[tier] = file_input
             logging.info("  - Tier {:s}. Selected."
                          "".format(tier.get_name()))
         else:
             logging.error("  - Tier {:s}: Not found."
                           "".format(args.t))
+            continue
 
     # ----------------------------------------------------------------------------
     # Estimates statistical distributions
     # ----------------------------------------------------------------------------
 
-    t = TierStats(tiers)
-    t.set_ngram(ngram)
-
-    ds = t.ds()
-    occurrences = dict()
-    total = dict()
-    mean = dict()
-    median = dict()
-    stdev = dict()
-
-    title = ["filename", "tier", "annotation tag"]
-    stats = dict()  # used only to get the list of keys
-    if 0 in modes or 1 in modes:
-        occurrences = ds.len()
-        title.append('occurrences')
-        stats = occurrences
-    if 0 in modes or 2 in modes:
-        total = ds.total()
-        title.append('total duration')
-        if not stats:
-            stats = total
-    if 0 in modes or 3 in modes:
-        mean = ds.mean()
-        title.append('mean duration')
-        if not stats:
-            stats = mean
-    if 0 in modes or 4 in modes:
-        median = ds.median()
-        title.append('median duration')
-        if not stats:
-            stats = median
-    if 0 in modes or 5 in modes:
-        stdev = ds.stdev()
-        title.append('Std dev duration')
-        if not stats:
-            stats = stdev
-
-    # -----------------------------------------------------------------------
-    # Format statistical distributions
-    # -----------------------------------------------------------------------
-
     row_data = list()
-    row_data.append(title)
 
-    for i, key in enumerate(stats.keys()):
-        if len(key) == 0:  # ignore empty label
-            continue
-        row = ["file", tier_name, key]
-        if 0 in modes or 1 in modes:
-            row.append(str(occurrences[key]))
-        if 0 in modes or 2 in modes:
-            row.append(str(round(total[key], 3)))
-        if 0 in modes or 3 in modes:
-            row.append(str(round(mean[key], 3)))
-        if 0 in modes or 4 in modes:
-            row.append(str(round(median[key], 3)))
-        if 0 in modes or 5 in modes:
-            row.append(str(round(stdev[key], 3)))
-        row_data.append(row)
+    # Summary (=> sum stats of all files and print all estimated values)
+    if mode == 0:
+
+        ts = TierStats(list(tiers), ngram, with_radius, with_alt)
+        ds = ts.ds()
+
+        occurrences = ds.len()
+        total = ds.total()
+        mean = ds.mean()
+        median = ds.median()
+        stdev = ds.stdev()
+
+        row_data.append(["Tag", "Occurrences", "Total durations",
+                         "Mean durations", "Median durations",
+                         "Std dev. durations"])
+        for key in occurrences:
+            row_data.append([key,
+                             "{:d}".format(occurrences[key]),
+                             "{:.4f}".format(total[key]),
+                             "{:.4f}".format(mean[key]),
+                             "{:.4f}".format(median[key]),
+                             "{:.4f}".format(stdev[key])])
+
+    # One value (mean, occ, ...) separately for each files
+    else:
+        data = list()
+        for tier in tiers:
+            ts = TierStats(tier, ngram, with_radius, with_alt)
+            ds = ts.ds()
+            data.append(ds)
+
+        title = ["Tag"]
+        title.extend([tiers[t] for t in tiers])
+        row_data.append(title)
+
+        # estimates descriptives statistics
+        stat_values = list()
+        items = list()  # the list of labels
+        for ds in data:
+            if mode == 1:
+                stat_values.append(ds.len())
+
+            elif mode == 2:
+                stat_values.append(ds.total())
+
+            elif mode == 3:
+                stat_values.append(ds.mean())
+
+            elif mode == 4:
+                stat_values.append(ds.median())
+
+            elif mode == 5:
+                stat_values.append(ds.stdev())
+
+            items.extend(ds.len().keys())
+
+        if mode == 1:
+            for i, item in enumerate(sorted(set(items))):
+                row = [item] + ["{:d}".format(stat.get(item, 0)) for stat in stat_values]
+                row_data.append(row)
+        else:
+            for i, item in enumerate(sorted(set(items))):
+                row = [item] + ["{:.4f}".format(stat.get(item, 0)) for stat in stat_values]
+                row_data.append(row)
 
     # -----------------------------------------------------------------------
     # Save stats
@@ -291,8 +329,7 @@ if __name__ == "__main__":
         file_output = args.o
         with codecs.open(file_output, 'w', sg.__encoding__) as fp:
             for row in row_data:
-                s = ','.join(row)
-                fp.write(s)
+                fp.write(','.join(row))
                 fp.write('\n')
 
     else:

@@ -112,7 +112,7 @@ class DescriptivesStatsDialog(spBaseDialog):
         ngrambox.SetSelection(0)
         ngrambox.SetFont(font)
 
-        lablist = ['Use only the label with the best score', 'Include also alternative labels']
+        lablist = ['Use only the tag with the best score', 'Include also alternative tags']
         withaltbox = wx.RadioBox(self, -1, label="Annotation labels:", choices=lablist, majorDimension=1, style=wx.RA_SPECIFY_COLS)
         withaltbox.SetFont(font)
 
@@ -324,7 +324,7 @@ class DetailedPanel(BaseStatPanel):
         self.statctrl = SortListCtrl(self, size=(-1, 400))
 
         # create columns
-        self.cols = ("Labels",) + tuple(os.path.basename(v)+":"+ts.get_tier().get_name() for ts, v in data.items())
+        self.cols = ("Tags",) + tuple(os.path.basename(v)+":"+ts.get_tier().get_name() for ts, v in data.items())
         for i, col in enumerate(self.cols):
             self.statctrl.InsertColumn(i, col)
             self.statctrl.SetColumnWidth(i, 120)
@@ -354,7 +354,7 @@ class DetailedPanel(BaseStatPanel):
 
         # fill rows
         self.rowdata = []
-        for i,item in enumerate(sorted(set(items))):
+        for i, item in enumerate(sorted(set(items))):
             row = [item] + [statvalues[i].get(item,0) for i in range(len(statvalues))]
             self.rowdata.append(row)
             self.AppendRow(i, row, self.statctrl)
