@@ -46,6 +46,7 @@ from .TextNorm import sppasTextNorm
 from .Phon import sppasPhon
 from .Syll import sppasSyll
 from .TGA import sppasTGA
+from .searchtier import sppasFindTier
 # from .Align import sppasAlign
 
 # ---------------------------------------------------------------------------
@@ -57,4 +58,5 @@ __all__ = (
     'sppasPhon',
     'sppasSyll',
     'sppasTGA',
+    'sppasFindTier'
 )
