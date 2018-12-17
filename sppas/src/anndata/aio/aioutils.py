@@ -178,13 +178,12 @@ def check_gaps(tier, min_loc=None, max_loc=None):
 
 
 def fill_gaps(tier, min_loc=None, max_loc=None):
-    """Return the tier in which the temporal gaps between annotations are
-    filled with an un-labelled annotation.
+    """Temporal gaps/holes between annotations are filled.
 
-    :param tier: (Tier) A tier with intervals.
+    :param tier: (sppasTier) A tier with intervals.
     :param min_loc: (sppasPoint)
     :param max_loc: (sppasPoint)
-    :returns: (sppasTier)
+    :returns: (sppasTier) a tier with un-labelled annotations instead of gaps.
 
     """
     if tier.is_empty() and min_loc is not None and max_loc is not None:
