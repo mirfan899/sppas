@@ -148,7 +148,7 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_logfilename(cg.log_file)
+        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:

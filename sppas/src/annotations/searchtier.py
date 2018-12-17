@@ -34,10 +34,10 @@
 """
 from .annotationsexc import NoInputError
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class sppasFindTier(object):
+class sppasFindTier:
     """Search for tiers in a sppasTranscription.
 
     :author:       Brigitte Bigi
@@ -47,11 +47,6 @@ class sppasFindTier(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-
-    def __init__(self):
-        pass
-
-    # ------------------------------------------------------------------------
 
     @staticmethod
     def transcription(trs):
@@ -93,7 +88,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def tokenization(trs, pattern=""):
@@ -142,7 +137,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def phonetization(trs):
@@ -175,7 +170,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_phones(trs):
@@ -191,7 +186,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_tokens(trs):
@@ -207,7 +202,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_syllables(trs):
@@ -228,7 +223,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_lemmas(trs):
@@ -243,7 +238,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def pitch_anchors(trs):

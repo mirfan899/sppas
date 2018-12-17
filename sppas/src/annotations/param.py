@@ -35,8 +35,8 @@
 import logging
 import os
 
-from sppas.src.config import paths
-from sppas.src.config import annots
+from sppas import paths
+from sppas import annots
 from sppas.src.anndata.aio import extensions_out
 
 from .cfgparser import sppasAnnotationConfigParser
@@ -64,24 +64,22 @@ class annotationParam(object):
         :param filename: (str) Annotation configuration file
         
         """
-        # An identifier to represent this annotation step
+        # An identifier to represent this annotation
         self.__key = None
         # The name of the annotation
         self.__name = ""
         # The description of the annotation
         self.__descr = ""
-        # The annotation status
+        # The status of the annotation
         self.__enabled = False
         self.__invalid = False
         # The language resource
         self.__langres = list()
         # The list of options
         self.__options = list()
-        # Status
-        self.__invalid = False
 
-        # OK... now fix all member values from the given file
-        if filename:
+        # Fix all members from a given config file
+        if filename is not None:
             self.parse(filename)
 
     # ------------------------------------------------------------------------
@@ -121,7 +119,7 @@ class annotationParam(object):
     # -----------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """Set the language of the annotation only if this latter is accepted.
+        """Set the language of the annotation, if this latter is accepted.
 
         :param lang: (str) Language to fix for the annotation
         :returns: (bool) Language is set or not
@@ -209,12 +207,20 @@ class annotationParam(object):
     # -----------------------------------------------------------------------
 
     def set_option_value(self, key, value):
-        """Change value of an option."""
+        """Change value of an option.
+        
+        :param key: (str) Identifier of the option
+        :param value: (any) New value for the option
+        :raises: KeyError
+
+        """
         # the option is already in the list, change its value
         for opt in self.__options:
             if key == opt.get_key():
                 opt.set_value(value)
                 return
+
+        # the option was not found in the list
         raise KeyError("Unknown option {:s} in annotation parameters."
                        "".format(key))
 
@@ -222,13 +228,15 @@ class annotationParam(object):
 
 
 class sppasParam(object):
-    """Annotations parameters manager.
+    """Annotation parameters manager.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Parameters of a set of annotations.
 
     """
 
@@ -238,44 +246,26 @@ class sppasParam(object):
         :param annotation_keys: (list) List of annotations to load. None=ALL.
 
         """
-        # Internal variables
-        self.continuer = False
+        # A log file to communicate to the user
+        self._report = ""
+        
+        # The format of the annotated files
+        self._output_ext = annots.extension
 
-        # User
-        self.logfilename = ""
-        self.output_format = annots.extension
+        # Input files to annotate
+        self._inputs = []
 
-        # SPPAS parameters
-        self.sppasinput = []
-
-        # Annotation steps
+        # The parameters of all the annotations
         self.annotations = []
         self.load_annotations(annotation_keys)
 
     # ------------------------------------------------------------------------
 
-    def parse_config_file(self):
-        """Parse the sppas.conf file to get the list of annotations.
-
-        :param annotation_files: (list) List of annotations to load. None=ALL.
-
-        """
-        with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
-            lines = fp.readlines()
-
-        # Read the whole file and load annotation options
-        for line in lines:
-            line = line.strip()
-            if line.lower().startswith("annotation:") is True:
-                data = line.split(":")
-                cfg_file = data[1].strip()
-                a = annotationParam(os.path.join(paths.etc, cfg_file))
-                self.annotations.append(a)
-
-    # ------------------------------------------------------------------------
-
     def load_annotations(self, annotation_files=None):
-        """Load annotations configurations from a list of .ini files.
+        """Load the annotation configuration files.
+
+        Load from a list of given file names (without path) or from the
+        default sppas.conf file.
 
         :param annotation_files: (list) List of annotations to load. None=ALL.
 
@@ -285,37 +275,109 @@ class sppasParam(object):
 
         else:
             for cfg_file in annotation_files:
-                a = annotationParam(os.path.join(paths.etc, cfg_file))
-                self.annotations.append(a)
+                self.__load(os.path.join(paths.etc, cfg_file))
+
+    # ------------------------------------------------------------------------
+
+    def parse_config_file(self):
+        """Parse the sppas.conf file.
+
+        Parse the file to get the list of annotations and parse the
+        corresponding "ini" file.
+
+        """
+        config = os.path.join(paths.etc, "sppas.conf")
+        if os.path.exists(config) is False:
+            raise IOError('Installation error: the file to configure the '
+                          'automatic annotations does not exist.')
+
+        # Read the whole file content
+        with open(config, "r") as fp:
+            lines = fp.readlines()
+            fp.close()
+
+        # Load annotation configurations
+        for line in lines:
+            line = line.strip()
+            if line.lower().startswith("annotation:") is True:
+                data = line.split(":")
+                self.__load(os.path.join(paths.etc, data[1].strip()))
 
     # -----------------------------------------------------------------------
-    # input file name or directory, i.e. entry to annotate
+
+    def __load(self, cfg_file):
+        """Load parameters of an annotation from its configuration file."""
+        try:
+            a = annotationParam(cfg_file)
+            self.annotations.append(a)
+        except:
+            logging.error('Configuration file {:s} not loaded.'
+                          ''.format(cfg_file))
+
+    # -----------------------------------------------------------------------
+    # Input entries to annotate
     # -----------------------------------------------------------------------
 
-    def set_sppasinput(self, inputlist):
-        self.sppasinput = inputlist
-        self.logfilename = self.sppasinput[0] + ".log"
+    def set_sppasinput(self, input_list):
+        """Fix the list of entries to annotate.
+
+        :param input_list: (str or list of str)
+
+        """
+        if isinstance(input_list, list) is False:
+            input_list = [input_list]
+
+        if len(input_list) == 0:
+            self._inputs = list()
+            self._report = ""
+            return
+
+        for entry in input_list:
+            self.add_sppasinput(entry)
+
+        self._report = os.path.splitext(self._inputs[0])[0] + ".log"
+
+    # -----------------------------------------------------------------------
 
     def get_sppasinput(self):
-        return self.sppasinput
+        """Return the list of entries to annotate."""
+        return self._inputs
 
-    def add_sppasinput(self, inputfilename):
-        self.sppasinput.append(inputfilename)
-        self.logfilename = self.sppasinput[0] + ".log"
+    # -----------------------------------------------------------------------
+
+    def add_sppasinput(self, entry):
+        """Add a new entry to annotate.
+
+        :param entry: (str)
+
+        """
+        if os.path.exists(entry):
+            self._inputs.append(entry)
+        self._report = os.path.splitext(entry)[0] + ".log"
+
+    # -----------------------------------------------------------------------
 
     def clear_sppasinput(self):
-        del self.sppasinput
-        self.sppasinput = []
+        self._inputs = list()
+        self._report = ""
 
     # -----------------------------------------------------------------------
-    # log file name for the procedure outcome report
+    # Procedure Outcome Report file name
     # -----------------------------------------------------------------------
 
-    def set_logfilename(self, logfilename):
-        self.logfilename = logfilename
+    def set_report_filename(self, filename):
+        """Fix the name of the file to save the report of the annotations.
+        
+        :param filename: (str) Filename for the Procedure Outcome Report
+        
+        """
+        self._report = filename
 
-    def get_logfilename(self):
-        return self.logfilename
+    # -----------------------------------------------------------------------
+
+    def get_report_filename(self):
+        """Return the name of the file for the Procedure Outcome Report."""
+        return self._report
 
     # -----------------------------------------------------------------------
     # selected language
@@ -389,7 +451,7 @@ class sppasParam(object):
     # -----------------------------------------------------------------------
 
     def get_output_format(self):
-        return self.output_format
+        return self._output_ext
 
     def set_output_format(self, output_format):
         """Fix the output format of the annotations.
@@ -405,26 +467,9 @@ class sppasParam(object):
         # Instead we could raise an exception... is it appropriate to do that?
         extensions = [e.lower() for e in extensions_out]
         if not output_format.lower() in extensions:
-            logging.warning("Unknown extension: {:s}. "
-                            "Extension is set to default."
-                            "".format(output_format))
+            logging.warning(
+                "Unknown extension: {:s}. Extension is set to default: {:s}."
+                "".format(output_format, annots.extension))
             output_format = annots.extension
 
-        self.output_format = output_format
-
-    # -----------------------------------------------------------------------
-    # Continue: everything is ok?
-    # -----------------------------------------------------------------------
-
-    def set_continue(self, status):
-        self.continuer = status
-
-    # ------------------------------------------------------------------------
-
-    def get_continue(self):
-        """Ask to continue SPPAS or not!
-
-        :returns: (bool)
-
-        """
-        return self.continuer
+        self._output_ext = output_format

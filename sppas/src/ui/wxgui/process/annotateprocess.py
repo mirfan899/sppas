@@ -140,9 +140,9 @@ class AnnotateProcess(object):
 
         # Show report
         try:
-            ShowLogDialog(parent, self.preferences, parameters.get_logfilename())
+            ShowLogDialog(parent, self.preferences, parameters.get_report_filename())
             try:
-                os.remove(parameters.get_logfilename())
+                os.remove(parameters.get_report_filename())
                 # eg. source or destination doesn't exist
             except IOError:
                 pass
@@ -150,7 +150,7 @@ class AnnotateProcess(object):
                 pass
         except Exception:
             message = "Automatic annotation finished.\nSee " + \
-                      parameters.get_logfilename() + \
+                      parameters.get_report_filename() + \
                       " for details.\nThanks for using SPPAS.\n"
             ShowInformation(None, self.preferences, message)
 

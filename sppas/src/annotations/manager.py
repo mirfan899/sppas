@@ -1057,7 +1057,7 @@ class sppasAnnotationsManager(Thread):
         # ##################################################################### #
         try:
             self._logfile = sppasLog(self.parameters)
-            self._logfile.create(self.parameters.get_logfilename())
+            self._logfile.create(self.parameters.get_report_filename())
             self._logfile.print_header()
             self._logfile.print_annotations_header()
         except:

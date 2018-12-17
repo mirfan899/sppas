@@ -50,7 +50,6 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.config import sg
-from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.anndata.aio import extensions_out
@@ -132,17 +131,7 @@ parameters.add_sppasinput(os.path.abspath(args.w))
 
 if args.l:
     parameters.set_lang(args.l)
-ext = args.e
-if not ext.startswith("."):
-    ext = "." + ext
-extensions = [e.lower() for e in extensions_out]
-if not ext.lower() in extensions:
-    print("\n")
-    print("[WARNING] Unknown extension: {:s}. Extension is set to "
-          "its default value.".format(args.e))
-    print("\n")
-    ext = annots.extension
-parameters.set_output_format(ext)
+parameters.set_output_format(args.e)
 
 if args.momel:
     parameters.activate_annotation("momel")
@@ -199,11 +188,11 @@ process.run_annotations(p)
 try:
     term = TerminalController()
     print(term.render('\n${GREEN}{:s}${NORMAL}').format(sep))
-    print(term.render('${RED}See {}.').format(parameters.get_logfilename()))
+    print(term.render('${RED}See {}.').format(parameters.get_report_filename()))
     print(term.render('${GREEN}Thank you for using {}.').format(sg.__name__))
     print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
 except:
     print('\n{:s}\n'.format(sep))
     print("See {} for details.\nThank you for using {}."
-          "".format(parameters.get_logfilename(), sg.__name__))
+          "".format(parameters.get_report_filename(), sg.__name__))
     print('{:s}\n'.format(sep))
