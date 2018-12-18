@@ -101,17 +101,136 @@ class sppasBaseAnnotation(object):
         pass
 
     # -----------------------------------------------------------------------
+    # Perform automatic annotation:
+    # -----------------------------------------------------------------------
 
-    def batch_processing(self, file_names, progress=None, output_format=annots.extension):
-        """Perform the annotation on a set of files.
+    def run(self, input_filename, output_filename=None):
+        """Run the automatic annotation process on an input file.
 
-        :param file_names: (list of str) List of file to annotate
-        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
-        :param output_format: (str) Output file extension (starting with a dot)
-        :returns: (int) Number of files processed with success
+        :param input_filename: (str) the input file name
+        :param output_filename: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
         raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def get_out_name(self, filename, output_format):
+        """Fix the output file name from the input one.
+
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
+
+        """
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def run_for_batch_processing(self, filename, output_format):
+        """Perform the annotation on a file.
+
+        Can be overridden.
+
+        :param filename: (str) Name of the input file to annotate
+        :param output_format: (str) Output file extension
+        :returns: output file name or None
+
+        """
+        # no file with momel anchors
+        if os.path.exists(filename) is False:
+            self.print_message(
+                "File not found. "
+                "This annotation expects a file with name {:s}. "
+                "".format(filename), indent=1, status=annots.error)
+            return None
+
+        # fix the output file name
+        out_name = self.get_out_name(filename, output_format)
+
+        # if out_name exists, it is overridden
+        if os.path.exists(out_name):
+            self.print_message(
+                "A file with name {:s} is already existing. "
+                "It will be overridden."
+                "".format(out_name), indent=2, status=annots.warning)
+
+        # execute annotation
+        try:
+            self.run(filename, out_name)
+        except Exception as e:
+            out_name = None
+            self.print_message(
+                "{:s} for file {:s}\n".format(str(e), out_name),
+                indent=2, status=annots.error)
+
+        return out_name
+
+    # -----------------------------------------------------------------------
+
+    def batch_processing(self, file_names, progress=None,
+                         output_format=annots.extension):
+        """Perform the annotation on a set of files.
+
+        :param file_names: (list of str) List of files with pitch values
+        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
+        :param output_format: (str)
+        :return: (int) Number of files processed with success
+
+        """
+        if len(self._options) > 0:
+            self.print_options()
+
+        total = len(file_names)
+        if total == 0:
+            return 0
+        files_processed_success = 0
+        if progress:
+            progress.set_header(self.__class__.__name__)
+            progress.update(0, "")
+
+        # Execute the annotation for each file in the list
+        for i, f in enumerate(file_names):
+
+            # Indicate the file to be processed
+            if progress:
+                progress.set_text(os.path.basename(f) +
+                                  " ("+str(i+1)+"/"+str(total)+")")
+            self.print_diagnosis(f)
+
+            # No expected file
+            if os.path.exists(f) is False:
+                self.print_message(
+                    "File not found. "
+                    "This annotation expects a file with name {:s}. "
+                    "".format(f), indent=1, status=annots.error)
+            else:
+
+                # Do the job (must be overridden)
+                out_name = self.run_for_batch_processing(f, output_format)
+
+                # Indicate progress
+                if out_name is None:
+                    self.print_message(
+                        "No file was created.", indent=2, status=annots.ignore)
+                else:
+                    files_processed_success += 1
+                    self.print_message(out_name, indent=2, status=annots.ok)
+
+            if progress:
+                progress.set_fraction(round(float((i+1))/float(total), 2))
+            self.print_newline()
+
+        # Indicate completed!
+        if progress:
+            progress.update(
+                1,
+                "Completed ({:d} files successfully over {:d} files).\n"
+                "".format(files_processed_success, total)
+            )
+            progress.set_header("")
+
+        return files_processed_success
 
     # -----------------------------------------------------------------------
     # To communicate with the interface:
@@ -173,17 +292,20 @@ class sppasBaseAnnotation(object):
         """Print the list of options in the user log."""
         if self.logfile:
             self.print_message(MSG_OPTIONS + ": ",
-                               indent=2,
+                               indent=0,
                                status=None)
         else:
             logging.info(MSG_OPTIONS)
 
         for k, v in self._options.items():
-            msg = " - {!s:s}: {!s:s}".format(k, v)
+            msg = "{!s:s}: {!s:s}".format(k, v)
             if self.logfile:
-                self.print_message(msg, indent=3, status=None)
+                self.print_message(msg, indent=1, status=None)
             else:
                 logging.info(msg)
+
+        if self.logfile:
+            self.print_newline()
 
     # -----------------------------------------------------------------------
 
@@ -210,6 +332,8 @@ class sppasBaseAnnotation(object):
         if self.logfile:
             self.logfile.print_newline()
 
+    # ------------------------------------------------------------------------
+    # Utility methods:
     # ------------------------------------------------------------------------
 
     def _get_filename(self, filename, extensions):

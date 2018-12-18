@@ -462,7 +462,8 @@ class TestTextNorm(unittest.TestCase):
             # Create a TextNormalizer for the given set of samples
             lang = samples_folder[-3:]
             vocab = os.path.join(paths.resources, "vocab", lang+".vocab")
-            tn = sppasTextNorm(vocab, lang)
+            tn = sppasTextNorm()
+            tn.set_vocab(vocab, lang)
             tn.set_faked(True)
             tn.set_std(True)
             tn.set_custom(True)

@@ -34,14 +34,14 @@
 """
 import os
 
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasLabel
+from sppas import sppasTag
+from sppas.src.config import annots
 from sppas.src.anndata.anndataexc import AnnDataTypeError
 from sppas.src.anndata.anndataexc import AnnDataEqError
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasLabel
-from sppas.src.anndata import sppasTag
-from sppas.src.config import annots
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
@@ -172,77 +172,12 @@ class sppasIntsint(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def batch_processing(self, file_names, progress=None, output_format=annots.extension):
-        """Perform the annotation on a set of files.
+    def get_out_name(self, filename, output_format):
+        """Fix the output file name from the input one.
 
-        :param file_names: (list of str) List of files with MOMEL annotation
-        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
-        :param output_format: (str)
-        :return: (int) Number of files processed with success
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
 
         """
-        total = len(file_names)
-        if total == 0:
-            return 0
-        files_processed_success = 0
-        if progress:
-            progress.set_header(self.__class__.__name__)
-            progress.update(0, "")
-
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(file_names):
-
-            # Indicate the file to be processed
-            annotation_done = False
-            if progress:
-                progress.set_text(os.path.basename(f) +
-                                  " ("+str(i+1)+"/"+str(total)+")")
-            self.print_diagnosis(f)
-
-            # no file with momel anchors
-            if os.path.exists(f) is False:
-                self.print_message(
-                    "File not found. "
-                    "This annotation expects a file with name {:s}. "
-                    "".format(f), indent=1, status=annots.error)
-            else:
-
-                # we do not care, if out_name exists, it is overridden
-                out_name = os.path.splitext(f)[0].replace('-momel', "-intsint") + output_format
-                if os.path.exists(out_name):
-                    self.print_message(
-                        "A file with name {:s} is already existing. "
-                        "It will be overridden."
-                        "".format(out_name), indent=2, status=annots.warning)
-
-                # execute annotation
-                try:
-                    self.run(f, out_name)
-                    annotation_done = True
-                except Exception as e:
-                    self.print_message(
-                        "{:s} for file {:s}\n".format(str(e), out_name),
-                        indent=2, status=annots.error)
-
-                # Indicate progress
-                if annotation_done is False:
-                    self.print_message(
-                        "No annotation was done.", indent=2, status=annots.ignore)
-                else:
-                    files_processed_success += 1
-                    self.print_message(out_name, indent=2, status=annots.ok)
-
-            if progress:
-                progress.set_fraction(round(float((i+1))/float(total), 2))
-            self.print_newline()
-
-        # Indicate completed!
-        if progress:
-            progress.update(
-                1,
-                "Completed ({:d} files successfully over {:d} files).\n"
-                "".format(files_processed_success, total)
-            )
-            progress.set_header("")
-
-        return files_processed_success
+        return os.path.splitext(filename)[0].replace('-momel', "-intsint") \
+               + output_format

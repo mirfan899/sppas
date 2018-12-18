@@ -1434,9 +1434,8 @@ class sppasHTKModelTrainer(object):
 
         # Create Tokenizer, Phonetizer, Aligner
         try:
-            tokenizer = sppasTextNorm(self.corpus.vocabfile,
-                                      self.corpus.lang,
-                                      logfile=None)
+            tokenizer = sppasTextNorm(logfile=None)
+            tokenizer.set_vocab(self.corpus.vocabfile, self.corpus.lang)
             tokenizer.set_std(False)
             tokenizer.set_custom(False)
 

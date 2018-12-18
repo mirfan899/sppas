@@ -48,8 +48,6 @@ from .unigram import sppasUnigram
 from .vocab import sppasVocabulary
 from .dumpfile import sppasDumpFile
 
-# ---------------------------------
-
 __all__ = (
     "sppasMapping",
     "sppasDictRepl",

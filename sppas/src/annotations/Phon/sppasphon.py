@@ -33,6 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
+
 from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
@@ -304,3 +306,14 @@ class sppasPhon(sppasBaseAnnotation):
                 raise EmptyOutputError
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    def get_out_name(self, filename, output_format):
+        """Fix the output file name from the input one.
+
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
+
+        """
+        return os.path.splitext(filename)[0] + '-phon' + output_format

@@ -422,6 +422,23 @@ class sppasParam(object):
     def get_step_descr(self, step):
         return self.annotations[step].get_descr()
 
+    # ------------------------------------------------------------------------
+
+    def get_step_idx(self, annotation_key):
+        """Get the annotation step index from annotation key.
+
+        :param annotation_key: (str)
+
+        """
+        for i, a in enumerate(self.annotations):
+            if a.get_key() == annotation_key:
+                return i
+
+        raise KeyError('No configuration file was available for an annotation'
+                       'with key {:s}'.format(annotation_key))
+
+    # ------------------------------------------------------------------------
+
     def get_step_key(self, step):
         return self.annotations[step].get_key()
 

@@ -34,13 +34,17 @@
 
 """
 
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasLocation
-from sppas.src.anndata import sppasPoint
-from sppas.src.anndata import sppasLabel
-from sppas.src.anndata import sppasTag
+import os
+
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasLocation
+from sppas import sppasPoint
+from sppas import sppasLabel
+from sppas import sppasTag
+
+from sppas.src.config import annots
 
 from ..baseannot import sppasBaseAnnotation
 from ..annotationsexc import AnnotationOptionError
@@ -175,7 +179,7 @@ class sppasMomel(sppasBaseAnnotation):
                     'No anchors found between time ' +
                     str(ipu_start_time * 0.01) + " and time " +
                     str(current_time * 0.01) + ": " + str(e),
-                    indent=2, status=1)
+                    indent=2, status=annots.warning)
             anchors = list()
             pass
 
@@ -260,17 +264,13 @@ class sppasMomel(sppasBaseAnnotation):
         :param output_filename: (str)
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get pitch values from the input
         pitch = self.fix_pitch(input_filename)
 
         # Search for anchors
         anchors_tier = self.convert(pitch)
         self.print_message(str(len(anchors_tier)) +
-                           " anchors found.", indent=2, status=3)
+                           " anchors found.", indent=2, status=annots.info)
 
         # Fix result
         trs_output = sppasTranscription("Momel")
@@ -282,3 +282,14 @@ class sppasMomel(sppasBaseAnnotation):
             parser.write(trs_output)
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    def get_out_name(self, filename, output_format):
+        """Fix the output file name from the input one.
+
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
+
+        """
+        return os.path.splitext(filename)[0] + '-momel' + output_format

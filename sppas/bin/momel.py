@@ -197,7 +197,7 @@ if __name__ == "__main__":
 
         # Perform the annotation
         process = sppasAnnotationsManager(parameters)
-        process.run_intsint()
+        process.run_momel()
 
     else:
 

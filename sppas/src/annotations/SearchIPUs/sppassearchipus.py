@@ -322,7 +322,13 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         """
         # Get audio and the channel we'll work on
         audio_speech = sppas.src.audiodata.aio.open(input_filename)
-        idx = audio_speech.extract_channel()
+        if audio_speech.get_nchannels() > 1:
+            self.print_message("Files with only one channel are supported.",
+                               indent=2, status=annots.error)
+            return None
+
+        # Extract the channel
+        idx = audio_speech.extract_channel(0)
         channel = audio_speech.get_channel(idx)
         self.__searcher.set_channel(channel)
 
@@ -354,83 +360,64 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def batch_processing(self, file_names, progress, output_format):
-        """Perform the annotation on a set of files.
+    def get_out_name(self, filename, output_format):
+        """Fix the output file name from the input one.
 
-        :param file_names: (list of str)
-        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
-        :param output_format: (str)
-        :return: (int) Number of files processed with success
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
 
         """
-        if len(file_names) == 0:
-            return 0
-        total = len(file_names)
-        files_processed_success = 0
-        progress.set_header(self.__class__.__name__)
-        progress.update(0, "")
+        return os.path.splitext(filename)[0] + output_format
 
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(file_names):
+    # -----------------------------------------------------------------------
 
-            # Indicate the file to be processed
-            annotation_done = False
-            progress.set_text(os.path.basename(f) +
-                              " ("+str(i+1)+"/"+str(total)+")")
-            self.print_diagnosis(f)
+    def run_for_batch_processing(self, filename, output_format):
+        """Perform the annotation on a file.
 
-            # Fix input/output file name
-            out_name = os.path.splitext(f)[0] + output_format
+        :param filename: (str) Name of the input file to annotate
+        :param output_format: (str) Output file extension
+        :returns: output file name or None
 
-            # Is there already an existing output file (in any format)!
-            ext = []
-            for e in sppas.src.anndata.aio.extensions_in:
-                if e not in ('.txt', '.hz', '.PitchTier'):
-                    ext.append(e)
-            exist_out_name = self._get_filename(f, ext)
+        """
+        # Fix input/output file name
+        out_name = self.get_out_name(filename, output_format)
 
-            # it's existing... but not in the expected format: convert!
-            if exist_out_name is not None:
+        # Is there already an existing output file (in any format)!
+        ext = []
+        for e in sppas.src.anndata.aio.extensions_in:
+            if e not in ('.txt', '.hz', '.PitchTier'):
+                ext.append(e)
+        exist_out_name = self._get_filename(filename, ext)
+
+        # it's existing... but not in the expected format: convert!
+        if exist_out_name is not None:
+            if exist_out_name == out_name:
                 self.print_message(
                     "A file with name {:s} is already existing."
                     "".format(exist_out_name), indent=2, status=annots.info)
-                if exist_out_name != out_name:
-                    try:
-                        parser = sppasRW(exist_out_name)
-                        t = parser.read()
-                        parser.set_filename(out_name)
-                        parser.write(t)
-                        self.print_message(
-                            'The file was exported to {:s}'
-                            ''.format(out_name), indent=2, status=annots.info)
-                    except:
-                        pass
+                return None
+
             else:
                 try:
-                    # Execute annotation
-                    self.run(f, out_name)
-                    annotation_done = True
-                except Exception as e:
+                    parser = sppasRW(exist_out_name)
+                    t = parser.read()
+                    parser.set_filename(out_name)
+                    parser.write(t)
                     self.print_message(
-                        "{:s} for file {:s}\n".format(str(e), out_name),
-                        indent=2, status=-1)
+                        "A file with name {:s} was already existing."
+                        'This file was exported to {:s}'
+                        ''.format(exist_out_name, out_name), indent=2, status=annots.info)
+                    return None
+                except:
+                    pass
 
-            # Indicate progress
-            if annotation_done is False:
-                self.print_message(
-                    "No annotation was done.", indent=2, status=annots.ignore)
-            else:
-                files_processed_success += 1
-                self.print_message(out_name, indent=2, status=annots.ok)
-            progress.set_fraction(round(float((i+1))/float(total), 2))
-            self.print_newline()
+        try:
+            # Execute annotation
+            self.run(filename, out_name)
+        except Exception as e:
+            out_name = None
+            self.print_message(
+                "{:s} for file {:s}\n".format(str(e), out_name),
+                indent=2, status=-1)
 
-        # Indicate completed!
-        progress.update(
-            1,
-            "Completed ({:d} files successfully over {:d} files).\n"
-            "".format(files_processed_success, total)
-        )
-        progress.set_header("")
-
-        return files_processed_success
+        return out_name

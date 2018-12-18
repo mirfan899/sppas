@@ -60,11 +60,13 @@ from .orthotranscription import sppasOrthoTranscription
 from .splitter import sppasSimpleSplitter
 from .tokenize import sppasTokenSegmenter
 from .num2letter import sppasNum
+from .normalize import TextNormalizer
 
 __all__ = (
     'sppasTextNorm',
     'sppasOrthoTranscription',
     'sppasSimpleSplitter',
     'sppasTokenSegmenter',
-    'sppasNum'
+    'sppasNum',
+    'TextNormalizer'
 )

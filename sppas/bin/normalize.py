@@ -51,10 +51,10 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg, paths
-from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
+from sppas.src.annotations import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
-from sppas.src.resources.vocab import sppasVocabulary
-from sppas.src.resources.dictrepl import sppasDictRepl
+from sppas.src.resources import sppasVocabulary
+from sppas.src.resources import sppasDictRepl
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
@@ -155,7 +155,8 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasTextNorm(vocab=args.r, lang=lang, logfile=None)
+        ann = sppasTextNorm(logfile=None)
+        ann.set_vocab(args.r, lang)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.o)
