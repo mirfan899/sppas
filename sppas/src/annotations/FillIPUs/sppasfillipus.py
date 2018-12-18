@@ -221,7 +221,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         """Perform the search of IPUs process.
 
         input_filename is a tuple (audio, raw transcription)
-        
+
         :param input_filename: (str or list of str) the input
         :param output_filename: (str) Resulting annotated file with IPUs
         :returns: (sppasTranscription)
