@@ -85,26 +85,21 @@ class sppasPhon(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, dict_filename, map_filename=None, logfile=None):
-        """Create a sppasPhon instance.
+    def __init__(self, logfile=None):
+        """Create a sppasPhon instance without any linguistic resources.
 
-        :param dict_filename: (str) is the pronunciation dictionary file name
-        (HTK-ASCII format, utf8).
-        :param map_filename: (str) is the filename of a mapping table. It is \
-        used to generate new pronunciations by mapping phonemes of the dict.
         :param logfile (sppasLog) is a log file utility class member.
-        :raises: ValueError if loading the dictionary fails
 
         """
         super(sppasPhon, self).__init__(logfile, "Phonetization")
 
-        # Pronunciation dictionary
+        # Mapping table (empty)
         self.maptable = None
-        if map_filename is not None:
-            self.maptable = sppasMapping(map_filename)
+        self.set_map(None)
 
+        # Pronunciation dictionary (empty)
         self.phonetizer = None
-        self.set_dict(dict_filename)
+        self.set_dict(None)
 
         # List of options to configure this automatic annotation
         self._options = dict()
@@ -178,6 +173,17 @@ class sppasPhon(sppasBaseAnnotation):
         """
         pdict = sppasDictPron(dict_filename, nodump=False)
         self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
+
+    # -----------------------------------------------------------------------
+
+    def set_map(self, map_filename):
+        """Set the mapping pronunciation table from a file.
+
+        :param map_filename: (str) is the filename of a mapping table. It is \
+        used to generate new pronunciations by mapping phonemes of the dict.
+
+        """
+        self.maptable = sppasMapping(map_filename)
 
     # -----------------------------------------------------------------------
 
@@ -271,10 +277,6 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get the tier to be phonetized.
         pattern = ""
         if self._options['usestdtokens'] is True:
@@ -301,11 +303,17 @@ class sppasPhon(sppasBaseAnnotation):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-phon'
 
     # -----------------------------------------------------------------------
 
@@ -316,4 +324,10 @@ class sppasPhon(sppasBaseAnnotation):
         :param output_format: (str) Extension of the output file
 
         """
-        return os.path.splitext(filename)[0] + '-phon' + output_format
+        # remove the extension
+        fn = os.path.splitext(filename)[0]
+        # remove the existing pattern
+        # ...
+        # add this annotation pattern
+        fn = fn.replace('-token', self.get_pattern())
+        return fn + output_format

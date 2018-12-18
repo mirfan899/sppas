@@ -172,6 +172,13 @@ class sppasIntsint(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-intsint'
+
+    # -----------------------------------------------------------------------
+
     def get_out_name(self, filename, output_format):
         """Fix the output file name from the input one.
 
@@ -179,5 +186,10 @@ class sppasIntsint(sppasBaseAnnotation):
         :param output_format: (str) Extension of the output file
 
         """
-        return os.path.splitext(filename)[0].replace('-momel', "-intsint") \
-               + output_format
+        # remove the extension
+        fn = os.path.splitext(filename)[0]
+        # remove the existing pattern
+        # ...
+        # add this annotation pattern
+        fn = fn.replace('-momel', self.get_pattern())
+        return fn + output_format

@@ -364,83 +364,23 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def run_phonetization(self):
-        """Execute the SPPAS-Phonetization program.
+        """Execute the Phonetization automatic annotation.
 
         :returns: number of files processed successfully
 
         """
+        a = self.create_ann("phon")
+
+        self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("phon")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
         step = self.parameters.get_step(step_idx)
-        stepname = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        a.set_dict(step.get_langresource())
+        a.set_map(None)
 
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
-
-        # Create annotation instance
-        try:
-            self._progress.set_text("Loading resources...")
-            p = sppasPhon(step.get_langresource(), logfile=self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % e, indent=1, status=4)
-            return 0
-
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            p.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-
-            # Get the input file
-            ext = ['-token'+self.parameters.get_output_format()]
-            for e in sppas.src.anndata.aio.extensions_out_multitiers:
-                ext.append('-token'+e)
-
-            inname = self._get_filename(f, ext)
-            if inname is not None:
-
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-phon' + self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    p.run(inname, outname)
-                    files_processed_success += 1
-                except Exception as e:
-                    #import traceback
-                    #print traceback.format_exc()
-                    if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with toketization. "
-                                                "Read the documentation for details.", indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
-        self._progress.set_header("")
-
-        return files_processed_success
+        return a.batch_processing(
+            self.get_annot_files(pattern="-token"),
+            self._progress,
+            self.parameters.get_output_format())
 
     # ------------------------------------------------------------------------
 

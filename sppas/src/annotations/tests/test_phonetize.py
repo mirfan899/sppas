@@ -349,8 +349,11 @@ class TestPhonetization(unittest.TestCase):
     def setUp(self):
         dict_file = os.path.join(paths.resources, "dict", "eng.dict")
         map_file = os.path.join(paths.resources, "dict", "eng-fra.map")
-        self.sp = sppasPhon(dict_file)
-        self.spl = sppasPhon(dict_file, map_file)
+        self.sp = sppasPhon()
+        self.sp.set_dict(dict_file)
+        self.spl = sppasPhon()
+        self.spl.set_dict(dict_file)
+        self.spl.set_map(map_file)
 
     # -----------------------------------------------------------------------
 
@@ -405,7 +408,8 @@ class TestPhonetization(unittest.TestCase):
             # Create a Phonetizer for the given set of samples of the given language
             lang = samples_folder[-3:]
             pron_dict = os.path.join(paths.resources, "dict", lang+".dict")
-            tn = sppasPhon(pron_dict)
+            tn = sppasPhon()
+            tn.set_dict(pron_dict)
 
             # Apply Phonetization on each sample
             for filename in os.listdir(os.path.join(samples_path, samples_folder)):

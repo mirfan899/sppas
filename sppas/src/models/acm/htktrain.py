@@ -1439,7 +1439,8 @@ class sppasHTKModelTrainer(object):
             tokenizer.set_std(False)
             tokenizer.set_custom(False)
 
-            phonetizer = sppasPhon(self.corpus.dictfile)
+            phonetizer = sppasPhon()
+            phonetizer.set_dict(self.corpus.dictfile)
             phonetizer.set_unk(True)
             phonetizer.set_usestdtokens(False)
 

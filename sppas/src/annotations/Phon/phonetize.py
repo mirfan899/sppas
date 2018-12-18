@@ -39,8 +39,8 @@ from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
 from sppas.src.utils.makeunicode import sppasUnicode, u
-from sppas.src.resources.mapping import sppasMapping
-from sppas.src.resources.dictpron import sppasDictPron
+from sppas.src.resources import sppasMapping
+from sppas.src.resources import sppasDictPron
 
 from .phonunk import sppasPhonUnk
 from .dagphon import sppasDAGPhonetizer
@@ -112,6 +112,9 @@ class sppasDictPhonetizer(object):
         :param pron_dict: (sppasDictPron) The pronunciation dictionary.
 
         """
+        if pron_dict is None:
+            pron_dict = sppasDictPron()
+
         if isinstance(pron_dict, sppasDictPron) is False:
             raise TypeError('Expected a sppasDictPron instance.')
 

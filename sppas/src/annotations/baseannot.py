@@ -116,6 +116,13 @@ class sppasBaseAnnotation(object):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def get_pattern():
+        """Return the pattern that annotation uses for its output filename."""
+        return ''
+
+    # -----------------------------------------------------------------------
+
     def get_out_name(self, filename, output_format):
         """Fix the output file name from the input one.
 
@@ -123,7 +130,8 @@ class sppasBaseAnnotation(object):
         :param output_format: (str) Extension of the output file
 
         """
-        raise NotImplementedError
+        return os.path.splitext(filename)[0] + \
+               self.get_pattern() + output_format
 
     # -----------------------------------------------------------------------
 

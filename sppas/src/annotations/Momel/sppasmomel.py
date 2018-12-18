@@ -285,11 +285,8 @@ class sppasMomel(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def get_out_name(self, filename, output_format):
-        """Fix the output file name from the input one.
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation adds to an output filename."""
+        return '-momel'
 
-        :param filename: (str) Name of the input file
-        :param output_format: (str) Extension of the output file
-
-        """
-        return os.path.splitext(filename)[0] + '-momel' + output_format

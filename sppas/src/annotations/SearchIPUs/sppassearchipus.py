@@ -360,17 +360,6 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def get_out_name(self, filename, output_format):
-        """Fix the output file name from the input one.
-
-        :param filename: (str) Name of the input file
-        :param output_format: (str) Extension of the output file
-
-        """
-        return os.path.splitext(filename)[0] + output_format
-
-    # -----------------------------------------------------------------------
-
     def run_for_batch_processing(self, filename, output_format):
         """Perform the annotation on a file.
 

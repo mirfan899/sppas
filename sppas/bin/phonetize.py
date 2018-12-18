@@ -166,7 +166,9 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasPhon(args.r, map_filename=args.map, logfile=None)
+        ann = sppasPhon(logfile=None)
+        ann.set_dict(args.r)
+        ann.set_map(args.map)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.o)
