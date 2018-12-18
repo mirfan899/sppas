@@ -315,19 +315,7 @@ class sppasPhon(sppasBaseAnnotation):
         """Return the pattern this annotation uses in an output filename."""
         return '-phon'
 
-    # -----------------------------------------------------------------------
-
-    def get_out_name(self, filename, output_format):
-        """Fix the output file name from the input one.
-
-        :param filename: (str) Name of the input file
-        :param output_format: (str) Extension of the output file
-
-        """
-        # remove the extension
-        fn = os.path.splitext(filename)[0]
-        # remove the existing pattern
-        # ...
-        # add this annotation pattern
-        fn = fn.replace('-token', self.get_pattern())
-        return fn + output_format
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern that annotation expects for its input filename."""
+        return '-token'

@@ -71,14 +71,11 @@ class sppasOtherRepet(sppasBaseRepet):
 
     """
 
-    def __init__(self, resource_file=None, logfile=None):
+    def __init__(self, logfile=None):
         """Create a new sppasOtherRepet instance.
 
-        :param resource_file: (str) File with the list of stop-words.
-
         """
-        super(sppasOtherRepet, self).__init__(resource_file, logfile,
-                                              "OtherRepetitions")
+        super(sppasOtherRepet, self).__init__(logfile, "OtherRepetitions")
 
         self.max_span = 12
         self.max_alpha = 4.
@@ -269,3 +266,15 @@ class sppasOtherRepet(sppasBaseRepet):
                 raise EmptyOutputError
 
         return trs_output
+
+    # ----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-orepet'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-palign'

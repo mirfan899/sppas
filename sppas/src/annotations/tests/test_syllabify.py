@@ -284,7 +284,8 @@ class TestsppasSyll(unittest.TestCase):
     """Syllabification of a tier with time-aligned phonemes."""
 
     def setUp(self):
-        self.syll = sppasSyll(FRA_SYLL)
+        self.syll = sppasSyll()
+        self.syll.set_rules(FRA_SYLL)
         tier = sppasTier('PhonAlign')
         tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2))),
                                sppasLabel(sppasTag('l')))
@@ -438,7 +439,8 @@ class TestsppasSyll(unittest.TestCase):
             if os.path.exists(rules_file) is False:
                 continue
 
-            tn = sppasSyll(rules_file)
+            tn = sppasSyll()
+            tn.set_rules(rules_file)
 
             # Apply Syllabification on each sample
             for filename in os.listdir(os.path.join(samples_path, samples_folder)):

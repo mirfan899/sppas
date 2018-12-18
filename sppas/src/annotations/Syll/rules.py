@@ -75,6 +75,8 @@ class SyllRules(object):
 
         if filename is not None:
             self.load(filename)
+        else:
+            self.reset()
 
     # ------------------------------------------------------------------------
 

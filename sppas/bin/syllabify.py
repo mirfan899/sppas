@@ -154,7 +154,8 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasSyll(args.r, logfile=None)
+        ann = sppasSyll(logfile=None)
+        ann.set_rules(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.o)

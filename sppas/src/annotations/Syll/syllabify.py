@@ -50,7 +50,7 @@ class Syllabifier(object):
 
     """
 
-    def __init__(self, rules_filename):
+    def __init__(self, rules_filename=None):
         """Create a new Syllabifier instance.
 
         Load rules from a text file, depending on the language and phonemes

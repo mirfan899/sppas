@@ -98,6 +98,11 @@ class sppasAnnotationsManager(Thread):
         self._annotations['fillipus'] = sppasFillIPUs
         self._annotations['textnorm'] = sppasTextNorm
         self._annotations['phon'] = sppasPhon
+        self._annotations['chunks'] = sppasChunks
+        self._annotations['align'] = sppasAlign
+        self._annotations['syll'] = sppasSyll
+        self._annotations['tga'] = sppasTGA
+        self._annotations['selfrepet'] = sppasSelfRepet
 
         self.start()
 
@@ -205,7 +210,7 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def get_annot_files(self, pattern=None, extensions=None):
+    def get_annot_files(self, pattern='', extensions=None):
         """Search for annotated files with pattern.
 
         :param pattern: (str) The pattern to search in the filenames
@@ -215,18 +220,18 @@ class sppasAnnotationsManager(Thread):
         """
         files = list()
 
-        # get from audio files
-        audio_files = self.set_filelist(".wav")
-
         if extensions is None:
             extensions = sppas.src.anndata.aio.extensions_out
 
-        if pattern is not None:
+        if len(pattern) > 0:
             ext = [pattern + self.parameters.get_output_format()]
             for e in extensions:
                 ext.append(pattern + e)
         else:
             ext = extensions
+
+        # get from audio files
+        audio_files = self.set_filelist(".wav")
 
         for f in audio_files:
             new_file = self._get_filename(f, ext)
@@ -236,7 +241,9 @@ class sppasAnnotationsManager(Thread):
         # get from annotated files
         if pattern is not None:
             for f in self.parameters.get_sppasinput():
-                if pattern in f and f not in files:
+                fn, e = os.path.splitext(f)
+                if pattern in f and f not in files and \
+                        e in sppas.src.anndata.aio.extensions_out:
                     files.append(f)
 
         return files
@@ -285,31 +292,36 @@ class sppasAnnotationsManager(Thread):
 
         return auto_annot
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_momel(self):
         """Execute the SPPAS implementation of Momel.
+
+        Requires pitch values.
 
         :returns: number of files processed successfully
 
         """
         a = self.create_ann("momel")
         return a.batch_processing(
-            self.get_annot_files(extensions=[".hz", ".PitchTier"]),
+            self.get_annot_files(a.get_replace_pattern(),
+                                 extensions=[".hz", ".PitchTier"]),
             self._progress,
             self.parameters.get_output_format())
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_intsint(self):
         """Execute the SPPAS implementation of Intsint.
+
+        Requires Momel annotations.
 
         :returns: number of files processed successfully
 
         """
         a = self.create_ann("intsint")
         return a.batch_processing(
-            self.get_annot_files(pattern="-momel"),
+            self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
             self.parameters.get_output_format())
 
@@ -317,6 +329,8 @@ class sppasAnnotationsManager(Thread):
 
     def run_searchipus(self):
         """Execute the SearchIPUs automatic annotation.
+
+        Requires an audio file with only one channel.
 
         :returns: number of files processed successfully
 
@@ -332,6 +346,8 @@ class sppasAnnotationsManager(Thread):
     def run_fillipus(self):
         """Execute the FillIPUs automatic annotation.
 
+        Requires an audio file with only one channel and its transcription.
+
         :returns: number of files processed successfully
 
         """
@@ -346,6 +362,8 @@ class sppasAnnotationsManager(Thread):
     def run_tokenization(self):
         """Execute the Text normalization automatic annotation.
 
+        Requires a transcription time-aligned with the IPUs or not.
+
         :returns: number of files processed successfully
 
         """
@@ -357,14 +375,16 @@ class sppasAnnotationsManager(Thread):
         a.set_vocab(step.get_langresource(), step.get_lang())
 
         return a.batch_processing(
-            self.get_annot_files(),
+            self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
             self.parameters.get_output_format())
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_phonetization(self):
         """Execute the Phonetization automatic annotation.
+
+        Requires a text-normalization time-aligned with the IPUs or not.
 
         :returns: number of files processed successfully
 
@@ -378,7 +398,7 @@ class sppasAnnotationsManager(Thread):
         a.set_map(None)
 
         return a.batch_processing(
-            self.get_annot_files(pattern="-token"),
+            self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
             self.parameters.get_output_format())
 
@@ -545,241 +565,53 @@ class sppasAnnotationsManager(Thread):
 
         return files_processed_success
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_syllabification(self):
-        """Execute the SPPAS syllabification.
+        """Execute the Syllabification automatic annotation."""
+        a = self.create_ann("syll")
 
-        """
+        self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("syll")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
         step = self.parameters.get_step(step_idx)
-        stepname = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(stepname)
-        self._progress.update(0,"")
+        a.set_rules(step.get_langresource())
 
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav",not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
+        return a.batch_processing(
+            self.get_annot_files(pattern=a.get_replace_pattern()),
+            self._progress,
+            self.parameters.get_output_format())
 
-        # Create annotation instance
-        try:
-            s = sppasSyll(step.get_langresource(), self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
-            return 0
-
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            s.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-
-            # Get the input file
-            ext = ['-palign'+self.parameters.get_output_format()]
-            for e in sppas.src.anndata.aio.extensions_out_multitiers:
-                ext.append('-palign'+e)
-
-            inname = self._get_filename(f,ext)
-            if inname is not None:
-
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-salign' + self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    s.run(inname, outname)
-                    files_processed_success += 1
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with time-aligned phonemes. "
-                                                "Read the documentation for details.", indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files)."
-                                 "\n" % (files_processed_success,total))
-        self._progress.set_header("")
-
-        return files_processed_success
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_tga(self):
-        """Execute the SPPAS TGA.
+        """Execute the TGA automatic annotation."""
+        a = self.create_ann("tga")
+        return a.batch_processing(
+            self.get_annot_files(pattern=a.get_replace_pattern()),
+            self._progress,
+            self.parameters.get_output_format())
 
-        """
-        step_idx = self.parameters.get_step_idx("tga")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
-        step = self.parameters.get_step(step_idx)
-        step_name = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(step_name)
-        self._progress.update(0, "")
-
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav", not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
-
-        # Create annotation instance
-        s = sppasTGA(self._logfile)
-
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            s.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-
-            # Get the input file
-            ext = ['-salign'+self.parameters.get_output_format()]
-            for e in sppas.src.anndata.aio.extensions_out_multitiers:
-                ext.append('-salign'+e)
-
-            inname = self._get_filename(f, ext)
-            if inname is not None:
-
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-tga' + self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    s.run(inname, outname)
-                    files_processed_success += 1
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message("%s for file %s\n" % (str(e), outname), indent=2, status=-1)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with time-aligned syllables. "
-                                                "Read the documentation for details.", indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files)."
-                                 "\n" % (files_processed_success, total))
-        self._progress.set_header("")
-
-        return files_processed_success
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_self_repetition(self):
         """Execute the automatic repetitions detection.
 
         """
+        a = self.create_ann("selfrepet")
+
+        self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("selfrepet")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
         step = self.parameters.get_step(step_idx)
-        stepname = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(stepname)
-        self._progress.update(0, "")
+        a.load_resources(step.get_langresource())
 
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav", not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
+        return a.batch_processing(
+            self.get_annot_files(pattern=a.get_replace_pattern()),
+            self._progress,
+            self.parameters.get_output_format())
 
-        # Create annotation instance
-        try:
-            self._progress.set_text("Loading resources...")
-            r = sppasSelfRepet(step.get_langresource(), self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
-            return 0
-
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            r.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+
-                                    " ("+str(i+1)+"/"+str(total)+")")
-
-            # Get the input file
-            ext = ['-palign'+self.parameters.get_output_format()]
-            for e in sppas.src.anndata.aio.extensions_out_multitiers:
-                ext.append('-palign'+e)
-
-            inname = self._get_filename(f, ext)
-            if inname is not None:
-
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-sralign' + \
-                          self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    r.run(inname, outname)
-                    files_processed_success += 1
-                    if self._logfile is not None:
-                        self._logfile.print_message(outname,
-                                                    indent=2, status=0)
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message(
-                            "%s for file %s\n" % (str(e), outname),
-                            indent=2, status=-1)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message(
-                        "Failed to find a file with time-aligned tokens/lemmas. "
-                        "Read the documentation for details.",
-                        indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(
-            1, "Completed ({:d} files successfully over {:d} files)."
-               "\n".format(files_processed_success, total))
-        self._progress.set_header("")
-
-        return files_processed_success
-
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Manage annotations:
+    # -----------------------------------------------------------------------
 
     def __add_trs(self, trs, trs_inputfile):
 

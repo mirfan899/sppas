@@ -159,7 +159,8 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasOtherRepet(args.r, logfile=None)
+        ann = sppasOtherRepet(logfile=None)
+        ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run(args.i, args.s, args.o)

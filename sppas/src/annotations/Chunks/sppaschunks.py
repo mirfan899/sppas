@@ -182,7 +182,6 @@ class sppasChunks(sppasBaseAnnotation):
         :returns: sppasTranscription
 
         """
-        self.print_filename(audioname)
         self.print_options()
         self.print_diagnosis(audioname, phonesname, tokensname)
 
@@ -257,3 +256,15 @@ class sppasChunks(sppasBaseAnnotation):
             shutil.rmtree(workdir)
 
         return trsoutput
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-chunks'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-phon'

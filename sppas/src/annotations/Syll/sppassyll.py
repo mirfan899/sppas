@@ -36,13 +36,15 @@
 from sppas.src.config import symbols
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasInterval
-from sppas.src.anndata import sppasLocation
-from sppas.src.anndata import sppasTag
-from sppas.src.anndata import sppasLabel
+
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasInterval
+from sppas import sppasLocation
+from sppas import sppasTag
+from sppas import sppasLabel
+
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from ..baseannot import sppasBaseAnnotation
@@ -75,16 +77,16 @@ class sppasSyll(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, config_filename, logfile=None):
-        """Create a new sppasSyll instance.
+    def __init__(self, logfile=None):
+        """Create a new sppasSyll instance with only general rules.
 
-        :param config_filename: Name of the configuration file with the rules
         :param logfile: (sppasLog)
 
         """
         super(sppasSyll, self).__init__(logfile, "Syllabification")
 
-        self.syllabifier = Syllabifier(config_filename)
+        # Default syllabifier with only general rules
+        self.syllabifier = Syllabifier()
 
         # List of options to configure this automatic annotation
         self._options = dict()
@@ -92,6 +94,16 @@ class sppasSyll(sppasBaseAnnotation):
         self._options['usesphons'] = True
         self._options['tiername'] = "TokensAlign"
         self._options['createclasses'] = True
+
+    # -----------------------------------------------------------------------
+
+    def set_rules(self, config_filename):
+        """Fix the syllabification rules from a configuration file.
+
+        :param config_filename: Name of the configuration file with the rules
+
+        """
+        self.syllabifier = Syllabifier(config_filename)
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -286,10 +298,6 @@ class sppasSyll(sppasBaseAnnotation):
         :param output_filename: (str) Resulting file with syllabification
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get the tier to syllabify
         parser = sppasRW(input_filename)
         trs_input = parser.read()
@@ -330,13 +338,26 @@ class sppasSyll(sppasBaseAnnotation):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
 
     # ----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-syll'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-palign'
+
+    # -----------------------------------------------------------------------
+    # Utilities:
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _phon_to_intervals(phonemes):

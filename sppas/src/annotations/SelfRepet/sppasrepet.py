@@ -32,9 +32,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
-
-from sppas import IndexRangeException
 from sppas import symbols
 from sppas import sppasRW
 from sppas import sppasTranscription
@@ -43,12 +40,8 @@ from sppas import sppasInterval
 from sppas import sppasLocation
 from sppas import sppasLabel
 from sppas import sppasTag
-from sppas import sppasVocabulary
-from sppas import sppasWordStrain
-from sppas import sppasUnigram
 
 from ..searchtier import sppasFindTier
-from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyOutputError
 
 from .sppasbaserepet import sppasBaseRepet
@@ -77,14 +70,13 @@ class sppasSelfRepet(sppasBaseRepet):
 
     """
 
-    def __init__(self, resource_file=None, logfile=None):
+    def __init__(self, logfile=None):
         """Create a new sppasRepetition instance.
 
         :param resource_file: (str) File with the list of stop-words.
 
         """
-        super(sppasSelfRepet, self).__init__(resource_file, logfile,
-                                             "SelfRepetitions")
+        super(sppasSelfRepet, self).__init__(logfile, "SelfRepetitions")
 
     # -----------------------------------------------------------------------
     # Automatic Detection search
@@ -212,16 +204,12 @@ class sppasSelfRepet(sppasBaseRepet):
     # -----------------------------------------------------------------------
 
     def run(self, input_filename, output_filename=None):
-        """Run the Repetition Automatic Detection annotation.
+        """Run the Self-Repetition Automatic Detection annotation.
 
         :param input_filename: (str) File with time-aligned tokens or lemmas
         :param output_filename:(str) Name of the file to save the result
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get the tier to be used
         parser = sppasRW(input_filename)
         trs_input = parser.read()
@@ -247,8 +235,19 @@ class sppasSelfRepet(sppasBaseRepet):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
+
+    # ----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-srepet'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-palign'

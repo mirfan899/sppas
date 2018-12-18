@@ -64,7 +64,7 @@ class sppasBaseRepet(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, resource_file=None, logfile=None, name="no-name"):
+    def __init__(self, logfile=None, name="no-name"):
         """Create a new sppasRepetition instance.
 
         :param resource_file: (str) File with the list of stop-words.
@@ -83,8 +83,6 @@ class sppasBaseRepet(sppasBaseAnnotation):
 
         self._word_strain = sppasWordStrain()
         self._stop_words = sppasVocabulary()
-        if resource_file is not None:
-            self.load_resources(resource_file)
 
     # -----------------------------------------------------------------------
 

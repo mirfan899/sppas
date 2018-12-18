@@ -121,6 +121,11 @@ class sppasBaseAnnotation(object):
         """Return the pattern that annotation uses for its output filename."""
         return ''
 
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return ''
+
     # -----------------------------------------------------------------------
 
     def get_out_name(self, filename, output_format):
@@ -128,10 +133,19 @@ class sppasBaseAnnotation(object):
 
         :param filename: (str) Name of the input file
         :param output_format: (str) Extension of the output file
+        :param replace_pattern: (str) The pattern to replace with
 
         """
-        return os.path.splitext(filename)[0] + \
-               self.get_pattern() + output_format
+        # remove the extension
+        fn = os.path.splitext(filename)[0]
+
+        # remove the existing pattern
+        r = self.get_replace_pattern()
+        if len(r) > 0 and fn.endswith(r):
+            fn = fn[:-len(r)]
+
+        # add this annotation pattern and extension
+        return fn + self.get_pattern() + output_format
 
     # -----------------------------------------------------------------------
 

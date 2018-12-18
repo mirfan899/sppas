@@ -423,7 +423,6 @@ class sppasAlign(sppasBaseAnnotation):
         :returns: (Transcription)
 
         """
-        self.print_filename(audioname)
         self.print_options()
         self.print_diagnosis(audioname, phonesname, tokensname)
 
@@ -519,3 +518,15 @@ class sppasAlign(sppasBaseAnnotation):
             shutil.rmtree(workdir)
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-palign'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-phon'

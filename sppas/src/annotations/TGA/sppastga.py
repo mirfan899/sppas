@@ -417,10 +417,6 @@ class sppasTGA(sppasBaseAnnotation):
         :param output_filename: (str) Name of the resulting file with TGA
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get the tier to syllabify
         parser = sppasRW(input_filename)
         trs_input = parser.read()
@@ -438,8 +434,19 @@ class sppasTGA(sppasBaseAnnotation):
             if len(trs_output) > 0:
                 parser = sppasRW(output_filename)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
+
+    # ----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Return the pattern this annotation uses in an output filename."""
+        return '-tga'
+
+    @staticmethod
+    def get_replace_pattern():
+        """Return the pattern this annotation expects for its input filename."""
+        return '-syll'
