@@ -172,12 +172,13 @@ if __name__ == "__main__":
             print("argparse.py: error: option -p is required with option -i")
             sys.exit(1)
 
-        ann = sppasAlign(args.r, args.R, logfile=None)
+        ann = sppasAlign(logfile=None)
+        ann.load_resources(args.r, args.R)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.p, args.t, args.i, args.o)
+            ann.run((args.p, args.t, args.i), args.o)
         else:
-            trs = ann.run(args.p, args.t, args.i, None)
+            trs = ann.run((args.p, args.t, args.i), None)
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:

@@ -458,11 +458,12 @@ class TestAlign(unittest.TestCase):
     def test_init(self):
         model = os.path.join(paths.resources, "models", 'models-eng')
         model1 = os.path.join(paths.resources, "models", 'models-fra')
-        sppasAlign(model)
-        sppasAlign(model, model1)
+        s = sppasAlign()
+        s.load_resources(model)
+        s.load_resources(model, model1)
 
         with self.assertRaises(IOError):
-            sppasAlign("toto")
+            s.load_resources("toto")
 
     # -----------------------------------------------------------------------
 
@@ -477,7 +478,8 @@ class TestAlign(unittest.TestCase):
         phn_tier = t.find('Phones')
         tok_tier = t.find('Tokens')
 
-        a = sppasAlign(model)
+        a = sppasAlign()
+        a.load_resources(model)
         tier_phn, tier_tok, tier_pron = a.convert(phn_tier, tok_tier, audio, TEMP)
 
         self.assertEqual(123, len(tier_phn))
@@ -530,7 +532,8 @@ class TestAlign(unittest.TestCase):
                                            "samples-" + lang)
 
         # Create an Aligner for the given set of samples of the given language
-        sa = sppasAlign(os.path.join(paths.resources, "models", "models-"+lang))
+        sa = sppasAlign()
+        sa.load_resources(os.path.join(paths.resources, "models", "models-"+lang))
         self.compare_folders(samples_folder, expected_result_dir, sa)
 
     # -----------------------------------------------------------------------
@@ -560,7 +563,7 @@ class TestAlign(unittest.TestCase):
             phn_file = os.path.join(expected_result_dir, filename.replace('.wav', '-phon.xra'))
             tok_file = os.path.join(expected_result_dir, filename.replace('.wav', '-token.xra'))
             result_file = os.path.join(paths.samples, samples_folder, filename.replace('.wav', '-palign.xra'))
-            expected_result = sa.run(phn_file, tok_file, audio_file, result_file)
+            expected_result = sa.run((phn_file, tok_file, audio_file), result_file)
             print('Evaluate:', audio_file)
 
             self.compare_tiers(expected_tier_phones,

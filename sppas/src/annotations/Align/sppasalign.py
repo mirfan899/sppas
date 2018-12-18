@@ -101,25 +101,23 @@ class sppasAlign(sppasBaseAnnotation):
 
     How to use sppasAlign?
 
-    >>> a = sppasAlign(model_dirname)
+    >>> a = sppasAlign()
+    >>> a.load_resources(model_dirname)
     >>> a.run(input_phones, input_tokens, input_audio, output)
 
     """
 
-    def __init__(self, model, model_L1=None, logfile=None):
+    def __init__(self, logfile=None):
         """Create a new sppasAlign instance.
 
-        :param model: (str) Directory of the acoustic model
-        :param model_L1: (str) Directory of the acoustic model L1
         :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile, "Alignment")
         self.mapping = sppasMapping()
-        self._segmenter = None
-        self._tracksrw = None
+        self._segmenter = TrackSegmenter()
+        self._tracksrw = TracksReaderWriter(sppasMapping())
 
-        self.fix_segmenter(model, model_L1)
         self.reset()
 
     # -----------------------------------------------------------------------
@@ -134,7 +132,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def fix_segmenter(self, model, model_L1):
+    def load_resources(self, model, model_L1):
         """Fix the acoustic model directory.
 
         Create a SpeechSegmenter and AlignerIO.
@@ -412,19 +410,19 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def run(self, phonesname, tokensname, audioname, outputfilename=None):
+    def run(self, input_filename, output_filename=None):
         """Execute SPPAS Alignment.
 
-        :param phonesname: (str) file containing the phonetization
-        :param tokensname: (str) file containing the tokenization
-        :param audioname: (str) Audio file name
-        :param outputfilename: (str) the file name with the result
+        input_filename is a tuple with: (phonetization, tokenization, audio)
 
-        :returns: (Transcription)
+        :param input_filename: (str or list of str) the input
+        :param output_filename: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
-        self.print_options()
-        self.print_diagnosis(audioname, phonesname, tokensname)
+        audioname = input_filename[0]
+        phonesname = input_filename[1]
+        tokensname = input_filename[2]
 
         # Get the tiers to be time-aligned
         parser = sppasRW(phonesname)
@@ -498,12 +496,11 @@ class sppasAlign(sppasBaseAnnotation):
         self.append_extra(trs_output)
 
         # Save results
-        if outputfilename is not None:
+        if output_filename is not None:
             try:
                 # Save in a file
-                parser = sppasRW(outputfilename)
+                parser = sppasRW(output_filename)
                 parser.write(trs_output)
-                self.print_filename(outputfilename, status=0)
             except Exception:
                 if self._options['clean'] is True:
                     shutil.rmtree(workdir)
@@ -530,3 +527,4 @@ class sppasAlign(sppasBaseAnnotation):
     def get_replace_pattern():
         """Return the pattern this annotation expects for its input filename."""
         return '-phon'
+

@@ -352,8 +352,15 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("fillipus")
+
+        files = list()
+        audio_files = self.set_filelist(".wav")
+        for f in audio_files:
+            in_name = os.path.splitext(f)[0] + ".txt"
+            files.append((audio_files, in_name))
+
         return a.batch_processing(
-            self.set_filelist(".wav"),
+            files,
             self._progress,
             self.parameters.get_output_format())
 
@@ -488,39 +495,16 @@ class sppasAnnotationsManager(Thread):
         """Execute the SPPAS-Alignment program.
 
         """
+        a = self.create_ann("align")
+
+        self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("align")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
         step = self.parameters.get_step(step_idx)
-        stepname = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(stepname)
-        self._progress.update(0, "")
+        a.load_resources(step.get_langresource(), None)
 
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")  #,not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
-
-        # Create annotation instance
-        try:
-            a = sppasAlign(step.get_langresource(), logfile=self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
-            return 0
-
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            a.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+        files = list()
+        audio_files = self.set_filelist(".wav")
+        for f in audio_files:
 
             # Get the input file
             extt = ['-token'+self.parameters.get_output_format()]
@@ -534,36 +518,12 @@ class sppasAnnotationsManager(Thread):
             inname = self._get_filename(f, extp)
             intok = self._get_filename(f, extt)
             if inname is not None:
+                files.append((inname, intok, f))
 
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-palign' + self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    a.run(inname, intok, f, outname)
-                    files_processed_success += 1
-                except Exception as e:
-                    if self._logfile is not None:
-                        stre = unicode(e.message).encode("utf-8")
-                        self._logfile.print_message("%s for file %s\n" % (stre, outname), indent=2, status=-1)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a file with phonetization. "
-                                                "Read the documentation for details.",
-                                                indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success, total))
-        self._progress.set_header("")
-
-        return files_processed_success
+        return a.batch_processing(
+            files,
+            self._progress,
+            self.parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 

@@ -177,9 +177,9 @@ if __name__ == "__main__":
         ann = sppasFillIPUs(logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.i, args.t, args.o)
+            ann.run((args.i, args.t), args.o)
         else:
-            trs = ann.run(args.i, args.t, None)
+            trs = ann.run((args.i, args.t), None)
             for a in trs[0]:
                 print("{:f} {:f} {:s}".format(
                     a.get_location().get_best().get_begin().get_midpoint(),

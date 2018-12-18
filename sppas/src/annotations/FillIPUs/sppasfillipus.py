@@ -217,16 +217,20 @@ class sppasFillIPUs(sppasBaseAnnotation):
     # Apply the annotation on one or several given files
     # -----------------------------------------------------------------------
 
-    def run(self, input_audio_filename, input_filename, output_filename=None):
+    def run(self, input_filename, output_filename=None):
         """Perform the search of IPUs process.
 
-        :param input_audio_filename: (str) Input audio file
-        :param input_filename: (str) Input transcription file
+        input_filename is a tuple (audio, raw transcription)
+        
+        :param input_filename: (str or list of str) the input
         :param output_filename: (str) Resulting annotated file with IPUs
         :returns: (sppasTranscription)
 
         """
-        tier = self.fill_in(input_audio_filename, input_filename)
+        input_audio_filename = input_filename[0]
+        input_trans_filename = input_filename[1]
+
+        tier = self.fill_in(input_audio_filename, input_trans_filename)
         if tier is None:
             msg = "Unable to align the audio with the given transcription."
             self.print_message(msg, indent=2, status=-1)
@@ -235,7 +239,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         # Create the transcription to put the result
         trs_output = sppasTranscription(self.__class__.__name__)
         trs_output.set_meta('fill_ipus_result_of', input_audio_filename)
-        trs_output.set_meta('fill_ipus_result_of_trs', input_filename)
+        trs_output.set_meta('fill_ipus_result_of_trs', input_trans_filename)
         trs_output.append(tier)
 
         extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
@@ -252,34 +256,24 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def run_for_batch_processing(self, filename, output_format):
+    def run_for_batch_processing(self, input_filename, output_format):
         """Perform the annotation on a file.
 
-        :param filename: (str) Name of the input file to annotate (audio)
+        :param input_filename: (str) Name of the input file to annotate (audio)
         :param output_format: (str) Output file extension
         :returns: output file name or None
 
         """
         # Fix input/output file name
-        in_name = os.path.splitext(filename)[0] + ".txt"
-        out_name = self.get_out_name(filename, output_format)
-
-        # there is already an existing transcription
-        if os.path.exists(in_name) is False:
-            self.print_message(
-                "File not found. "
-                "This annotation expects a file with name {:s}. "
-                "".format(in_name), indent=1, status=4)
-            return None
-
-        self.print_diagnosis(in_name)
+        in_name = input_filename[0]
+        out_name = self.get_out_name(in_name, output_format)
 
         # Is there already an existing IPU-seg (in any format)!
         ext = []
         for e in sppas.src.anndata.aio.extensions_in:
             if e not in ('.txt', '.hz', '.PitchTier'):
                 ext.append(e)
-        exist_out_name = self._get_filename(filename, ext)
+        exist_out_name = self._get_filename(input_filename[1], ext)
 
         # it's existing... but not in the expected format: we convert!
         if exist_out_name is not None:
@@ -305,7 +299,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         else:
             # Create annotation instance, fix options, run.
             try:
-                self.run(filename, in_name, out_name)
+                self.run((input_filename[1], in_name), out_name)
             except Exception as e:
                 out_name = None
                 self.print_message(

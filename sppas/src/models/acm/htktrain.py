@@ -1444,7 +1444,8 @@ class sppasHTKModelTrainer(object):
             phonetizer.set_unk(True)
             phonetizer.set_usestdtokens(False)
 
-            aligner = sppasAlign(self.__current_dir)
+            aligner = sppasAlign()
+            aligner.load_resources(self.__current_dir)
             if test_command("julius") is False:
                 if test_command("HVite") is True:
                     aligner.set_aligner("hvite")

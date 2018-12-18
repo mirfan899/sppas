@@ -107,7 +107,7 @@ class sppasBaseAnnotation(object):
     def run(self, input_filename, output_filename=None):
         """Run the automatic annotation process on an input file.
 
-        :param input_filename: (str) the input file name
+        :param input_filename: (str or list of str) the input
         :param output_filename: (str) the output file name
         :returns: (sppasTranscription)
 
@@ -149,26 +149,18 @@ class sppasBaseAnnotation(object):
 
     # -----------------------------------------------------------------------
 
-    def run_for_batch_processing(self, filename, output_format):
+    def run_for_batch_processing(self, input_filename, output_format):
         """Perform the annotation on a file.
 
         Can be overridden.
 
-        :param filename: (str) Name of the input file to annotate
+        :param input_filename: (str) Name of the input file to annotate, or list
         :param output_format: (str) Output file extension
         :returns: output file name or None
 
         """
-        # no file with momel anchors
-        if os.path.exists(filename) is False:
-            self.print_message(
-                "File not found. "
-                "This annotation expects a file with name {:s}. "
-                "".format(filename), indent=1, status=annots.error)
-            return None
-
         # fix the output file name
-        out_name = self.get_out_name(filename, output_format)
+        out_name = self.get_out_name(input[0], output_format)
 
         # if out_name exists, it is overridden
         if os.path.exists(out_name):
@@ -179,7 +171,11 @@ class sppasBaseAnnotation(object):
 
         # execute annotation
         try:
-            self.run(filename, out_name)
+            if len(input_filename) == 1:
+                self.run(input_filename[0], out_name)
+            else:
+                self.run(input_filename, out_name)
+
         except Exception as e:
             out_name = None
             self.print_message(
@@ -194,7 +190,7 @@ class sppasBaseAnnotation(object):
                          output_format=annots.extension):
         """Perform the annotation on a set of files.
 
-        :param file_names: (list of str) List of files with pitch values
+        :param file_names: (list) List of inputs
         :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
         :param output_format: (str)
         :return: (int) Number of files processed with success
@@ -214,33 +210,41 @@ class sppasBaseAnnotation(object):
         # Execute the annotation for each file in the list
         for i, f in enumerate(file_names):
 
+            if isinstance(f, (list, tuple)) is False:
+                f = [f]
+
             # Indicate the file to be processed
             if progress:
-                progress.set_text(os.path.basename(f) +
+                progress.set_text(os.path.basename(f[0]) +
                                   " ("+str(i+1)+"/"+str(total)+")")
-            self.print_diagnosis(f)
 
-            # No expected file
-            if os.path.exists(f) is False:
-                self.print_message(
-                    "File not found. "
-                    "This annotation expects a file with name {:s}. "
-                    "".format(f), indent=1, status=annots.error)
-            else:
+            out_name = ""
+            for fn in f:
+                if os.path.exists(fn):
+                    self.print_diagnosis(fn)
+                else:
+                    # no input file
+                    self.print_message(
+                        "File not found. "
+                        "This annotation expects a file with name {:s}. "
+                        "".format(fn), indent=1, status=annots.error)
+                    out_name = None
 
-                # Do the job (must be overridden)
+            if out_name:
+                # Do the job
                 out_name = self.run_for_batch_processing(f, output_format)
 
-                # Indicate progress
-                if out_name is None:
-                    self.print_message(
-                        "No file was created.", indent=2, status=annots.ignore)
-                else:
-                    files_processed_success += 1
-                    self.print_message(out_name, indent=2, status=annots.ok)
+            # Indicate progress
+            if out_name is None:
+                self.print_message(
+                    "No file was created.", indent=2, status=annots.ignore)
+            else:
+                files_processed_success += 1
+                self.print_message(out_name, indent=2, status=annots.ok)
 
             if progress:
                 progress.set_fraction(round(float((i+1))/float(total), 2))
+
             self.print_newline()
 
         # Indicate completed!
