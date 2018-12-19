@@ -37,6 +37,7 @@ import os
 
 from sppas import paths
 from sppas import annots
+from sppas.src.structs.lang import UNDETERMINED
 from sppas.src.anndata.aio import extensions_out
 
 from .cfgparser import sppasAnnotationConfigParser
@@ -73,7 +74,7 @@ class annotationParam(object):
         # The status of the annotation
         self.__enabled = False
         self.__invalid = False
-        # The language resource
+        # The language resource: sppasLangResource()
         self.__langres = list()
         # The list of options
         self.__options = list()
@@ -179,7 +180,7 @@ class annotationParam(object):
     # -----------------------------------------------------------------------
 
     def get_langresource(self):
-        """Return the list of language resources (list of sppasLang)."""
+        """Return the list of language resources."""
         if len(self.__langres) > 0:
             return self.__langres[0].get_langresource()
         return []
@@ -390,11 +391,17 @@ class sppasParam(object):
         if step is not None:
             self.annotations[step].set_lang(language)
         else:
-            for i in range(len(self.annotations)):
-                self.annotations[i].set_lang(language)
+            for a in self.annotations:
+                a.set_lang(language)
 
-    def get_lang(self, step=2):
-        return self.annotations[step].get_lang()
+    def get_lang(self, step=None):
+        if step is None:
+            for a in self.annotations:
+                if a.get_lang() != UNDETERMINED:
+                    return a.get_lang()
+        else:
+            return self.annotations[step].get_lang()
+        return UNDETERMINED
 
     def get_langresource(self, step):
         return self.annotations[step].get_langresource()

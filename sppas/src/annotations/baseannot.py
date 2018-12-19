@@ -388,7 +388,7 @@ class sppasBaseAnnotation(object):
             logging.info(MSG_OPTIONS)
 
         for k, v in self._options.items():
-            msg = "{!s:s}: {!s:s}".format(k, v)
+            msg = " ... {!s:s}: {!s:s}".format(k, v)
             if self.logfile:
                 self.print_message(msg, indent=0, status=None)
             else:

@@ -138,6 +138,18 @@ class sppasLangResource(object):
         return self.langresource
 
     # ------------------------------------------------------------------------
+
+    def get_resourcetype(self):
+        """Return the language type."""
+        return self._rtype
+
+    # ------------------------------------------------------------------------
+
+    def get_resourceext(self):
+        """Return the language extension."""
+        return self._rext
+
+    # ------------------------------------------------------------------------
     # Setters
     # ------------------------------------------------------------------------
 

@@ -113,8 +113,14 @@ if __name__ == "__main__":
     group_io.add_argument(
         "-r",
         metavar="vocab",
-        required=True,
         help='Vocabulary file name')
+
+    group_io.add_argument(
+        "-l",
+        metavar="lang",
+        choices=parameters.get_langlist(ann_step_idx),
+        help='Language code (iso8859-3). One of: {:s}.'
+             ''.format(" ".join(parameters.get_langlist(ann_step_idx))))
 
     group_io.add_argument(
         "-e",
@@ -158,9 +164,6 @@ if __name__ == "__main__":
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
 
-    base = os.path.basename(args.r)
-    lang = base[:3]
-
     # Redirect all messages to logging
     # --------------------------------
 
@@ -175,7 +178,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'I', 'e', 'r', 'quiet'):
+        if a not in ('i', 'o', 'I', 'e', 'r', 'l', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -183,6 +186,15 @@ if __name__ == "__main__":
 
         # Perform the annotation on a single file
         # ---------------------------------------
+
+        if not args.r:
+            print("argparse.py: error: option -r is required with option -i")
+            sys.exit(1)
+
+        if args.l:
+            lang = args.l
+        else:
+            lang = os.path.basename(args.r)[:3]
 
         ann = sppasTextNorm(logfile=None)
         ann.set_vocab(args.r, lang)
@@ -209,7 +221,12 @@ if __name__ == "__main__":
         # Perform the annotation on a set of files
         # ----------------------------------------
 
-        # Fix the output file extension
+        if not args.l:
+            print("argparse.py: error: option -l is required with option -I")
+            sys.exit(1)
+
+        # Fix the output file extension and others
+        parameters.set_lang(args.l)
         parameters.set_output_format(args.e)
         parameters.set_report_filename("")
 
@@ -227,7 +244,16 @@ if __name__ == "__main__":
         # Perform the annotation on stdin
         # -------------------------------
 
-        vocab = sppasVocabulary(args.vocab)
+        if not args.r:
+            print("argparse.py: error: option -r is required with option -i")
+            sys.exit(1)
+
+        if args.l:
+            lang = args.l
+        else:
+            lang = os.path.basename(args.r)[:3]
+
+        vocab = sppasVocabulary(args.r)
         normalizer = TextNormalizer(vocab, lang)
 
         replace_file = os.path.join(paths.resources, "repl", lang + ".repl")
