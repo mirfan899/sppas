@@ -457,7 +457,8 @@ class TestsppasSyll(unittest.TestCase):
                 expected_result = parser.read()
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(samples_path, samples_folder, filename))
+                input_file = os.path.join(samples_path, samples_folder, filename)
+                result = tn.run([input_file])
 
                 expected_tier_syll = expected_result.find('SyllAlign')
                 if expected_tier_syll is not None:

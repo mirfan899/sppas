@@ -51,7 +51,6 @@ from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
 from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
-from sppas.src.annotations.Chunks.sppaschunks import sppasChunks
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
 from sppas.src.annotations.TGA.sppastga import sppasTGA
@@ -98,7 +97,6 @@ class sppasAnnotationsManager(Thread):
         self._annotations['fillipus'] = sppasFillIPUs
         self._annotations['textnorm'] = sppasTextNorm
         self._annotations['phon'] = sppasPhon
-        self._annotations['chunks'] = sppasChunks
         self._annotations['align'] = sppasAlign
         self._annotations['syll'] = sppasSyll
         self._annotations['tga'] = sppasTGA
@@ -376,7 +374,8 @@ class sppasAnnotationsManager(Thread):
         """
         a = self.create_ann("textnorm")
 
-        self._progress.set_text("Loading resources...")
+        if self._progress:
+            self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("textnorm")
         step = self.parameters.get_step(step_idx)
         a.set_vocab(step.get_langresource(), step.get_lang())
@@ -398,7 +397,8 @@ class sppasAnnotationsManager(Thread):
         """
         a = self.create_ann("phon")
 
-        self._progress.set_text("Loading resources...")
+        if self._progress:
+            self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("phon")
         step = self.parameters.get_step(step_idx)
         a.set_dict(step.get_langresource())
@@ -411,93 +411,19 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def run_chunks_alignment(self):
-        """Execute the SPPAS Chunks alignment program.
-
-        """
-        step_idx = self.parameters.get_step_idx("chunks")
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
-
-        # Initializations
-        step = self.parameters.get_step(step_idx)
-        stepname = self.parameters.get_step_name(step_idx)
-        files_processed_success = 0
-        self._progress.set_header(stepname)
-        self._progress.update(0, "")
-
-        # Get the list of input file names, with the ".wav" (or ".wave") extension
-        filelist = self.set_filelist(".wav")#,not_start=["track_"])
-        if len(filelist) == 0:
-            return 0
-        total = len(filelist)
-
-        # Create annotation instance
-        try:
-            a = sppasChunks(step.get_langresource(), logfile=self._logfile)
-        except Exception as e:
-            if self._logfile is not None:
-                self._logfile.print_message("%s\n" % str(e), indent=1, status=4)
-            return 0
-
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(filelist):
-
-            # fix the default values
-            a.fix_options(step.get_options())
-
-            # Indicate the file to be processed
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-
-            # Get the input file: only txt and xra supports non-time-aligned data
-            extt = ['-token.txt', '-token.xra']
-            extp = ['-phon.txt', '-phon.xra']
-
-            inname = self._get_filename(f, extp)
-            intok  = self._get_filename(f, extt)
-            if inname is not None and intok is not None:
-
-                # Fix output file name
-                outname = os.path.splitext(f)[0] + '-chunks' + self.parameters.get_output_format()
-
-                # Execute annotation
-                try:
-                    a.run(inname, intok, f, outname)
-                except Exception as e:
-                    if self._logfile is not None:
-                        stre = unicode(e.message).encode("utf-8")
-                        self._logfile.print_message("%s for file %s\n" % (stre, outname), indent=2, status=-1)
-                else:
-                    files_processed_success += 1
-                    if self._logfile is not None:
-                        self._logfile.print_message(outname, indent=2, status=0)
-
-            else:
-                self._logfile.print_message("File " + f, indent=1)
-                if self._logfile is not None:
-                    self._logfile.print_message("Failed to find a raw file with phonetization/tokenization."
-                                                "Read the documentation for details.", indent=2, status=2)
-
-            # Indicate progress
-            self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
-
-        # Indicate completed!
-        self._progress.update(1, "Completed (%d files successfully over %d files).\n" % (files_processed_success,total))
-        self._progress.set_header("")
-
-        return files_processed_success
-
-    # ------------------------------------------------------------------------
-
     def run_alignment(self):
         """Execute the SPPAS-Alignment program.
+
+        Requires a phonetization time-aligned with the IPUs.
+        Optional: a text-normalization time-aligned with the IPUs.
+
+        :returns: number of files processed successfully
 
         """
         a = self.create_ann("align")
 
-        self._progress.set_text("Loading resources...")
+        if self._progress:
+            self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("align")
         step = self.parameters.get_step(step_idx)
         a.load_resources(step.get_langresource(), None)
@@ -512,8 +438,6 @@ class sppasAnnotationsManager(Thread):
             for e in sppas.src.anndata.aio.extensions_out:
                 extt.append('-token'+e)
                 extp.append('-phon'+e)
-            extt.append('-chunks'+self.parameters.get_output_format())
-            extp.append('-chunks'+self.parameters.get_output_format())
 
             inname = self._get_filename(f, extp)
             intok = self._get_filename(f, extt)
@@ -531,7 +455,8 @@ class sppasAnnotationsManager(Thread):
         """Execute the Syllabification automatic annotation."""
         a = self.create_ann("syll")
 
-        self._progress.set_text("Loading resources...")
+        if self._progress:
+            self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("syll")
         step = self.parameters.get_step(step_idx)
         a.set_rules(step.get_langresource())
@@ -559,7 +484,8 @@ class sppasAnnotationsManager(Thread):
         """
         a = self.create_ann("selfrepet")
 
-        self._progress.set_text("Loading resources...")
+        if self._progress:
+            self._progress.set_text("Loading resources...")
         step_idx = self.parameters.get_step_idx("selfrepet")
         step = self.parameters.get_step(step_idx)
         a.load_resources(step.get_langresource())
@@ -711,9 +637,6 @@ class sppasAnnotationsManager(Thread):
 
                     elif self.parameters.get_step_key(i) == "phon":
                         nbruns[i] = self.run_phonetization()
-
-                    elif self.parameters.get_step_key(i) == "chunks":
-                        nbruns[i] = self.run_chunks_alignment()
 
                     elif self.parameters.get_step_key(i) == "align":
                         nbruns[i] = self.run_alignment()

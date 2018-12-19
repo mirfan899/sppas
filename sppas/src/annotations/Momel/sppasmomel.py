@@ -34,8 +34,6 @@
 
 """
 
-import os
-
 from sppas import sppasRW
 from sppas import sppasTranscription
 from sppas import sppasTier
@@ -256,16 +254,20 @@ class sppasMomel(sppasBaseAnnotation):
         return sppasMomel.anchors_to_tier(targets)
 
     # -----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Apply momel from a pitch file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str)
-        :param output_filename: (str)
+        :param input_file: (list of str) pitch values
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
         # Get pitch values from the input
-        pitch = self.fix_pitch(input_filename)
+        pitch = self.fix_pitch(input_file[0])
 
         # Search for anchors
         anchors_tier = self.convert(pitch)
@@ -273,12 +275,12 @@ class sppasMomel(sppasBaseAnnotation):
                            " anchors found.", indent=2, status=annots.info)
 
         # Fix result
-        trs_output = sppasTranscription("Momel")
+        trs_output = sppasTranscription(self.name)
         trs_output.append(anchors_tier)
-        trs_output.set_meta('annotation_result_of', input_filename)
+        trs_output.set_meta('annotation_result_of', input_file[0])
 
-        if output_filename is not None:
-            parser = sppasRW(output_filename)
+        if output_file is not None:
+            parser = sppasRW(output_file)
             parser.write(trs_output)
 
         return trs_output
@@ -287,6 +289,6 @@ class sppasMomel(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation adds to an output filename."""
+        """Pattern this annotation adds to an output filename."""
         return '-momel'
 

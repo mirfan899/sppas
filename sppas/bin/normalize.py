@@ -50,7 +50,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import sg, paths
+from sppas import sg, paths, annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
 from sppas.src.resources import sppasVocabulary
@@ -58,6 +59,7 @@ from sppas.src.resources import sppasDictRepl
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
 if __name__ == "__main__":
 
@@ -82,6 +84,11 @@ if __name__ == "__main__":
                "author at: {:s}".format(sg.__name__, sg.__version__,
                                         sg.__copyright__, sg.__contact__))
 
+    parser.add_argument(
+        "--quiet",
+        action='store_true',
+        help="Disable the verbosity")
+
     # Add arguments for input/output files
     # ------------------------------------
 
@@ -98,10 +105,24 @@ if __name__ == "__main__":
         help='Annotated file with normalized tokens.')
 
     group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input transcription file name (append).')
+
+    group_io.add_argument(
         "-r",
         metavar="vocab",
         required=True,
         help='Vocabulary file name')
+
+    group_io.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
     # Add arguments from the options of the annotation
     # ------------------------------------------------
@@ -124,6 +145,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
@@ -135,7 +165,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -146,7 +175,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'e', 'quiet'):
+        if a not in ('i', 'o', 'I', 'e', 'r', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -159,16 +188,39 @@ if __name__ == "__main__":
         ann.set_vocab(args.r, lang)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.i, args.o)
+            ann.run([args.i], output_file=args.o)
         else:
-            trs = ann.run(args.i, None)
+            trs = ann.run([args.i])
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
-                        a.get_location().get_best().get_begin().get_midpoint(),
-                        a.get_location().get_best().get_end().get_midpoint(),
-                        a.serialize_labels(" ")))
+                    if a.location_is_point():
+                        print("{:d}, {:s}".format(
+                            a.get_location().get_best().get_midpoint(),
+                            a.serialize_labels(" ")))
+                    else:
+                        print("{:f}, {:f} {:s}".format(
+                            a.get_location().get_best().get_begin().get_midpoint(),
+                            a.get_location().get_best().get_end().get_midpoint(),
+                            a.serialize_labels(" ")))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_tokenization()
 
     else:
 

@@ -482,7 +482,8 @@ class TestTextNorm(unittest.TestCase):
                 expected_result = parser.read()
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(paths.samples, samples_folder, filename))
+                input_file = os.path.join(paths.samples, samples_folder, filename)
+                result = tn.run([input_file])
 
                 expected_tier_tokens = expected_result.find('Tokens')
                 if expected_tier_tokens is not None:

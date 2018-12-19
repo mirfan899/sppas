@@ -231,16 +231,17 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     # ------------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the annotation process on an input file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) Name of the input file
-        :param output_filename: (str) Name of the resulting
+        :param input_file: (list of str) orthographic transcription
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
         # Get input tier to tokenize
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.transcription(trs_input)
 
@@ -256,7 +257,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         if tier_custom is not None:
             trs_output.append(tier_custom)
 
-        trs_output.set_meta('text_normalization_result_of', input_filename)
+        trs_output.set_meta('text_normalization_result_of', input_file[0])
         trs_output.set_meta('text_normalization_vocab',
                             self.normalizer.get_vocab_filename())
         trs_output.set_meta('language_iso', "iso639-3")
@@ -266,9 +267,9 @@ class sppasTextNorm(sppasBaseAnnotation):
                             "https://iso639-3.sil.org/code/"+self.normalizer.lang)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
             else:
                 raise EmptyOutputError
@@ -279,7 +280,7 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation adds to an output filename."""
+        """Pattern this annotation adds to an output filename."""
         return '-token'
 
     # -----------------------------------------------------------------------
@@ -292,7 +293,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            self.print_message(MSG_TRACK.format(number=i+1), indent=2)
+            self.print_message(MSG_TRACK.format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
@@ -310,7 +311,7 @@ class sppasTextNorm(sppasBaseAnnotation):
                     except Exception as e:
                         message = "Error while normalizing interval {:d}: " \
                                   "{:s}".format(i, str(e))
-                        self.print_message(message, indent=3)
+                        self.print_message(message, indent=2)
 
                 elif text.is_silence():
                     # in ortho a silence could be one of "#" or "gpf_".

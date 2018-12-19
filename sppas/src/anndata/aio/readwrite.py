@@ -41,6 +41,7 @@ from sppas.src.utils.datatype import sppasTime
 
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioFileExtensionError
+from ..anndataexc import AioError
 
 from .text import sppasRawText
 from .text import sppasCSV
@@ -169,6 +170,8 @@ class sppasRW(object):
 
         except UnicodeError as e:
             raise AioEncodingError(filename=self.__filename, error=str(e))
+        except IOError:
+            raise AioError(self.__filename)
         except Exception:
             raise
 

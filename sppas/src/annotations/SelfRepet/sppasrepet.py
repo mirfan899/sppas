@@ -73,10 +73,10 @@ class sppasSelfRepet(sppasBaseRepet):
     def __init__(self, logfile=None):
         """Create a new sppasRepetition instance.
 
-        :param resource_file: (str) File with the list of stop-words.
+        :param logfile: (sppasLog)
 
         """
-        super(sppasSelfRepet, self).__init__(logfile, "SelfRepetitions")
+        super(sppasSelfRepet, self).__init__(logfile, "Self Repetitions")
 
     # -----------------------------------------------------------------------
     # Automatic Detection search
@@ -200,18 +200,20 @@ class sppasSelfRepet(sppasBaseRepet):
         return True
 
     # -----------------------------------------------------------------------
-    # Run
+    # Apply the annotation on one given file
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the Self-Repetition Automatic Detection annotation.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) File with time-aligned tokens or lemmas
-        :param output_filename:(str) Name of the file to save the result
+        :param input_file: (list of str) time-aligned tokens
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
         # Get the tier to be used
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
 
         tier_tokens = sppasFindTier.aligned_tokens(trs_input)
@@ -221,8 +223,8 @@ class sppasSelfRepet(sppasBaseRepet):
         (src_tier, echo_tier) = self.self_detection(tier_input)
 
         # Create the transcription result
-        trs_output = sppasTranscription("SelfRepetition")
-        trs_output.set_meta('self_repetition_result_of', input_filename)
+        trs_output = sppasTranscription(self.name)
+        trs_output.set_meta('self_repetition_result_of', input_file[0])
         if len(self._word_strain) > 0:
             trs_output.append(tier_input)
         if self._options['stopwords'] is True:
@@ -231,9 +233,9 @@ class sppasSelfRepet(sppasBaseRepet):
         trs_output.append(echo_tier)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
             else:
                 raise EmptyOutputError
@@ -244,10 +246,10 @@ class sppasSelfRepet(sppasBaseRepet):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-srepet'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-palign'

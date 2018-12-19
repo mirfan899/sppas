@@ -290,22 +290,26 @@ class sppasSyll(sppasBaseAnnotation):
             syllables.create_annotation(location, label)
 
     # ----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Perform the Syllabification process.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) Input file with the aligned phonemes
-        :param output_filename: (str) Resulting file with syllabification
+        :param input_file: (list of str) time-aligned phonemes
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
         # Get the tier to syllabify
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.aligned_phones(trs_input)
 
         # Create the transcription result
-        trs_output = sppasTranscription("Syllabification")
-        trs_output.set_meta('syllabification_result_of', input_filename)
+        trs_output = sppasTranscription(self.name)
+        trs_output.set_meta('syllabification_result_of', input_file[0])
 
         # Syllabify the tier
         if self._options['usesphons'] is True:
@@ -334,9 +338,9 @@ class sppasSyll(sppasBaseAnnotation):
                     trs_output.append(t)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
             else:
                 raise EmptyOutputError
@@ -347,12 +351,12 @@ class sppasSyll(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-syll'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-palign'
 
     # -----------------------------------------------------------------------

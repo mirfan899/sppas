@@ -33,21 +33,20 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
 
 from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasLabel
-from sppas.src.anndata import sppasTag
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasLabel
+from sppas import sppasTag
 
-from sppas.src.resources.dictpron import sppasDictPron
-from sppas.src.resources.mapping import sppasMapping
+from sppas.src.resources import sppasDictPron
+from sppas.src.resources import sppasMapping
 
 from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyInputError
@@ -268,12 +267,15 @@ class sppasPhon(sppasBaseAnnotation):
         return phones_tier
 
     # ------------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the Phonetization process on an input file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename (str) Name of the file including a tokenization
-        :param output_filename (str) Name of the resulting file
+        :param input_file: (list of str) normalized text
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
@@ -281,7 +283,7 @@ class sppasPhon(sppasBaseAnnotation):
         pattern = ""
         if self._options['usestdtokens'] is True:
             pattern = "std"
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.tokenization(trs_input, pattern)
 
@@ -289,19 +291,19 @@ class sppasPhon(sppasBaseAnnotation):
         tier_phon = self.convert(tier_input)
 
         # Create the transcription result
-        trs_output = sppasTranscription("Phonetization")
+        trs_output = sppasTranscription(self.name)
         if tier_phon is not None:
             trs_output.append(tier_phon)
 
         trs_output.set_meta('text_phonetization_result_of',
-                            input_filename)
+                            input_file[0])
         trs_output.set_meta('text_phonetization_dict',
                             self.phonetizer.get_dict_filename())
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
             else:
                 raise EmptyOutputError
@@ -312,10 +314,10 @@ class sppasPhon(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-phon'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern that annotation expects for its input filename."""
+        """Pattern that annotation expects for its input filename."""
         return '-token'

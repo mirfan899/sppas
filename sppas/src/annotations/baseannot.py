@@ -88,9 +88,12 @@ class sppasBaseAnnotation(object):
         :raises: KeyError
 
         """
-        return self._options[key]
+        if key in self._options:
+            return self._options[key]
+        raise KeyError('{:s} is not a valid option for the automatic '
+                       'annotation.'.format(key))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def fix_options(self, options):
         """Fix all options.
@@ -104,36 +107,24 @@ class sppasBaseAnnotation(object):
     # Perform automatic annotation:
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the automatic annotation process on an input file.
-
-        :param input_filename: (str or list of str) the input
-        :param output_filename: (str) the output file name
-        :returns: (sppasTranscription)
-
-        """
-        raise NotImplementedError
-
-    # -----------------------------------------------------------------------
-
     @staticmethod
     def get_pattern():
-        """Return the pattern that annotation uses for its output filename."""
+        """Pattern that the annotation uses for its output filename."""
         return ''
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern that the annotation expects for its input filename."""
         return ''
 
     # -----------------------------------------------------------------------
 
     def get_out_name(self, filename, output_format):
-        """Fix the output file name from the input one.
+        """Return the output filename from the input one.
 
         :param filename: (str) Name of the input file
         :param output_format: (str) Extension of the output file
-        :param replace_pattern: (str) The pattern to replace with
+        :returns: (str)
 
         """
         # remove the extension
@@ -144,23 +135,44 @@ class sppasBaseAnnotation(object):
         if len(r) > 0 and fn.endswith(r):
             fn = fn[:-len(r)]
 
-        # add this annotation pattern and extension
+        # add this annotation pattern its extension
         return fn + self.get_pattern() + output_format
 
     # -----------------------------------------------------------------------
 
-    def run_for_batch_processing(self, input_filename, output_format):
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
+
+        Both the required and the optional inputs are a list of files
+        the annotation needs (audio, transcription, pitch, etc).
+        There's no constraint on the filenames, neither for the inputs nor
+        for the outputs.
+
+        :param input_file: (list of str) the required input
+        :param opt_input_file: (list of str) the optional input
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
+
+        """
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
+    def run_for_batch_processing(self, input_file, opt_input_file, output_format):
         """Perform the annotation on a file.
 
+        This method is called by 'batch_processing'. It fixes the name of the
+        output file, and call the run method.
         Can be overridden.
 
-        :param input_filename: (str) Name of the input file to annotate, or list
-        :param output_format: (str) Output file extension
+        :param input_file: (list of str) the required input
+        :param opt_input_file: (list of str) the optional input
+        :param output_format: (str) Extension of the output file
         :returns: output file name or None
 
         """
         # fix the output file name
-        out_name = self.get_out_name(input[0], output_format)
+        out_name = self.get_out_name(input_file[0], output_format)
 
         # if out_name exists, it is overridden
         if os.path.exists(out_name):
@@ -171,24 +183,33 @@ class sppasBaseAnnotation(object):
 
         # execute annotation
         try:
-            if len(input_filename) == 1:
-                self.run(input_filename[0], out_name)
-            else:
-                self.run(input_filename, out_name)
-
+            self.run(input_file, opt_input_file, out_name)
         except Exception as e:
             out_name = None
             self.print_message(
-                "{:s} for file {:s}\n".format(str(e), out_name),
+                "{:s}\n".format(str(e)),
                 indent=2, status=annots.error)
 
         return out_name
 
     # -----------------------------------------------------------------------
 
-    def batch_processing(self, file_names, progress=None,
+    def batch_processing(self,
+                         file_names,
+                         progress=None,
                          output_format=annots.extension):
         """Perform the annotation on a set of files.
+
+        The given list of inputs can be either:
+            - a list of the files to be used as a single input:
+              [file1, file2, ...]
+            - a list of the files to be used as several-required-inputs:
+              [(file1_a, file1_b), (file2_a, file2_b), ...]
+            - a list of the files to be used as inputs and optional-inputs:
+              [((file_1_a), (file_1_x)), ((file_2_a), (file_2_x)), ... ]
+            - a list of the files to be used as several-required-inputs and
+              optional-inputs:
+              [((file1_a, file1_b), (file_1_x, file_1_y)), ...]
 
         :param file_names: (list) List of inputs
         :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
@@ -204,48 +225,29 @@ class sppasBaseAnnotation(object):
             return 0
         files_processed_success = 0
         if progress:
-            progress.set_header(self.__class__.__name__)
+            progress.set_header(self.name)
             progress.update(0, "")
 
         # Execute the annotation for each file in the list
-        for i, f in enumerate(file_names):
+        for i, input_files in enumerate(file_names):
 
-            if isinstance(f, (list, tuple)) is False:
-                f = [f]
+            required_inputs, optional_inputs = self._split_inputs(input_files)
+            self.print_diagnosis(*required_inputs)
+            self.print_diagnosis(*optional_inputs)
 
-            # Indicate the file to be processed
-            if progress:
-                progress.set_text(os.path.basename(f[0]) +
-                                  " ("+str(i+1)+"/"+str(total)+")")
+            out_name = self.run_for_batch_processing(required_inputs,
+                                                     optional_inputs,
+                                                     output_format)
 
-            out_name = ""
-            for fn in f:
-                if os.path.exists(fn):
-                    self.print_diagnosis(fn)
-                else:
-                    # no input file
-                    self.print_message(
-                        "File not found. "
-                        "This annotation expects a file with name {:s}. "
-                        "".format(fn), indent=1, status=annots.error)
-                    out_name = None
-
-            if out_name:
-                # Do the job
-                out_name = self.run_for_batch_processing(f, output_format)
-
-            # Indicate progress
             if out_name is None:
                 self.print_message(
-                    "No file was created.", indent=2, status=annots.ignore)
+                    "No file was created.", indent=1, status=annots.info)
             else:
                 files_processed_success += 1
-                self.print_message(out_name, indent=2, status=annots.ok)
-
+                self.print_message(out_name, indent=1, status=annots.ok)
+            self.print_newline()
             if progress:
                 progress.set_fraction(round(float((i+1))/float(total), 2))
-
-            self.print_newline()
 
         # Indicate completed!
         if progress:
@@ -257,6 +259,62 @@ class sppasBaseAnnotation(object):
             progress.set_header("")
 
         return files_processed_success
+
+    # -----------------------------------------------------------------------
+
+    def _split_inputs(self, input_files):
+        """Return required and optional inputs from the input files.
+
+        The given input files can be:
+
+            - a single input: file1
+            - several-required-inputs: (file1_a, file1_b)
+            - a single required-input and an optional-input: ((file_1_a), file_1_x)
+            - several required-inputs and an optional-input:
+              ((file1_a, file1_b), file_1_x))
+            - several required-inputs and several optional-inputs:
+              ((file1_a, file1_b), (file_1_x, file_1_y)))
+
+        :param input_files: (str, list of str, list of tuple, list of tuple of tuple)
+        :returns: a list of required files; a list of optional files
+
+        """
+        if len(input_files) == 0:
+            raise IOError
+
+        optional_inputs = tuple()
+
+        if isinstance(input_files, (list, tuple)) is False:
+            # input_files is a single file to be used as a single required input
+            required_inputs = [input_files]
+
+        else:
+            # input_files is either a list of required + optional files
+            # or a list of required files
+            if isinstance(input_files[0], (list, tuple)) is False:
+                # input_files is a list of required files
+                required_inputs = input_files
+            else:
+                # input_files is a list with (required inputs, optional inputs)
+                required_inputs = input_files[0]
+                # optional inputs can be either a single file or a list
+                if len(input_files) == 1:
+                    if isinstance(input_files[1], (list, tuple)) is False:
+                        optional_inputs = [input_files[1]]
+                    else:
+                        optional_inputs = input_files[1]
+
+        for fn in required_inputs:
+            if os.path.exists(fn) is False:
+                self.print_message(
+                    "File not found. "
+                    "This annotation expects a file with name {:s}. "
+                    "".format(fn), indent=1, status=annots.error)
+                self.print_message(
+                    "Annotation cancelled.", indent=1, status=annots.ignore)
+                raise IOError
+
+        return required_inputs, optional_inputs
 
     # -----------------------------------------------------------------------
     # To communicate with the interface:
@@ -277,20 +335,26 @@ class sppasBaseAnnotation(object):
                                        status=status)
 
         elif len(message) > 0:
+            nbsp = ""
+            if indent < 0:
+                indent = 0
+            if indent > 0:
+                nbsp = " ..."*indent + " "
+
             if status is None:
-                logging.info(message)
+                logging.info(nbsp + message)
             else:
                 if status == annots.info:
-                    logging.info(message)
+                    logging.info(nbsp + message)
 
                 elif status == annots.warning:
-                    logging.warning(message)
+                    logging.warning(nbsp + message)
 
                 elif status == annots.error:
-                    logging.error(message)
+                    logging.error(nbsp + message)
 
                 elif status == annots.ok:
-                    logging.info(message)
+                    logging.info(nbsp + message)
 
                 else:
                     logging.debug(message)
@@ -326,7 +390,7 @@ class sppasBaseAnnotation(object):
         for k, v in self._options.items():
             msg = "{!s:s}: {!s:s}".format(k, v)
             if self.logfile:
-                self.print_message(msg, indent=1, status=None)
+                self.print_message(msg, indent=0, status=None)
             else:
                 logging.info(msg)
 
@@ -336,13 +400,13 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_diagnosis(self, *filenames):
-        """Print the diagnosis of a list of files in the user log.
+        """Print the diagnosis of a list of files in the user report.
 
         :param filenames: (list) List of files.
 
         """
         for filename in filenames:
-            if filename is not None:
+            if filename is not None and os.path.exists(filename):
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
                 msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
@@ -362,7 +426,8 @@ class sppasBaseAnnotation(object):
     # Utility methods:
     # ------------------------------------------------------------------------
 
-    def _get_filename(self, filename, extensions):
+    @staticmethod
+    def _get_filename(filename, extensions):
         """Return a filename corresponding to one of the extensions.
 
         :param filename: input file name

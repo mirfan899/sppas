@@ -32,8 +32,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
-
 from sppas import sppasRW
 from sppas import sppasTranscription
 from sppas import sppasTier
@@ -137,19 +135,20 @@ class sppasIntsint(sppasBaseAnnotation):
         return tier
 
     # -----------------------------------------------------------------------
-    # Apply the annotation on one or several given files
+    # Apply the annotation on one given file
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the INTSINT annotation process on an input file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) the input file name with momel
-        :param output_filename: (str) the output file name of the INTSINT tier
+        :param input_file: (list of str) momel anchors
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
         # Get the tier to be annotated.
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.pitch_anchors(trs_input)
 
@@ -161,11 +160,11 @@ class sppasIntsint(sppasBaseAnnotation):
         # Create the transcription result
         trs_output = sppasTranscription(self.name)
         trs_output.append(tier_intsint)
-        trs_output.set_meta('intsint_result_of', input_filename)
+        trs_output.set_meta('intsint_result_of', input_file[0])
 
         # Save in a file
-        if output_filename is not None:
-            parser = sppasRW(output_filename)
+        if output_file is not None:
+            parser = sppasRW(output_file)
             parser.write(trs_output)
 
         return trs_output
@@ -174,10 +173,10 @@ class sppasIntsint(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-intsint'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-momel'

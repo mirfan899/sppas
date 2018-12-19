@@ -158,9 +158,9 @@ if __name__ == "__main__":
         ann.set_rules(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.i, args.o)
+            ann.run([args.i], output_file=args.o)
         else:
-            trs = ann.run(args.i, None)
+            trs = ann.run([args.i])
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:

@@ -155,7 +155,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -177,9 +176,9 @@ if __name__ == "__main__":
         ann = sppasSearchIPUs(logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.i, args.o)
+            ann.run([args.i], output_file=args.o)
         else:
-            trs = ann.run(args.i, None)
+            trs = ann.run([args.i])
             for ann in trs[0]:
                 print("{:f} {:f} {:s}".format(
                     ann.get_location().get_best().get_begin().get_midpoint(),
@@ -193,19 +192,12 @@ if __name__ == "__main__":
 
         # Fix the output file extension
         parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
 
         # Fix input files
         files = list()
         for f in args.I:
             parameters.add_sppasinput(os.path.abspath(f))
-
-        # Redirect all messages to logging.
-        with sppasAppConfig() as cg:
-            parameters.set_report_filename(cg.log_file)
-            if not args.quiet:
-                setup_logging(cg.log_level, None)
-            else:
-                setup_logging(cg.quiet_log_level, None)
 
         # Perform the annotation
         process = sppasAnnotationsManager(parameters)

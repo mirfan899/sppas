@@ -74,8 +74,10 @@ class sppasOtherRepet(sppasBaseRepet):
     def __init__(self, logfile=None):
         """Create a new sppasOtherRepet instance.
 
+        :param logfile: (sppasLog)
+
         """
-        super(sppasOtherRepet, self).__init__(logfile, "OtherRepetitions")
+        super(sppasOtherRepet, self).__init__(logfile, "Other Repetitions")
 
         self.max_span = 12
         self.max_alpha = 4.
@@ -163,7 +165,8 @@ class sppasOtherRepet(sppasBaseRepet):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __add_repetition(repetition, spk1_tier, spk2_tier, start_idx1, start_idx2, src_tier, echo_tier):
+    def __add_repetition(repetition, spk1_tier, spk2_tier,
+                         start_idx1, start_idx2, src_tier, echo_tier):
         """Add a repetition - source and echos - in tiers.
 
         :param repetition: (DataRepetition)
@@ -212,29 +215,31 @@ class sppasOtherRepet(sppasBaseRepet):
     # Run
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename1, input_filename2, output_filename=None):
-        """Run the Repetition Automatic Detection annotation.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename1: (str) File with time-aligned tokens or lemmas
-        :param input_filename2: (str) File with time-aligned tokens or lemmas
-        :param output_filename:(str) Name of the file to save the result
+        Input file is a tuple with 2 files: the main speaker and the echoing
+        speaker.
+
+        :param input_file: (list of str) time-aligned tokens
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename1)
-        self.print_filename(input_filename2)
         self.print_options()
-        self.print_diagnosis(input_filename1)
-        self.print_diagnosis(input_filename2)
+        self.print_diagnosis(input_file[0])
+        self.print_diagnosis(input_file[1])
 
         # Get the tier to be used
-        parser = sppasRW(input_filename1)
+        parser = sppasRW(input_file[0])
         trs_input1 = parser.read()
         tier_tokens = sppasFindTier.aligned_tokens(trs_input1)
         tier_input1 = self.make_word_strain(tier_tokens)
         tier_input1.set_name(tier_input1.get_name() + "-source")
 
         # Get the tier to be used
-        parser = sppasRW(input_filename2)
+        parser = sppasRW(input_file[1])
         trs_input2 = parser.read()
         tier_tokens = sppasFindTier.aligned_tokens(trs_input2)
         tier_input2 = self.make_word_strain(tier_tokens)
@@ -244,9 +249,9 @@ class sppasOtherRepet(sppasBaseRepet):
         (src_tier, echo_tier) = self.other_detection(tier_input1, tier_input2)
 
         # Create the transcription result
-        trs_output = sppasTranscription("OtherRepetition")
-        trs_output.set_meta('other_repetition_result_of_src', input_filename1)
-        trs_output.set_meta('other_repetition_result_of_echo', input_filename2)
+        trs_output = sppasTranscription(self.name)
+        trs_output.set_meta('other_repetition_result_of_src', input_file[0])
+        trs_output.set_meta('other_repetition_result_of_echo', input_file[1])
         if len(self._word_strain) > 0:
             trs_output.append(tier_input1)
         if self._options['stopwords'] is True:
@@ -257,11 +262,11 @@ class sppasOtherRepet(sppasBaseRepet):
             trs_output.append(tier_input2)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
+                self.print_filename(output_file, status=0)
             else:
                 raise EmptyOutputError
 
@@ -271,10 +276,10 @@ class sppasOtherRepet(sppasBaseRepet):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-orepet'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-palign'

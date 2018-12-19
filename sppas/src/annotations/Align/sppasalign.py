@@ -103,7 +103,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     >>> a = sppasAlign()
     >>> a.load_resources(model_dirname)
-    >>> a.run(input_phones, input_tokens, input_audio, output)
+    >>> a.run([audio, phones], [tokens], output)
 
     """
 
@@ -410,29 +410,27 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Execute SPPAS Alignment.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        input_filename is a tuple with: (phonetization, tokenization, audio)
-
-        :param input_filename: (str or list of str) the input
-        :param output_filename: (str) the output file name
+        :param input_file: (list of str) (audio, phonemes)
+        :param opt_input_file: (list of str) (tokens)
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
-        audioname = input_filename[0]
-        phonesname = input_filename[1]
-        tokensname = input_filename[2]
+        input_audio_filename = input_file[0]
+        input_phon_filename = input_file[1]
 
         # Get the tiers to be time-aligned
-        parser = sppasRW(phonesname)
+        parser = sppasRW(input_phon_filename)
         trs_input = parser.read()
         phon_tier = sppasFindTier.phonetization(trs_input)
         if phon_tier is None:
             raise NoInputError
 
         try:
-            parser = sppasRW(tokensname)
+            parser = sppasRW(opt_input_file[0])
             trs_input_tok = parser.read()
             tok_tier = sppasFindTier.tokenization(trs_input_tok)
         except:   # IOError, AttributeError:
@@ -441,27 +439,27 @@ class sppasAlign(sppasBaseAnnotation):
                                indent=2, status=annots.warning)
 
         # Prepare data
-        input_audio = fix_audioinput(audioname)
+        input_audio = fix_audioinput(input_audio_filename)
         workdir = fix_workingdir(input_audio)
         if self._options['clean'] is False:
             self.print_message(MSG_WORKDIR.format(dirname=workdir),
                                indent=3, status=None)
 
         # Set media
-        extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = sppasMedia(audioname, mime_type="audio/"+extm)
+        extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
+        media = sppasMedia(input_audio_filename, mime_type="audio/"+extm)
 
         # Processing...
         try:
             tier_phn, tier_tok, tier_pron = self.convert(
                 phon_tier,
                 tok_tier,
-                audioname,
+                input_audio_filename,
                 workdir
             )
             tier_phn.set_media(media)
 
-            trs_output = sppasTranscription()
+            trs_output = sppasTranscription(self.name)
             trs_output.append(tier_phn)
             if tier_tok is not None:
                 tier_tok.set_media(media)
@@ -496,10 +494,10 @@ class sppasAlign(sppasBaseAnnotation):
         self.append_extra(trs_output)
 
         # Save results
-        if output_filename is not None:
+        if output_file is not None:
             try:
                 # Save in a file
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
             except Exception:
                 if self._options['clean'] is True:
@@ -508,7 +506,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         # Clean!
         # if the audio file was converted.... remove the tmpaudio
-        if input_audio != audioname:
+        if input_audio != input_audio_filename:
             os.remove(input_audio)
         # Remove the working directory we created
         if self._options['clean'] is True:
@@ -520,11 +518,11 @@ class sppasAlign(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-palign'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-phon'
 

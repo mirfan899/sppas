@@ -174,9 +174,9 @@ if __name__ == "__main__":
         intsint = sppasIntsint(logfile=None)
         intsint.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            intsint.run(args.i, args.o)
+            intsint.run([args.i], output_file=args.o)
         else:
-            trs = intsint.run(args.i, None)
+            trs = intsint.run([args.i])
             for ann in trs[0]:
                 print("{:f} {:s}".format(
                     ann.get_location().get_best().get_midpoint(),

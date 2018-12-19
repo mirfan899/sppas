@@ -335,7 +335,8 @@ class sppasParam(object):
         for entry in input_list:
             self.add_sppasinput(entry)
 
-        self._report = os.path.splitext(self._inputs[0])[0] + ".log"
+        if len(self._report) == 0:
+            self._report = os.path.splitext(self._inputs[0])[0] + ".log"
 
     # -----------------------------------------------------------------------
 
@@ -353,7 +354,9 @@ class sppasParam(object):
         """
         if os.path.exists(entry):
             self._inputs.append(entry)
-        self._report = os.path.splitext(entry)[0] + ".log"
+
+        if len(self._report) == 0:
+            self._report = os.path.splitext(entry)[0] + ".log"
 
     # -----------------------------------------------------------------------
 

@@ -176,9 +176,16 @@ if __name__ == "__main__":
         ann.load_resources(args.r, args.R)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run((args.p, args.t, args.i), args.o)
+            if args.t:
+                ann.run([args.i, args.p], [args.t], args.o)
+            else:
+                ann.run([args.i, args.p], None, args.o)
+
         else:
-            trs = ann.run((args.p, args.t, args.i), None)
+            if args.t:
+                trs = ann.run([args.i, args.p], [args.t])
+            else:
+                trs = ann.run([args.i, args.p])
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:

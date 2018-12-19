@@ -163,9 +163,9 @@ if __name__ == "__main__":
         ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run(args.i, args.s, args.o)
+            ann.run([args.i, args.s], output_file=args.o)
         else:
-            trs = ann.run(args.i, args.s, None)
+            trs = ann.run([args.i, args.s])
             for tier in trs:
                 for a in tier:
                     print("{:f} {:f} {:s}".format(

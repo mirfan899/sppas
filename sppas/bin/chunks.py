@@ -169,10 +169,8 @@ if __name__ == "__main__":
 
         ann = sppasChunks(args.r, logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
-        if args.o:
-            ann.run(args.p, args.t, args.i, args.o)
-        else:
-            trs = ann.run(args.p, args.t, args.i, None)
+        trs = ann.run([args.i, args.p, args.t], output_file=args.o)
+        if not args.o:
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:

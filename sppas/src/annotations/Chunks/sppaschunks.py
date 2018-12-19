@@ -169,34 +169,38 @@ class sppasChunks(sppasBaseAnnotation):
 
         return None
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, phonesname, tokensname, audioname, outputfilename=None):
-        """Execute SPPAS Chunks alignment.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param phonesname (str) file containing the phonetization
-        :param tokensname (str) file containing the tokenization
-        :param audioname (str) Audio file name
-        :param outputfilename (str) the file name with the result
-
-        :returns: sppasTranscription
+        :param input_file: (list of str) (audio, raw phonemes, raw tokens)
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
+        input_audio_filename = input_file[0]
+        input_phon_filename = input_file[1]
+        input_token_filename = input_file[2]
+
         self.print_options()
-        self.print_diagnosis(audioname, phonesname, tokensname)
+        self.print_diagnosis(*input_file)
 
         # Get the tiers to be time-aligned
         # -------------------------------------------------------------------
 
-        parser = sppasRW(phonesname)
-        trs_input = parser.read(phonesname)
+        parser = sppasRW(input_phon_filename)
+        trs_input = parser.read()
         phontier = sppasChunks.get_phonestier(trs_input)
         if phontier is None:
             raise IOError("No tier with the raw phonetization was found.")
 
         try:
-            parser.set_filename(tokensname)
-            trs_inputtok = parser.read(tokensname)
+            parser.set_filename(input_token_filename)
+            trs_inputtok = parser.read()
             toktier = sppasFindTier.tokenization(trs_inputtok)
         except Exception:
             raise IOError("No tier with the raw tokenization was found.")
@@ -204,7 +208,7 @@ class sppasChunks(sppasBaseAnnotation):
         # Prepare data
         # -------------------------------------------------------------------
 
-        inputaudio = fix_audioinput(audioname)
+        inputaudio = fix_audioinput(input_audio_filename)
         workdir = fix_workingdir(inputaudio)
         if self._options['clean'] is False:
             self.print_message("Working directory is {:s}".format(workdir),
@@ -226,19 +230,19 @@ class sppasChunks(sppasBaseAnnotation):
         # Set media
         # -------------------------------------------------------------------
 
-        extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = sppasMedia(audioname, None, "audio/"+extm)
+        extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
+        media = sppasMedia(input_audio_filename, None, "audio/"+extm)
         trsoutput.add_media(media)
         for tier in trsoutput:
             tier.SetMedia(media)
 
         # Save results
         # -------------------------------------------------------------------
-        if outputfilename is not None:
+        if output_file is not None:
             try:
                 self.print_message("Save automatic chunk alignment: ",
                                    indent=3)
-                parser = sppasRW(outputfilename)
+                parser = sppasRW(output_file)
                 # Save in a file
                 parser.write(trsoutput)
             except Exception:
@@ -249,7 +253,7 @@ class sppasChunks(sppasBaseAnnotation):
         # Clean!
         # -------------------------------------------------------------------
         # if the audio file was converted.... remove the tmpaudio
-        if inputaudio != audioname:
+        if inputaudio != input_audio_filename:
             os.remove(inputaudio)
         # Remove the working directory we created
         if self._options['clean'] is True:
@@ -261,10 +265,10 @@ class sppasChunks(sppasBaseAnnotation):
 
     @staticmethod
     def get_pattern():
-        """Return the pattern this annotation uses in an output filename."""
+        """Pattern this annotation uses in an output filename."""
         return '-chunks'
 
     @staticmethod
     def get_replace_pattern():
-        """Return the pattern this annotation expects for its input filename."""
+        """Pattern this annotation expects for its input filename."""
         return '-phon'

@@ -55,6 +55,7 @@ from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
 if __name__ == "__main__":
 
@@ -106,6 +107,12 @@ if __name__ == "__main__":
         help='Annotated file with filled IPUs ')
 
     group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input wav file name (append).')
+
+    group_io.add_argument(
         "-e",
         metavar=".ext",
         default=annots.extension,
@@ -151,7 +158,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -162,7 +168,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 't', 'e', 'quiet'):
+        if a not in ('i', 'o', 't', 'I', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, arguments[a])
 
     if args.i:
@@ -177,14 +183,32 @@ if __name__ == "__main__":
         ann = sppasFillIPUs(logfile=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            ann.run((args.i, args.t), args.o)
+            ann.run((args.i, args.t), output_file=args.o)
         else:
-            trs = ann.run((args.i, args.t), None)
+            trs = ann.run((args.i, args.t))
             for a in trs[0]:
                 print("{:f} {:f} {:s}".format(
                     a.get_location().get_best().get_begin().get_midpoint(),
                     a.get_location().get_best().get_end().get_midpoint(),
                     a.get_best_tag().get_typed_content()))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_fillipus()
 
     else:
 

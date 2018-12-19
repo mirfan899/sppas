@@ -174,9 +174,9 @@ if __name__ == "__main__":
         melodie = sppasMomel(logfile=None)
         melodie.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
-            melodie.run(args.i, args.o)
+            melodie.run([args.i], output_file=args.o)
         else:
-            trs = melodie.run(args.i, None)
+            trs = melodie.run([args.i])
             for a in trs[0]:
                 print("{:f} {:f}".format(
                     a.get_location().get_best().get_midpoint(),
