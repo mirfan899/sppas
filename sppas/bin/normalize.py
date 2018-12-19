@@ -180,7 +180,6 @@ if __name__ == "__main__":
     for a in arguments:
         if a not in ('i', 'o', 'I', 'e', 'r', 'l', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
-            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
     if args.i:
 

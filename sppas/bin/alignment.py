@@ -184,7 +184,6 @@ if __name__ == "__main__":
     for a in arguments:
         if a not in ('i', 'o', 'p', 't', 'r', 'R', 'I', 'l', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
-            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
     if args.i:
 
@@ -196,14 +195,10 @@ if __name__ == "__main__":
             sys.exit(1)
 
         ann = sppasAlign(logfile=None)
-        if not args.r:
-            ann.set_aligner('basic')
-            logging.warning("No acoustic model was given with option -r. "
-                            "All phonemes will have the same duration.")
-        else:
+        if args.r:
             ann.load_resources(args.r, args.R)
-
         ann.fix_options(parameters.get_options(ann_step_idx))
+
         if args.o:
             if args.t:
                 ann.run([args.i, args.p], [args.t], args.o)
