@@ -37,7 +37,7 @@ from sppas import sppasTranscription
 from sppas import sppasTier
 from sppas import sppasLabel
 from sppas import sppasTag
-from sppas.src.config import annots
+
 from sppas.src.anndata.anndataexc import AnnDataTypeError
 from sppas.src.anndata.anndataexc import AnnDataEqError
 

@@ -211,7 +211,7 @@ if __name__ == "__main__":
                             a.get_location().get_best().get_midpoint(),
                             a.serialize_labels(" ")))
                     else:
-                        print("{:f}, {:f} {:s}".format(
+                        print("{:f}, {:f}, {:s}".format(
                             a.get_location().get_best().get_begin().get_midpoint(),
                             a.get_location().get_best().get_end().get_midpoint(),
                             a.serialize_labels(" ")))

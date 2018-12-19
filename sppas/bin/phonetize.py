@@ -49,7 +49,8 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import sg
+from sppas import sg, annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
 from sppas.src.resources.dictpron import sppasDictPron
@@ -57,6 +58,7 @@ from sppas.src.resources.mapping import sppasMapping
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
 
 if __name__ == "__main__":
@@ -104,10 +106,30 @@ if __name__ == "__main__":
         help='Annotated file with phonetization')
 
     group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input transcription file name (append).')
+
+    group_io.add_argument(
         "-r",
         metavar="dict",
-        required=True,
         help='Pronunciation dictionary (HTK-ASCII format).')
+
+    group_io.add_argument(
+        "-l",
+        metavar="lang",
+        choices=parameters.get_langlist(ann_step_idx),
+        help='Language code (iso8859-3). One of: {:s}.'
+             ''.format(" ".join(parameters.get_langlist(ann_step_idx))))
+
+    group_io.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
     group_io.add_argument(
         "-m",
@@ -146,7 +168,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -157,7 +178,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'r', 'map', 'e', 'quiet'):
+        if a not in ('i', 'o', 'r', 'l', 'm', 'I', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -166,9 +187,13 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
+        if not args.r:
+            print("argparse.py: error: option -r is required with option -i")
+            sys.exit(1)
+
         ann = sppasPhon(logfile=None)
         ann.set_dict(args.r)
-        ann.set_map(args.map)
+        ann.set_map(args.m)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)
@@ -177,21 +202,57 @@ if __name__ == "__main__":
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
-                        a.get_location().get_best().get_begin().get_midpoint(),
-                        a.get_location().get_best().get_end().get_midpoint(),
-                        a.serialize_labels(" ")))
+                    if a.location_is_point():
+                        print("{:d}, {:s}".format(
+                            a.get_location().get_best().get_midpoint(),
+                            a.serialize_labels(" ")))
+                    else:
+                        print("{:f}, {:f}, {:s}".format(
+                            a.get_location().get_best().get_begin().get_midpoint(),
+                            a.get_location().get_best().get_end().get_midpoint(),
+                            a.serialize_labels(" ")))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        if not args.l:
+            print("argparse.py: error: option -l is required with option -I")
+            sys.exit(1)
+
+        # Fix the output file extension and others
+        parameters.set_lang(args.l)
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_phonetization()
 
     else:
 
         # Perform the annotation on stdin
-        # an argument 'unk' must exists.
+        # an argument 'unk' must exists (which is in the options).
         # -------------------------------
+
+        if not args.unk:
+            print("argparse.py: error: option -unk is required")
+            sys.exit(1)
+
+        if not args.r:
+            print("argparse.py: error: option -r is required")
+            sys.exit(1)
 
         pdict = sppasDictPron(args.r, nodump=False)
         mapping = sppasMapping()
-        if args.map:
-            map_table = sppasMapping(args.map)
+        if args.m:
+            map_table = sppasMapping(args.m)
         phonetizer = sppasDictPhonetizer(pdict, mapping)
         for line in sys.stdin:
             print("{:s}".format(phonetizer.phonetize(line, args.unk)))

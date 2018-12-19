@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 
     bin.momel.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~
 
 :author:       Brigitte Bigi
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -41,6 +41,7 @@
 
 """
 
+import logging
 import sys
 import os
 from argparse import ArgumentParser
@@ -152,7 +153,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -189,6 +189,7 @@ if __name__ == "__main__":
 
         # Fix the output file extension
         parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
 
         # Fix input files
         files = list()
@@ -202,4 +203,4 @@ if __name__ == "__main__":
     else:
 
         if not args.quiet:
-            print("No file was given to be annotated. Nothing to do!")
+            logging.info("No file was given to be annotated. Nothing to do!")

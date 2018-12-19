@@ -236,7 +236,7 @@ class sppasPhon(sppasBaseAnnotation):
 
         phones_tier = sppasTier("Phones")
         for i, ann in enumerate(tier):
-            self.print_message(MSG_TRACK.format(number=i+1), indent=2)
+            self.print_message(MSG_TRACK.format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
