@@ -153,7 +153,7 @@ class sppasAlign(sppasBaseAnnotation):
                 model = output_dir
             except Exception as e:
                 self.print_message(MSG_MODEL_L1_FAILED.format(str(e)),
-                                   indent=3,
+                                   indent=2,
                                    status=annots.warning)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
@@ -271,12 +271,12 @@ class sppasAlign(sppasBaseAnnotation):
 
     def _segment_track_with_basic(self, audio, phn, token, align):
         """Segmentation of a track with the basic alignment system."""
-        self.print_message(MSG_BASIC, indent=3)
+        self.print_message(MSG_BASIC, indent=2)
         aligner_id = self._segmenter.get_aligner()
         self._segmenter.set_aligner('basic')
         msg = self._segmenter.segment(audio, phn, token, align)
         if len(msg) > 0:
-            self.print_message(msg, indent=3, status=annots.info)
+            self.print_message(msg, indent=2, status=annots.info)
         self._segmenter.set_aligner(aligner_id)
 
     # -----------------------------------------------------------------------
@@ -299,7 +299,7 @@ class sppasAlign(sppasBaseAnnotation):
             # Fix track number (starts from 1)
             track_number += 1
             self.print_message(
-                MSG_ALIGN_TRACK.format(number=track_number), indent=2)
+                MSG_ALIGN_TRACK.format(number=track_number), indent=1)
 
             # Fix the expected filenames for this track
             (audio, phn, token, align) = \
@@ -309,16 +309,16 @@ class sppasAlign(sppasBaseAnnotation):
             try:
                 msg = self._segmenter.segment(audio, phn, token, align)
                 if len(msg) > 0:
-                    self.print_message(msg, indent=3, status=annots.info)
+                    self.print_message(msg, indent=2, status=annots.info)
 
             except Exception as e:
                 # Something went wrong and the aligner failed
                 self.print_message(
                     MSG_ALIGN_FAILED.format(
                         name=self._segmenter.get_aligner()),
-                    indent=3,
+                    indent=2,
                     status=annots.error)
-                self.print_message(str(e), indent=4, status=annots.info)
+                self.print_message(str(e), indent=3, status=annots.info)
                 logging.error(traceback.format_exc())
 
                 # Execute BasicAlign
@@ -347,7 +347,7 @@ class sppasAlign(sppasBaseAnnotation):
             raise NoDirectoryError(workdir)
 
         # Split input into tracks
-        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=2)
+        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=1)
         if os.path.exists(workdir) is False:
             os.mkdir(workdir)
         self._tracksrw.split_into_tracks(
@@ -357,7 +357,7 @@ class sppasAlign(sppasBaseAnnotation):
         self._segment_tracks(workdir)
 
         # Merge track alignment results
-        self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=2)
+        self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=1)
         tier_phn, tier_tok, tier_pron = \
             self._tracksrw.read_aligned_tracks(workdir)
 
@@ -377,13 +377,13 @@ class sppasAlign(sppasBaseAnnotation):
 
         token_align = trs.find("TokensAlign")
         if token_align is None:
-            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2,
+            self.print_message(MSG_NO_TOKENS_ALIGN, indent=1,
                                status=annots.warning)
             return trs
 
         # Activity tier
         try:
-            self.print_message(MSG_ACTION_EXTRA_TIER, indent=2)
+            self.print_message(MSG_ACTION_EXTRA_TIER, indent=1)
             activity = sppasActivity()
             tier = activity.get_tier(trs)
             if self._options['activity'] is True:

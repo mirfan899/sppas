@@ -298,7 +298,7 @@ class sppasBaseAnnotation(object):
                 # input_files is a list with (required inputs, optional inputs)
                 required_inputs = input_files[0]
                 # optional inputs can be either a single file or a list
-                if len(input_files) == 1:
+                if len(input_files) == 2:
                     if isinstance(input_files[1], (list, tuple)) is False:
                         optional_inputs = [input_files[1]]
                     else:

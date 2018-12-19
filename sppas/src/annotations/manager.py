@@ -414,6 +414,7 @@ class sppasAnnotationsManager(Thread):
     def run_alignment(self):
         """Execute the SPPAS-Alignment program.
 
+        Requires an audio file.
         Requires a phonetization time-aligned with the IPUs.
         Optional: a text-normalization time-aligned with the IPUs.
 
@@ -433,16 +434,16 @@ class sppasAnnotationsManager(Thread):
         for f in audio_files:
 
             # Get the input file
-            extt = ['-token'+self.parameters.get_output_format()]
-            extp = ['-phon'+self.parameters.get_output_format()]
+            extt = ['-token' + self.parameters.get_output_format()]
+            extp = [a.get_replace_pattern() + self.parameters.get_output_format()]
             for e in sppas.src.anndata.aio.extensions_out:
-                extt.append('-token'+e)
-                extp.append('-phon'+e)
+                extt.append('-token' + e)
+                extp.append(a.get_replace_pattern() + e)
 
-            inname = self._get_filename(f, extp)
-            intok = self._get_filename(f, extt)
-            if inname is not None:
-                files.append((inname, intok, f))
+            phon = self._get_filename(f, extp)
+            tok = self._get_filename(f, extt)
+            if phon is not None:
+                files.append(((f, phon), tok))
 
         return a.batch_processing(
             files,
@@ -452,7 +453,13 @@ class sppasAnnotationsManager(Thread):
     # -----------------------------------------------------------------------
 
     def run_syllabification(self):
-        """Execute the Syllabification automatic annotation."""
+        """Execute the Syllabification automatic annotation.
+
+        Requires time-aligned phonemes.
+
+        :returns: number of files processed successfully
+
+        """
         a = self.create_ann("syll")
 
         if self._progress:
@@ -469,7 +476,13 @@ class sppasAnnotationsManager(Thread):
     # -----------------------------------------------------------------------
 
     def run_tga(self):
-        """Execute the TGA automatic annotation."""
+        """Execute the TGA automatic annotation.
+
+        Requires time-aligned syllables.
+
+        :returns: number of files processed successfully
+
+        """
         a = self.create_ann("tga")
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
@@ -480,6 +493,10 @@ class sppasAnnotationsManager(Thread):
 
     def run_self_repetition(self):
         """Execute the automatic repetitions detection.
+
+        Requires time-aligned tokens.
+
+        :returns: number of files processed successfully
 
         """
         a = self.create_ann("selfrepet")

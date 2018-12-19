@@ -246,6 +246,8 @@ class JuliusAligner(BaseAligner):
         :param outputalign: (str) output file name
 
         """
+        if self._model is None:
+            raise IOError('Julius aligner requires an acoustic model')
         # Fix file names
         tiedlist = os.path.join(self._model, "tiedlist")
         config = os.path.join(self._model, "config")
