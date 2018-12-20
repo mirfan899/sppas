@@ -107,13 +107,7 @@ parser.add_argument("--all", action='store_true',
 
 parser.add_argument("--merge",
                     action='store_true',
-                    help="Create a merged TextGrid file, "
-                         "if more than two automatic annotations. "
-                         "(this is the default)")
-
-parser.add_argument("--nomerge",
-                    action='store_true',
-                    help="Do not create a merged TextGrid file.")
+                    help="Create a merged file with all annotations")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -178,12 +172,10 @@ except:
 # ----------------------------------------------------------------------------
 
 p = ProcessProgressTerminal()
-process = sppasAnnotationsManager(parameters)
-if args.nomerge:
-    process.set_do_merge(False)
+manager = sppasAnnotationsManager()
 if args.merge:
-    process.set_do_merge(True)
-process.run_annotations(p)
+    manager.set_do_merge(True)
+manager.annotate(parameters, p)
 
 try:
     term = TerminalController()

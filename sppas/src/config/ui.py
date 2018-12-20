@@ -59,7 +59,7 @@ class sppasAppConfig(sppasBaseSettings):
 
         self.__dict__ = dict(
             name=sg.__name__ + " " + sg.__version__,
-            log_level=15,
+            log_level=5,
             quiet_log_level=30,
             log_file=None,
             splash_delay=3,

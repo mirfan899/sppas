@@ -41,6 +41,8 @@
 :summary:      Search IPUs and fill in with a transcription
 
 """
+
+import logging
 import sys
 import os
 from argparse import ArgumentParser
@@ -85,6 +87,11 @@ if __name__ == "__main__":
         "--quiet",
         action='store_true',
         help="Disable the verbosity")
+
+    parser.add_argument(
+        "--log",
+        metavar="file",
+        help="File name for a Procedure Outcome Report (default: None)")
 
     # Add arguments for input/output files
     # ------------------------------------
@@ -168,7 +175,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 't', 'I', 'e', 'quiet'):
+        if a not in ('i', 'o', 't', 'I', 'e', 'quiet', 'log'):
             parameters.set_option_value(ann_step_idx, a, arguments[a])
 
     if args.i:
@@ -197,20 +204,20 @@ if __name__ == "__main__":
         # Perform the annotation on a set of files
         # ----------------------------------------
 
-        # Fix the output file extension
-        parameters.set_output_format(args.e)
-        parameters.set_report_filename("")
-
         # Fix input files
         files = list()
         for f in args.I:
             parameters.add_sppasinput(os.path.abspath(f))
 
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename(args.log)
+
         # Perform the annotation
-        process = sppasAnnotationsManager(parameters)
-        process.run_fillipus()
+        process = sppasAnnotationsManager()
+        process.annotate(parameters)
 
     else:
 
         if not args.quiet:
-            print("No file was given to be annotated. Nothing to do!")
+            logging.info("No file was given to be annotated. Nothing to do!")

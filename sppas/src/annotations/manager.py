@@ -56,8 +56,6 @@ from sppas.src.annotations.Syll.sppassyll import sppasSyll
 from sppas.src.annotations.TGA.sppastga import sppasTGA
 from sppas.src.annotations.SelfRepet.sppasrepet import sppasSelfRepet
 
-from .annotationsexc import AnnotationOptionError
-
 # ----------------------------------------------------------------------------
 
 
@@ -70,26 +68,27 @@ class sppasAnnotationsManager(Thread):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Process a directory full of files or a single file, and report on a
-    progress.
+    Run annotations on a set of files.
 
     """
-    def __init__(self, parameters):
+
+    def __init__(self):
         """Create a new sppasAnnotationsManager instance.
 
         Initialize a Thread.
 
-        :param parameters: (sppasParam) SPPAS parameters, i.e. config of annotations
-
         """
         Thread.__init__(self)
 
-        # fix input variables
-        self.parameters = parameters
+        # fix members that are required to run annotations
+        self._parameters = None
         self._progress = None
         self._logfile = None
-        self.__do_merge = True
 
+        # fix optional members
+        self.__do_merge = False
+
+        # fix annotations: key,instance
         self._annotations = dict()
         self._annotations['intsint'] = sppasIntsint
         self._annotations['momel'] = sppasMomel
@@ -102,169 +101,20 @@ class sppasAnnotationsManager(Thread):
         self._annotations['tga'] = sppasTGA
         self._annotations['selfrepet'] = sppasSelfRepet
 
+        # start threading
         self.start()
 
-    # ------------------------------------------------------------------------
-
-    def fix_options(self, options):
-        """Fix all options.
-
-        Available options are:
-
-            - domerge (bool) create a merged TextGrid file.
-
-        :param options: (option)
-
-        """
-        for opt in options:
-
-            key = opt.get_key()
-            if key == "domerge":
-                self.set_do_merge(opt.get_value())
-            else:
-                raise AnnotationOptionError(key)
-
+    # -----------------------------------------------------------------------
+    # Manager options
     # -----------------------------------------------------------------------
 
     def set_do_merge(self, do_merge):
-        """Fix the domerge option.
+        """Fix if the 'run' method have to create a merged file or not.
 
-        If do merge is set to True, a merged TextGrid file is created.
-
-        :param do_merge: (bool)
+        :param do_merge: (bool) if set to True, a merged file will be created
 
         """
         self.__do_merge = do_merge
-
-    # ----------------------------------------------------------------------
-
-    def set_progress(self, p=None):
-        """Fix the progress system.
-
-        :param p:
-
-        """
-        self._progress = p
-
-    # -----------------------------------------------------------------------
-
-    def set_filelist(self, extension, not_ext=[], not_start=[]):
-        """Create a list of file names from the parameter inputs.
-
-        :param extension: (str) expected file extension
-        :param not_ext: (str) list of extensions of files that must not be treated
-        :param not_start: (str) list of start of filenames that must not be treated
-        :returns: a list of strings
-
-        """
-        filelist = []
-        try:
-            for sinput in self.parameters.get_sppasinput():
-
-                inputfilename, inputfileextension = os.path.splitext(sinput)
-
-                # Input is a file (and not a directory)
-                if extension.lower() in sppas.src.audiodata.aio.extensions and \
-                        os.path.isfile(sinput) is True:
-                    if sinput not in filelist:
-                        filelist.append(sinput)
-
-                elif inputfileextension.lower() in sppas.src.audiodata.aio.extensions:
-                    sinput = inputfilename + extension
-                    if os.path.isfile(sinput) is True:
-                        if sinput not in filelist:
-                            filelist.append(sinput)
-                    else:
-                        if self._logfile is not None:
-                            self._logfile.print_message(
-                                "Can't find file %s\n" % sinput,
-                                indent=1, status=1)
-
-                # Input is a directory:
-                else:
-                    # Get the list of files with 'extension' from the input directory
-                    files = sppasDirUtils(sinput).get_files(extension)
-                    filelist.extend(files)
-        except:
-            pass
-
-        # Removing files with not_ext as extension or containing not_start
-        fl2 = []
-        for x in filelist:
-            is_valid = True
-            for ne in not_ext:
-                if x.lower().endswith(ne.lower()) is True:
-                    is_valid = False
-
-            for ns in not_start:
-                basex = os.path.basename(x.lower())
-                if basex.startswith(ns.lower()) is True:
-                    is_valid = False
-
-            if is_valid is True:
-                fl2.append(x)
-
-        return fl2
-
-    # ------------------------------------------------------------------------
-
-    def get_annot_files(self, pattern='', extensions=None):
-        """Search for annotated files with pattern.
-
-        :param pattern: (str) The pattern to search in the filenames
-        :param extensions: (str) The extension to search
-        :returns: List of filenames matching pattern and extensions
-
-        """
-        files = list()
-
-        if extensions is None:
-            extensions = sppas.src.anndata.aio.extensions_out
-
-        if len(pattern) > 0:
-            ext = [pattern + self.parameters.get_output_format()]
-            for e in extensions:
-                ext.append(pattern + e)
-        else:
-            ext = extensions
-
-        # get from audio files
-        audio_files = self.set_filelist(".wav")
-
-        for f in audio_files:
-            new_file = self._get_filename(f, ext)
-            if new_file is not None and new_file not in files:
-                files.append(new_file)
-
-        # get from annotated files
-        if pattern is not None:
-            for f in self.parameters.get_sppasinput():
-                fn, e = os.path.splitext(f)
-                if pattern in f and f not in files and \
-                        e in sppas.src.anndata.aio.extensions_out:
-                    files.append(f)
-
-        return files
-
-    # ------------------------------------------------------------------------
-
-    def _get_filename(self, filename, extensions):
-        """Return a filename corresponding to one of extensions.
-
-        :param filename: input file name
-        :param extensions: the list of expected extension
-        :returns: a file name of the first existing file with an expected extension or None
-
-        """
-        base_name = os.path.splitext(filename)[0]
-        for ext in extensions:
-
-            ext_filename = base_name + ext
-            new_filename = sppasFileUtils(ext_filename).exists()
-            if new_filename is not None and os.path.isfile(new_filename):
-                return new_filename
-
-        return None
 
     # ------------------------------------------------------------------------
     # Run annotations.
@@ -278,12 +128,10 @@ class sppasAnnotationsManager(Thread):
 
         """
         # Find the index of this annotation
-        step_idx = self.parameters.get_step_idx(annotation_key)
-        if self._logfile is not None:
-            self._logfile.print_step(step_idx)
+        step_idx = self._parameters.get_step_idx(annotation_key)
 
         # Create the instance and fix options
-        options = self.parameters.get_options(step_idx)
+        options = self._parameters.get_options(step_idx)
         auto_annot = self._annotations[annotation_key](self._logfile)
         if len(options) > 0:
             auto_annot.fix_options(options)
@@ -291,8 +139,9 @@ class sppasAnnotationsManager(Thread):
         # Load language resources
         if self._progress:
             self._progress.set_text("Loading resources...")
-        step = self.parameters.get_step(step_idx)
-        auto_annot.load_resources(*step.get_langresource(), lang=step.get_lang())
+        step = self._parameters.get_step(step_idx)
+        auto_annot.load_resources(*step.get_langresource(), 
+                                  lang=step.get_lang())
 
         return auto_annot
 
@@ -311,7 +160,7 @@ class sppasAnnotationsManager(Thread):
             self.get_annot_files(a.get_replace_pattern(),
                                  extensions=[".hz", ".PitchTier"]),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -327,7 +176,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -343,7 +192,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.set_filelist(".wav"),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -366,11 +215,11 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             files,
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
-    def run_tokenization(self):
+    def run_normalization(self):
         """Execute the Text normalization automatic annotation.
 
         Requires a transcription time-aligned with the IPUs or not.
@@ -382,7 +231,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -398,7 +247,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # ------------------------------------------------------------------------
 
@@ -414,13 +263,13 @@ class sppasAnnotationsManager(Thread):
         """
         a = self.create_ann("align")
 
-        files = list()
         audio_files = self.set_filelist(".wav")
+        files = list()
         for f in audio_files:
 
             # Get the input file
-            extt = ['-token' + self.parameters.get_output_format()]
-            extp = [a.get_replace_pattern() + self.parameters.get_output_format()]
+            extt = ['-token' + self._parameters.get_output_format()]
+            extp = [a.get_replace_pattern() + self._parameters.get_output_format()]
             for e in sppas.src.anndata.aio.extensions_out:
                 extt.append('-token' + e)
                 extp.append(a.get_replace_pattern() + e)
@@ -433,7 +282,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             files,
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -449,7 +298,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -465,7 +314,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
 
@@ -481,7 +330,7 @@ class sppasAnnotationsManager(Thread):
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
-            self.parameters.get_output_format())
+            self._parameters.get_output_format())
 
     # -----------------------------------------------------------------------
     # Manage annotations:
@@ -521,7 +370,7 @@ class sppasAnnotationsManager(Thread):
         filelist = self.set_filelist(".wav", ["track_"])
         total = len(filelist)
 
-        output_format = self.parameters.get_output_format()
+        output_format = self._parameters.get_output_format()
 
         for i, f in enumerate(filelist):
 
@@ -571,77 +420,84 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def run_annotations(self, progress):
-        """Execute activated SPPAS steps.
+    def annotate(self, parameters, progress=None):
+        """Run activated annotations.
 
         Get execution information from the 'parameters' object.
+        Create a Procedure Outcome Report if a filename is set in the
+        parameters.
 
         """
+        self._parameters = parameters
         self._progress = progress
+        self._logfile = None
 
-        # ##################################################################### #
-        # Print header message in the log file
-        # ##################################################################### #
-        try:
-            self._logfile = sppasLog(self.parameters)
-            self._logfile.create(self.parameters.get_report_filename())
-            self._logfile.print_header()
-            self._logfile.print_annotations_header()
-        except:
-            self._logfile = None
-            pass
+        # Print header message in the log-report file
+        report_file = self._parameters.get_report_filename()
+        if report_file:
+            try:
+                self._logfile = sppasLog(self._parameters)
+                self._logfile.create(report_file)
+                self._logfile.print_header()
+                self._logfile.print_annotations_header()
+            except:
+                self._logfile = None
+                pass
 
-        # ##################################################################### #
-        # Run!
-        # ##################################################################### #
+        # Run is here!
         nbruns = []
         steps = False
 
-        for i in range(self.parameters.get_step_numbers()):
+        for i in range(self._parameters.get_step_numbers()):
 
             nbruns.append(-1)
-            if self.parameters.get_step_status(i) is True:
+            if self._parameters.get_step_status(i) is True:
+                logging.debug("Annotation step {:d} enabled: {:s}"
+                              "".format(i, self._parameters.get_step_key(i)))
 
                 if steps is False:
                     steps = True
-                else:
+                elif self._progress:
                     self._progress.set_new()
 
                 try:
-                    if self.parameters.get_step_key(i) == "momel":
+                    if self._logfile is not None:
+                        self._logfile.print_step(i)
+
+                    if self._parameters.get_step_key(i) == "momel":
                         nbruns[i] = self.run_momel()
 
-                    elif self.parameters.get_step_key(i) == "intsint":
+                    elif self._parameters.get_step_key(i) == "intsint":
                         nbruns[i] = self.run_intsint()
 
-                    elif self.parameters.get_step_key(i) == "searchipus":
+                    elif self._parameters.get_step_key(i) == "searchipus":
                         nbruns[i] = self.run_searchipus()
 
-                    elif self.parameters.get_step_key(i) == "fillipus":
+                    elif self._parameters.get_step_key(i) == "fillipus":
                         nbruns[i] = self.run_fillipus()
 
-                    elif self.parameters.get_step_key(i) == "textnorm":
-                        nbruns[i] = self.run_tokenization()
+                    elif self._parameters.get_step_key(i) == "textnorm":
+                        nbruns[i] = self.run_normalization()
 
-                    elif self.parameters.get_step_key(i) == "phon":
+                    elif self._parameters.get_step_key(i) == "phon":
                         nbruns[i] = self.run_phonetization()
 
-                    elif self.parameters.get_step_key(i) == "align":
+                    elif self._parameters.get_step_key(i) == "align":
                         nbruns[i] = self.run_alignment()
 
-                    elif self.parameters.get_step_key(i) == "syll":
+                    elif self._parameters.get_step_key(i) == "syll":
                         nbruns[i] = self.run_syllabification()
 
-                    elif self.parameters.get_step_key(i) == "tga":
+                    elif self._parameters.get_step_key(i) == "tga":
                         nbruns[i] = self.run_tga()
 
-                    elif self.parameters.get_step_key(i) == "selfrepet":
+                    elif self._parameters.get_step_key(i) == "selfrepet":
                         nbruns[i] = self.run_self_repetition()
 
                     else:
                         raise KeyError(
                             'Unrecognized annotation step: {:s}'
-                            ''.format(self.parameters.get_step_name(i)))
+                            ''.format(self._parameters.get_step_name(i)))
 
                 except Exception as e:
                     if self._logfile is not None:
@@ -657,14 +513,124 @@ class sppasAnnotationsManager(Thread):
         if self.__do_merge:
             self.merge()
 
-        # ##################################################################### #
         # Log file: Final information
-        # ##################################################################### #
         if self._logfile is not None:
             self._logfile.print_separator()
             self._logfile.print_message('Result statistics:')
             self._logfile.print_separator()
-            for i in range(self.parameters.get_step_numbers()):
+            for i in range(self._parameters.get_step_numbers()):
                 self._logfile.print_stat(i, str(nbruns[i]))
             self._logfile.print_separator()
             self._logfile.close()
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def set_filelist(self, extension):
+        """Create a list of file names from the parameter inputs.
+
+        :param extension: (str) expected file extension
+        :returns: a list of strings
+
+        """
+        all_files = list()
+        for sinput in self._parameters.get_sppasinput():
+            # Input is a directory:
+            if os.path.isdir(sinput):
+                # Get the list of files with 'extension' from the input directory
+                files = sppasDirUtils(sinput).get_files(extension)
+                all_files.extend(files)
+            else:
+                if sinput not in all_files:
+                    all_files.append(sinput)
+
+        filelist = []
+        for sinput in all_files:
+            try:
+
+                inputfilename, inputfileextension = os.path.splitext(sinput)
+
+                # Input is a file (and not a directory)
+                if extension.lower() in sppas.src.audiodata.aio.extensions and \
+                        os.path.isfile(sinput) is True:
+
+                    if sinput not in filelist:
+                        filelist.append(sinput)
+
+                elif inputfileextension.lower() in sppas.src.audiodata.aio.extensions:
+                    sinput = inputfilename + extension
+                    if os.path.isfile(sinput) is True:
+                        if sinput not in filelist:
+                            filelist.append(sinput)
+                    else:
+                        if self._logfile is not None:
+                            self._logfile.print_message(
+                                "Can't find file %s\n" % sinput,
+                                indent=1, status=1)
+
+            except:
+                continue
+
+        return filelist
+
+    # ------------------------------------------------------------------------
+
+    def get_annot_files(self, pattern='', extensions=None):
+        """Search for annotated files with pattern.
+
+        :param pattern: (str) The pattern to search in the filenames
+        :param extensions: (str) The extension to search
+        :returns: List of filenames matching pattern and extensions
+
+        """
+        files = list()
+
+        if extensions is None:
+            extensions = sppas.src.anndata.aio.extensions_out
+
+        if len(pattern) > 0:
+            ext = [pattern + self._parameters.get_output_format()]
+            for e in extensions:
+                ext.append(pattern + e)
+        else:
+            ext = extensions
+
+        # get from audio files
+        audio_files = self.set_filelist(".wav")
+
+        for f in audio_files:
+            new_file = self._get_filename(f, ext)
+            if new_file is not None and new_file not in files:
+                files.append(new_file)
+
+        # get from annotated files
+        if pattern is not None:
+            for f in self._parameters.get_sppasinput():
+                fn, e = os.path.splitext(f)
+                if pattern in f and f not in files and \
+                        e in sppas.src.anndata.aio.extensions_out:
+                    files.append(f)
+
+        return files
+
+    # ------------------------------------------------------------------------
+
+    def _get_filename(self, filename, extensions):
+        """Return a filename corresponding to one of extensions.
+
+        :param filename: input file name
+        :param extensions: the list of expected extension
+        :returns: a file name of the first existing file with an expected extension or None
+
+        """
+        base_name = os.path.splitext(filename)[0]
+        for ext in extensions:
+
+            ext_filename = base_name + ext
+            new_filename = sppasFileUtils(ext_filename).exists()
+            if new_filename is not None and os.path.isfile(new_filename):
+                return new_filename
+
+        return None
+

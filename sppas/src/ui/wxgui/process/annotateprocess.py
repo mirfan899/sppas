@@ -63,7 +63,7 @@ class AnnotateProcess(object):
         :param preferences: (Preferences)
 
         """
-        self.process = None
+        self.process = sppasAnnotationsManager()
         self.preferences = preferences
 
     # ------------------------------------------------------------------------
@@ -119,11 +119,10 @@ class AnnotateProcess(object):
 
         # Create the progress bar then run the annotations
         wx.BeginBusyCursor()
-        p = ProcessProgressDialog(parent, self.preferences, "Automatic annotation processing...")
-        self.process = sppasAnnotationsManager(parameters)
-        self.process.run_annotations(p)
+        p = ProcessProgressDialog(parent, self.preferences,
+                                  "Automatic annotation processing...")
+        self.process.annotate(parameters, p)
         p.close()
-        self.process = None
         wx.EndBusyCursor()
 
         # Update the file tree (append new annotated files)

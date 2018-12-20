@@ -88,6 +88,11 @@ if __name__ == "__main__":
         action='store_true',
         help="Disable the verbosity")
 
+    parser.add_argument(
+        "--log",
+        metavar="file",
+        help="File name for a Procedure Outcome Report (default: None)")
+
     # Add arguments for input/output files
     # ------------------------------------
 
@@ -167,7 +172,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'I', 'e', 'quiet'):
+        if a not in ('i', 'o', 'I', 'e', 'quiet', 'log'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -195,18 +200,18 @@ if __name__ == "__main__":
         # Perform the annotation on a set of files
         # ----------------------------------------
 
-        # Fix the output file extension and others
-        parameters.set_output_format(args.e)
-        parameters.set_report_filename("")
-
         # Fix input files
         files = list()
         for f in args.I:
             parameters.add_sppasinput(os.path.abspath(f))
 
+        # Fix the output file extension and others
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename(args.log)
+
         # Perform the annotation
-        process = sppasAnnotationsManager(parameters)
-        process.run_tga()
+        process = sppasAnnotationsManager()
+        process.annotate(parameters)
 
     else:
 
