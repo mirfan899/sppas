@@ -175,8 +175,7 @@ class sppasPhon(sppasBaseAnnotation):
         if map_filename is not None:
             self.maptable = sppasMapping(map_filename)
             self.print_message("The mapping table contains {:d} phonemes"
-                               "".format(len(self.maptable)),
-                               indent=0, status=3)
+                               "".format(len(self.maptable)), indent=0)
         else:
             self.maptable = sppasMapping()
 
@@ -184,8 +183,7 @@ class sppasPhon(sppasBaseAnnotation):
         if dict_filename is not None:
             self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
             self.print_message("The dictionary contains {:d} tokens"
-                               "".format(len(pdict)),
-                               indent=0, status=3)
+                               "".format(len(pdict)), indent=0)
         else:
             self.phonetizer = sppasDictPhonetizer(pdict)
 

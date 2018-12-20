@@ -112,8 +112,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         voc = sppasVocabulary(vocab_filename)
         self.normalizer = TextNormalizer(voc, lang)
         self.print_message("The vocabulary contains {:d} tokens"
-                           "".format(len(voc)),
-                           indent=0, status=3)
+                           "".format(len(voc)), indent=0)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -123,8 +122,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             dict_replace = sppasDictRepl()
         self.normalizer.set_repl(dict_replace)
         self.print_message("The replacement dictionary contains {:d} items"
-                           "".format(len(dict_replace)),
-                           indent=0, status=3)
+                           "".format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")

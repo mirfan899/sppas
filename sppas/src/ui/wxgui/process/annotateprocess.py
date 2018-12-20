@@ -48,13 +48,13 @@ from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
 
 class AnnotateProcess(object):
-    """
+    """Automatic annotation process, with progress bar.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Automatic annotation process, with progress bar.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, preferences):
@@ -64,6 +64,7 @@ class AnnotateProcess(object):
 
         """
         self.process = sppasAnnotationsManager()
+        self.process.set_do_merge(True)
         self.preferences = preferences
 
     # ------------------------------------------------------------------------
@@ -114,7 +115,8 @@ class AnnotateProcess(object):
             ShowInformation(None, self.preferences, message)
             return
 
-        parameters.set_sppasinput(filelist)
+        for entry in filelist:
+            parameters.add_sppasinput(entry)
         parameters.set_output_format(self.preferences.GetValue('M_OUTPUT_EXT'))
 
         # Create the progress bar then run the annotations

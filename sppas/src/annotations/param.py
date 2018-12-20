@@ -38,7 +38,9 @@ import os
 from sppas import paths
 from sppas import annots
 from sppas.src.structs.lang import UNDETERMINED
-from sppas.src.anndata.aio import extensions_out
+from sppas.src.anndata.aio import extensions as annots_ext
+from sppas.src.audiodata.aio import extensions as audio_ext
+from sppas.src.utils.fileutils import sppasDirUtils
 
 from .cfgparser import sppasAnnotationConfigParser
 
@@ -317,42 +319,65 @@ class sppasParam(object):
     # Input entries to annotate
     # -----------------------------------------------------------------------
 
-    def set_sppasinput(self, input_list):
-        """Fix the list of entries to annotate.
-
-        :param input_list: (str or list of str)
-
-        """
-        if isinstance(input_list, list) is False:
-            input_list = [input_list]
-
-        if len(input_list) == 0:
-            self._inputs = list()
-            self._report = ""
-            return
-
-        for entry in input_list:
-            self.add_sppasinput(entry)
-
-        if len(self._report) == 0:
-            self._report = os.path.splitext(self._inputs[0])[0] + ".log"
-
-    # -----------------------------------------------------------------------
-
     def get_sppasinput(self):
         """Return the list of entries to annotate."""
         return self._inputs
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def __remove_pattern(entry):
+        minus = entry.rfind('-')
+        if minus != -1:
+            sep = entry.rfind(os.path.sep)
+            if minus > sep:
+                return entry[:minus]
+        return entry
+
+    # -----------------------------------------------------------------------
+
     def add_sppasinput(self, entry):
         """Add a new entry to annotate.
 
-        :param entry: (str)
+        :param entry: (str) Filename or directory
 
         """
-        if os.path.exists(entry):
-            self._inputs.append(entry)
+        base_ext = ['.txt', '.hz', '.pitchtier']
+        for e in audio_ext:
+            base_ext.append(e.lower())
+        ann_ext = [e.lower() for e in annots_ext]
+
+        # Create a full list of files to add, without any kind of filter
+        initial_files = list()
+        if os.path.isdir(entry):
+            # Get the list of files from the input directory
+            initial_files.extend(sppasDirUtils(entry).get_files())
+        else:
+            if entry not in initial_files:
+                initial_files.append(entry)
+
+        # Create a list with the basename of the files
+        for entry_file in initial_files:
+            fn, e = os.path.splitext(entry_file)
+            if fn in self._inputs:
+                continue
+
+            if e.lower() in base_ext:
+                    self._inputs.append(entry) #fn)
+                    logging.debug("a. Append input base-file: {:s}".format(fn))
+            else:
+                if e.lower() in ann_ext:
+                    for ae in base_ext:
+                        if os.path.exists(fn + ae):
+                            self._inputs.append(entry) #fn)
+                            logging.debug("b. Append input base-file: {:s}".format(fn))
+
+                    fn = self.__remove_pattern(fn)
+                    if fn not in self._inputs:
+                        for ae in base_ext:
+                            if os.path.exists(fn + ae) and fn not in self._inputs:
+                                self._inputs.append(entry) #fn)
+                                logging.debug("c. Append input base-file: {:s}".format(fn))
 
         if len(self._report) == 0:
             self._report = os.path.splitext(entry)[0] + ".log"
@@ -433,16 +458,17 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def get_step_idx(self, annotation_key):
-        """Get the annotation step index from annotation key.
+        """Get the annotation step index from an annotation key.
 
         :param annotation_key: (str)
+        :raises: KeyError
 
         """
         for i, a in enumerate(self.annotations):
             if a.get_key() == annotation_key:
                 return i
 
-        raise KeyError('No configuration file was available for an annotation'
+        raise KeyError('No configuration file is available for an annotation'
                        'with key {:s}'.format(annotation_key))
 
     # ------------------------------------------------------------------------
@@ -477,25 +503,34 @@ class sppasParam(object):
     # -----------------------------------------------------------------------
 
     def get_output_format(self):
+        """Return the output format of the annotations (extension)."""
         return self._output_ext
+
+    # -----------------------------------------------------------------------
 
     def set_output_format(self, output_format):
         """Fix the output format of the annotations.
 
         :param output_format: (str) File extension (with or without a dot)
+        :returns: the extension really set.
 
         """
         # Force to contain the dot
         if not output_format.startswith("."):
             output_format = "." + output_format
 
+        # Force to use the appropriate upper-lower cases
+        for e in annots_ext:
+            if output_format.lower() == e.lower():
+                output_format = e
+
         # Check if this extension is know. If not, set to the default.
-        # Instead we could raise an exception... is it appropriate to do that?
-        extensions = [e.lower() for e in extensions_out]
-        if not output_format.lower() in extensions:
+        if output_format not in annots_ext:
+            # Instead we could raise an exception...
             logging.warning(
-                "Unknown extension: {:s}. Extension is set to default: {:s}."
-                "".format(output_format, annots.extension))
+                "Unknown extension: {:s}. Output format is set to the "
+                "default: {:s}.".format(output_format, annots.extension))
             output_format = annots.extension
 
         self._output_ext = output_format
+        return output_format

@@ -32,7 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import logging
+
 import os
 from threading import Thread
 
@@ -90,8 +90,8 @@ class sppasAnnotationsManager(Thread):
 
         # fix annotations: key,instance
         self._annotations = dict()
-        self._annotations['intsint'] = sppasIntsint
         self._annotations['momel'] = sppasMomel
+        self._annotations['intsint'] = sppasIntsint
         self._annotations['searchipus'] = sppasSearchIPUs
         self._annotations['fillipus'] = sppasFillIPUs
         self._annotations['textnorm'] = sppasTextNorm
@@ -105,11 +105,11 @@ class sppasAnnotationsManager(Thread):
         self.start()
 
     # -----------------------------------------------------------------------
-    # Manager options
+    # Options of the manager
     # -----------------------------------------------------------------------
 
     def set_do_merge(self, do_merge):
-        """Fix if the 'run' method have to create a merged file or not.
+        """Fix if the 'annotate' method have to create a merged file or not.
 
         :param do_merge: (bool) if set to True, a merged file will be created
 
@@ -117,10 +117,99 @@ class sppasAnnotationsManager(Thread):
         self.__do_merge = do_merge
 
     # ------------------------------------------------------------------------
-    # Run annotations.
+    # Run annotations
     # ------------------------------------------------------------------------
 
-    def create_ann(self, annotation_key):
+    def annotate(self, parameters, progress=None):
+        """Run activated annotations.
+
+        Get execution information from the 'parameters' object.
+        Create a Procedure Outcome Report if a filename is set in the
+        parameters.
+
+        """
+        self._parameters = parameters
+        self._progress = progress
+        self._logfile = None
+
+        # Print header message in the log-report file
+        report_file = self._parameters.get_report_filename()
+        if report_file:
+            try:
+                self._logfile = sppasLog(self._parameters)
+                self._logfile.create(report_file)
+                self._logfile.print_header()
+                self._logfile.print_annotations_header()
+            except:
+                self._logfile = None
+                pass
+
+        # Run all enabled annotations
+        ann_stats = [-1] * self._parameters.get_step_numbers()
+        steps = False
+
+        for i in range(self._parameters.get_step_numbers()):
+
+            # ignore disabled annotations
+            if self._parameters.get_step_status(i) is False:
+                continue
+
+            # ok, this annotation is enabled.
+            annotation_key = self._parameters.get_step_key(i)
+            if self._logfile is not None:
+                self._logfile.print_step(i)
+
+            if steps is False:
+                steps = True
+            elif self._progress:
+                self._progress.set_new()
+
+            try:
+                if annotation_key == "momel":
+                    ann_stats[i] = self._run_momel()
+
+                elif annotation_key == "searchipus":
+                    ann_stats[i] = self._run_searchipus()
+
+                elif annotation_key == "fillipus":
+                    ann_stats[i] = self._run_fillipus()
+
+                elif annotation_key == "align":
+                    ann_stats[i] = self._run_alignment()
+
+                else:
+                    ann_stats[i] = self._run_annotation(annotation_key)
+
+            except Exception as e:
+                if self._logfile is not None:
+                    self._logfile.print_message(
+                        "{:s}\n".format(str(e)), indent=1, status=4)
+                ann_stats[i] = 0
+
+        if self._logfile is not None:
+            self._logfile.print_separator()
+            self._logfile.print_newline()
+
+        if self.__do_merge:
+            if self._logfile:
+                self._logfile.print_separator()
+            self._merge()
+
+        # Log file: Final information
+        if self._logfile is not None:
+            self._logfile.print_separator()
+            self._logfile.print_message('Result statistics:')
+            self._logfile.print_separator()
+            for i in range(self._parameters.get_step_numbers()):
+                self._logfile.print_stat(i, str(ann_stats[i]))
+            self._logfile.print_separator()
+            self._logfile.close()
+
+    # -----------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    def _create_ann_instance(self, annotation_key):
         """Create and configure an instance of an automatic annotation.
 
         :param annotation_key: (str) Key of an annotation
@@ -147,7 +236,22 @@ class sppasAnnotationsManager(Thread):
 
     # -----------------------------------------------------------------------
 
-    def run_momel(self):
+    def _run_annotation(self, annotation_key):
+        """Execute the automatic annotation.
+
+        :param annotation_key: (str) Key of an annotation
+        :returns: number of files processed successfully
+
+        """
+        a = self._create_ann_instance(annotation_key)
+        return a.batch_processing(
+            self.get_annot_files(pattern=a.get_replace_pattern()),
+            self._progress,
+            self._parameters.get_output_format())
+
+    # -----------------------------------------------------------------------
+
+    def _run_momel(self):
         """Execute the SPPAS implementation of Momel.
 
         Requires pitch values.
@@ -155,7 +259,7 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
-        a = self.create_ann("momel")
+        a = self._create_ann_instance("momel")
         return a.batch_processing(
             self.get_annot_files(a.get_replace_pattern(),
                                  extensions=[".hz", ".PitchTier"]),
@@ -164,23 +268,7 @@ class sppasAnnotationsManager(Thread):
 
     # -----------------------------------------------------------------------
 
-    def run_intsint(self):
-        """Execute the SPPAS implementation of Intsint.
-
-        Requires Momel annotations.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("intsint")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def run_searchipus(self):
+    def _run_searchipus(self):
         """Execute the SearchIPUs automatic annotation.
 
         Requires an audio file with only one channel.
@@ -188,7 +276,7 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
-        a = self.create_ann("searchipus")
+        a = self._create_ann_instance("searchipus")
         return a.batch_processing(
             self.set_filelist(".wav"),
             self._progress,
@@ -196,7 +284,7 @@ class sppasAnnotationsManager(Thread):
 
     # -----------------------------------------------------------------------
 
-    def run_fillipus(self):
+    def _run_fillipus(self):
         """Execute the FillIPUs automatic annotation.
 
         Requires an audio file with only one channel and its transcription.
@@ -204,7 +292,7 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
-        a = self.create_ann("fillipus")
+        a = self._create_ann_instance("fillipus")
 
         files = list()
         audio_files = self.set_filelist(".wav")
@@ -217,42 +305,10 @@ class sppasAnnotationsManager(Thread):
             self._progress,
             self._parameters.get_output_format())
 
-    # -----------------------------------------------------------------------
-
-    def run_normalization(self):
-        """Execute the Text normalization automatic annotation.
-
-        Requires a transcription time-aligned with the IPUs or not.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("textnorm")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def run_phonetization(self):
-        """Execute the Phonetization automatic annotation.
-
-        Requires a text-normalization time-aligned with the IPUs or not.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("phon")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
     # ------------------------------------------------------------------------
 
-    def run_alignment(self):
-        """Execute the SPPAS-Alignment program.
+    def _run_alignment(self):
+        """Execute the Alignment automatic annotation.
 
         Requires an audio file.
         Requires a phonetization time-aligned with the IPUs.
@@ -261,7 +317,7 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
-        a = self.create_ann("align")
+        a = self._create_ann_instance("align")
 
         audio_files = self.set_filelist(".wav")
         files = list()
@@ -281,54 +337,6 @@ class sppasAnnotationsManager(Thread):
 
         return a.batch_processing(
             files,
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def run_syllabification(self):
-        """Execute the Syllabification automatic annotation.
-
-        Requires time-aligned phonemes.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("syll")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def run_tga(self):
-        """Execute the TGA automatic annotation.
-
-        Requires time-aligned syllables.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("tga")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def run_self_repetition(self):
-        """Execute the automatic repetitions detection.
-
-        Requires time-aligned tokens.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self.create_ann("selfrepet")
-        return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
             self._parameters.get_output_format())
 
@@ -357,17 +365,13 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def merge(self):
-        """Merge all annotated files.
-
-        Force output format to TextGrid.
-
-        """
-        self._progress.set_header("Create a merged TextGrid file...")
+    def _merge(self):
+        """Merge all annotated files."""
+        self._progress.set_header("Merge all annotations in a file")
         self._progress.update(0, "")
 
         # Get the list of files with the ".wav" extension
-        filelist = self.set_filelist(".wav", ["track_"])
+        filelist = self.set_filelist(".wav")
         total = len(filelist)
 
         output_format = self._parameters.get_output_format()
@@ -380,36 +384,35 @@ class sppasAnnotationsManager(Thread):
             basef = os.path.splitext(f)[0]
 
             if self._logfile is not None:
-                self._logfile.print_message("Merge outputs " + f, indent=1)
+                self._logfile.print_message("File :" + f, indent=1)
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
+            # Add all files content in the same order than to annotate
             trs = sppasTranscription()
-            nbfiles += self.__add_trs(trs, basef + output_format)               # OrthoTranscription
-            nbfiles += self.__add_trs(trs, basef + "-token" + output_format)    # Tokenization
-            nbfiles += self.__add_trs(trs, basef + "-phon" + output_format)     # Phonetization
-            nbfiles += self.__add_trs(trs, basef + "-chunks" + output_format)   # ChunckAlign
-            nbfiles += self.__add_trs(trs, basef + "-palign" + output_format)   # PhonAlign, TokensAlign
-            nbfiles += self.__add_trs(trs, basef + "-salign" + output_format)   # SyllAlign
-            nbfiles += self.__add_trs(trs, basef + "-sralign" + output_format)  # SelfRepetitions
-            nbfiles += self.__add_trs(trs, basef + "-momel" + output_format)    # Momel
-            nbfiles += self.__add_trs(trs, basef + "-intsint" + output_format)  # INTSINT
-            nbfiles += self.__add_trs(trs, basef + "-tga" + output_format)      # TGA
+            nbfiles += self.__add_trs(trs, basef + output_format)
+            for s in range(self._parameters.get_step_numbers()):
+                ann_key = self._parameters.get_step_key(s)
+                a = self._annotations[ann_key]
+                pattern = a.get_pattern()
+                if len(pattern) > 0:
+                    nbfiles += self.__add_trs(trs, basef + pattern + output_format)
 
-            try:
-                if nbfiles > 1:
+            if nbfiles > 1:
+                try:
                     info_tier = sppasMetaInfoTier(trs)
-                    tier = info_tier.create_time_tier(trs.get_min_loc().get_midpoint(), 
-                                                      trs.get_max_loc().get_midpoint())
+                    tier = info_tier.create_time_tier(
+                        trs.get_min_loc().get_midpoint(),
+                        trs.get_max_loc().get_midpoint())
                     trs.append(tier)
-                    parser = sppasRW(basef + "-merge.TextGrid")
+                    parser = sppasRW(basef + "-merge.xra")
                     parser.write(trs)
                     if self._logfile is not None:
-                        self._logfile.print_message(basef + "-merge.TextGrid", indent=2, status=0)
-                elif self._logfile is not None:
-                    self._logfile.print_message("", indent=2, status=2)
-            except Exception as e:
-                if self._logfile is not None:
-                    self._logfile.print_message(str(e), indent=2, status=-1)
+                        self._logfile.print_message(
+                            basef + "-merge.xra", indent=2, status=0)
+
+                except Exception as e:
+                    if self._logfile is not None:
+                        self._logfile.print_message(str(e), indent=1, status=-1)
 
             self._progress.set_fraction(float((i+1))/float(total))
             if self._logfile is not None:
@@ -419,112 +422,7 @@ class sppasAnnotationsManager(Thread):
         self._progress.set_header("")
 
     # ------------------------------------------------------------------------
-
-    def annotate(self, parameters, progress=None):
-        """Run activated annotations.
-
-        Get execution information from the 'parameters' object.
-        Create a Procedure Outcome Report if a filename is set in the
-        parameters.
-
-        """
-        self._parameters = parameters
-        self._progress = progress
-        self._logfile = None
-
-        # Print header message in the log-report file
-        report_file = self._parameters.get_report_filename()
-        if report_file:
-            try:
-                self._logfile = sppasLog(self._parameters)
-                self._logfile.create(report_file)
-                self._logfile.print_header()
-                self._logfile.print_annotations_header()
-            except:
-                self._logfile = None
-                pass
-
-        # Run is here!
-        nbruns = []
-        steps = False
-
-        for i in range(self._parameters.get_step_numbers()):
-
-            nbruns.append(-1)
-            if self._parameters.get_step_status(i) is True:
-                logging.debug("Annotation step {:d} enabled: {:s}"
-                              "".format(i, self._parameters.get_step_key(i)))
-
-                if steps is False:
-                    steps = True
-                elif self._progress:
-                    self._progress.set_new()
-
-                try:
-                    if self._logfile is not None:
-                        self._logfile.print_step(i)
-
-                    if self._parameters.get_step_key(i) == "momel":
-                        nbruns[i] = self.run_momel()
-
-                    elif self._parameters.get_step_key(i) == "intsint":
-                        nbruns[i] = self.run_intsint()
-
-                    elif self._parameters.get_step_key(i) == "searchipus":
-                        nbruns[i] = self.run_searchipus()
-
-                    elif self._parameters.get_step_key(i) == "fillipus":
-                        nbruns[i] = self.run_fillipus()
-
-                    elif self._parameters.get_step_key(i) == "textnorm":
-                        nbruns[i] = self.run_normalization()
-
-                    elif self._parameters.get_step_key(i) == "phon":
-                        nbruns[i] = self.run_phonetization()
-
-                    elif self._parameters.get_step_key(i) == "align":
-                        nbruns[i] = self.run_alignment()
-
-                    elif self._parameters.get_step_key(i) == "syll":
-                        nbruns[i] = self.run_syllabification()
-
-                    elif self._parameters.get_step_key(i) == "tga":
-                        nbruns[i] = self.run_tga()
-
-                    elif self._parameters.get_step_key(i) == "selfrepet":
-                        nbruns[i] = self.run_self_repetition()
-
-                    else:
-                        raise KeyError(
-                            'Unrecognized annotation step: {:s}'
-                            ''.format(self._parameters.get_step_name(i)))
-
-                except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message(
-                            "{:s}\n".format(str(e)), indent=1, status=4)
-                    nbruns[i] = 0
-
-        if self._logfile is not None:
-            self._logfile.print_separator()
-            self._logfile.print_newline()
-            self._logfile.print_separator()
-
-        if self.__do_merge:
-            self.merge()
-
-        # Log file: Final information
-        if self._logfile is not None:
-            self._logfile.print_separator()
-            self._logfile.print_message('Result statistics:')
-            self._logfile.print_separator()
-            for i in range(self._parameters.get_step_numbers()):
-                self._logfile.print_stat(i, str(nbruns[i]))
-            self._logfile.print_separator()
-            self._logfile.close()
-
-    # -----------------------------------------------------------------------
-    # Private
+    # Manage files:
     # -----------------------------------------------------------------------
 
     def set_filelist(self, extension):
