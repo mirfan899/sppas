@@ -196,8 +196,9 @@ if __name__ == "__main__":
             lang = os.path.basename(args.r)[:3]
 
         ann = sppasTextNorm(logfile=None)
-        ann.set_vocab(args.r, lang)
+        ann.load_resources(args.r, lang=lang)
         ann.fix_options(parameters.get_options(ann_step_idx))
+
         if args.o:
             ann.run([args.i], output_file=args.o)
         else:

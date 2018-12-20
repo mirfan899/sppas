@@ -85,6 +85,7 @@ class TestLang(unittest.TestCase):
         with self.assertRaises(LangNameError):
             self.lr.set_lang("wrong")
 
+        # other...
         self.lr.set("directory", "models", "models-", ".txt")
         self.lr.set_lang("fra")
         self.assertEqual(os.path.join(paths.resources, "models", "models-fra"), self.lr.get_langresource())

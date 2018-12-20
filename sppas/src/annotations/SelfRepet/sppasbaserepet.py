@@ -110,30 +110,43 @@ class sppasBaseRepet(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def load_resources(self, filename):
-        """Load a list of stop-words from a file and replacements (if any).
+    def load_resources(self, lang_resources, lang=None):
+        """Load a list of stop-words and replacements.
 
-        Erase the existing lists...
+        Override the existing loaded lists...
 
-        :param filename: (str) File with 1 column.
+        :param lang_resources: (str) File with extension '.stp' or '.lem' or nothing
+        :param lang: (str)
 
         """
         self._stop_words = sppasVocabulary()
         self._word_strain = sppasWordStrain()
+        fn, fe = os.path.splitext(lang_resources)
 
         try:
-            self._stop_words.load_from_ascii(filename)
+            stp = fn + '.stp'
+            self._stop_words.load_from_ascii(stp)
             self.print_message("The initial list contains {:d} stop-words"
                                "".format(len(self._stop_words)),
-                               indent=2, status=3)
-            fn, fe = os.path.splitext(filename)
-            repl = fn + ".lem"
-            if os.path.exists(repl):
-                self._word_strain.load(repl)
+                               indent=0, status=3)
+
         except Exception as e:
             self._stop_words = sppasVocabulary()
             self.print_message("No stop-words loaded: {:s}"
-                               "".format(str(e)), indent=2, status=1)
+                               "".format(str(e)), indent=1, status=1)
+
+        try:
+            repl = fn + ".lem"
+            if os.path.exists(repl):
+                self._word_strain.load(repl)
+            self.print_message("The replacement list contains {:d} tokens"
+                               "".format(len(self._word_strain)),
+                               indent=0, status=3)
+
+        except Exception as e:
+            self._word_strain = sppasWordStrain()
+            self.print_message("No replacement list loaded: {:s}"
+                               "".format(str(e)), indent=1, status=1)
 
     # -----------------------------------------------------------------------
     # Getters and Setters
@@ -229,7 +242,7 @@ class sppasBaseRepet(sppasBaseAnnotation):
             if p_w > threshold:
                 stop_list.add(token)
                 self.print_message('Add in the stop-list: {:s}'
-                                   ''.format(token), indent=3)
+                                   ''.format(token), indent=2)
 
         return stop_list
 
@@ -246,7 +259,7 @@ class sppasBaseRepet(sppasBaseAnnotation):
         if len(self._word_strain) == 0:
             return tier
 
-        self.print_message("Words strain enabled.", indent=2, status=2)
+        self.print_message("Words strain enabled.", indent=1, status=2)
         lems_tier = sppasTier('TokenStrain')
         for ann in tier:
             token = ann.serialize_labels()

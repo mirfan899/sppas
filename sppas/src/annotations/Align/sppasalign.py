@@ -132,7 +132,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def load_resources(self, model, model_L1):
+    def load_resources(self, model, model_L1=None, **kwargs):
         """Fix the acoustic model directory.
 
         Create a SpeechSegmenter and AlignerIO.

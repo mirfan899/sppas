@@ -164,6 +164,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------

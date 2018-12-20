@@ -97,7 +97,7 @@ class sppasSyll(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def set_rules(self, config_filename):
+    def load_resources(self, config_filename, **kwargs):
         """Fix the syllabification rules from a configuration file.
 
         :param config_filename: Name of the configuration file with the rules

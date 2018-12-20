@@ -415,6 +415,8 @@ class sppasTGA(sppasBaseAnnotation):
         return trs_out
 
     # ----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
     def run(self, input_file, opt_input_file=None, output_file=None):
         """Run the automatic annotation process on an input.

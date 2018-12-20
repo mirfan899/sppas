@@ -160,6 +160,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
@@ -191,8 +200,7 @@ if __name__ == "__main__":
             sys.exit(1)
 
         ann = sppasPhon(logfile=None)
-        ann.set_dict(args.r)
-        ann.set_map(args.m)
+        ann.load_resources(args.r, args.m)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)

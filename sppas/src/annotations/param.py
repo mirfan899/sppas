@@ -75,7 +75,7 @@ class annotationParam(object):
         self.__enabled = False
         self.__invalid = False
         # The language resource: sppasLangResource()
-        self.__langres = list()
+        self.__resources = list()
         # The list of options
         self.__options = list()
 
@@ -95,7 +95,7 @@ class annotationParam(object):
         p.parse(filename)
 
         self.__options = p.get_options()
-        self.__langres = p.get_resources()
+        self.__resources = p.get_resources()
         conf = p.get_config()
         self.__key = conf['id']
         self.__name = conf.get('name', "")
@@ -126,9 +126,9 @@ class annotationParam(object):
         :returns: (bool) Language is set or not
 
         """
-        if len(self.__langres) > 0:
+        if len(self.__resources) > 0:
             try:
-                self.__langres[0].set_lang(lang)
+                self.__resources[0].set_lang(lang)
                 return True
             except:
                 self.__invalid = True
@@ -165,25 +165,23 @@ class annotationParam(object):
 
     def get_lang(self):
         """Return the language or an empty string."""
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_lang()
+        if len(self.__resources) > 0:
+            return self.__resources[0].get_lang()
         return ""
 
     # -----------------------------------------------------------------------
 
     def get_langlist(self):
         """Return the list of available languages (list of str)."""
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_langlist()
+        if len(self.__resources) > 0:
+            return self.__resources[0].get_langlist()
         return []
 
     # -----------------------------------------------------------------------
 
     def get_langresource(self):
         """Return the list of language resources."""
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_langresource()
-        return []
+        return [r.get_langresource() for r in self.__resources]
 
     # -----------------------------------------------------------------------
 
@@ -465,6 +463,7 @@ class sppasParam(object):
         return self.annotations[step].get_langlist()
 
     def get_step(self, step):
+        """Return the 'sppasParam' instance of the annotation."""
         return self.annotations[step]
 
     def get_options(self, step):

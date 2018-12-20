@@ -99,18 +99,21 @@ class sppasTextNorm(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def set_vocab(self, vocab, lang="und"):
+    def load_resources(self, vocab_filename, lang="und", **kwargs):
         """Fix the list of words of a given language.
 
         It allows a better tokenization, and enables the language-dependent
         modules like num2letters.
 
-        :param vocab: (str) name of the file with the orthographic transcription
+        :param vocab_filename: (str) File with the orthographic transcription
         :param lang: (str) the language code
 
         """
-        voc = sppasVocabulary(vocab)
+        voc = sppasVocabulary(vocab_filename)
         self.normalizer = TextNormalizer(voc, lang)
+        self.print_message("The vocabulary contains {:d} tokens"
+                           "".format(len(voc)),
+                           indent=0, status=3)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -119,6 +122,9 @@ class sppasTextNorm(sppasBaseAnnotation):
         else:
             dict_replace = sppasDictRepl()
         self.normalizer.set_repl(dict_replace)
+        self.print_message("The replacement dictionary contains {:d} items"
+                           "".format(len(dict_replace)),
+                           indent=0, status=3)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
@@ -230,6 +236,8 @@ class sppasTextNorm(sppasBaseAnnotation):
         return tokens_faked, tokens_std, tokens_custom
 
     # ------------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
     def run(self, input_file, opt_input_file=None, output_file=None):
         """Run the automatic annotation process on an input.

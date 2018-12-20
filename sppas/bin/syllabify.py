@@ -42,6 +42,7 @@
 
 """
 
+import logging
 import sys
 import os
 from argparse import ArgumentParser
@@ -50,11 +51,13 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import sg
+from sppas import sg, annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
 if __name__ == "__main__":
 
@@ -101,9 +104,30 @@ if __name__ == "__main__":
         help='Output file name with syllables.')
 
     group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input transcription file name (append).')
+
+    group_io.add_argument(
         "-r",
-        required=True,
+        metavar="rules",
         help='Configuration file with syllabification rules')
+
+    group_io.add_argument(
+        "-l",
+        metavar="lang",
+        choices=parameters.get_langlist(ann_step_idx),
+        help='Language code (iso8859-3). One of: {:s}.'
+             ''.format(" ".join(parameters.get_langlist(ann_step_idx))))
+
+    group_io.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
     # Add arguments from the options of the annotation
     # ------------------------------------------------
@@ -126,6 +150,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
@@ -134,7 +167,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -145,18 +177,22 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'r', 'quiet'):
+        if a not in ('i', 'o', 'r', 'I', 'l', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
-            o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
     if args.i:
 
         # Perform the annotation on a single file
         # ---------------------------------------
 
+        if not args.r:
+            print("argparse.py: error: option -r is required with option -i")
+            sys.exit(1)
+
         ann = sppasSyll(logfile=None)
-        ann.set_rules(args.r)
+        ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
+
         if args.o:
             ann.run([args.i], output_file=args.o)
         else:
@@ -169,7 +205,30 @@ if __name__ == "__main__":
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))
 
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        if not args.l:
+            print("argparse.py: error: option -l is required with option -I")
+            sys.exit(1)
+
+        # Fix the output file extension and others
+        parameters.set_lang(args.l)
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_syllabification()
+
     else:
 
         if not args.quiet:
-            print("No file was given to be annotated. Nothing to do!")
+            logging.info("No file was given to be annotated. Nothing to do!")

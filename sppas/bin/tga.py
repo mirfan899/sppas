@@ -41,6 +41,8 @@
 :summary:      TGA automatic annotation.
 
 """
+
+import logging
 import sys
 import os
 from argparse import ArgumentParser
@@ -49,12 +51,13 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import sg
+from sppas import sg, annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.TGA import sppasTGA
 from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
-
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
 if __name__ == "__main__":
 
@@ -88,17 +91,33 @@ if __name__ == "__main__":
     # Add arguments for input/output files
     # ------------------------------------
 
-    group_io = parser.add_argument_group('Files')
+    group_io_1 = parser.add_argument_group('Files (manual mode)')
 
-    group_io.add_argument(
+    group_io_1.add_argument(
         "-i",
         metavar="file",
-        help='Input time-aligned syllables file name.')
+        help='An input time-aligned syllables file.')
 
-    group_io.add_argument(
+    group_io_1.add_argument(
         "-o",
         metavar="file",
         help='Output file name with TGA.')
+
+    group_io_2 = parser.add_argument_group('Files (auto mode)')
+
+    group_io_2.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input time-aligned syllables file (append).')
+
+    group_io_2.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
     # Add arguments from the options of the annotation
     # ------------------------------------------------
@@ -121,6 +140,15 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
     # -----------------------------------------------------------------------
     # The automatic annotation is here:
     # -----------------------------------------------------------------------
@@ -129,7 +157,6 @@ if __name__ == "__main__":
     # --------------------------------
 
     with sppasAppConfig() as cg:
-        parameters.set_report_filename(cg.log_file)
         if not args.quiet:
             setup_logging(cg.log_level, None)
         else:
@@ -140,7 +167,7 @@ if __name__ == "__main__":
 
     arguments = vars(args)
     for a in arguments:
-        if a not in ('i', 'o', 'r', 'quiet'):
+        if a not in ('i', 'o', 'I', 'e', 'quiet'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
             o = parameters.get_step(ann_step_idx).get_option_by_key(a)
 
@@ -163,7 +190,25 @@ if __name__ == "__main__":
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))
 
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        # Fix the output file extension and others
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename("")
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Perform the annotation
+        process = sppasAnnotationsManager(parameters)
+        process.run_tga()
+
     else:
 
         if not args.quiet:
-            print("No file was given to be annotated. Nothing to do!")
+            logging.info("No file was given to be annotated. Nothing to do!")

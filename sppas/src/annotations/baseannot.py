@@ -104,6 +104,14 @@ class sppasBaseAnnotation(object):
         pass
 
     # -----------------------------------------------------------------------
+    # Load the linguistic resources
+    # -----------------------------------------------------------------------
+
+    def load_resources(self, *args, **kwargs):
+        """Load the linguistic resources."""
+        pass
+
+    # -----------------------------------------------------------------------
     # Perform automatic annotation:
     # -----------------------------------------------------------------------
 
@@ -411,7 +419,7 @@ class sppasBaseAnnotation(object):
                 (s, m) = sppasDiagnosis.check_file(filename)
                 msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
                 if self.logfile:
-                    self.print_message(msg, indent=1, status=None)
+                    self.print_message(msg, indent=0, status=None)
                 else:
                     logging.info(msg)
 

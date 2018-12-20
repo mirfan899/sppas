@@ -463,7 +463,7 @@ class TestTextNorm(unittest.TestCase):
             lang = samples_folder[-3:]
             vocab = os.path.join(paths.resources, "vocab", lang+".vocab")
             tn = sppasTextNorm()
-            tn.set_vocab(vocab, lang)
+            tn.load_resources(vocab, lang=lang)
             tn.set_faked(True)
             tn.set_std(True)
             tn.set_custom(True)

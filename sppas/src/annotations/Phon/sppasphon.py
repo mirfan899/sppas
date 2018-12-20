@@ -93,12 +93,11 @@ class sppasPhon(sppasBaseAnnotation):
         super(sppasPhon, self).__init__(logfile, "Phonetization")
 
         # Mapping table (empty)
-        self.maptable = None
-        self.set_map(None)
+        self.maptable = sppasMapping()
 
         # Pronunciation dictionary (empty)
         self.phonetizer = None
-        self.set_dict(None)
+        self.load_resources()
 
         # List of options to configure this automatic annotation
         self._options = dict()
@@ -163,26 +162,32 @@ class sppasPhon(sppasBaseAnnotation):
     # Methods to phonetize series of data
     # -----------------------------------------------------------------------
 
-    def set_dict(self, dict_filename):
-        """Set the pronunciation dictionary.
+    def load_resources(self, dict_filename=None, map_filename=None, **kwargs):
+        """Set the pronunciation dictionary and the mapping table.
 
         :param dict_filename: (str) The pronunciation dictionary in HTK-ASCII
         format with UTF-8 encoding.
-
-        """
-        pdict = sppasDictPron(dict_filename, nodump=False)
-        self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
-
-    # -----------------------------------------------------------------------
-
-    def set_map(self, map_filename):
-        """Set the mapping pronunciation table from a file.
 
         :param map_filename: (str) is the filename of a mapping table. It is \
         used to generate new pronunciations by mapping phonemes of the dict.
 
         """
-        self.maptable = sppasMapping(map_filename)
+        if map_filename is not None:
+            self.maptable = sppasMapping(map_filename)
+            self.print_message("The mapping table contains {:d} phonemes"
+                               "".format(len(self.maptable)),
+                               indent=0, status=3)
+        else:
+            self.maptable = sppasMapping()
+
+        pdict = sppasDictPron(dict_filename, nodump=False)
+        if dict_filename is not None:
+            self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
+            self.print_message("The dictionary contains {:d} tokens"
+                               "".format(len(pdict)),
+                               indent=0, status=3)
+        else:
+            self.phonetizer = sppasDictPhonetizer(pdict)
 
     # -----------------------------------------------------------------------
 
@@ -205,7 +210,7 @@ class sppasPhon(sppasBaseAnnotation):
             message = None
             if s == annots.error:
                 message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
-                self.print_message(message, indent=3, status=s)
+                self.print_message(message, indent=2, status=s)
                 return [unk]
             else:
                 if s == annots.warning:
@@ -218,7 +223,7 @@ class sppasPhon(sppasBaseAnnotation):
                 tab_phones.append(p)
 
             if message:
-                self.print_message(message, indent=3, status=s)
+                self.print_message(message, indent=2, status=s)
 
         return tab_phones
 

@@ -288,6 +288,12 @@ class sppasAnnotationsManager(Thread):
         if len(options) > 0:
             auto_annot.fix_options(options)
 
+        # Load language resources
+        if self._progress:
+            self._progress.set_text("Loading resources...")
+        step = self.parameters.get_step(step_idx)
+        auto_annot.load_resources(*step.get_langresource(), lang=step.get_lang())
+
         return auto_annot
 
     # -----------------------------------------------------------------------
@@ -373,13 +379,6 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("textnorm")
-
-        if self._progress:
-            self._progress.set_text("Loading resources...")
-        step_idx = self.parameters.get_step_idx("textnorm")
-        step = self.parameters.get_step(step_idx)
-        a.set_vocab(step.get_langresource(), step.get_lang())
-
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
@@ -396,14 +395,6 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("phon")
-
-        if self._progress:
-            self._progress.set_text("Loading resources...")
-        step_idx = self.parameters.get_step_idx("phon")
-        step = self.parameters.get_step(step_idx)
-        a.set_dict(step.get_langresource())
-        a.set_map(None)
-
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
@@ -422,12 +413,6 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("align")
-
-        if self._progress:
-            self._progress.set_text("Loading resources...")
-        step_idx = self.parameters.get_step_idx("align")
-        step = self.parameters.get_step(step_idx)
-        a.load_resources(step.get_langresource(), None)
 
         files = list()
         audio_files = self.set_filelist(".wav")
@@ -461,13 +446,6 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("syll")
-
-        if self._progress:
-            self._progress.set_text("Loading resources...")
-        step_idx = self.parameters.get_step_idx("syll")
-        step = self.parameters.get_step(step_idx)
-        a.set_rules(step.get_langresource())
-
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,
@@ -500,13 +478,6 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self.create_ann("selfrepet")
-
-        if self._progress:
-            self._progress.set_text("Loading resources...")
-        step_idx = self.parameters.get_step_idx("selfrepet")
-        step = self.parameters.get_step(step_idx)
-        a.load_resources(step.get_langresource())
-
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_replace_pattern()),
             self._progress,

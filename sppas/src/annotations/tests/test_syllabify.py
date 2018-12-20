@@ -285,7 +285,7 @@ class TestsppasSyll(unittest.TestCase):
 
     def setUp(self):
         self.syll = sppasSyll()
-        self.syll.set_rules(FRA_SYLL)
+        self.syll.load_resources(FRA_SYLL)
         tier = sppasTier('PhonAlign')
         tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2))),
                                sppasLabel(sppasTag('l')))
@@ -440,7 +440,7 @@ class TestsppasSyll(unittest.TestCase):
                 continue
 
             tn = sppasSyll()
-            tn.set_rules(rules_file)
+            tn.load_resources(rules_file)
 
             # Apply Syllabification on each sample
             for filename in os.listdir(os.path.join(samples_path, samples_folder)):
