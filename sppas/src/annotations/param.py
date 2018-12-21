@@ -41,6 +41,7 @@ from sppas.src.structs.lang import UNDETERMINED
 from sppas.src.anndata.aio import extensions as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
 from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.utils.fileutils import sppasFileUtils
 
 from .cfgparser import sppasAnnotationConfigParser
 
@@ -325,19 +326,11 @@ class sppasParam(object):
 
     # -----------------------------------------------------------------------
 
-    @staticmethod
-    def __remove_pattern(entry):
-        minus = entry.rfind('-')
-        if minus != -1:
-            sep = entry.rfind(os.path.sep)
-            if minus > sep:
-                return entry[:minus]
-        return entry
-
-    # -----------------------------------------------------------------------
-
     def add_sppasinput(self, entry):
         """Add a new entry to annotate.
+
+        If no report file name was previously fixed, it will be assigned to
+        the given entry with the extension '.log'.
 
         :param entry: (str) Filename or directory
 
@@ -351,10 +344,10 @@ class sppasParam(object):
         initial_files = list()
         if os.path.isdir(entry):
             # Get the list of files from the input directory
-            initial_files.extend(sppasDirUtils(entry).get_files())
+            for ae in base_ext:
+                initial_files.extend(sppasDirUtils(entry).get_files(ae))
         else:
-            if entry not in initial_files:
-                initial_files.append(entry)
+            initial_files.append(entry)
 
         # Create a list with the basename of the files
         for entry_file in initial_files:
@@ -362,31 +355,49 @@ class sppasParam(object):
             if fn in self._inputs:
                 continue
 
-            if e.lower() in base_ext:
-                    self._inputs.append(entry) #fn)
-                    logging.debug("a. Append input base-file: {:s}".format(fn))
-            else:
-                if e.lower() in ann_ext:
-                    for ae in base_ext:
-                        if os.path.exists(fn + ae):
-                            self._inputs.append(entry) #fn)
-                            logging.debug("b. Append input base-file: {:s}".format(fn))
+            if len(e) == 0:
+                # the entry is already the basename
+                self.__append_input(fn, base_ext)
 
+            elif e.lower() in base_ext:
+                # the entry is a primary file (audio/text/pitch)
+                self._inputs.append(fn)
+
+            elif e.lower() in ann_ext:
+                # the entry is an annotated file
+                appended = self.__append_input(fn, base_ext)
+                if appended is False:
+                    # the entry is an annotated file with a pattern
                     fn = self.__remove_pattern(fn)
                     if fn not in self._inputs:
-                        for ae in base_ext:
-                            if os.path.exists(fn + ae) and fn not in self._inputs:
-                                self._inputs.append(entry) #fn)
-                                logging.debug("c. Append input base-file: {:s}".format(fn))
+                        self.__append_input(fn, base_ext)
+
+        for f in self._inputs:
+            logging.debug(f)
 
         if len(self._report) == 0:
             self._report = os.path.splitext(entry)[0] + ".log"
 
     # -----------------------------------------------------------------------
 
-    def clear_sppasinput(self):
-        self._inputs = list()
-        self._report = ""
+    def __append_input(self, base_fn, base_ext):
+        for ae in base_ext:
+            if sppasFileUtils(base_fn + ae).exists() \
+                    and base_fn not in self._inputs:
+                self._inputs.append(base_fn)
+                return True
+        return False
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __remove_pattern(entry):
+        minus = entry.rfind('-')
+        if minus != -1:
+            sep = entry.rfind(os.path.sep)
+            if minus > sep:
+                return entry[:minus]
+        return entry
 
     # -----------------------------------------------------------------------
     # Procedure Outcome Report file name

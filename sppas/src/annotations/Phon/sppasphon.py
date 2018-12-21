@@ -322,6 +322,6 @@ class sppasPhon(sppasBaseAnnotation):
         return '-phon'
 
     @staticmethod
-    def get_replace_pattern():
+    def get_input_pattern():
         """Pattern that annotation expects for its input filename."""
         return '-token'

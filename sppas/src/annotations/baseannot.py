@@ -35,6 +35,7 @@
 import logging
 import os
 
+import sppas.src.anndata.aio
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -124,9 +125,16 @@ class sppasBaseAnnotation(object):
         return ''
 
     @staticmethod
-    def get_replace_pattern():
+    def get_input_pattern():
         """Pattern that the annotation expects for its input filename."""
         return ''
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_input_extensions():
+        """Extensions that the annotation expects for its input filename."""
+        return sppas.src.anndata.aio.annotations_in
 
     # -----------------------------------------------------------------------
 
@@ -142,7 +150,7 @@ class sppasBaseAnnotation(object):
         fn = os.path.splitext(filename)[0]
 
         # remove the existing pattern
-        r = self.get_replace_pattern()
+        r = self.get_input_pattern()
         if len(r) > 0 and fn.endswith(r):
             fn = fn[:-len(r)]
 

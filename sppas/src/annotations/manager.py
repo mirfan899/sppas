@@ -37,7 +37,6 @@ import os
 from threading import Thread
 
 from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.anndata import sppasTranscription, sppasRW
 
 import sppas.src.audiodata.aio
@@ -162,13 +161,7 @@ class sppasAnnotationsManager(Thread):
                 self._progress.set_new()
 
             try:
-                if annotation_key == "momel":
-                    ann_stats[i] = self._run_momel()
-
-                elif annotation_key == "searchipus":
-                    ann_stats[i] = self._run_searchipus()
-
-                elif annotation_key == "fillipus":
+                if annotation_key == "fillipus":
                     ann_stats[i] = self._run_fillipus()
 
                 elif annotation_key == "align":
@@ -231,40 +224,8 @@ class sppasAnnotationsManager(Thread):
         """
         a = self._create_ann_instance(annotation_key)
         return a.batch_processing(
-            self.get_annot_files(pattern=a.get_replace_pattern()),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def _run_momel(self):
-        """Execute the SPPAS implementation of Momel.
-
-        Requires pitch values.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self._create_ann_instance("momel")
-        return a.batch_processing(
-            self.get_annot_files(a.get_replace_pattern(),
-                                 extensions=[".hz", ".PitchTier"]),
-            self._progress,
-            self._parameters.get_output_format())
-
-    # -----------------------------------------------------------------------
-
-    def _run_searchipus(self):
-        """Execute the SearchIPUs automatic annotation.
-
-        Requires an audio file with only one channel.
-
-        :returns: number of files processed successfully
-
-        """
-        a = self._create_ann_instance("searchipus")
-        return a.batch_processing(
-            self.set_filelist(".wav"),
+            self.get_annot_files(pattern=a.get_input_pattern(),
+                                 extensions=a.get_input_extensions()),
             self._progress,
             self._parameters.get_output_format())
 
@@ -281,10 +242,13 @@ class sppasAnnotationsManager(Thread):
         a = self._create_ann_instance("fillipus")
 
         files = list()
-        audio_files = self.set_filelist(".wav")
+        audio_files = self.get_annot_files(
+            pattern=a.get_input_pattern(),
+            extensions=sppas.src.audiodata.aio.extensions)
+
         for f in audio_files:
             in_name = os.path.splitext(f)[0] + ".txt"
-            files.append((audio_files, in_name))
+            files.append((f, in_name))
 
         return a.batch_processing(
             files,
@@ -305,16 +269,18 @@ class sppasAnnotationsManager(Thread):
         """
         a = self._create_ann_instance("align")
 
-        audio_files = self.set_filelist(".wav")
+        audio_files = self.get_annot_files(
+            pattern="", extensions=sppas.src.audiodata.aio.extensions)
+
         files = list()
         for f in audio_files:
 
             # Get the input file
             extt = ['-token' + self._parameters.get_output_format()]
-            extp = [a.get_replace_pattern() + self._parameters.get_output_format()]
+            extp = [a.get_input_pattern() + self._parameters.get_output_format()]
             for e in sppas.src.anndata.aio.extensions_out:
                 extt.append('-token' + e)
-                extp.append(a.get_replace_pattern() + e)
+                extp.append(a.get_input_pattern() + e)
 
             phon = self._get_filename(f, extp)
             tok = self._get_filename(f, extt)
@@ -357,7 +323,8 @@ class sppasAnnotationsManager(Thread):
         self._progress.update(0, "")
 
         # Get the list of files with the ".wav" extension
-        filelist = self.set_filelist(".wav")
+        filelist = self.get_annot_files(
+            pattern="", extensions=sppas.src.audiodata.aio.extensions)
         total = len(filelist)
 
         output_format = self._parameters.get_output_format()
@@ -403,70 +370,19 @@ class sppasAnnotationsManager(Thread):
         self._progress.update(1, "Completed.")
         self._progress.set_header("")
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Manage files:
     # -----------------------------------------------------------------------
 
-    def set_filelist(self, extension):
-        """Create a list of file names from the parameter inputs.
+    def get_annot_files(self, pattern, extensions):
+        """Search for annotated files with pattern and extensions.
 
-        :param extension: (str) expected file extension
-        :returns: a list of strings
-
-        """
-        all_files = list()
-        for sinput in self._parameters.get_sppasinput():
-            # Input is a directory:
-            if os.path.isdir(sinput):
-                # Get the list of files with 'extension' from the input directory
-                files = sppasDirUtils(sinput).get_files(extension)
-                all_files.extend(files)
-            else:
-                if sinput not in all_files:
-                    all_files.append(sinput)
-
-        filelist = []
-        for sinput in all_files:
-            try:
-
-                inputfilename, inputfileextension = os.path.splitext(sinput)
-
-                # Input is a file (and not a directory)
-                if extension.lower() in sppas.src.audiodata.aio.extensions and \
-                        os.path.isfile(sinput) is True:
-
-                    if sinput not in filelist:
-                        filelist.append(sinput)
-
-                elif inputfileextension.lower() in sppas.src.audiodata.aio.extensions:
-                    sinput = inputfilename + extension
-                    if os.path.isfile(sinput) is True:
-                        if sinput not in filelist:
-                            filelist.append(sinput)
-                    else:
-                        self._logfile.print_message(
-                            "Can't find file %s\n" % sinput,
-                            indent=1, status=1)
-
-            except:
-                continue
-
-        return filelist
-
-    # ------------------------------------------------------------------------
-
-    def get_annot_files(self, pattern='', extensions=None):
-        """Search for annotated files with pattern.
-
-        :param pattern: (str) The pattern to search in the filenames
+        :param pattern: (str) The pattern to search in the inputs
         :param extensions: (str) The extension to search
         :returns: List of filenames matching pattern and extensions
 
         """
         files = list()
-
-        if extensions is None:
-            extensions = sppas.src.anndata.aio.extensions_out
 
         if len(pattern) > 0:
             ext = [pattern + self._parameters.get_output_format()]
@@ -475,21 +391,10 @@ class sppasAnnotationsManager(Thread):
         else:
             ext = extensions
 
-        # get from audio files
-        audio_files = self.set_filelist(".wav")
-
-        for f in audio_files:
+        for f in self._parameters.get_sppasinput():
             new_file = self._get_filename(f, ext)
             if new_file is not None and new_file not in files:
                 files.append(new_file)
-
-        # get from annotated files
-        if pattern is not None:
-            for f in self._parameters.get_sppasinput():
-                fn, e = os.path.splitext(f)
-                if pattern in f and f not in files and \
-                        e in sppas.src.anndata.aio.extensions_out:
-                    files.append(f)
 
         return files
 
@@ -500,12 +405,14 @@ class sppasAnnotationsManager(Thread):
 
         :param filename: input file name
         :param extensions: the list of expected extension
-        :returns: a file name of the first existing file with an expected extension or None
+        :returns: a file name of the first existing file with an expected
+        extension or None
 
         """
         base_name = os.path.splitext(filename)[0]
         for ext in extensions:
-
+            if ext.startswith('.') is False:
+                ext = "." + ext
             ext_filename = base_name + ext
             new_filename = sppasFileUtils(ext_filename).exists()
             if new_filename is not None and os.path.isfile(new_filename):

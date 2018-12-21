@@ -316,3 +316,10 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     "{:s}\n".format(str(e)), indent=1, status=-1)
 
         return out_name
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_input_extensions():
+        """Extensions that the annotation expects for its input filename."""
+        return sppas.src.audiodata.aio.extensions

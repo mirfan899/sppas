@@ -355,7 +355,7 @@ class sppasSyll(sppasBaseAnnotation):
         return '-syll'
 
     @staticmethod
-    def get_replace_pattern():
+    def get_input_pattern():
         """Pattern this annotation expects for its input filename."""
         return '-palign'
 

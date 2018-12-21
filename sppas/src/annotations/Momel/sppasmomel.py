@@ -42,6 +42,7 @@ from sppas import sppasPoint
 from sppas import sppasLabel
 from sppas import sppasTag
 
+import sppas.src.anndata.aio
 from sppas.src.config import annots
 
 from ..baseannot import sppasBaseAnnotation
@@ -292,3 +293,7 @@ class sppasMomel(sppasBaseAnnotation):
         """Pattern this annotation adds to an output filename."""
         return '-momel'
 
+    @staticmethod
+    def get_input_extensions():
+        """Extensions that the annotation expects for its input filename."""
+        return sppas.src.anndata.aio.primary_in
