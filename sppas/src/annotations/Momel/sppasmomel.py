@@ -173,7 +173,7 @@ class sppasMomel(sppasBaseAnnotation):
         try:
             anchors = self.momel.annotate(ipu_pitch)
         except Exception as e:
-            self.print_message(
+            self.logfile.print_message(
                     'No anchors found between time ' +
                     str(ipu_start_time * 0.01) + " and time " +
                     str(current_time * 0.01) + ": " + str(e),
@@ -271,8 +271,8 @@ class sppasMomel(sppasBaseAnnotation):
 
         # Search for anchors
         anchors_tier = self.convert(pitch)
-        self.print_message(str(len(anchors_tier)) +
-                           " anchors found.", indent=2, status=annots.info)
+        self.logfile.print_message(str(len(anchors_tier)) + " anchors found.",
+                                   indent=2, status=annots.info)
 
         # Fix result
         trs_output = sppasTranscription(self.name)

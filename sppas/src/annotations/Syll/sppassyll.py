@@ -226,8 +226,8 @@ class sppasSyll(sppasBaseAnnotation):
                                         end_phon_idx,
                                         syllables)
             else:
-                self.print_message(MSG_INVALID.format(interval),
-                                   indent=2, status=annots.warning)
+                self.logfile.print_message(
+                    MSG_INVALID.format(interval), indent=2, status=annots.warning)
 
         return syllables
 
@@ -322,7 +322,7 @@ class sppasSyll(sppasBaseAnnotation):
         if self._options['usesintervals'] is True:
             intervals = trs_input.find(self._options['tiername'])
             if intervals is None:
-                self.print_message(
+                self.logfile.print_message(
                     MSG_NO_TIER.format(tiername=self._options['tiername']),
                     indent=2,
                     status=annots.warning)

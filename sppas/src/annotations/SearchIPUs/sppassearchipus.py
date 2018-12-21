@@ -296,7 +296,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         tier.set_meta('shift_ipus_end',
                       str(self.__searcher.get_shift_end()))
 
-        self.print_message("Information: ", indent=1)
+        self.logfile.print_message("Information: ", indent=1)
         m1 = "Threshold volume value:     {:d}" \
              "".format(self.__searcher.get_vol_threshold())
         m2 = "Threshold silence duration: {:.3f}" \
@@ -306,7 +306,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         m4 = "Number of IPUs found:       {:s}" \
              "".format(tier.get_meta("number_of_ipus"))
         for m in (m4, m1, m2, m3):
-            self.print_message(m, indent=2)
+            self.logfile.print_message(m, indent=2)
 
     # -----------------------------------------------------------------------
     # Apply the annotation on one or several given files
@@ -388,7 +388,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         # it's existing... but not in the expected format: convert!
         if exist_out_name is not None:
             if exist_out_name == out_name:
-                self.print_message(
+                self.logfile.print_message(
                     "A file with name {:s} is already existing."
                     "".format(exist_out_name),
                     indent=2, status=annots.info)
@@ -400,7 +400,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
                     t = parser.read()
                     parser.set_filename(out_name)
                     parser.write(t)
-                    self.print_message(
+                    self.logfile.print_message(
                         "A file with name {:s} is already existing. "
                         'This file was exported to {:s}'
                         ''.format(exist_out_name, out_name),
@@ -414,6 +414,6 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             self.run(input_file, opt_input_file, out_name)
         except Exception as e:
             out_name = None
-            self.print_message("{:s}\n".format(str(e)), indent=2, status=-1)
+            self.logfile.print_message("{:s}\n".format(str(e)), indent=2, status=-1)
 
         return out_name

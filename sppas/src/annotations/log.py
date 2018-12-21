@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import codecs
 import logging
 import os
@@ -40,6 +41,7 @@ from sppas.src.config import sg
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
 from sppas.src.utils.datatype import sppasTime
+from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
 
@@ -65,7 +67,7 @@ MSG_STATUS_IGNORE = (_(":INFO 1044: "))
 MSG_STATUS_ERROR = (_(":INFO 1045: "))
 MSG_REPORT = _(":INFO 1054: ")
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
 class sppasLog(object):
@@ -86,26 +88,20 @@ class sppasLog(object):
     STR_ITEM = "  - "
     MAX_INDENT = 10
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def __init__(self, parameters):
+    def __init__(self, parameters=None):
         """Create a sppasLog instance and open an output stream to NULL.
 
         :param parameters: (sppasParam)
 
         """
         self.parameters = parameters
-        self.logfp = codecs.open(os.devnull, 'w', sg.__encoding__)
+        self.logfp = None  # codecs.open(os.devnull, 'w', sg.__encoding__)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # File management
-    # ----------------------------------------------------------------------
-
-    def close(self):
-        """Close the current output stream."""
-        self.logfp.close()
-
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def create(self, filename):
         """Create and open a new output stream.
@@ -113,14 +109,12 @@ class sppasLog(object):
         :param filename: (str) Output filename
 
         """
-        try:
+        if self.logfp is not None:
             self.close()
-        except:
-            pass
 
         self.logfp = codecs.open(filename, 'w', sg.__encoding__)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def open(self, filename):
         """Open an existing file and set the output stream.
@@ -128,16 +122,22 @@ class sppasLog(object):
         :param filename: (str) Output filename
 
         """
-        try:
+        if self.logfp is not None:
             self.close()
-        except:
-            pass
 
         self.logfp = codecs.open(filename, 'a+', sg.__encoding__)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def close(self):
+        """Close the current output stream."""
+        if self.logfp is not None:
+            self.logfp.close()
+        self.logfp = None
+
+    # -----------------------------------------------------------------------
     # Write data
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def print_step(self, step_number):
         """Print a step name in the output stream from its number.
@@ -146,42 +146,69 @@ class sppasLog(object):
         sppasParam instance.
 
         """
-        try:
-            self.logfp.seek(0, 2)  # force to write at the end of the file
+        if self.parameters is not None:
+            message = self.parameters.get_step_name(step_number)
+        else:
+            message = "Annotation step " + str(step_number)
+
+        if self.logfp is not None:
+            # force to write at the end of the file
+            self.logfp.seek(0, 2)
             self.print_separator()
-            self.logfp.write(' '*24 +
-                             self.parameters.get_step_name(step_number))
+            # try to write at center
+            self.logfp.write(' '*24 + message)
             self.print_newline()
             self.print_separator()
-        except Exception as e:
-            logging.info(str(e))
+        else:
+            logging.info(" * * * " + message + " * * * ")
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def print_message(self, message, indent=0, status=None):
         """Print a message at the end of the current output stream.
 
-        :param  message: (str) text to print
-        :param  indent: (int) is the number of indentation to apply to
-        the message
-        :param  status: (int)
+        :param message: (str) The message to communicate
+        :param indent: (int) Shift the message with indents
+        :param status: (int) A status identifier
 
         0 means OK,
         1 means WARNING,
-        2 means IGNORED, and
-        -1 value means ERROR.
+        2 means IGNORED,
+        3 means INFO,
+        -1 means ERROR.
 
         """
-        try:
+        message = u(message)
+        if len(message) == 0:
+            return
+        str_indent = sppasLog.get_indent_text(indent)
+
+        if self.logfp is not None:
             self.logfp.seek(0, 2)
-            str_indent = sppasLog.get_indent_text(indent)
             status_text = sppasLog.get_status_text(status)
             self.logfp.write(str_indent + status_text + message)
             self.print_newline()
-        except Exception as e:
-            logging.info(str(e))
 
-    # ----------------------------------------------------------------------
+        else:
+            if status is None:
+                logging.info(str_indent + message)
+            else:
+                if status == annots.info:
+                    logging.info(str_indent + message)
+
+                elif status == annots.warning:
+                    logging.warning(str_indent + message)
+
+                elif status == annots.error:
+                    logging.error(str_indent + message)
+
+                elif status == annots.ok:
+                    logging.info(str_indent + message)
+
+                else:
+                    logging.debug(message)
+
+    # -----------------------------------------------------------------------
 
     def print_raw_text(self, text):
         """Print a text at the end of the output stream.
@@ -189,51 +216,73 @@ class sppasLog(object):
         :param text: (str) text to print
 
         """
-        try:
+        if self.logfp is not None:
             self.logfp.seek(0, 2)  # write at the end of the file
             self.logfp.write(text)
-        except Exception as e:
-            logging.info(str(e))
+        else:
+            logging.info(text)
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def print_newline(self):
-        """Print a carriage return in the output stream."""
-        try:
+        """Print a CR in the output file stream, do nothing if logging."""
+        if self.logfp is not None:
             self.logfp.write('\n')
-        except Exception:
-            pass
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def print_separator(self):
-        """Print a line in the output stream."""
-        try:
+        """Print a line in the output file stream, do nothing if logging."""
+        if self.logfp is not None:
             self.logfp.write('-'*78)
             self.print_newline()
-        except Exception:
-            pass
 
-    # ----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def print_stat(self, step_number, value=None):
+    def print_stats(self, stats):
         """Print the statistics values in the output stream for a given step.
+
+        Do not print anything if no parameters were given.
+
+        :param stats: List of values (one for each annotation)
+
+        """
+        if self.parameters is None:
+            return
+
+        if len(stats) != self.parameters.get_step_numbers():
+            return
+
+        self.print_separator()
+        self.print_message('Result statistics:')
+        self.print_separator()
+        for i in range(len(stats)):
+            self.print_stat_item(i, str(stats[i]))
+        self.print_separator()
+
+    # -----------------------------------------------------------------------
+
+    def print_stat_item(self, step_number, value=None):
+        """Print a statistic value in the output stream for a given step.
+
+        Do not print anything if no parameters were given.
 
         :param step_number: (1..N)
         :param value: (str) A statistic value.
         Instead, print the status (enabled or disabled).
 
         """
-        try:
-            if value is None:
-                if self.parameters.get_step_status(step_number):
-                    value = MSG_ENABLED
-                else:
-                    value = MSG_DISABLED
-            self.print_item(self.parameters.get_step_name(step_number),
-                            str(value))
-        except Exception as e:
-            logging.info(str(e))
+        if self.parameters is None:
+            return
+
+        if value is None:
+            if self.parameters.get_step_status(step_number):
+                value = MSG_ENABLED
+            else:
+                value = MSG_DISABLED
+
+        self.print_item(self.parameters.get_step_name(step_number),
+                        str(value))
 
     # ----------------------------------------------------------------------
 
@@ -244,37 +293,52 @@ class sppasLog(object):
         :param second_info: (str) A secondary info to print
 
         """
-        try:
-            self.logfp.seek(0, 2)  # write at the end of the file
-            self.logfp.write(sppasLog.STR_ITEM)
-            self.logfp.write(main_info)
-            if second_info is not None:
-                self.logfp.write(': ')
-                self.logfp.write(second_info)
+        message = sppasLog.STR_ITEM + main_info
+        if second_info is not None:
+            message += ': ' + second_info
+
+        if self.logfp is not None:
+            self.logfp.seek(0, 2)
+            self.logfp.write(message)
             self.print_newline()
-        except Exception as e:
-            logging.info(str(e))
+        else:
+            logging.info(message)
 
     # ----------------------------------------------------------------------
 
     def print_header(self):
-        """Print the parameters information in the output stream."""
-        self.logfp.seek(0, 2)  # write at the end of the file
-        self.print_message(sg.__name__ + ' ' +
-                           MSG_VERSION + ' ' +
-                           sg.__version__)
-        self.print_message(sg.__copyright__)
-        self.print_message(MSG_URL + ': ' + sg.__url__)
-        self.print_message(MSG_CONTACT + ': ' +
-                           sg.__author__ +
-                           " (" + sg.__contact__ + ")")
-        self.print_newline()
-        self.print_separator()
+        """Print the parameters information in the output file stream."""
+        sppas_name = sg.__name__ + ' ' + MSG_VERSION + ' ' + sg.__version__
+        sppas_copy = sg.__copyright__
+        sppas_url = MSG_URL + ': ' + sg.__url__
+        sppas_contact = MSG_CONTACT + ': ' + sg.__author__ + " (" + sg.__contact__ + ")"
+
+        if self.logfp is not None:
+            self.logfp.seek(0, 2)
+            self.print_message(sppas_name)
+            self.print_message(sppas_copy)
+            self.print_message(sppas_url)
+            self.print_message(sppas_contact)
+            self.print_newline()
+            self.print_separator()
+        else:
+
+            logging.info(sppas_name)
+            logging.info(sppas_copy)
+            logging.info(sppas_url)
+            logging.info(sppas_contact)
 
     # ----------------------------------------------------------------------
 
     def print_annotations_header(self):
-        """Print the parameters information in the output stream."""
+        """Print the parameters information in the output stream.
+
+        Do not print anything if no parameters were given.
+
+        """
+        if self.parameters is None:
+            return
+
         self.print_message(' '*24 + MSG_REPORT)
         self.print_newline()
         self.print_message(' '*24 + MSG_AUTO_ANNS)
@@ -288,8 +352,7 @@ class sppasLog(object):
                 self.print_item(self.parameters.get_step_name(i),
                                 self.parameters.get_lang(i))
             else:
-                self.print_item(self.parameters.get_step_name(i),
-                                "---")
+                self.print_item(self.parameters.get_step_name(i), "---")
         self.print_newline()
 
         self.print_message(MSG_SEL_FILES + ': ')
@@ -299,7 +362,7 @@ class sppasLog(object):
 
         self.print_message(MSG_SEL_ANNS + ': ')
         for i in range(self.parameters.get_step_numbers()):
-            self.print_stat(i)
+            self.print_stat_item(i)
         self.print_newline()
 
         self.print_message(MSG_FILE_EXT +

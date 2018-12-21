@@ -199,8 +199,8 @@ class sppasOtherRepet(sppasBaseRepet):
             rep_begin = spk2_tier[start_idx2 + s].get_lowest_localization()
             rep_end = spk2_tier[start_idx2 + e].get_highest_localization()
             time = sppasInterval(rep_begin.copy(), rep_end.copy())
+            r = sppasLabel(sppasTag("R" + str(index + 1)))
             try:
-                r = sppasLabel(sppasTag("R" + str(index + 1)))
                 a = echo_tier.create_annotation(
                     sppasLocation(time), r)
                 a.set_meta('is_other_repetition_of', src_id)

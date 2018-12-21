@@ -174,16 +174,17 @@ class sppasPhon(sppasBaseAnnotation):
         """
         if map_filename is not None:
             self.maptable = sppasMapping(map_filename)
-            self.print_message("The mapping table contains {:d} phonemes"
-                               "".format(len(self.maptable)), indent=0)
+            self.logfile.print_message(
+                "The mapping table contains {:d} phonemes"
+                "".format(len(self.maptable)), indent=0)
         else:
             self.maptable = sppasMapping()
 
         pdict = sppasDictPron(dict_filename, nodump=False)
         if dict_filename is not None:
             self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
-            self.print_message("The dictionary contains {:d} tokens"
-                               "".format(len(pdict)), indent=0)
+            self.logfile.print_message("The dictionary contains {:d} tokens"
+                                       "".format(len(pdict)), indent=0)
         else:
             self.phonetizer = sppasDictPhonetizer(pdict)
 
@@ -208,7 +209,7 @@ class sppasPhon(sppasBaseAnnotation):
             message = None
             if s == annots.error:
                 message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
-                self.print_message(message, indent=2, status=s)
+                self.logfile.print_message(message, indent=2, status=s)
                 return [unk]
             else:
                 if s == annots.warning:
@@ -221,7 +222,7 @@ class sppasPhon(sppasBaseAnnotation):
                 tab_phones.append(p)
 
             if message:
-                self.print_message(message, indent=2, status=s)
+                self.logfile.print_message(message, indent=2, status=s)
 
         return tab_phones
 
@@ -239,7 +240,7 @@ class sppasPhon(sppasBaseAnnotation):
 
         phones_tier = sppasTier("Phones")
         for i, ann in enumerate(tier):
-            self.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()

@@ -83,7 +83,7 @@ class sppasAnnotationsManager(Thread):
         # fix members that are required to run annotations
         self._parameters = None
         self._progress = None
-        self._logfile = None
+        self._logfile = sppasLog()
 
         # fix optional members
         self.__do_merge = False
@@ -130,19 +130,17 @@ class sppasAnnotationsManager(Thread):
         """
         self._parameters = parameters
         self._progress = progress
-        self._logfile = None
 
-        # Print header message in the log-report file
+        # Print header message in the log-report file or in the logging
         report_file = self._parameters.get_report_filename()
         if report_file:
             try:
                 self._logfile = sppasLog(self._parameters)
                 self._logfile.create(report_file)
-                self._logfile.print_header()
-                self._logfile.print_annotations_header()
             except:
-                self._logfile = None
-                pass
+                self._logfile = sppasLog()
+        self._logfile.print_header()
+        self._logfile.print_annotations_header()
 
         # Run all enabled annotations
         ann_stats = [-1] * self._parameters.get_step_numbers()
@@ -156,8 +154,7 @@ class sppasAnnotationsManager(Thread):
 
             # ok, this annotation is enabled.
             annotation_key = self._parameters.get_step_key(i)
-            if self._logfile is not None:
-                self._logfile.print_step(i)
+            self._logfile.print_step(i)
 
             if steps is False:
                 steps = True
@@ -181,29 +178,18 @@ class sppasAnnotationsManager(Thread):
                     ann_stats[i] = self._run_annotation(annotation_key)
 
             except Exception as e:
-                if self._logfile is not None:
-                    self._logfile.print_message(
-                        "{:s}\n".format(str(e)), indent=1, status=4)
+                self._logfile.print_message(
+                    "{:s}\n".format(str(e)), indent=1, status=4)
                 ann_stats[i] = 0
 
-        if self._logfile is not None:
-            self._logfile.print_separator()
-            self._logfile.print_newline()
-
+        # Log file & Merge
+        self._logfile.print_separator()
+        self._logfile.print_newline()
         if self.__do_merge:
-            if self._logfile:
-                self._logfile.print_separator()
+            self._logfile.print_separator()
             self._merge()
-
-        # Log file: Final information
-        if self._logfile is not None:
-            self._logfile.print_separator()
-            self._logfile.print_message('Result statistics:')
-            self._logfile.print_separator()
-            for i in range(self._parameters.get_step_numbers()):
-                self._logfile.print_stat(i, str(ann_stats[i]))
-            self._logfile.print_separator()
-            self._logfile.close()
+        self._logfile.print_stats(ann_stats)
+        self._logfile.close()
 
     # -----------------------------------------------------------------------
     # Private
@@ -383,8 +369,7 @@ class sppasAnnotationsManager(Thread):
             # Change f, to allow "replace" to work properly
             basef = os.path.splitext(f)[0]
 
-            if self._logfile is not None:
-                self._logfile.print_message("File :" + f, indent=1)
+            self._logfile.print_message("File :" + f, indent=1)
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
             # Add all files content in the same order than to annotate
@@ -406,17 +391,14 @@ class sppasAnnotationsManager(Thread):
                     trs.append(tier)
                     parser = sppasRW(basef + "-merge.xra")
                     parser.write(trs)
-                    if self._logfile is not None:
-                        self._logfile.print_message(
-                            basef + "-merge.xra", indent=2, status=0)
+                    self._logfile.print_message(
+                        basef + "-merge.xra", indent=2, status=0)
 
                 except Exception as e:
-                    if self._logfile is not None:
-                        self._logfile.print_message(str(e), indent=1, status=-1)
+                    self._logfile.print_message(str(e), indent=1, status=-1)
 
             self._progress.set_fraction(float((i+1))/float(total))
-            if self._logfile is not None:
-                self._logfile.print_newline()
+            self._logfile.print_newline()
 
         self._progress.update(1, "Completed.")
         self._progress.set_header("")
@@ -462,10 +444,9 @@ class sppasAnnotationsManager(Thread):
                         if sinput not in filelist:
                             filelist.append(sinput)
                     else:
-                        if self._logfile is not None:
-                            self._logfile.print_message(
-                                "Can't find file %s\n" % sinput,
-                                indent=1, status=1)
+                        self._logfile.print_message(
+                            "Can't find file %s\n" % sinput,
+                            indent=1, status=1)
 
             except:
                 continue

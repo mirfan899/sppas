@@ -37,10 +37,10 @@ import os
 
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
-from sppas.src.utils.makeunicode import u
 from sppas.src.utils.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
+from .log import sppasLog
 
 # ---------------------------------------------------------------------------
 
@@ -72,7 +72,10 @@ class sppasBaseAnnotation(object):
         self.name = name
 
         # Log messages for the user
-        self.logfile = logfile
+        if logfile is None:
+            self.logfile = sppasLog()
+        else:
+            self.logfile = logfile
 
         # List of options to configure the automatic annotation
         self._options = dict()
@@ -184,7 +187,7 @@ class sppasBaseAnnotation(object):
 
         # if out_name exists, it is overridden
         if os.path.exists(out_name):
-            self.print_message(
+            self.logfile.print_message(
                 "A file with name {:s} is already existing. "
                 "It will be overridden."
                 "".format(out_name), indent=2, status=annots.warning)
@@ -194,7 +197,7 @@ class sppasBaseAnnotation(object):
             self.run(input_file, opt_input_file, out_name)
         except Exception as e:
             out_name = None
-            self.print_message(
+            self.logfile.print_message(
                 "{:s}\n".format(str(e)),
                 indent=2, status=annots.error)
 
@@ -248,12 +251,12 @@ class sppasBaseAnnotation(object):
                                                      output_format)
 
             if out_name is None:
-                self.print_message(
+                self.logfile.print_message(
                     "No file was created.", indent=1, status=annots.info)
             else:
                 files_processed_success += 1
-                self.print_message(out_name, indent=1, status=annots.ok)
-            self.print_newline()
+                self.logfile.print_message(out_name, indent=1, status=annots.ok)
+            self.logfile.print_newline()
             if progress:
                 progress.set_fraction(round(float((i+1))/float(total), 2))
 
@@ -314,11 +317,11 @@ class sppasBaseAnnotation(object):
 
         for fn in required_inputs:
             if os.path.exists(fn) is False:
-                self.print_message(
+                self.logfile.print_message(
                     "File not found. "
                     "This annotation expects a file with name {:s}. "
                     "".format(fn), indent=1, status=annots.error)
-                self.print_message(
+                self.logfile.print_message(
                     "Annotation cancelled.", indent=1, status=annots.ignore)
                 raise IOError
 
@@ -326,47 +329,6 @@ class sppasBaseAnnotation(object):
 
     # -----------------------------------------------------------------------
     # To communicate with the interface:
-    # -----------------------------------------------------------------------
-
-    def print_message(self, message, indent=3, status=None):
-        """Print a message in the user log.
-
-        :param message: (str) The message to communicate
-        :param indent: (int) Shift the message with indents
-        :param status: (int) A status identifier
-
-        """
-        message = u(message)
-        if self.logfile:
-            self.logfile.print_message(message,
-                                       indent=indent,
-                                       status=status)
-
-        elif len(message) > 0:
-            nbsp = ""
-            if indent < 0:
-                indent = 0
-            if indent > 0:
-                nbsp = " ..."*indent + " "
-
-            if status is None:
-                logging.info(nbsp + message)
-            else:
-                if status == annots.info:
-                    logging.info(nbsp + message)
-
-                elif status == annots.warning:
-                    logging.warning(nbsp + message)
-
-                elif status == annots.error:
-                    logging.error(nbsp + message)
-
-                elif status == annots.ok:
-                    logging.info(nbsp + message)
-
-                else:
-                    logging.debug(message)
-
     # -----------------------------------------------------------------------
 
     def print_filename(self, filename, status=None):
@@ -378,9 +340,8 @@ class sppasBaseAnnotation(object):
         """
         if self.logfile:
             fn = os.path.basename(filename)
-            self.print_message(MSG_ANN_FILE.format(fn),
-                               indent=1,
-                               status=status)
+            self.logfile.print_message(
+                MSG_ANN_FILE.format(fn), indent=1, status=status)
         else:
             logging.info(MSG_ANN_FILE.format(filename))
 
@@ -388,22 +349,13 @@ class sppasBaseAnnotation(object):
 
     def print_options(self):
         """Print the list of options in the user log."""
-        if self.logfile:
-            self.print_message(MSG_OPTIONS + ": ",
-                               indent=0,
-                               status=None)
-        else:
-            logging.info(MSG_OPTIONS)
+        self.logfile.print_message(MSG_OPTIONS + ": ", indent=0, status=None)
 
         for k, v in self._options.items():
             msg = " ... {!s:s}: {!s:s}".format(k, v)
-            if self.logfile:
-                self.print_message(msg, indent=0, status=None)
-            else:
-                logging.info(msg)
+            self.logfile.print_message(msg, indent=0, status=None)
 
-        if self.logfile:
-            self.print_newline()
+        self.logfile.print_newline()
 
     # -----------------------------------------------------------------------
 
@@ -418,17 +370,7 @@ class sppasBaseAnnotation(object):
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
                 msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
-                if self.logfile:
-                    self.print_message(msg, indent=0, status=None)
-                else:
-                    logging.info(msg)
-
-    # -----------------------------------------------------------------------
-
-    def print_newline(self):
-        """Print an empty line."""
-        if self.logfile:
-            self.logfile.print_newline()
+                self.logfile.print_message(msg, indent=0, status=None)
 
     # ------------------------------------------------------------------------
     # Utility methods:

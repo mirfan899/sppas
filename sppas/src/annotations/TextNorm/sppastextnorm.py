@@ -111,8 +111,8 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         voc = sppasVocabulary(vocab_filename)
         self.normalizer = TextNormalizer(voc, lang)
-        self.print_message("The vocabulary contains {:d} tokens"
-                           "".format(len(voc)), indent=0)
+        self.logfile.print_message("The vocabulary contains {:d} tokens"
+                                   "".format(len(voc)), indent=0)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -121,8 +121,9 @@ class sppasTextNorm(sppasBaseAnnotation):
         else:
             dict_replace = sppasDictRepl()
         self.normalizer.set_repl(dict_replace)
-        self.print_message("The replacement dictionary contains {:d} items"
-                           "".format(len(dict_replace)), indent=0)
+        self.logfile.print_message(
+            "The replacement dictionary contains {:d} items"
+            "".format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
@@ -299,7 +300,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            self.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
@@ -317,7 +318,7 @@ class sppasTextNorm(sppasBaseAnnotation):
                     except Exception as e:
                         message = "Error while normalizing interval {:d}: " \
                                   "{:s}".format(i, str(e))
-                        self.print_message(message, indent=2)
+                        self.logfile.print_message(message, indent=2)
 
                 elif text.is_silence():
                     # in ortho a silence could be one of "#" or "gpf_".
@@ -382,12 +383,12 @@ class sppasTextNorm(sppasBaseAnnotation):
                         text_faked.set_content(textf)
 
                     except:
-                        self.print_message("Standard/Faked tokens matching error, "
+                        self.logfile.print_message("Standard/Faked tokens matching error, "
                                            "at interval {:d}\n".format(i),
                                            indent=2, status=1)
-                        self.print_message(text_std.get_content(), indent=3)
-                        self.print_message(text_faked.get_content(), indent=3)
-                        self.print_message("Fall back on faked.", indent=3, status=3)
+                        self.logfile.print_message(text_std.get_content(), indent=3)
+                        self.logfile.print_message(text_faked.get_content(), indent=3)
+                        self.logfile.print_message("Fall back on faked.", indent=3, status=3)
                         text_std.set_content(text_faked.get_content())
 
     # -----------------------------------------------------------------------

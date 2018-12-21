@@ -75,7 +75,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasFillIPUs, self).__init__(logfile, "Finn in IPUs")
+        super(sppasFillIPUs, self).__init__(logfile, "Fill in IPUs")
 
         # List of options to configure this automatic annotation
         f = FillIPUs(None, [])
@@ -153,7 +153,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         tier.set_meta('minimum_ipus_duration',
                       str(filler.get_min_ipu_dur()))
 
-        self.print_message("Information: ", indent=1)
+        self.logfile.print_message("Information: ", indent=1)
         m1 = "Threshold volume value:     {:d}" \
              "".format(filler.get_vol_threshold())
         m2 = "Threshold silence duration: {:.3f}" \
@@ -161,7 +161,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         m3 = "Threshold speech duration:  {:.3f}" \
              "".format(filler.get_min_ipu_dur())
         for m in (m1, m2, m3):
-            self.print_message(m, indent=2)
+            self.logfile.print_message(m, indent=2)
 
     # -----------------------------------------------------------------------
 
@@ -238,7 +238,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         tier = self.fill_in(input_audio_filename, input_trans_filename)
         if tier is None:
             msg = "Unable to align the audio with the given transcription."
-            self.print_message(msg, indent=2, status=-1)
+            self.logfile.print_message(msg, indent=2, status=-1)
             return None
 
         # Create the transcription to put the result
@@ -287,7 +287,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         # it's existing... but not in the expected format: we convert!
         if exists_out_name is not None:
             if exists_out_name == out_name:
-                self.print_message(
+                self.logfile.print_message(
                     "A file with name {:s} is already existing."
                     "".format(exists_out_name), indent=2, status=annots.info)
                 return None
@@ -298,10 +298,11 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     t = parser.read()
                     parser.set_filename(out_name)
                     parser.write(t)
-                    self.print_message(
+                    self.logfile.print_message(
                         "A file with name {:s} was already existing. "
                         'This file was exported to {:s}'
-                        ''.format(exists_out_name, out_name), indent=2, status=annots.info)
+                        ''.format(exists_out_name, out_name),
+                        indent=2, status=annots.info)
                     return out_name
                 except:
                     pass
@@ -311,6 +312,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
                 self.run(input_file, opt_input_file, out_name)
             except Exception as e:
                 out_name = None
-                self.print_message("{:s}\n".format(str(e)), indent=1, status=-1)
+                self.logfile.print_message(
+                    "{:s}\n".format(str(e)), indent=1, status=-1)
 
         return out_name
