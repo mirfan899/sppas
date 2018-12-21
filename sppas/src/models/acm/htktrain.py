@@ -55,7 +55,7 @@ from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.annotationsexc import NoInputError
 
 import sppas.src.anndata as anndata
-from sppas.src.anndata import sppasTranscription, sppasRW
+from sppas.src.anndata import sppasTranscription, sppasRW, sppasLabel, sppasTag
 import sppas.src.anndata.aio.aioutils as tierutils
 import sppas.src.audiodata.aio as audiodataio
 
@@ -811,8 +811,8 @@ class sppasTrainingCorpus(object):
 
         for ann in tier:
             label = ann.serialize_labels()
-            new_label = sppasTrainingCorpus._format_phonetization(label)
-            ann.GetLabel().SetValue(new_label)
+            new_content = sppasTrainingCorpus._format_phonetization(label)
+            ann.set_labels(sppasLabel(sppasTag(new_content)))
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("phon")

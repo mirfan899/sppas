@@ -59,12 +59,14 @@ def test_command(command):
     :param command: (str) The command to execute as a sub-process.
 
     """
+    NULL = open(os.devnull, "w")
     try:
-        NULL = open(os.devnull, "w")
         subprocess.call([command], stdout=NULL, stderr=subprocess.STDOUT)
     except OSError:
+        NULL.close()
         return False
 
+    NULL.close()
     return True
 
 # ---------------------------------------------------------------------------
