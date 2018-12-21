@@ -311,7 +311,8 @@ class sppasLog(object):
         sppas_name = sg.__name__ + ' ' + MSG_VERSION + ' ' + sg.__version__
         sppas_copy = sg.__copyright__
         sppas_url = MSG_URL + ': ' + sg.__url__
-        sppas_contact = MSG_CONTACT + ': ' + sg.__author__ + " (" + sg.__contact__ + ")"
+        sppas_contact = MSG_CONTACT + ': ' + \
+                        sg.__author__ + " (" + sg.__contact__ + ")"
 
         if self.logfp is not None:
             self.logfp.seek(0, 2)

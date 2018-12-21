@@ -57,16 +57,16 @@ class annotationParam(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Class to store data of an automatic annotation like its name, description, 
+    Class to store data of an automatic annotation like its name, description,
     supported languages, etc.
-    
+
     """
 
     def __init__(self, filename=None):
         """Create a new annotationParam instance.
 
         :param filename: (str) Annotation configuration file
-        
+
         """
         # An identifier to represent this annotation
         self.__key = None
@@ -90,7 +90,7 @@ class annotationParam(object):
 
     def parse(self, filename):
         """Parse a configuration file to fill members.
-        
+
         :param filename: (str) Annotation configuration file (.ini)
 
         """
@@ -110,10 +110,10 @@ class annotationParam(object):
 
     def set_activate(self, activate):
         """Enable the annotation but only if this annotation is valid.
-        
+
         :param activate: (bool) Enable or disable the annotation
         :returns: (bool) enabled or disabled
-        
+
         """
         self.__enabled = activate
         if activate is True and self.__invalid is True:
@@ -210,7 +210,7 @@ class annotationParam(object):
 
     def set_option_value(self, key, value):
         """Change value of an option.
-        
+
         :param key: (str) Identifier of the option
         :param value: (any) New value for the option
         :raises: KeyError
@@ -250,7 +250,7 @@ class sppasParam(object):
         """
         # A log file to communicate to the user
         self._report = ""
-        
+
         # The format of the annotated files
         self._output_ext = annots.extension
 
@@ -405,9 +405,9 @@ class sppasParam(object):
 
     def set_report_filename(self, filename):
         """Fix the name of the file to save the report of the annotations.
-        
+
         :param filename: (str) Filename for the Procedure Outcome Report
-        
+
         """
         self._report = filename
 

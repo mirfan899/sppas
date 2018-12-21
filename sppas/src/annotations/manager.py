@@ -419,4 +419,3 @@ class sppasAnnotationsManager(Thread):
                 return new_filename
 
         return None
-

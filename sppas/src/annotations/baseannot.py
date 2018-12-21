@@ -177,7 +177,10 @@ class sppasBaseAnnotation(object):
 
     # -----------------------------------------------------------------------
 
-    def run_for_batch_processing(self, input_file, opt_input_file, output_format):
+    def run_for_batch_processing(self,
+                                 input_file,
+                                 opt_input_file,
+                                 output_format):
         """Perform the annotation on a file.
 
         This method is called by 'batch_processing'. It fixes the name of the
@@ -286,9 +289,12 @@ class sppasBaseAnnotation(object):
 
         The given input files can be:
 
-            - a single input: file1
-            - several-required-inputs: (file1_a, file1_b)
-            - a single required-input and an optional-input: ((file_1_a), file_1_x)
+            - a single input:
+              file1
+            - several-required-inputs:
+              (file1_a, file1_b)
+            - a single required-input and an optional-input:
+              ((file_1_a), file_1_x)
             - several required-inputs and an optional-input:
               ((file1_a, file1_b), file_1_x))
             - several required-inputs and several optional-inputs:
@@ -304,7 +310,7 @@ class sppasBaseAnnotation(object):
         optional_inputs = tuple()
 
         if isinstance(input_files, (list, tuple)) is False:
-            # input_files is a single file to be used as a single required input
+            # a single file to be used as a single required input
             required_inputs = [input_files]
 
         else:
