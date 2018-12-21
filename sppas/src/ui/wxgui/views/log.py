@@ -54,13 +54,13 @@ from sppas.src.ui.wxgui.sp_consts import OK_COLOUR
 
 
 class LogDialog(spBaseDialog):
-    """
+    """Dialog to show/save the log file of automatic annotations.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Dialog to show/save the log file of automatic annotations.
+    :copyright:    Copyright (C) 2011-2018 Brigitte Bigi
 
     """
     def __init__(self, parent, preferences, filename):
@@ -106,7 +106,8 @@ class LogDialog(spBaseDialog):
                          "Error is: %s" % str(e)
             self.btn_save.Enable(False)
 
-        self.log_txt = wx.TextCtrl(self, -1, size=(620, 480), style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.HSCROLL)
+        self.log_txt = wx.TextCtrl(self, -1, size=(620, 480),
+                                   style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.HSCROLL)
         self.log_txt.SetDefaultStyle(wx.TextAttr(wx.BLACK, wx.WHITE))
         fs = self.preferences.GetValue('M_FONT').GetPointSize()
         self.log_txt.SetFont(wx.Font(fs,
@@ -148,9 +149,9 @@ class LogDialog(spBaseDialog):
         Save the content in a text file.
         """
         filesel = None
-        wildcard = "SPPAS log files (*-sppas.log)|*-sppas.log"
-        defaultDir  = os.path.dirname(self.filename)
-        defaultFile = os.path.basename("Annotations-sppas.log")
+        wildcard = "SPPAS log files (*_log*.txt)|sppas*.txt"
+        defaultDir = os.path.dirname(self.filename)
+        defaultFile = os.path.basename(self.filename)
 
         dlg = wx.FileDialog(
             self, message="Save as...",
@@ -176,10 +177,12 @@ class LogDialog(spBaseDialog):
                 shutil.copy(self.filename, filesel)
             # eg. src and dest are the same file
             except shutil.Error as e:
-                ShowInformation(self, self.preferences, "Error while saving: %s" % str(e), wx.ICON_ERROR)
+                ShowInformation(self, self.preferences,
+                                "Error while saving: %s" % str(e), wx.ICON_ERROR)
             # eg. source or destination doesn't exist
             except IOError as e:
-                ShowInformation(self, self.preferences, "Error while saving: %s" % str(e), wx.ICON_ERROR)
+                ShowInformation(self, self.preferences,
+                                "Error while saving: %s" % str(e), wx.ICON_ERROR)
 
 # ----------------------------------------------------------------------------
 
@@ -191,9 +194,8 @@ def ShowLogDialog(parent, preferences, filename):
 
 # ---------------------------------------------------------------------------
 
+
 if __name__ == "__main__":
     app = wx.PySimpleApp()
     ShowLogDialog(None, None, filename="log.py")
     app.MainLoop()
-
-# ---------------------------------------------------------------------------

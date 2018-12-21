@@ -426,14 +426,12 @@ class FrameSPPAS(wx.Frame):
 
     def GetSelected(self, extension):
         """Return the list of selected files in FLP."""
-
         return self.flp.GetSelected(extension)
 
     # -----------------------------------------------------------------------
 
     def GetTrsSelection(self):
         """Return the list of annotated files selected in the FLP."""
-
         selection = list()
         for ext in sppas.src.anndata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))
@@ -443,7 +441,6 @@ class FrameSPPAS(wx.Frame):
 
     def GetAudioSelection(self):
         """Return the list of audio files selected in the FLP."""
-
         selection = list()
         for ext in sppas.src.audiodata.aio.extensions:
             selection.extend(self.flp.GetSelected(ext))

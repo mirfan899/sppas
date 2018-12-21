@@ -249,7 +249,7 @@ class sppasParam(object):
 
         """
         # A log file to communicate to the user
-        self._report = ""
+        self._report = None
 
         # The format of the annotated files
         self._output_ext = annots.extension
@@ -374,9 +374,6 @@ class sppasParam(object):
 
         for f in self._inputs:
             logging.debug(f)
-
-        if len(self._report) == 0:
-            self._report = os.path.splitext(entry)[0] + ".log"
 
     # -----------------------------------------------------------------------
 

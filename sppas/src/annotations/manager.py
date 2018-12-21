@@ -411,8 +411,6 @@ class sppasAnnotationsManager(Thread):
         """
         base_name = os.path.splitext(filename)[0]
         for ext in extensions:
-            if ext.startswith('.') is False:
-                ext = "." + ext
             ext_filename = base_name + ext
             new_filename = sppasFileUtils(ext_filename).exists()
             if new_filename is not None and os.path.isfile(new_filename):

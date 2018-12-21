@@ -128,12 +128,12 @@ class sppasBaseRepet(sppasBaseAnnotation):
             self._stop_words.load_from_ascii(stp)
             self.logfile.print_message(
                 "The initial list contains {:d} stop-words"
-                "".format(len(self._stop_words)), indent=0, status=3)
+                "".format(len(self._stop_words)), indent=0)
 
         except Exception as e:
             self._stop_words = sppasVocabulary()
             self.logfile.print_message(
-                "No stop-words loaded: {:s}".format(str(e)), indent=1, status=1)
+                "No stop-words loaded: {:s}".format(str(e)), indent=1)
 
         try:
             repl = fn + ".lem"
@@ -141,13 +141,13 @@ class sppasBaseRepet(sppasBaseAnnotation):
                 self._word_strain.load(repl)
             self.logfile.print_message(
                 "The replacement list contains {:d} tokens"
-                "".format(len(self._word_strain)), indent=0, status=3)
+                "".format(len(self._word_strain)), indent=0)
 
         except Exception as e:
             self._word_strain = sppasWordStrain()
             self.logfile.print_message(
                 "No replacement list loaded: {:s}"
-                "".format(str(e)), indent=1, status=1)
+                "".format(str(e)), indent=1)
 
     # -----------------------------------------------------------------------
     # Getters and Setters

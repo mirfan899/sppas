@@ -33,11 +33,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
 import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
 
+from sppas.src.config import paths
 from sppas.src.annotations.param import sppasParam
+from sppas.src.ui.log_file import sppasLogFile
 
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.cutils.ctrlutils import CreateGenButton
@@ -270,6 +273,8 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         self.SetupScrolling(scroll_x=True, scroll_y=True)
         self.SetMinSize(wx.Size(MIN_PANEL_W, MIN_PANEL_H))
 
+        self.log_report = sppasLogFile()
+
     # -----------------------------------------------------------------------
 
     def __create_content(self):
@@ -324,13 +329,23 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         else:
             self.parameters.set_lang(l, evt.step_idx)
 
+    # -----------------------------------------------------------------------
+
     def on_sppas_run(self, evt):
-        """
-        Execute the automatic annotations.
-        """
-        filelist = self.GetTopLevelParent().GetAudioSelection()
+        """ Execute the automatic annotations. """
+        # The procedure outcome report file.
+        self.parameters.set_report_filename(self.log_report.get_filename())
+        self.log_report.increment()
+
+        # The list of files and folders selected by the user
+        file_list = self.GetTopLevelParent().GetAudioSelection()
+        file_list.extend(self.GetTopLevelParent().GetTrsSelection())
+
+        # The annotation
         self.annprocess = AnnotateProcess(self._prefsIO)
-        self.annprocess.Run(self.GetParent(), filelist, self.activated, self.parameters)
+        self.annprocess.Run(self.GetParent(), file_list, self.activated, self.parameters)
+
+    # -----------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
         """

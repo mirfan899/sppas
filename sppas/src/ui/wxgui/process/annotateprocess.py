@@ -92,7 +92,7 @@ class AnnotateProcess(object):
         """
         # Check input files
         if len(filelist) == 0:
-            message = "Empty selection! Select audio file(s) to annotate."
+            message = "Empty selection! Select file(s) to annotate."
             ShowInformation(None, self.preferences, message)
             return
 
@@ -100,7 +100,7 @@ class AnnotateProcess(object):
         nbsteps = 0
         for i in range(len(activeannot)):
             if activeannot[i]:
-                nbsteps = nbsteps + 1
+                nbsteps += 1
                 parameters.activate_step(i)
                 # if there are languages available and none of them is selected, print an error
                 if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) is None:
@@ -111,7 +111,7 @@ class AnnotateProcess(object):
                 parameters.disable_step(i)
 
         if not nbsteps:
-            message = "No annotation selected!"
+            message = "No appropriate annotation selected!"
             ShowInformation(None, self.preferences, message)
             return
 
@@ -142,16 +142,8 @@ class AnnotateProcess(object):
         # Show report
         try:
             ShowLogDialog(parent, self.preferences, parameters.get_report_filename())
-            try:
-                os.remove(parameters.get_report_filename())
-                # eg. source or destination doesn't exist
-            except IOError:
-                pass
-            except shutil.Error:
-                pass
-        except Exception:
+        except:
             message = "Automatic annotation finished.\nSee " + \
-                      parameters.get_report_filename() + \
-                      " for details.\nThanks for using SPPAS.\n"
+                      parameters.get_report_filename() + " for details.\n"
             ShowInformation(None, self.preferences, message)
 
