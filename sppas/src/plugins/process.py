@@ -128,8 +128,8 @@ class sppasPluginProcess(object):
         :returns: output message
 
         """
-        line = self._process.communicate()
-        return "".join(line[0])
+        out, err = self._process.communicate()
+        return "".join(out)
 
     # ------------------------------------------------------------------------
 

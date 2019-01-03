@@ -254,6 +254,7 @@ class sppasPluginsManager(Thread):
                 result = process.communicate()
             except Exception as e:
                 result = str(e)
+
             if len(result) == 0:
                 output_lines += info("4015")
             else:

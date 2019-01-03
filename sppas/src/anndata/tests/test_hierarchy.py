@@ -94,13 +94,13 @@ class TestHierarchy(unittest.TestCase):
 
         # Modification of parent's/children:
         ref_tier[3].get_highest_localization().set(sppasPoint(4.))
-        self.assertEquals(ref_tier[3].get_highest_localization(), sppasPoint(3.))
+        self.assertEqual(ref_tier[3].get_highest_localization(), sppasPoint(3.))
 
         # we can't modify a parent if it's invalidate the hierarchy
         with self.assertRaises(Exception):
             ref_tier[3].set_best_localization(sppasInterval(sppasPoint(2.5),
                                                             sppasPoint(4.)))
-        self.assertEquals(ref_tier[3].get_highest_localization(), sppasPoint(3.))
+        self.assertEqual(ref_tier[3].get_highest_localization(), sppasPoint(3.))
 
         # we can't modify a child if it's invalidate the hierarchy
         with self.assertRaises(Exception):
