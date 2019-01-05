@@ -98,10 +98,9 @@ class sppasPluginProcess(object):
                     command += " " + opt.get_key()
 
             else:
-                command += " " + opt.get_key()
                 value = opt.get_untypedvalue()
                 if len(value) > 0:
-
+                    command += " " + opt.get_key()
                     if value == "input":
                         command += " \"" + filename + "\" "
                     elif "file" in opt.get_type():
