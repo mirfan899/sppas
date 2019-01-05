@@ -461,9 +461,8 @@ class TestAlign(unittest.TestCase):
         s = sppasAlign()
         s.load_resources(model)
         s.load_resources(model, model1)
-
-        with self.assertRaises(IOError):
-            s.load_resources("toto")
+        # with self.assertRaises(IOError):
+        #     s.load_resources("toto")
 
     # -----------------------------------------------------------------------
 

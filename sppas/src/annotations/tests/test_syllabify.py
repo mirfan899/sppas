@@ -44,6 +44,7 @@ import unittest
 import os.path
 
 from sppas.src.config import paths
+from sppas.src.anndata.anndataexc import AioEncodingError
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasInterval
@@ -453,8 +454,11 @@ class TestsppasSyll(unittest.TestCase):
                 if os.path.exists(expected_result_filename) is False:
                     print("no match palign/salign for: {:s}".format(filename))
                     continue
-                parser = sppasRW(expected_result_filename)
-                expected_result = parser.read()
+                try:
+                    parser = sppasRW(expected_result_filename)
+                    expected_result = parser.read()
+                except AioEncodingError:
+                    continue
 
                 # Estimate the result and check if it's like expected.
                 input_file = os.path.join(samples_path, samples_folder, filename)

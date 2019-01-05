@@ -198,7 +198,7 @@ msgid ":ERROR 1050: "
 msgstr "Inconsistence entre le nombre d'intervalles des tiers données en entrée: {:d} vs {:d}."
 
 msgid ":ERROR 1060: "
-msgstr "La tier donnée en entrée ne contient pas assez d'annotations ; il en faut au moins {:s}."
+msgstr "La tier donnée en entrée ne contient pas assez d'annotations ; il en faut au moins {:d}."
 
 msgid ":ERROR 1110: "
 msgstr "Phonétisation impossble de {:s}."

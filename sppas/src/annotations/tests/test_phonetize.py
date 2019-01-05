@@ -360,7 +360,7 @@ class TestPhonetization(unittest.TestCase):
         """... Phonetization of an utterance."""
 
         self.sp.set_unk(True)
-        self.assertEqual(symbols.unk, self.sp.phonetize("é à"))
+        self.assertEqual([symbols.unk], self.sp.phonetize("é à"))
 
         self.assertEqual(set("D-@|D-V|D-i:".split('|')),
                          set(self.sp.phonetize("THE")[0].split('|')))
@@ -369,7 +369,7 @@ class TestPhonetization(unittest.TestCase):
                          self.sp.phonetize("HE")[0])
 
         self.sp.set_unk(False)  # do not try to phonetize if missing of the dict
-        self.assertEqual(symbols.unk, self.sp.phonetize("THE BANCI THE"))
+        self.assertEqual([symbols.unk], self.sp.phonetize("THE BANCI THE"))
 
         self.sp.set_unk(True)
 

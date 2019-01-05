@@ -45,6 +45,7 @@ import os.path
 
 from sppas.src.config import paths
 
+from sppas.src.anndata.anndataexc import AioEncodingError
 from sppas.src.utils.makeunicode import u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
@@ -478,8 +479,12 @@ class TestTextNorm(unittest.TestCase):
                                                         filename[:-9] + "-token.xra")
                 if os.path.exists(expected_result_filename) is False:
                     continue
-                parser = sppasRW(expected_result_filename)
-                expected_result = parser.read()
+
+                try:
+                    parser = sppasRW(expected_result_filename)
+                    expected_result = parser.read()
+                except AioEncodingError:
+                    continue
 
                 # Estimate the result and check if it's like expected.
                 input_file = os.path.join(paths.samples, samples_folder, filename)
