@@ -64,7 +64,7 @@ MSG_FILE_ENCODING = (_(":INFO 1026: "))
 # ----------------------------------------------------------------------------
 
 
-class sppasDiagnosis(object):
+class sppasDiagnosis:
     """Diagnose if files are appropriate.
 
     :author:       Brigitte Bigi
@@ -82,12 +82,6 @@ class sppasDiagnosis(object):
     EXPECTED_CHANNELS = 1
     EXPECTED_FRAME_RATE = 16000
     EXPECTED_SAMPLE_WIDTH = 2
-
-    # ------------------------------------------------------------------------
-
-    def __init__(self):
-        """Create a sppasDiagnosis instance."""
-        pass
 
     # ------------------------------------------------------------------------
     # Workers

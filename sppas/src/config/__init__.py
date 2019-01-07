@@ -89,10 +89,11 @@ resources_translation = st.translation("resources")
 structs_translation = st.translation("structs")
 ui_translation = st.translation("ui")
 utils_translation = st.translation("utils")
+globals_translation = st.translation("globals")
 
 # ---------------------------------------------------------------------------
 
-__all__ = [
+__all__ = (
     "sppasBaseSettings",
     "sg",
     "paths",
@@ -109,5 +110,5 @@ __all__ = [
     "structs_translation",
     "ui_translation",
     "utils_translation",
-
-]
+    "globals_translation"
+)

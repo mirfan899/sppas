@@ -120,6 +120,9 @@ class HviteAligner(BaseAligner):
         :param outputalign: (str) the output file name
 
         """
+        if self._model is None:
+            raise IOError('HVite aligner requires an acoustic model')
+
         base_name = os.path.splitext(inputwav)[0]
         dict_name = base_name + ".dict"
         grammar_name = base_name + ".lab"

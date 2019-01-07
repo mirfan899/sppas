@@ -45,7 +45,7 @@ class sppasGlobalSettings(sppasBaseSettings):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -54,10 +54,10 @@ class sppasGlobalSettings(sppasBaseSettings):
         super(sppasGlobalSettings, self).__init__()
 
         self.__dict__ = dict(
-            __version__="1.9.9",
+            __version__="2.0",
             __author__="Brigitte Bigi",
             __contact__="contact@sppas.org",
-            __copyright__="Copyright (C) 2011-2018 Brigitte Bigi",
+            __copyright__="Copyright (C) 2011-2019 Brigitte Bigi",
             __license__="GNU Public License, version 3",
             __docformat__='reStructedText en',
             __name__="SPPAS",
@@ -81,7 +81,7 @@ class sppasPathSettings(sppasBaseSettings):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -114,7 +114,7 @@ class sppasSymbolSettings(sppasBaseSettings):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This class defines:
 
@@ -176,7 +176,7 @@ class sppasSeparatorSettings(sppasBaseSettings):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -199,7 +199,7 @@ class sppasAnnotationsSettings(sppasBaseSettings):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 

@@ -5257,6 +5257,7 @@ L-E+n w-E+n
 L-dz+r noise-dz+E
 L-j+o k-j+E
 L-noise+* fp-noise+fp
+L-v+E u-v+i
 O-O+s L-O+r
 O-b+E noise-b+E
 O-b+o noise-b+E
@@ -5341,6 +5342,8 @@ a-r+n a-r+d
 a-r+r a-r+d
 a-s+s O-s+E
 a-t+e a-t+E
+a-t+g noise-t+i
+a-t+k noise-t+i
 a-t+n noise-t+i
 a-t+noise noise-t+i
 a-t+t noise-t+i
@@ -5529,6 +5532,7 @@ f-i+u O-i+m
 f-j+o f-j+O
 f-noise+S fp-noise+fp
 f-noise+f noise+fp
+f-o+t ts-o+t
 f-r+O a-r+d
 f-r+u f-r+o
 f-u+u f-u+o
@@ -5925,6 +5929,7 @@ p-o+g ts-o+t
 p-o+t p-o+ts
 p-p+e s-p+i
 p-p+o s-p+i
+p-r+k a-r+d
 p-r+o p-r+O
 p-r+u p-r+O
 p-w+O m-w+O
@@ -6034,11 +6039,14 @@ t-O+ts t-O+tS
 t-a+tS t-a+S
 t-b+e noise-b+E
 t-e+ts t-e+tS
+t-g+e g+e
 t-i+S O-i+m
 t-i+dz t-i+dZ
 t-i+s k-i+s
 t-j+E k-j+E
 t-j+e ts-j+e
+t-k+* a-k+l
+t-k+e a-k+l
 t-n+i u-n+l
 t-n+n u-n+l
 t-noise+d t-noise+a
@@ -6115,6 +6123,7 @@ ts-noise+n n-noise+n
 ts-o+noise S-o+noise
 ts-s+* O-s+E
 ts-u+t l-u+S
+u-L+v a-L+E
 u-S+a a-S+O
 u-b+E noise-b+E
 u-b+r u-b+l

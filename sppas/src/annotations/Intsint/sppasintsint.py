@@ -32,14 +32,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasLabel
+from sppas import sppasTag
 
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata.anndataexc import AnnDataTypeError
 from sppas.src.anndata.anndataexc import AnnDataEqError
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasLabel
-from sppas.src.anndata import sppasTag
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
@@ -135,19 +135,20 @@ class sppasIntsint(sppasBaseAnnotation):
         return tier
 
     # -----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the INTSINT annotation process on an input file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) the input file name with momel
-        :param output_filename: (str) the output file name of the INTSINT tier
+        :param input_file: (list of str) momel anchors
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename)
-
         # Get the tier to be annotated.
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.pitch_anchors(trs_input)
 
@@ -159,12 +160,23 @@ class sppasIntsint(sppasBaseAnnotation):
         # Create the transcription result
         trs_output = sppasTranscription(self.name)
         trs_output.append(tier_intsint)
-        trs_output.set_meta('intsint_result_of', input_filename)
+        trs_output.set_meta('intsint_result_of', input_file[0])
 
         # Save in a file
-        if output_filename is not None:
-            parser = sppasRW(output_filename)
+        if output_file is not None:
+            parser = sppasRW(output_file)
             parser.write(trs_output)
-            self.print_filename(output_filename, status=0)
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Pattern this annotation uses in an output filename."""
+        return '-intsint'
+
+    @staticmethod
+    def get_input_pattern():
+        """Pattern this annotation expects for its input filename."""
+        return '-momel'

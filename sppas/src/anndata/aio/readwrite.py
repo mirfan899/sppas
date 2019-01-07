@@ -41,6 +41,7 @@ from sppas.src.utils.datatype import sppasTime
 
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioFileExtensionError
+from ..anndataexc import AioError
 
 from .text import sppasRawText
 from .text import sppasCSV
@@ -158,10 +159,11 @@ class sppasRW(object):
 
         try:
             # Add metadata about the file
+            fn = u(self.__filename)
             trs.set_meta('file_reader', trs.__class__.__name__)
-            trs.set_meta('file_name', os.path.basename(self.__filename))
-            trs.set_meta('file_path', os.path.dirname(self.__filename))
-            trs.set_meta('file_ext', os.path.splitext(self.__filename)[1])
+            trs.set_meta('file_name', os.path.basename(fn))
+            trs.set_meta('file_path', os.path.dirname(fn))
+            trs.set_meta('file_ext', os.path.splitext(fn)[1])
             trs.set_meta('file_read_date', sppasTime().now)
 
             # Read the file content dans store into a Transcription()
@@ -169,6 +171,8 @@ class sppasRW(object):
 
         except UnicodeError as e:
             raise AioEncodingError(filename=self.__filename, error=str(e))
+        except IOError:
+            raise AioError(self.__filename)
         except Exception:
             raise
 

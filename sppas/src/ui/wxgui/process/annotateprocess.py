@@ -33,28 +33,25 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
 import wx
-import shutil
 
 from sppas.src.annotations.manager import sppasAnnotationsManager
 
 from sppas.src.ui.wxgui.sp_consts import ID_FILES
 from sppas.src.ui.wxgui.views.log import ShowLogDialog
 from sppas.src.ui.wxgui.views.processprogress import ProcessProgressDialog
-from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 
 
 class AnnotateProcess(object):
-    """
+    """Automatic annotation process, with progress bar.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Automatic annotation process, with progress bar.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
     def __init__(self, preferences):
@@ -63,7 +60,8 @@ class AnnotateProcess(object):
         :param preferences: (Preferences)
 
         """
-        self.process = None
+        self.process = sppasAnnotationsManager()
+        self.process.set_do_merge(True)
         self.preferences = preferences
 
     # ------------------------------------------------------------------------
@@ -89,41 +87,38 @@ class AnnotateProcess(object):
         :param parameters:
 
         """
+        message = None
+
         # Check input files
         if len(filelist) == 0:
-            message = "Empty selection! Select audio file(s) to annotate."
-            ShowInformation(None, self.preferences, message)
-            return
+           return "Empty selection! Select file(s) to annotate."
 
         # Fix options
         nbsteps = 0
         for i in range(len(activeannot)):
             if activeannot[i]:
-                nbsteps = nbsteps + 1
-                parameters.activate_step(i)
                 # if there are languages available and none of them is selected, print an error
-                if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) is None:
-                    message = "There isn't any language selected for the annotation \"%s\"" % parameters.get_step_name(i)
-                    ShowInformation(None, self.preferences, message)
-                    return
+                if len(parameters.get_langlist(i)) > 0 and len(parameters.get_lang(i)) == 0:
+                    return "A language must be selected for the " \
+                           "annotation \"{:s}\"".format(parameters.get_step_name(i))
+                nbsteps += 1
+                parameters.activate_step(i)
             else:
                 parameters.disable_step(i)
 
-        if not nbsteps:
-            message = "No annotation selected!"
-            ShowInformation(None, self.preferences, message)
-            return
+        if nbsteps == 0:
+            return "No annotation selected or annotations not properly selected"
 
-        parameters.set_sppasinput(filelist)
+        for entry in filelist:
+            parameters.add_sppasinput(entry)
         parameters.set_output_format(self.preferences.GetValue('M_OUTPUT_EXT'))
 
         # Create the progress bar then run the annotations
         wx.BeginBusyCursor()
-        p = ProcessProgressDialog(parent, self.preferences, "Automatic annotation processing...")
-        self.process = sppasAnnotationsManager(parameters)
-        self.process.run_annotations(p)
+        p = ProcessProgressDialog(parent, self.preferences,
+                                  "Automatic annotation processing...")
+        self.process.annotate(parameters, p)
         p.close()
-        self.process = None
         wx.EndBusyCursor()
 
         # Update the file tree (append new annotated files)
@@ -140,17 +135,9 @@ class AnnotateProcess(object):
 
         # Show report
         try:
-            ShowLogDialog(parent, self.preferences, parameters.get_logfilename())
-            try:
-                os.remove(parameters.get_logfilename())
-                # eg. source or destination doesn't exist
-            except IOError:
-                pass
-            except shutil.Error:
-                pass
-        except Exception:
+            ShowLogDialog(parent, self.preferences, parameters.get_report_filename())
+        except:
             message = "Automatic annotation finished.\nSee " + \
-                      parameters.get_logfilename() + \
-                      " for details.\nThanks for using SPPAS.\n"
-            ShowInformation(None, self.preferences, message)
+                      parameters.get_report_filename() + " for details.\n"
 
+        return message

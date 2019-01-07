@@ -32,11 +32,18 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import logging
+import os
 
-from sppas.src.config import paths
-from sppas.src.config import annots
-from sppas.src.annotations.cfgparser import sppasAnnotationConfigParser
+from sppas import paths
+from sppas import annots
+from sppas.src.structs.lang import UNDETERMINED
+from sppas.src.anndata.aio import extensions as annots_ext
+from sppas.src.audiodata.aio import extensions as audio_ext
+from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.utils.fileutils import sppasFileUtils
+
+from .cfgparser import sppasAnnotationConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -48,154 +55,151 @@ class annotationParam(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Class to store data of an automatic annotation like its name, description, 
+    Class to store data of an automatic annotation like its name, description,
     supported languages, etc.
-    
+
     """
+
     def __init__(self, filename=None):
-        """Creates a new annotationParam instance.
+        """Create a new annotationParam instance.
 
         :param filename: (str) Annotation configuration file
-        
+
         """
-        # An identifier to represent this annotation step
+        # An identifier to represent this annotation
         self.__key = None
         # The name of the annotation
         self.__name = ""
         # The description of the annotation
         self.__descr = ""
-        # The annotation status
+        # The status of the annotation
         self.__enabled = False
         self.__invalid = False
-        # The language resource
-        self.__langres = list()
+        # The language resource: sppasLangResource()
+        self.__resources = list()
         # The list of options
         self.__options = list()
-        # Status
-        self.__invalid = False
 
-        # OK... now fix all values from the given file
-        if filename:
+        # Fix all members from a given config file
+        if filename is not None:
             self.parse(filename)
 
     # ------------------------------------------------------------------------
 
     def parse(self, filename):
         """Parse a configuration file to fill members.
-        
-        :param filename: (str) Annotation configuration file
+
+        :param filename: (str) Annotation configuration file (.ini)
 
         """
         p = sppasAnnotationConfigParser()
         p.parse(filename)
 
         self.__options = p.get_options()
-        self.__langres = p.get_resources()
+        self.__resources = p.get_resources()
         conf = p.get_config()
         self.__key = conf['id']
         self.__name = conf.get('name', "")
         self.__descr = conf.get('descr', "")
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Setters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_activate(self, activate):
-        """Enable or disable the annotation only if this annotation is valid.
-        
-        :param activate: (bool) 
+        """Enable the annotation but only if this annotation is valid.
+
+        :param activate: (bool) Enable or disable the annotation
         :returns: (bool) enabled or disabled
-        
+
         """
         self.__enabled = activate
         if activate is True and self.__invalid is True:
             self.__enabled = False
         return self.__enabled
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """Set the language of the annotation only if this latter is accepted.
+        """Set the language of the annotation, if this latter is accepted.
 
         :param lang: (str) Language to fix for the annotation
-        :returns: (bool) 
+        :returns: (bool) Language is set or not
 
         """
-        if len(self.__langres) > 0:
+        if len(self.__resources) > 0:
             try:
-                self.__langres[0].set_lang(lang)
+                self.__resources[0].set_lang(lang)
                 return True
-            except Exception:
+            except:
                 self.__invalid = True
                 self.__enabled = False
-        return False
+                return False
+        return True
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Getters
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_key(self):
         """Return the identifier of the annotation (str)."""
         return self.__key
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_name(self):
         """Return the name of the annotation (str)."""
         return self.__name
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_descr(self):
         """Return the description of the annotation (str)."""
         return self.__descr
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_activate(self):
         """Return the activation status of the annotation (bool)."""
         return self.__enabled
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_lang(self):
-        """Return the language defined for the annotation (str) or an empty string."""
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_lang()
+        """Return the language or an empty string."""
+        if len(self.__resources) > 0:
+            return self.__resources[0].get_lang()
         return ""
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_langlist(self):
-        """Return the list of available languages for the annotation (list of str)."""
-
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_langlist()
+        """Return the list of available languages (list of str)."""
+        if len(self.__resources) > 0:
+            return self.__resources[0].get_langlist()
         return []
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_langresource(self):
-        """Return the list of language resources related to the annotation (list of sppasLang)."""
-        if len(self.__langres) > 0:
-            return self.__langres[0].get_langresource()
-        return []
+        """Return the list of language resources."""
+        return [r.get_langresource() for r in self.__resources]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_options(self):
         """Return the list of options of the annotation."""
         return self.__options
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_option(self, step):
         """Return the step-th option."""
         return self.__options[step]
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_option_by_key(self, key):
         """Return an option from its key."""
@@ -203,85 +207,231 @@ class annotationParam(object):
             if key == opt.get_key():
                 return opt
 
-# ----------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    def set_option_value(self, key, value):
+        """Change value of an option.
+
+        :param key: (str) Identifier of the option
+        :param value: (any) New value for the option
+        :raises: KeyError
+
+        """
+        # the option is already in the list, change its value
+        for opt in self.__options:
+            if key == opt.get_key():
+                opt.set_value(value)
+                return
+
+        # the option was not found in the list
+        raise KeyError("Unknown option {:s} in annotation parameters."
+                       "".format(key))
+
+# ---------------------------------------------------------------------------
 
 
 class sppasParam(object):
-    """Annotations parameters manager.
+    """Annotation parameters manager.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    Parameters of a set of annotations.
 
     """
-    def __init__(self):
-        """Creates a new sppasParam instance with default values."""
 
-        # Internal variables
-        self.continuer = False
+    def __init__(self, annotation_keys=None):
+        """Create a new sppasParam instance with default values.
 
-        # User
-        self.logfilename = ""
-        self.output_format = annots.extension
+        :param annotation_keys: (list) List of annotations to load. None=ALL.
 
-        # SPPAS parameters
-        self.sppasinput = []
+        """
+        # A log file to communicate to the user
+        self._report = None
 
-        # Annotation steps
+        # The format of the annotated files
+        self._output_ext = annots.extension
+
+        # Input files to annotate
+        self._inputs = []
+
+        # The parameters of all the annotations
         self.annotations = []
-        self.parse_config_file()
+        self.load_annotations(annotation_keys)
+
+    # ------------------------------------------------------------------------
+
+    def load_annotations(self, annotation_files=None):
+        """Load the annotation configuration files.
+
+        Load from a list of given file names (without path) or from the
+        default sppas.conf file.
+
+        :param annotation_files: (list) List of annotations to load. None=ALL.
+
+        """
+        if not annotation_files or len(annotation_files) == 0:
+            self.parse_config_file()
+
+        else:
+            for cfg_file in annotation_files:
+                self.__load(os.path.join(paths.etc, cfg_file))
 
     # ------------------------------------------------------------------------
 
     def parse_config_file(self):
-        """Parse the sppas.conf file to get the list of annotations."""
-        with open(os.path.join(paths.etc, "sppas.conf"), "r") as fp:
-            lines = fp.readlines()
+        """Parse the sppas.conf file.
 
-        # Read the whole file and load annotation options
+        Parse the file to get the list of annotations and parse the
+        corresponding "ini" file.
+
+        """
+        config = os.path.join(paths.etc, "sppas.conf")
+        if os.path.exists(config) is False:
+            raise IOError('Installation error: the file to configure the '
+                          'automatic annotations does not exist.')
+
+        # Read the whole file content
+        with open(config, "r") as fp:
+            lines = fp.readlines()
+            fp.close()
+
+        # Load annotation configurations
         for line in lines:
             line = line.strip()
             if line.lower().startswith("annotation:") is True:
                 data = line.split(":")
-                cfg_file = data[1].strip()
-                self.annotations.append(annotationParam(os.path.join(paths.etc, cfg_file)))
+                self.__load(os.path.join(paths.etc, data[1].strip()))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    # sppas input (file name or directory)
-    def set_sppasinput(self, inputlist):
-        self.sppasinput = inputlist
-        self.logfilename = self.sppasinput[0]+".log"
+    def __load(self, cfg_file):
+        """Load parameters of an annotation from its configuration file."""
+        try:
+            a = annotationParam(cfg_file)
+            self.annotations.append(a)
+        except:
+            logging.error('Configuration file {:s} not loaded.'
+                          ''.format(cfg_file))
+
+    # -----------------------------------------------------------------------
+    # Input entries to annotate
+    # -----------------------------------------------------------------------
 
     def get_sppasinput(self):
-        return self.sppasinput
+        """Return the list of entries to annotate."""
+        return self._inputs
 
-    def add_sppasinput(self, inputfilename):
-        self.sppasinput.append(inputfilename)
-        self.logfilename = self.sppasinput[0]+".log"
+    # -----------------------------------------------------------------------
 
-    def clear_sppasinput(self):
-        del self.sppasinput
-        self.sppasinput = []
+    def add_sppasinput(self, entry):
+        """Add a new entry to annotate.
 
-    # sppas log file name
-    def set_logfilename(self, logfilename):
-        self.logfilename = logfilename
+        If no report file name was previously fixed, it will be assigned to
+        the given entry with the extension '.log'.
 
-    def get_logfilename(self):
-        return self.logfilename
+        :param entry: (str) Filename or directory
 
-    # sppas selected language
+        """
+        base_ext = ['.txt', '.hz', '.pitchtier']
+        for e in audio_ext:
+            base_ext.append(e.lower())
+        ann_ext = [e.lower() for e in annots_ext]
+
+        # Create a full list of files to add, without any kind of filter
+        initial_files = list()
+        if os.path.isdir(entry):
+            # Get the list of files from the input directory
+            for ae in base_ext:
+                initial_files.extend(sppasDirUtils(entry).get_files(ae))
+        else:
+            initial_files.append(entry)
+
+        # Create a list with the basename of the files
+        for entry_file in initial_files:
+            fn, e = os.path.splitext(entry_file)
+            if fn in self._inputs:
+                continue
+
+            if len(e) == 0:
+                # the entry is already the basename
+                self.__append_input(fn, base_ext)
+
+            elif e.lower() in base_ext:
+                # the entry is a primary file (audio/text/pitch)
+                self._inputs.append(fn)
+
+            elif e.lower() in ann_ext:
+                # the entry is an annotated file
+                appended = self.__append_input(fn, base_ext)
+                if appended is False:
+                    # the entry is an annotated file with a pattern
+                    fn = self.__remove_pattern(fn)
+                    if fn not in self._inputs:
+                        self.__append_input(fn, base_ext)
+
+        for f in self._inputs:
+            logging.debug(f)
+
+    # -----------------------------------------------------------------------
+
+    def __append_input(self, base_fn, base_ext):
+        for ae in base_ext:
+            if sppasFileUtils(base_fn + ae).exists() \
+                    and base_fn not in self._inputs:
+                self._inputs.append(base_fn)
+                return True
+        return False
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __remove_pattern(entry):
+        minus = entry.rfind('-')
+        if minus != -1:
+            sep = entry.rfind(os.path.sep)
+            if minus > sep:
+                return entry[:minus]
+        return entry
+
+    # -----------------------------------------------------------------------
+    # Procedure Outcome Report file name
+    # -----------------------------------------------------------------------
+
+    def set_report_filename(self, filename):
+        """Fix the name of the file to save the report of the annotations.
+
+        :param filename: (str) Filename for the Procedure Outcome Report
+
+        """
+        self._report = filename
+
+    # -----------------------------------------------------------------------
+
+    def get_report_filename(self):
+        """Return the name of the file for the Procedure Outcome Report."""
+        return self._report
+
+    # -----------------------------------------------------------------------
+    # selected language
+    # -----------------------------------------------------------------------
+
     def set_lang(self, language, step=None):
         if step is not None:
             self.annotations[step].set_lang(language)
         else:
-            for i in range(len(self.annotations)):
-                self.annotations[i].set_lang(language)
+            for a in self.annotations:
+                a.set_lang(language)
 
-    def get_lang(self, step=2):
+    def get_lang(self, step=None):
+        if step is None:
+            for a in self.annotations:
+                if a.get_lang() != UNDETERMINED:
+                    return a.get_lang()
+            return UNDETERMINED
         return self.annotations[step].get_lang()
 
     def get_langresource(self, step):
@@ -292,9 +442,11 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def activate_annotation(self, stepname):
-        for a in self.annotations:
+        for i, a in enumerate(self.annotations):
             if a.get_key() == stepname:
                 a.set_activate(True)
+                return i
+        return -1
 
     def activate_step(self, step):
         self.annotations[step].set_activate(True)
@@ -310,6 +462,24 @@ class sppasParam(object):
 
     def get_step_descr(self, step):
         return self.annotations[step].get_descr()
+
+    # ------------------------------------------------------------------------
+
+    def get_step_idx(self, annotation_key):
+        """Get the annotation step index from an annotation key.
+
+        :param annotation_key: (str)
+        :raises: KeyError
+
+        """
+        for i, a in enumerate(self.annotations):
+            if a.get_key() == annotation_key:
+                return i
+
+        raise KeyError('No configuration file is available for an annotation'
+                       'with key {:s}'.format(annotation_key))
+
+    # ------------------------------------------------------------------------
 
     def get_step_key(self, step):
         return self.annotations[step].get_key()
@@ -327,30 +497,48 @@ class sppasParam(object):
         return self.annotations[step].get_langlist()
 
     def get_step(self, step):
+        """Return the 'sppasParam' instance of the annotation."""
         return self.annotations[step]
 
     def get_options(self, step):
         return self.annotations[step].get_options()
 
+    def set_option_value(self, step, key, value):
+        self.annotations[step].set_option_value(key, value)
+
+    # -----------------------------------------------------------------------
+    # Annotation file output format
+    # -----------------------------------------------------------------------
+
     def get_output_format(self):
-        return self.output_format
+        """Return the output format of the annotations (extension)."""
+        return self._output_ext
+
+    # -----------------------------------------------------------------------
 
     def set_output_format(self, output_format):
-        self.output_format = output_format
+        """Fix the output format of the annotations.
 
-    # ------------------------------------------------------------------------
-    # Continue: everything is ok?
-    # ------------------------------------------------------------------------
-
-    def set_continue(self, status):
-        self.continuer = status
-
-    # ------------------------------------------------------------------------
-
-    def get_continue(self):
-        """Ask to continue SPPAS or not!
-
-        :returns: (bool)
+        :param output_format: (str) File extension (with or without a dot)
+        :returns: the extension really set.
 
         """
-        return self.continuer
+        # Force to contain the dot
+        if not output_format.startswith("."):
+            output_format = "." + output_format
+
+        # Force to use the appropriate upper-lower cases
+        for e in annots_ext:
+            if output_format.lower() == e.lower():
+                output_format = e
+
+        # Check if this extension is know. If not, set to the default.
+        if output_format not in annots_ext:
+            # Instead we could raise an exception...
+            logging.warning(
+                "Unknown extension: {:s}. Output format is set to the "
+                "default: {:s}.".format(output_format, annots.extension))
+            output_format = annots.extension
+
+        self._output_ext = output_format
+        return output_format

@@ -101,25 +101,23 @@ class sppasAlign(sppasBaseAnnotation):
 
     How to use sppasAlign?
 
-    >>> a = sppasAlign(model_dirname)
-    >>> a.run(input_phones, input_tokens, input_audio, output)
+    >>> a = sppasAlign()
+    >>> a.load_resources(model_dirname)
+    >>> a.run([audio, phones], [tokens], output)
 
     """
 
-    def __init__(self, model, model_L1=None, logfile=None):
+    def __init__(self, logfile=None):
         """Create a new sppasAlign instance.
 
-        :param model: (str) Directory of the acoustic model
-        :param model_L1: (str) Directory of the acoustic model L1
         :param logfile: (sppasLog)
 
         """
         sppasBaseAnnotation.__init__(self, logfile, "Alignment")
         self.mapping = sppasMapping()
-        self._segmenter = None
-        self._tracksrw = None
+        self._segmenter = TrackSegmenter()
+        self._tracksrw = TracksReaderWriter(sppasMapping())
 
-        self.fix_segmenter(model, model_L1)
         self.reset()
 
     # -----------------------------------------------------------------------
@@ -134,7 +132,7 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def fix_segmenter(self, model, model_L1):
+    def load_resources(self, model, model_L1=None, **kwargs):
         """Fix the acoustic model directory.
 
         Create a SpeechSegmenter and AlignerIO.
@@ -154,9 +152,9 @@ class sppasAlign(sppasBaseAnnotation):
                 model_mixer.mix(output_dir, gamma=0.6)
                 model = output_dir
             except Exception as e:
-                self.print_message(MSG_MODEL_L1_FAILED.format(str(e)),
-                                   indent=3,
-                                   status=annots.warning)
+                self.logfile.print_message(
+                    MSG_MODEL_L1_FAILED.format(str(e)), indent=2,
+                    status=annots.warning)
 
         # Map phoneme names from model-specific to SAMPA and vice-versa
         mapping_filename = os.path.join(model, "monophones.repl")
@@ -165,8 +163,8 @@ class sppasAlign(sppasBaseAnnotation):
                 mapping = sppasMapping(mapping_filename)
             except:
                 mapping = sppasMapping()
-                logging.info('No mapping file was found in model {:s}'
-                             ''.format(model))
+                logging.warning('No mapping file was found in model {:s}'
+                                ''.format(model))
         else:
             mapping = sppasMapping()
 
@@ -273,12 +271,12 @@ class sppasAlign(sppasBaseAnnotation):
 
     def _segment_track_with_basic(self, audio, phn, token, align):
         """Segmentation of a track with the basic alignment system."""
-        self.print_message(MSG_BASIC, indent=3)
+        self.logfile.print_message(MSG_BASIC, indent=2)
         aligner_id = self._segmenter.get_aligner()
         self._segmenter.set_aligner('basic')
         msg = self._segmenter.segment(audio, phn, token, align)
         if len(msg) > 0:
-            self.print_message(msg, indent=3, status=annots.info)
+            self.logfile.print_message(msg, indent=2, status=annots.info)
         self._segmenter.set_aligner(aligner_id)
 
     # -----------------------------------------------------------------------
@@ -300,8 +298,8 @@ class sppasAlign(sppasBaseAnnotation):
 
             # Fix track number (starts from 1)
             track_number += 1
-            self.print_message(
-                MSG_ALIGN_TRACK.format(number=track_number), indent=2)
+            self.logfile.print_message(
+                MSG_ALIGN_TRACK.format(number=track_number), indent=1)
 
             # Fix the expected filenames for this track
             (audio, phn, token, align) = \
@@ -311,16 +309,16 @@ class sppasAlign(sppasBaseAnnotation):
             try:
                 msg = self._segmenter.segment(audio, phn, token, align)
                 if len(msg) > 0:
-                    self.print_message(msg, indent=3, status=annots.info)
+                    self.logfile.print_message(msg, indent=2, status=annots.info)
 
             except Exception as e:
                 # Something went wrong and the aligner failed
-                self.print_message(
+                self.logfile.print_message(
                     MSG_ALIGN_FAILED.format(
                         name=self._segmenter.get_aligner()),
-                    indent=3,
+                    indent=2,
                     status=annots.error)
-                self.print_message(str(e), indent=4, status=annots.info)
+                self.logfile.print_message(str(e), indent=3, status=annots.info)
                 logging.error(traceback.format_exc())
 
                 # Execute BasicAlign
@@ -349,7 +347,7 @@ class sppasAlign(sppasBaseAnnotation):
             raise NoDirectoryError(workdir)
 
         # Split input into tracks
-        self.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=2)
+        self.logfile.print_message(MSG_ACTION_SPLIT_INTERVALS, indent=1)
         if os.path.exists(workdir) is False:
             os.mkdir(workdir)
         self._tracksrw.split_into_tracks(
@@ -359,7 +357,7 @@ class sppasAlign(sppasBaseAnnotation):
         self._segment_tracks(workdir)
 
         # Merge track alignment results
-        self.print_message(MSG_ACTION_MERGE_INTERVALS, indent=2)
+        self.logfile.print_message(MSG_ACTION_MERGE_INTERVALS, indent=1)
         tier_phn, tier_tok, tier_pron = \
             self._tracksrw.read_aligned_tracks(workdir)
 
@@ -379,13 +377,13 @@ class sppasAlign(sppasBaseAnnotation):
 
         token_align = trs.find("TokensAlign")
         if token_align is None:
-            self.print_message(MSG_NO_TOKENS_ALIGN, indent=2,
-                               status=annots.warning)
+            self.logfile.print_message(
+                MSG_NO_TOKENS_ALIGN, indent=1, status=annots.warning)
             return trs
 
         # Activity tier
         try:
-            self.print_message(MSG_ACTION_EXTRA_TIER, indent=2)
+            self.logfile.print_message(MSG_ACTION_EXTRA_TIER, indent=1)
             activity = sppasActivity()
             tier = activity.get_tier(trs)
             if self._options['activity'] is True:
@@ -405,66 +403,63 @@ class sppasAlign(sppasBaseAnnotation):
                                        tier, dur_tier)
         except Exception as e:
             logging.error(traceback.format_exc())
-            self.print_message(
+            self.logfile.print_message(
                 MSG_EXTRA_TIER.format(
                     tiername="Activities", message=str(e)),
                 indent=2, status=annots.warning)
 
     # -----------------------------------------------------------------------
 
-    def run(self, phonesname, tokensname, audioname, outputfilename=None):
-        """Execute SPPAS Alignment.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param phonesname: (str) file containing the phonetization
-        :param tokensname: (str) file containing the tokenization
-        :param audioname: (str) Audio file name
-        :param outputfilename: (str) the file name with the result
-
-        :returns: (Transcription)
+        :param input_file: (list of str) (audio, phonemes)
+        :param opt_input_file: (list of str) (tokens)
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
-        self.print_filename(audioname)
-        self.print_options()
-        self.print_diagnosis(audioname, phonesname, tokensname)
+        input_audio_filename = input_file[0]
+        input_phon_filename = input_file[1]
 
         # Get the tiers to be time-aligned
-        parser = sppasRW(phonesname)
+        parser = sppasRW(input_phon_filename)
         trs_input = parser.read()
         phon_tier = sppasFindTier.phonetization(trs_input)
         if phon_tier is None:
             raise NoInputError
 
         try:
-            parser = sppasRW(tokensname)
+            parser = sppasRW(opt_input_file[0])
             trs_input_tok = parser.read()
             tok_tier = sppasFindTier.tokenization(trs_input_tok)
         except:   # IOError, AttributeError:
             tok_tier = None
-            self.print_message(MSG_TOKENS_DISABLED,
-                               indent=2, status=annots.warning)
+            self.logfile.print_message(
+                MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
 
         # Prepare data
-        input_audio = fix_audioinput(audioname)
+        input_audio = fix_audioinput(input_audio_filename)
         workdir = fix_workingdir(input_audio)
         if self._options['clean'] is False:
-            self.print_message(MSG_WORKDIR.format(dirname=workdir),
-                               indent=3, status=None)
+            self.logfile.print_message(
+                MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
 
         # Set media
-        extm = os.path.splitext(audioname)[1].lower()[1:]
-        media = sppasMedia(audioname, mime_type="audio/"+extm)
+        extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
+        media = sppasMedia(input_audio_filename, mime_type="audio/"+extm)
 
         # Processing...
         try:
             tier_phn, tier_tok, tier_pron = self.convert(
                 phon_tier,
                 tok_tier,
-                audioname,
+                input_audio_filename,
                 workdir
             )
             tier_phn.set_media(media)
 
-            trs_output = sppasTranscription()
+            trs_output = sppasTranscription(self.name)
             trs_output.append(tier_phn)
             if tier_tok is not None:
                 tier_tok.set_media(media)
@@ -491,7 +486,7 @@ class sppasAlign(sppasBaseAnnotation):
                                   'phonemes and tokens')
 
         except Exception as e:
-            self.print_message(str(e))
+            self.logfile.print_message(str(e))
             if self._options['clean'] is True:
                 shutil.rmtree(workdir)
             raise
@@ -499,12 +494,11 @@ class sppasAlign(sppasBaseAnnotation):
         self.append_extra(trs_output)
 
         # Save results
-        if outputfilename is not None:
+        if output_file is not None:
             try:
                 # Save in a file
-                parser = sppasRW(outputfilename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
-                self.print_filename(outputfilename, status=0)
             except Exception:
                 if self._options['clean'] is True:
                     shutil.rmtree(workdir)
@@ -512,10 +506,23 @@ class sppasAlign(sppasBaseAnnotation):
 
         # Clean!
         # if the audio file was converted.... remove the tmpaudio
-        if input_audio != audioname:
+        if input_audio != input_audio_filename:
             os.remove(input_audio)
         # Remove the working directory we created
         if self._options['clean'] is True:
             shutil.rmtree(workdir)
 
         return trs_output
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Pattern this annotation uses in an output filename."""
+        return '-palign'
+
+    @staticmethod
+    def get_input_pattern():
+        """Pattern this annotation expects for its input filename."""
+        return '-phon'
+

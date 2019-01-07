@@ -48,6 +48,7 @@ from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasRW
 import sppas.src.audiodata.aio
 from sppas.src.audiodata.audio import sppasAudioPCM
+from sppas.src.annotations.searchtier import sppasFindTier
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -65,7 +66,6 @@ parser.add_argument("-i",
 parser.add_argument("-t",
                     metavar="tier",
                     required=False,
-                    default="IPUs",
                     help="Name of the tier indicating the tracks.")
 
 parser.add_argument("-e",
@@ -87,7 +87,11 @@ args = parser.parse_args()
 # Load input data
 
 # Open the audio and check it
-audio = sppas.src.audiodata.aio.open(args.i)
+try:
+    audio = sppas.src.audiodata.aio.open(args.i)
+except Exception as e:
+    print(str(e))
+    sys.exit(1)
 if audio.get_nchannels() > 1:
     print('AudioSegmenter supports only mono audio files.')
     sys.exit(1)
@@ -105,18 +109,29 @@ if ann is None:
     sys.exit(1)
 
 # Load annotated data
-parser = sppasRW(ann)
-trs_input = parser.read()
+try:
+    parser = sppasRW(ann)
+    trs_input = parser.read()
+except Exception as e:
+    print(str(e))
+    sys.exit(1)
 
 # ----------------------------------------------------------------------------
 # Extract the data we'll work on
 
 # Extract the tier
-tier = trs_input.find(args.t, case_sensitive=False)
-if tier is None:
-    print("A tier with name {:s} is required in file {:s}."
-          "".format(args.t, ann))
-    sys.exit(1)
+if args.t:
+    tier = trs_input.find(args.t, case_sensitive=False)
+    if tier is None:
+        print("Tier {:s} not found.".format(args.t))
+        sys.exit(1)
+else:
+    try:
+        tier = sppasFindTier.transcription(trs_input)
+    except:
+        print('A tier with IPUs or a transcription is required to indicate '
+              'the tracks. Tier not found.')
+        sys.exit(1)
 
 # Extract the channel
 audio.extract_channel(0)
@@ -127,8 +142,10 @@ framerate = channel.get_framerate()
 # ----------------------------------------------------------------------------
 # Prepare output
 
+tier_name = sppasUnicode(tier.get_name()).to_ascii()
+
 # output directory
-output_dir = filename + "-" + args.t
+output_dir = filename + "-" + tier_name
 if os.path.exists(output_dir):
     print("A directory with name {:s} is already existing.".format(output_dir))
     sys.exit(1)
@@ -155,9 +172,9 @@ for i, ann in enumerate(tier):
     su = sppasUnicode(text)
     su.clear_whitespace()
     text_ascii = su.to_ascii()
+    text_ascii = text_ascii[:29]  # to limit the size of the filename...
     idx = "{:04d}".format(i+1)
     fn = os.path.join(output_dir, idx + "_" + text_ascii)
-    fn = fn[:40]  # to limit the size of the filename...
     if not args.quiet:
         print('* track {:s} from {:f} to {:f}'.format(idx, begin, end))
 
@@ -172,7 +189,7 @@ for i, ann in enumerate(tier):
 
     # create text output (copy original label as it!)
     trs_output = sppasTranscription("TrackSegment")
-    tracks_tier = trs_output.create_tier(tier.get_name()+"-"+idx)
+    tracks_tier = trs_output.create_tier(tier_name + "-" + idx)
     tracks_tier.create_annotation(
         sppasLocation(sppasInterval(
             sppasPoint(0.),

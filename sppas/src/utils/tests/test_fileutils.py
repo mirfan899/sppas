@@ -73,7 +73,7 @@ class TestFileUtils(unittest.TestCase):
     def test_format(self):
         sf = sppasFileUtils(" filename with some   whitespace ")
         f = sf.clear_whitespace()
-        self.assertEqual(f, "filename_with_some_whitespace")
+        self.assertEqual("filename_with_some_whitespace", f)
         sf = sppasFileUtils(self.sample_2)
         f = sf.to_ascii()
         self.assertTrue(f.endswith("AG_____0460.TextGrid"))

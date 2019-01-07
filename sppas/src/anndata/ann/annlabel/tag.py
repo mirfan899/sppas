@@ -76,6 +76,7 @@ class sppasTag(object):
         >>> t7 = sppasTag(0, tag_type="bool")       # False (bool)
 
     """
+
     TAG_TYPES = ("str", "float", "int", "bool")
 
     # ------------------------------------------------------------------------
@@ -175,8 +176,9 @@ class sppasTag(object):
                 raise AnnDataTypeError(tag_content, "int")
 
         elif tag_type == "bool":
-            # always works. Never raises ValueError!
-            tag_content = bool(tag_content)
+            if tag_content not in ('False', 'True'):
+                # always works. Never raises ValueError!
+                tag_content = bool(tag_content)
 
         # we systematically convert data into strings
         self.__tag_type = tag_type

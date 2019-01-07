@@ -246,6 +246,8 @@ class JuliusAligner(BaseAligner):
         :param outputalign: (str) output file name
 
         """
+        if self._model is None:
+            raise IOError('Julius aligner requires an acoustic model')
         # Fix file names
         tiedlist = os.path.join(self._model, "tiedlist")
         config = os.path.join(self._model, "config")
@@ -356,33 +358,45 @@ class JuliusAligner(BaseAligner):
 
         entries = []
         for line in lines:
-            if line.find("Error: voca_load_htkdict") > -1 \
-                    and line.find("not found") > -1:
+            if line.startswith("Error: voca_load_htkdict") and \
+                    "content" not in line and \
+                    "not found" not in line and \
+                    "missing" not in line:
                 line = sppasUnicode(line).to_strip()
-                line = line[line.find('"')+1:]
-                line = line[:line.find('"')]
-                if len(line) > 0:
-                    entries = line.split()
+                columns = line.split(":")
+                if len(columns) >= 3:
+                    tie = columns[2].split()[0]
+                    entries.append(tie)
 
         if len(entries) > 0:
+            message = "SPPAS will try to add the following {:d} triphones in the acoustic model: \n{:s}\n".format(len(entries), "\n".join(entries))
             added = self.add_tiedlist(entries)
-            if len(added) > 0:
-                message = "The acoustic model was modified. " \
-                          "The following entries were successfully added " \
-                          "into the tiedlist: "
-                message = message + " ".join(added) + "\n"
+            if len(added) == len(entries):
+                message += "The acoustic model was modified. All the missing " \
+                           "entries were successfully added in the model: " \
+                           "{:s}.\nSPPAS calls Julius alignment system for a 2nd time." \
+                           "\n".format(",".join(added))
                 self.run_julius(input_wav, basename, output_align)
                 with codecs.open(output_align, 'r', sg.__encoding__) as f:
                     lines = f.readlines()
+                    f.close()
+
+            elif len(added) > 0:
+                    message += "The acoustic model was modified. " \
+                              "The following entries were successfully added in the acoustic model: {:s}.\n" \
+                              "However not all missing entries were added. " \
+                              "Alignment can't be performed by 'Julius' aligner." \
+                              "\n".format(added)
+            else:
+                message += "None of the entries were added in the acoustic model. " \
+                          "Alignment can't be performed by 'Julius' aligner." \
+                          "\n".format(added)
 
         for line in lines:
             if (line.startswith("Error:") or line.startswith("ERROR:")) \
                     and " line " not in line:
-                error_lines = error_lines + line
-            if "search failed" in line:
-                message = "Julius has failed to find the transcription " \
-                          "in the audio file. "
-                error_lines = "Search error. " + error_lines
+                message += "Julius failed to align the transcription with the audio file.\n"
+                error_lines += line
 
         if len(error_lines) > 0:
             raise Exception(message + error_lines)

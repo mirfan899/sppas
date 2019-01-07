@@ -349,8 +349,10 @@ class TestPhonetization(unittest.TestCase):
     def setUp(self):
         dict_file = os.path.join(paths.resources, "dict", "eng.dict")
         map_file = os.path.join(paths.resources, "dict", "eng-fra.map")
-        self.sp = sppasPhon(dict_file)
-        self.spl = sppasPhon(dict_file, map_file)
+        self.sp = sppasPhon()
+        self.sp.load_resources(dict_filename=dict_file)
+        self.spl = sppasPhon()
+        self.spl.load_resources(dict_filename=dict_file, map_filename=map_file)
 
     # -----------------------------------------------------------------------
 
@@ -358,7 +360,7 @@ class TestPhonetization(unittest.TestCase):
         """... Phonetization of an utterance."""
 
         self.sp.set_unk(True)
-        self.assertEqual(symbols.unk, self.sp.phonetize("é à"))
+        self.assertEqual([symbols.unk], self.sp.phonetize("é à"))
 
         self.assertEqual(set("D-@|D-V|D-i:".split('|')),
                          set(self.sp.phonetize("THE")[0].split('|')))
@@ -367,7 +369,7 @@ class TestPhonetization(unittest.TestCase):
                          self.sp.phonetize("HE")[0])
 
         self.sp.set_unk(False)  # do not try to phonetize if missing of the dict
-        self.assertEqual(symbols.unk, self.sp.phonetize("THE BANCI THE"))
+        self.assertEqual([symbols.unk], self.sp.phonetize("THE BANCI THE"))
 
         self.sp.set_unk(True)
 
@@ -405,7 +407,8 @@ class TestPhonetization(unittest.TestCase):
             # Create a Phonetizer for the given set of samples of the given language
             lang = samples_folder[-3:]
             pron_dict = os.path.join(paths.resources, "dict", lang+".dict")
-            tn = sppasPhon(pron_dict)
+            tn = sppasPhon()
+            tn.load_resources(dict_filename=pron_dict)
 
             # Apply Phonetization on each sample
             for filename in os.listdir(os.path.join(samples_path, samples_folder)):
@@ -422,7 +425,8 @@ class TestPhonetization(unittest.TestCase):
                 expected_result = parser.read()
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(samples_path, samples_folder, filename))
+                input_file = os.path.join(samples_path, samples_folder, filename)
+                result = tn.run([input_file])
 
                 expected_tier_phones = expected_result.find('Phones')
                 if expected_tier_phones is not None:

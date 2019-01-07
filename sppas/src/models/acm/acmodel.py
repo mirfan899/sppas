@@ -48,13 +48,13 @@ from .tiedlist import sppasTiedList
 
 
 class sppasAcModel(object):
-    """
+    """Acoustic model representation.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Acoustic model representation.
 
     An acoustic model is made of:
        - 'macros' is an OrderedDict of options, transitions, states, ...
@@ -63,9 +63,9 @@ class sppasAcModel(object):
        - a mapping table to replace phone names.
 
     """
+
     def __init__(self, name=None):
         """Create an sppasAcModel instance."""
-
         self._name = None
         self._macros = None
         self._hmms = list()
@@ -80,7 +80,6 @@ class sppasAcModel(object):
 
     def get_name(self):
         """Return the identifier name of the acoustic model."""
-
         return self._name
 
     # -----------------------------------------------------------------------
@@ -126,7 +125,9 @@ class sppasAcModel(object):
 
         """
         if not isinstance(repllist, sppasMapping):
-            raise ModelsDataTypeError("tiedlist", "sppasMapping()", type(repllist))
+            raise ModelsDataTypeError("tiedlist",
+                                      "sppasMapping()",
+                                      type(repllist))
 
         self._repllist = repllist
 
@@ -148,7 +149,8 @@ class sppasAcModel(object):
         :param hmms: (list) List of HMM instances
 
         """
-        if not (isinstance(hmms, list) and all([isinstance(h, sppasHMM) for h in hmms])):
+        if not (isinstance(hmms, list) and
+                all([isinstance(h, sppasHMM) for h in hmms])):
             raise ModelsDataTypeError("hmms", "list of sppasHMM()", type(hmms))
 
         self._hmms = hmms
@@ -179,17 +181,23 @@ class sppasAcModel(object):
 
         """
         if isinstance(hmm, sppasHMM) is False:
-            raise TypeError('Expected an HMM instance. Got {:s}.'.format(type(hmm)))
+            raise TypeError('Expected an HMM instance. Got {:s}.'
+                            ''.format(type(hmm)))
 
         for h in self._hmms:
             if h.get_name() == hmm.get_name():
-                raise ValueError('Duplicate HMM is forbidden. {:s} is already in the model.'.format(hmm.get_name()))
+                raise ValueError('Duplicate HMM is forbidden. '
+                                 '{:s} is already in the model.'
+                                 ''.format(hmm.get_name()))
 
         if hmm.definition is None:
-            raise TypeError('Expected an hmm with a definition as key. No definition was given.')
+            raise TypeError('Expected an hmm with a definition as key. '
+                            'No definition was given.')
 
-        if hmm.definition.get('states', None) is None or hmm.definition.get('transition', None) is None:
-            raise TypeError('Expected an hmm with a definition including states and transitions.')
+        if hmm.definition.get('states', None) is None or\
+                hmm.definition.get('transition', None) is None:
+            raise TypeError('Expected an hmm with a definition '
+                            'including states and transitions.')
 
         self._hmms.append(hmm)
 
@@ -213,10 +221,10 @@ class sppasAcModel(object):
     def replace_phones(self, reverse=False):
         """Replace the phones by using a mapping table.
 
-        This is mainly useful due to restrictions in some acoustic model toolkits:
+        This is mainly useful due to restrictions in some acoustic model tks:
         X-SAMPA can't be fully used and a "mapping" is required.
         As for example, the /2/ or /9/ can't be represented directly in an
-        HTK-ASCII acoustic model. We commonly replace respectively by /eu/ and
+        HTK-ASCII acoustic model. We can replace respectively by /eu/ and
         /oe/.
 
         Notice that '+' and '-' can't be used as a phone name.
@@ -266,10 +274,10 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def fill_hmms(self):
-        """Fill HMM states and transitions, i.e.:
+        """Fill HMM states and transitions.
 
-           - replace all the "ST_..." by the corresponding macro, for states.
-           - replace all the "T_..." by the corresponding macro, for transitions.
+        - replace all the "ST_..." by the corresponding macro, for states.
+        - replace all the "T_..." by the corresponding macro, for transitions.
 
         """
         for hmm in self._hmms:
@@ -282,14 +290,16 @@ class sppasAcModel(object):
                 if all(s is not None for s in new_states):
                     hmm.definition['states'] = new_states
                 else:
-                    raise ValueError('No corresponding macro for states: {:s}'.format(states))
+                    raise ValueError('No corresponding macro for states: '
+                                     '{:s}'.format(states))
 
             if isinstance(transition, (collections.OrderedDict, collections.defaultdict)) is False:
                 new_trs = self._fill_transition(transition)
                 if new_trs is not None:
                     hmm.definition['transition'] = new_trs
                 else:
-                    raise ValueError('No corresponding macro for transition: %s' % transition)
+                    raise ValueError('No corresponding macro for transition:'
+                                     ' {:s}'.format(transition))
 
         # No more need of states and transitions in macros
         new_macros = list()
@@ -306,7 +316,8 @@ class sppasAcModel(object):
         """Create an empty sppasAcModel and return it.
 
         :param macros: OrderedDict of options, transitions, states, ...
-        :param hmms: models (one per phone/biphone/triphone) is a list of HMM instances
+        :param hmms: models (one per phone/biphone/triphone) is a list
+        of HMM instances
 
         """
         model = sppasAcModel()
@@ -318,7 +329,8 @@ class sppasAcModel(object):
     # -----------------------------------------------------------------------
 
     def extract_monophones(self):
-        """Return an Acoustic Model that includes only monophones:
+        """Return an Acoustic Model that includes only monophones.
+
             - hmms and macros are selected,
             - repllist is copied,
             - tiedlist is ignored.
@@ -347,7 +359,6 @@ class sppasAcModel(object):
 
     def get_mfcc_parameter_kind(self):
         """Return the MFCC parameter kind, as a string, or an empty string."""
-
         if self._macros is None:
             return ""
 
@@ -401,14 +412,16 @@ class sppasAcModel(object):
         """
         # Check the given input data
         if gamma < 0. or gamma > 1.:
-            raise ValueError('Gamma coefficient must be between 0. and 1. Got %f' % gamma)
+            raise ValueError('Gamma coefficient must be between 0. and 1. '
+                             'Got {:s}'.format(gamma))
         if isinstance(other, sppasAcModel) is False:
             raise TypeError('Expected an sppasAcModel instance.')
 
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
         if self.compare_mfcc(other) is False:
-            raise TypeError('Can only merge models of identical MFCC parameter kind.')
+            raise TypeError('Can only merge models of identical MFCC '
+                            'parameter kind.')
 
         # Fill HMM states and transitions, i.e.:
         #   - replace all the "ST_..." by the corresponding macro, for states.
@@ -518,7 +531,8 @@ class sppasAcModel(object):
     def _fill_states(self, states):
         new_states = list()
         for state in states:
-            if isinstance(state['state'], (collections.OrderedDict, collections.defaultdict)) is True:
+            if isinstance(state['state'], (collections.OrderedDict,
+                                           collections.defaultdict)) is True:
                 new_states.append(state)
                 continue
             news = copy.deepcopy(state)

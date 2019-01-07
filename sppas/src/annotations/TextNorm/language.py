@@ -35,21 +35,24 @@
 """
 
 
-class sppasLangISO(object):
-    """
+class sppasLangISO:
+    """Language name definition.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Language name definition.
 
-    todo: parse the iso639-3 json file to load all language names.
+    todo: parse a iso639-3 json file to load all language names.
 
     """
+
     lang_list = ["cmn", "jpn", "yue", "zho", "cdo", "cjy", "cmo", "cpx",
                  "czh", "czo", "czt", "gan", "hak", "hsn", "ltc", "lzh",
                  "mnp", "och", "wuu"]  # TODO: add languages
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def without_whitespace(lang):
@@ -63,7 +66,6 @@ class sppasLangISO(object):
         :returns: (bool)
 
         """
-
         for l in sppasLangISO.lang_list:
             if l in lang:
                 return True

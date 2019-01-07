@@ -42,15 +42,17 @@ from ..modelsexc import ModelsDataTypeError
 
 
 class sppasBaseIO(sppasAcModel):
-    """
+    """Base object for readers and writers of acm.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Base object for readers and writers of annotated data.
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :summary:
 
     """
+
     @staticmethod
     def detect(filename):
         return False
@@ -72,8 +74,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def is_ascii(self):
-        """Return True if the reader-writer supports to read and write
-        ASCII files.
+        """Return True if it supports to read/write ASCII files.
 
         :returns: (bool)
 
@@ -83,8 +84,7 @@ class sppasBaseIO(sppasAcModel):
     # -----------------------------------------------------------------------
 
     def is_binary(self):
-        """Return True if this reader-writer supports to read and write
-        binary files.
+        """Return True if it supports to read and write binary files.
 
         :returns: (bool)
 
@@ -108,7 +108,9 @@ class sppasBaseIO(sppasAcModel):
             self._tiedlist = other.get_tiedlist()
             self._repllist = other.get_repllist()
         except AttributeError:
-            raise ModelsDataTypeError("acoustic model", "sppasAcModel", type(other))
+            raise ModelsDataTypeError("acoustic model",
+                                      "sppasAcModel",
+                                      type(other))
 
     # -----------------------------------------------------------------------
 
@@ -136,8 +138,8 @@ class sppasBaseIO(sppasAcModel):
     def write_hmm_proto(proto_size, proto_filename):
         """Write a `proto` file. The proto is based on a 5-states HMM.
 
-        :param proto_size: (int) Number of mean and variance values. It's commonly
-        either 25 or 39, it depends on the MFCC parameters.
+        :param proto_size: (int) Number of mean and variance values.
+        It's commonly either 25 or 39, it depends on the MFCC parameters.
         :param proto_filename: (str) Full name of the prototype to write.
 
         """
@@ -171,5 +173,5 @@ class sppasBaseIO(sppasAcModel):
         """
         try:
             self._tiedlist.read(filename)
-        except Exception:
+        except:
             pass

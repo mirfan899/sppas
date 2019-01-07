@@ -48,6 +48,7 @@ import re
 
 from sppas.src.config import sg
 from sppas.src.utils.makeunicode import u
+from sppas.src.calculus import linear_values
 
 from ..anndataexc import AioEncodingError
 from ..anndataexc import AioEmptyTierError
@@ -846,6 +847,60 @@ class sppasPitchTier(sppasBaseNumericalTier):
 
         """
         self._write(filename, "PitchTier")
+
+    # -----------------------------------------------------------------------
+
+    def to_pitch(self):
+        """Convert the PitchTier to Pitch values.
+
+        :returns: list of pitch values with delta = 0.01
+
+        """
+        if self.is_empty():
+            raise AioNoTiersError("PitchTier")
+        pt = self.find("PitchTier")
+        if pt is None:
+            raise AioNoTiersError("PitchTier")
+        if len(pt) < 2:
+            raise AioEmptyTierError("PitchTier", "PitchTier")
+
+        return sppasPitchTier.__to_pitch(pt)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __to_pitch(tier):
+        """Linear interpolation between annotations of tier to get pitch."""
+        delta = 0.01
+
+        # from 0 to the first value
+        time1 = round(tier[0].get_lowest_localization().get_midpoint(), 6)
+        pitch1 = tier[0].get_best_tag().get_typed_content()
+        pitch2 = 0.
+        steps = int(time1 / delta) - 1
+        pitch = [0.] * steps
+
+        # inside the range of the annotations
+        for ann in tier[1:]:
+
+            time2 = round(ann.get_lowest_localization().get_midpoint(), 6)
+            pitch2 = ann.get_best_tag().get_typed_content()
+
+            # estimates a linear fct (slope and intercept) to
+            # get values from p1 to p2 (both included into the result)
+            intermediate_values = linear_values(delta,
+                                                (time1, pitch1),
+                                                (time2, pitch2),
+                                                rounded=6)
+            pitch.extend(intermediate_values[:-1])
+
+            time1 = time2
+            pitch1 = pitch2
+
+        # last annotation
+        pitch.append(round(pitch2, 6))
+
+        return pitch
 
 # ---------------------------------------------------------------------------
 

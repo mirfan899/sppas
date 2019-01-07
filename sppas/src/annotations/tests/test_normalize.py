@@ -45,6 +45,7 @@ import os.path
 
 from sppas.src.config import paths
 
+from sppas.src.anndata.anndataexc import AioEncodingError
 from sppas.src.utils.makeunicode import u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
@@ -462,7 +463,8 @@ class TestTextNorm(unittest.TestCase):
             # Create a TextNormalizer for the given set of samples
             lang = samples_folder[-3:]
             vocab = os.path.join(paths.resources, "vocab", lang+".vocab")
-            tn = sppasTextNorm(vocab, lang)
+            tn = sppasTextNorm()
+            tn.load_resources(vocab, lang=lang)
             tn.set_faked(True)
             tn.set_std(True)
             tn.set_custom(True)
@@ -477,11 +479,16 @@ class TestTextNorm(unittest.TestCase):
                                                         filename[:-9] + "-token.xra")
                 if os.path.exists(expected_result_filename) is False:
                     continue
-                parser = sppasRW(expected_result_filename)
-                expected_result = parser.read()
+
+                try:
+                    parser = sppasRW(expected_result_filename)
+                    expected_result = parser.read()
+                except AioEncodingError:
+                    continue
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(paths.samples, samples_folder, filename))
+                input_file = os.path.join(paths.samples, samples_folder, filename)
+                result = tn.run([input_file])
 
                 expected_tier_tokens = expected_result.find('Tokens')
                 if expected_tier_tokens is not None:

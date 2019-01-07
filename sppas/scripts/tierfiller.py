@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -44,97 +44,17 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-import sppas.src.annotationdata.aio
-from sppas.src.annotationdata.transcription import Transcription
-from sppas.src.annotationdata.label.label import Label
-from sppas.src.annotationdata.aio.utils import fill_gaps
-
-# ----------------------------------------------------------------------------
-
-
-def fct_fill(tier, filler):
-    """ Fill empty annotations with a specific filler.
-
-    :param tier: (Tier)
-    :param filler: (str)
-    
-    """
-    labelfiller = Label(filler)
-    i = tier.GetSize()-1
-    while i >= 0:
-        ann = tier[i]
-        while ann.GetLabel().IsEmpty() and i >= 0:
-            print " * Fill interval number", i+1,":",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-            ann.GetLabel().Set(labelfiller)
-            # the next annotation is labelled with our filler
-            if i<tier.GetSize()-1 and tier[i+1].GetLabel().GetValue() == labelfiller.GetValue():
-                print " * Merge:",tier[i+1].GetLocation().GetBegin().GetValue(),tier[i+1].GetLocation().GetEnd().GetValue()
-                print "   with:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-                end = tier[i+1].GetLocation().GetEnd()
-                tier.Pop(i+1)
-                ann.GetLocation().SetEnd(end)
-                print "   gives:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-            i = i - 1
-            if i >= 0:
-                ann = tier[i]
-        
-        if i>0 and ann.GetLabel().GetValue() == labelfiller.GetValue():
-            # the previous annotation is labelled with our filler
-            if i>0 and tier[i-1].GetLabel().GetValue() == labelfiller.GetValue() and ann.GetLabel().GetValue() == labelfiller.GetValue():
-                print " * Merge:",tier[i-1].GetLocation().GetBegin().GetValue(),tier[i-1].GetLocation().GetEnd().GetValue()
-                print "   with:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-                i = i - 1
-                ann = tier[i]
-                end = tier[i+1].GetLocation().GetEnd()
-                tier.Pop(i+1)
-                ann.GetLocation().SetEnd(end)
-                print "   gives:",ann.GetLocation().GetBegin().GetValue()
-            # the next annotation is labelled with our filler
-            elif i<tier.GetSize()-1 and tier[i+1].GetLabel().GetValue() == labelfiller.GetValue():
-                print " * Merge:",tier[i+1].GetLocation().GetBegin().GetValue(),tier[i+1].GetLocation().GetEnd().GetValue()
-                print "   with:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-                end = tier[i+1].GetLocation().GetEnd()
-                tier.Pop(i+1)
-                ann.GetLocation().SetEnd(end)
-                print "   gives:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue()
-        i = i - 1
-
-    return tier
-
-# ----------------------------------------------------------------------------
-
-
-def fct_clean(tier, filler, duration):
-    """
-    Merge too short intervals with the previous one if filler match.
-    
-    """
-    i = tier.GetSize()-1
-    while i > 0:
-        ann = tier[i]
-        labelfiller = Label(filler)
-        if ann.GetLabel().GetValue() == labelfiller.GetValue():
-            annduration = ann.GetLocation().GetDuration().GetValue()
-            if annduration < duration:
-                print " * Merge:",tier[i-1].GetLocation().GetBegin().GetValue(),tier[i-1].GetLocation().GetEnd().GetValue(),"label:",tier[i-1].GetLabel().GetValue()
-                print "   with:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue(),"label:",ann.GetLabel().GetValue()
-                i = i - 1
-                ann = tier[i]
-                end = tier[i+1].GetLocation().GetEnd()
-                tier.Pop(i+1)
-                ann.GetLocation().SetEnd(end)
-                print "   gives:",ann.GetLocation().GetBegin().GetValue(),ann.GetLocation().GetEnd().GetValue(),"label:",ann.GetLabel().GetValue()
-
-        i = i - 1
-
-    return tier
+from sppas.src.anndata.aio.aioutils import fill_gaps
+from sppas import sppasRW
+from sppas import sppasLabel, sppasTag
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file -o file [options]" % os.path.basename(PROGRAM),
-                        description="... a script to fill empty labels of a tier of an annotated file.")
+parser = ArgumentParser(
+    usage="%(prog)s [options]",
+    description="Fill empty tags and holes of a tier of an annotated file.")
 
 parser.add_argument("-i",
                     metavar="file",
@@ -142,71 +62,101 @@ parser.add_argument("-i",
                     help='Input annotated file name')
 
 parser.add_argument("-t",
-                    metavar="value",
-                    required=False,
-                    action='append',
-                    type=int,
-                    help='A tier number (use as many -t options as wanted). '
-                         'Positive or negative value: 1=first tier, -1=last tier.')
+                    metavar="name",
+                    required=True,
+                    help='Name of the tier to fill.')
 
 parser.add_argument("-o",
                     metavar="file",
-                    required=True,
                     help='Output file name')
 
 parser.add_argument("-f",
                     metavar="text",
-                    required=False,
                     default="#",
                     help='Text to fill with (default:#)')
-
-parser.add_argument("-d",
-                    metavar="duration",
-                    required=False,
-                    default=0.02,
-                    type=float,
-                    help='Minimum duration of a filled interval (default:0.02)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Read
+# ---------------------------------------------------------------------------
 
-trsinput = sppas.src.annotationdata.aio.read( args.i )
+parser = sppasRW(args.i)
+trs_input = parser.read(args.i)
 
-# Take all tiers or specified tiers
-tiersnumbs = list()
-if not args.t:
-    tiersnumbs = range(1, (trsinput.GetSize() + 1))
-elif args.t:
-    tiersnumbs = args.t
+tier_input = trs_input.find(args.t, case_sensitive=False)
+if tier_input is None:
+    print('Tier {:s} not found in file {:s}'.format(args.t, args.i))
+    sys.exit(1)
+
+if tier_input.is_interval() is False:
+    print('Only not empty interval tiers can be filled.')
+    sys.exit(1)
+
+if len(tier_input) < 2:
+    print('The tier does not contains enough intervals.')
+    sys.exit(1)
+
+if args.o:
+    tier = tier_input.copy()
+    tier.set_name(tier_input.get_name()+"-fill")
+else:
+    tier = tier_input
+
+# ---------------------------------------------------------------------------
+# Create the tag to fill empty intervals
+# ---------------------------------------------------------------------------
+
+if tier.is_int():
+    filler = sppasTag(args.f, "int")
+elif tier.is_float():
+    filler = sppasTag(args.f, "float")
+elif tier.is_bool():
+    filler = sppasTag(args.f, "bool")
+else:
+    filler = sppasTag(args.f)
+
+ctrl_vocab = tier.get_ctrl_vocab()
+if ctrl_vocab is not None:
+    if ctrl_vocab.contains(filler) is False:
+        ctrl_vocab.add(filler, description="Filler")
 
 # ----------------------------------------------------------------------------
-# Fill
-
-trsout = Transcription()
-
-for i in tiersnumbs:
-    tier = trsinput[i-1]
-
-    tier = fill_gaps(tier, trsinput.GetMinTime(), trsinput.GetMaxTime())
-    ctrlvocab = tier.GetCtrlVocab()
-    if ctrlvocab is not None:
-        if ctrlvocab.Contains(args.f) is False:
-            ctrlvocab.Append( args.f, descr="Filler" )
-
-    print "Tier: ", tier.GetName()
-    print "Fill empty intervals with", args.f, "(and merge with previous or following if any)"
-    tier = fct_fill(tier, args.f)
-    print "Merge intervals during less than",args.d
-    tier = fct_clean(tier, args.f, args.d)
-    print()
-    trsout.Append(tier)
-
+# Fill in
 # ----------------------------------------------------------------------------
+
+# Temporal gaps/holes between annotations are filled with an un-labelled ann.
+tier = fill_gaps(tier)
+
+# Fill in un-labelled / un-tagged annotations
+for ann in tier:
+    for label in ann.get_labels():
+        if label is not None and len(label) > 0:
+            for tag, score in label:
+                if tag.is_empty() is True:
+                    tag.set(filler)
+        else:
+            label = sppasLabel(filler)
+    if len(ann.get_labels()) == 0:
+        ann.append_label(sppasLabel(filler))
+
+
+# ---------------------------------------------------------------------------
 # Write
+# ---------------------------------------------------------------------------
 
-sppas.src.annotationdata.aio.write(args.o, trsout)
+if args.o:
+    trs_input.append(tier)
+    parser = sppasRW(args.o)
+    parser.write(trs_input)
+
+else:
+
+    for a in tier:
+        print("{:f} {:f} {:s}".format(
+            a.get_location().get_best().get_begin().get_midpoint(),
+            a.get_location().get_best().get_end().get_midpoint(),
+            a.get_labels()))

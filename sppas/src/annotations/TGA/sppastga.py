@@ -264,7 +264,8 @@ class sppasTGA(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def tga_to_tier(self, tga_result, timegroups, tier_name, tag_type="float"):
+    @staticmethod
+    def tga_to_tier(tga_result, timegroups, tier_name, tag_type="float"):
         """Create a tier from one of the TGA result.
 
         :param tga_result: One of the results of TGA
@@ -291,7 +292,8 @@ class sppasTGA(sppasBaseAnnotation):
 
     # ----------------------------------------------------------------------
 
-    def tga_to_tier_reglin(self, tga_result, timegroups, intercept=True):
+    @staticmethod
+    def tga_to_tier_reglin(tga_result, timegroups, intercept=True):
         """Create tiers of intercept,slope from one of the TGA result.
 
         :param tga_result: One of the results of TGA
@@ -351,57 +353,61 @@ class sppasTGA(sppasBaseAnnotation):
         ts = TimeGroupAnalysis(tg_dur)
 
         # Put TGA non-optional results into tiers
-        tier = self.tga_to_tier(ts.len(), timegroups, "TGA-Occurrences", "int")
+        tier = sppasTGA.tga_to_tier(ts.len(), timegroups, "TGA-Occurrences", "int")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.total(), timegroups, "TGA-Total")
+        tier = sppasTGA.tga_to_tier(ts.total(), timegroups, "TGA-Total")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.mean(), timegroups, "TGA-Mean")
+        tier = sppasTGA.tga_to_tier(ts.mean(), timegroups, "TGA-Mean")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.median(), timegroups, "TGA-Median")
+        tier = sppasTGA.tga_to_tier(ts.median(), timegroups, "TGA-Median")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.stdev(), timegroups, "TGA-StdDev")
+        tier = sppasTGA.tga_to_tier(ts.stdev(), timegroups, "TGA-StdDev")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-        tier = self.tga_to_tier(ts.nPVI(), timegroups, "TGA-nPVI")
+        tier = sppasTGA.tga_to_tier(ts.nPVI(), timegroups, "TGA-nPVI")
         trs_out.append(tier)
         trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
         # Put TGA Intercept/Slope results
         if self._options['original'] is True:
-            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(),
-                                           timegroups,
-                                           True)
+            tier = sppasTGA.tga_to_tier_reglin(
+                ts.intercept_slope_original(),
+                timegroups,
+                True)
             tier.set_name('TGA-Intercept_original')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-            tier = self.tga_to_tier_reglin(ts.intercept_slope_original(),
-                                           timegroups,
-                                           False)
+            tier = sppasTGA.tga_to_tier_reglin(
+                ts.intercept_slope_original(),
+                timegroups,
+                False)
             tier.set_name('TGA-slope_original')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
         if self._options['annotationpro'] is True:
-            tier = self.tga_to_tier_reglin(ts.intercept_slope(),
-                                           timegroups,
-                                           True)
+            tier = sppasTGA.tga_to_tier_reglin(
+                ts.intercept_slope(),
+                timegroups,
+                True)
             tier.set_name('TGA-Intercept_timestamps')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
 
-            tier = self.tga_to_tier_reglin(ts.intercept_slope(),
-                                           timegroups,
-                                           False)
+            tier = sppasTGA.tga_to_tier_reglin(
+                ts.intercept_slope(),
+                timegroups,
+                False)
             tier.set_name('TGA-slope_timestamps')
             trs_out.append(tier)
             trs_out.add_hierarchy_link("TimeAssociation", timegroups, tier)
@@ -409,37 +415,48 @@ class sppasTGA(sppasBaseAnnotation):
         return trs_out
 
     # ----------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Perform the TGA estimation process.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) Name of the input file with syllables
-        :param output_filename: (str) Name of the resulting file with TGA
+        :param input_file: (list of str) syllabification
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get the tier to syllabify
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.aligned_syllables(trs_input)
 
         # Create the transcription result
-        trs_output = sppasTranscription("Time Group Analyzer")
-        trs_output.set_meta('tga_result_of', input_filename)
+        trs_output = sppasTranscription(self.name)
+        trs_output.set_meta('tga_result_of', input_file[0])
 
         # Estimate TGA on the tier
         trs_output = self.convert(tier_input)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
+
+    # ----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Pattern this annotation uses in an output filename."""
+        return '-tga'
+
+    @staticmethod
+    def get_input_pattern():
+        """Pattern this annotation expects for its input filename."""
+        return '-syll'

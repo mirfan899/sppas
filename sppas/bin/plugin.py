@@ -33,26 +33,26 @@
     bin.plugin.py
     ~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Main script to work with SPPAS plugins.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+:summary:      Main script to work with SPPAS plugins.
 
-    Examples:
+Examples:
 
-    Install a plugin:
-    >>> ./sppas/bin/plugin.py --install -p sppas/src/plugins/tests/data/soxplugin.zip
+Install a plugin:
+>>> ./sppas/bin/plugin.py --install -p sppas/src/plugins/tests/data/soxplugin.zip
 
-    Use a plugin on a file:
-    >>> ./sppas/bin/plugin.py --apply -p soxplugin -i samples/samples-eng/oriana1.wav -o resampled.wav
+Use a plugin on a file:
+>>> ./sppas/bin/plugin.py --apply -p soxplugin -i samples/samples-eng/oriana1.wav -o resampled.wav
 
-    Remove a plugin:
-    >>> ./sppas/bin/plugin.py --remove -p soxplugin
+Remove a plugin:
+>>> ./sppas/bin/plugin.py --remove -p soxplugin
 
-    An "all-in-one" solution:
-    >>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
+An "all-in-one" solution:
+>>> ./sppas/bin/plugin.py --install --apply --remove -p sppas/src/plugins/tests/data/soxplugin.zip -i samples/samples-eng/oriana1.wav -o resampled.wav
 
 """
 import sys
@@ -63,106 +63,128 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config import sg
+from sppas import sg
 from sppas.src.ui.term.terminalcontroller import TerminalController
 from sppas.src.plugins import sppasPluginsManager
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} [actions] [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        prog=PROGRAM,
-                        description="Plugin command line interface.")
+if __name__ == "__main__":
 
-parser.add_argument("--install",
-                    action='store_true',
-                    help="Install a new plugin from a plugin package.")
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("--remove",
-                    action='store_true',
-                    help="Remove an existing plugin.")
+    parser = ArgumentParser(
+        usage="%(prog)s [actions] [files]",
+        description="Plugin command line interface.",
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
-parser.add_argument("--apply",
-                    action='store_true',
-                    help="Apply a plugin on a file.")
+    # Add arguments for actions
+    # -------------------------
 
-parser.add_argument("-p",
-                    metavar="string",
-                    required=True,
-                    help="Plugin (either an identifier, or an archive file).")
+    group_act = parser.add_argument_group('Actions')
 
-parser.add_argument("-i",
-                    metavar="string",
-                    required=False,
-                    help="Input file to apply a plugin on it.")
+    group_act.add_argument(
+        "--install",
+        action='store_true',
+        help="Install a new plugin from a plugin package.")
 
-parser.add_argument("-o",
-                    metavar="string",
-                    required=False,
-                    help="Output file, ie the result of the plugin.")
+    group_act.add_argument(
+        "--remove",
+        action='store_true',
+        help="Remove an existing plugin.")
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    group_act.add_argument(
+        "--apply",
+        action='store_true',
+        help="Apply a plugin on a file.")
 
-args = parser.parse_args()
+    # Add arguments for input/output files
+    # ------------------------------------
 
+    group_io = parser.add_argument_group('Files')
 
-# ----------------------------------------------------------------------------
-# Plugins is here:
-# ----------------------------------------------------------------------------
-sep = "-"*72
+    group_io.add_argument(
+        "-p",
+        metavar="string",
+        required=True,
+        help="Plugin (either an identifier, or an archive file).")
 
-try:
-    term = TerminalController()
-    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
-    print(term.render('${RED} {} - Version {}${NORMAL}'
-                      '').format(sg.__name__, sg.__version__))
-    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__copyright__))
-    print(term.render('${BLUE} {} ${NORMAL}').format(sg.__url__))
-    print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
-except Exception:
+    group_io.add_argument(
+        "-i",
+        metavar="string",
+        required=False,
+        help="Input file to apply a plugin on it.")
+
+    group_io.add_argument(
+        "-o",
+        metavar="string",
+        required=False,
+        help="Output file, ie the result of the plugin.")
+
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
+
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+    # -----------------------------------------------------------------------
+    # Plugins is here:
+    # -----------------------------------------------------------------------
+    sep = "-"*72
+
+    try:
+        term = TerminalController()
+        print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
+        print(term.render('${RED} {} - Version {}${NORMAL}'
+                          '').format(sg.__name__, sg.__version__))
+        print(term.render('${BLUE} {} ${NORMAL}').format(sg.__copyright__))
+        print(term.render('${BLUE} {} ${NORMAL}').format(sg.__url__))
+        print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
+    except:
+        print('{:s}\n'.format(sep))
+        print('{:s}   -  Version {}'.format(sg.__name__, sg.__version__))
+        print(sg.__copyright__)
+        print(sg.__url__+'\n')
+        print('{:s}\n'.format(sep))
+
+    manager = sppasPluginsManager()
+    plugin_id = args.p
+
+    if args.install:
+
+        print("Plugin installation")
+
+        # fix a name for the plugin directory
+        plugin_folder = os.path.splitext(os.path.basename(args.p))[0]
+        plugin_folder.replace(' ', "_")
+
+        # install the plugin.
+        plugin_id = manager.install(args.p, plugin_folder)
+
+    if args.apply and args.i:
+
+        # Get the plugin
+        p = manager.get_plugin(plugin_id)
+
+        # Set the output file name (if any)
+        if args.o:
+            options = p.get_options()
+            for opt in options.values():
+                if opt.get_key() == "output":
+                    opt.set_value(args.o)
+            p.set_options(options)
+
+        # Run
+        message = manager.run_plugin(plugin_id, [args.i])
+        print(message)
+
+    if args.remove:
+        manager.delete(plugin_id)
+
     print('{:s}\n'.format(sep))
-    print('{:s}   -  Version {}'.format(sg.__name__, sg.__version__))
-    print(sg.__copyright__)
-    print(sg.__url__+'\n')
-    print('{:s}\n'.format(sep))
-
-manager = sppasPluginsManager()
-plugin_id = args.p
-
-
-if args.install:
-
-    print("Plugin installation")
-
-    # fix a name for the plugin directory
-    plugin_folder = os.path.splitext(os.path.basename(args.p))[0]
-    plugin_folder.replace(' ', "_")
-
-    # install the plugin.
-    plugin_id = manager.install(args.p, plugin_folder)
-
-if args.apply and args.i:
-
-    # Get the plugin
-    p = manager.get_plugin(plugin_id)
-
-    # Set the output file name (if any)
-    if args.o:
-        options = p.get_options()
-        for opt in options.values():
-            if opt.get_key() == "output":
-                opt.set_value(args.o)
-        p.set_options(options)
-
-    # Run
-    message = manager.run_plugin(plugin_id, [args.i])
-    print(message)
-
-
-if args.remove:
-    manager.delete(plugin_id)
-
-print('{:s}\n'.format(sep))

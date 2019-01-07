@@ -74,7 +74,7 @@ BORDER_WIDTH = 2
 
 
 class AnnotationCtrl(wx.Window):
-    """This class is used to display an annotation (see annotationdata).
+    """This class is used to display an annotation.
     
     :author:  Brigitte Bigi
     :contact: contact@sppas.org

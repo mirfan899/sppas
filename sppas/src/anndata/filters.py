@@ -159,7 +159,7 @@ class sppasFilters(object):
     def dur(self, **kwargs):
         """Apply functions on durations of the location of annotations.
 
-        :param kwargs: logic_bool/any sppasTagCompare() method.
+        :param kwargs: logic_bool/any sppasDurationCompare() method.
         :returns: (sppasAnnSet)
 
         Examples:

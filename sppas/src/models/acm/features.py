@@ -50,7 +50,8 @@ SourceFormat = {
     "WAVE": "Microsoft WAVE files used on PCs",
     "ESIG": "Entropic Esignal file format",
     "AUDIO": "Pseudo format to indicate direct audio input",
-    "ALIEN": "Pseudo format to indicate unsupported file, the alien header size must be set via the environment variable HDSIZE",
+    "ALIEN": "Pseudo format to indicate unsupported file, the alien header "
+             "size must be set via the environment variable HDSIZE",
     "NOHEAD": "As for the ALIEN format but header size is zero"
 }
 
@@ -72,7 +73,8 @@ SourceKind = {
 
 # available qualifiers for parameter kinds.
 # The first 6 of these are used to describe the target kind.
-# The source kind may already have some of these, HPARM adds the rest as needed.
+# The source kind may already have some of these,
+# HPARM adds the rest as needed.
 ParameterKind = {
     "_A": "Acceleration coefficients appended",
     "_C": "External form is compressed",
@@ -85,7 +87,8 @@ ParameterKind = {
     "_0": "Cepstral C0 coefficient appended"
 }
 
-# all of the configuration parameters along with their meaning and default values
+# all of the configuration parameters along with their meaning and
+# default values
 # See: http://www.ee.columbia.edu/ln/rosa/doc/HTKBook21/node78.html
 # LINEIN     T     Select line input for audio
 # MICIN     F     Select microphone input for audio
@@ -143,18 +146,18 @@ ParameterKind = {
 
 
 class sppasAcFeatures(object):
-    """
+    """Acoustic model features.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Acoustic model features.
 
     """
+
     def __init__(self):
         """Create a sppasAcFeatures instance."""
-
         self.sourcekind = "MFC"   # either WAV or anything else!
         self.win_length_ms = 25   # The window length of the cepstral analysis in milliseconds
         self.win_shift_ms = 10    # The window shift of the cepstral analysis in milliseconds
@@ -175,8 +178,9 @@ class sppasAcFeatures(object):
     # -----------------------------------------------------------------------
 
     def write_all(self, dirname):
-        """Write all files at once, with their default name, in the given
-        directory.
+        """Write all files at once.
+
+        Write files with their default name, in the given directory.
 
         :param dirname: (str) a directory name (existing or to be created).
 

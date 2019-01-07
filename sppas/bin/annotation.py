@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: UTF-8 -*-
 """
     ..
         ---------------------------------------------------------------------
@@ -8,7 +9,7 @@
            \  |     |     |   |    \             analysis
         ___/  |     |     |   | ___/              of speech
 
-        http://www.sg.org/
+        http://www.sppas.org/
 
         Use of this software is governed by the GNU Public License, version 3.
 
@@ -40,7 +41,6 @@
     :summary:      Run any or all automatic annotations.
 
 """
-
 import sys
 import os
 from argparse import ArgumentParser
@@ -50,7 +50,6 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.config import sg
-from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.anndata.aio import extensions_out
@@ -108,13 +107,7 @@ parser.add_argument("--all", action='store_true',
 
 parser.add_argument("--merge",
                     action='store_true',
-                    help="Create a merged TextGrid file, "
-                         "if more than two automatic annotations. "
-                         "(this is the default)")
-
-parser.add_argument("--nomerge",
-                    action='store_true',
-                    help="Do not create a merged TextGrid file.")
+                    help="Create a merged file with all annotations")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -132,17 +125,7 @@ parameters.add_sppasinput(os.path.abspath(args.w))
 
 if args.l:
     parameters.set_lang(args.l)
-ext = args.e
-if not ext.startswith("."):
-    ext = "." + ext
-extensions = [e.lower() for e in extensions_out]
-if not ext.lower() in extensions:
-    print("\n")
-    print("[WARNING] Unknown extension: {:s}. Extension is set to "
-          "its default value.".format(args.e))
-    print("\n")
-    ext = annots.extension
-parameters.set_output_format(ext)
+parameters.set_output_format(args.e)
 
 if args.momel:
     parameters.activate_annotation("momel")
@@ -189,21 +172,19 @@ except:
 # ----------------------------------------------------------------------------
 
 p = ProcessProgressTerminal()
-process = sppasAnnotationsManager(parameters)
-if args.nomerge:
-    process.set_do_merge(False)
+manager = sppasAnnotationsManager()
 if args.merge:
-    process.set_do_merge(True)
-process.run_annotations(p)
+    manager.set_do_merge(True)
+manager.annotate(parameters, p)
 
 try:
     term = TerminalController()
     print(term.render('\n${GREEN}{:s}${NORMAL}').format(sep))
-    print(term.render('${RED}See {}.').format(parameters.get_logfilename()))
+    print(term.render('${RED}See {}.').format(parameters.get_report_filename()))
     print(term.render('${GREEN}Thank you for using {}.').format(sg.__name__))
     print(term.render('${GREEN}{:s}${NORMAL}').format(sep))
 except:
     print('\n{:s}\n'.format(sep))
     print("See {} for details.\nThank you for using {}."
-          "".format(parameters.get_logfilename(), sg.__name__))
+          "".format(parameters.get_report_filename(), sg.__name__))
     print('{:s}\n'.format(sep))

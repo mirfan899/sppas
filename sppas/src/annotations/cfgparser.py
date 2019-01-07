@@ -48,7 +48,7 @@ from .annotationsexc import AnnotationSectionConfigFileError
 
 
 class sppasAnnotationConfigParser(object):
-    """Read an automatic annotation configuration file.
+    """Parse an automatic annotation configuration file.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -113,7 +113,7 @@ class sppasAnnotationConfigParser(object):
         self._options = list()
         self._parser = SafeConfigParser()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def reset(self):
         """Set all members to their default value."""
@@ -121,25 +121,25 @@ class sppasAnnotationConfigParser(object):
         self._resources = list()
         self._options = list()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_config(self):
         """Return the configuration dictionary."""
         return self._config
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_resources(self):
         """Return the list of language resources."""
         return self._resources
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_options(self):
         """Return the list of options."""
         return self._options
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def parse(self, filename):
         """Parse a configuration file.
@@ -149,7 +149,6 @@ class sppasAnnotationConfigParser(object):
         """
         self.reset()
 
-        # Open the file with the correct encoding
         with open(filename, 'r') as f:
             try:  # python 3
                 self._parser.read_file(f)
@@ -162,9 +161,9 @@ class sppasAnnotationConfigParser(object):
         else:
             raise AnnotationSectionConfigFileError("[Configuration]")
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse(self):
         for section_name in self._parser.sections():
@@ -182,13 +181,13 @@ class sppasAnnotationConfigParser(object):
                     sppasAnnotationConfigParser._parse_option(
                         self._parser.items(section_name)))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _parse_config(self, items):
         for name, value in items:
             self._config[name] = u(value)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_resource(items):
@@ -210,7 +209,7 @@ class sppasAnnotationConfigParser(object):
 
         return lr
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def _parse_option(items):

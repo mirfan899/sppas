@@ -40,14 +40,15 @@ import os
 from sppas.src.config import paths
 from sppas.src.config import symbols
 from sppas.src.config import annotations_translation
-from sppas.src.resources.vocab import sppasVocabulary
-from sppas.src.resources.dictrepl import sppasDictRepl
 
-from sppas.src.anndata import sppasRW
-from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasTier
-from sppas.src.anndata import sppasLabel
-from sppas.src.anndata import sppasTag
+from sppas import sppasDictRepl
+from sppas import sppasVocabulary
+
+from sppas import sppasRW
+from sppas import sppasTranscription
+from sppas import sppasTier
+from sppas import sppasLabel
+from sppas import sppasTag
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
@@ -71,28 +72,47 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 
 
 class sppasTextNorm(sppasBaseAnnotation):
-    """
+    """Text normalization automatic annotation.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Text normalization automatic annotation.
 
     """
-    def __init__(self, vocab, lang="und", logfile=None):
-        """Create a sppasTextNorm instance.
+    def __init__(self, logfile=None):
+        """Create a sppasTextNorm instance without any linguistic resources.
 
-        :param vocab: (str) name of the file with the orthographic transcription
-        :param lang: (str) the language code
         :param logfile: (sppasLog)
 
         """
         super(sppasTextNorm, self).__init__(logfile, name="Text Normalization")
 
-        self.normalizer = None
-        voc = sppasVocabulary(vocab)
+        # Create a text normalizer, fully language-independent
+        self.normalizer = TextNormalizer()
+
+        # List of options to configure this automatic annotation
+        self._options['faked'] = True
+        self._options['std'] = False
+        self._options['custom'] = False
+
+    # -----------------------------------------------------------------------
+
+    def load_resources(self, vocab_filename, lang="und", **kwargs):
+        """Fix the list of words of a given language.
+
+        It allows a better tokenization, and enables the language-dependent
+        modules like num2letters.
+
+        :param vocab_filename: (str) File with the orthographic transcription
+        :param lang: (str) the language code
+
+        """
+        voc = sppasVocabulary(vocab_filename)
         self.normalizer = TextNormalizer(voc, lang)
+        self.logfile.print_message("The vocabulary contains {:d} tokens"
+                                   "".format(len(voc)), indent=0)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -101,6 +121,9 @@ class sppasTextNorm(sppasBaseAnnotation):
         else:
             dict_replace = sppasDictRepl()
         self.normalizer.set_repl(dict_replace)
+        self.logfile.print_message(
+            "The replacement dictionary contains {:d} items"
+            "".format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
@@ -109,11 +132,6 @@ class sppasTextNorm(sppasBaseAnnotation):
         else:
             vocab_punct = sppasVocabulary()
         self.normalizer.set_punct(vocab_punct)
-
-        # List of options to configure this automatic annotation
-        self._options['faked'] = True
-        self._options['std'] = False
-        self._options['custom'] = False
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -217,21 +235,20 @@ class sppasTextNorm(sppasBaseAnnotation):
         return tokens_faked, tokens_std, tokens_custom
 
     # ------------------------------------------------------------------------
+    # Apply the annotation on one given file
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Run the annotation process on an input file.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) Name of the input file with the transcription
-        :param output_filename: (str) Name of the resulting file with normalization
+        :param input_file: (list of str) orthographic transcription
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
-        self.print_filename(input_filename)
-        self.print_options()
-        self.print_diagnosis(input_filename)
-
         # Get input tier to tokenize
-        parser = sppasRW(input_filename)
+        parser = sppasRW(input_file[0])
         trs_input = parser.read()
         tier_input = sppasFindTier.transcription(trs_input)
 
@@ -247,27 +264,35 @@ class sppasTextNorm(sppasBaseAnnotation):
         if tier_custom is not None:
             trs_output.append(tier_custom)
 
-        trs_output.set_meta('text_normalization_result_of', input_filename)
-        trs_output.set_meta('text_normalization_vocab', self.normalizer.get_vocab_filename())
+        trs_output.set_meta('text_normalization_result_of', input_file[0])
+        trs_output.set_meta('text_normalization_vocab',
+                            self.normalizer.get_vocab_filename())
         trs_output.set_meta('language_iso', "iso639-3")
         trs_output.set_meta('language_code_0', self.normalizer.lang)
         trs_output.set_meta('language_name_0', "Undetermined")
-        trs_output.set_meta('language_url_0', "https://iso639-3.sil.org/code/"+self.normalizer.lang)
+        trs_output.set_meta('language_url_0',
+                            "https://iso639-3.sil.org/code/"+self.normalizer.lang)
 
         # Save in a file
-        if output_filename is not None:
+        if output_file is not None:
             if len(trs_output) > 0:
-                parser = sppasRW(output_filename)
+                parser = sppasRW(output_file)
                 parser.write(trs_output)
-                self.print_filename(output_filename, status=0)
             else:
                 raise EmptyOutputError
 
         return trs_output
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Pattern this annotation adds to an output filename."""
+        return '-token'
+
+    # -----------------------------------------------------------------------
     # Private: some workers...
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def __convert(self, tier, actions):
         """Normalize all tags of all labels of an annotation.
@@ -275,7 +300,7 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            self.print_message(MSG_TRACK.format(number=i+1), indent=2)
+            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
@@ -291,9 +316,9 @@ class sppasTextNorm(sppasBaseAnnotation):
                     try:
                         tokens = self.normalizer.normalize(text.get_content(), actions)
                     except Exception as e:
-                        tokens = list()
-                        message = "Error while normalizing interval {:d}: {:s}".format(i, str(e))
-                        self.print_message(message, indent=3)
+                        message = "Error while normalizing interval {:d}: " \
+                                  "{:s}".format(i, str(e))
+                        self.logfile.print_message(message, indent=2)
 
                 elif text.is_silence():
                     # in ortho a silence could be one of "#" or "gpf_".
@@ -358,12 +383,12 @@ class sppasTextNorm(sppasBaseAnnotation):
                         text_faked.set_content(textf)
 
                     except:
-                        self.print_message("Standard/Faked tokens matching error, "
+                        self.logfile.print_message("Standard/Faked tokens matching error, "
                                            "at interval {:d}\n".format(i),
                                            indent=2, status=1)
-                        self.print_message(text_std.get_content(), indent=3)
-                        self.print_message(text_faked.get_content(), indent=3)
-                        self.print_message("Fall back on faked.", indent=3, status=3)
+                        self.logfile.print_message(text_std.get_content(), indent=3)
+                        self.logfile.print_message(text_faked.get_content(), indent=3)
+                        self.logfile.print_message("Fall back on faked.", indent=3, status=3)
                         text_std.set_content(text_faked.get_content())
 
     # -----------------------------------------------------------------------

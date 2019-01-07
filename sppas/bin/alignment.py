@@ -32,14 +32,16 @@
     bin.alignment.py
     ~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Run the alignment automatic annotation
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      Run the alignment automatic annotation
 
 """
+
+import logging
 import sys
 import os
 from argparse import ArgumentParser
@@ -48,122 +50,212 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.annotations.Align import sppasAligners
+from sppas import sg, annots
+from sppas.src.anndata.aio import extensions_out
 from sppas.src.annotations.Align import sppasAlign
+from sppas.src.annotations.param import sppasParam
 from sppas.src.utils.fileutils import setup_logging
+from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 
-# ----------------------------------------------------------------------------
-# Verify and extract args:
-# ----------------------------------------------------------------------------
+if __name__ == "__main__":
 
-parser = ArgumentParser(usage="{:s} -w file -i file -r dir -o file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Alignment automatic annotation.")
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input audio file name')
+    parameters = sppasParam(["Align.ini"])
+    ann_step_idx = parameters.activate_annotation("align")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-i",
-                    metavar="file",
-                    required=True,
-                    help='Input file name with the phonetization')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-parser.add_argument("-I",
-                    metavar="file",
-                    required=False,
-                    help='Input file name with the tokenization')
+    parser = ArgumentParser(
+        usage="%(prog)s [files] [options]",
+        description=
+        parameters.get_step_name(ann_step_idx) + ": " +
+        parameters.get_step_descr(ann_step_idx),
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
-parser.add_argument("-r",
-                    metavar="file",
-                    required=True,
-                    help='Directory of the acoustic model '
-                         'of the language of the text')
+    parser.add_argument(
+        "--quiet",
+        action='store_true',
+        help="Disable the verbosity")
 
-parser.add_argument("-R",
-                    metavar="file",
-                    required=False,
-                    help='Directory of the acoustic model of '
-                         'the mother language of the speaker')
+    parser.add_argument(
+        "--log",
+        metavar="file",
+        help="File name for a Procedure Outcome Report (default: None)")
 
-parser.add_argument("-o",
-                    metavar="file",
-                    required=True,
-                    help='Output file name with estimated alignments')
+    # Add arguments for input/output files
+    # ------------------------------------
 
-parser.add_argument("-a",
-                    metavar="name",
-                    required=False,
-                    choices=sppasAligners().names(),
-                    default="julius",
-                    help='Speech automatic aligner system: '
-                         'julius, hvite, basic (default: julius)')
+    group_io = parser.add_argument_group('Files')
 
-parser.add_argument("--basic",
-                    action='store_true',
-                    help="Perform basic alignment if the aligner fails")
+    group_io.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-parser.add_argument("--noclean",
-                    action='store_true',
-                    help="Do not remove working directory")
+    group_io.add_argument(
+        "-p",
+        metavar="file",
+        help='Input file name with the phonetization.')
 
-parser.add_argument("--noactivity",
-                    action='store_true',
-                    help="Do not generate Activity tier")
+    group_io.add_argument(
+        "-t",
+        metavar="file",
+        help='Input file name with the tokenization.')
 
-parser.add_argument("--activitydur",
-                    action='store_true',
-                    help="Generates the Activity Duration tier")
+    group_io.add_argument(
+        "-o",
+        metavar="file",
+        help='Output file name with estimated alignments.')
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable verbose.")
+    group_io.add_argument(
+        "-r",
+        metavar="model",
+        help='Directory of the acoustic model of the language of the text')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input transcription file name (append).')
 
-args = parser.parse_args()
+    group_io.add_argument(
+        "-R",
+        metavar="model",
+        help='Directory of the acoustic model of the mother language of the speaker')
 
-# ----------------------------------------------------------------------------
+    group_io.add_argument(
+        "-l",
+        metavar="lang",
+        choices=parameters.get_langlist(ann_step_idx),
+        help='Language code (iso8859-3). One of: {:s}.'
+             ''.format(" ".join(parameters.get_langlist(ann_step_idx))))
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+    group_io.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-# ----------------------------------------------------------------------------
-# Automatic alignment is here:
-# ----------------------------------------------------------------------------
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-# Fix resources
+    group_opt = parser.add_argument_group('Options')
 
-# Acoustic model of the language of the text (required)
-modelText = args.r
-# Acoustic model of the mother language of the speaker (optional)
-modelSpk = args.R
-# Create aligner
-a = sppasAlign(modelText, modelSpk)
+    for opt in ann_options:
+        group_opt.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-# Fix options
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
 
-a.set_clean(True)
-if args.noclean:
-    a.set_clean(False)
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
 
-a.set_basic(False)
-if args.basic:
-    a.set_basic(True)
+    args = parser.parse_args()
 
-a.set_activity_tier(True)
-if args.noactivity:
-    a.set_activity_tier(False)
+    # Mutual exclusion of inputs
+    # --------------------------
 
-a.set_activity_duration_tier(False)
-if args.activitydur:
-    a.set_activity_duration_tier(True)
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
 
-a.set_aligner(args.a)
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
 
-# Run speech segmentation
-a.run(args.i, args.I, args.w, args.o)
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
+    # --------------------------
+
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'p', 't', 'r', 'R', 'I', 'l', 'e', 'quiet', 'log'):
+            parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        if not args.p:
+            print("argparse.py: error: option -p is required with option -i")
+            sys.exit(1)
+
+        ann = sppasAlign(logfile=None)
+        if args.r:
+            ann.load_resources(args.r, args.R)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+
+        if args.o:
+            if args.t:
+                ann.run([args.i, args.p], [args.t], args.o)
+            else:
+                ann.run([args.i, args.p], None, args.o)
+
+        else:
+            if args.t:
+                trs = ann.run([args.i, args.p], [args.t])
+            else:
+                trs = ann.run([args.i, args.p])
+            for tier in trs:
+                print(tier.get_name())
+                for a in tier:
+                    print("{:f} {:f} {:s}".format(
+                        a.get_location().get_best().get_begin().get_midpoint(),
+                        a.get_location().get_best().get_end().get_midpoint(),
+                        a.serialize_labels(" ")))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        if not args.l:
+            print("argparse.py: error: option -l is required with option -I")
+            sys.exit(1)
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Fix the output file extension and others
+        parameters.set_lang(args.l)
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename(args.log)
+
+        # Perform the annotation
+        process = sppasAnnotationsManager()
+        process.annotate(parameters)
+
+    else:
+
+        if not args.quiet:
+            logging.info("No file was given to be annotated. Nothing to do!")

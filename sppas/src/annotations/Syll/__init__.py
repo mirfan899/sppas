@@ -59,12 +59,12 @@ For details, read the following reference:
 
 """
 
-from .rules import Rules
+from .rules import SyllRules
 from .syllabify import Syllabifier
 from .sppassyll import sppasSyll
 
 __all__ = (
-    'Rules',
+    'SyllRules',
     'Syllabifier',
     'sppasSyll'
 )

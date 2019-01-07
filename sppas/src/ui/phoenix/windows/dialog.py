@@ -88,6 +88,11 @@ class sppasDialog(wx.Dialog):
         self._init_infos()
         self.SetAutoLayout(True)
 
+        # To fade-in and fade-out the opacity
+        self.opacity_in = 0
+        self.opacity_out = 255
+        self.deltaN = -10
+
     # -----------------------------------------------------------------------
 
     def _init_infos(self):
@@ -113,6 +118,25 @@ class sppasDialog(wx.Dialog):
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+
+    # -----------------------------------------------------------------------
+    # Fade-in at start-up and Fade-out at close
+    # -----------------------------------------------------------------------
+
+    def FadeIn(self, deltaN=-10):
+        """Fade-in opacity."""
+        self.deltaN = int(deltaN)
+        self.SetTransparent(self.opacity_in)
+        self.timer1 = wx.Timer(self, -1)
+        self.timer1.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_in, self.timer1)
+
+    def DestroyFadeOut(self, deltaN=-10):
+        """Destroy with a fade-out opacity."""
+        self.deltaN = int(deltaN)
+        self.timer2 = wx.Timer(self, -1)
+        self.timer2.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_out, self.timer2)
 
     # -----------------------------------------------------------------------
     # Override existing but un-useful methods
@@ -192,16 +216,16 @@ class sppasDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
 
-    def SetContent(self, object):
+    def SetContent(self, window):
         """Assign the content window to this dialog.
 
         :param window: (wx.Window) Any kind of wx.Window, wx.Panel, ...
 
         """
-        object.SetName("content")
-        object.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        object.SetForegroundColour(wx.GetApp().settings.fg_color)
-        object.SetFont(wx.GetApp().settings.text_font)
+        window.SetName("content")
+        window.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        window.SetForegroundColour(wx.GetApp().settings.fg_color)
+        window.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
 
@@ -336,7 +360,6 @@ class sppasDialog(wx.Dialog):
 
     # ---------------------------------------------------------------------------
     # Private
-    # ---------------------------------------------------------------------------
 
     def __create_button(self, parent, flag):
         """Create a button from a flag and return it.
@@ -372,3 +395,38 @@ class sppasDialog(wx.Dialog):
             btn.SetDefault()
 
         return btn
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_in(self, *args):
+        """Fade-in opacity of the dialog."""
+        self.opacity_in += self.deltaN
+        if self.opacity_in <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 0
+
+        if self.opacity_in >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 255
+            self.timer1.Stop()
+
+        self.SetTransparent(self.opacity_in)
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_out(self, *args):
+        """Fade-out opacity of the dialog."""
+        self.opacity_out += self.deltaN
+        if self.opacity_out >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_out = 255
+
+            self.timer2.Stop()
+
+        if self.opacity_out <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_out = 0
+            wx.CallAfter(self.Destroy)
+
+        self.SetTransparent(self.opacity_out)
+

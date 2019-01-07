@@ -51,20 +51,26 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import ubpa
-from sppas.src.annotationdata.transcription import Transcription
-import sppas.src.annotationdata.aio
+from sppas import sppasRW
+from sppas import sppasTranscription
+import sppas.src.anndata.aio
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Constants
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y","a~","A~","E~", "e~","i~","o~","O~","O:",
-          "u~","U~","eu","EU","{","}","@","1","2","3","6","7","8","9","&","3:r","OI","@U","eI","ai","aI","au","aU",
-          "aj","aw","ei","ew","ia","ie","io","ja","je","jo","ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu",
+
+vowels = ["a","e","i","i:","o","u","y","A","E","I","M","O","Q","U","V","Y",
+          "a~","A~","E~", "e~","i~","o~","O~","O:","u~","U~","eu","EU","{",
+          "}","@","1","2","3","6","7","8","9","&","3:r","OI","@U","eI","ai",
+          "aI","au","aU","aj","aw","ei","ew","ia","ie","io","ja","je","jo",
+          "ju","oj","ou","ua","uo","wa","we","wi","wo","ya","ye","yu",
           "A/","O/","U~/"]
-consonants = ["b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m","n","n`","p","q","r","r`","r\\", "rr",
-              "s","s`","t","t`","v","w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N","R","S","T","W","X","Z",
-              "4","5","?","ts","tS","dz","dZ","tK","kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss"]
+consonants = ["b","b_<","c","d","d`","f","g","g_<","h","j","k","l","l`","m",
+              "n","n`","p","q","r","r`","r\\", "rr","s","s`","t","t`","v",
+              "w","x","z","z`","B","C","D","F","G","H","J","K","L","M","N",
+              "R","S","T","W","X","Z","4","5","?","ts","tS","dz","dZ","tK",
+              "kp","Nm","rr","ss","ts_h","k_h","p_h","t_h","ts_hs","tss"]
 fillers = ["laugh", "noise", "fp"]
 
 # ----------------------------------------------------------------------------
@@ -76,32 +82,35 @@ fillers = ["laugh", "noise", "fp"]
 
 
 def get_tier(filename, tier_idx):
-    """ Returns the tier of the given index in an annotated file.
+    """Return the tier of the given index in an annotated file.
 
-    :param filename: Name of the annotated file
-    :param tier_idx: Index of the tier to get
-    :returns: Tier or None
+    :param filename: (str) Name of the annotated file
+    :param tier_idx: (int) Index of the tier to get
+    :returns: sppasTier or None
 
     """
     try:
-        trs_input = sppas.src.annotationdata.aio.read(filename)
-    except Exception:
+        parser = sppasRW(filename)
+        trs_input = parser.read(filename)
+    except:
         return None
-    if tier_idx < 0 or tier_idx >= trs_input.GetSize():
+    if tier_idx < 0 or tier_idx >= len(trs_input):
         return None
 
     return trs_input[tier_idx]
 
+# ----------------------------------------------------------------------------
+
 
 def get_tiers(ref_filename, hyp_filename, ref_idx=0, hyp_idx=0):
-    """ Returns a reference and an hypothesis tier from annotated files.
+    """Return a reference and an hypothesis tier from annotated files.
 
     :param ref_filename: Name of the annotated file with the reference
     :param hyp_filename: Name of the annotated file with the hypothesis
     :param ref_idx: (int)
     :param hyp_idx: (int)
 
-    :returns: a tuple with Tier or None for both ref and hyp
+    :returns: a tuple with sppasTier or None for both ref and hyp
 
     """
     ref_tier = get_tier(ref_filename, ref_idx)
@@ -109,13 +118,12 @@ def get_tiers(ref_filename, hyp_filename, ref_idx=0, hyp_idx=0):
 
     return ref_tier, hyp_tier
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Function to draw the evaluation as BoxPlots (using an R script)
 
 
 def test_R():
-    """ Test if Rscript is available as a command of the system. """
-
+    """Test if Rscript is available as a command of the system. """
     try:
         NULL = open(os.devnull, "w")
         subprocess.call(['Rscript'], stdout=NULL, stderr=subprocess.STDOUT)
@@ -123,12 +131,19 @@ def test_R():
         return False
     return True
 
+# ---------------------------------------------------------------------------
+
 
 def exec_Rscript(filenamed, filenames, filenamee, rscriptname, pdffilename):
-    """ Write the R script to draw boxplots from the given files, then
-    execute it, and delete it.
+    """Perform an the R script to draw boxplots from the given files.
+    
+    Write the script, then execute it, and delete it.
 
-    :param pdffilename: the file with the result.
+    :param filenamed: (str) duration
+    :param filenames: (str) start
+    :param filenamee: (str) end
+    :param rscriptname: (str)
+    :param pdffilename: PDF file with the result.
 
     """
     with codecs.open(rscriptname, "w", "utf8") as fp:
@@ -181,8 +196,9 @@ def exec_Rscript(filenamed, filenames, filenamee, rscriptname, pdffilename):
         fp.write('abline(0,0) \n')
         fp.write('graphics.off() \n')
         fp.write("\n")
+        fp.close()
 
-    command = "Rscript "+rscriptname
+    command = "Rscript " + rscriptname
     try:
         p = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
         retval = p.wait()
@@ -197,9 +213,11 @@ def exec_Rscript(filenamed, filenames, filenamee, rscriptname, pdffilename):
 
     return ""
 
+# ---------------------------------------------------------------------------
+
 
 def boxplot(deltaposB, deltaposE, deltaposD, extras, out_name, vector, name):
-    """ Create a PDF file with boxplots, but selecting only a subset of phonemes.
+    """Create a PDF file with boxplots of selected phonemes.
 
     :param vector: the list of phonemes
 
@@ -227,7 +245,8 @@ def boxplot(deltaposB, deltaposE, deltaposD, extras, out_name, vector, name):
     fpe.close()
     fpd.close()
 
-    message = exec_Rscript(filenamed, filenames, filenamee, out_name+".R", out_name+"-delta-"+name+".pdf")
+    message = exec_Rscript(filenamed, filenames, filenamee, 
+                           out_name+".R", out_name+"-delta-"+name+".pdf")
 
     os.remove(filenamed)
     os.remove(filenames)
@@ -235,56 +254,64 @@ def boxplot(deltaposB, deltaposE, deltaposD, extras, out_name, vector, name):
     return message
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Main program
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Verify and extract args:
 
-parser = ArgumentParser(usage="%s -fr ref -fh hyp [options]" % os.path.basename(PROGRAM), 
-                        description="... a script to compare two segmentation boundaries, "
-                                    "in the scope of evaluating an hypothesis vs a reference.")
+parser = ArgumentParser(
+    usage="%(prog)s -fr ref -fh hyp [options]", 
+    description="Compare two segmentation boundaries, "
+                "in the scope of evaluating an hypothesis vs a reference.")
 
-parser.add_argument("-fr",
-                    metavar="file",
-                    required=True,
-                    help='Input annotated file/directory name of the reference.')
+parser.add_argument(
+    "-fr",
+    metavar="file",
+    required=True,
+    help='Input annotated file/directory name of the reference.')
 
-parser.add_argument("-fh",
-                    metavar="file",
-                    required=True,
-                    help='Input annotated file/directory name of the hypothesis.')
+parser.add_argument(
+    "-fh",
+    metavar="file",
+    required=True,
+    help='Input annotated file/directory name of the hypothesis.')
 
-parser.add_argument("-tr",
-                    metavar="file",
-                    type=int,
-                    default=1,
-                    required=False,
-                    help='Tier number of the reference (default=1).')
+parser.add_argument(
+    "-tr",
+    metavar="file",
+    type=int,
+    default=1,
+    required=False,
+    help='Tier number of the reference (default=1).')
 
-parser.add_argument("-th",
-                    metavar="file",
-                    type=int,
-                    default=1,
-                    required=False,
-                    help='Tier number of the hypothesis (default=1).')
+parser.add_argument(
+    "-th",
+    metavar="file",
+    type=int,
+    default=1,
+    required=False,
+    help='Tier number of the hypothesis (default=1).')
 
-parser.add_argument("-d",
-                    metavar="delta",
-                    required=False,
-                    type=float,
-                    default=0.04,
-                    help='Delta max value for the UBPA estimation (default=0.02).')
+parser.add_argument(
+    "-d",
+    metavar="delta",
+    required=False,
+    type=float,
+    default=0.04,
+    help='Delta max value for the UBPA estimation (default=0.02).')
 
-parser.add_argument("-o",
-                    metavar="path",
-                    required=False,
-                    help='Path for the output files.')
+parser.add_argument(
+    "-o",
+    metavar="path",
+    required=False,
+    help='Path for the output files.')
 
-parser.add_argument("--quiet",
-                    action='store_true',
-                    help="Disable the verbosity.")
+parser.add_argument(
+    "--quiet",
+    action='store_true',
+    help="Disable the verbosity.")
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -342,17 +369,18 @@ elif os.path.isdir(args.fh) and os.path.isdir(args.fr):
 
     for fr in ref_files:
         base_fr, ext_fr = os.path.splitext(fr)
-        if not ext_fr.lower() in sppas.src.annotationdata.aio.extensions:
+        if not ext_fr.lower() in sppas.src.anndata.aio.extensions:
             continue
         for fh in hyp_files:
             base_fh, ext_fh = os.path.splitext(fh)
-            if not ext_fh.lower() in sppas.src.annotationdata.aio.extensions:
+            if not ext_fh.lower() in sppas.src.anndata.aio.extensions:
                 continue
             if fh.startswith(base_fr):
                 files.append((fr, fh))
 
 else:
-    print("Both reference and hypothesis must be of the same type: file or directory.")
+    print("Both reference and hypothesis must be of the same type: "
+          "file or directory.")
     sys.exit(1)
 
 if not args.quiet:
@@ -380,39 +408,40 @@ for f in files:
     if ref_tier is None or hyp_tier is None:
         print("[ INFO ] No aligned phonemes found in tiers. Nothing to do. ")
         continue
-    if ref_tier.GetSize() != hyp_tier.GetSize():
+    if len(ref_tier) != len(hyp_tier):
         print("[ ERROR ] Hypothesis: {} -> {} vs Reference: {} -> {} phonemes."
-              .format(f[1], hyp_tier.GetSize(), f[0], ref_tier.GetSize()))
+              .format(f[1], len(hyp_tier), f[0], len(ref_tier)))
         continue
     if not args.quiet:
         print("[ OK ] Hypothesis: {} vs Reference: {} -> {} phonemes."
-              .format(f[1], f[0], ref_tier.GetSize()))
+              .format(f[1], f[0], len(ref_tier)))
 
     # ----------------------------------------------------------------------------
     # Compare boundaries and durations of annotations.
 
     i = 0
-    imax = ref_tier.GetSize()-1
+    imax = len(ref_tier)-1
 
     for ref_ann, hyp_ann in zip(ref_tier, hyp_tier):
-        etiquette = ref_ann.GetLabel().GetValue()
+        etiquette = ref_ann.serialize_labels()
         if etiquette == "#":
             continue
+
         # begin
-        rb = ref_ann.GetLocation().GetBegin().GetValue()
-        hb = hyp_ann.GetLocation().GetBegin().GetValue()
+        rb = ref_ann.get_location().get_best().get_begin().get_midpoint()
+        hb = hyp_ann.get_location().get_best().get_begin().get_midpoint()
         delta_start = hb-rb
         # end
-        re = ref_ann.GetLocation().GetEnd().GetValue()
-        he = hyp_ann.GetLocation().GetEnd().GetValue()
+        re = ref_ann.get_location().get_best().get_end().get_midpoint()
+        he = hyp_ann.get_location().get_best().get_end().get_midpoint()
         delta_end = he-re
         # middle
         rm = rb + (re-rb)/2.
         hm = hb + (he-hb)/2.
         delta_center = hm-rm
         # duration
-        rd = ref_ann.GetLocation().GetDuration().GetValue()
-        hd = hyp_ann.GetLocation().GetDuration().GetValue()
+        rd = ref_ann.get_location().get_best().duration().get_value()
+        hd = hyp_ann.get_location().get_best().duration().get_value()
         delta_duration = hd-rd
 
         tag = 1
@@ -463,17 +492,17 @@ fpd.close()
 # Estimates the Unit Boundary Positioning Accuracy
 
 if not args.quiet:
-    ubpa(deltaposB, "Start boundary", sys.stdout)
+    ubpa(deltaposB, "Start boundary", sys.stdout, delta_max=args.d, step=0.005)
 
 with open(out_name+"-eval-position-start.txt", "w") as fp:
-    ubpa(deltaposB, "Start boundary position", fp, delta_max=args.d, step=0.01)
+    ubpa(deltaposB, "Start boundary position", fp, delta_max=args.d, step=0.005)
 with open(out_name+"-eval-position-end.txt", "w") as fp:
-    ubpa(deltaposE, "End boundary position", fp, delta_max=args.d, step=0.01)
+    ubpa(deltaposE, "End boundary position", fp, delta_max=args.d, step=0.005)
 with open(out_name+"-eval-position-middle.txt", "w") as fp:
-    ubpa(deltaposM, "Middle boundary position", fp, delta_max=args.d, step=0.01)
+    ubpa(deltaposM, "Middle boundary position", fp, delta_max=args.d, step=0.005)
 
 with open(out_name+"-eval-duration.txt", "w") as fp:
-    ubpa(delta_durationur, "Duration", fp, delta_max=args.d, step=0.01)
+    ubpa(delta_durationur, "Duration", fp, delta_max=args.d, step=0.005)
 
 # ----------------------------------------------------------------------------
 # Draw BoxPlots of the accuracy via an R script

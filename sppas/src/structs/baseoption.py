@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
+from distutils.util import strtobool
 from sppas.src.utils.makeunicode import u, text_type, binary_type
 
 # ----------------------------------------------------------------------------
@@ -65,6 +66,14 @@ class sppasBaseOption(object):
     >>> <type 'str'>
 
     """
+
+    type_mappings = {
+        'float': float,
+        'int': int,
+        'bool': lambda x: bool(strtobool(x)),
+        'str': str,
+        'file': str
+    }
 
     def __init__(self, option_type, option_value=""):
         """Create a sppasBaseOption instance.

@@ -43,28 +43,29 @@ import codecs
 
 from sppas.src.config import sg
 from sppas.src.config import symbols
+from sppas.src.config import separators
 
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.utils.fileutils import sppasDirUtils
 
-from sppas.src.annotations.searchtier import sppasSearchTier
+from sppas.src.annotations.searchtier import sppasFindTier
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
 from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
 from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.annotationsexc import NoInputError
 
-import sppas.src.annotationdata.aio as annotationdataio
-import sppas.src.annotationdata.utils.tierutils as tierutils
-from sppas.src.annotationdata.transcription import Transcription
-
+import sppas.src.anndata as anndata
+from sppas.src.anndata import sppasTranscription, sppasRW, sppasLabel, sppasTag
+import sppas.src.anndata.aio.aioutils as tierutils
 import sppas.src.audiodata.aio as audiodataio
+
 from sppas.src.audiodata.audio import sppasAudioPCM
 from sppas.src.audiodata.channelformatter import sppasChannelFormatter
 from sppas.src.audiodata.channelmfcc import sppasChannelMFCC
 
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.resources.vocab import sppasVocabulary
-from sppas.src.resources.mapping import sppasMapping
+from sppas.src.presenters.tiermapping import sppasMappingTier
 
 from .hmm import sppasHMM
 from .htkscripts import sppasHtkScripts
@@ -119,12 +120,13 @@ class sppasDataTrainer(object):
 
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
 
-    This class manage the data created at each step of the acoustic training
-    model procedure, following the HTK Handbook. It includes:
+    This class is a manager for the data created at each step of the
+    acoustic training model procedure, following the HTK Handbook.
+    It includes:
 
         - HTK scripts
         - phoneme prototypes
@@ -143,6 +145,7 @@ class sppasDataTrainer(object):
         self.featsdir = None
         self.scriptsdir = None
         self.logdir = None
+
         self.htkscripts = sppasHtkScripts()
         self.features = sppasAcFeatures()
 
@@ -163,7 +166,6 @@ class sppasDataTrainer(object):
 
     def reset(self):
         """Fix all members to their initial value."""
-        
         # The working directory.
         self.workdir = None
         self.featsdir = None
@@ -215,7 +217,6 @@ class sppasDataTrainer(object):
 
     def delete(self):
         """Delete all folders and their content, then reset members."""
-        
         if self.workdir is not None:
             shutil.rmtree(self.workdir)
         self.reset()
@@ -228,6 +229,7 @@ class sppasDataTrainer(object):
                         featsdir=DEFAULT_FEATURES_DIR, 
                         logdir=DEFAULT_LOG_DIR):
         """Set the working directory and its folders.
+
         Create all of them if necessary.
 
         :param workdir: (str) The working main directory
@@ -236,7 +238,7 @@ class sppasDataTrainer(object):
         :param logdir: (str) The folder to write output logs
 
         """
-        # The working directory will be located in the system temporary directory
+        # The working directory will be located in the system temp dir
         if workdir is None:
             sf = sppasFileUtils()
             workdir = sf.set_random()
@@ -260,14 +262,18 @@ class sppasDataTrainer(object):
         self.scriptsdir = scriptsdir
         self.featsdir = featsdir
         self.logdir = logdir
-        logging.info('Working directory is fixed to: {:s}'.format(self.workdir))
+
+        logging.info('Working directory is {:s}'.format(self.workdir))
 
     # -----------------------------------------------------------------------
 
     def fix_storage_dirs(self, basename):
         """Fix the folders to store annotated speech and audio files.
 
-        :param basename: (str) a name to identify storage folders, like: align, phon, trans, ...
+        The given basename can be something like: align, phon, trans, ...
+
+        :param basename: (str) a name to identify storage folders
+        :raises: IOError
 
         """
         if basename is None:
@@ -275,7 +281,8 @@ class sppasDataTrainer(object):
             return
 
         if self.workdir is None:
-            raise IOError("A working directory must be fixed before defining its folders.")
+            raise IOError("A working directory must be fixed before "
+                          "defining its folders.")
 
         store_trs = os.path.join(self.workdir, "trs-"+basename)
         store_wav = os.path.join(self.workdir, "wav-"+basename)
@@ -296,8 +303,11 @@ class sppasDataTrainer(object):
     # -----------------------------------------------------------------------
 
     def get_storetrs(self):
-        """Return the current folder name to store transcribed data files, or None."""
+        """Get the current folder name to store transcribed data files.
 
+        :returns: folder name or None.
+
+        """
         if self.storeidx == -1: 
             return None
         return self.storetrs[self.storeidx]
@@ -305,8 +315,11 @@ class sppasDataTrainer(object):
     # -----------------------------------------------------------------------
 
     def get_storewav(self):
-        """Return the current folder name to store audio data files, or None."""
-        
+        """Get the current folder name to store audio data files.
+
+        :returns: folder name or None.
+
+        """
         if self.storeidx == -1: 
             return None
         return self.storewav[self.storeidx]
@@ -314,8 +327,11 @@ class sppasDataTrainer(object):
     # -----------------------------------------------------------------------
 
     def get_storemfc(self):
-        """Return the current folder name to store MFCC data files, or None."""
+        """Get the current folder name to store MFCC data files.
 
+        :returns: folder name or None.
+
+        """
         if self.storeidx == -1: 
             return None
         return self.storemfc[self.storeidx]
@@ -325,7 +341,9 @@ class sppasDataTrainer(object):
     def fix_proto(self, 
                   proto_dir=DEFAULT_PROTO_DIR, 
                   proto_filename=DEFAULT_PROTO_FILENAME):
-        """(Re-)Create the proto, then if relevant only, create a `protos` directory
+        """(Re-)Create the proto.
+
+        If relevant, create a `protos` directory
         and add the proto file. Create the macro if any.
 
         :param proto_dir: (str) Directory in which prototypes will be stored
@@ -346,8 +364,10 @@ class sppasDataTrainer(object):
             self.protodir = proto_dir
 
         if self.protodir is not None:
-            self.protofile = os.path.join(self.protodir, proto_filename)
-            self.macrofile = os.path.join(self.protodir, DEFAULT_MACROS_FILENAME)
+            self.protofile = os.path.join(self.protodir,
+                                          proto_filename)
+            self.macrofile = os.path.join(self.protodir,
+                                          DEFAULT_MACROS_FILENAME)
 
             if os.path.exists(self.protofile) is False:
                 logging.info('Write proto file: {:s}'.format(self.protofile))
@@ -356,72 +376,83 @@ class sppasDataTrainer(object):
                 logging.info('Read proto file: {!s:s}'.format(self.protofile))
                 self.proto = sppasHtkIO.read_hmm(self.protofile)
                 self.features.nbmv = self.proto.get_vecsize()
-                logging.info(' ... [OK] Vector size: {:d}'.format(self.features.nbmv))
+                logging.info(' ... [OK] Vector size: {:d}'
+                             ''.format(self.features.nbmv))
 
             if os.path.exists(self.macrofile) is False:
-                logging.info('Write macros file: {:s}'.format(DEFAULT_MACROS_FILENAME))
+                logging.info('Write macros file: {:s}'
+                             ''.format(DEFAULT_MACROS_FILENAME))
                 vectorsize = self.features.nbmv
                 targetkind = self.features.targetkind
-                paramkind = sppasAcModel.create_parameter_kind("mfcc", targetkind[4:])
+                paramkind = sppasAcModel.create_parameter_kind("mfcc",
+                                                               targetkind[4:])
 
                 opt = sppasAcModel.create_options(vector_size=vectorsize,
                                                   parameter_kind=paramkind,
                                                   stream_info=[vectorsize])
+
+                self.macrofile = os.path.join(self.protodir,
+                                              DEFAULT_MACROS_FILENAME)
                 macromodel = sppasHtkIO()
                 macromodel.set_macros([opt])
-                self.macrofile = os.path.join(self.protodir, DEFAULT_MACROS_FILENAME)
                 macromodel.write(self.protodir, DEFAULT_MACROS_FILENAME)
 
     # -----------------------------------------------------------------------
 
     def check(self):
         """Check if all members are initialized with appropriate values.
-        Return None if success.
 
+        :returns: None if success.
         :raises: IOError
 
         """
         if self.protodir is None:
             raise IOError("No proto directory defined.")
         if os.path.isdir(self.protodir) is False:
-            raise IOError("Bad proto directory: %s." % self.protodir)
+            raise IOError("Bad proto directory: {:s}."
+                          "".format(self.protodir))
 
         if self.protofile is None:
             raise IOError("No proto file defined.")
         if os.path.isfile(self.protofile) is False:
-            raise IOError("Bad proto file name: %s." % self.protofile)
+            raise IOError("Bad proto file name: {:s}."
+                          "".format(self.protofile))
 
         if self.workdir is None:
             raise IOError("No working directory defined.")
         if os.path.isdir(self.workdir) is False:
-            raise IOError("Bad working directory: %s." % self.workdir)
+            raise IOError("Bad working directory: {:s}."
+                          "".format(self.workdir))
 
         if self.scriptsdir is None:
             raise IOError("No scripts directory defined.")
         if os.path.isdir(self.scriptsdir) is False:
-            raise IOError("Bad scripts directory: %s." % self.scriptsdir)
+            raise IOError("Bad scripts directory: {:s}."
+                          "".format(self.scriptsdir))
 
         if self.featsdir is None:
             raise IOError("No features directory defined.")
         if os.path.isdir(self.featsdir) is False:
-            raise IOError("Bad features directory: %s." % self.featsdir)
+            raise IOError("Bad features directory: {:s}."
+                          "".format(self.featsdir))
 
         if self.logdir is None:
             raise IOError("No log directory defined.")
         if os.path.isdir(self.logdir) is False:
-            raise IOError("Bad log directory: %s." % self.logdir)
+            raise IOError("Bad log directory: {:s}."
+                          "".format(self.logdir))
 
 # ---------------------------------------------------------------------------
 
 
 class sppasTrainingCorpus(object):
-    """
+    """Manager of a training corpus, to prepare a set of data.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Manager of a training corpus, to prepare such a set of data.
 
     Data preparation is the step 1 of the acoustic model training procedure.
 
@@ -433,20 +464,21 @@ class sppasTrainingCorpus(object):
 
     Accepted input:
 
-        - annotated files: one of annotationdataio.extensions_in
+        - annotated files: one of anndata.aio.extensions_in
         - audio files: one of audiodata.extensions
 
     """
     def __init__(self, datatrainer=None, lang="und"):
-        """sppasTrainingCorpus constructor.
+        """Create a sppasTrainingCorpus instance.
 
         :param datatrainer: (sppasDataTrainer)
+        :param lang: (str) iso-8859-3 of the language
 
         """
         self.datatrainer = datatrainer
         self.lang = lang
-        self.transfiles = {}  # Time-aligned at the utterance level, orthography
-        self.phonfiles = {}   # Time-aligned at the utterance level, phonetization
+        self.transfiles = {}  # Time-aligned at the ipus level, orthograph
+        self.phonfiles = {}   # Time-aligned at the ipus level, phonetization
         self.alignfiles = {}  # Time-aligned at the phone level
         self.audiofiles = {}  #
         self.mfcfiles = {}    #
@@ -454,7 +486,7 @@ class sppasTrainingCorpus(object):
         self.dictfile = None
         self.phonesfile = None
         self.monophones = sppasPhoneSet()
-        self.phonemap = sppasMapping()
+        self.phonemap = sppasMappingTier()
 
         if datatrainer is None:
             self.datatrainer = sppasDataTrainer()
@@ -465,15 +497,14 @@ class sppasTrainingCorpus(object):
 
     def reset(self):
         """Fix all members to None or to their default values."""
-
         if self.datatrainer is not None:
             self.datatrainer.reset()
 
         # Selection of the input data files.
         #   - Key   = original file
         #   - Value = working file
-        self.transfiles = {}  # Time-aligned at the utterance level, orthography
-        self.phonfiles = {}   # Time-aligned at the utterance level, phonetization
+        self.transfiles = {}  # Time-aligned at the ipus level, orthography
+        self.phonfiles = {}   # Time-aligned at the ipus level, phonetization
         self.alignfiles = {}  # Time-aligned at the phone level
         self.audiofiles = {}  #
         self.mfcfiles = {}    #
@@ -483,13 +514,12 @@ class sppasTrainingCorpus(object):
         self.dictfile = None
         self.phonesfile = None
         self.monophones = sppasPhoneSet()
-        self.phonemap = sppasMapping()
+        self.phonemap = sppasMappingTier()
 
     # -----------------------------------------------------------------------
 
     def create(self):
         """Create files and directories."""
-
         if self.datatrainer.workdir is None:
             logging.info('Create a temporary working directory: ')
             self.datatrainer.create()
@@ -516,19 +546,24 @@ class sppasTrainingCorpus(object):
         else:
             logging.info(' - no mapping table is defined.')
 
-        # The pronunciation dictionary (also used to construct the vocab if required)
+        # The pronunciation dictionary
+        # (also used to construct the vocab if required)
         if dict_file is not None and os.path.exists(dict_file) is True:
-            logging.info(' - pronunciation dictionary {!s:s}'.format(dict_file))
+            logging.info(' - pronunciation dictionary {!s:s}'
+                         ''.format(dict_file))
 
-            # Map the phoneme strings of the dictionary. Save the mapped version.
+            # Map the phoneme strings of the dictionary.
+            # Save the mapped version.
             pdict = sppasDictPron(dict_file)
             if self.datatrainer.workdir is not None:
                 map_dict = pdict.map_phones(self.phonemap)
-                dict_file = os.path.join(self.datatrainer.workdir, self.lang+".dict")
+                dict_file = os.path.join(self.datatrainer.workdir,
+                                         self.lang + ".dict")
                 map_dict.save_as_ascii(dict_file)
             # Create the vocabulary from the dictionary.
             if vocab_file is None:
-                vocab_file = os.path.join(self.datatrainer.workdir, self.lang+".vocab")
+                vocab_file = os.path.join(self.datatrainer.workdir,
+                                          self.lang + ".vocab")
                 w = sppasVocabulary()
                 for token in pdict:
                     if '(' not in token and ')' not in token:
@@ -571,8 +606,8 @@ class sppasTrainingCorpus(object):
             audio_files.extend(files)
 
         # Get the list of annotated files from the input directory
-        trs_files = []
-        for extension in annotationdataio.extensions_in:
+        trs_files = list()
+        for extension in anndata.aio.extensions_in:
             if extension.lower() in [".hz", ".pitchtier", ".txt"]:
                 continue
             files = sd.get_files(extension)
@@ -606,59 +641,70 @@ class sppasTrainingCorpus(object):
     # -----------------------------------------------------------------------
 
     def add_file(self, trs_filename, audio_filename):
-        """Add a new couple of files to deal with.
+        """Add a new set of files to deal with.
+
         If such files are already in the data, they will be added again.
 
         :param trs_filename: (str) The annotated file.
         :param audio_filename: (str) The audio file.
-        :returns: Bool
+        :returns: (bool)
 
         """
         if self.datatrainer.workdir is None:
             self.create()
 
         try:
-            trs = annotationdataio.read(trs_filename)
+            parser = sppasRW(trs_filename)
+            trs = parser.read(trs_filename)
         except Exception as e:
-            logging.info("Error with file: {!s:s}: {:s}".format(trs_filename, str(e)))
+            logging.error("Error with file: {!s:s}: {:s}"
+                          "".format(trs_filename, str(e)))
             return False
 
         appended = False
         # Already time-aligned phonemes
         try:
-            tier = sppasSearchTier.aligned_phones(trs)
-            appended = self._append_phonalign(tier, trs_filename, audio_filename)
+            tier = sppasFindTier.aligned_phones(trs)
+            appended = self._append_phonalign(tier,
+                                              trs_filename,
+                                              audio_filename)
         except NoInputError:
             pass
 
         # Already phonetized
         try:
-            tier = sppasSearchTier.phonetization(trs)
-            appended = self._append_phonetization(tier, trs_filename, audio_filename)
+            tier = sppasFindTier.phonetization(trs)
+            appended = self._append_phonetization(tier,
+                                                  trs_filename,
+                                                  audio_filename)
         except NoInputError:
             pass
 
         # Already tokenized (appended as an ortho transc.)
         try:
-            tier = sppasSearchTier.tokenization(trs)
-            appended = self._append_transcription(tier, trs_filename, audio_filename)
+            tier = sppasFindTier.tokenization(trs)
+            appended = self._append_transcription(tier,
+                                                  trs_filename,
+                                                  audio_filename)
         except NoInputError:
             # Orthographic transcription
             try:
-                tier = sppasSearchTier.transcription(trs)
-                appended = self._append_transcription(tier, trs_filename, audio_filename)
+                tier = sppasFindTier.transcription(trs)
+                appended = self._append_transcription(tier,
+                                                      trs_filename,
+                                                      audio_filename)
             except NoInputError:
                 pass
 
         if appended is False:
-            logging.info("No tier was found and/or appended from file {!s:s}.".format(trs_filename))
-
+            logging.warning("No tier was found and/or appended from "
+                            "file {!s:s}.".format(trs_filename))
         return appended
 
     # -----------------------------------------------------------------------
 
     def get_scp(self, aligned=True, phonetized=False, transcribed=False):
-        """Fix the scp file by choosing the files to add.
+        """Fix the train.scp file content.
 
         :param aligned: (bool) Add time-aligned data in the scp file
         :param phonetized: (bool) Add phonetized data in the scp file
@@ -713,7 +759,7 @@ class sppasTrainingCorpus(object):
             for i, trs_dir in enumerate(self.datatrainer.storetrs):
                 mfc_dir = self.datatrainer.storemfc[i]
                 mfc = os.path.basename(mfc_dir)
-                fp.write('"*/%s/*" => "%s"\n' % (mfc, trs_dir))
+                fp.write('"*/{:s}/*" => "{:s}"\n'.format(mfc, trs_dir))
                 files = True
 
         if files is True:
@@ -723,29 +769,13 @@ class sppasTrainingCorpus(object):
 
     # -----------------------------------------------------------------------
 
-    def map_phonemes(self, tier, unkstamp=symbols.unk):
-        """Map phonemes of a tier."""
-
-        # Map phonemes.
-        for ann in tier:
-            label = ann.GetLabel().GetValue()
-            if label == SP_PHON:
-                new_label = SIL_PHON
-            elif label == unkstamp:
-                new_label = "dummy"
-            else:
-                new_label = self.phonemap.map_entry(label)
-            if label != new_label:
-                ann.GetLabel().SetValue(new_label)
-
-        return tier
-
-    # -----------------------------------------------------------------------
-
     def _append_phonalign(self, tier, trs_filename, audio_filename):
-        """Append a PhonAlign tier in the set of known data."""
+        """Append a PhonAlign tier in the set of known data.
 
-        tier = self.map_phonemes(tier)
+        :returns: (bool)
+
+        """
+        tier = self.phonemap.map_tier(tier)
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("align")
@@ -757,23 +787,32 @@ class sppasTrainingCorpus(object):
         # Add the tier
         res = self._append_tier(tier, outfile, trs_filename, audio_filename)
         if res is True:
-            self.alignfiles[trs_filename] = os.path.join(self.datatrainer.get_storetrs(), outfile+".lab")
+            self.alignfiles[trs_filename] = os.path.join(
+                self.datatrainer.get_storetrs(),
+                outfile+".lab")
 
         return res
 
     # -----------------------------------------------------------------------
 
     def _append_phonetization(self, tier, trs_filename, audio_filename):
-        """Append a Phonetization tier in the set of known data."""
+        """Append a Phonetization tier in the set of known data.
 
+        :returns: (bool)
+
+        """
         # Map phonemes.
+        d = self.phonemap.get_delimiters()
+        self.phonemap.set_delimiters([" ", "\n",  # separate labels of an ann
+                                      separators.phonemes,
+                                      separators.variants])
+        tier = self.phonemap.map_tier(tier)
+        self.phonemap.set_delimiters(d)
+
         for ann in tier:
-            label = ann.GetLabel().GetValue()
-            label = label.replace(SP_PHON, SIL_PHON)
-            label = label.replace(SP_ORTHO, SIL_ORTHO)
-            new_label = self.phonemap.map(label, delimiters=[" ", "-", "|"])
-            new_label = sppasTrainingCorpus._format_phonetization(new_label)
-            ann.GetLabel().SetValue(new_label)
+            label = ann.serialize_labels()
+            new_content = sppasTrainingCorpus._format_phonetization(label)
+            ann.set_labels(sppasLabel(sppasTag(new_content)))
 
         # Fix current storage dir.
         self.datatrainer.fix_storage_dirs("phon")
@@ -815,25 +854,35 @@ class sppasTrainingCorpus(object):
             ret = self._add_audio(audio_filename, outfile)
             if ret is True:
 
-                logging.info('Files %s / %s appended as %s.' % (trs_filename, audio_filename, outfile))
-                self.audiofiles[trs_filename] = os.path.join(self.datatrainer.get_storewav(), outfile + ".wav")
-                self.mfcfiles[trs_filename] = os.path.join(self.datatrainer.get_storemfc(), outfile + ".mfc")
+                logging.info('Files {:s} / {:s} appended as {:s}.'
+                             ''.format(trs_filename, audio_filename, outfile))
+                self.audiofiles[trs_filename] = \
+                    os.path.join(self.datatrainer.get_storewav(),
+                                 outfile + ".wav")
+                self.mfcfiles[trs_filename] = \
+                    os.path.join(self.datatrainer.get_storemfc(),
+                                 outfile + ".mfc")
                 return True
 
             else:
                 self._pop_tier(outfile)
 
-        logging.info('Files %s / %s rejected.' % (trs_filename, audio_filename))
+        logging.info('Files {:s} / {:s} rejected.'
+                     ''.format(trs_filename, audio_filename))
         return False
 
     # -----------------------------------------------------------------------
 
     def _add_tier(self, tier, outfile, ext):
         try:
-            trs = Transcription()
-            trs.Append(tier)
-            annotationdataio.write(os.path.join(self.datatrainer.get_storetrs(), outfile+ext), trs)
-        except Exception:
+            trs = sppasTranscription()
+            trs.append(tier)
+
+            out_filename = os.path.join(self.datatrainer.get_storetrs(),
+                                        outfile+ext)
+            parser = sppasRW(out_filename)
+            parser.write(trs)
+        except:
             return False
         return True
 
@@ -841,7 +890,9 @@ class sppasTrainingCorpus(object):
 
     def _pop_tier(self, outfile):
         try:
-            os.remove(os.path.join(self.datatrainer.get_storetrs(), outfile + ".lab"))
+            filename = os.path.join(self.datatrainer.get_storetrs(),
+                                    outfile + ".lab")
+            os.remove(filename)
         except IOError:
             pass
 
@@ -853,7 +904,7 @@ class sppasTrainingCorpus(object):
             audio = audiodataio.open(audio_filename)
             audio.extract_channel(0)
             formatter = sppasChannelFormatter(audio.get_channel(0))
-        except Exception:
+        except:
             return False
 
         # Check/Convert
@@ -901,7 +952,7 @@ class sppasTrainingCorpus(object):
                 lab = "".join(fp.readlines()).strip()
             if len(lab) == 0:
                 return False
-        except Exception:
+        except:
             return False
 
         with codecs.open(filename, "a+", sg.__encoding__) as fp:
@@ -915,25 +966,24 @@ class sppasTrainingCorpus(object):
     # -----------------------------------------------------------------------
 
     def _create_phonemap(self, mapfile):
-        """Create the default mapping table, and/or get from a file."""
+        """Create the default mapping table, and/or get from a file.
 
-        self.phonemap = sppasMapping(mapfile)
+        :param mapfile:
 
-        if self.phonemap.is_key(SIL_PHON) is False:
-            self.phonemap.add(SIL_PHON, SIL_ORTHO)
-
-        if self.phonemap.is_key(SP_PHON) is False:
-            self.phonemap.add(SP_PHON, SP_ORTHO)
-
-        # if self.phonemap.is_key("noise") is False:
-        #     self.phonemap.add('noise', 'noise')
-
+        """
+        self.phonemap = sppasMappingTier(mapfile)
         self.phonemap.set_reverse(True)
+        self.phonemap.set_map_symbols(True)
+
+        self.phonemap.add(SIL_PHON, SIL_ORTHO)
+        self.phonemap.add(SIL_PHON, SP_ORTHO)
 
         # Update the list of monophones from the phonemap table.
         for phoneme in self.phonemap:
             if phoneme != SP_PHON:
                 self.monophones.add(phoneme)
+
+        self.phonemap.add("dummy", symbols.unk)
 
     # -----------------------------------------------------------------------
 
@@ -953,7 +1003,7 @@ class sppasTrainingCorpus(object):
                 if len(p) < m:
                     i = n
                     m = len(p)
-            select_list.append(tab[i].replace("-", " "))
+            select_list.append(tab[i].replace(separators.phonemes, " "))
 
         return " ".join(select_list)
 
@@ -961,13 +1011,13 @@ class sppasTrainingCorpus(object):
 
 
 class sppasHTKModelInitializer(object):
-    """
+    """Acoustic model initializer.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Acoustic model initializer.
 
     Monophones initialization is the step 2 of the acoustic model training
     procedure.
@@ -976,6 +1026,7 @@ class sppasHTKModelInitializer(object):
     prototype definition. The function of a prototype definition is to describe
     the form and topology of the HMM, the actual numbers used in the definition
     are not important.
+
     Having set up an appropriate prototype, an HMM can be initialized by both
     methods:
     1. create a flat start monophones model, a prototype trained from
@@ -990,30 +1041,37 @@ class sppasHTKModelInitializer(object):
        state alignment, the log likelihood of the training data can be computed.
         Hence, the whole estimation process can be repeated until no further
        increase in likelihood is obtained.
+
     This program trains the flat start model and fall back on this model
     for each phoneme that fails to be trained with `Hinit` (if there are not
     enough occurrences).
 
     """
     def __init__(self, trainingcorpus, directory):
-        """sppasHTKModelInitializer constructor.
+        """Create an instance of sppasHTKModelInitializer.
 
-        :param trainingcorpus: (sppasTrainingCorpus) The data prepared during strep 1.
+        :param trainingcorpus: (sppasTrainingCorpus) The data prepared during step 1.
         :param directory: (str) The current directory to write the result of this step.
+        :raises: IOError
 
         """
         self.trainingcorpus = trainingcorpus
         self.directory = directory
         if os.path.exists(directory) is False:
-            raise IOError('A valid directory must be defined in order to initialize the model.')
+            raise IOError('A valid directory must be defined in order to '
+                          'initialize the model.')
 
     # -----------------------------------------------------------------------
 
     def create_model(self):
-        """Main method to create the initial acoustic model."""
+        """Main method to create the initial acoustic model.
 
+        :raises: IOError
+
+        """
         if self.trainingcorpus.monophones is None:
-            raise IOError('A list of monophones must be defined in order to initialize the model.')
+            raise IOError('A list of monophones must be defined in order '
+                          'to initialize the model.')
 
         self.create_models()
         self.create_macros()
@@ -1031,69 +1089,85 @@ class sppasHTKModelInitializer(object):
 
         """
         if test_command("HCompV") is False:
-            logging.info("Error. HCompV is not installed.")
+            logging.error("HCompV is not installed.")
             return
 
-        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=True, transcribed=False)
+        scp_file = self.trainingcorpus.get_scp(aligned=True,
+                                               phonetized=True,
+                                               transcribed=False)
         if scp_file is None:
-            logging.info("Error. The scp file is not defined.")
+            logging.error("The scp file is not defined.")
             return
 
-        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "log-step00.txt")
-        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "err-step00.txt")
+        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir,
+                                "log-step00.txt")
+        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir,
+                                  "err-step00.txt")
 
         try:
-            subprocess.check_call(["HCompV",
-                                   "-T", "2",
-                                   "-m",
-                                   "-I", self.trainingcorpus.get_mlf(),
-                                   "-f", str(0.01),
-                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                   "-S", scp_file,
-                                   "-H", self.trainingcorpus.datatrainer.macrofile,
-                                   "-M", self.directory,
-                                   self.trainingcorpus.datatrainer.protofile],
-                                   stdout=open(log_file, 'ab+'),
-                                   stderr=open(error_file, 'ab+'))
+            subprocess.check_call([
+               "HCompV",
+               "-T", "2",
+               "-m",
+               "-I", self.trainingcorpus.get_mlf(),
+               "-f", str(0.01),
+               "-C", self.trainingcorpus.datatrainer.features.configfile,
+               "-S", scp_file,
+               "-H", self.trainingcorpus.datatrainer.macrofile,
+               "-M", self.directory,
+               self.trainingcorpus.datatrainer.protofile],
+               stdout=open(log_file, 'ab+'),
+               stderr=open(error_file, 'ab+'))
         except subprocess.CalledProcessError as e:
-            logging.info("Error. HCompV failed: {:s}".format(str(e)))
+            logging.error("HCompV failed with error:\n"
+                          "{:s}".format(str(e)))
             return
 
     # -----------------------------------------------------------------------
 
     def _create_start_model(self, phone, outfile):
-        """Create a proto for a specific phone, using `HInit`."""
+        """Create a proto for a specific phone, using `HInit`.
 
+        :param phone:
+        :param outfile:
+
+        """
         if test_command("HInit") is False:
-            logging.info("Error. HInit is not installed.")
+            logging.error("HInit is not installed.")
             return
 
-        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
+        scp_file = self.trainingcorpus.get_scp(aligned=True,
+                                               phonetized=False,
+                                               transcribed=False)
         if scp_file is None:
-            logging.info("Error. The scp file is not defined.")
+            logging.error("The scp file is not defined.")
             return
 
-        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "log-step00.txt")
-        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir, "err-step00.txt")
+        log_file = os.path.join(self.trainingcorpus.datatrainer.logdir,
+                                "log-step00.txt")
+        error_file = os.path.join(self.trainingcorpus.datatrainer.logdir,
+                                  "err-step00.txt")
 
         try:
-            subprocess.check_call(["HInit",
-                                   "-T", "2",
-                                   "-i", "20",
-                                   "-m", "1",
-                                   "-v", "0.0001",
-                                   "-I", self.trainingcorpus.get_mlf(),
-                                   "-l", phone,
-                                   "-o", outfile,
-                                   "-C", self.trainingcorpus.datatrainer.features.configfile,
-                                   "-S", scp_file,
-                                   "-H", self.trainingcorpus.datatrainer.macrofile,
-                                   "-M", self.directory,
-                                   self.trainingcorpus.datatrainer.protofile],
-                                   stdout=open(log_file, 'ab+'),
-                                   stderr=open(error_file, 'ab+'))
+            subprocess.check_call([
+                "HInit",
+                "-T", "2",
+                "-i", "20",
+                "-m", "1",
+                "-v", "0.0001",
+                "-I", self.trainingcorpus.get_mlf(),
+                "-l", phone,
+                "-o", outfile,
+                "-C", self.trainingcorpus.datatrainer.features.configfile,
+                "-S", scp_file,
+                "-H", self.trainingcorpus.datatrainer.macrofile,
+                "-M", self.directory,
+                self.trainingcorpus.datatrainer.protofile],
+                stdout=open(log_file, 'ab+'),
+                stderr=open(error_file, 'ab+'))
         except subprocess.CalledProcessError as e:
-            logging.info("Error. HInit failed: {:s}".format(str(e)))
+            logging.warning("HInit failed with message:\n"
+                            "{:s}".format(str(e)))
             return
 
     # -----------------------------------------------------------------------
@@ -1109,7 +1183,9 @@ class sppasHTKModelInitializer(object):
             - or use the default prototype.
 
         """
-        scp_file = self.trainingcorpus.get_scp(aligned=True, phonetized=False, transcribed=False)
+        scp_file = self.trainingcorpus.get_scp(aligned=True,
+                                               phonetized=False,
+                                               transcribed=False)
 
         # Adapt the proto file from the corpus (if any)
         if scp_file is not None:
@@ -1174,7 +1250,6 @@ class sppasHTKModelInitializer(object):
 
     def create_hmmdefs(self):
         """Create an hmmdefs file from a set of separated hmm files."""
-
         logging.info(" ... ... Create hmmdefs file with files: ")
         parser = sppasHtkIO()
 
@@ -1198,7 +1273,6 @@ class sppasHTKModelInitializer(object):
 
     def create_macros(self):
         """Create macros file from vfloors."""
-
         ac_model = sppasHtkIO()
 
         # Create a default macro
@@ -1225,13 +1299,13 @@ class sppasHTKModelInitializer(object):
 
 
 class sppasHTKModelTrainer(object):
-    """
+    """Acoustic model trainer.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      Acoustic model trainer.
 
     This class allows to train an acoustic model from audio data and their
     transcriptions (either phonetic or orthographic or both).
@@ -1260,7 +1334,7 @@ class sppasHTKModelTrainer(object):
     MFCC files and the training data.
 
     Step 4 creates tied-state triphones from monophones and from some language
-    specificities defined by means of a configuration file.
+    specificity defined by means of a configuration file.
 
     """
     def __init__(self, corpus=None):
@@ -1273,23 +1347,25 @@ class sppasHTKModelTrainer(object):
 
         # Epoch folders: the content of one round of the training procedure
         self.__epoch = 0
-        self.__previous_dir = None  # Directory of the previous epoch
-        self.__current_dir = None   # Directory we're currently working in
+        self.__previous_dir = None  # Folder of the previous epoch
+        self.__current_dir = None   # Folder we're currently working in
 
     # -----------------------------------------------------------------------
 
     def init_epoch_dir(self):
         """Create a new epoch folder and fill it with the macros."""
-        
         # Create the new epoch folder
-        next_dir = os.path.join(self.corpus.datatrainer.workdir, "hmm" + str(self.__epoch).zfill(2))
+        next_dir = os.path.join(self.corpus.datatrainer.workdir,
+                                "hmm" + str(self.__epoch).zfill(2))
         if os.path.exists(next_dir) is False:
             os.mkdir(next_dir)
 
         # Copy the current macros into the new folder
         if self.__current_dir is not None:
-            if os.path.exists(os.path.join(self.__current_dir, DEFAULT_MACROS_FILENAME)):
-                shutil.copy(os.path.join(self.__current_dir, DEFAULT_MACROS_FILENAME), next_dir)
+            if os.path.exists(os.path.join(self.__current_dir,
+                                           DEFAULT_MACROS_FILENAME)):
+                shutil.copy(os.path.join(self.__current_dir,
+                                         DEFAULT_MACROS_FILENAME), next_dir)
 
         # Set data
         self.__previous_dir = self.__current_dir
@@ -1358,35 +1434,42 @@ class sppasHTKModelTrainer(object):
 
         # Create Tokenizer, Phonetizer, Aligner
         try:
-            tokenizer = sppasTextNorm(self.corpus.vocabfile, self.corpus.lang, logfile=None)
+            tokenizer = sppasTextNorm(logfile=None)
+            tokenizer.load_resources(vocab_filename=self.corpus.vocabfile,
+                                     lang=self.corpus.lang)
             tokenizer.set_std(False)
             tokenizer.set_custom(False)
 
-            phonetizer = sppasPhon(self.corpus.dictfile)
+            phonetizer = sppasPhon()
+            phonetizer.load_resources(dict_filename=self.corpus.dictfile)
             phonetizer.set_unk(True)
             phonetizer.set_usestdtokens(False)
 
-            aligner = sppasAlign(self.__current_dir)
-            aligner.set_infersp(infersp)
+            aligner = sppasAlign()
+            aligner.load_resources(self.__current_dir)
             if test_command("julius") is False:
                 if test_command("HVite") is True:
                     aligner.set_aligner("hvite")
                     logging.info("Aligner is set to HVite.")
                 else:
-                    logging.info('None of Julius nor HVite command is available.')
+                    logging.error('None of Julius nor HVite command '
+                                  'is available.')
                     return False
             else:
                 logging.info("Aligner is set to Julius.")
             # aligner.set_clean(False)
             aligner.set_activity_tier(False)
             aligner.set_activity_duration_tier(False)
-            aligner.set_phntokalign_tier(False)
             aligner.set_basic(False)
 
-            alignerdir = os.path.join(self.corpus.datatrainer.workdir, "alignerio")
+            alignerdir = os.path.join(self.corpus.datatrainer.workdir,
+                                      "alignerio")
+            if os.path.exists(alignerdir) is False:
+                os.mkdir(alignerdir)
 
         except Exception as e:
-            logging.info('Error while creating automatic annotations: {:s}'.format(str(e)))
+            logging.info('Error while creating automatic annotations: {:s}'
+                         ''.format(str(e)))
             return False
 
         # Annotate
@@ -1399,12 +1482,13 @@ class sppasHTKModelTrainer(object):
                 trs_workfile = trs_workfile.replace('.lab', '.xra')
 
             # Read input file, get tier with orthography
-            trs_input = annotationdataio.read(trs_workfile)
+            parser = sppasRW(trs_workfile)
+            trs_input = parser.read()
             try:
-                tier_input = sppasSearchTier.transcription(trs_input)
+                tier_input = sppasFindTier.transcription(trs_input)
             except NoInputError:
                 try:
-                    tier_input = sppasSearchTier.tokenization(trs_input)
+                    tier_input = sppasFindTier.tokenization(trs_input)
                 except NoInputError:
                     logging.info(" ... [ERROR] "
                                  "No transcription tier for file: {:s}"
@@ -1413,51 +1497,52 @@ class sppasHTKModelTrainer(object):
 
             # Annotate the tier: tokenization, phonetization, time-alignment
             try:
-                tiertokens, tierStokens, tierCustom = tokenizer.convert(tier_input)
+                tokens_faked, tokens_std, tokens_custom = \
+                    tokenizer.convert(tier_input)
             except Exception as e:
                 logging.info(" ... [ERROR] "
                              "Text normalization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
+
             try:
-                tierphones = phonetizer.convert(tiertokens)
+                phones_tier = phonetizer.convert(tokens_faked)
             except Exception as e:
                 logging.info(" ... [ERROR] "
                              "Phonetization failed for file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
+
             try:
-                trsalign = aligner.convert(tierphones, None, audio_work_file, alignerdir)
+                tier_phn, tier_tok, tier_pron = \
+                    aligner.convert(phones_tier, None, audio_work_file, alignerdir)
             except Exception as e:
                 logging.info(" ... [ERROR] "
                              "Alignment error failed file {:s}. {:s}"
                              "".format(trs_workfile, str(e)))
                 return False
-                # continue
 
             # Get only the phonetization from the time-alignment
-            tiera = trsalign.Find('PhonAlign')
-            if len(tiera) == 0:
+            if len(tier_phn) == 0:
                 logging.info(" ... [ERROR] "
                              "Empty result for file {:s}. "
                              "".format(trs_workfile))
                 return False
-            if len(tiera) == 1 and tiera[0].GetLabel().GetValue() == "":
+            if len(tier_phn) == 1 and tier_phn[0].is_labelled() is False:
                 logging.info(" ... [ERROR] "
                              "Empty result for file {:s}. "
                              "".format(trs_workfile))
                 return False
 
-            tiera = self.corpus.map_phonemes(tiera, unkstamp=symbols.unk)
-            tier = tierutils.align2phon(tiera)
-            trs = Transcription()
-            trs.Add(tier)
+            tier = self.corpus.phonemap.map_tier(tier_phn)
+            tier = tierutils.unalign(tier)
+            trs = sppasTranscription()
+            trs.append(tier)
 
             # Save file.
             outfile = trs_workfile.replace('.xra', '.lab')
-            annotationdataio.write(outfile, trs)
+            parser = sppasRW(outfile)
+            parser.write(trs)
             self.corpus.transfiles[trs_filename] = outfile
             logging.info(" ... [SUCCESS] Created file: {:s}".format(outfile))
             success += 1
@@ -1489,17 +1574,18 @@ class sppasHTKModelTrainer(object):
 
         try:
             subprocess.check_call([
-                        "HLEd", "-T", "2",
-                        "-l", "'*'",
-                        "-n", triphones,
-                        "-i", new_mlf,
-                        self.corpus.datatrainer.htkscripts.mktrifile,
-                        self.corpus.get_mlf(),
-                        ],
-                        stdout=open(os.devnull, 'ab+'),
-                        stderr=open(os.devnull, 'ab+'))
+                    "HLEd", "-T", "2",
+                    "-l", "'*'",
+                    "-n", triphones,
+                    "-i", new_mlf,
+                    self.corpus.datatrainer.htkscripts.mktrifile,
+                    self.corpus.get_mlf(),
+                    ],
+                    stdout=open(os.devnull, 'ab+'),
+                    stderr=open(os.devnull, 'ab+'))
         except subprocess.CalledProcessError as e:
-            logging.info('HLEd failed: {:s}'.format(str(e)))
+            logging.info('HLEd failed with error:\n'
+                         '{:s}'.format(str(e)))
             return False
 
         return True
@@ -1521,12 +1607,12 @@ class sppasHTKModelTrainer(object):
 
         """
         if test_command("HERest") is False:
-            logging.info("Error. HERest is not installed.")
+            logging.error("HERest is not installed.")
             return False
 
         # Is there files?
         if scpfile is None or len(scpfile) == 0:
-            logging.info("Error. The scp file is not defined.")
+            logging.error("The scp file is not defined.")
             return True
 
         macro = []
@@ -1535,9 +1621,12 @@ class sppasHTKModelTrainer(object):
         #     macro.append('-H')
         #     macro.append(os.path.join(self.__previous_dir, DEFAULT_MACROS_FILENAME))
 
-        stat_file = os.path.join(self.corpus.datatrainer.logdir, "stats-step"+str(self.__epoch).zfill(2)+".txt")
-        log_file = os.path.join(self.corpus.datatrainer.logdir, "log-step"+str(self.__epoch).zfill(2)+".txt")
-        error_file = os.path.join(self.corpus.datatrainer.logdir, "err-step"+str(self.__epoch).zfill(2)+".txt")
+        stat_file = os.path.join(self.corpus.datatrainer.logdir,
+                                 "stats-step"+str(self.__epoch).zfill(2)+".txt")
+        log_file = os.path.join(self.corpus.datatrainer.logdir,
+                                "log-step"+str(self.__epoch).zfill(2)+".txt")
+        error_file = os.path.join(self.corpus.datatrainer.logdir,
+                                  "err-step"+str(self.__epoch).zfill(2)+".txt")
 
         pruning = []
         if dopruning is True:
@@ -1552,20 +1641,21 @@ class sppasHTKModelTrainer(object):
 
             try:
                 subprocess.check_call([
-                            "HERest", "-T", "2",
-                            "-I", self.corpus.get_mlf(),
-                            "-C", self.corpus.datatrainer.features.configfile,
-                            "-S", scpfile,
-                            "-s", stat_file,
-                            "-M", self.__current_dir,
-                            "-H", os.path.join(self.__previous_dir, DEFAULT_HMMDEFS_FILENAME)]
-                            + macro
-                            + pruning
-                            + [self.corpus.phonesfile],
-                            stdout=open(log_file, 'wb+'),
-                            stderr=open(error_file, 'wb+'))
+                        "HERest", "-T", "2",
+                        "-I", self.corpus.get_mlf(),
+                        "-C", self.corpus.datatrainer.features.configfile,
+                        "-S", scpfile,
+                        "-s", stat_file,
+                        "-M", self.__current_dir,
+                        "-H", os.path.join(self.__previous_dir, DEFAULT_HMMDEFS_FILENAME)]
+                        + macro
+                        + pruning
+                        + [self.corpus.phonesfile],
+                        stdout=open(log_file, 'wb+'),
+                        stderr=open(error_file, 'wb+'))
             except subprocess.CalledProcessError as e:
-                logging.info('HERest failed: {:s}'.format(str(e)))
+                logging.error('HERest failed with error:\n'
+                              '{:s}'.format(str(e)))
                 return False
 
         return True
@@ -1573,8 +1663,11 @@ class sppasHTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_step1(self):
-        """Step 1 of the training procedure: Data preparation."""
+        """Step 1 of the training procedure.
 
+        Data preparation.
+
+        """
         logging.info("Step 1. Data preparation.")
 
         # Create a working directory if needed
@@ -1591,24 +1684,31 @@ class sppasHTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_step2(self):
-        """Step 2 of the training procedure: Monophones initialization."""
+        """Step 2 of the training procedure.
 
+        Monophones initialization.
+
+        """
         logging.info("Step 2. Monophones initialization.")
 
         if self.corpus.datatrainer.workdir is None:
-            raise IOError('No working directory was previously fixed. Step 2 aborted.')
+            raise IOError('No working directory was previously fixed. '
+                          'Step 2 aborted.')
         if os.path.exists(self.corpus.datatrainer.workdir) is False:
-            raise IOError('The working directory was not previously created. Step 2 aborted.')
+            raise IOError('The working directory was not previously created. '
+                          'Step 2 aborted.')
 
         self.init_epoch_dir()
         initial = sppasHTKModelInitializer(self.corpus, self.__current_dir)
         initial.create_model()
 
-        if os.path.exists(os.path.join(self.__current_dir, DEFAULT_HMMDEFS_FILENAME)) is False:
+        if os.path.exists(os.path.join(self.__current_dir,
+                                       DEFAULT_HMMDEFS_FILENAME)) is False:
             raise IOError('Monophones initialization failed.')
 
         if len(self.corpus.audiofiles) == 0:
-            logging.info('No audio file: the model was created only from prototypes.')
+            logging.error('No audio file: '
+                          'the model was created only from prototypes.')
             return False
 
         return True
@@ -1616,7 +1716,9 @@ class sppasHTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_step3(self):
-        """Step 3 of the training procedure: Monophones training.
+        """Step 3 of the training procedure.
+
+        Monophones training.
 
             1. Train phonemes from manually time-aligned data.
             2. Create sp model.
@@ -1654,7 +1756,7 @@ class sppasHTKModelTrainer(object):
                                        transcribed=False)
         ret = self.train_step(scp_file, dopruning=True)
         if ret is False:
-            logging.info('ERROR: Additional training failed.')
+            logging.error('Additional training failed.')
             return False
 
         # Step 3.4 Train from utterance-aligned data with orthography.
@@ -1668,7 +1770,7 @@ class sppasHTKModelTrainer(object):
                                                   phonetized=True,
                                                   transcribed=True))
         if ret is False:
-            logging.info('ERROR: Intermediate training failed.')
+            logging.error('Intermediate training failed.')
             return False
 
         logging.info(" ... Re-Aligning transcribed files.")
@@ -1679,7 +1781,7 @@ class sppasHTKModelTrainer(object):
                                                   phonetized=True,
                                                   transcribed=True))
         if ret is False:
-            logging.info('ERROR: Final training failed.')
+            logging.error('Final training failed.')
             return False
 
         return True
@@ -1687,21 +1789,25 @@ class sppasHTKModelTrainer(object):
     # -----------------------------------------------------------------------
 
     def training_step4(self, header_tree):
-        """Step 4 of the training procedure: Triphones training.
+        """Step 4 of the training procedure. Not implemented yet.
 
-        :param header_tree: (str) Name of the script file to train a triphone (commonly header-tree.hed).
+        Triphones training.
+
+        :param header_tree: (str) Name of the script file to train a
+        triphone (commonly header-tree.hed).
 
         """
         logging.info("Step 4. Tied-State Triphones training.")
 
         # Making Triphones from Monophones
         if self.make_triphones() is False:
-            logging.info('ERROR: Failed to make triphones from the mlf data.')
+            logging.error('Failed to make triphones from the mlf data.')
             return False
 
         return True
-        # TODO:
-        # THE FOLLOWING IS THE TCSH-CODE TO TRANSLATE IN PYTHON:
+        # TODO: Triphones training.
+
+        # The following code in TCSH has to be translated in PYTHON:
 
         # cat ./htk/triphones | grep - v "-" | grep - v "+" > monophones
         # cat ./htk/monophones1 monophones | sort | uniq - u >> ./htk/triphones
@@ -1770,14 +1876,14 @@ class sppasHTKModelTrainer(object):
 
     def get_current_model(self):
         """Return the model of the current epoch, or None."""
-
-        if os.path.exists(os.path.join(self.__current_dir, DEFAULT_HMMDEFS_FILENAME)) is False:
+        if os.path.exists(os.path.join(self.__current_dir,
+                                       DEFAULT_HMMDEFS_FILENAME)) is False:
             return None
 
         model = sppasHtkIO()
         try:
             model.read(self.__current_dir, DEFAULT_HMMDEFS_FILENAME)
-        except Exception:
+        except:
             return None
         return model
 
@@ -1785,14 +1891,14 @@ class sppasHTKModelTrainer(object):
 
     def get_current_macro(self):
         """Return the macros of the current epoch, or None."""
-
-        if os.path.exists(os.path.join(self.__current_dir, DEFAULT_MACROS_FILENAME)) is False:
+        if os.path.exists(os.path.join(self.__current_dir,
+                                       DEFAULT_MACROS_FILENAME)) is False:
             return None
 
         model = sppasHtkIO()
         try:
             model.read(self.__current_dir, DEFAULT_MACROS_FILENAME)
-        except Exception:
+        except:
             return None
         return model
 
@@ -1835,8 +1941,8 @@ class sppasHTKModelTrainer(object):
             if os.path.exists(outdir) is False:
                 try:
                     os.mkdir(outdir)
-                except Exception:
-                    logging.info('Error while creating directory {:s}'.format(outdir))
+                except:
+                    logging.error('Error while creating directory {:s}'.format(outdir))
                     to_continue = False
             if to_continue:
                 model.write(outdir, DEFAULT_HMMDEFS_FILENAME)

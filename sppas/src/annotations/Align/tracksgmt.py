@@ -84,7 +84,7 @@ class TrackSegmenter(object):
 
     # -----------------------------------------------------------------------
 
-    def __init__(self, model, aligner_name=DEFAULT_ALIGNER):
+    def __init__(self, model=None, aligner_name=DEFAULT_ALIGNER):
         """Create a TrackSegmenter instance.
 
         :param model: (str) Name of the directory of the acoustic model.
@@ -103,9 +103,7 @@ class TrackSegmenter(object):
         self._infersp = False
 
         # The acoustic model directory
-        if os.path.exists(model) is False:
-            raise IOError('Bad input model directory')
-        self._model_dir = model
+        self._model_dir = None
 
         # The automatic alignment system, and the "basic".
         # The basic aligner is used:
@@ -116,6 +114,9 @@ class TrackSegmenter(object):
         self.set_aligner(aligner_name)
         self._basic_aligner = TrackSegmenter.aligners.instantiate(None)
         self._instantiate_aligner()
+
+        if model is not None:
+            self.set_model(model)
 
     # -----------------------------------------------------------------------
 

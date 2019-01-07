@@ -218,3 +218,9 @@ class sppasVocabulary(object):
 
     def __contains__(self, item):
         return item in self.__entries
+
+    # ------------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self.__entries:
+            yield a

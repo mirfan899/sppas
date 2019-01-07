@@ -153,22 +153,22 @@ msgid ":INFO 1240: "
 msgstr "La même durée est assignée à chaque phonème."
 
 msgid ":INFO 1250: "
-msgstr "Découpage en intervalles: "
+msgstr "Découpage en intervalles."
 
 msgid ":INFO 1252: "
 msgstr "Alignement de chaque intervalle: "
 
 msgid ":INFO 1254: "
-msgstr "Fusion des alignements des intervalles:"
+msgstr "Fusion des alignements des intervalles."
 
 msgid ":INFO 1256: "
-msgstr "Création de la tier des activités:"
+msgstr "Création de la tier des activités."
 
 msgid ":INFO 1260: "
-msgstr "Alignement des tokens désactivé."
+msgstr "Sans tokenization, les tokens seront remplacés par des index."
 
 msgid ":INFO 1262: "
-msgstr "Pas de tier de tokens alignés. La génération des activités est annulé."
+msgstr "Pas de tier de tokens alignés. La génération des activités est annulée."
 
 msgid ":INFO 1264: "
 msgstr "La tier {tiername} n'a pas été trouvée. Aucune tier supplémentaire ne peut être créée."
@@ -198,7 +198,7 @@ msgid ":ERROR 1050: "
 msgstr "Inconsistence entre le nombre d'intervalles des tiers données en entrée: {:d} vs {:d}."
 
 msgid ":ERROR 1060: "
-msgstr "La tier donnée en entrée ne contient pas assez d'annotations ; il en faut au moins {:s}."
+msgstr "La tier donnée en entrée ne contient pas assez d'annotations ; il en faut au moins {:d}."
 
 msgid ":ERROR 1110: "
 msgstr "Phonétisation impossble de {:s}."

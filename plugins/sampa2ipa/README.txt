@@ -2,7 +2,7 @@
 
 program:    sampa2ipa
 author:     Brigitte Bigi
-contact:    contact@sppas.org
+contact:    develop@sppas.org
 date:       2018-10-10
 version:    2.0
 copyright:  Copyright (C) 2017-2018  Brigitte Bigi

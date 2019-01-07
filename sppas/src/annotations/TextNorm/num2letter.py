@@ -44,13 +44,13 @@ from sppas.src.utils.makeunicode import u
 
 
 class sppasNum(object):
-    """
+    """Numerical conversion using a multilingual algorithm.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      Numerical conversion using a multilingual algorithm.
 
     The language names used in this class are based on iso639-3.
 
@@ -78,7 +78,8 @@ class sppasNum(object):
         1000000000 milliard
 
     """
-    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm", "vie", "jpn", "pol", "por", "pcm"]
+    LANGUAGES = ["und", "yue", "cmn", "fra", "ita", "eng", "spa", "khm",
+                 "vie", "jpn", "pol", "por", "pcm"]
 
     ZERO = dict()
     ZERO["und"] = u("0")
@@ -386,9 +387,7 @@ class sppasNum(object):
             return self.__unite_spa(number)
         if self._lang == "vie":
             return self.__unite_vie(number)
-        if "cmn" in self._lang \
-                or "yue" in self._lang  \
-                or "jpn" in self._lang:
+        if self._lang in ["cmn", "yue", "jpn"]:
             return self.__unite_cmn(number)
         if self._lang == "fra":
             return self.__unite_fra(number)
@@ -403,7 +402,8 @@ class sppasNum(object):
         if self._lang == "und":
             return str(number)
 
-        raise ValueError("Unknown language {:s} to convert numbers".format(self._lang))
+        raise ValueError("Unknown language {:s} to convert numbers"
+                         "".format(self._lang))
 
     # -------------------------------------------------------------------------
     # Numbers from 10 to 99
@@ -501,48 +501,47 @@ class sppasNum(object):
     def __dizaine_spa(self, number):
         if number < 10:
             return self.unite(number)
-        if number < 30:
-            if number == 10: 
-                _r = u("diez")
-            elif number == 11: 
-                _r = u("once")
-            elif number == 12: 
-                _r = u("doce")
-            elif number == 13: 
-                _r = u("trece")
-            elif number == 14: 
-                _r = u("catorce")
-            elif number == 15: 
-                _r = u("quince")
-            elif number == 16: 
-                _r = u("dieciséis")
-            elif number == 17: 
-                _r = u("diecisiete")
-            elif number == 18: 
-                _r = u("dieciocho")
-            elif number == 19: 
-                _r = u("diecinueve")
-            elif number == 20: 
-                _r = u("veinte")
-            elif number == 21: 
-                _r = u("veintiuno")
-            elif number == 22: 
-                _r = u("veintidós")
-            elif number == 23: 
-                _r = u("veintitrés")
-            elif number == 24: 
-                _r = u("veinticuatro")
-            elif number == 25: 
-                _r = u("veinticinco")
-            elif number == 26: 
-                _r = u("veintiséis")
-            elif number == 27: 
-                _r = u("veintisiete")
-            elif number == 28: 
-                _r = u("veintiocho")
-            elif number == 29: 
-                _r = u("veintinueve")
-            return _r
+        if number == 10:
+            return u("diez")
+        if number == 11:
+            return u("once")
+        if number == 12:
+            return u("doce")
+        if number == 13:
+            return u("trece")
+        if number == 14:
+            return u("catorce")
+        if number == 15:
+            return u("quince")
+        if number == 16:
+            return u("dieciséis")
+        if number == 17:
+            return u("diecisiete")
+        if number == 18:
+            return u("dieciocho")
+        if number == 19:
+            return u("diecinueve")
+        if number == 20:
+            return u("veinte")
+        if number == 21:
+            return u("veintiuno")
+        if number == 22:
+            return u("veintidós")
+        if number == 23:
+            return u("veintitrés")
+        if number == 24:
+            return u("veinticuatro")
+        if number == 25:
+            return u("veinticinco")
+        if number == 26:
+            return u("veintiséis")
+        if number == 27:
+            return u("veintisiete")
+        if number == 28:
+            return u("veintiocho")
+        if number == 29:
+            return u("veintinueve")
+
         n = (number / 10) * 10
         r = number % 10
         if 29 < n < 40:    
@@ -568,7 +567,7 @@ class sppasNum(object):
         if number < 10:
             _str = self.unite(number)
         elif 10 <= number < 100:
-            if (number%10) == 0:
+            if (number % 10) == 0:
                 _str = self.unite(int(number/10)) + u("十")
             else:
                 _str = self.unite(int(number/10)) + u("十") + self.unite(number%10)
@@ -849,7 +848,8 @@ class sppasNum(object):
             s = u("setecientos")
         elif 899 < number < 1000:
             s = u("novecientos")
-        else: s = u("%scientos") % self.unite(n)
+        else:
+            s = u("{:s}cientos".format(self.unite(n)))
         if r == 0:
             return s
         return u("%s-%s") % (s, self.dizaine(r))
@@ -1450,8 +1450,9 @@ class sppasNum(object):
 
 # ------------------------------------------------------------------
 
+
 if __name__ == '__main__':
-    import os.path
+    import os
     import sys
     from argparse import ArgumentParser
     PROGRAM = os.path.abspath(__file__)
@@ -1462,6 +1463,6 @@ if __name__ == '__main__':
     if len(sys.argv) <= 1:
         sys.argv.append('-h')
     args = parser.parse_args()
-    nb = sppasNum( args.lang )
+    nb = sppasNum(args.lang)
     for line in sys.stdin:
-        print(nb.convert( line ).encode('utf8'))
+        print(nb.convert(line).encode('utf8'))

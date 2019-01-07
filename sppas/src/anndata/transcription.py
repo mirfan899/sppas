@@ -600,9 +600,18 @@ class sppasTranscription(sppasMetaData):
         :raise: AnnDataTypeError
 
         """
+        if float(delay) == 0.:
+            return
+
         for tier in self._tiers:
-            for ann in tier:
-                ann.get_location().shift(delay)
+            if delay < 0:
+                # shifted to left: from the first to the last annotation
+                for ann in tier:
+                    ann.get_location().shift(delay)
+            else:
+                # shifted to right: from the last to the first annotation
+                for ann in reversed(tier):
+                    ann.get_location().shift(delay)
 
     # -----------------------------------------------------------------------
     # Overloads

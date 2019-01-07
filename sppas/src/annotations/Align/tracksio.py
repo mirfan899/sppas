@@ -293,7 +293,10 @@ class TracksReader:
             # Fix filename to read, and load the content
             basename = \
                 TrackNamesGenerator.align_filename(dir_name, track_number)
-            _phons, _words, _prons = AlignerIO.read_aligned(basename)
+            try:
+                _phons, _words, _prons = AlignerIO.read_aligned(basename)
+            except IOError:
+                _phons, _words, _prons = [], [], []
 
             # Append alignments in tiers
             TracksReader._add_aligned_track_into_tier(

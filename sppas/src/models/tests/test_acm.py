@@ -1,18 +1,56 @@
 # -*- coding:utf-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.models.acm.tests.test_acm
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os.path
 import copy
 import shutil
+import logging
 
 from sppas.src.config import symbols
 from sppas.src.config import paths
 from sppas.src.utils.compare import sppasCompare
 from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.utils.fileutils import setup_logging
 
 from ..acm.acmodelhtkio import sppasHtkIO
-from ..acm.htktrain import sppasHTKModelTrainer, sppasDataTrainer, \
-    sppasPhoneSet, sppasTrainingCorpus, sppasHTKModelInitializer
+from ..acm.htktrain import sppasHTKModelTrainer
+from ..acm.htktrain import sppasDataTrainer
+from ..acm.htktrain import sppasPhoneSet
+from ..acm.htktrain import sppasTrainingCorpus
+from ..acm.htktrain import sppasHTKModelInitializer
 
 # ---------------------------------------------------------------------------
 
@@ -29,10 +67,12 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 class TestTrainer(unittest.TestCase):
 
     def setUp(self):
+        setup_logging(0)
         if os.path.exists(TEMP) is True:
             shutil.rmtree(TEMP)
         os.mkdir(TEMP)
-        shutil.copytree(os.path.join(DATA, "protos"), os.path.join(TEMP, "protos"))
+        shutil.copytree(os.path.join(DATA, "protos"),
+                        os.path.join(TEMP, "protos"))
 
     # -----------------------------------------------------------------------
 
@@ -43,16 +83,17 @@ class TestTrainer(unittest.TestCase):
 
     def test_add_corpus(self):
         corpus = sppasTrainingCorpus()
-        corpus1 = os.path.join(paths.samples, "samples-eng")
-        corpus2 = os.path.join(paths.samples, "samples-ita")
-        nb = corpus.add_corpus(corpus1)
-        self.assertEqual(nb, 0)
-        nb = corpus.add_corpus(corpus2)
-        self.assertEqual(nb, 4)
+
+        nb = corpus.add_corpus(os.path.join(paths.samples, "samples-eng"))
+        self.assertEqual(0, nb)
+
+        nb = corpus.add_corpus(os.path.join(paths.samples, "samples-ita"))
+        self.assertEqual(4, nb)
+
         corpus.add_corpus(paths.samples)
-        self.assertGreater(len(corpus.transfiles), 10)
-        self.assertEqual(len(corpus.phonfiles), 0)
-        self.assertEqual(len(corpus.alignfiles), 0)
+        self.assertGreater(len(corpus.transfiles), 30)
+        self.assertEqual(0, len(corpus.phonfiles))
+        self.assertEqual(0, len(corpus.alignfiles))
 
     # -----------------------------------------------------------------------
 
@@ -60,6 +101,7 @@ class TestTrainer(unittest.TestCase):
         datatrainer = sppasDataTrainer()
         datatrainer.create()
         self.assertEqual(datatrainer.check(), None)
+
         dire = datatrainer.workdir
         self.assertTrue(os.path.exists(dire))
         datatrainer.delete()
@@ -71,7 +113,7 @@ class TestTrainer(unittest.TestCase):
         pho = sppasPhoneSet()
         self.assertEqual(4, len(pho))
         pho.add_from_dict(os.path.join(paths.resources, "dict", "nan.dict"))
-        self.assertEqual(44, len(pho))
+        self.assertEqual(43, len(pho))  # sp is missing
         pho.save(os.path.join(TEMP, "monophones"))
 
         pho2 = sppasPhoneSet(os.path.join(TEMP, "monophones"))
@@ -89,16 +131,24 @@ class TestTrainer(unittest.TestCase):
 
         self.assertEqual(corpus.phonemap.map_entry('#'), "#")
 
-        corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"))
+        corpus.fix_resources(dict_file=os.path.join(paths.resources,
+                                                    "dict",
+                                                    "nan.dict"))
         self.assertEqual(len(corpus.monophones), 43)
 
-        corpus.fix_resources(dict_file=os.path.join(paths.resources, "dict", "nan.dict"),
-                             mapping_file=os.path.join(paths.resources, "models", "models-nan", "monophones.repl"))
+        corpus.fix_resources(dict_file=os.path.join(paths.resources,
+                                                    "dict",
+                                                    "nan.dict"),
+                             mapping_file=os.path.join(paths.resources,
+                                                       "models",
+                                                       "models-nan",
+                                                       "monophones.repl"))
         self.assertEqual(corpus.phonemap.map_entry(SIL_ORTHO), SIL_PHON)
 
-        self.assertFalse(corpus.add_file("toto", "toto"))
         self.assertTrue(corpus.add_file(os.path.join(DATA, "F_F_B003-P8-palign.TextGrid"),
                                         os.path.join(DATA, "F_F_B003-P8.wav")))
+        self.assertFalse(corpus.add_file("toto", "toto"))
+
         corpus.datatrainer.delete()
 
     # -----------------------------------------------------------------------

@@ -82,11 +82,11 @@ class sppasDictRepl(object):
 
         """
         self._dict = dict()
-        self.__filename = ""
+        self._filename = ""
 
         if dict_filename is not None:
 
-            self.__filename = dict_filename
+            self._filename = dict_filename
             data = None
             dp = sppasDumpFile(dict_filename)
 
@@ -109,7 +109,7 @@ class sppasDictRepl(object):
 
     def get_filename(self):
         """Return the name of the file from which the vocab comes from."""
-        return self.__filename
+        return self._filename
 
     # -----------------------------------------------------------------------
     # Getters
@@ -274,6 +274,18 @@ class sppasDictRepl(object):
 
     # -----------------------------------------------------------------------
 
+    def pop(self, entry):
+        """Remove an entry, as key.
+
+        :param entry: (str) unicode string of the entry to remove
+
+        """
+        s = sppasDictRepl.format_token(entry)
+        if s in self._dict:
+            self._dict.pop(s)
+
+    # -----------------------------------------------------------------------
+
     def remove(self, entry):
         """Remove an entry, as key or value.
 
@@ -304,23 +316,22 @@ class sppasDictRepl(object):
                 lines = fd.readlines()
             except UnicodeDecodeError:
                 raise FileUnicodeError(filename=filename)
-
-            self.__filename = filename
-            for line in lines:
-                line = " ".join(line.split())
-                if len(line) == 0:
-                    continue
-
-                tab_line = line.split()
-                if len(tab_line) < 2:
-                    continue
-
-                # Add (or modify) the entry in the dict
-                key = tab_line[0]
-                value = sppasDictRepl.REPLACE_SEPARATOR.join(tab_line[1:])
-                self.add(key, value)
-
             fd.close()
+
+        self._filename = filename
+        for line in lines:
+            line = " ".join(line.split())
+            if len(line) == 0:
+                continue
+
+            tab_line = line.split()
+            if len(tab_line) < 2:
+                continue
+
+            # Add (or modify) the entry in the dict
+            key = tab_line[0]
+            value = sppasDictRepl.REPLACE_SEPARATOR.join(tab_line[1:])
+            self.add(key, value)
 
     # -----------------------------------------------------------------------
 

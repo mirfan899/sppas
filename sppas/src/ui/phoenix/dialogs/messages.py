@@ -50,6 +50,7 @@ MSG_HEADER_INFO = ui_translation.gettext("Information")
 
 # ----------------------------------------------------------------------------
 
+
 class sppasBaseMessageDialog(sppasDialog):
     """Base class to create message dialogs.
 
@@ -84,6 +85,7 @@ class sppasBaseMessageDialog(sppasDialog):
 
         self.LayoutComponents()
         self.CenterOnParent()
+        self.FadeIn(deltaN=-10)
 
     # -----------------------------------------------------------------------
 

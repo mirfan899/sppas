@@ -35,22 +35,19 @@
 import logging
 import os
 
+import sppas.src.anndata.aio
 from sppas.src.config import annots
 from sppas.src.config import annotations_translation
-from sppas.src.utils.makeunicode import u
 from sppas.src.utils.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
+from .log import sppasLog
 
 # ---------------------------------------------------------------------------
 
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_OPTIONS = _(":INFO 1050: ")
-MSG_DIAGNOSIS = _(":INFO 1052: ")
-MSG_ANN_FILE = (_(":INFO 1056: "))
+MSG_OPTIONS = annotations_translation.gettext(":INFO 1050: ")
+MSG_DIAGNOSIS = annotations_translation.gettext(":INFO 1052: ")
+MSG_ANN_FILE = (annotations_translation.gettext(":INFO 1056: "))
 
 # ---------------------------------------------------------------------------
 
@@ -76,16 +73,16 @@ class sppasBaseAnnotation(object):
         self.name = name
 
         # Log messages for the user
-        self.logfile = logfile
+        if logfile is None:
+            self.logfile = sppasLog()
+        else:
+            self.logfile = logfile
 
         # List of options to configure the automatic annotation
         self._options = dict()
 
-        # A file diagnostician
-        self.diagnosis = sppasDiagnosis()
-
     # -----------------------------------------------------------------------
-    # Methods to fix options
+    # Shared methods to fix options and to annotate
     # -----------------------------------------------------------------------
 
     def get_option(self, key):
@@ -95,50 +92,261 @@ class sppasBaseAnnotation(object):
         :raises: KeyError
 
         """
-        return self._options[key]
+        if key in self._options:
+            return self._options[key]
+        raise KeyError('{:s} is not a valid option for the automatic '
+                       'annotation.'.format(key))
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def fix_options(self, options):
         """Fix all options.
 
-        :param options: (list)
+        :param options: (list of sppasOption)
+
+        """
+        pass
+
+    # -----------------------------------------------------------------------
+    # Load the linguistic resources
+    # -----------------------------------------------------------------------
+
+    def load_resources(self, *args, **kwargs):
+        """Load the linguistic resources."""
+        pass
+
+    # -----------------------------------------------------------------------
+    # Perform automatic annotation:
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_pattern():
+        """Pattern that the annotation uses for its output filename."""
+        return ''
+
+    @staticmethod
+    def get_input_pattern():
+        """Pattern that the annotation expects for its input filename."""
+        return ''
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_input_extensions():
+        """Extensions that the annotation expects for its input filename."""
+        return sppas.src.anndata.aio.annotations_in
+
+    # -----------------------------------------------------------------------
+
+    def get_out_name(self, filename, output_format):
+        """Return the output filename from the input one.
+
+        :param filename: (str) Name of the input file
+        :param output_format: (str) Extension of the output file
+        :returns: (str)
+
+        """
+        # remove the extension
+        fn = os.path.splitext(filename)[0]
+
+        # remove the existing pattern
+        r = self.get_input_pattern()
+        if len(r) > 0 and fn.endswith(r):
+            fn = fn[:-len(r)]
+
+        # add this annotation pattern its extension
+        return fn + self.get_pattern() + output_format
+
+    # -----------------------------------------------------------------------
+
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
+
+        Both the required and the optional inputs are a list of files
+        the annotation needs (audio, transcription, pitch, etc).
+        There's no constraint on the filenames, neither for the inputs nor
+        for the outputs.
+
+        :param input_file: (list of str) the required input
+        :param opt_input_file: (list of str) the optional input
+        :param output_file: (str) the output file name
+        :returns: (sppasTranscription)
 
         """
         raise NotImplementedError
 
     # -----------------------------------------------------------------------
 
-    def print_message(self, message, indent=3, status=None):
-        """Print a message in the user log.
+    def run_for_batch_processing(self,
+                                 input_file,
+                                 opt_input_file,
+                                 output_format):
+        """Perform the annotation on a file.
 
-        :param message: (str) The message to communicate
-        :param indent: (int) Shift the message with indents
-        :param status: (int) A status identifier
+        This method is called by 'batch_processing'. It fixes the name of the
+        output file, and call the run method.
+        Can be overridden.
+
+        :param input_file: (list of str) the required input
+        :param opt_input_file: (list of str) the optional input
+        :param output_format: (str) Extension of the output file
+        :returns: output file name or None
 
         """
-        message = u(message)
-        if self.logfile:
-            self.logfile.print_message(message,
-                                       indent=indent,
-                                       status=status)
+        # fix the output file name
+        out_name = self.get_out_name(input_file[0], output_format)
 
-        elif len(message) > 0:
-            if status is None:
-                logging.info(message)
-            else:
-                if status == annots.info:
-                    logging.info(message)
-                elif status == annots.warning:
-                    logging.warning(message)
-                elif status == annots.error:
-                    logging.error(message)
-                else:
-                    logging.debug(message)
+        # if out_name exists, it is overridden
+        if os.path.exists(out_name):
+            self.logfile.print_message(
+                "A file with name {:s} is already existing. "
+                "It will be overridden."
+                "".format(out_name), indent=2, status=annots.warning)
+
+        # execute annotation
+        try:
+            self.run(input_file, opt_input_file, out_name)
+        except Exception as e:
+            out_name = None
+            self.logfile.print_message(
+                "{:s}\n".format(str(e)),
+                indent=2, status=annots.error)
+
+        return out_name
 
     # -----------------------------------------------------------------------
 
-    def print_filename(self, filename, status=None):
+    def batch_processing(self,
+                         file_names,
+                         progress=None,
+                         output_format=annots.extension):
+        """Perform the annotation on a set of files.
+
+        The given list of inputs can be either:
+            - a list of the files to be used as a single input:
+              [file1, file2, ...]
+            - a list of the files to be used as several-required-inputs:
+              [(file1_a, file1_b), (file2_a, file2_b), ...]
+            - a list of the files to be used as inputs and optional-inputs:
+              [((file_1_a), (file_1_x)), ((file_2_a), (file_2_x)), ... ]
+            - a list of the files to be used as several-required-inputs and
+              optional-inputs:
+              [((file1_a, file1_b), (file_1_x, file_1_y)), ...]
+
+        :param file_names: (list) List of inputs
+        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
+        :param output_format: (str)
+        :return: (int) Number of files processed with success
+
+        """
+        if len(self._options) > 0:
+            self.print_options()
+
+        total = len(file_names)
+        if total == 0:
+            return 0
+        files_processed_success = 0
+        if progress:
+            progress.set_header(self.name)
+            progress.update(0, "")
+
+        # Execute the annotation for each file in the list
+        for i, input_files in enumerate(file_names):
+
+            required_inputs, optional_inputs = self._split_inputs(input_files)
+            self.print_diagnosis(*required_inputs)
+            self.print_diagnosis(*optional_inputs)
+
+            out_name = self.run_for_batch_processing(required_inputs,
+                                                     optional_inputs,
+                                                     output_format)
+
+            if out_name is None:
+                self.logfile.print_message(
+                    "No file was created.", indent=1, status=annots.info)
+            else:
+                files_processed_success += 1
+                self.logfile.print_message(out_name, indent=1, status=annots.ok)
+            self.logfile.print_newline()
+            if progress:
+                progress.set_fraction(round(float((i+1))/float(total), 2))
+
+        # Indicate completed!
+        if progress:
+            progress.update(
+                1,
+                "Completed ({:d} files successfully over {:d} files).\n"
+                "".format(files_processed_success, total)
+            )
+            progress.set_header("")
+
+        return files_processed_success
+
+    # -----------------------------------------------------------------------
+
+    def _split_inputs(self, input_files):
+        """Return required and optional inputs from the input files.
+
+        The given input files can be:
+
+            - a single input:
+              file1
+            - several-required-inputs:
+              (file1_a, file1_b)
+            - a single required-input and an optional-input:
+              ((file_1_a), file_1_x)
+            - several required-inputs and an optional-input:
+              ((file1_a, file1_b), file_1_x))
+            - several required-inputs and several optional-inputs:
+              ((file1_a, file1_b), (file_1_x, file_1_y)))
+
+        :param input_files: (str, list of str, list of tuple, list of tuple of tuple)
+        :returns: a list of required files; a list of optional files
+
+        """
+        if len(input_files) == 0:
+            raise IOError
+
+        optional_inputs = tuple()
+
+        if isinstance(input_files, (list, tuple)) is False:
+            # a single file to be used as a single required input
+            required_inputs = [input_files]
+
+        else:
+            # input_files is either a list of required + optional files
+            # or a list of required files
+            if isinstance(input_files[0], (list, tuple)) is False:
+                # input_files is a list of required files
+                required_inputs = input_files
+            else:
+                # input_files is a list with (required inputs, optional inputs)
+                required_inputs = input_files[0]
+                # optional inputs can be either a single file or a list
+                if len(input_files) == 2:
+                    if isinstance(input_files[1], (list, tuple)) is False:
+                        optional_inputs = [input_files[1]]
+                    else:
+                        optional_inputs = input_files[1]
+
+        for fn in required_inputs:
+            if os.path.exists(fn) is False:
+                self.print_filename(input_files[0])
+                self.logfile.print_message(
+                    "File not found. "
+                    "This annotation expects a file with name {:s}. "
+                    "".format(fn), indent=1, status=annots.error)
+                self.logfile.print_message(
+                    "Annotation cancelled.", indent=1, status=annots.ignore)
+                raise IOError
+
+        return required_inputs, optional_inputs
+
+    # -----------------------------------------------------------------------
+    # To communicate with the interface:
+    # -----------------------------------------------------------------------
+
+    def print_filename(self, filename):
         """Print the annotation name applied on a filename in the user log.
 
         :param filename: (str) Name of the file to annotate.
@@ -147,9 +355,8 @@ class sppasBaseAnnotation(object):
         """
         if self.logfile:
             fn = os.path.basename(filename)
-            self.print_message(MSG_ANN_FILE.format(fn),
-                               indent=1,
-                               status=status)
+            self.logfile.print_message(
+                MSG_ANN_FILE.format(fn), indent=0, status=None)
         else:
             logging.info(MSG_ANN_FILE.format(filename))
 
@@ -157,57 +364,35 @@ class sppasBaseAnnotation(object):
 
     def print_options(self):
         """Print the list of options in the user log."""
-        if self.logfile:
-            self.print_message(MSG_OPTIONS + ": ",
-                               indent=2,
-                               status=None)
-        else:
-            logging.info(MSG_OPTIONS)
+        self.logfile.print_message(MSG_OPTIONS + ": ", indent=0, status=None)
 
         for k, v in self._options.items():
-            if self.logfile:
-                self.print_message(" - {!s:s}: {!s:s}".format(k, v),
-                                   indent=3,
-                                   status=None)
-            else:
-                logging.info("    - {!s:s}: {!s:s}".format(k, v))
+            msg = " ... {!s:s}: {!s:s}".format(k, v)
+            self.logfile.print_message(msg, indent=0, status=None)
+
+        self.logfile.print_newline()
 
     # -----------------------------------------------------------------------
 
     def print_diagnosis(self, *filenames):
-        """Print the diagnosis of a list of files in the user log.
+        """Print the diagnosis of a list of files in the user report.
 
         :param filenames: (list) List of files.
 
         """
-        if self.logfile:
-            self.print_message(MSG_DIAGNOSIS + ": ",
-                               indent=2,
-                               status=None)
-        else:
-            logging.info(MSG_DIAGNOSIS)
-
         for filename in filenames:
-            if filename is not None:
+            if filename is not None and os.path.exists(filename):
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
-                if self.logfile:
-                    self.print_message(" - {!s:s}: {!s:s}".format(fn, m),
-                                       indent=3,
-                                       status=None)
-                else:
-                    logging.info("    - {!s:s}: {!s:s}".format(fn, m))
-
-    # -----------------------------------------------------------------------
-
-    def print_newline(self):
-        """Print an empty line."""
-        if self.logfile:
-            self.logfile.print_newline()
+                msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
+                self.logfile.print_message(msg, indent=0, status=None)
 
     # ------------------------------------------------------------------------
+    # Utility methods:
+    # ------------------------------------------------------------------------
 
-    def _get_filename(self, filename, extensions):
+    @staticmethod
+    def _get_filename(filename, extensions):
         """Return a filename corresponding to one of the extensions.
 
         :param filename: input file name
@@ -216,9 +401,9 @@ class sppasBaseAnnotation(object):
         extension or None
 
         """
+        base_name = os.path.splitext(filename)[0]
         for ext in extensions:
-
-            ext_filename = os.path.splitext(filename)[0] + ext
+            ext_filename = base_name + ext
             new_filename = sppasFileUtils(ext_filename).exists()
             if new_filename is not None and os.path.isfile(new_filename):
                 return new_filename

@@ -48,6 +48,7 @@ from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasRW
+from sppas.src.config import annots
 
 from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
@@ -85,7 +86,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasSearchIPUs, self).__init__(logfile, "SearchIPUs")
+        super(sppasSearchIPUs, self).__init__(logfile, "Search of IPUs")
 
         self.__searcher = SearchIPUs(channel=None)
 
@@ -107,7 +108,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             - min_ipu: minimum duration of an ipu
             - shift_start: start boundary shift value.
             - shift_end: end boundary shift value.
-        
+
         :param options: (sppasOption)
 
         """
@@ -116,10 +117,10 @@ class sppasSearchIPUs(sppasBaseAnnotation):
             key = opt.get_key()
             if "threshold" == key:
                 self.set_threshold(opt.get_value())
-                
+
             elif "win_length" == key:
                 self.set_win_length(opt.get_value())
-            
+
             elif "min_sil" == key:
                 self.set_min_sil(opt.get_value())
 
@@ -284,33 +285,51 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
     def _set_meta(self, tier):
         """Set meta values to the tier."""
-        tier.set_meta('threshold_volume', str(self.__searcher.get_vol_threshold()))
-        tier.set_meta('minimum_silence_duration', str(self.__searcher.get_min_sil_dur()))
-        tier.set_meta('minimum_ipus_duration', str(self.__searcher.get_min_ipu_dur()))
-        tier.set_meta('shift_ipus_start', str(self.__searcher.get_shift_start()))
-        tier.set_meta('shift_ipus_end', str(self.__searcher.get_shift_end()))
+        tier.set_meta('threshold_volume',
+                      str(self.__searcher.get_vol_threshold()))
+        tier.set_meta('minimum_silence_duration',
+                      str(self.__searcher.get_min_sil_dur()))
+        tier.set_meta('minimum_ipus_duration',
+                      str(self.__searcher.get_min_ipu_dur()))
+        tier.set_meta('shift_ipus_start',
+                      str(self.__searcher.get_shift_start()))
+        tier.set_meta('shift_ipus_end',
+                      str(self.__searcher.get_shift_end()))
 
-        self.print_message("Information: ", indent=2)
-        m1 = "Threshold volume value:     {:d}".format(self.__searcher.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}".format(self.__searcher.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}".format(self.__searcher.get_min_ipu_dur())
-        m4 = "Number of IPUs found:       {:s}".format(tier.get_meta("number_of_ipus"))
+        self.logfile.print_message("Information: ", indent=1)
+        m1 = "Threshold volume value:     {:d}" \
+             "".format(self.__searcher.get_vol_threshold())
+        m2 = "Threshold silence duration: {:.3f}" \
+             "".format(self.__searcher.get_min_sil_dur())
+        m3 = "Threshold speech duration:  {:.3f}" \
+             "".format(self.__searcher.get_min_ipu_dur())
+        m4 = "Number of IPUs found:       {:s}" \
+             "".format(tier.get_meta("number_of_ipus"))
         for m in (m4, m1, m2, m3):
-            self.print_message(m, indent=3)
+            self.logfile.print_message(m, indent=2)
 
     # -----------------------------------------------------------------------
+    # Apply the annotation on one or several given files
+    # -----------------------------------------------------------------------
 
-    def run(self, input_filename, output_filename=None):
-        """Perform the search of IPUs process.
+    def run(self, input_file, opt_input_file=None, output_file=None):
+        """Run the automatic annotation process on an input.
 
-        :param input_filename: (str) Input audio file
-        :param output_filename: (str) Resulting annotated file with IPUs
+        :param input_file: (list of str) audio
+        :param opt_input_file: (list of str) ignored
+        :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
         # Get audio and the channel we'll work on
-        audio_speech = sppas.src.audiodata.aio.open(input_filename)
-        idx = audio_speech.extract_channel()
+        audio_speech = sppas.src.audiodata.aio.open(input_file[0])
+        n = audio_speech.get_nchannels()
+        if n != 1:
+            raise IOError("An audio file with only one channel is expected. "
+                          "Got {:d} channels.".format(n))
+
+        # Extract the channel
+        idx = audio_speech.extract_channel(0)
         channel = audio_speech.get_channel(idx)
         self.__searcher.set_channel(channel)
 
@@ -324,96 +343,84 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         self._set_meta(tier)
 
         # Create the transcription to put the result
-        trs_output = sppasTranscription(self.__class__.__name__)
-        trs_output.set_meta('search_ipus_result_of', input_filename)
+        trs_output = sppasTranscription(self.name)
+        trs_output.set_meta('search_ipus_result_of', input_file[0])
         trs_output.append(tier)
 
-        extm = os.path.splitext(input_filename)[1].lower()[1:]
-        media = sppasMedia(os.path.abspath(input_filename), mime_type="audio/"+extm)
+        extm = os.path.splitext(input_file[0])[1].lower()[1:]
+        media = sppasMedia(os.path.abspath(input_file[0]),
+                           mime_type="audio/"+extm)
         tier.set_media(media)
 
         # Save in a file
-        if output_filename is not None:
-            parser = sppasRW(output_filename)
+        if output_file is not None:
+            parser = sppasRW(output_file)
             parser.write(trs_output)
-            self.print_filename(output_filename, status=0)
 
         return trs_output
 
     # -----------------------------------------------------------------------
 
-    def batch_processing(self, file_names, progress, output_format):
+    def run_for_batch_processing(self, input_file, opt_input_file, output_format):
+        """Perform the annotation on a file.
+
+        This method is called by 'batch_processing'. It fixes the name of the
+        output file. If the output file is already existing, the annotation
+        is cancelled (the file won't be overridden). If not, it calls the run
+        method.
+
+        :param input_file: (list of str) the required input
+        :param opt_input_file: (list of str) the optional input
+        :param output_format: (str) Extension of the output file
+        :returns: output file name or None
+
         """
+        # Fix input/output file name
+        out_name = self.get_out_name(input_file[0], output_format)
 
-        :param file_names:
-        :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
-        :return:
+        # Is there already an existing output file (in any format)!
+        ext = []
+        for e in sppas.src.anndata.aio.extensions_in:
+            if e not in ('.txt', '.hz', '.PitchTier', '.IntensityTier'):
+                ext.append(e)
+        exist_out_name = sppasBaseAnnotation._get_filename(input_file[0], ext)
 
-        """
-        if len(file_names) == 0:
-            return 0
-        total = len(file_names)
-        files_processed_success = 0
-        progress.set_header(self.__class__.__name__)
-        progress.update(0, "")
-
-        # Execute the annotation for each file in the list
-        for i, f in enumerate(file_names):
-
-            # Indicate the file to be processed
-            progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
-            self.print_filename(f)
-            self.print_diagnosis(f)
-
-            # Fix input/output file name
-            out_name = os.path.splitext(f)[0] + output_format
-
-            # Is there already an existing output file (in any format)!
-            ext = []
-            for e in sppas.src.anndata.aio.extensions_in:
-                if e not in ('.txt', '.hz', '.PitchTier'):
-                    ext.append(e)
-            exist_out_name = self._get_filename(f, ext)
-
-            # it's existing... but not in the expected format: convert!
-            if exist_out_name is not None:
-                self.print_message(
+        # it's existing... but not in the expected format: convert!
+        if exist_out_name is not None:
+            if exist_out_name == out_name:
+                self.logfile.print_message(
                     "A file with name {:s} is already existing."
-                    "".format(exist_out_name), indent=2)
-                if exist_out_name != out_name:
-                    try:
-                        parser = sppasRW(exist_out_name)
-                        t = parser.read()
-                        parser.set_filename(out_name)
-                        parser.write(t)
-                        # OK, it's done! just copy the file!
-                        self.print_message(
-                            'It was converted automatically to {:s}'
-                            ''.format(out_name), indent=2)
-                    except Exception:
-                        pass
-                self.print_message("No automatic annotation was done."
-                                   "", indent=2, status=3)
+                    "".format(exist_out_name),
+                    indent=2, status=annots.info)
+                return None
+
             else:
                 try:
-                    # Execute annotation
-                    self.run(f, out_name)
-                    files_processed_success += 1
-                except Exception as e:
-                    self.print_message(
-                        "{:s} for file {:s}\n".format(str(e), out_name),
-                        indent=2, status=-1)
+                    parser = sppasRW(exist_out_name)
+                    t = parser.read()
+                    parser.set_filename(out_name)
+                    parser.write(t)
+                    self.logfile.print_message(
+                        "A file with name {:s} is already existing. "
+                        'This file was exported to {:s}'
+                        ''.format(exist_out_name, out_name),
+                        indent=2, status=annots.warning)
+                    return out_name
+                except:
+                    pass
 
-            # Indicate progress
-            progress.set_fraction(float((i+1))/float(total))
-            self.print_newline()
+        try:
+            # Execute annotation
+            self.run(input_file, opt_input_file, out_name)
+        except Exception as e:
+            out_name = None
+            self.logfile.print_message("{:s}\n".format(str(e)), indent=2, status=-1)
 
-        # Indicate completed!
-        progress.update(
-            1,
-            "Completed ({:d} files successfully over {:d} files).\n"
-            "".format(files_processed_success, total)
-        )
-        progress.set_header("")
+        return out_name
 
-        return files_processed_success
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def get_input_extensions():
+        """Extensions that the annotation expects for its input filename."""
+        return sppas.src.audiodata.aio.extensions

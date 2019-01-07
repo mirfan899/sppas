@@ -62,7 +62,7 @@ class sppasCtrlVocab(sppasMetaData):
     """
 
     def __init__(self, name, description=""):
-        """Creates a new sppasCtrlVocab instance.
+        """Create a new sppasCtrlVocab instance.
 
         :param name: (str) Identifier name of the controlled vocabulary
         :param description: (str)
@@ -124,6 +124,7 @@ class sppasCtrlVocab(sppasMetaData):
 
     def contains(self, tag):
         """Test if a tag is in the controlled vocabulary.
+
         Attention: Do not check the instance but the data content of the tag.
 
         :param tag: (sppasTag) the tag to check.
@@ -143,8 +144,12 @@ class sppasCtrlVocab(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def validate_tag(self, tag):
-        """Check if the given tag can be added to the ctrl vocabulary."""
+        """Check if the given tag can be added to the ctrl vocabulary.
 
+        :param tag: (sppasTag) the tag to check.
+        :returns: Boolean
+
+        """
         if isinstance(tag, sppasTag) is False:
             raise AnnDataTypeError(tag, "sppasTag")
 

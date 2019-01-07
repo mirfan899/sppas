@@ -224,7 +224,7 @@ class TestTGA(unittest.TestCase):
         self.assertEqual(10, len(trs1))
 
         # do the same from the file
-        trs2 = t.run(path)
+        trs2 = t.run([path])
         self.assertEqual(10, len(trs2))
 
         # we should test the content of the TGA result!

@@ -99,6 +99,7 @@ class sppasFeedbackDialog(sppasDialog):
         self.SetMinSize(wx.Size(480, 320))
         self.LayoutComponents()
         self.CenterOnParent()
+        self.FadeIn(deltaN=-8)
 
     # -----------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -31,14 +31,14 @@
         ---------------------------------------------------------------------
 
     bin.searchipus.py
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-    :summary:      IPUs automatic detection.
+:author:       Brigitte Bigi
+:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+:contact:      contact@sppas.org
+:license:      GPL, v3
+:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:summary:      IPUs automatic detection.
 
 """
 import sys
@@ -49,91 +49,166 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
+from sppas import sg
 from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas.src.anndata.aio import extensions_out
+from sppas.src.config import annots
+from sppas.src.annotations.param import sppasParam
+from sppas.src.config.ui import sppasAppConfig
+from sppas.src.annotations.manager import sppasAnnotationsManager
 from sppas.src.utils.fileutils import setup_logging
 
-# ---------------------------------------------------------------------------
-# Verify and extract args:
-# ---------------------------------------------------------------------------
+if __name__ == "__main__":
 
-w = sppasSearchIPUs()
+    # -----------------------------------------------------------------------
+    # Fix initial annotation parameters
+    # -----------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -w file [options]"
-                              "".format(os.path.basename(PROGRAM)),
-                        description="Search for IPUs automatic annotation.")
+    parameters = sppasParam(["SearchIPUs.ini"])
+    ann_step_idx = parameters.activate_annotation("searchipus")
+    ann_options = parameters.get_options(ann_step_idx)
 
-parser.add_argument("-w",
-                    metavar="file",
-                    required=True,
-                    help='Input wav file name')
+    # -----------------------------------------------------------------------
+    # Verify and extract args:
+    # -----------------------------------------------------------------------
 
-# Silence/Speech segmentation options:
-parser.add_argument("-r", "--winrms",
-                    type=float,
-                    default=w.get_win_length(),
-                    help='Window size to estimate rms, in seconds '
-                         '(default: {:f})'.format(w.get_win_length()))
+    parser = ArgumentParser(
+        usage="%(prog)s [files] [options]",
+        description=
+        parameters.get_step_name(ann_step_idx) + ": " +
+        parameters.get_step_descr(ann_step_idx),
+        epilog="This program is part of {:s} version {:s}. {:s}. Contact the "
+               "author at: {:s}".format(sg.__name__, sg.__version__,
+                                        sg.__copyright__, sg.__contact__)
+    )
 
-parser.add_argument("-m",
-                    "--minipu",
-                    type=float,
-                    default=w.get_min_ipu(),
-                    help='Drop speech shorter than m seconds long '
-                         '(default: {:f})'.format(w.get_min_ipu()))
+    parser.add_argument(
+        "--quiet",
+        action='store_true',
+        help="Disable the verbosity")
 
-parser.add_argument("-s",
-                    "--minsil",
-                    type=float,
-                    default=w.get_min_sil(),
-                    help='Drop silences shorter than s seconds long '
-                         '(default: {:f})'.format(w.get_min_sil()))
+    parser.add_argument(
+        "--log",
+        metavar="file",
+        help="File name for a Procedure Outcome Report (default: None)")
 
-parser.add_argument("-v",
-                    "--minrms",
-                    type=int,
-                    default=w.get_threshold(),
-                    help='Assume everything with a rms lower than v is a silence. 0=automatic adjust.'
-                         '(default: {:d})'.format(w.get_threshold()))
+    # Add arguments for input/output files
+    # ------------------------------------
 
-# Other options:
-parser.add_argument("-d",
-                    "--shiftstart",
-                    type=float,
-                    default=w.get_shift_start(),
-                    help='Shift-left the start boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_start()))
+    group_io = parser.add_argument_group('Files')
 
-parser.add_argument("-D",
-                    "--shiftend",
-                    type=float,
-                    default=w.get_shift_end(),
-                    help='Shift-right the end boundary of IPUs '
-                         '(default: {:f})'.format(w.get_shift_end()))
+    group_io.add_argument(
+        "-i",
+        metavar="file",
+        help='Input wav file name.')
 
-# Output options:
-parser.add_argument("-o",
-                    metavar="file",
-                    help='Annotated file with silences/units segmentation '
-                         '(default: None)')
+    group_io.add_argument(
+        "-o",
+        metavar="file",
+        help='Annotated file with silences/units segmentation '
+             '(default: None)')
 
-if len(sys.argv) <= 1:
-    sys.argv.append('-h')
+    group_io.add_argument(
+        "-I",
+        metavar="file",
+        action='append',
+        help='Input wav file name (append).')
 
-args = parser.parse_args()
+    group_io.add_argument(
+        "-e",
+        metavar=".ext",
+        default=annots.extension,
+        choices=extensions_out,
+        help='Output file extension. One of: {:s}'
+             ''.format(" ".join(extensions_out)))
 
-log_level = 1
-log_file = None
-setup_logging(log_level, log_file)
+    # Add arguments from the options of the annotation
+    # ------------------------------------------------
 
-# ----------------------------------------------------------------------------
-# Automatic IPUs segmentation is here:
-# ----------------------------------------------------------------------------
+    group_opt = parser.add_argument_group('Options')
 
-w.set_shift_start(args.shiftstart)
-w.set_shift_end(args.shiftend)
-w.set_min_ipu(args.minipu)
-w.set_min_sil(args.minsil)
-w.set_threshold(args.minrms)
-w.set_win_length(args.winrms)
+    for opt in ann_options:
+        group_opt.add_argument(
+            "--" + opt.get_key(),
+            type=opt.type_mappings[opt.get_type()],
+            default=opt.get_value(),
+            help=opt.get_text() + " (default: {:s})"
+                                  "".format(opt.get_untypedvalue()))
 
-trs_out = w.run(args.w, args.o)
+    # Force to print help if no argument is given then parse
+    # ------------------------------------------------------
+
+    if len(sys.argv) <= 1:
+        sys.argv.append('-h')
+
+    args = parser.parse_args()
+
+    # Mutual exclusion of inputs
+    # --------------------------
+
+    if args.i and args.I:
+        parser.print_usage()
+        print("{:s}: error: argument -I: not allowed with argument -i"
+              "".format(os.path.basename(PROGRAM)))
+        sys.exit(1)
+
+    # -----------------------------------------------------------------------
+    # The automatic annotation is here:
+    # -----------------------------------------------------------------------
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            setup_logging(cg.log_level, None)
+        else:
+            setup_logging(cg.quiet_log_level, None)
+
+    # Get options from arguments
+    # --------------------------
+
+    arguments = vars(args)
+    for a in arguments:
+        if a not in ('i', 'o', 'I', 'e', 'quiet', 'log'):
+            parameters.set_option_value(ann_step_idx, a, arguments[a])
+
+    if args.i:
+
+        # Perform the annotation on a single file
+        # ---------------------------------------
+
+        ann = sppasSearchIPUs(logfile=None)
+        ann.fix_options(parameters.get_options(ann_step_idx))
+        if args.o:
+            ann.run([args.i], output_file=args.o)
+        else:
+            trs = ann.run([args.i])
+            for ann in trs[0]:
+                print("{:f} {:f} {:s}".format(
+                    ann.get_location().get_best().get_begin().get_midpoint(),
+                    ann.get_location().get_best().get_end().get_midpoint(),
+                    ann.get_best_tag().get_typed_content()))
+
+    elif args.I:
+
+        # Perform the annotation on a set of files
+        # ----------------------------------------
+
+        # Fix input files
+        files = list()
+        for f in args.I:
+            parameters.add_sppasinput(os.path.abspath(f))
+
+        # Fix the output file extension
+        parameters.set_output_format(args.e)
+        parameters.set_report_filename(args.log)
+
+        # Perform the annotation
+        process = sppasAnnotationsManager()
+        process.annotate(parameters)
+
+    else:
+
+        if not args.quiet:
+            print("No file was given to be annotated. Nothing to do!")

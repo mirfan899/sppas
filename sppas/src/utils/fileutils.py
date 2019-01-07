@@ -191,6 +191,7 @@ class sppasFileUtils(object):
 
     def exists(self, directory=None):
         """Check if the file exists, or exists in a given directory.
+
         Case-insensitive test on all platforms.
 
         :param directory: (str) Optional directory to test if a file exists.

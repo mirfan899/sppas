@@ -44,7 +44,7 @@ class sppasModelMixer(object):
 
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
 
@@ -52,9 +52,9 @@ class sppasModelMixer(object):
     Typical use is to create an acoustic model of a non-native speaker.
 
     """
+
     def __init__(self):
         """Create a sppasModelMixer instance."""
-        
         self._model1 = None
         self._model2 = None
         self._model_mix = None
@@ -89,8 +89,10 @@ class sppasModelMixer(object):
         """
         # Check the MFCC parameter kind:
         # we can only interpolate identical models.
-        if model_text.get_mfcc_parameter_kind() != model_spk.get_mfcc_parameter_kind():
-            raise TypeError('Can only mix models of identical MFCC parameters kind.')
+        if model_text.get_mfcc_parameter_kind() != \
+                model_spk.get_mfcc_parameter_kind():
+            raise TypeError('Can only mix models of identical MFCC '
+                            'parameters kind.')
 
         # Extract the monophones of both models.
         self._model1 = model_text.extract_monophones()
@@ -105,8 +107,10 @@ class sppasModelMixer(object):
     # ------------------------------------------------------------------------
 
     def mix(self, outputdir, format="hmmdefs", gamma=1.):
-        """Mix the acoustic model of the text with the one of the mother language
-        of the speaker reading such text.
+        """Mix the acm of the text with the one of the spk mother language.
+
+        Mix the acm of the text with the one of the mother language of the
+        speaker reading such text.
 
         All new phones are added and the shared ones are combined using a
         Static Linear Interpolation.
@@ -154,7 +158,8 @@ class sppasModelMixer(object):
                     repllist.remove(k)
                     repllist.add(new_key, v)
 
-        (appended, interpolated, kept, changed) = self._model_mix.merge_model(self._model2, gamma)
+        (appended, interpolated, kept, changed) = \
+            self._model_mix.merge_model(self._model2, gamma)
         self._model_mix.replace_phones(reverse=True)
 
         parser = sppasACMRW(outputdir)

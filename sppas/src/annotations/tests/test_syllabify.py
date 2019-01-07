@@ -44,6 +44,7 @@ import unittest
 import os.path
 
 from sppas.src.config import paths
+from sppas.src.anndata.anndataexc import AioEncodingError
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasInterval
@@ -284,7 +285,8 @@ class TestsppasSyll(unittest.TestCase):
     """Syllabification of a tier with time-aligned phonemes."""
 
     def setUp(self):
-        self.syll = sppasSyll(FRA_SYLL)
+        self.syll = sppasSyll()
+        self.syll.load_resources(FRA_SYLL)
         tier = sppasTier('PhonAlign')
         tier.create_annotation(sppasLocation(sppasInterval(sppasPoint(1), sppasPoint(2))),
                                sppasLabel(sppasTag('l')))
@@ -438,7 +440,8 @@ class TestsppasSyll(unittest.TestCase):
             if os.path.exists(rules_file) is False:
                 continue
 
-            tn = sppasSyll(rules_file)
+            tn = sppasSyll()
+            tn.load_resources(rules_file)
 
             # Apply Syllabification on each sample
             for filename in os.listdir(os.path.join(samples_path, samples_folder)):
@@ -451,11 +454,15 @@ class TestsppasSyll(unittest.TestCase):
                 if os.path.exists(expected_result_filename) is False:
                     print("no match palign/salign for: {:s}".format(filename))
                     continue
-                parser = sppasRW(expected_result_filename)
-                expected_result = parser.read()
+                try:
+                    parser = sppasRW(expected_result_filename)
+                    expected_result = parser.read()
+                except AioEncodingError:
+                    continue
 
                 # Estimate the result and check if it's like expected.
-                result = tn.run(os.path.join(samples_path, samples_folder, filename))
+                input_file = os.path.join(samples_path, samples_folder, filename)
+                result = tn.run([input_file])
 
                 expected_tier_syll = expected_result.find('SyllAlign')
                 if expected_tier_syll is not None:

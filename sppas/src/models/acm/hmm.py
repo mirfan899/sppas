@@ -43,13 +43,13 @@ from ..modelsexc import ModelsDataTypeError
 
 
 class sppasHMM(object):
-    """
+    """HMM representation for one phone.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      HMM representation for one phone.
 
     Hidden Markov Models (HMMs) provide a simple and effective framework for
     modeling time-varying spectral vector sequences. As a consequence, most
@@ -70,12 +70,14 @@ class sppasHMM(object):
         - duration
 
     """
+
     DEFAULT_NAME = "und"
 
     # -----------------------------------------------------------------------
 
     def __init__(self, name=DEFAULT_NAME):
         """Create a sppasHMM instance.
+
         The model includes a default name and an empty definition.
 
         :param name: (str) Name of the HMM (usually the phoneme in SAMPA)
@@ -91,7 +93,8 @@ class sppasHMM(object):
         """Set the model.
 
         :param name: (str) Name of the HMM
-        :param definition: (OrderedDict) Definition of the HMM (states and transitions)
+        :param definition: (OrderedDict) Definition of the HMM (states
+        and transitions)
 
         """
         self.set_name(name)
@@ -101,7 +104,6 @@ class sppasHMM(object):
 
     def get_name(self):
         """Return the name (str) of the model."""
-
         return self.__name
 
     # -----------------------------------------------------------------------
@@ -126,14 +128,12 @@ class sppasHMM(object):
 
     def get_definition(self):
         """Return the definition (OrderedDict) of the model."""
-
         return self._definition
 
     # -----------------------------------------------------------------------
 
     def set_default_definition(self):
         """Set an empty definition."""
-
         self._definition = collections.OrderedDict()
         self._definition['state_count'] = 0
         self._definition['states'] = list()
@@ -144,7 +144,8 @@ class sppasHMM(object):
     def set_definition(self, definition):
         """Set the definition of the model.
 
-        :param definition: (OrderedDict) Definition of the HMM (states and transitions)
+        :param definition: (OrderedDict) Definition of the HMM
+        (states and transitions)
         :raises: ModelsDataTypeError
 
         """
@@ -162,7 +163,7 @@ class sppasHMM(object):
 
         :param states: (OrderedDict)
         :param transition: (OrderedDict)
-        :param name: (string) The name of the HMM. 
+        :param name: (string) The name of the HMM.
         If name is set to None, the default name is assigned.
 
         """
@@ -186,7 +187,7 @@ class sppasHMM(object):
 
         :param proto_size: (int) Number of mean and variance values.
         It's commonly either 25 or 39, it depends on the MFCC parameters.
-        :param nb_mix: (int) Number of mixtures 
+        :param nb_mix: (int) Number of mixtures
         (i.e. the number of times means and variances occur)
 
         """
@@ -204,7 +205,8 @@ class sppasHMM(object):
         for i in range(3):
             hmm_state = sppasHMM.create_default()
             hmm_state['index'] = i + 2
-            hmm_state['state'] = sppasHMM.create_gmm([means]*nb_mix, [variances]*nb_mix)
+            hmm_state['state'] = sppasHMM.create_gmm([means]*nb_mix,
+                                                     [variances]*nb_mix)
             self._definition['states'].append(hmm_state)
 
         # Define transitions
@@ -215,8 +217,8 @@ class sppasHMM(object):
     def create_sp(self):
         """Create the 3-states HMM `sp` and set it.
 
-        The `sp` model is based on a 3-state HMM with string "silst" as state 2,
-        and a 3x3 transition matrix as follow:
+        The `sp` model is based on a 3-state HMM with string "silst"
+        as state 2, and a 3x3 transition matrix as follow:
            0.0 1.0 0.0
            0.0 0.9 0.1
            0.0 0.0 0.0
@@ -256,6 +258,7 @@ class sppasHMM(object):
 
     def get_vecsize(self):
         """Return the number of means and variance of each state.
+
         If state is pointing to a macro, 0 is returned.
 
         """
@@ -271,6 +274,7 @@ class sppasHMM(object):
 
     def static_linear_interpolation(self, hmm, gamma):
         """Static Linear Interpolation.
+
         This is perhaps one of the most straightforward manner to combine models.
         This is an efficient way for merging the GMMs of the component models.
 
@@ -285,13 +289,15 @@ class sppasHMM(object):
 
         my_states = self._definition['states']
         other_states = hmm.definition['states']
-        int_sts = lin.linear_states([my_states, other_states], [gamma, 1.-gamma])
+        int_sts = lin.linear_states([my_states, other_states],
+                                    [gamma, 1.-gamma])
         if int_sts is None:
             return False
 
         my_transition = self._definition['transition']
         other_transition = hmm.definition['transition']
-        int_trs = lin.linear_transitions([my_transition, other_transition], [gamma, 1.-gamma])
+        int_trs = lin.linear_transitions([my_transition, other_transition],
+                                         [gamma, 1.-gamma])
         if int_trs is None:
             return False
 
@@ -343,7 +349,8 @@ class sppasHMM(object):
             mixture['pdf'] = sppasHMM.create_default()
             mixture['pdf']['mean'] = sppasHMM.create_vector(means[i])
             mixture['pdf']['covariance'] = sppasHMM.create_default()
-            mixture['pdf']['covariance']['variance'] = sppasHMM.create_vector(variances[i])
+            mixture['pdf']['covariance']['variance'] = \
+                sppasHMM.create_vector(variances[i])
 
             if gconsts is not None:
                 mixture['pdf']['gconst'] = gconsts[i]
@@ -405,34 +412,32 @@ class sppasHMM(object):
     # -----------------------------------------------------------------------
 
     name = property(fget=get_name, fset=set_name, fdel=None, doc=None)
-    definition = property(fget=get_definition, fset=set_definition, fdel=None, doc=None)
+    definition = property(fget=get_definition, fset=set_definition,
+                          fdel=None, doc=None)
 
     # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 
     def __repr__(self):
-        return "Name:" + self.__name + "\n" + json.dumps(self._definition, indent=2)
+        return "Name:" + self.__name + "\n" + json.dumps(self._definition,
+                                                         indent=2)
 
 # ---------------------------------------------------------------------------
 # Interpolation of HMMs.
 # ---------------------------------------------------------------------------
 
 
-class HMMInterpolation(object):
-    """
+class HMMInterpolation:
+    """HMM interpolation.
+
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     :author:       Brigitte Bigi
     :contact:      develop@sppas.org
-    :summary:      HMM interpolation.
 
     """
-    def __init__(self):
-        pass
-
-    # -----------------------------------------------------------------------
 
     @staticmethod
     def linear_states(states, coefficients):
@@ -481,7 +486,8 @@ class HMMInterpolation(object):
         if len(transitions) == 1:
             return transitions[0]
 
-        return HMMInterpolation.linear_interpolate_transitions(transitions, coefficients)
+        return HMMInterpolation.linear_interpolate_transitions(transitions,
+                                                               coefficients)
 
     # -----------------------------------------------------------------------
     # Private
@@ -511,7 +517,8 @@ class HMMInterpolation(object):
         intvec = list()
         for i in range(len(vectors[0])):
             values = [v[i] for v in vectors]
-            intvec.append(HMMInterpolation.linear_interpolate_values(values, gammas))
+            intvec.append(HMMInterpolation.linear_interpolate_values(values,
+                                                                     gammas))
         return intvec
 
     # -----------------------------------------------------------------------
@@ -527,7 +534,8 @@ class HMMInterpolation(object):
         intmat = list()
         for i in range(len(matrices[0])):
             vectors = [m[i] for m in matrices]
-            intmat.append(HMMInterpolation.linear_interpolate_vectors(vectors, gammas))
+            intmat.append(HMMInterpolation.linear_interpolate_vectors(vectors,
+                                                                      gammas))
         return intmat
 
     # -----------------------------------------------------------------------
@@ -549,7 +557,8 @@ class HMMInterpolation(object):
         if len(trans_matrix) != len(gammas):
             return None
 
-        matrix = HMMInterpolation.linear_interpolate_matrix(trans_matrix, gammas)
+        matrix = HMMInterpolation.linear_interpolate_matrix(trans_matrix,
+                                                            gammas)
 
         # t = collections.OrderedDict()
         t = copy.deepcopy(transitions[0])
@@ -582,13 +591,15 @@ class HMMInterpolation(object):
         streams = [s['streams'] for s in state]
         for i in range(len(streams[0])):
             values = [v[i] for v in streams]
-            int_state['state']['streams'][i] = HMMInterpolation.linear_interpolate_streams(values, gammas)
+            int_state['state']['streams'][i] = \
+                HMMInterpolation.linear_interpolate_streams(values, gammas)
 
         weights = [w['weights'] for w in state]
         if all(type(item) == collections.OrderedDict for item in weights) is True:
             for i in range(len(weights[0])):
                 values = [v[i] for v in weights]
-                int_state['state']['weights'][i] = HMMInterpolation.linear_interpolate_vectors(values, gammas)
+                int_state['state']['weights'][i] = \
+                    HMMInterpolation.linear_interpolate_vectors(values, gammas)
 
         return int_state
 
@@ -610,7 +621,8 @@ class HMMInterpolation(object):
         mixtures = [item['mixtures'] for item in streams]
         for i in range(len(mixtures[0])):
             values = [v[i] for v in mixtures]
-            int_mix['mixtures'][i] = HMMInterpolation.linear_interpolate_mixtures(values, gammas)
+            int_mix['mixtures'][i] = \
+                HMMInterpolation.linear_interpolate_mixtures(values, gammas)
 
         return int_mix
 

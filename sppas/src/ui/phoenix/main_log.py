@@ -33,18 +33,16 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
-import platform
+
 import wx
 import wx.lib.newevent
 import logging
-from datetime import date
 
 from sppas.src.config import sg
-from sppas.src.config import paths
 from sppas.src.config import ui_translation
 from sppas.src.utils.datatype import sppasTime
 
+from ..log_file import sppasLogFile
 from .tools import sppasSwissKnife
 from .windows import sppasPanel
 from .windows import sppasBitmapTextButton
@@ -117,70 +115,6 @@ def log_level_to_wx(log_level):
     if log_level <= 40:
         return wx.LOG_Error
     return wx.LOG_FatalError
-
-# ---------------------------------------------------------------------------
-
-
-class sppasLogFile(object):
-    """Utility file name manager for wx logs.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
-
-    """
-
-    def __init__(self):
-        """Create a sppasLogFile instance.
-
-        Create the log directory if not already existing then fix the
-        log filename with increment=0.
-
-        """
-        log_dir = paths.logs
-        if os.path.exists(log_dir) is False:
-            os.mkdir(log_dir)
-
-        self.__filename = "{:s}_log_".format(sg.__name__)
-        self.__filename += str(date.today()) + "_"
-        self.__filename += str(os.getpid()) + "_"
-        self.__current = 0
-
-    # -----------------------------------------------------------------------
-
-    def get_filename(self):
-        """Return the current log filename."""
-        fn = os.path.join(paths.logs, self.__filename)
-        fn += "{0:04d}".format(self.__current)
-        return fn + ".txt"
-
-    # -----------------------------------------------------------------------
-
-    def increment(self):
-        """Increment the current log filename."""
-        self.__current += 1
-
-    # -----------------------------------------------------------------------
-
-    def get_header(self):
-        """Return a string with an header for log files."""
-        header = "-"*78
-        header += "\n\n"
-        header += " {:s} {:s}".format(sg.__name__, sg.__version__)
-        header += "\n"
-        header += " {:s}".format(sppasTime().now)
-        header += "\n"
-        header += " {:s}".format(platform.platform())
-        header += "\n"
-        header += " python {:s}".format(platform.python_version())
-        header += "\n"
-        header += " wxpython {:s}".format(wx.version())
-        header += "\n\n"
-        header += "-"*78
-        header += "\n\n"
-        return header
 
 # ---------------------------------------------------------------------------
 
@@ -273,6 +207,11 @@ class sppasLogWindow(wx.TopLevelWindow):
             title='{:s} Log'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
+        # To fade-in and fade-out the opacity
+        self.opacity_in = 0
+        self.opacity_out = 255
+        self.deltaN = -3
+
         # Members
         self.handler = sppasHandlerToWx(self)
         self.txt = None
@@ -284,6 +223,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         self._setup_wx_logging(log_level)
         self._setup_events()
         self.SetAutoLayout(True)
+        self._fade_in()
         self.Show(True)
 
     # ------------------------------------------------------------------------
@@ -381,6 +321,31 @@ class sppasLogWindow(wx.TopLevelWindow):
         logging.info('This is how an information message looks like.')
         logging.warning('This is how a warning message looks like.')
         logging.error('This is how an error message looks like.')
+
+    # -----------------------------------------------------------------------
+
+    def _fade_in(self):
+        """Fade-in opacity."""
+        self.SetTransparent(self.opacity_in)
+        self.timer1 = wx.Timer(self, -1)
+        self.timer1.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_in, self.timer1)
+
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_in(self, *args):
+        """Fade-in opacity of the dialog."""
+        self.opacity_in += self.deltaN
+        if self.opacity_in <= 0:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 0
+
+        if self.opacity_in >= 255:
+            self.deltaN = -self.deltaN
+            self.opacity_in = 255
+            self.timer1.Stop()
+
+        self.SetTransparent(self.opacity_in)
 
     # -----------------------------------------------------------------------
     # Events
@@ -646,6 +611,7 @@ class sppasMessageTextCtrl(wx.TextCtrl):
     Font, foreground and background are taken from the application settings.
 
     """
+
     text_style = wx.TAB_TRAVERSAL | \
                  wx.TE_MULTILINE | \
                  wx.TE_READONLY | \
@@ -665,6 +631,9 @@ class sppasMessageTextCtrl(wx.TextCtrl):
         self.debug = wx.TextAttr()
 
         self.ResetStyles()
+
+        if wx.Platform == "__WXMAC__":
+            self.MacCheckSpelling(False)
 
     # -----------------------------------------------------------------------
 

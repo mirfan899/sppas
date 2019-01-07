@@ -1,12 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
-<Document author="SPPAS 1.9.7 (C) Brigitte Bigi" date="2018-07-18T12:20:14+02:00" format="1.4" name="AutomaticAlignment">
+<Document author="SPPAS 1.9.9 (C) Brigitte Bigi" date="2018-10-22T10:44:02+02:00" format="1.4" name="96f2d268-7452-4db7-983f-f6b7d05ec6d6">
 	<Metadata>
-		<Entry key="id">1f787e8a-2b63-6e66-6dd7-6205cb8a777b</Entry>
+		<Entry key="id">7c87bdf5-7b3a-4d8f-8240-e76183d283fb</Entry>
 		<Entry key="software_name">SPPAS</Entry>
-		<Entry key="software_version">1.9.7</Entry>
+		<Entry key="software_version">1.9.9</Entry>
 		<Entry key="software_url">http://www.sppas.org/</Entry>
 		<Entry key="software_author">Brigitte Bigi</Entry>
-		<Entry key="software_contact">brigite.bigi@gmail.com</Entry>
+		<Entry key="software_contact">contact@sppas.org</Entry>
 		<Entry key="software_copyright">Copyright (C) 2011-2018 Brigitte Bigi</Entry>
 		<Entry key="language_iso">iso639-3</Entry>
 		<Entry key="language_code_0">und</Entry>
@@ -16,18 +16,17 @@
 		<Entry key="file_license_url_0">https://www.gnu.org/licenses/gpl-3.0.en.html</Entry>
 		<Entry key="file_writer">sppasXRA</Entry>
 		<Entry key="file_name">IM_track_0767-palign.xra</Entry>
-		<Entry key="file_path">E:\bigi\Workspace\sppas\samples\samples-fra</Entry>
+		<Entry key="file_path">E:\bigi\Projets\sppas\samples\samples-fra</Entry>
 		<Entry key="file_ext">.xra</Entry>
-		<Entry key="file_write_date">2018-20-18 12:20</Entry>
+		<Entry key="file_write_date">2018-10-22T10:44:02+02:00</Entry>
 		<Entry key="file_version">1</Entry>
-		<Entry key="file_created_date">2018-20-18 12:20</Entry>
 	</Metadata>
 
-	<Tier id="1f619d4c-1a28-1e56-9ff6-6042eb5c318e" tiername="PhonAlign">
-		<Annotation id="5d347b7d-0c32-1d47-2ba6-7966ac0e020b">
+	<Tier id="81efca5f-84c5-478a-a5d2-0522b2f076b1" tiername="PhonAlign">
+		<Annotation id="37853b4b-2dc4-4f15-9ab3-a5dc8fa7e82a">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.0" />
+					<Begin midpoint="0.0" radius="0.0" />
 					<End midpoint="0.08" radius="0.005" />
 				</Interval>
 			</Location>
@@ -35,7 +34,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3d525a1c-5b37-9d06-3de5-7344df9a824c">
+		<Annotation id="ce79389d-a980-4e86-8f30-f7a3010248fa">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.08" radius="0.005" />
@@ -46,7 +45,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f956f9c-5b39-0f17-2af9-7061cc9a019a">
+		<Annotation id="97cc7b5e-99c3-4054-ab74-4af212ef1ef5">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.19" radius="0.005" />
@@ -57,7 +56,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9a184e2a-1e80-3b12-7ba5-4220da8e316b">
+		<Annotation id="5d8775f9-869e-40c7-82fe-a95104b20e7b">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.36" radius="0.005" />
@@ -68,21 +67,21 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4d863e2f-4b28-1c95-2db9-6004ca5e598a">
+		<Annotation id="6ecf130e-f770-4aed-b7b3-b2a50a6f57d5">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.4" radius="0.005" />
-					<End midpoint="0.54" radius="0.005" />
+					<End midpoint="0.52" radius="0.005" />
 				</Interval>
 			</Location>
 			<Label>
 				<Tag>fp</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8c612c6e-3d01-1f24-7ad6-8913ab9b178e">
+		<Annotation id="c8a76259-f016-4c64-a2ce-68d0bf233612">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.54" radius="0.005" />
+					<Begin midpoint="0.52" radius="0.005" />
 					<End midpoint="0.73" radius="0.005" />
 				</Interval>
 			</Location>
@@ -90,7 +89,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e606c1a-3b03-1f13-7fe2-5697be3b782c">
+		<Annotation id="6d2eb9d0-4056-465d-a952-e4312672422e">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.73" radius="0.005" />
@@ -101,7 +100,7 @@
 				<Tag>p</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3d430c2d-8e20-3c76-0cd9-3912cd6a393d">
+		<Annotation id="c295946c-a648-4d43-8c85-feedd4cee6bb">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.9" radius="0.005" />
@@ -112,7 +111,7 @@
 				<Tag>u</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2c217d2e-8a56-2d00-9cf8-4333de7a258a">
+		<Annotation id="b1ca8262-c875-4a16-86bb-6650c2a543b6">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.97" radius="0.005" />
@@ -123,7 +122,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2a135d8f-4d02-1f40-8be4-1472de0d048b">
+		<Annotation id="b6b0ac9b-157a-4785-a4d1-a7ae1e102fc8">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.01" radius="0.005" />
@@ -134,7 +133,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0b695b6a-9d98-7a65-6da0-1087fd6b684e">
+		<Annotation id="ab8bc75e-3828-4652-973c-fe341e0a2ad2">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.04" radius="0.005" />
@@ -145,7 +144,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d270e6d-2d95-2c55-7fe7-1785da7a424f">
+		<Annotation id="31601283-30d8-4a83-9e4d-96378a5b006f">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.1" radius="0.005" />
@@ -156,7 +155,7 @@
 				<Tag>f</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f879a3a-7c53-0c12-7ef0-8546df1e437e">
+		<Annotation id="49bfccc6-dc53-499a-9f97-d0ee77db3da1">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.22" radius="0.005" />
@@ -167,7 +166,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2a227b8d-5f10-3a42-3ad0-8085ad3f207d">
+		<Annotation id="f2d81631-9b44-4b8b-a8f4-686c22841a6f">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.25" radius="0.005" />
@@ -178,7 +177,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d792b1f-1d36-4c80-8bf6-4224fc2c758d">
+		<Annotation id="7af536e7-6fc8-48b3-a634-b87f678d8143">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.4" radius="0.005" />
@@ -189,7 +188,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c274f8e-1b77-4b15-9eb3-4822aa1f936a">
+		<Annotation id="a85d4e1d-1254-4b9f-9b96-204533817be1">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.65" radius="0.005" />
@@ -200,7 +199,7 @@
 				<Tag>#</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4e975e1a-4f87-0a89-6cb3-3715fa8c584b">
+		<Annotation id="c8540714-fcda-414b-bcca-f6f58396f4bf">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.75" radius="0.005" />
@@ -211,7 +210,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7c088d8e-1a61-3b38-2af3-7105bc2f718d">
+		<Annotation id="011b9d0e-02e6-4944-8eac-611d565b68ea">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.85" radius="0.005" />
@@ -222,7 +221,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8f880c5d-8b34-3a21-5db4-6686af6f981b">
+		<Annotation id="9a30cc55-b9d2-451c-b2b7-5d5171dee46d">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.88" radius="0.005" />
@@ -233,7 +232,7 @@
 				<Tag>H</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9d198f0e-8d12-7e44-9cd0-7838ba8a412a">
+		<Annotation id="a2d01539-fd81-4ad7-8937-9cbad0f1a3d8">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.94" radius="0.005" />
@@ -244,7 +243,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9e035b1a-9d79-2c21-9cd2-5134fb9d889c">
+		<Annotation id="145909c5-9da2-42c9-aaf5-9f0d25773823">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.03" radius="0.005" />
@@ -255,7 +254,7 @@
 				<Tag>v</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1d971b0c-0e24-3b95-3da7-8809bd6d593c">
+		<Annotation id="4eb48d25-0e3b-4760-8d20-c2aa6702c398">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.07" radius="0.005" />
@@ -266,7 +265,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f613e4b-5b51-9b10-7bb9-9789cc3d016a">
+		<Annotation id="75f3e9d6-b59b-4e66-9db5-34acb672431b">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.15" radius="0.005" />
@@ -277,7 +276,7 @@
 				<Tag>m</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4c016a9a-6b81-5f88-8ec9-3060be5d741c">
+		<Annotation id="d0faa9bd-7363-41cd-a312-3a4cf4382939">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.21" radius="0.005" />
@@ -288,7 +287,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5a285a8a-4e60-2b03-7da6-3071bf7e963c">
+		<Annotation id="fe2ea494-c3c8-4a53-b9bd-400a86d74191">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.28" radius="0.005" />
@@ -299,7 +298,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2c989e8d-8d90-5d60-2bc6-6996de8b917f">
+		<Annotation id="055944c4-300d-4707-a339-523e25654b9f">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.38" radius="0.005" />
@@ -310,7 +309,7 @@
 				<Tag>f</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1b433d2e-6d51-1e84-9da9-8162fe4f213f">
+		<Annotation id="ccc53f1d-9dfa-425c-adc4-ee832226d0db">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.53" radius="0.005" />
@@ -321,7 +320,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6d751d7e-8c08-9e17-2ac3-6067ef8c576a">
+		<Annotation id="bc9e02ab-fbfe-40d6-a268-81f48d9ba42c">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.63" radius="0.005" />
@@ -332,7 +331,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1c213f6e-9b21-1f90-4db9-5032ea9f579c">
+		<Annotation id="69ade3db-9d46-4f65-8853-be366fca4cc6">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.67" radius="0.005" />
@@ -343,7 +342,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f349d7c-6f10-3b58-2fb0-6702fe0a168e">
+		<Annotation id="427d5a4f-8d01-402a-a739-ddc63f8d0bdf">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.79" radius="0.005" />
@@ -354,7 +353,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0a413d4a-8e75-8f73-8ac4-5533fa7d381f">
+		<Annotation id="9ccbd39b-294b-4238-92ef-218da1b71cb2">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.82" radius="0.005" />
@@ -365,7 +364,7 @@
 				<Tag>f</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b510e7d-5b89-3d54-4da5-2874db5b429a">
+		<Annotation id="f0d475f5-31c5-4b57-8715-6b32736df05d">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.95" radius="0.005" />
@@ -376,7 +375,7 @@
 				<Tag>2</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6b473c3b-3a36-7b89-3ff3-1841ed2f733b">
+		<Annotation id="83c12ec6-97df-48e2-bcc5-ba9f71cfb7a6">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.0" radius="0.005" />
@@ -387,7 +386,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a086c2e-3c70-9c89-7bf4-8111bf5a153d">
+		<Annotation id="5ae94abc-4b83-4fb1-b8bc-a6b447b602f4">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.03" radius="0.005" />
@@ -398,7 +397,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c728f0f-5d36-7f11-7fb7-3777bf3d254c">
+		<Annotation id="35f20088-7fa1-4410-adf8-f112ea04e392">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.06" radius="0.005" />
@@ -409,7 +408,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5f931f7c-0e59-5c05-5ff9-5494ab9b029f">
+		<Annotation id="9e5244a9-62d4-4aea-91ee-f8ecc09d98a2">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.1" radius="0.005" />
@@ -420,7 +419,7 @@
 				<Tag>a~</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4d507e1a-7d63-5b25-2ff6-3321bb5e437c">
+		<Annotation id="ca22b3da-f44d-41e1-b14d-665f2b4ee9be">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.18" radius="0.005" />
@@ -431,7 +430,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1e650f9e-6a04-0d99-1dd8-3828ab4c169f">
+		<Annotation id="5b0d91d1-046f-4606-93b0-5c95c53bebad">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.21" radius="0.005" />
@@ -442,7 +441,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a721a4d-2d81-8f21-3ce8-9528eb7b401b">
+		<Annotation id="593b2858-e5d5-41c7-bd90-53d58ede035d">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.28" radius="0.005" />
@@ -453,7 +452,7 @@
 				<Tag>m</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8c931f2d-2e36-9c14-8aa9-4287bd6e485e">
+		<Annotation id="085012d7-4d7d-4c1d-9d7b-f9e2892cdd55">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.33" radius="0.005" />
@@ -464,7 +463,7 @@
 				<Tag>U~/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f559e9f-6c07-5f52-0ea7-9255ef5e536b">
+		<Annotation id="905269e8-fe80-47aa-a8e2-6fa772d35714">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.43" radius="0.005" />
@@ -475,7 +474,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f777d2e-0c42-5f51-2ae1-6885dd0d221e">
+		<Annotation id="7ff1f2ef-a6a7-4ccd-8348-ecfbb421e369">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.48" radius="0.005" />
@@ -486,7 +485,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2c437b9e-8a60-4c34-5ba6-7991ac1c026e">
+		<Annotation id="89cd2176-8e5c-456a-beb7-78c911a4a639">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.55" radius="0.005" />
@@ -497,7 +496,7 @@
 				<Tag>w</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9d054c1c-2d38-6b21-4bc1-8878da7f507c">
+		<Annotation id="f70ee730-62a5-4130-a26d-dad05ca1de0b">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.6" radius="0.005" />
@@ -508,7 +507,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1b104f3c-0c36-4d86-6bc4-6347af8e700b">
+		<Annotation id="49f4a66a-a3c4-4b4c-91b7-16e7b18fb803">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.66" radius="0.005" />
@@ -519,7 +518,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b486a9d-2b46-2c27-9ae4-2654cc7c907e">
+		<Annotation id="3f93c664-a975-4251-ad49-f2f810b27eaa">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.89" radius="0.005" />
@@ -530,7 +529,7 @@
 				<Tag>u</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5b192e3b-0a23-8d17-0ba8-1704ba1a191a">
+		<Annotation id="eb8f9fe8-19ad-4857-8e95-37c18cc929ec">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.0" radius="0.005" />
@@ -541,7 +540,7 @@
 				<Tag>v</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c140d8c-3e45-7e63-4fe4-3479ba8c483c">
+		<Annotation id="a6b58eef-ccd7-4a5c-8575-5d23fb37ae82">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.08" radius="0.005" />
@@ -552,7 +551,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0a338b2c-1c25-5a35-2da5-7747ab7f734f">
+		<Annotation id="0f037a13-15de-4779-9ba9-0dab1c868826">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.23" radius="0.005" />
@@ -563,7 +562,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4e599d0f-3f85-0b35-6fc2-0904fa0f345c">
+		<Annotation id="2803c946-b878-4deb-ac20-208b6813ecd5">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.27" radius="0.005" />
@@ -574,7 +573,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8b155e4f-8e35-9d73-1ab9-0108df0a083f">
+		<Annotation id="9d33fe87-3ebd-4ac8-9b9a-38949cb32d14">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.33" radius="0.005" />
@@ -585,7 +584,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f566d9b-4d14-5e93-5fc4-7015ed3d650f">
+		<Annotation id="cd7e87b6-9fcd-42cb-8107-75d898a2c596">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.45" radius="0.005" />
@@ -596,7 +595,7 @@
 				<Tag>u</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6c850e9a-5b35-9d16-5fa7-9992fa4d642c">
+		<Annotation id="e300c676-df65-40b7-8c88-3d81439fd41c">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.51" radius="0.005" />
@@ -607,7 +606,7 @@
 				<Tag>k</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2f454e8b-6b48-7b37-6de7-4288fc2a060b">
+		<Annotation id="e6720550-959a-41bd-a602-f00a6e726302">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.58" radius="0.005" />
@@ -618,7 +617,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0c694f4c-8a88-4c27-3ab1-8630bc6f816c">
+		<Annotation id="c2ecdfc1-8160-4ee9-bebf-1126afbff10c">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.65" radius="0.005" />
@@ -629,7 +628,7 @@
 				<Tag>m</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5b255d8b-9c55-1d11-4ed3-2744ad1d375f">
+		<Annotation id="4bf6ebf2-6a12-4b2c-a430-89446bd77201">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.68" radius="0.005" />
@@ -640,7 +639,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b133c6d-4b60-7e61-3ec7-7366aa9a674c">
+		<Annotation id="d9d45e2c-68d1-493e-be39-0ab85ae72827">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.83" radius="0.005" />
@@ -651,7 +650,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3f825d4a-1b16-7d39-7bc3-5765da5e904e">
+		<Annotation id="e3023bab-0ed2-48f9-b5ab-562ea76bb896">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.9" radius="0.005" />
@@ -662,7 +661,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8c548a1d-3d31-9c85-6ca0-7603cf2c398e">
+		<Annotation id="88e7ebe0-3550-4a47-a588-e8575f94f485">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.96" radius="0.005" />
@@ -673,7 +672,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f161e0e-0a58-4b20-6aa0-1846af3c519f">
+		<Annotation id="08cb9a88-3eb1-4213-9770-34b64e23ebf8">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.07" radius="0.005" />
@@ -684,7 +683,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4f030c8d-5a14-0d93-5df7-1395cf3e779b">
+		<Annotation id="bee7ea7b-f3a6-4082-8c4c-c0778c9e0cda">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.1" radius="0.005" />
@@ -695,7 +694,7 @@
 				<Tag>a~</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2c990a7f-6a01-2b21-3fd0-0432cc4d379e">
+		<Annotation id="c2fc99ee-b3fe-4958-862e-a865ebee045e">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.13" radius="0.005" />
@@ -706,7 +705,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a826f1b-2b82-7e63-9dc3-8352ff7c551c">
+		<Annotation id="0708c794-aafa-4de3-ad7a-5d3ba4b64657">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.21" radius="0.005" />
@@ -717,7 +716,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6b286b9c-8c06-9a50-9bb5-1413af6d686b">
+		<Annotation id="aec3d42c-f328-490a-8a65-732ae32d9692">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.27" radius="0.005" />
@@ -728,7 +727,7 @@
 				<Tag>U~/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2b377e1d-2f19-9e11-4db4-6124dd0d448f">
+		<Annotation id="50522445-ad40-447a-89dd-2c538738ed04">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.34" radius="0.005" />
@@ -739,7 +738,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5a378f6b-3a66-5b88-3ab8-9523fe8a606f">
+		<Annotation id="70f6ccf8-7798-4875-b742-2ad6ec94cc9b">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.37" radius="0.005" />
@@ -750,7 +749,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3f233b5b-2e66-6a60-9fa4-4782fd6d300c">
+		<Annotation id="d7b1d1a2-d8bc-4eda-ab33-3c45f23ec3de">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.42" radius="0.005" />
@@ -761,7 +760,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0c397d1d-9a79-6a70-2db9-3690df8e093f">
+		<Annotation id="cd137a34-6437-4c14-a9cf-d6633ad1474a">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.45" radius="0.005" />
@@ -772,7 +771,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1c917e2c-3c15-7f93-1ac7-7548ed1b142c">
+		<Annotation id="4dac1f3c-7b85-40e8-a8a3-82698e3888a5">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.63" radius="0.005" />
@@ -783,7 +782,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9c088b0d-6a99-1a92-0df1-2863aa3b873a">
+		<Annotation id="2007f831-da9a-4d37-8aea-57457aefb925">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.67" radius="0.005" />
@@ -794,7 +793,7 @@
 				<Tag>n</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3e501e5f-6c07-8d87-0de4-4194ce9f780d">
+		<Annotation id="bd2570ab-4e27-44aa-8b6f-a20eef66bac1">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.71" radius="0.005" />
@@ -805,7 +804,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1e927f0b-1e72-3b91-3df3-6209cc9d433f">
+		<Annotation id="888b15cb-efe9-475d-9158-7ccd30069ba1">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.8" radius="0.005" />
@@ -816,7 +815,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a897a6c-4c19-8a55-7ba5-8451be1c845e">
+		<Annotation id="1e1a7e7e-63f8-4500-8117-c8c2d8057018">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.88" radius="0.005" />
@@ -827,7 +826,7 @@
 				<Tag>k</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7f125e4f-1e06-1e32-1fe1-9331ea3b106d">
+		<Annotation id="8de39b12-9750-4484-a008-031d2f1f2d45">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.96" radius="0.005" />
@@ -838,7 +837,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3c756e6a-2e51-0d98-2ea3-6576eb6d423b">
+		<Annotation id="bfac9992-e00b-4c67-b307-8471ad63242b">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.02" radius="0.005" />
@@ -849,7 +848,7 @@
 				<Tag>t</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3c733a9c-8e65-2e68-4ab0-1087fe8f252c">
+		<Annotation id="37389b52-970e-4b3d-937c-84f29dfdaa8c">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.1" radius="0.005" />
@@ -860,7 +859,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5f175d2c-7d67-2b34-8bd8-8003ec4e031c">
+		<Annotation id="2062e773-a89c-400c-95df-a278806b6ce0">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.14" radius="0.005" />
@@ -871,7 +870,7 @@
 				<Tag>U~/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5d461c2e-6d87-5a25-5af2-4303bb1b281d">
+		<Annotation id="d331a876-c30b-46e5-bef3-5f88f3d4ec75">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.17" radius="0.005" />
@@ -882,7 +881,7 @@
 				<Tag>p</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1d327b4b-2f89-7f73-2ba3-3296ac2d032d">
+		<Annotation id="956ec526-aa57-4c5c-bb1c-545998d9f89e">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.26" radius="0.005" />
@@ -893,7 +892,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8e399d0b-3a42-7d47-6ab3-2964ec8e660f">
+		<Annotation id="cdf18582-724a-4695-8ac4-9e3d4df32844">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.3" radius="0.005" />
@@ -904,7 +903,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9e972c9c-3b67-0f42-3fa7-4195aa8f876c">
+		<Annotation id="192be272-6bf6-49a6-a272-4ff1f91a8a14">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.42" radius="0.005" />
@@ -915,7 +914,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0b816c4a-1e08-2b41-8ea2-4096ee6a832c">
+		<Annotation id="3c0b4d5e-9b44-4297-8d0d-411c6e9108a7">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.45" radius="0.005" />
@@ -926,7 +925,7 @@
 				<Tag>b</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a585b1f-3d87-6a82-7bf3-7062ac6f980e">
+		<Annotation id="e7d1fa7d-2344-4fc8-aeb6-ac298dd37c09">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.48" radius="0.005" />
@@ -937,7 +936,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8b320d9a-9b00-6c96-3be4-5501fe6e782a">
+		<Annotation id="258d7f73-e25a-4c4d-bd4d-ae7d6c67f486">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.51" radius="0.005" />
@@ -948,7 +947,7 @@
 				<Tag>S</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2f818c0b-0a03-1c39-1db8-1233ca2c828c">
+		<Annotation id="8d94cfdf-398a-48fc-9f77-4603e8d3e614">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.6" radius="0.005" />
@@ -959,7 +958,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a055a5d-0c99-5a38-7ea9-0879ee5f331e">
+		<Annotation id="7201d1c3-6d25-4de8-a599-832d466f8fa3">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.66" radius="0.005" />
@@ -970,7 +969,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1b174d1d-2a47-0c20-7cb2-8216ac9b333f">
+		<Annotation id="e0ee3a18-292f-43eb-b6d6-7b87cf991266">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.71" radius="0.005" />
@@ -981,7 +980,7 @@
 				<Tag>H</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d034c4b-9f36-3e74-1ac1-4783ec7d258d">
+		<Annotation id="398232ea-1698-4a54-9d00-cb1aa38fe3de">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.8" radius="0.005" />
@@ -992,7 +991,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7d798c1b-0c85-0b51-9fa0-0318cc8e768c">
+		<Annotation id="e8480ad9-a5c2-4df1-94a9-4b00380e18cf">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.87" radius="0.005" />
@@ -1003,7 +1002,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a323e7d-3b95-0b71-0bd0-9102bb2c450c">
+		<Annotation id="229d2ec5-a5ab-48d1-bd39-57533a314be7">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.93" radius="0.005" />
@@ -1014,7 +1013,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7f295d2a-2b59-8c24-9cf9-1340fc7a948c">
+		<Annotation id="d6b0d6f3-9606-4edd-977e-a1d834976c6a">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.0" radius="0.005" />
@@ -1025,7 +1024,7 @@
 				<Tag>p</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3b672d2e-9c38-5b81-9af7-4180ea8b258b">
+		<Annotation id="b229cf11-d483-40c9-9201-fcfbe6c2c8e4">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.07" radius="0.005" />
@@ -1036,7 +1035,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3e457e0f-6f34-9b01-4cb5-6017ff4b269b">
+		<Annotation id="12c76db0-5a14-458c-af8d-a74de4475036">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.17" radius="0.005" />
@@ -1047,7 +1046,7 @@
 				<Tag>O/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6a729a6a-3c96-0e76-4ca0-3656eb8b224d">
+		<Annotation id="ba46d12d-52bd-4cb4-be93-a816a8e11a5d">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.2" radius="0.005" />
@@ -1058,7 +1057,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6d935d6c-4c88-3d71-9de1-9285cd4a994a">
+		<Annotation id="15e810b0-6b60-4775-95b2-5592b03d0d92">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.23" radius="0.005" />
@@ -1069,7 +1068,7 @@
 				<Tag>y</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3e205f9e-5b55-8d28-2af4-5339ae0f903b">
+		<Annotation id="a8eec79d-2987-45c7-970a-f4e9684b7567">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.26" radius="0.005" />
@@ -1080,7 +1079,7 @@
 				<Tag>m</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5b800f5e-0d68-4a95-9ea8-8154dc1d219e">
+		<Annotation id="d9a5bba4-b52c-45fb-a3fa-90c178270437">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.29" radius="0.005" />
@@ -1091,7 +1090,7 @@
 				<Tag>a~</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7d665a0a-9f13-2d54-0fe9-6049da2f540e">
+		<Annotation id="f7bdac93-6217-49a4-8fe3-4eb327990824">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.32" radius="0.005" />
@@ -1102,7 +1101,7 @@
 				<Tag>U~/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7d294a2c-6c68-9b30-3cc7-5939bf5b814e">
+		<Annotation id="e957086d-916f-449c-ba4e-2aa1d7647452">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.36" radius="0.005" />
@@ -1113,7 +1112,7 @@
 				<Tag>k</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a915f1e-4f48-9f66-5ee3-7635db2b948e">
+		<Annotation id="15da0deb-6351-481b-b0a9-7f8a6d36aa0e">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.46" radius="0.005" />
@@ -1124,7 +1123,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9a932e3c-8e48-5e75-6fd7-3145dc1e365a">
+		<Annotation id="5e8d100c-0e51-47da-b933-b65adb4dc90f">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.52" radius="0.005" />
@@ -1135,7 +1134,7 @@
 				<Tag>p</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e601a5f-0f84-5c45-8ac1-3035cd1c566a">
+		<Annotation id="c2dcf9d9-e7dd-4284-b586-6d96fa946662">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.61" radius="0.005" />
@@ -1146,7 +1145,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0c688e2d-3a23-0d11-7ed1-6218ff1d124e">
+		<Annotation id="f6c11dab-f029-41fd-83d2-f298dc43e44e">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.72" radius="0.005" />
@@ -1157,7 +1156,7 @@
 				<Tag>b</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4b874b6e-4f33-5a34-1ab5-2892ef6e100e">
+		<Annotation id="e4b3d35e-f35a-4f50-8eab-fd2e2872871d">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.8" radius="0.005" />
@@ -1168,7 +1167,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4d831a3f-3c53-4e01-6de9-8609ec7a272b">
+		<Annotation id="0aed9217-4ccd-43b6-b364-da3307ee640c">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.83" radius="0.005" />
@@ -1179,7 +1178,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e849f1a-8f49-3b60-0ab2-7353db2b498b">
+		<Annotation id="5ed6dd25-f138-4022-9fba-dc7fa067c5d9">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.9" radius="0.005" />
@@ -1190,7 +1189,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a313a2a-1a68-4b01-7ca5-7401ac9d705a">
+		<Annotation id="4ac25850-f720-41c5-ad8a-1ae00a52c8a2">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.93" radius="0.005" />
@@ -1201,7 +1200,7 @@
 				<Tag>E</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9c276f9a-5f38-3c04-1fc7-7405cc7a644b">
+		<Annotation id="eebf625e-5fa4-487a-b064-37635723b928">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.96" radius="0.005" />
@@ -1212,7 +1211,7 @@
 				<Tag>s</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6d024d9f-9d63-7b38-8fd4-6891ea6c848d">
+		<Annotation id="ba963fbb-4db3-4c72-acfa-1e0ac4a0a042">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.11" radius="0.005" />
@@ -1223,7 +1222,7 @@
 				<Tag>i</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f233d3c-3e60-0d41-8db0-1536ca9d083c">
+		<Annotation id="aa7a9c80-eb06-4ad3-a801-3b4cf7427007">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.14" radius="0.005" />
@@ -1234,7 +1233,7 @@
 				<Tag>n</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7f215a0f-0d46-7b22-3aa6-5695de7a822f">
+		<Annotation id="c38f1a2b-5802-4e4a-a37c-8383f9736b6b">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.17" radius="0.005" />
@@ -1245,7 +1244,7 @@
 				<Tag>e</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3a360f0d-4b90-6e55-1fb8-4997ff7b652f">
+		<Annotation id="14a975a6-25d0-4794-9a9e-2f136831a58e">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.24" radius="0.005" />
@@ -1256,7 +1255,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9e370d3e-6f14-2e13-2fc5-7088df0e072d">
+		<Annotation id="ff642333-3053-498e-9d67-bbc15b152749">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.28" radius="0.005" />
@@ -1267,7 +1266,7 @@
 				<Tag>l</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a692c5a-0f35-0d26-8ab6-6629ab3d293d">
+		<Annotation id="443a3644-a5e1-442b-bd92-21ec35f106dd">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.31" radius="0.005" />
@@ -1278,7 +1277,7 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a709f3a-9d92-6b19-7dc3-7658ee4f021c">
+		<Annotation id="e5ad8cb7-b517-4235-b8d1-a75f55cfc023">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.36" radius="0.005" />
@@ -1289,7 +1288,7 @@
 				<Tag>m</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e970c7a-1a21-1a37-5aa9-2793da4b871b">
+		<Annotation id="496e00b9-525c-4a50-8c38-0dd55ba446b3">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.42" radius="0.005" />
@@ -1300,7 +1299,7 @@
 				<Tag>U~/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4c983d7d-6b10-4c86-6ef9-5634cb2a513d">
+		<Annotation id="005af1b2-ad3c-4ec0-920a-27b2a8655da5">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.51" radius="0.005" />
@@ -1311,7 +1310,7 @@
 				<Tag>d</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8f295f5f-7f00-2b46-4ab2-5751ee2e581c">
+		<Annotation id="4f9d7b7a-888d-42e0-9104-183bda793fa5">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.55" radius="0.005" />
@@ -1322,7 +1321,7 @@
 				<Tag>R</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c567a9e-4b63-1a18-5fa7-0010fc1f825e">
+		<Annotation id="66435cee-9c7c-4f5c-a007-a05466f9d2e9">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.58" radius="0.005" />
@@ -1333,7 +1332,7 @@
 				<Tag>w</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9d563c0d-4a01-9b43-9cc0-1482df6b256b">
+		<Annotation id="4ffb72f1-919e-4644-833d-5d39ee9ddf31">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.64" radius="0.005" />
@@ -1344,11 +1343,11 @@
 				<Tag>A/</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c344c9d-8c59-7f13-2bf4-9829dc4b836f">
+		<Annotation id="2b5cda82-0465-40a1-8359-ab1248c19f7e">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.7" radius="0.005" />
-					<End midpoint="8.84" radius="0.0" />
+					<End midpoint="8.84" radius="0.005" />
 				</Interval>
 			</Location>
 			<Label>
@@ -1357,11 +1356,11 @@
 		</Annotation>
 	</Tier>
 
-	<Tier id="3f496f8a-3d25-3f02-1bd9-3604ae3d107a" tiername="TokensAlign">
-		<Annotation id="1d592e2b-8b61-5a99-8cc4-6020eb5a470e">
+	<Tier id="3eac6f7e-d570-47dc-bd34-a6c7817b5ee4" tiername="TokensAlign">
+		<Annotation id="8d0219b1-0cac-406c-b2a6-7b8c8f0c4bcc">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.0" />
+					<Begin midpoint="0.0" radius="0.0" />
 					<End midpoint="0.4" radius="0.005" />
 				</Interval>
 			</Location>
@@ -1369,21 +1368,21 @@
 				<Tag>alors</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3d699b0e-5a91-3a53-5ef8-3770fd2b216f">
+		<Annotation id="27b9f49a-165a-4c45-9eb7-6e5af92525e7">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.4" radius="0.005" />
-					<End midpoint="0.54" radius="0.005" />
+					<End midpoint="0.52" radius="0.005" />
 				</Interval>
 			</Location>
 			<Label>
 				<Tag>euh</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3b580e1f-6e59-2d13-0fb3-5968cf1e451a">
+		<Annotation id="a3788278-1719-4fea-95ef-484173976032">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.54" radius="0.005" />
+					<Begin midpoint="0.52" radius="0.005" />
 					<End midpoint="0.73" radius="0.005" />
 				</Interval>
 			</Location>
@@ -1391,7 +1390,7 @@
 				<Tag>elle</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2b034f9c-0a34-8f05-1af3-9404dc1b220e">
+		<Annotation id="0954bf8a-4183-4f51-8dd8-0841e5c4e725">
 			<Location>
 				<Interval>
 					<Begin midpoint="0.73" radius="0.005" />
@@ -1402,7 +1401,7 @@
 				<Tag>pour</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8b558a3f-5a42-2f59-9ef1-0173fe8b987b">
+		<Annotation id="6d814458-1e59-4551-bf5c-54592b7d898d">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.01" radius="0.005" />
@@ -1413,7 +1412,7 @@
 				<Tag>la</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3b464b4e-4a23-6b54-9dd4-5136dc9f965b">
+		<Annotation id="97605f88-51a9-4e82-924a-2614f7d2988b">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.1" radius="0.005" />
@@ -1424,7 +1423,7 @@
 				<Tag>photo</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7b344e5c-3c10-7c50-2fe4-4374cd1f838b">
+		<Annotation id="6699e9fc-f921-4482-8132-46c7470dbdfd">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.65" radius="0.005" />
@@ -1435,7 +1434,7 @@
 				<Tag>+</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5a327d9b-6b39-6a43-6da5-7232eb4c033a">
+		<Annotation id="12672178-af2c-4dae-988e-4eed65280479">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.75" radius="0.005" />
@@ -1446,7 +1445,7 @@
 				<Tag>elle</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9c531a6e-1c21-3a39-8eb3-4881cb9d800e">
+		<Annotation id="9705df14-69ac-4630-8521-9aa7afa6f05a">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.85" radius="0.005" />
@@ -1457,7 +1456,7 @@
 				<Tag>lui</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5f552f5b-7c13-4a05-4ee4-4179cd4c541d">
+		<Annotation id="45c9f49e-0bcc-4d67-8678-5925bd191106">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.94" radius="0.005" />
@@ -1468,7 +1467,7 @@
 				<Tag>avait</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9f485f5f-0a90-4a13-7ad7-6264af4c043f">
+		<Annotation id="23b021f4-3063-4eb3-85c2-20a25b55c387">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.15" radius="0.005" />
@@ -1479,7 +1478,7 @@
 				<Tag>mis</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8e982f7a-7b70-1d90-9fb4-1472ce0b420a">
+		<Annotation id="d5c2f30b-8235-4a81-94af-378352aa1475">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.28" radius="0.005" />
@@ -1490,7 +1489,7 @@
 				<Tag>de_force</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d559d0a-5f40-9c37-3bf2-1777bc9d895d">
+		<Annotation id="efa1b366-faa5-4b17-886f-c3d538f57c51">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.79" radius="0.005" />
@@ -1501,7 +1500,7 @@
 				<Tag>le</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6c837f3b-8d71-1a86-8de1-6895ab4a659d">
+		<Annotation id="974051d1-7308-495b-9702-6f0f28ecbfc0">
 			<Location>
 				<Interval>
 					<Begin midpoint="2.82" radius="0.005" />
@@ -1512,7 +1511,7 @@
 				<Tag>feutre</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1c698f8a-5a56-4f67-1ba0-6213ba8e140c">
+		<Annotation id="5b64c6d2-22f9-4b91-a852-020503c11669">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.06" radius="0.005" />
@@ -1523,7 +1522,7 @@
 				<Tag>dans</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c031a1c-0b16-2c62-0cc2-8738ba7a038f">
+		<Annotation id="3dd8eb2c-eeb3-4130-99e3-50ac580c6348">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.18" radius="0.005" />
@@ -1534,7 +1533,7 @@
 				<Tag>la</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d830b0b-9d53-5f43-8bc2-4883be8f825e">
+		<Annotation id="24383da3-c0a9-44c3-805d-06cdaadced99">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.28" radius="0.005" />
@@ -1545,7 +1544,7 @@
 				<Tag>main</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1e784d4b-6e75-6e87-3fe0-1807cd9b130a">
+		<Annotation id="11bfdee3-4499-4e91-bc04-51ebcc54412c">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.43" radius="0.005" />
@@ -1556,7 +1555,7 @@
 				<Tag>droite</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e743c0b-8d13-7e46-4ad7-3631ff1e004d">
+		<Annotation id="2582632d-f276-421c-ba74-49b7bbcd9184">
 			<Location>
 				<Interval>
 					<Begin midpoint="3.89" radius="0.005" />
@@ -1567,7 +1566,7 @@
 				<Tag>ouvert</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6d436b6e-6a85-7e83-8fa8-4713cc1f558a">
+		<Annotation id="1f908aca-60d7-406f-8f72-9c987c67eb3b">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.27" radius="0.005" />
@@ -1578,7 +1577,7 @@
 				<Tag>et</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3c371d2e-1c61-9e78-5cd9-9898df1f767b">
+		<Annotation id="e6668f48-1448-4ee5-a1e8-e2b5546604ba">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.33" radius="0.005" />
@@ -1589,7 +1588,7 @@
 				<Tag>tout</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="1a727e7e-2b22-2e91-7fc0-3657ef4b239d">
+		<Annotation id="13d41e59-c87e-467d-832a-947fa5c93d11">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.51" radius="0.005" />
@@ -1600,7 +1599,7 @@
 				<Tag>comme</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6a424d8d-6a37-2f04-3ef4-4641fb2f576a">
+		<Annotation id="643dd427-86e1-4ca4-a734-d7d0e65ea713">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.68" radius="0.005" />
@@ -1611,7 +1610,7 @@
 				<Tag>s'</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8e602e1e-3b99-4d45-4ca8-5975ed4b899f">
+		<Annotation id="33cca404-5b49-40e4-a865-87b50a30c71d">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.83" radius="0.005" />
@@ -1622,7 +1621,7 @@
 				<Tag>il</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e681a0d-7d07-5b03-2fd7-6244bc5b821f">
+		<Annotation id="20485e56-577f-4f09-ab92-30547387ceed">
 			<Location>
 				<Interval>
 					<Begin midpoint="4.9" radius="0.005" />
@@ -1633,7 +1632,7 @@
 				<Tag>était</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3c310b5e-1d47-2d21-3fb7-7086db8d541d">
+		<Annotation id="94e29dab-814a-4134-bb9f-853049aff239">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.1" radius="0.005" />
@@ -1644,7 +1643,7 @@
 				<Tag>en_train</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8c443d8c-8e33-2a08-7df8-9799ec7e131b">
+		<Annotation id="a006d56d-bf91-45f3-91e3-5bab59e86230">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.34" radius="0.005" />
@@ -1655,7 +1654,7 @@
 				<Tag>de</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0e189c5d-8f89-9d54-0ba4-7195cf9d877c">
+		<Annotation id="9fb21eb6-a4d6-400b-bc24-3aff1a7b5595">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.37" radius="0.005" />
@@ -1666,7 +1665,7 @@
 				<Tag>dessiner</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9a446b2c-9c59-0a02-4df5-5110db4b761f">
+		<Annotation id="f1692769-23c8-41ac-835a-88572e54c4b4">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.8" radius="0.005" />
@@ -1677,7 +1676,7 @@
 				<Tag>ce</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="4d845f6a-7c07-5e18-9ad0-6192ae0c131d">
+		<Annotation id="ad8608f7-a595-457e-83b6-b13ae6b696b9">
 			<Location>
 				<Interval>
 					<Begin midpoint="5.88" radius="0.005" />
@@ -1688,7 +1687,7 @@
 				<Tag>qui</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8a708f2d-7e95-6a48-4ac3-5984de5e090d">
+		<Annotation id="cec329a5-d0d6-4d95-85e8-43bad30d2de0">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.02" radius="0.005" />
@@ -1699,7 +1698,7 @@
 				<Tag>était</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0a087d8c-7f55-2e21-5cc6-2815ac2c713c">
+		<Annotation id="8d74c0d2-7c96-4236-ad40-717f3eab71ce">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.14" radius="0.005" />
@@ -1710,7 +1709,7 @@
 				<Tag>impossible</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3f653b5d-7e57-4c21-6da5-4168ed1b147b">
+		<Annotation id="95bc0ece-94d6-41cb-b36a-ee897301ae53">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.51" radius="0.005" />
@@ -1721,7 +1720,7 @@
 				<Tag>chez</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7e544b7f-2e10-8d05-7ff7-5878ca2a924f">
+		<Annotation id="a943a93d-e7c6-45d4-b285-38a7a263d868">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.66" radius="0.005" />
@@ -1732,7 +1731,7 @@
 				<Tag>lui</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="8d986d0d-1a59-6e74-9ba3-9130df7a726f">
+		<Annotation id="f053dd38-0b38-45ea-bba9-2511977f4098">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.8" radius="0.005" />
@@ -1743,7 +1742,7 @@
 				<Tag>il</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7d342f7a-7b69-2f68-4de8-3568fa6a342e">
+		<Annotation id="53113f90-b536-4674-8462-73d5beb80279">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.87" radius="0.005" />
@@ -1754,7 +1753,7 @@
 				<Tag>est</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="7d299f5c-3d20-6d50-6ef2-1738ea8f201b">
+		<Annotation id="8f03bd98-ab40-4445-b3f8-ac4d8acb6f98">
 			<Location>
 				<Interval>
 					<Begin midpoint="6.93" radius="0.005" />
@@ -1765,7 +1764,7 @@
 				<Tag>absolument</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e944a1e-2a26-4c51-8ac3-8177ba8c521e">
+		<Annotation id="62b8fc27-ba12-4423-a805-669284db2af1">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.32" radius="0.005" />
@@ -1776,7 +1775,7 @@
 				<Tag>incapable</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="2e087f7f-6d46-0a22-9cc3-7906aa8a831d">
+		<Annotation id="8556262f-a35f-4900-befa-e27939204bf0">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.83" radius="0.005" />
@@ -1787,7 +1786,7 @@
 				<Tag>de</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="6c116a2b-0c97-3f78-9aa4-9370de6d316b">
+		<Annotation id="02369ffe-2f39-4c34-b392-90b761c540c8">
 			<Location>
 				<Interval>
 					<Begin midpoint="7.9" radius="0.005" />
@@ -1798,7 +1797,7 @@
 				<Tag>dessiner</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5e592c7f-8d93-1e32-1bd2-6953ba2b849a">
+		<Annotation id="d3121672-b21e-4950-bd5b-981f34588696">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.24" radius="0.005" />
@@ -1809,7 +1808,7 @@
 				<Tag>de</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="5c784b8e-7a93-7c89-5bb0-3369ee0e684f">
+		<Annotation id="8883baa9-a00f-433e-8740-86bef5296f4c">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.28" radius="0.005" />
@@ -1820,7 +1819,7 @@
 				<Tag>la</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3b008e1e-8e10-2c64-3aa3-4092ca9f563c">
+		<Annotation id="6c7a078a-957b-43c9-baf1-382b0718c58e">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.36" radius="0.005" />
@@ -1831,11 +1830,11 @@
 				<Tag>main</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="3c797f1b-2e55-0c75-9fc6-2857ac7f012d">
+		<Annotation id="4cde936a-9578-4103-961f-8c79596a800f">
 			<Location>
 				<Interval>
 					<Begin midpoint="8.51" radius="0.005" />
-					<End midpoint="8.84" radius="0.0" />
+					<End midpoint="8.84" radius="0.005" />
 				</Interval>
 			</Location>
 			<Label>
@@ -1844,11 +1843,498 @@
 		</Annotation>
 	</Tier>
 
-	<Tier id="2e053c0b-6b14-2d74-2fb5-4733fa2e581d" tiername="Activity">
-		<Annotation id="8b291a4f-4e27-7a40-6cf6-3544fe0e761a">
+	<Tier id="67581ca2-cf0c-469d-bd0a-ecd655eadadb" tiername="PronTokAlign">
+		<Annotation id="b8af890a-9727-4da6-aa80-c2280040ce72">
 			<Location>
 				<Interval>
-					<Begin midpoint="0.0" />
+					<Begin midpoint="0.0" radius="0.0" />
+					<End midpoint="0.4" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.462">A/-l-O/-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="f6c1be75-4727-43bf-af16-5bad4945cb36">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.4" radius="0.005" />
+					<End midpoint="0.52" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">fp</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="ee5cd683-8115-4b9b-a72c-9d8930ad01f1">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.52" radius="0.005" />
+					<End midpoint="0.73" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.381">E</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="b848b948-170a-48b0-8c49-990097c38562">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.73" radius="0.005" />
+					<End midpoint="1.01" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">p-u-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="ee14e6c7-2396-4025-8248-5fc70bf25bcd">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.01" radius="0.005" />
+					<End midpoint="1.1" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">l-A/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="da3fadfd-bdf4-446f-a2a0-132b60348ab3">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.1" radius="0.005" />
+					<End midpoint="1.65" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">f-O/-t-O/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="e20fcfa8-e5fa-4a5e-8ed4-5ac3b5515b84">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.65" radius="0.005" />
+					<End midpoint="1.75" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">#</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="486fec74-49e0-4a44-99b2-acc1415d2626">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.75" radius="0.005" />
+					<End midpoint="1.85" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.454">E</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="02b94cea-b9f4-4c4a-82ee-74ae2d612ed3">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.85" radius="0.005" />
+					<End midpoint="1.94" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.505">l-H</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="30a1d70f-dd99-4eac-a7d4-4088e17b0aaf">
+			<Location>
+				<Interval>
+					<Begin midpoint="1.94" radius="0.005" />
+					<End midpoint="2.15" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.578">A/-v-e</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="8ab58425-8faa-4c57-8e04-9cd70f3de620">
+			<Location>
+				<Interval>
+					<Begin midpoint="2.15" radius="0.005" />
+					<End midpoint="2.28" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.812">m-i</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="6011f2ed-6fc9-49ec-be7b-bd3be6b63992">
+			<Location>
+				<Interval>
+					<Begin midpoint="2.28" radius="0.005" />
+					<End midpoint="2.79" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.63">d-f-O/-R-s</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="e3704ec4-34dd-4446-b2cb-fb4fc280021c">
+			<Location>
+				<Interval>
+					<Begin midpoint="2.79" radius="0.005" />
+					<End midpoint="2.82" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.437">l</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="5fb6fbd1-9ab9-493e-b5b1-fbb1ab4bba21">
+			<Location>
+				<Interval>
+					<Begin midpoint="2.82" radius="0.005" />
+					<End midpoint="3.06" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.888">f-2-t-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="71f36a82-0616-4af6-a3f8-48dd5cc9bf35">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.06" radius="0.005" />
+					<End midpoint="3.18" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.944">d-a~</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="647e8582-5a1c-4665-93db-7712715204d6">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.18" radius="0.005" />
+					<End midpoint="3.28" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">l-A/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="43c19d39-c499-4e02-b15d-c01222decd86">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.28" radius="0.005" />
+					<End midpoint="3.43" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">m-U~/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="89fc7d59-cf99-4ffa-8550-5c1caa26dc9f">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.43" radius="0.005" />
+					<End midpoint="3.89" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.864">d-R-w-A/-t</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9b4be6e3-a428-43c8-9b15-8b1c7b3a86c7">
+			<Location>
+				<Interval>
+					<Begin midpoint="3.89" radius="0.005" />
+					<End midpoint="4.27" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.738">u-v-E-R</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="f238b8fb-437d-432e-ab89-387d10c9e424">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.27" radius="0.005" />
+					<End midpoint="4.33" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.645">e</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="fa0b1182-6662-474a-bbd5-9e4bb59debdd">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.33" radius="0.005" />
+					<End midpoint="4.51" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.764">t-u</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="afc31081-351d-40ec-a5ef-b23eff80ba44">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.51" radius="0.005" />
+					<End midpoint="4.68" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.683">k-O/-m</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="93f934ac-5d42-4d6f-ad44-8c25e11e2f1f">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.68" radius="0.005" />
+					<End midpoint="4.83" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">s</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="285bd706-c607-4747-8654-5a23ea3b1049">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.83" radius="0.005" />
+					<End midpoint="4.9" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.572">i</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="cf3d0f51-f5f9-4b1a-a415-4a51da83a9c0">
+			<Location>
+				<Interval>
+					<Begin midpoint="4.9" radius="0.005" />
+					<End midpoint="5.1" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.25">e-t-E</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="081065fc-2ee6-4476-9714-d797989d23f2">
+			<Location>
+				<Interval>
+					<Begin midpoint="5.1" radius="0.005" />
+					<End midpoint="5.34" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">a~-t-R-U~/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="a8dadfe3-906e-4d5c-9aa2-e617ca4a447f">
+			<Location>
+				<Interval>
+					<Begin midpoint="5.34" radius="0.005" />
+					<End midpoint="5.37" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.531">d</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="cbccf8a9-aac2-4049-a275-338f58073503">
+			<Location>
+				<Interval>
+					<Begin midpoint="5.37" radius="0.005" />
+					<End midpoint="5.8" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.898">d-E-s-i-n-e</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="89911dd7-f6d7-4e4c-b350-b227aa47840a">
+			<Location>
+				<Interval>
+					<Begin midpoint="5.8" radius="0.005" />
+					<End midpoint="5.88" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.991">s</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2c902363-0151-4090-adcb-bb93ede05d7e">
+			<Location>
+				<Interval>
+					<Begin midpoint="5.88" radius="0.005" />
+					<End midpoint="6.02" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.637">k-i</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="9196944e-4684-4c2c-ac28-ff99c7e5733e">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.02" radius="0.005" />
+					<End midpoint="6.14" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.256">t-E</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="fec6f03a-2e79-477b-9d90-6b35068a36e3">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.14" radius="0.005" />
+					<End midpoint="6.51" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.999">U~/-p-O/-s-i-b-l</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="c3be31fa-aff1-4150-81c9-cb6884dac178">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.51" radius="0.005" />
+					<End midpoint="6.66" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.829">S-e</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="ab47f13d-c9a3-4c89-9acc-3d8357f279aa">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.66" radius="0.005" />
+					<End midpoint="6.8" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.409">l-H</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="89348761-f49b-4314-93dd-8c597b3725aa">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.8" radius="0.005" />
+					<End midpoint="6.87" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.59">i</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="925299cc-a1c6-4fa1-8d64-a5fafa27ead7">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.87" radius="0.005" />
+					<End midpoint="6.93" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.352">E</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="2070cd48-09a3-4c1c-ab6c-08cca9fab5ba">
+			<Location>
+				<Interval>
+					<Begin midpoint="6.93" radius="0.005" />
+					<End midpoint="7.32" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.643">A/-p-s-O/-l-y-m-a~</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="dc065e61-e1d9-4fae-aea6-ae65dd9e8c79">
+			<Location>
+				<Interval>
+					<Begin midpoint="7.32" radius="0.005" />
+					<End midpoint="7.83" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.556">U~/-k-A/-p-A/-b-l</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="c9d4ff28-093d-4e79-821c-480313747a33">
+			<Location>
+				<Interval>
+					<Begin midpoint="7.83" radius="0.005" />
+					<End midpoint="7.9" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.573">d</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="a3782042-1d5d-40b6-8403-7a21198c1bd1">
+			<Location>
+				<Interval>
+					<Begin midpoint="7.9" radius="0.005" />
+					<End midpoint="8.24" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.829">d-E-s-i-n-e</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="ac9721dc-4fe6-4a61-b0fe-38796d9b6361">
+			<Location>
+				<Interval>
+					<Begin midpoint="8.24" radius="0.005" />
+					<End midpoint="8.28" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.65">d</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="60b7198d-3d0b-4d17-988c-62ebab944200">
+			<Location>
+				<Interval>
+					<Begin midpoint="8.28" radius="0.005" />
+					<End midpoint="8.36" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">l-A/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="044a8142-b3bd-4c89-9ca3-1766a170192e">
+			<Location>
+				<Interval>
+					<Begin midpoint="8.36" radius="0.005" />
+					<End midpoint="8.51" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="1.0">m-U~/</Tag>
+			</Label>
+		</Annotation>
+		<Annotation id="0576e7d8-48d6-49f3-84ed-a2772de31eb4">
+			<Location>
+				<Interval>
+					<Begin midpoint="8.51" radius="0.005" />
+					<End midpoint="8.84" radius="0.005" />
+				</Interval>
+			</Location>
+			<Label>
+				<Tag score="0.893">d-R-w-A/-t</Tag>
+			</Label>
+		</Annotation>
+	</Tier>
+
+	<Tier id="70a8edb7-b0f3-4871-9b07-f90371576308" tiername="Activity-unfill">
+		<Annotation id="69a2d3b4-8883-4e96-a5f8-c1c85ec4d481">
+			<Location>
+				<Interval>
+					<Begin midpoint="0.0" radius="0.0" />
 					<End midpoint="1.65" radius="0.005" />
 				</Interval>
 			</Location>
@@ -1856,7 +2342,7 @@
 				<Tag>speech</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="0a849d8a-0c90-3c18-5ae2-7892da2b459e">
+		<Annotation id="ebea61fa-68f7-4c59-8204-3ee2d2a32f5d">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.65" radius="0.005" />
@@ -1867,11 +2353,11 @@
 				<Tag>pause</Tag>
 			</Label>
 		</Annotation>
-		<Annotation id="9e780c9f-7a56-3f45-7fc7-6647ba8e420f">
+		<Annotation id="5bb2c747-74d9-4198-ac2c-f1a5f3c6111e">
 			<Location>
 				<Interval>
 					<Begin midpoint="1.75" radius="0.005" />
-					<End midpoint="8.84" radius="0.0" />
+					<End midpoint="8.84" radius="0.005" />
 				</Interval>
 			</Location>
 			<Label>
@@ -1880,14 +2366,16 @@
 		</Annotation>
 	</Tier>
 
-	<Media id="6c834d5a-1c78-7e85-3dd7-9573da2e847c" mimetype="audio/wav" url="E:\bigi\Workspace\sppas\samples\samples-fra\IM_track_0767.wav">
-		<Tier id="1f619d4c-1a28-1e56-9ff6-6042eb5c318e" />
-		<Tier id="3f496f8a-3d25-3f02-1bd9-3604ae3d107a" />
-		<Tier id="2e053c0b-6b14-2d74-2fb5-4733fa2e581d" />
+	<Media id="5bcc156b-014c-4c38-b260-0a7110d2b93c" mimetype="audio/wav" url="E:\bigi\Projets\sppas\samples\samples-fra\IM_track_0767.wav">
+		<Tier id="81efca5f-84c5-478a-a5d2-0522b2f076b1" />
+		<Tier id="3eac6f7e-d570-47dc-bd34-a6c7817b5ee4" />
+		<Tier id="67581ca2-cf0c-469d-bd0a-ecd655eadadb" />
 	</Media>
 
 	<Hierarchy>
-		<Link from="3f496f8a-3d25-3f02-1bd9-3604ae3d107a" to="2e053c0b-6b14-2d74-2fb5-4733fa2e581d" type="TimeAlignment" />
+		<Link from="81efca5f-84c5-478a-a5d2-0522b2f076b1" to="3eac6f7e-d570-47dc-bd34-a6c7817b5ee4" type="TimeAlignment" />
+		<Link from="3eac6f7e-d570-47dc-bd34-a6c7817b5ee4" to="67581ca2-cf0c-469d-bd0a-ecd655eadadb" type="TimeAssociation" />
+		<Link from="3eac6f7e-d570-47dc-bd34-a6c7817b5ee4" to="70a8edb7-b0f3-4871-9b07-f90371576308" type="TimeAlignment" />
 	</Hierarchy>
 </Document>
 

@@ -34,10 +34,10 @@
 """
 from .annotationsexc import NoInputError
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 
-class sppasFindTier(object):
+class sppasFindTier:
     """Search for tiers in a sppasTranscription.
 
     :author:       Brigitte Bigi
@@ -47,11 +47,6 @@ class sppasFindTier(object):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-
-    def __init__(self):
-        pass
-
-    # ------------------------------------------------------------------------
 
     @staticmethod
     def transcription(trs):
@@ -93,7 +88,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def tokenization(trs, pattern=""):
@@ -142,7 +137,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def phonetization(trs):
@@ -175,7 +170,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_phones(trs):
@@ -191,11 +186,11 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_tokens(trs):
-        """Return the tier with time-aligned phonemes.
+        """Return the tier with time-aligned tokens.
 
         :param trs: (sppasTranscription)
 
@@ -207,7 +202,7 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def aligned_syllables(trs):
@@ -228,7 +223,22 @@ class sppasFindTier(object):
 
         raise NoInputError
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def aligned_lemmas(trs):
+        """Return the tier with time-aligned lemmas.
+
+        :param trs: (sppasTranscription)
+
+        """
+        for tier in trs:
+            if "lemma" in tier.get_name().lower():
+                return tier
+
+        raise NoInputError
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def pitch_anchors(trs):
@@ -244,182 +254,6 @@ class sppasFindTier(object):
 
         for tier in trs:
             if "anchors" in tier.get_name().lower():
-                return tier
-
-        raise NoInputError
-
-# ----------------------------------------------------------------------------
-
-
-class sppasSearchTier(object):
-    """SPPAS tier finder (deprecated).
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-
-    """
-
-    def __init__(self):
-        pass
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def transcription(trs):
-        """Return the tier with orthographic transcription.
-
-        :param trs: (Transcription)
-        :returns: (tier)
-
-        """
-        for tier in trs:
-            tier_name = tier.GetName().lower()
-            if "transcription" in tier_name:
-                return tier
-
-        for tier in trs:
-            tier_name = tier.GetName().lower()
-            if "trans" in tier_name:
-                return tier
-            elif "trs" in tier_name:
-                return tier
-            elif "toe" in tier_name:
-                return tier
-            elif "ortho" in tier_name:
-                return tier
-            elif "ipu" in tier_name:
-                return tier
-
-        raise NoInputError
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def phonetization(trs):
-        """Return the tier with phonetization.
-
-        :param trs: (Transcription)
-
-        """
-        # Search for a tier starting with "phon"
-        for tier in trs:
-            tier_name = tier.GetName().lower()
-            if "align" in tier_name:
-                continue
-            if tier_name.startswith("phon") is True:
-                return tier
-
-        # Search for a tier containing "phon"
-        for tier in trs:
-            tier_name = tier.GetName().lower()
-            if "align" in tier_name:
-                continue
-            if "phon" in tier_name:
-                return tier
-
-        raise NoInputError
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def tokenization(trs, pattern=""):
-        """Return the tier with tokenization.
-
-        In case of EOT, several tiers with tokens are available.
-        Priority is given to faked.
-
-        :param trs: (Transcription)
-        :param pattern: (str) Priority pattern
-
-        """
-        # Search with the pattern
-        if len(pattern) > 0:
-            for tier in trs:
-                tier_name = tier.GetName().lower()
-                if pattern in tier_name and "token" in tier_name:
-                    return tier
-
-        # Search with known patterns
-        if trs.GetSize() == 1:
-            if "token" in trs[0].GetName().lower():
-                return trs[0]
-        else:
-            tok_tier = None  # generic tier with tokens
-            std_tier = None  # tier with standard tokens
-
-            for tier in trs:
-                tier_name = tier.GetName().lower()
-                if "align" in tier_name:
-                    continue
-                if tier_name == "tokens":
-                    return tier
-                elif "std" in tier_name and "token" in tier_name:
-                    std_tier = tier
-                elif "token" in tier_name:
-                    tok_tier = tier
-
-            if std_tier is not None:
-                return std_tier
-
-            if tok_tier is not None:
-                return tok_tier
-
-        raise NoInputError
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def aligned_phones(trs):
-        """Return the tier with time-aligned phonemes.
-
-        :param trs: (Transcription)
-
-        """
-        for tier in trs:
-            if "align" in tier.GetName().lower() and "phon" in tier.GetName().lower():
-                return tier
-
-        # for tier in trs:
-        #    if "phones" in tier.GetName().lower():
-        #        return tier
-
-        raise NoInputError
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def aligned_tokens(trs):
-        """Return the tier with time-aligned tokens.
-
-        :param trs: (Transcription)
-        :returns: Tier
-
-        """
-        for tier in trs:
-            if "align" in tier.GetName().lower() and "token" in tier.GetName().lower():
-                return tier
-
-        raise NoInputError
-
-    # -------------------------------------------------------------------
-
-    @staticmethod
-    def pitch_anchors(trs):
-        """Return the tier with pitch anchors, like momel.
-
-        :param trs: (Transcription)
-        :returns: Tier
-
-        """
-        for tier in trs:
-            if "momel" in tier.GetName().lower():
-                return tier
-
-        for tier in trs:
-            if "anchors" in tier.GetName().lower():
                 return tier
 
         raise NoInputError
