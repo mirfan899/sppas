@@ -33,12 +33,11 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
+import logging
 import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
 
-from sppas.src.config import paths
 from sppas.src.annotations.param import sppasParam
 from sppas.src.ui.log_file import sppasLogFile
 
@@ -55,6 +54,7 @@ from sppas.src.ui.wxgui.sp_icons import LINK_ICON
 from sppas.src.ui.wxgui.sp_icons import UNLINK_ICON
 from sppas.src.ui.wxgui.sp_icons import ANNOTATE_ICON
 import sppas.src.ui.wxgui.ui.CustomCheckBox as CCB
+from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -79,13 +79,13 @@ langEvent, EVT_LANG_EVENT = wx.lib.newevent.NewEvent()
 
 
 class sppasStepPanel(wx.Panel):
-    """
+    """Panel with an annotation and the language choice.
+
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
-    :summary:      Panel with an annotation and the language choice.
 
     Panel containing a checkbox and eventually a choice of languages for a
     given annotation.
@@ -150,6 +150,8 @@ class sppasStepPanel(wx.Panel):
         self.SetSizerAndFit(sizer)
         self.SetAutoLayout(True)
 
+        self.parameters.set_lang(None, self.step_idx)
+
     # -----------------------------------------------------------------------
 
     def on_check_changed(self, evt):
@@ -184,20 +186,28 @@ class sppasStepPanel(wx.Panel):
     # -----------------------------------------------------------------------
 
     def set_lang(self, lang):
+        logging.debug('set lang for annotation {:s}'.format(
+            self.parameters.get_step_name(self.step_idx)))
         if self.choice is not None:
-                if lang in self.choice.GetItems():
-                    self.choice.SetSelection(self.choice.GetItems().index(lang))
-                else:
-                    # empty the selection
-                    self.choice.SetSelection(self.choice.GetItems().index( LANG_NONE ))
-                    self.parameters.set_lang(None, self.step_idx)
+            if lang in self.choice.GetItems():
+                logging.debug(' - choice fixed lang={:s}'.format(lang))
+                self.choice.SetSelection(self.choice.GetItems().index(lang))
                 self.parameters.set_lang(lang, self.step_idx)
+
+            else:
+                # empty the selection
+                self.choice.SetSelection(self.choice.GetItems().index(LANG_NONE))
+                self.parameters.set_lang(None, self.step_idx)
+                logging.debug(' - choice fixed lang to None')
+
+        else:
+            logging.debug(' - no choice available. lang is None')
+            self.parameters.set_lang(None, self.step_idx)
 
     # -----------------------------------------------------------------------
 
     def SetPrefs(self, prefs):
         """Fix new preferences."""
-
         self._prefsIO = prefs
 
         self.__apply_preferences(self)
@@ -342,8 +352,10 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         file_list.extend(self.GetTopLevelParent().GetTrsSelection())
 
         # The annotation
-        self.annprocess = AnnotateProcess(self._prefsIO)
-        self.annprocess.Run(self.GetParent(), file_list, self.activated, self.parameters)
+        annprocess = AnnotateProcess(self._prefsIO)
+        message = annprocess.Run(self.GetParent(), file_list, self.activated, self.parameters)
+        if message:
+            ShowInformation(None, self._prefsIO, message)
 
     # -----------------------------------------------------------------------
 

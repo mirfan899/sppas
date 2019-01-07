@@ -266,7 +266,7 @@ class sppasOtherRepet(sppasBaseRepet):
             if len(trs_output) > 0:
                 parser = sppasRW(output_file)
                 parser.write(trs_output)
-                self.print_filename(output_file, status=0)
+                self.print_filename(output_file)
             else:
                 raise EmptyOutputError
 

@@ -136,7 +136,8 @@ class annotationParam(object):
             except:
                 self.__invalid = True
                 self.__enabled = False
-        return False
+                return False
+        return True
 
     # -----------------------------------------------------------------------
     # Getters
@@ -430,9 +431,8 @@ class sppasParam(object):
             for a in self.annotations:
                 if a.get_lang() != UNDETERMINED:
                     return a.get_lang()
-        else:
-            return self.annotations[step].get_lang()
-        return UNDETERMINED
+            return UNDETERMINED
+        return self.annotations[step].get_lang()
 
     def get_langresource(self, step):
         return self.annotations[step].get_langresource()

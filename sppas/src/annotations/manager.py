@@ -336,7 +336,7 @@ class sppasAnnotationsManager(Thread):
             # Change f, to allow "replace" to work properly
             basef = os.path.splitext(f)[0]
 
-            self._logfile.print_message("File :" + f, indent=1)
+            self._logfile.print_message("File: " + f, indent=0)
             self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
             # Add all files content in the same order than to annotate
@@ -359,7 +359,7 @@ class sppasAnnotationsManager(Thread):
                     parser = sppasRW(basef + "-merge.xra")
                     parser.write(trs)
                     self._logfile.print_message(
-                        basef + "-merge.xra", indent=2, status=0)
+                        basef + "-merge.xra", indent=1, status=0)
 
                 except Exception as e:
                     self._logfile.print_message(str(e), indent=1, status=-1)

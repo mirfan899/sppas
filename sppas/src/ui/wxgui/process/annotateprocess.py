@@ -33,16 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
 import wx
-import shutil
 
 from sppas.src.annotations.manager import sppasAnnotationsManager
 
 from sppas.src.ui.wxgui.sp_consts import ID_FILES
 from sppas.src.ui.wxgui.views.log import ShowLogDialog
 from sppas.src.ui.wxgui.views.processprogress import ProcessProgressDialog
-from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
 # ----------------------------------------------------------------------------
 
@@ -90,30 +87,27 @@ class AnnotateProcess(object):
         :param parameters:
 
         """
+        message = None
+
         # Check input files
         if len(filelist) == 0:
-            message = "Empty selection! Select file(s) to annotate."
-            ShowInformation(None, self.preferences, message)
-            return
+           return "Empty selection! Select file(s) to annotate."
 
         # Fix options
         nbsteps = 0
         for i in range(len(activeannot)):
             if activeannot[i]:
+                # if there are languages available and none of them is selected, print an error
+                if len(parameters.get_langlist(i)) > 0 and len(parameters.get_lang(i)) == 0:
+                    return "A language must be selected for the " \
+                           "annotation \"{:s}\"".format(parameters.get_step_name(i))
                 nbsteps += 1
                 parameters.activate_step(i)
-                # if there are languages available and none of them is selected, print an error
-                if len(parameters.get_langlist(i)) > 0 and parameters.get_lang(i) is None:
-                    message = "There isn't any language selected for the annotation \"%s\"" % parameters.get_step_name(i)
-                    ShowInformation(None, self.preferences, message)
-                    return
             else:
                 parameters.disable_step(i)
 
-        if not nbsteps:
-            message = "No appropriate annotation selected!"
-            ShowInformation(None, self.preferences, message)
-            return
+        if nbsteps == 0:
+            return "No annotation selected or annotations not properly selected"
 
         for entry in filelist:
             parameters.add_sppasinput(entry)
@@ -145,5 +139,5 @@ class AnnotateProcess(object):
         except:
             message = "Automatic annotation finished.\nSee " + \
                       parameters.get_report_filename() + " for details.\n"
-            ShowInformation(None, self.preferences, message)
 
+        return message

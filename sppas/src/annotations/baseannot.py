@@ -331,6 +331,7 @@ class sppasBaseAnnotation(object):
 
         for fn in required_inputs:
             if os.path.exists(fn) is False:
+                self.print_filename(input_files[0])
                 self.logfile.print_message(
                     "File not found. "
                     "This annotation expects a file with name {:s}. "
@@ -345,7 +346,7 @@ class sppasBaseAnnotation(object):
     # To communicate with the interface:
     # -----------------------------------------------------------------------
 
-    def print_filename(self, filename, status=None):
+    def print_filename(self, filename):
         """Print the annotation name applied on a filename in the user log.
 
         :param filename: (str) Name of the file to annotate.
@@ -355,7 +356,7 @@ class sppasBaseAnnotation(object):
         if self.logfile:
             fn = os.path.basename(filename)
             self.logfile.print_message(
-                MSG_ANN_FILE.format(fn), indent=1, status=status)
+                MSG_ANN_FILE.format(fn), indent=0, status=None)
         else:
             logging.info(MSG_ANN_FILE.format(filename))
 

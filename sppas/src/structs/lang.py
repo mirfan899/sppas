@@ -79,7 +79,7 @@ class sppasLangResource(object):
         self.langlist = list()
 
         # The selected language
-        self.lang = UNDETERMINED
+        self.lang = ""
 
         # The language resource of the selected language
         self.langresource = ""
@@ -94,7 +94,7 @@ class sppasLangResource(object):
         self._rext = ""
 
         self.langlist = []
-        self.lang = UNDETERMINED
+        self.lang = ""
         self.langresource = ""
 
     # ------------------------------------------------------------------------
@@ -109,7 +109,7 @@ class sppasLangResource(object):
         known human languages. "und" is representing an undetermined language.
         See <http://www-01.sil.org/iso639-3/> for details...
 
-        :returns: (str)
+        :returns: (str) Language code or an empty string if no lang was set.
 
         """
         return self.lang
@@ -253,10 +253,16 @@ class sppasLangResource(object):
     def set_lang(self, lang):
         """Set the language.
 
-        :param lang: (str) The language must be UNDETERMINED
-        or one of the language list.
+        To reset the language, fix lang to None.
+
+        :param lang: (str) The language must be either UNDETERMINED
+        or one of the language of the list.
 
         """
+        if lang is None:
+            self.lang = ""
+            return
+
         if lang.lower() != UNDETERMINED and lang not in self.langlist:
             raise LangNameError(lang)
 

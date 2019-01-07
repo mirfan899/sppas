@@ -35,7 +35,6 @@
 
 import codecs
 import logging
-import os
 
 from sppas.src.config import sg
 from sppas.src.config import annots
