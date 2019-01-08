@@ -232,7 +232,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         self._segmenter.set_aligner(aligner_name)
-        self._options['aligner'] = aligner_name
+        self._options['aligner'] = self._segmenter.get_aligner_name()
 
     # -----------------------------------------------------------------------
 
@@ -272,7 +272,7 @@ class sppasAlign(sppasBaseAnnotation):
     def _segment_track_with_basic(self, audio, phn, token, align):
         """Segmentation of a track with the basic alignment system."""
         self.logfile.print_message(MSG_BASIC, indent=2)
-        aligner_id = self._segmenter.get_aligner()
+        aligner_id = self._segmenter.get_aligner_name()
         self._segmenter.set_aligner('basic')
         msg = self._segmenter.segment(audio, phn, token, align)
         if len(msg) > 0:
@@ -315,7 +315,7 @@ class sppasAlign(sppasBaseAnnotation):
                 # Something went wrong and the aligner failed
                 self.logfile.print_message(
                     MSG_ALIGN_FAILED.format(
-                        name=self._segmenter.get_aligner()),
+                        name=self._segmenter.get_aligner_name()),
                     indent=2,
                     status=annots.error)
                 self.logfile.print_message(str(e), indent=3, status=annots.info)

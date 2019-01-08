@@ -109,11 +109,9 @@ class TrackSegmenter(object):
         # The basic aligner is used:
         #   - when the track segment contains only one phoneme;
         #   - when the track segment does not contain phonemes.
-        self._aligner_id = None
         self._aligner = None
         self.set_aligner(aligner_name)
         self._basic_aligner = TrackSegmenter.aligners.instantiate(None)
-        self._instantiate_aligner()
 
         if model is not None:
             self.set_model(model)
@@ -127,7 +125,9 @@ class TrackSegmenter(object):
 
         """
         self._model_dir = model
-        self._instantiate_aligner()
+
+        # re-instantiate with the appropriate model
+        self._instantiate_aligner(self._aligner.name())
 
     # -----------------------------------------------------------------------
 
@@ -138,8 +138,7 @@ class TrackSegmenter(object):
 
         """
         aligner_name = TrackSegmenter.aligners.check(aligner_name)
-        self._aligner_id = aligner_name
-        self._instantiate_aligner()
+        self._instantiate_aligner(aligner_name)
 
     # -----------------------------------------------------------------------
 
@@ -159,9 +158,9 @@ class TrackSegmenter(object):
 
     # -----------------------------------------------------------------------
 
-    def get_aligner(self):
-        """Return the aligner name identifier."""
-        return self._aligner_id
+    def get_aligner_name(self):
+        """Return the name of the instantiated aligner."""
+        return self._aligner.name()
 
     # -----------------------------------------------------------------------
 
@@ -229,12 +228,10 @@ class TrackSegmenter(object):
     # Private
     # -----------------------------------------------------------------------
 
-    def _instantiate_aligner(self):
+    def _instantiate_aligner(self, name):
         """Instantiate self._aligner to the appropriate Aligner system."""
         self._aligner = TrackSegmenter.aligners.instantiate(
-            self._model_dir,
-            self._aligner_id
-        )
+            self._model_dir, name)
         self._aligner.set_infersp(self._infersp)
 
     # -----------------------------------------------------------------------
