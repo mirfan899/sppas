@@ -142,11 +142,11 @@ class sppasAligners(object):
         :returns: formatted alignername
 
         """
-        aligner_name = aligner_name.lower()
-        if aligner_name not in self._aligners.keys():
-            raise KeyError('Unknown aligner name {:s}.'.format(aligner_name))
+        a = aligner_name.lower().strip()
+        if a not in self._aligners.keys():
+            raise KeyError('Unknown aligner name {:s}.'.format(a))
 
-        return aligner_name
+        return a
 
     # ---------------------------------------------------------------------------
 
@@ -160,11 +160,5 @@ class sppasAligners(object):
         :returns: an Aligner instance.
 
         """
-        aligner_name = aligner_name.lower()
-
-        try:
-            a = self._aligners[aligner_name](model_dir)
-        except KeyError:
-            raise KeyError("Unknown aligner name: {:s}".format(aligner_name))
-
-        return a
+        a = self.check(aligner_name)
+        return self._aligners[a](model_dir)
