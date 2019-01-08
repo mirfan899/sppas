@@ -192,7 +192,7 @@ class TestAligners(unittest.TestCase):
                                        aligners.classes(a)))
 
         with self.assertRaises(KeyError):
-            aligners.instantiate("invalid")
+            aligners.instantiate(None, "invalid")
 
 # ---------------------------------------------------------------------------
 
