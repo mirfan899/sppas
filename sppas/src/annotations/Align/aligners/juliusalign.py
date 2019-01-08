@@ -293,9 +293,9 @@ class JuliusAligner(BaseAligner):
             command += " -nlr " + slm
 
         # options
-        if self._infersp is True:
+        # if self._infersp is True:
             # inter-word short pause = on (append "sp" for each word tail)
-            command += ' -iwsp'
+            # command += ' -iwsp'
 
         # output of the command
         command += " > " + output

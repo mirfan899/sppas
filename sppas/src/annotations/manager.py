@@ -172,7 +172,7 @@ class sppasAnnotationsManager(Thread):
 
             except Exception as e:
                 self._logfile.print_message(
-                    "{:s}\n".format(str(e)), indent=1, status=4)
+                    "{:s}\n".format(str(e)), indent=1, status=-1)
                 ann_stats[i] = 0
 
         # Log file & Merge

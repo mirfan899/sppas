@@ -73,7 +73,6 @@ class BaseAligner(object):
         self._extensions = list()
 
         # alignment options
-        self._infersp = False   # automatically infers short pauses
         self._outext = ""       # output file name extension
         self._phones = ""       # string of the phonemes to time-align
         self._tokens = ""       # string of the tokens to time-align
@@ -100,27 +99,6 @@ class BaseAligner(object):
 
     # -----------------------------------------------------------------------
     # alignment options
-    # -----------------------------------------------------------------------
-
-    def get_infersp(self):
-        """Return the infersp option value."""
-        return self._infersp
-
-    # -----------------------------------------------------------------------
-
-    def set_infersp(self, infersp):
-        """Fix the infersp option.
-
-        :param infersp: (bool) If infersp is set to True, the system will
-        add a short pause at the end of each token, and the automatic aligner
-        will infer if it is appropriate or not.
-
-        """
-        if isinstance(infersp, bool) is False:
-            self._infersp = False
-        else:
-            self._infersp = infersp
-
     # -----------------------------------------------------------------------
 
     def add_tiedlist(self, entries):

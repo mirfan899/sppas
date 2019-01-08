@@ -32,7 +32,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os
 import codecs
 
 from sppas.src.config import sg
@@ -99,9 +98,6 @@ class TrackSegmenter(object):
         Any other file will be ignored.
 
         """
-        # Options, must be fixed before to instantiate the aligner
-        self._infersp = False
-
         # The acoustic model directory
         self._model_dir = None
 
@@ -111,6 +107,7 @@ class TrackSegmenter(object):
         #   - when the track segment does not contain phonemes.
         self._aligner = None
         self.set_aligner(aligner_name)
+
         self._basic_aligner = TrackSegmenter.aligners.instantiate(None)
 
         if model is not None:
@@ -126,7 +123,7 @@ class TrackSegmenter(object):
         """
         self._model_dir = model
 
-        # re-instantiate with the appropriate model
+        # re-instantiate the same aligner with the appropriate model
         self._instantiate_aligner(self._aligner.name())
 
     # -----------------------------------------------------------------------
@@ -137,24 +134,7 @@ class TrackSegmenter(object):
         :param aligner_name: (str) Case-insensitive name of an aligner system.
 
         """
-        aligner_name = TrackSegmenter.aligners.check(aligner_name)
         self._instantiate_aligner(aligner_name)
-
-    # -----------------------------------------------------------------------
-
-    def set_infersp(self, infersp):
-        """Fix the automatic inference of short pauses.
-
-        Not really relevant... it's not efficient. short-pauses should be
-        indicated manually in the ortho transcription.
-
-        :param infersp: (bool) If infersp is set to True, a short pause is
-        added at the end of each token, and the automatic aligner will infer
-        if it is relevant or not.
-
-        """
-        self._infersp = infersp
-        self._aligner.set_infersp(infersp)
 
     # -----------------------------------------------------------------------
 
@@ -232,7 +212,6 @@ class TrackSegmenter(object):
         """Instantiate self._aligner to the appropriate Aligner system."""
         self._aligner = TrackSegmenter.aligners.instantiate(
             self._model_dir, name)
-        self._aligner.set_infersp(self._infersp)
 
     # -----------------------------------------------------------------------
 

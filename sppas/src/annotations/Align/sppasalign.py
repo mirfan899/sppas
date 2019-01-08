@@ -102,6 +102,7 @@ class sppasAlign(sppasBaseAnnotation):
     How to use sppasAlign?
 
     >>> a = sppasAlign()
+    >>> a.set_aligner('julius')
     >>> a.load_resources(model_dirname)
     >>> a.run([audio, phones], [tokens], output)
 
@@ -114,11 +115,17 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         sppasBaseAnnotation.__init__(self, logfile, "Alignment")
-        self.mapping = sppasMapping()
-        self._segmenter = TrackSegmenter()
-        self._tracksrw = TracksReaderWriter(sppasMapping())
 
-        self.reset()
+        self._options = dict()
+        self._options['aligner'] = "basic"
+        self._options['clean'] = True     # Remove temporary files
+        self._options['basic'] = False    # Perform a basic alignment if error
+        self._options['activity'] = True  # Add the Activity tier
+        self._options['activityduration'] = False
+
+        self.mapping = sppasMapping()
+        self._segmenter = TrackSegmenter(model=None, aligner_name="basic")
+        self._tracksrw = TracksReaderWriter(sppasMapping())
 
     # -----------------------------------------------------------------------
 
@@ -170,7 +177,7 @@ class sppasAlign(sppasBaseAnnotation):
 
         # Managers of the automatic alignment task
         self._tracksrw = TracksReaderWriter(mapping)
-        self._segmenter = TrackSegmenter(model)
+        self._segmenter.set_model(model)
 
     # -----------------------------------------------------------------------
     # Methods to fix options

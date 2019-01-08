@@ -144,7 +144,7 @@ class sppasAligners(object):
         """
         aligner_name = aligner_name.lower()
         if aligner_name not in self._aligners.keys():
-            raise ValueError('Unknown aligner name {:s}.'.format(aligner_name))
+            raise KeyError('Unknown aligner name {:s}.'.format(aligner_name))
 
         return aligner_name
 
@@ -165,7 +165,6 @@ class sppasAligners(object):
         try:
             a = self._aligners[aligner_name](model_dir)
         except KeyError:
-            logging.error("Unknown aligner name: {:s}".format(aligner_name))
-            a = BasicAligner()
+            raise KeyError("Unknown aligner name: {:s}".format(aligner_name))
 
         return a
