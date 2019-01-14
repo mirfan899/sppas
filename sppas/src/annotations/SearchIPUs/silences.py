@@ -253,7 +253,7 @@ class sppasSilences(object):
 
         This is then a search for silences. All windows with a volume
         higher than the threshold are considered as tracks and not included
-        in the result. Block of silences lesser that min_sil_dur are
+        in the result. Block of silences lesser than min_sil_dur are
         also considered tracks.
 
         :param threshold: (int) Expected minimum volume (rms value)
@@ -290,7 +290,6 @@ class sppasSilences(object):
                 if inside is True:
                     # It's the first window of an IPU
                     # so it's the end of a block of non-zero volumes
-                    # Is this silence long enough?
                         idx_end = i - 1
                         from_pos = int(idx_begin * nframes)
                         to_pos = int(idx_end * nframes)
