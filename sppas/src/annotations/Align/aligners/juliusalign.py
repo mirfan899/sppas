@@ -60,6 +60,7 @@ project (1997-2000), Continuous Speech Recognition Consortium, Japan (CSRC)
 import os
 import codecs
 from subprocess import Popen, PIPE, STDOUT
+import logging
 
 from sppas.src.config import sg
 from sppas.src.config import symbols
@@ -304,22 +305,24 @@ class JuliusAligner(BaseAligner):
         p = Popen(command, shell=True, stdout=PIPE, stderr=STDOUT)
         p.wait()
         line = p.communicate()
+        msg = u(" ").join([u(l) for l in line])
+        logging.debug('julius returns the following message:')
+        logging.debug(msg)
 
         # Julius not installed
-        if len(line[0]) > 0 and u("not found") in u(line[0]):
-            raise OSError("julius is not properly installed. "
+        if u("not found") in msg:
+            raise OSError("julius command not found. "
                           "See installation instructions for details.")
 
         # Bad command
-        if len(line[0]) > 0 and u("-help") in u(line[0]):
-            msg = u(" ".join(line))
+        if u("-help") in msg:
             raise OSError("julius command failed: {:s}".format(msg))
 
         # Check output file
         if os.path.isfile(outputalign) is False:
             raise Exception("julius did not created an alignment file.")
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def run_alignment(self, input_wav, output_align, N=3):
         """Execute the external program `julius` to align.
