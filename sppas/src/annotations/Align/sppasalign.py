@@ -446,8 +446,8 @@ class sppasAlign(sppasBaseAnnotation):
                 MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
 
         # Prepare data
-        input_audio = fix_audioinput(input_audio_filename)
-        workdir = fix_workingdir(input_audio)
+        workdir = fix_workingdir(input_audio_filename)
+
         if self._options['clean'] is False:
             self.logfile.print_message(
                 MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
@@ -511,10 +511,6 @@ class sppasAlign(sppasBaseAnnotation):
                     shutil.rmtree(workdir)
                 raise
 
-        # Clean!
-        # if the audio file was converted.... remove the tmpaudio
-        if input_audio != input_audio_filename:
-            os.remove(input_audio)
         # Remove the working directory we created
         if self._options['clean'] is True:
             shutil.rmtree(workdir)

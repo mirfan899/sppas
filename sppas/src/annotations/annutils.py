@@ -48,15 +48,17 @@ def fix_audioinput(inputaudioname):
     An only-ascii-based file name without whitespace is set if the
     current audio file name does not fit in these requirements.
 
+    Notice that only the filename is checked, not the path.
+
     :param inputaudioname: (str) Audio file name
 
     """
-    sf = sppasFileUtils(inputaudioname)
-    inputaudio = sf.format()
-    if inputaudio != inputaudioname:
-        shutil.copy(inputaudioname, inputaudio)
+    sf = sppasFileUtils(os.path.basename(inputaudioname))
+    audio_file = sf.format()
+    if audio_file != inputaudioname:
+        shutil.copy(inputaudioname, audio_file)
 
-    return inputaudio
+    return audio_file
 
 # ------------------------------------------------------------------------
 
@@ -67,20 +69,33 @@ def fix_workingdir(inputaudio=""):
     :param inputaudio: (str) Audio file name
 
     """
-    if len(inputaudio) == 0:
+    #if len(inputaudio) == 0:
         # Notice that the following generates a directory that the
         # aligners won't be able to access under Windows.
         # No problem with MacOS or Linux.
-        sf = sppasFileUtils()
+    sf = sppasFileUtils()
+    workdir = sf.set_random()
+    while os.path.exists(workdir) is True:
         workdir = sf.set_random()
-        while os.path.exists(workdir) is True:
-            workdir = sf.set_random()
-    else:
-        workdir = os.path.splitext(inputaudio)[0]+"-temp"
-        i = 1
-        while os.path.exists(workdir) is True:
-            workdir = os.path.splitext(inputaudio)[0]+"-temp"+str(i)
-            i = i + 1
+
+    # else:
+    #     audio_dir = os.path.dirname(inputaudio)
+    #     sf = sppasFileUtils(audio_dir)
+    #     formatted_audio_dir = sf.format()
+    #     if audio_dir != formatted_audio_dir:
+    #         raise IOError('No whitespace are allowed in the path of files')
+    #
+    #     workdir = audio_dir + "-temp"
+    #     i = 1
+    #     while os.path.exists(workdir) is True:
+    #         workdir = audio_dir + "-temp" + str(i)
+    #         i += 1
+
+    audio_file = os.path.basename(inputaudio)
+    sf = sppasFileUtils(audio_file)
+    formatted_audio_file = sf.format()
 
     os.mkdir(workdir)
+    shutil.copy(inputaudio, os.path.join(workdir, formatted_audio_file))
+
     return workdir
