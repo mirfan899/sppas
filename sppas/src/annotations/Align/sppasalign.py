@@ -47,6 +47,7 @@ from sppas.src.anndata import sppasLabel, sppasTag, sppasLocation
 from sppas.src.anndata import sppasMedia
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
+from sppas.src.utils.fileutils import sppasFileUtils
 
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
@@ -54,7 +55,6 @@ from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import NoDirectoryError
 from ..annotationsexc import EmptyDirectoryError
 from ..annotationsexc import NoInputError
-from ..annutils import fix_audioinput, fix_workingdir
 
 from .tracksio import TracksReaderWriter
 from .tracksgmt import TrackSegmenter
@@ -417,6 +417,29 @@ class sppasAlign(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
+    @staticmethod
+    def fix_workingdir(inputaudio=""):
+        """Fix the working directory to store temporarily the data.
+
+        :param inputaudio: (str) Audio file name
+
+        """
+        sf = sppasFileUtils()
+        workdir = sf.set_random()
+        while os.path.exists(workdir) is True:
+            workdir = sf.set_random()
+
+        audio_file = os.path.basename(inputaudio)
+        sf = sppasFileUtils(audio_file)
+        formatted_audio_file = sf.format()
+
+        os.mkdir(workdir)
+        shutil.copy(inputaudio, os.path.join(workdir, formatted_audio_file))
+
+        return workdir
+
+    # -----------------------------------------------------------------------
+
     def run(self, input_file, opt_input_file=None, output_file=None):
         """Run the automatic annotation process on an input.
 
@@ -446,8 +469,7 @@ class sppasAlign(sppasBaseAnnotation):
                 MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
 
         # Prepare data
-        workdir = fix_workingdir(input_audio_filename)
-
+        workdir = sppasAlign.fix_workingdir(input_audio_filename)
         if self._options['clean'] is False:
             self.logfile.print_message(
                 MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
