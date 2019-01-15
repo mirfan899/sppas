@@ -290,25 +290,18 @@ class sppasSilences(object):
                 if inside is True:
                     # It's the first window of an IPU
                     # so it's the end of a block of non-zero volumes
-                        idx_end = i - 1
-                        from_pos = int(idx_begin * nframes)
-                        to_pos = int(idx_end * nframes)
 
-                        # Find the boundaries with a better precision
-                        from_pos = self.adjust_bound(from_pos, threshold,
-                                                     direction=-1)
-                        new_to_pos = self.adjust_bound(to_pos, threshold,
-                                                       direction=1)
-                        if new_to_pos > to_pos:
-                            d = float(new_to_pos - to_pos) / \
-                                float(self._channel.get_framerate())
-                            increment = math.ceil(
-                                d / self.__volume_stats.get_winlen())
-                            i += int(increment)
-                        to_pos = new_to_pos
+                    # For the beginning of the silence, we adjust carefully
+                    # the boundary.
+                    from_pos_sil = int(idx_begin * nframes)
+                    from_pos = self.adjust_bound(from_pos_sil, threshold)
 
-                        self.__silences.append((from_pos, to_pos))
-                        inside = False
+                    # For the end of the silence, we take the middle of the
+                    # current window.
+                    to_pos = int((float(i) - 0.5) * nframes)
+
+                    self.__silences.append((from_pos, to_pos))
+                    inside = False
 
                 # else: it's the continuation of an IPU
 
@@ -349,16 +342,11 @@ class sppasSilences(object):
 
     # -----------------------------------------------------------------------
 
-    def adjust_bound(self, pos, threshold, direction=1):
+    def adjust_bound(self, pos, threshold):
         """Adjust the position of a silence around a given position.
-
-        Here "around" the position means in a range of 1.5 windows before
-        or after the position, analyzing this range by steps of
-        window/vagueness (so 12 windows, i.e. 6 before + 6 after the position).
 
         :param pos: (int) Initial position of the silence
         :param threshold: (int) RMS threshold value for a silence
-        :param direction: (int)
 
         :returns: new position
 
@@ -366,35 +354,32 @@ class sppasSilences(object):
         if self._vagueness == self._win_len:
             return pos
 
-        delta = int(1.5 *
-                    self.__volume_stats.get_winlen() *
-                    self._channel.get_framerate())
-        from_pos = max(pos - delta, 0)
+        delta = 1.5 * self.__volume_stats.get_winlen() * self._channel.get_framerate()
+        from_pos = max(pos - int(delta), 0)
         self._channel.seek(from_pos)
 
-        frames = self._channel.get_frames(delta * 3)
+        frames = self._channel.get_frames(int(delta * 3.))
         c = sppasChannel(self._channel.get_framerate(),
                          self._channel.get_sampwidth(),
                          frames)
         vol_stats = sppasChannelVolume(c, self._vagueness)
 
-        if direction == 1:
-            for i, v in enumerate(vol_stats):
-                if v > threshold:
-                    return \
-                        from_pos + \
-                        (i * (int(self._vagueness *
-                                  self._channel.get_framerate())))
+        idx = len(vol_stats)  # = 18
+        for v in reversed(vol_stats):
+            if v > threshold:
+                # if idx < 6: we shifted left
+                # if idx > 6: we shifted right (the most frequent)
+                new_pos = from_pos + \
+                    (idx * (int(self._vagueness *
+                                self._channel.get_framerate())))
+                if new_pos > pos:
+                    print("RIGHT. pos={:d}, changed to {:d}, idx={:d}".format(pos, new_pos, idx))
+                elif new_pos < pos:
+                    print("LEFT. pos={:d}, changed to {:d}, idx={:d}".format(pos, new_pos, idx))
 
-        elif direction == -1:
-            i = len(vol_stats)
-            for v in reversed(vol_stats):
-                if v > threshold:
-                    return \
-                        from_pos + \
-                        (i * (int(self._vagueness *
-                                  self._channel.get_framerate())))
-                i -= 1
+                return new_pos
+
+            idx -= 1
 
         return pos
 

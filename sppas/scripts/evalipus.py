@@ -35,8 +35,8 @@
 
     ... a script to evaluate an IPUs segmentation vs a reference segmentation.
 
-    1. Evaluate the match of ref in hyp
-    ------------------------------------
+    1. Evaluate the match of ref in hyp (add, merge)
+    ------------------------------------------------
 
     No speech in ref has to be assigned to a silence in hyp => no need to
     listen the whole signal, only listen the ipus the system detected...
@@ -55,13 +55,10 @@
 
        ref:  #   |      ipu_1    |  #  |     ipu_2   |  #  |   ipu_3  |  #
 
-    100% good are:
        hyp1: #     |    ipu_a   |  #    |     ipu_b  |  #    |  ipu_c |  #
        hyp2:    ipu_a        |  #    |     ipu_b                    |  #
        hyp3:    # |                           ipu_a                    |  #
        hyp4: #  |ipu_a |  #              |    ipu_c |      #   |  ipu_d |  #
-
-    Not good are (implies the user must listen the whole audio to check):
        hyp5: #  |ipu_a |  # | ipu_b  | # |    ipu_c |      #   |  ipu_d |  #
        hyp6: #     |    ipu_a   |  #    |     ipu_b  |            #
 
@@ -78,36 +75,60 @@
     But hyp3 is clearly problematic and other evaluation metrics must be
     analyzed!
 
-    2. Evaluate the match of hyp in ref
-    -----------------------------------
+        a. add an ipu (hyp6)
 
-    how many manual corrections have to be applied on the ipus the system
-    found?
+            ref:     #   |   ipu  |    #
+            hyp:             #
 
-        a. merge 2 ipus (hyp5)
+
+        b. merge ipus (hyp5)
 
             ref:     #    |         ipu        |    #
             hyp:     #    | ipu    |  #  | ipu |    #
 
-        b. split an ipu (hyp6)
+
+    2. Evaluate the match of hyp in ref (split, ignore)
+    ---------------------------------------------------
+
+    how many manual corrections have to be applied on the ipus the system
+    found?
+
+        c. split an ipu (hyp6)
 
             ref:    #   |  ipu    |  #  |  ipu  |   #
             hyp:    #   |           ipu         |   #
 
-        c. delete an ipu (false positive)
+        d. ignore an ipu (false positive)
 
             ref:               #
             hyp:    #      | ipu  |    #
 
-        d. move boundaries (start, end or both)
 
-            ref:    #     |    ipu     |   #
-            hyp:    #   |      ipu   |    #
+    3. Move boundaries (begin, end)
+    ---------------------------------
+
+        e. begin
+
+            ref:    #     |    ipu     |    #
+            hyp:    #   |      ipu     |    #
+
+        f. end
+
+            ref:    #   |    ipu     |      #
+            hyp:    #   |      ipu     |    #
+
+    Moving time is (ref-hyp):
+        - a negative value means to move the boundary to the left, i.e.
+             * for begin: increase the size (=duration) of the IPU
+             * for end: reduce the size of the IPU
+        - a positive value means to move the boundary to the right, i.e.
+            * for begin: reduce the duration of the ipu
+            * for end: increase the duration of the ipu
 
 """
 import sys
 import codecs
-import os.path
+import os
 import logging
 from argparse import ArgumentParser
 
@@ -380,19 +401,23 @@ if __name__ == "__main__":
     nb_hyp_merge_ipus_total = 0
     nb_hyp_split_ipus_total = 0
     nb_hyp_not_match_total = 0
-    nb_hyp_move_bounds_total = 0
+    nb_hyp_move_begin_total = 0
+    nb_hyp_move_end_total = 0
 
     for f in files:
-
-        logging.info(" * File: {:s}".format(os.path.basename(f[1])))
 
         # Get the hyp/ref tiers
         # ---------------------
         fr = os.path.join(ref_directory, f[0])
         fh = os.path.join(hyp_directory, f[1])
+        logging.info(" * Files: {:s} {:s}".format(fr, fh))
+
         ref_tier, hyp_tier = get_tiers(fr, fh, idxref_tier, idxhyp_tier)
-        if ref_tier is None or hyp_tier is None:
-            logging.error("No ipus found in tiers. Nothing to do. ")
+        if ref_tier is None:
+            logging.error("No IPUs found in ref tier. Nothing to do. ")
+            continue
+        if hyp_tier is None:
+            logging.error("No IPUs found in hyp tier. Nothing to do. ")
             continue
         files_ok.append((f[0], f[1]))
 
@@ -407,16 +432,14 @@ if __name__ == "__main__":
 
         nb_ipus_ref = get_nb_ipus(ref_tier)
         nb_ipus_ref_total += nb_ipus_ref
-        logging.info('    - number of ipus in ref: {:d}'.format(nb_ipus_ref))
+        logging.info('    ==> Number of IPUs in ref: {:d}'.format(nb_ipus_ref))
 
         nb_ipus_hyp = get_nb_ipus(hyp_tier)
-        logging.info('    - number of ipus in hyp: {:d}'.format(nb_ipus_hyp))
+        logging.info('    ==> Number of IPUs in hyp: {:d}'.format(nb_ipus_hyp))
         nb_ipus_hyp_total += nb_ipus_hyp
 
         # ----------------------------------------------------------------------------
-        # Match ipus of ref in hyp
-
-        logging.info('    - Match ipus of ref in hyp: ')
+        # Match ipus of ref in hyp (add, merge)
 
         nb_ref_not_match = 0
         nb_ref_several_match = 0
@@ -424,7 +447,6 @@ if __name__ == "__main__":
         tier_ref_result = ref_tier.copy()
         tier_ref_result.set_name('Ref-in-hyp')
 
-        # we will also prepare the next evaluation (a. merge 2 ipus)
         to_merge_anns = dict()
 
         for result_ann, ref_ann in zip(tier_ref_result, ref_tier):
@@ -470,43 +492,21 @@ if __name__ == "__main__":
                 logging.debug('        REF IPU: [ {:f} ; {:f} ; {:s} ] has several HYPs:'
                               ''.format(rb, re, etiquette))
                 for i, h in enumerate(hyp_anns):
-                    logging.debug('          HYP IPU: {:s}'.format(h.get_location().get_best()))
+                    logging.debug('          HYP IPU: {}'.format(h.get_location().get_best()))
                     if i == 0:
                         to_merge_anns[h] = hyp_anns
                     else:
                         to_merge_anns[h] = None
-                result_ann.set_labels(sppasLabel(sppasTag('Multi')))
+                result_ann.set_labels(sppasLabel(sppasTag('Merge')))
 
         nb_ref_perfect_match_total += nb_ref_perfect_match
         nb_ref_not_match_total += nb_ref_not_match
         nb_ref_several_match_total += nb_ref_several_match
 
-        # communicate this result:
-        # ------------------------
-        trs.append(tier_ref_result)
-        logging.info('       ==> full success is {:.2f}%:'
-                     ''.format((float(nb_ref_perfect_match) / float(nb_ipus_ref)) * 100.))
-        logging.info('         - number of NOT matching ipus of ref in hyp: {:d}'
-                     ''.format(nb_ref_not_match))
-        logging.info('         - number of time several hyp are matching the ref: {:d}'
-                     ''.format(nb_ref_several_match))
-        logging.info('         + number of perfect match of ref in hyp: {:d}'
-                     ''.format(nb_ref_perfect_match))
-
-        # -------------------------------------------------------------------
-        # Match ipus of hyp in ref
-
-        logging.info('    - Match ipus of hyp in ref:')
-
+        # Search for situation b in hyp to merge such IPUs
+        # -------------------------------------------------
+        
         nb_hyp_merge_ipus = 0
-        nb_hyp_not_match = 0
-        nb_hyp_split_ipus = 0
-        nb_hyp_move_one_bound = 0
-        nb_hyp_move_two_bound = 0
-
-        # Search for situation a.
-        # -------------------------------
-
         if len(to_merge_anns) > 0:
             a_hyp_tier = sppasTier(hyp_tier.get_name())
             for hyp_ann in hyp_tier:
@@ -520,7 +520,7 @@ if __name__ == "__main__":
                         labels = []
                         for h in anns_to_merge:
                             labels.extend(h.get_labels())
-                        labels.append(sppasLabel(sppasTag('Merge')))
+                        labels.append(sppasLabel(sppasTag('Merged')))
                         a = a_hyp_tier.create_annotation(
                             sppasLocation(
                                 sppasInterval(
@@ -533,8 +533,32 @@ if __name__ == "__main__":
         else:
             a_hyp_tier = hyp_tier
 
-        # Search for situations b. c. and d.
-        # ----------------------------------
+        # Communicate the results:
+        # ------------------------
+        
+        trs.append(tier_ref_result)
+        logging.info('    ==> Match success is {:d} ({:.2f}%)'
+                     ''.format(nb_ref_perfect_match,
+                               (float(nb_ref_perfect_match) / float(nb_ipus_ref)) * 100.))
+        logging.info('    ==> Actions to check IPUs:')
+        logging.info('        - [add] {:d} ({:.2f}%)'
+                     ''.format(nb_ref_not_match,
+                               float(nb_ref_not_match) / float(nb_ipus_ref) * 100.))
+        logging.info('        - [merge] {:d} ({:.2f}%). It concerns {:d} ipus of hyp.'
+                     ''.format(nb_ref_several_match,
+                               float(nb_ref_several_match) / float(nb_ipus_ref) * 100.,
+                               nb_hyp_merge_ipus))
+
+        # -------------------------------------------------------------------
+        # Match ipus of hyp in ref
+
+        nb_hyp_not_match = 0
+        nb_hyp_split_ipus = 0
+        nb_hyp_move_begin = 0
+        nb_hyp_move_end = 0
+
+        # Search for situations c. and d. and moves
+        # -----------------------------------------
         prec_he = 0.
         hyp_tier_result = a_hyp_tier.copy()
         hyp_tier_result.set_name('Hyp-in-ref')
@@ -544,12 +568,12 @@ if __name__ == "__main__":
                 continue
             hb, he, etiquette = get_ann_infos(hyp_ann)
 
-            # d. move bounds
-            move_bounds = 0
+            # move bounds
+            move_begin = 0
             if prec_he >= hb:
                 # we previously moved the end. now it is higher than our begin!
                 hb = prec_he
-                move_bounds = 1
+                move_begin = 1
                 result_ann.append_label(sppasLabel(sppasTag('MoveBegin')))
                 logging.debug('          BEGIN MOVED. HYP IPU: [ {:f} ; {:f} ; {:s} ].'
                               ''.format(hb, he, etiquette))
@@ -561,7 +585,7 @@ if __name__ == "__main__":
                     ipus_ref_anns.append(h)
         
             if len(ipus_ref_anns) == 0:
-                # c. delete an ipu (false positive)
+                # delete an ipu (false positive)
                 #    ref:               #
                 #    hyp:    #      | ipu  |    #
                 nb_hyp_not_match += 1
@@ -571,15 +595,16 @@ if __name__ == "__main__":
 
             else:  # if len(ipus_ref_anns)== 1:
 
-                # d. move bounds
+                # move bounds
                 rb, x, rl = get_ann_infos(ipus_ref_anns[0])
                 x, re, rl = get_ann_infos(ipus_ref_anns[-1])
 
                 if rb < (hb-0.045) or rb > (hb+0.090):
+                    delta = rb-hb
                     hb = rb
-                    if move_bounds == 0:
-                        move_bounds += 1
-                        result_ann.append_label(sppasLabel(sppasTag('MoveBegin')))
+                    if move_begin == 0:
+                        move_begin = 1
+                        result_ann.append_label(sppasLabel(sppasTag('MoveBegin={:.4f}'.format(delta))))
                         logging.debug('          BEGIN MOVED. HYP IPU: [ {:f} ; {:f} ; {:s} ].'
                                       ''.format(hb, he, etiquette))
 
@@ -587,10 +612,11 @@ if __name__ == "__main__":
                         logging.debug('             RE-BEGIN MOVED. HYP IPU: [ {:f} ; {:f} ; {:s} ].'
                                       ''.format(hb, he, etiquette))
 
-                if re > (he+0.04) or re < (he-0.08):
-                    move_bounds += 1
+                if re > (he+0.045) or re < (he-0.090):
+                    nb_hyp_move_end += 1
+                    delta = re-he
                     he = re
-                    result_ann.append_label(sppasLabel(sppasTag('MoveEnd')))
+                    result_ann.append_label(sppasLabel(sppasTag('MoveEnd={:.4f}'.format(delta))))
                     logging.debug('          END MOVED. HYP IPU: [ {:f} ; {:f} ; {:s} ].'
                                   ''.format(hb, he, etiquette))
 
@@ -598,7 +624,7 @@ if __name__ == "__main__":
             ref_anns = ref_tier.find(hb, he, overlaps=True)
             ipus_ref_anns = [h for h in ref_anns if is_silence(h) is False]
             if len(ipus_ref_anns) > 1:
-                # b. split an ipu (hyp6)
+                # split an ipu (hyp6)
                 #    ref:    #   |  ipu    |  #  |  ipu  |   #
                 #    hyp:    #   |           ipu         |   #
                 _nb_splits = len(ipus_ref_anns) - 1
@@ -607,12 +633,10 @@ if __name__ == "__main__":
                               ''.format(hb, he, etiquette))
                 result_ann.append_label(sppasLabel(sppasTag('Split{:d}'.format(_nb_splits))))
                 for i, h in enumerate(ipus_ref_anns):
-                    logging.debug('            REF IPU: {:s}'.format(h.get_location().get_best()))
+                    logging.debug('            REF IPU: {}'.format(h.get_location().get_best()))
 
-            if move_bounds == 1:
-                nb_hyp_move_one_bound += 1
-            elif move_bounds == 2:
-                nb_hyp_move_two_bound += 1
+            if move_begin == 1:
+                nb_hyp_move_begin += 1
 
             # prepare for the analysis of the next hyp ann
             prec_he = he
@@ -620,20 +644,19 @@ if __name__ == "__main__":
         trs.append(hyp_tier_result)
         nb_hyp_split_ipus_total += nb_hyp_split_ipus
         nb_hyp_not_match_total += nb_hyp_not_match
-        nb_hyp_move_bounds_total += (nb_hyp_move_one_bound+nb_hyp_move_two_bound)
+        nb_hyp_move_begin_total += nb_hyp_move_begin
+        nb_hyp_move_end_total += nb_hyp_move_end
 
         # communicate the results
-        logging.info("        a. merge of ipus: {:d}. "
-                     "({:.2f}% of the ipus of hyp are merged with another one)"
-                     "".format(nb_hyp_merge_ipus,
-                               (float(nb_hyp_merge_ipus) / float(nb_ipus_hyp)) * 100.))
-        logging.info("        b. split ipus: {:d}. ({:.2f}% of the ipus of hyp)"
+        logging.info("        - [split]: {:d}. ({:.2f}% of the ipus of hyp)"
                      "".format(nb_hyp_split_ipus, (float(nb_hyp_split_ipus) / float(nb_ipus_hyp)) * 100.))
-        logging.info("        c. delete an ipu: {:d}. ({:.2f}% of the ipus of hyp are false positives)"
+        logging.info("        - [ignore]: {:d}. ({:.2f}% of the ipus of hyp are false positives)"
                      "".format(nb_hyp_not_match, (float(nb_hyp_not_match) / float(nb_ipus_hyp)) * 100.))
-        m = nb_hyp_move_one_bound+nb_hyp_move_two_bound
-        logging.info("        d. move bounds of an ipu: {:d}. ({:.2f}% of the ipus of hyp)"
-                     "".format(m, (float(m) / float(nb_ipus_hyp)) * 100.))
+
+        logging.info("        - [move_begin]: {:d}. ({:.2f}% of the ipus of ref)"
+                     "".format(nb_hyp_move_begin, (float(nb_hyp_move_begin) / float(nb_ipus_ref)) * 100.))
+        logging.info("        - [move_end]: {:d}. ({:.2f}% of the ipus of ref)"
+                     "".format(nb_hyp_move_end, (float(nb_hyp_move_end) / float(nb_ipus_ref)) * 100.))
 
         p = sppasRW(os.path.join(out_name)+"-"+os.path.basename(fh))
         p.write(trs)
@@ -642,35 +665,39 @@ if __name__ == "__main__":
     # Write/save global results
     # -----------------------------------------------------------------------
 
+    if nb_ipus_ref_total == 0:
+        sys.exit(1)
+
     # Prepare summary messages
     # ------------------------
-    r1 = '   - number of NOT matching ipus of ref in hyp: {:d}'.format(nb_ref_not_match_total)
-    r2 = '   - number of time several hyp are matching the ref: {:d}'.format(nb_ref_several_match_total)
-    r3 = '   - number of perfect match of ref in hyp: {:d}'.format(nb_ref_perfect_match_total)
-    r = ' ==> full success is {:.2f}%. Details are:'.format(
+    r = ' ==> Correct matching is {:.2f}%.'.format(
         (float(nb_ref_perfect_match_total) / float(nb_ipus_ref_total)) * 100.)
-    h1 = " a. merge of ipus: {:d}. ({:.2f}% of the ipus of hyp are merged with another one)" \
-         "".format(nb_hyp_merge_ipus_total,
-                   (float(nb_hyp_merge_ipus_total) / float(nb_ipus_hyp_total)) * 100.)
-    h2 = " b. split ipus: {:d}. ({:.2f}% of the ipus of hyp)" \
+
+    r0 = '    ==> Actions to check IPUs are:'
+    r1 = '   - [add] {:d}. ({:.2f}% of the ipus of ref)' \
+         ''.format(nb_ref_not_match_total,
+                   (float(nb_ref_not_match_total) / float(nb_ipus_ref_total)) * 100.)
+    r2 = '   - [merge] {:d}. ({:.2f}% of the ipus of ref)' \
+         ''.format(nb_ref_several_match_total,
+                   (float(nb_ref_several_match_total) / float(nb_ipus_ref_total)) * 100.)
+    h1 = "   - [split] {:d}. ({:.2f}% of the ipus of hyp)" \
          "".format(nb_hyp_split_ipus_total,
                    (float(nb_hyp_split_ipus_total) / float(nb_ipus_hyp_total)) * 100.)
-    h3 = " c. delete an ipu: {:d}. ({:.2f}% of the ipus of hyp are false positives)" \
+    h2 = "   - [ignore] {:d}. ({:.2f}% of the ipus of hyp are false positives)" \
          "".format(nb_hyp_not_match_total,
                    (float(nb_hyp_not_match_total) / float(nb_ipus_hyp_total)) * 100.)
-    h4 = " d. move bounds of an ipu: {:d}. ({:.2f}% of the ipus of hyp)" \
-         "".format(nb_hyp_move_bounds_total,
-                   (float(nb_hyp_move_bounds_total) / float(nb_ipus_hyp_total)) * 100.)
+    r3 = "   - [move begin] {:d}. ({:.2f}% of the ipus of ref)" \
+         "".format(nb_hyp_move_begin_total,
+                   (float(nb_hyp_move_begin_total) / float(nb_ipus_ref_total)) * 100.)
+    r4 = "   - [move end] {:d}. ({:.2f}% of the ipus of ref)" \
+         "".format(nb_hyp_move_end_total,
+                   (float(nb_hyp_move_end_total) / float(nb_ipus_ref_total)) * 100.)
 
     # Print on stdout
     # ---------------
     logging.info('Number of ipus in ref: {:d}'.format(nb_ipus_ref_total))
     logging.info('Number of ipus in hyp: {:d}'.format(nb_ipus_hyp_total))
-    logging.info('1. Match ipus of ref in hyp: ')
-    for msg in (r, r1, r2, r3):
-        logging.info(msg)
-    logging.info('2. Match ipus of hyp in ref: ')
-    for msg in (h1, h2, h3, h4):
+    for msg in (r, r1, r2, h1, h2, r3, r4):
         logging.info(msg)
 
     # Print in a file
@@ -684,16 +711,11 @@ if __name__ == "__main__":
         for f in files_ok:
             fp.write(' - {:s}: {:s}\n'.format(f[0], f[1]))
         fp.write('\n')
-        fp.write('Number of ipus in ref: {:d}'.format(nb_ipus_ref_total))
-        fp.write('Number of ipus in hyp: {:d}'.format(nb_ipus_hyp_total))
+        fp.write('Number of ipus in ref: {:d}\n'.format(nb_ipus_ref_total))
+        fp.write('Number of ipus in hyp: {:d}\n'.format(nb_ipus_hyp_total))
         fp.write('\n')
         fp.write('Results: \n')
-        fp.write('1. Match ipus of ref in hyp: \n')
-        for msg in (r1, r2, r3):
-            fp.write(msg)
-            fp.write('\n')
-        fp.write('2. Match ipus of hyp in ref: \n')
-        for msg in (h1, h2, h3, h4):
+        for msg in (r, r1, r2, h1, h2, r3, r4):
             fp.write(msg)
             fp.write('\n')
 
