@@ -59,8 +59,8 @@ class SearchIPUs(sppasSilences):
     DEFAULT_MIN_SIL_DUR = 0.250
     DEFAULT_MIN_IPU_DUR = 0.300
     DEFAULT_VOL_THRESHOLD = 0
-    DEFAULT_SHIFT_START = 0.01
-    DEFAULT_SHIFT_END = 0.
+    DEFAULT_SHIFT_START = 0.02
+    DEFAULT_SHIFT_END = 0.02
 
     def __init__(self, channel, win_len=0.02):
         """Create a new SearchIPUs instance.
@@ -239,7 +239,7 @@ class SearchIPUs(sppasSilences):
 
         # Keep only silences during more than a given duration
         # remove silences first because we are interested in finding tracks
-        self.filter_silences(self._min_sil_dur)
+        self.filter_silences(threshold, self._min_sil_dur)
 
         # Get the (from_pos, to_pos) of the tracks during more than
         # a given duration and shift these values (from-start; to+end)

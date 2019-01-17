@@ -695,6 +695,8 @@ if __name__ == "__main__":
 
     # Print on stdout
     # ---------------
+    logging.info(' * Summary: ')
+    logging.info('Files: {:d}'.format(len(files_ok)))
     logging.info('Number of ipus in ref: {:d}'.format(nb_ipus_ref_total))
     logging.info('Number of ipus in hyp: {:d}'.format(nb_ipus_hyp_total))
     for msg in (r, r1, r2, h1, h2, r3, r4):

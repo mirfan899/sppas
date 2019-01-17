@@ -127,7 +127,7 @@ class sppasChannel(object):
             return self._frames
 
         chunck_size = int(chunck_size)
-        p = self._position
+        p = int(self._position)
         m = len(self._frames)
         s = p * self._sampwidth
         e = min(m, s + chunck_size * self._sampwidth)

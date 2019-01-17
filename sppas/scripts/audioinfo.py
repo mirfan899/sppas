@@ -56,6 +56,11 @@ from sppas.src.audiodata.audioframes import sppasAudioFrames
 parser = ArgumentParser(usage="%s -w file [options]" % os.path.basename(PROGRAM),
                         description="... a script to get information about an audio file.")
 
+parser.add_argument(
+    "--noclip",
+    action='store_true',
+    help="Do not print the clipping values")
+
 parser.add_argument("-w",
                     metavar="file",
                     required=True,
@@ -63,9 +68,9 @@ parser.add_argument("-w",
 
 parser.add_argument("-f",
                     metavar="value",
-                    default=0.01,
+                    default=0.02,
                     type=float,
-                    help='Frame duration to estimate rms values (default: 0.01)')
+                    help='Frame duration to estimate rms values (default: 0.02)')
 
 if len(sys.argv) <= 1:
     sys.argv.append('-h')
@@ -85,11 +90,12 @@ nc = audio.get_nchannels()
 print("Number of channels:  {:d}".format(nc))
 
 if nc == 1:
-    print("Clipping rate (in %):")
-    for i in range(2, 9, 2):
-        f = float(i)/10.
-        c = audio.clipping_rate(f) * 100.
-        print("  - factor={:.1f}:      {:.3f}".format(f, c))
+    if not args.noclip:
+        print("Clipping rate (in %):")
+        for i in range(2, 9, 2):
+            f = float(i)/10.
+            c = audio.clipping_rate(f) * 100.
+            print("  - factor={:.1f}:      {:.3f}".format(f, c))
 
     audiovol = sppasAudioVolume(audio, args.f)
     print("Volume:")
@@ -99,6 +105,7 @@ if nc == 1:
     print("  - median:        {:.2f}".format(audiovol.median()))
     print("  - stdev:         {:.2f}".format(audiovol.stdev()))
     print("  - coefvariation: {:.2f}".format(audiovol.coefvariation()))
+    print("  - std err:       {:.2f}".format(audiovol.stderr()))
 
 else:
 
