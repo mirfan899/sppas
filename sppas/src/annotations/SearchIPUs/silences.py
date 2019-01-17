@@ -291,14 +291,21 @@ class sppasSilences(object):
                     # It's the first window of an IPU
                     # so it's the end of a block of non-zero volumes
 
-                    # For the beginning of the silence, we adjust carefully
-                    # the boundary.
+                    # For the beginning of the silence
                     from_pos_sil = int(idx_begin * nframes)
-                    from_pos = self.adjust_bound(from_pos_sil, threshold)
+                    from_pos = self.adjust_bound(from_pos_sil, threshold, direction=-1)
 
-                    # For the end of the silence, we take the middle of the
-                    # current window.
-                    to_pos = int((float(i) - 0.5) * nframes)
+                    # For the end of the silence
+                    idx_end = i - 1
+                    to_pos = int(idx_end * nframes)
+                    new_to_pos = self.adjust_bound(to_pos, threshold, direction=1)
+                    if new_to_pos > to_pos:
+                        d = float(new_to_pos - to_pos) / \
+                            float(self._channel.get_framerate())
+                        increment = math.ceil(
+                            d / self.__volume_stats.get_winlen())
+                        i += int(increment)
+                    to_pos = new_to_pos
 
                     self.__silences.append((from_pos, to_pos))
                     inside = False
@@ -342,44 +349,58 @@ class sppasSilences(object):
 
     # -----------------------------------------------------------------------
 
-    def adjust_bound(self, pos, threshold):
+    def adjust_bound(self, pos, threshold, direction=0):
         """Adjust the position of a silence around a given position.
+
+        Here "around" the position means in a range of 18 windows,
+        i.e. 6 before + 12 after the position.
 
         :param pos: (int) Initial position of the silence
         :param threshold: (int) RMS threshold value for a silence
+        :param direction: (int)
 
         :returns: new position
 
         """
         if self._vagueness == self._win_len:
             return pos
+        if direction not in (-1, 1):
+            return pos
+        c = 1
+        if direction == 1:
+            c = 2
 
-        delta = 1.5 * self.__volume_stats.get_winlen() * self._channel.get_framerate()
-        from_pos = max(pos - int(delta), 0)
-        self._channel.seek(from_pos)
+        # Extract the frames of the windows around the pos
+        delta = int(c * self.__volume_stats.get_winlen() * self._channel.get_framerate())
+        start_pos = max(pos - delta, 0)
+        self._channel.seek(start_pos)
+        frames = self._channel.get_frames(delta * 3)
 
-        frames = self._channel.get_frames(int(delta * 3.))
+        # Create a channel and estimate volume values with a window
+        # of vagueness (i.e. 4 times more precise than the original)
         c = sppasChannel(self._channel.get_framerate(),
                          self._channel.get_sampwidth(),
                          frames)
         vol_stats = sppasChannelVolume(c, self._vagueness)
 
-        idx = len(vol_stats)  # = 18
-        for v in reversed(vol_stats):
-            if v > threshold:
-                # if idx < 6: we shifted left
-                # if idx > 6: we shifted right (the most frequent)
-                new_pos = from_pos + \
-                    (idx * (int(self._vagueness *
-                                self._channel.get_framerate())))
-                if new_pos > pos:
-                    print("RIGHT. pos={:d}, changed to {:d}, idx={:d}".format(pos, new_pos, idx))
-                elif new_pos < pos:
-                    print("LEFT. pos={:d}, changed to {:d}, idx={:d}".format(pos, new_pos, idx))
+        # we'll see if we can reduce the silence
 
-                return new_pos
+        if direction == 1:  # silence | ipu
+            for idx, v in enumerate(vol_stats):
+                shift = idx * (int(self._vagueness * self._channel.get_framerate()))
+                if v > threshold:
+                    return start_pos + shift
 
-            idx -= 1
+        elif direction == -1:  # ipu | silence
+            idx = len(vol_stats)  # = 12 (3 windows of 4 vagueness)
+            for v in reversed(vol_stats):
+                # if idx < 4: we shifted left
+                # if idx > 4: we shifted right (the most frequent)
+                if v > threshold:
+                    shift = idx * (int(self._vagueness * self._channel.get_framerate()))
+                    return start_pos + shift
+
+                idx -= 1
 
         return pos
 
