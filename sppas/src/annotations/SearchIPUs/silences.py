@@ -327,9 +327,6 @@ class sppasSilences(object):
                     # so it's the end of a silence
                     idx_end = i - 1
 
-                    # # Adjust the boundary for the beginning of the silence
-                    # from_pos_sil = int(idx_begin * nframes)
-                    # from_pos = self.__adjust_bound(from_pos_sil, threshold, direction=-1)
                     #
                     # # For the end of the silence
                     # to_pos = int(idx_end * nframes)
@@ -376,19 +373,16 @@ class sppasSilences(object):
         if threshold == 0:
             threshold = self.fix_threshold_vol()
 
-        # self.__silences = self.__filter_silences(self.__silences, min_sil_dur)
-        # return len(self.__silences)
-
         # Filter the current very small silences
-        reduced = min_sil_dur / 2.
-        reduced = max(reduced, 2. * self._win_len)
+        reduced = 3 * self._win_len
+
         filtered_sil = self.__filter_silences(self.__silences, reduced)
 
         # Adjust boundaries of the silences
         adjusted = list()
         for (from_pos, to_pos) in filtered_sil:
             new_from_pos = self.__adjust_bound(from_pos, threshold, direction=-1)
-            new_to_pos = self.__adjust_bound(to_pos, threshold, direction=1)
+            new_to_pos = to_pos  # self.__adjust_bound(to_pos, threshold, direction=1)
             adjusted.append((new_from_pos, new_to_pos))
 
         # Re-filter
