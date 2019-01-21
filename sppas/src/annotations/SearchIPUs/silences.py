@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import math
 import logging
 from sppas.src.audiodata.channel import sppasChannel
 from sppas.src.audiodata.channelvolume import sppasChannelVolume
@@ -236,8 +237,6 @@ class sppasSilences(object):
         """
         vmin = max(self.__volume_stats.min(), 0)  # provide negative values
         logging.debug("RMS min={:d}".format(vmin))
-        vmax = self.__volume_stats.max()
-        logging.debug("RMS max={:d}".format(vmax))
         vmean = self.__volume_stats.mean()
         logging.debug("RMS mean={:.2f}".format(vmean))
         vmedian = self.__volume_stats.median()
@@ -245,40 +244,45 @@ class sppasSilences(object):
         vvar = self.__volume_stats.coefvariation()
         logging.debug("RMS coef. var={:2f}".format(vvar))
 
-        # Remove very high volume values
-        volumes = sorted(self.__volume_stats.volumes())
-        index = 0.80*len(volumes)
+        # Remove very high volume values (outliers)
+        # only for distributions with a too high variability
+        if vmedian > vmean or (1.5 * vvar) > vmean:
+            logging.debug('The RMS distribution need to be normalized.')
 
-        rms_threshold = volumes[int(index)]
-        nb = 0
-        for i, v in enumerate(self.__volume_stats):
-            if v > rms_threshold:
-                self.__volume_stats.set_volume_value(i, rms_threshold)
-                nb += 1
+            volumes = sorted(self.__volume_stats.volumes())
+            rms_threshold = volumes[int(0.85 * len(volumes))]
+            nb = 0
+            for i, v in enumerate(self.__volume_stats):
+                if v > rms_threshold:
+                    self.__volume_stats.set_volume_value(i, rms_threshold)
+                    nb += 1
 
-        vmin = max(self.__volume_stats.min(), 0)  # provide negative values
-        vmean = self.__volume_stats.mean()
-        vmedian = self.__volume_stats.median()
-        vvar = self.__volume_stats.coefvariation()
-        vcvar = 2. * vvar
+            vmean = self.__volume_stats.mean()
+            vmedian = self.__volume_stats.median()
+            vvar = self.__volume_stats.coefvariation()
+            vcvar = 2. * vvar
+            if vcvar > vmean:
+                vcvar = 1.25 * vvar
 
-        # alternative, in case the audio is not as good as expected!
-        # (too low volume, or outliers which make the coeff var very high)
-        if vmedian > vmean:
-            # often means a lot of low volume values
-            index = 0.50 * len(volumes)
-            threshold = vmin + volumes[int(index)]
-        elif vcvar > vmean:
-            if vvar > vmean:
-                # often means some crazy values
-                threshold = (vmean-vmin) / 5.
+            # alternative, in case the audio is not as good as expected!
+            # (too low volume, or outliers which make the coeff var very high)
+            if vmedian > vmean:
+                # often means a lot of low volume values
+                index = 0.55 * len(volumes)
+                threshold = volumes[int(index)]
+            elif vcvar > vmean:
+                # often means some crazy values (very rare).
+                threshold = int((vmean-vmin) / 5.)
             else:
-                threshold = int(vmin) + int((vmean - vvar))
+                threshold = int(vmin) + int((vmean - vcvar))
+
         else:
+            # Normal situation... (more than 75% of the files!!!)
+            vcvar = 1.5 * vvar
             threshold = int(vmin) + int((vmean - vcvar))
 
-        logging.debug('Threshold value for the search of silences: {:d}'
-                      ''.format(threshold))
+        logging.info('Threshold value for the search of silences: {:d}'
+                     ''.format(threshold))
         return threshold
 
     # -----------------------------------------------------------------------
@@ -324,12 +328,14 @@ class sppasSilences(object):
                 # It's a big enough volume to consider the window an IPU
                 if inside is True:
                     # It's the first window of an IPU
-                    # so it's the end of a silence
+                    # so the previous window was the end of a silence
                     idx_end = i - 1
 
+                    from_pos = int(idx_begin * nframes)
+                    # from_pos = self.__adjust_bound(from_pos, threshold, direction=-1)
                     #
-                    # # For the end of the silence
-                    # to_pos = int(idx_end * nframes)
+                    # For the end of the silence
+                    to_pos = int(idx_end * nframes)
                     # new_to_pos = self.__adjust_bound(to_pos, threshold, direction=1)
                     # if new_to_pos > to_pos:
                     #     d = float(new_to_pos - to_pos) / \
@@ -339,8 +345,7 @@ class sppasSilences(object):
                     #     i += int(increment)
                     # to_pos = new_to_pos
 
-                    self.__silences.append((int(idx_begin * nframes),
-                                            int(idx_end * nframes)))
+                    self.__silences.append((from_pos, to_pos))
                     inside = False
 
                 # else: it's the continuation of an IPU
@@ -370,18 +375,19 @@ class sppasSilences(object):
         """
         if len(self.__silences) == 0:
             return 0
+
         if threshold == 0:
             threshold = self.fix_threshold_vol()
 
-        # Filter the current very small silences
-        reduced = 3 * self._win_len
-
+        # Filter the current very small windows
+        reduced = 2 * self._win_len
         filtered_sil = self.__filter_silences(self.__silences, reduced)
+        self.__silences = filtered_sil  # self.__filter_tracks(filtered_sil, reduced)
 
         # Adjust boundaries of the silences
         adjusted = list()
         for (from_pos, to_pos) in filtered_sil:
-            new_from_pos = self.__adjust_bound(from_pos, threshold, direction=-1)
+            new_from_pos = from_pos  # self.__adjust_bound(from_pos, threshold, direction=-1)
             new_to_pos = to_pos  # self.__adjust_bound(to_pos, threshold, direction=1)
             adjusted.append((new_from_pos, new_to_pos))
 
@@ -389,6 +395,38 @@ class sppasSilences(object):
         self.__silences = self.__filter_silences(adjusted, min_sil_dur)
 
         return len(self.__silences)
+
+    # -----------------------------------------------------------------------
+
+    def __filter_tracks(self, silences, min_track_dur=0.100):
+        """Filter the given silences to remove very small tracks.
+
+        :param min_track_dur: (float) Minimum duration of a track
+        :returns: filtered silences
+
+        """
+        if len(silences) < 3:
+            return silences
+        tracks = self.extract_tracks(min_track_dur, 0., 0.)
+        track_start = tracks[0][0]
+        prev_track_end = tracks[0][1]
+
+        filtered_sil = list()
+        sil_start = self.__silences[0][0]
+        if sil_start < track_start:
+            filtered_sil.append((sil_start, track_start))
+
+        for (from_track, to_track) in tracks:
+
+            if (from_track-prev_track_end) >= min_track_dur:
+                filtered_sil.append((int(prev_track_end), int(from_track)))
+            prev_track_end = from_track
+
+        to_pos = self._channel.get_nframes()
+        to_track = tracks[-1][1]
+        if (to_pos - to_track) > 0:
+            filtered_sil.append((int(to_track), int(to_pos)))
+        return filtered_sil
 
     # -----------------------------------------------------------------------
 
