@@ -311,8 +311,7 @@ class sppasSilences(object):
         self.__silences = list()
         inside = False  # inside a silence or not
         idx_begin = 0
-        nframes = self.__volume_stats.get_winlen() * \
-                    self._channel.get_framerate()
+        nframes = self.__volume_stats.get_winlen() * self._channel.get_framerate()
 
         i = 0
         for v in self.__volume_stats:
@@ -329,22 +328,8 @@ class sppasSilences(object):
                 if inside is True:
                     # It's the first window of an IPU
                     # so the previous window was the end of a silence
-                    idx_end = i - 1
-
                     from_pos = int(idx_begin * nframes)
-                    # from_pos = self.__adjust_bound(from_pos, threshold, direction=-1)
-                    #
-                    # For the end of the silence
-                    to_pos = int(idx_end * nframes)
-                    # new_to_pos = self.__adjust_bound(to_pos, threshold, direction=1)
-                    # if new_to_pos > to_pos:
-                    #     d = float(new_to_pos - to_pos) / \
-                    #         float(self._channel.get_framerate())
-                    #     increment = math.ceil(
-                    #         d / self.__volume_stats.get_winlen())
-                    #     i += int(increment)
-                    # to_pos = new_to_pos
-
+                    to_pos = int((i - 1) * nframes)
                     self.__silences.append((from_pos, to_pos))
                     inside = False
 
@@ -359,6 +344,10 @@ class sppasSilences(object):
                             self._channel.get_framerate())
             end_pos = self._channel.get_nframes()
             self.__silences.append((start_pos, end_pos))
+
+        # Filter the current very small windows
+        filtered_sil = self.__filter_silences(self.__silences, 2 * self._win_len)
+        self.__silences = filtered_sil
 
         return threshold
 
@@ -379,17 +368,12 @@ class sppasSilences(object):
         if threshold == 0:
             threshold = self.fix_threshold_vol()
 
-        # Filter the current very small windows
-        reduced = 2 * self._win_len
-        filtered_sil = self.__filter_silences(self.__silences, reduced)
-        self.__silences = filtered_sil  # self.__filter_tracks(filtered_sil, reduced)
-
         # Adjust boundaries of the silences
         adjusted = list()
-        for (from_pos, to_pos) in filtered_sil:
-            new_from_pos = from_pos  # self.__adjust_bound(from_pos, threshold, direction=-1)
-            new_to_pos = to_pos  # self.__adjust_bound(to_pos, threshold, direction=1)
-            adjusted.append((new_from_pos, new_to_pos))
+        for (from_pos, to_pos) in self.__silences:
+            adjusted.append((
+                self.__adjust_bound(from_pos, threshold, direction=-1),
+                to_pos))
 
         # Re-filter
         self.__silences = self.__filter_silences(adjusted, min_sil_dur)
@@ -465,12 +449,9 @@ class sppasSilences(object):
             return pos
         if direction not in (-1, 1):
             return pos
-        c = 0.5
-        if direction == 1:
-            c = 3
 
         # Extract the frames of the windows around the pos
-        delta = int(c * self.__volume_stats.get_winlen() * self._channel.get_framerate())
+        delta = int(1.5 * self.__volume_stats.get_winlen() * self._channel.get_framerate())
         start_pos = int(max(pos - delta, 0))
         self._channel.seek(start_pos)
         frames = self._channel.get_frames(int(delta * 3))
@@ -493,12 +474,9 @@ class sppasSilences(object):
         elif direction == -1:  # ipu | silence
             idx = len(vol_stats)  # = 12 (3 windows of 4 vagueness)
             for v in reversed(vol_stats):
-                # if idx < 4: we shifted left
-                # if idx > 4: we shifted right (the most frequent)
                 if v > threshold:
                     shift = idx * (int(self._vagueness * self._channel.get_framerate()))
                     return start_pos + int(shift)
-
                 idx -= 1
 
         return pos
