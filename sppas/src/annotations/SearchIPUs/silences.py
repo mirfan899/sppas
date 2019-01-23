@@ -346,8 +346,7 @@ class sppasSilences(object):
             self.__silences.append((start_pos, end_pos))
 
         # Filter the current very small windows
-        filtered_sil = self.__filter_silences(self.__silences, 2 * self._win_len)
-        self.__silences = filtered_sil
+        self.__filter_silences(2. * self._win_len)
 
         return threshold
 
@@ -374,47 +373,55 @@ class sppasSilences(object):
             adjusted.append((
                 self.__adjust_bound(from_pos, threshold, direction=-1),
                 to_pos))
+        self.__silences = adjusted
 
         # Re-filter
-        self.__silences = self.__filter_silences(adjusted, min_sil_dur)
+        self.__filter_silences(min_sil_dur)
 
         return len(self.__silences)
 
     # -----------------------------------------------------------------------
 
-    def __filter_tracks(self, silences, min_track_dur=0.100):
+    def filter_silences_from_tracks(self, min_track_dur=0.60):
         """Filter the given silences to remove very small tracks.
 
         :param min_track_dur: (float) Minimum duration of a track
         :returns: filtered silences
 
         """
-        if len(silences) < 3:
-            return silences
+        if len(self.__silences) < 3:
+            return
         tracks = self.extract_tracks(min_track_dur, 0., 0.)
-        track_start = tracks[0][0]
-        prev_track_end = tracks[0][1]
 
-        filtered_sil = list()
-        sil_start = self.__silences[0][0]
-        if sil_start < track_start:
-            filtered_sil.append((sil_start, track_start))
-
+        # Remove too short tracks
+        keep_tracks = list()
         for (from_track, to_track) in tracks:
+            delta = float((to_track - from_track)) / float(self._channel.get_framerate())
+            if delta > min_track_dur:
+                keep_tracks.append((from_track, to_track))
 
-            if (from_track-prev_track_end) >= min_track_dur:
+        # Re-create silences from the selected tracks
+        filtered_sil = list()
+        # first silence
+        if self.__silences[0][0] < keep_tracks[0][0]:
+            filtered_sil.append((self.__silences[0][0], self.__silences[0][1]))
+        # silences between tracks
+        prev_track_end = -1
+        for (from_track, to_track) in keep_tracks:
+            if prev_track_end > -1:
                 filtered_sil.append((int(prev_track_end), int(from_track)))
-            prev_track_end = from_track
-
+            prev_track_end = to_track
+        # last silence
         to_pos = self._channel.get_nframes()
         to_track = tracks[-1][1]
         if (to_pos - to_track) > 0:
             filtered_sil.append((int(to_track), int(to_pos)))
-        return filtered_sil
+
+        self.__silences = filtered_sil
 
     # -----------------------------------------------------------------------
 
-    def __filter_silences(self, silences, min_sil_dur=0.200):
+    def __filter_silences(self, min_sil_dur=0.200):
         """Filter the given silences.
 
         :param min_sil_dur: (float) Minimum silence duration in seconds
@@ -422,13 +429,13 @@ class sppasSilences(object):
 
         """
         filtered_sil = list()
-        for (start_pos, end_pos) in silences:
+        for (start_pos, end_pos) in self.__silences:
             sil_dur = float(end_pos-start_pos) / \
                       float(self._channel.get_framerate())
             if sil_dur > min_sil_dur:
                 filtered_sil.append((start_pos, end_pos))
 
-        return filtered_sil
+        self.__silences = filtered_sil
 
     # -----------------------------------------------------------------------
 
