@@ -481,7 +481,12 @@ class FiletreePanel(wx.Panel):
         """Add the directory as item of the tree."""
 
         # files contains all the files in the appended dir
-        files = os.listdir(txt)
+        try:
+            files = os.listdir(txt)
+        except WindowsError as e:
+            logging.error('The following error occurred to Refresh the Tree '
+                          'for files {:s}: {:s}' % (txt, str(e)))
+            return
         wavfile_list = []
 
         # store all the wav file names in wavfile_list
