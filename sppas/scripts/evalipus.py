@@ -160,7 +160,8 @@ def get_tier(filename, tier_idx):
     try:
         parser = sppasRW(filename)
         trs_input = parser.read(filename)
-    except:
+    except Exception as e:
+        logging.error("Parsing file {:s} failed: {:s}".format(filename, str(e)))
         return None
     if tier_idx < 0 or tier_idx >= len(trs_input):
         return None
@@ -414,10 +415,10 @@ if __name__ == "__main__":
 
         ref_tier, hyp_tier = get_tiers(fr, fh, idxref_tier, idxhyp_tier)
         if ref_tier is None:
-            logging.error("No IPUs found in ref tier. Nothing to do. ")
+            logging.error("No tier with IPUs found in reference file. Nothing to do. ")
             continue
         if hyp_tier is None:
-            logging.error("No IPUs found in hyp tier. Nothing to do. ")
+            logging.error("No tier with IPUs found in hypotheses. Nothing to do. ")
             continue
         files_ok.append((f[0], f[1]))
 

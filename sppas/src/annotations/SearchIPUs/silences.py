@@ -246,7 +246,7 @@ class sppasSilences(object):
 
         # Remove very high volume values (outliers)
         # only for distributions with a too high variability
-        if vmedian > vmean or (1.5 * vvar) > vmean:
+        if vmedian > vmean:
             logging.debug('The RMS distribution need to be normalized.')
 
             volumes = sorted(self.__volume_stats.volumes())
@@ -275,6 +275,10 @@ class sppasSilences(object):
                 threshold = int((vmean-vmin) / 5.)
             else:
                 threshold = int(vmin) + int((vmean - vcvar))
+
+        elif (2. * vvar) > vmean:
+            vcvar = 1.25 * vvar
+            threshold = int(vmin) + int((vmean - vcvar))
 
         else:
             # Normal situation... (more than 75% of the files!!!)
