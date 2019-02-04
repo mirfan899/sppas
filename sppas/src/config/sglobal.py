@@ -94,7 +94,7 @@ class sppasPathSettings(sppasBaseSettings):
 
         self.__dict__ = dict(
             sppas=sppas_dir,
-            bin=os.path.join(sppas_dir, "bin"),
+            cli=os.path.join(sppas_dir, "bin"),
             etc=os.path.join(sppas_dir, "etc"),
             po=os.path.join(sppas_dir, "po"),
             src=os.path.join(sppas_dir, "src"),
