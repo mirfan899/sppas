@@ -1,91 +1,91 @@
 {
-  "__annotate__": [
+  "annotate": [
     {
       "id": "momel",
       "config": "Momel.ini",
       "api": "sppasMomel",
       "cli": "momel.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "intsint",
       "config": "Intsint.ini",
       "api": "sppasIntsint",
       "cli": "intsint.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "fillipus",
       "config": "FillIPUs.ini",
       "api": "sppasFillIPUs",
       "cli": "fillipus.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "searchipus",
       "config": "SearchIPUs.ini",
       "api": "sppasSearchIPUs",
       "cli": "searchipus.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "textnorm",
       "config": "TextNorm.ini",
       "api": "sppasTextNorm",
       "cli": "normalize.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "phonetize",
       "config": "Phon.ini",
       "api": "sppasPhon",
       "cli": "phonetize.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "align",
       "config": "Align.ini",
       "api": "sppasAlign",
       "cli": "alignment.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "syllabify",
       "config": "Syll.ini",
       "api": "sppasSyll",
       "cli": "syllabify.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "tga",
       "config": "TGA.ini",
       "api": "sppasTGA",
       "cli": "tga.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "selfrepet",
       "config": "SelfRepet.ini",
       "api": "sppasSelfRepet",
       "cli": "selfrepetition.py",
-      "gui": "true"
+      "gui": true
     },
     {
       "id": "otherrepet",
       "config": "OtherRepet.ini",
       "api": "sppasOtherRepet",
       "cli": "otherrepetition.py",
-      "gui": "false"
+      "gui": false
     }
   ],
 
-  "__analyze__":
+  "analyze":
   {
     "id": "datastats",
     "cli": "stats.py"
   },
 
-  "__manage__":
+  "manage":
   {
     "id": "convert",
     "cli": "trsconvert.py"

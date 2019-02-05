@@ -33,6 +33,7 @@
 
 """
 import logging
+import json
 import os
 
 from sppas import paths
@@ -268,7 +269,7 @@ class sppasParam(object):
         """Load the annotation configuration files.
 
         Load from a list of given file names (without path) or from the
-        default sppas.conf file.
+        default sppas ui configuration file.
 
         :param annotation_files: (list) List of annotations to load. None=ALL.
 
@@ -283,28 +284,25 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def parse_config_file(self):
-        """Parse the sppas.conf file.
+        """Parse the sppasui.json file.
 
         Parse the file to get the list of annotations and parse the
         corresponding "ini" file.
 
         """
-        config = os.path.join(paths.etc, "sppas.conf")
+        config = os.path.join(paths.etc, "sppasui.json")
         if os.path.exists(config) is False:
             raise IOError('Installation error: the file to configure the '
                           'automatic annotations does not exist.')
 
         # Read the whole file content
-        with open(config, "r") as fp:
-            lines = fp.readlines()
-            fp.close()
+        with open(config) as cfg:
+            dict_cfg = json.load(cfg)
 
         # Load annotation configurations
-        for line in lines:
-            line = line.strip()
-            if line.lower().startswith("annotation:") is True:
-                data = line.split(":")
-                self.__load(os.path.join(paths.etc, data[1].strip()))
+        for ann in dict_cfg["annotate"]:
+            if ann["gui"] is True:
+                self.__load(os.path.join(paths.etc, ann["config"]))
 
     # -----------------------------------------------------------------------
 

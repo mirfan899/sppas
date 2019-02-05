@@ -32,10 +32,12 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-
+import sys
+import json
 import os
 from threading import Thread
 
+from sppas import paths
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.anndata import sppasTranscription, sppasRW
 
@@ -88,20 +90,29 @@ class sppasAnnotationsManager(Thread):
         self.__do_merge = False
 
         # fix annotations: key,instance
-        self._annotations = dict()
-        self._annotations['momel'] = sppasMomel
-        self._annotations['intsint'] = sppasIntsint
-        self._annotations['searchipus'] = sppasSearchIPUs
-        self._annotations['fillipus'] = sppasFillIPUs
-        self._annotations['textnorm'] = sppasTextNorm
-        self._annotations['phon'] = sppasPhon
-        self._annotations['align'] = sppasAlign
-        self._annotations['syll'] = sppasSyll
-        self._annotations['tga'] = sppasTGA
-        self._annotations['selfrepet'] = sppasSelfRepet
+        self._annotations = self.__parse_config_file()
 
         # start threading
         self.start()
+
+    # ------------------------------------------------------------------------
+
+    def __parse_config_file(self):
+        """Parse the sppasui.json file.
+
+        Parse the file to get the list of annotations.
+
+        """
+        config = os.path.join(paths.etc, "sppasui.json")
+        if os.path.exists(config) is False:
+            raise IOError('Installation error: the file to configure the '
+                          'automatic annotations does not exist.')
+
+        # Read the whole file content
+        with open(config) as cfg:
+            dict_cfg = json.load(cfg)
+
+        return dict_cfg["annotate"]
 
     # -----------------------------------------------------------------------
     # Options of the manager
@@ -188,6 +199,19 @@ class sppasAnnotationsManager(Thread):
     # Private
     # ------------------------------------------------------------------------
 
+    def _get_instance(self, annotation_key):
+        classname = None
+        for a in self._annotations:
+            if a['id'] == annotation_key:
+                classname = a['api']
+                break
+        if classname is None:
+            raise IOError('Unknown annotation key: {:s}'.format(annotation_key))
+
+        return getattr(sys.modules[__name__], classname)
+
+    # ------------------------------------------------------------------------
+
     def _create_ann_instance(self, annotation_key):
         """Create and configure an instance of an automatic annotation.
 
@@ -200,7 +224,7 @@ class sppasAnnotationsManager(Thread):
 
         # Create the instance and fix options
         options = self._parameters.get_options(step_idx)
-        auto_annot = self._annotations[annotation_key](self._logfile)
+        auto_annot = self._get_instance(annotation_key)(self._logfile)
         if len(options) > 0:
             auto_annot.fix_options(options)
 
@@ -344,7 +368,7 @@ class sppasAnnotationsManager(Thread):
             nbfiles += self.__add_trs(trs, basef + output_format)
             for s in range(self._parameters.get_step_numbers()):
                 ann_key = self._parameters.get_step_key(s)
-                a = self._annotations[ann_key]
+                a = self._get_instance(ann_key)
                 pattern = a.get_pattern()
                 if len(pattern) > 0:
                     nbfiles += self.__add_trs(trs, basef + pattern + output_format)
