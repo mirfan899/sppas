@@ -7,6 +7,7 @@
       "cli": "momel.py",
       "gui": true
     },
+
     {
       "id": "intsint",
       "config": "intsint.json",
@@ -14,6 +15,7 @@
       "cli": "intsint.py",
       "gui": true
     },
+
     {
       "id": "fillipus",
       "config": "fillipus.json",
@@ -21,13 +23,15 @@
       "cli": "fillipus.py",
       "gui": true
     },
+
     {
       "id": "searchipus",
-      "config": "SearchIPUs.ini",
+      "config": "searchipus.json",
       "api": "sppasSearchIPUs",
       "cli": "searchipus.py",
       "gui": true
     },
+
     {
       "id": "textnorm",
       "config": "TextNorm.ini",
@@ -35,6 +39,7 @@
       "cli": "normalize.py",
       "gui": true
     },
+
     {
       "id": "phonetize",
       "config": "Phon.ini",
@@ -42,6 +47,7 @@
       "cli": "phonetize.py",
       "gui": true
     },
+
     {
       "id": "align",
       "config": "Align.ini",
@@ -49,6 +55,7 @@
       "cli": "alignment.py",
       "gui": true
     },
+
     {
       "id": "syllabify",
       "config": "Syll.ini",
@@ -56,6 +63,7 @@
       "cli": "syllabify.py",
       "gui": true
     },
+
     {
       "id": "tga",
       "config": "TGA.ini",
@@ -63,6 +71,7 @@
       "cli": "tga.py",
       "gui": true
     },
+
     {
       "id": "selfrepet",
       "config": "SelfRepet.ini",
@@ -70,6 +79,7 @@
       "cli": "selfrepetition.py",
       "gui": true
     },
+    
     {
       "id": "otherrepet",
       "config": "OtherRepet.ini",

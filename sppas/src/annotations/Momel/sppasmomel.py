@@ -75,7 +75,7 @@ class sppasMomel(sppasBaseAnnotation):
 
         """
         super(sppasMomel, self).__init__(logfile, "momel")
-        self.momel = Momel()
+        self.__momel = Momel()
 
         # Load default options (key/value) from a configuration file.
         self.set_options("momel.json")
@@ -220,21 +220,21 @@ class sppasMomel(sppasBaseAnnotation):
         :returns: (list of Anchor)
 
         """
-        self.momel.set_option_win1(self._options['win1'])
-        self.momel.set_option_lo(self._options['lo'])
-        self.momel.set_option_hi(self._options['hi'])
-        self.momel.set_option_maxerr(self._options['maxerr'])
-        self.momel.set_option_win2(self._options['win2'])
-        self.momel.set_option_mind(self._options['mind'])
-        self.momel.set_option_minr(self._options['minr'])
-        self.momel.set_option_elim_glitch(self._options['elim_glitch'])
+        self.__momel.set_option_win1(self._options['win1'])
+        self.__momel.set_option_lo(self._options['lo'])
+        self.__momel.set_option_hi(self._options['hi'])
+        self.__momel.set_option_maxerr(self._options['maxerr'])
+        self.__momel.set_option_win2(self._options['win2'])
+        self.__momel.set_option_mind(self._options['mind'])
+        self.__momel.set_option_minr(self._options['minr'])
+        self.__momel.set_option_elim_glitch(self._options['elim_glitch'])
 
         # Estimates the real start time of the IPU
         ipu_start_time = current_time - (len(ipu_pitch)) + 1
 
         # Search for anchors
         try:
-            anchors = self.momel.annotate(ipu_pitch)
+            anchors = self.__momel.annotate(ipu_pitch)
         except Exception as e:
             self.logfile.print_message(
                     'No anchors found between time ' +

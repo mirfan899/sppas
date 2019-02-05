@@ -68,7 +68,7 @@ class sppasIntsint(sppasBaseAnnotation):
         """
         super(sppasIntsint, self).__init__(logfile, "INTSINT")
 
-        self.intsint = Intsint()
+        self.__intsint = Intsint()
 
         # Load default options (key/value) from a configuration file.
         self.set_options("intsint.json")
@@ -157,7 +157,7 @@ class sppasIntsint(sppasBaseAnnotation):
 
         # Annotate the tier
         targets = sppasIntsint.tier_to_anchors(tier_input)
-        tones = self.intsint.annotate(targets)
+        tones = self.__intsint.annotate(targets)
         tier_intsint = sppasIntsint.tones_to_tier(tones, tier_input)
 
         # Create the transcription result

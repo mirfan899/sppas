@@ -238,3 +238,21 @@ msgstr "Durée initiale minimale d'une IPU (en secondes)"
 
 msgid "Initial minimum duration of a silence (in seconds)"
 msgstr "Durée initiale minimale d'un silence (en secondes)"
+
+msgid "Window size to estimate rms (in seconds)"
+msgstr "Durée de la fenêtre d'analyse pour l'estimation des valeurs de RMS (en secondes)"
+
+msgid "Threshold of the volume value (rms) for the detection of silences, 0=automatic"
+msgstr "Seuil de la valeur RMS pour considérer une fenêtre d'analyse comme silence, 0=automatique"
+
+msgid "Minimum duration of an IPU (in seconds)"
+msgstr "Durée minimale d'une IPU (en secondes)"
+
+msgid "Minimum duration of a silence (in seconds)"
+msgstr "Durée minimale d'un silence (en secondes)"
+
+msgid "Systematically move at left the boundary of the beginning of an IPU (in seconds)"
+msgstr "Déplacement systématique vers la gauche de la frontière de début d'IPU (en secondes)"
+
+msgid "Systematically move at right the boundary of the end of an IPU (in seconds)"
+msgstr "Déplacement systématique vers la droite de la frontière de fin d'IPU (en secondes)"

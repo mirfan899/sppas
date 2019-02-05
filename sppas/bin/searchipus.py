@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["SearchIPUs.ini"])
+    parameters = sppasParam(["searchipus.json"])
     ann_step_idx = parameters.activate_annotation("searchipus")
     ann_options = parameters.get_options(ann_step_idx)
 

@@ -86,12 +86,11 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasSearchIPUs, self).__init__(logfile, "Search of IPUs")
-
+        super(sppasSearchIPUs, self).__init__(logfile, "searchipus")
         self.__searcher = SearchIPUs(channel=None)
 
-        # List of options to configure this automatic annotation
-        self._options = dict()
+        # Load default options (key/value) from a configuration file.
+        self.set_options("searchipus.json")
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -139,22 +138,22 @@ class sppasSearchIPUs(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def get_threshold(self):
-        return self.__searcher.get_vol_threshold()
+        return self._options['threshold']
 
     def get_win_length(self):
-        return self.__searcher.get_win_length()
+        return self._options['win_length']
 
     def get_min_sil(self):
-        return self.__searcher.get_min_sil_dur()
+        return self._options['min_sil']
 
     def get_min_ipu(self):
-        return self.__searcher.get_min_ipu_dur()
+        return self._options['min_ipu']
 
     def get_shift_start(self):
-        return self.__searcher.get_shift_start()
+        return self._options['shift_start']
 
     def get_shift_end(self):
-        return self.__searcher.get_shift_end()
+        return self._options['shift_end']
 
     # -----------------------------------------------------------------------
 
@@ -164,7 +163,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (int) RMS value used as volume threshold
 
         """
-        self.__searcher.set_vol_threshold(value)
+        self._options['threshold'] = value
 
     # -----------------------------------------------------------------------
 
@@ -177,7 +176,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (float) generally between 0.01 and 0.04 seconds.
 
         """
-        self.__searcher.set_win_length(value)
+        self._options['win_length'] = value
 
     # -----------------------------------------------------------------------
 
@@ -187,7 +186,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (float) Duration in seconds.
 
         """
-        self.__searcher.set_min_sil(value)
+        self._options['min_sil'] = value
 
     # -----------------------------------------------------------------------
 
@@ -197,7 +196,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (float) Duration in seconds.
 
         """
-        self.__searcher.set_min_ipu(value)
+        self._options['min_ipu'] = value
 
     # -----------------------------------------------------------------------
 
@@ -207,7 +206,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (float) Duration in seconds.
 
         """
-        self.__searcher.set_shift_start(value)
+        self._options['shift_start'] = value
 
     # -----------------------------------------------------------------------
 
@@ -217,9 +216,10 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         :param value: (float) Duration in seconds.
 
         """
-        self.__searcher.set_shift_end(value)
+        self._options['shift_end'] = value
 
     # -----------------------------------------------------------------------
+    # Annotate
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -312,6 +312,35 @@ class sppasSearchIPUs(sppasBaseAnnotation):
     # Apply the annotation on one or several given files
     # -----------------------------------------------------------------------
 
+    def convert(self, channel):
+        """Search for IPUs in the given channel.
+
+        :param channel: (sppasChannel) Input channel
+        :returns: (sppasTier)
+
+        """
+        # Fix options
+        self.__searcher.set_vol_threshold(self._options['threshold'])
+        self.__searcher.set_win_length(self._options['win_length'])
+        self.__searcher.set_min_sil(self._options['min_sil'])
+        self.__searcher.set_min_ipu(self._options['min_ipu'])
+        self.__searcher.set_shift_start(self._options['shift_start'])
+        self.__searcher.set_shift_end(self._options['shift_end'])
+
+        # Process the data.
+        self.__searcher.set_channel(channel)
+        tracks = self.__searcher.get_tracks(time_domain=True)
+        tier = self.tracks_to_tier(
+            tracks,
+            channel.get_duration(),
+            self.__searcher.get_vagueness()
+        )
+        self._set_meta(tier)
+
+        return tier
+
+    # -----------------------------------------------------------------------
+
     def run(self, input_file, opt_input_file=None, output_file=None):
         """Run the automatic annotation process on an input.
 
@@ -331,16 +360,7 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         # Extract the channel
         idx = audio_speech.extract_channel(0)
         channel = audio_speech.get_channel(idx)
-        self.__searcher.set_channel(channel)
-
-        # Process the data.
-        tracks = self.__searcher.get_tracks(time_domain=True)
-        tier = self.tracks_to_tier(
-            tracks,
-            channel.get_duration(),
-            self.__searcher.get_vagueness()
-        )
-        self._set_meta(tier)
+        tier = self.convert(channel)
 
         # Create the transcription to put the result
         trs_output = sppasTranscription(self.name)
