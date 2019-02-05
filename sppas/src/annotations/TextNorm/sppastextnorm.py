@@ -200,6 +200,8 @@ class sppasTextNorm(sppasBaseAnnotation):
             - "Tokens-Custom"
 
         """
+        if tier is None:
+            raise IOError('No tier found.')
         if tier.is_empty() is True:
             raise EmptyInputError(name=tier.get_name())
 

@@ -42,7 +42,7 @@
 
     {
       "id": "phonetize",
-      "config": "Phon.ini",
+      "config": "phon.json",
       "api": "sppasPhon",
       "cli": "phonetize.py",
       "gui": true

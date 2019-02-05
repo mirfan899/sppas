@@ -114,7 +114,7 @@ class annotationParam(object):
                 conf = json.load(cfg)
 
             self.__key = conf['id']
-            self.__name = conf.get('name', "")
+            self.__name = conf.get(_('name'), '')        # translate the name
             self.__descr = conf.get('descr', "")
 
             for new_option in conf['options']:

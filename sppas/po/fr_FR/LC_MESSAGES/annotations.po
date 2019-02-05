@@ -212,6 +212,9 @@ msgstr "Le dossier {dirname} ne contient aucun fichier qui pourrait être utilis
 msgid ":ERROR 4014: "
 msgstr "Il manque la section {section_name} dans le fichier de configuration."
 
+msgid "Momel"
+msgstr "Momel"
+
 msgid "Target window length"
 msgstr "Taille de la fenêtre d'analyse"
 
@@ -228,16 +231,22 @@ msgid "Reduce window length"
 msgstr "Taille de la fenêtre d'analyse réduite"
 
 msgid "Minimal distance"
-msgstr "Diatance minimale"
+msgstr "Distance minimale"
 
 msgid "Minimal frequency ratio"
 msgstr "Ratio minimum de fréquence"
+
+msgid "Fill in IPUs"
+msgstr "Remplir les IPUs"
 
 msgid "Initial minimum duration of an IPU (in seconds)"
 msgstr "Durée initiale minimale d'une IPU (en secondes)"
 
 msgid "Initial minimum duration of a silence (in seconds)"
 msgstr "Durée initiale minimale d'un silence (en secondes)"
+
+msgid "Search for IPUs"
+msgstr "Rechercher les IPUs"
 
 msgid "Window size to estimate rms (in seconds)"
 msgstr "Durée de la fenêtre d'analyse pour l'estimation des valeurs de RMS (en secondes)"
@@ -257,6 +266,9 @@ msgstr "Déplacement systématique vers la gauche de la frontière de début d'I
 msgid "Systematically move at right the boundary of the end of an IPU (in seconds)"
 msgstr "Déplacement systématique vers la droite de la frontière de fin d'IPU (en secondes)"
 
+msgid "Text Normalization"
+msgstr "Normaliser la transcription"
+
 msgid "Create a tier with the faked tokens"
 msgstr "Création d'une tier avec l'orthographe truquée"
 
@@ -265,3 +277,18 @@ msgstr "Création d'une tier avec l'orthographe standard (utile si TOE)"
 
 msgid "Create a customized tier (useful if EOT)"
 msgstr "Création d'une tier customisée (utile si TOE)"
+
+msgid "Phonetization"
+msgstr "Phonétiser"
+
+msgid "Let's try to phonetize unknown tokens"
+msgstr "Tenter de phonétiser les items inconnus du dictionnaire"
+
+msgid "Phonetize from standard tokens instead of faked tokens"
+msgstr "Phonétiser à partir de l'orthographe standard au lieu de la truquée"
+
+msgid "Alignment"
+msgstr "Aligner"
+
+msgid "Syllabification"
+msgstr "Syllaber"

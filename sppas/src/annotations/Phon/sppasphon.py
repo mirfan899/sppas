@@ -33,7 +33,6 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-
 from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
@@ -96,13 +95,11 @@ class sppasPhon(sppasBaseAnnotation):
         self.maptable = sppasMapping()
 
         # Pronunciation dictionary (empty)
-        self.phonetizer = None
+        self.__phonetizer = None
         self.load_resources()
 
-        # List of options to configure this automatic annotation
-        self._options = dict()
-        self._options['phonunk'] = False       # Phonetize missing tokens
-        self._options['usestdtokens'] = False  # Phonetize standard spelling
+        # Load default options (key/value) from a configuration file.
+        self.set_options("phon.json")
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -182,15 +179,15 @@ class sppasPhon(sppasBaseAnnotation):
 
         pdict = sppasDictPron(dict_filename, nodump=False)
         if dict_filename is not None:
-            self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
+            self.__phonetizer = sppasDictPhonetizer(pdict, self.maptable)
             self.logfile.print_message("The dictionary contains {:d} tokens"
                                        "".format(len(pdict)), indent=0)
         else:
-            self.phonetizer = sppasDictPhonetizer(pdict)
+            self.__phonetizer = sppasDictPhonetizer(pdict)
 
     # -----------------------------------------------------------------------
 
-    def phonetize(self, entry):
+    def __phonetize(self, entry):
         """Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
@@ -202,8 +199,9 @@ class sppasPhon(sppasBaseAnnotation):
 
         """
         unk = symbols.unk
-        tab = self.phonetizer.get_phon_tokens(entry.split(),
-                                              phonunk=self._options['phonunk'])
+        tab = self.__phonetizer.get_phon_tokens(
+            entry.split(),
+            phonunk=self._options['phonunk'])
         tab_phones = list()
         for tex, p, s in tab:
             message = None
@@ -235,6 +233,8 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: (Tier) phonetized tier with name "Phones"
 
         """
+        if tier is None:
+            raise IOError('No tier found.')
         if tier.is_empty() is True:
             raise EmptyInputError(name=tier.get_name())
 
@@ -256,7 +256,7 @@ class sppasPhon(sppasBaseAnnotation):
                         phonetizations.append(SIL)
 
                     elif text.is_empty() is False:
-                        phones = self.phonetize(text.get_content())
+                        phones = self.__phonetize(text.get_content())
                         for p in phones:
                             phonetizations.extend(p.split(separators.variants))
 
@@ -302,7 +302,7 @@ class sppasPhon(sppasBaseAnnotation):
         trs_output.set_meta('text_phonetization_result_of',
                             input_file[0])
         trs_output.set_meta('text_phonetization_dict',
-                            self.phonetizer.get_dict_filename())
+                            self.__phonetizer.get_dict_filename())
 
         # Save in a file
         if output_file is not None:
