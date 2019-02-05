@@ -128,7 +128,7 @@ class annotationParam(object):
                 lr = sppasLangResource()
                 lr.set(new_resource['type'],
                        new_resource['path'],
-                       new_resource['name'],
+                       new_resource.get('name', ''),
                        new_resource['ext'])
                 self.__resources.append(lr)
 

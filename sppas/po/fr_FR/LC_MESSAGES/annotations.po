@@ -256,3 +256,12 @@ msgstr "Déplacement systématique vers la gauche de la frontière de début d'I
 
 msgid "Systematically move at right the boundary of the end of an IPU (in seconds)"
 msgstr "Déplacement systématique vers la droite de la frontière de fin d'IPU (en secondes)"
+
+msgid "Create a tier with the faked tokens"
+msgstr "Création d'une tier avec l'orthographe truquée"
+
+msgid "Create a tier with the standard tokens (useful if EOT)"
+msgstr "Création d'une tier avec l'orthographe standard (utile si TOE)"
+
+msgid "Create a customized tier (useful if EOT)"
+msgstr "Création d'une tier customisée (utile si TOE)"

@@ -34,7 +34,7 @@
 
     {
       "id": "textnorm",
-      "config": "TextNorm.ini",
+      "config": "textnorm.json",
       "api": "sppasTextNorm",
       "cli": "normalize.py",
       "gui": true
@@ -79,7 +79,7 @@
       "cli": "selfrepetition.py",
       "gui": true
     },
-    
+
     {
       "id": "otherrepet",
       "config": "OtherRepet.ini",

@@ -87,15 +87,11 @@ class sppasTextNorm(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasTextNorm, self).__init__(logfile, name="Text Normalization")
-
-        # Create a text normalizer, fully language-independent
+        super(sppasTextNorm, self).__init__(logfile, name="textnorm")
         self.normalizer = TextNormalizer()
 
-        # List of options to configure this automatic annotation
-        self._options['faked'] = True
-        self._options['std'] = False
-        self._options['custom'] = False
+        # Load default options (key/value) from a configuration file.
+        self.set_options("textnorm.json")
 
     # -----------------------------------------------------------------------
 
@@ -383,9 +379,9 @@ class sppasTextNorm(sppasBaseAnnotation):
                         text_faked.set_content(textf)
 
                     except:
-                        self.logfile.print_message("Standard/Faked tokens matching error, "
-                                           "at interval {:d}\n".format(i),
-                                           indent=2, status=1)
+                        self.logfile.print_message(
+                            "Standard/Faked tokens matching error, "
+                            "at interval {:d}\n".format(i), indent=2, status=1)
                         self.logfile.print_message(text_std.get_content(), indent=3)
                         self.logfile.print_message(text_faked.get_content(), indent=3)
                         self.logfile.print_message("Fall back on faked.", indent=3, status=3)

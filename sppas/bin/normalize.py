@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["TextNorm.ini"])
+    parameters = sppasParam(["textnorm.json"])
     ann_step_idx = parameters.activate_annotation("textnorm")
     ann_options = parameters.get_options(ann_step_idx)
 
