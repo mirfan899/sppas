@@ -34,9 +34,11 @@
 """
 import logging
 import os
+import json
 
 import sppas.src.anndata.aio
 from sppas.src.config import annots
+from sppas.src.config import paths
 from sppas.src.config import annotations_translation
 from sppas.src.utils.fileutils import sppasFileUtils
 
@@ -85,6 +87,30 @@ class sppasBaseAnnotation(object):
     # Shared methods to fix options and to annotate
     # -----------------------------------------------------------------------
 
+    def set_options(self, filename):
+        """Fix options from a configuration file.
+
+        :param filename: (str) Name of the configuration file (json)
+        The filename must NOT contain the path. This file must be in
+        paths.etc
+
+        """
+        config = os.path.join(paths.etc, filename)
+        if os.path.exists(config) is False:
+            raise IOError('Installation error: the file {:s} to configure '
+                          'the automatic annotations does not exist.'
+                          ''.format(config))
+
+        # Read the whole file content
+        with open(config) as cfg:
+            dict_cfg = json.load(cfg)
+
+        # Extract options
+        for opt in dict_cfg['options']:
+            self._options[opt['id']] = opt['value']
+
+    # -----------------------------------------------------------------------
+
     def get_option(self, key):
         """Return the option value of a given key or raise KeyError.
 
@@ -100,7 +126,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options.
+        """Fix all options of the annotation from a list of sppasOption().
 
         :param options: (list of sppasOption)
 

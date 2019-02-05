@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # ------------------------------------------------------------------------
     
-    parameters = sppasParam(["Momel.ini"])
+    parameters = sppasParam(["momel.json"])
     ann_step_idx = parameters.activate_annotation("momel")
     ann_options = parameters.get_options(ann_step_idx)
     

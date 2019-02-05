@@ -38,6 +38,10 @@ import os
 
 from sppas import paths
 from sppas import annots
+
+from sppas.src.config import annotations_translation
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.lang import UNDETERMINED
 from sppas.src.anndata.aio import extensions as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
@@ -45,6 +49,10 @@ from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils.fileutils import sppasFileUtils
 
 from .cfgparser import sppasAnnotationConfigParser
+
+# ----------------------------------------------------------------------------
+
+_ = annotations_translation.gettext
 
 # ----------------------------------------------------------------------------
 
@@ -95,15 +103,48 @@ class annotationParam(object):
         :param filename: (str) Annotation configuration file (.ini)
 
         """
-        p = sppasAnnotationConfigParser()
-        p.parse(filename)
+        if filename.endswith('.json'):
+            config = os.path.join(paths.etc, filename)
+            if os.path.exists(config) is False:
+                raise IOError('Installation error: the file to configure the '
+                              'automatic annotations does not exist.')
 
-        self.__options = p.get_options()
-        self.__resources = p.get_resources()
-        conf = p.get_config()
-        self.__key = conf['id']
-        self.__name = conf.get('name', "")
-        self.__descr = conf.get('descr', "")
+            # Read the whole file content
+            with open(config) as cfg:
+                conf = json.load(cfg)
+
+            self.__key = conf['id']
+            self.__name = conf.get('name', "")
+            self.__descr = conf.get('descr', "")
+
+            for new_option in conf['options']:
+                opt = sppasOption(new_option['id'])
+                opt.set_type(new_option['type'])
+                opt.set_value(str(new_option['value']))  # dangerous cast
+                opt.set_text(_(new_option['text']))      # translated
+                self.__options.append(opt)
+
+            for new_resource in conf['resources']:
+                lr = sppasLangResource()
+                lr.set(new_resource['type'],
+                       new_resource['path'],
+                       new_resource['name'],
+                       new_resource['ext'])
+                self.__resources.append(lr)
+
+        elif filename.endswith('.ini'):
+            p = sppasAnnotationConfigParser()
+            p.parse(filename)
+
+            self.__options = p.get_options()
+            self.__resources = p.get_resources()
+            conf = p.get_config()
+            self.__key = conf['id']
+            self.__name = conf.get('name', "")
+            self.__descr = conf.get('descr', "")
+
+        else:
+            raise IOError('Unknown extension for filename {:s}'.format(filename))
 
     # -----------------------------------------------------------------------
     # Setters

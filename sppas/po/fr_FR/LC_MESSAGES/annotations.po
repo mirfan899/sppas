@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Last-Translator: Brigitte Bigi <develop@sppas.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.1.1\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
@@ -211,3 +211,24 @@ msgstr "Le dossier {dirname} ne contient aucun fichier qui pourrait être utilis
 
 msgid ":ERROR 4014: "
 msgstr "Il manque la section {section_name} dans le fichier de configuration."
+
+msgid "Target window length"
+msgstr "Taille de la fenêtre d'analyse"
+
+msgid "F0 threshold"
+msgstr "Seuil minimum des valeurs de F0"
+
+msgid "F0 ceiling"
+msgstr "Seuil maximum des valeurs de F0"
+
+msgid "Maximum error"
+msgstr "Coefficient d'erreur"
+
+msgid "Reduce window length"
+msgstr "Taille de la fenêtre d'analyse réduite"
+
+msgid "Minimal distance"
+msgstr "Diatance minimale"
+
+msgid "Minimal frequency ratio"
+msgstr "Ratio minimum de fréquence"
