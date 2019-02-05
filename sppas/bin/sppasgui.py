@@ -41,16 +41,35 @@
     This is the main program to execute the Graphical User Interface of SPPAS.
 
 """
-import sys
 import traceback
 from argparse import ArgumentParser
-
+import sys
+import time
 from os import path, getcwd
+
 PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
-from sppas.bin import exit_error, check_python, check_aligner
-#check_python()
+
+# ----------------------------------------------------------------------------
+
+EXIT_DELAY = 6
+EXIT_STATUS = 1
+
+# ----------------------------------------------------------------------------
+
+
+def exit_error(msg="Unknown."):
+    """Exit the program with status 1 and an error message.
+
+    :param msg: (str) Message to print on stdout.
+
+    """
+    print("[ ERROR ] {:s}".format(msg))
+    time.sleep(EXIT_DELAY)
+    sys.exit(EXIT_STATUS)
+
+# ----------------------------------------------------------------------------
 
 try:
     import wx
@@ -64,7 +83,12 @@ except ImportError:
 
 v = wx.version().split()[0][0]
 if v == '4':
-    from sppas.src.ui.phoenix import sppasApp
+    try:
+        from sppas.src.ui.phoenix import sppasApp
+    except:
+        exit_error("An unexpected error occurred.\n"
+                   "Verify the the installation of SPPAS and try again.\n"
+                   "The error message is: %s" % traceback.format_exc())
 
     # Create and run the application
     app = sppasApp()
@@ -76,19 +100,20 @@ if v == '4':
 # ---------------------------------------------------------------------------
 
 try:
+    from sppas.bin import check_aligner
     from sppas.src.ui import SETTINGS_FILE
     from sppas.src.ui.wxgui.frames.mainframe import FrameSPPAS
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
     from sppas.src.utils.fileutils import setup_logging
-except ImportError:
+except Exception:
     exit_error("An unexpected error occurred.\n"
-               "Verify the SPPAS installation and try again. "
+               "Verify the installation of SPPAS and try again. "
                "The error message is: %s" % traceback.format_exc())
 
 # Arguments
-# ---------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="{:s} files".format(path.basename(PROGRAM)),
                         description="SPPAS Graphical User Interface.")

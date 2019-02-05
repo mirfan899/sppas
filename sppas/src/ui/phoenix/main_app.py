@@ -118,7 +118,7 @@ class sppasApp(wx.App):
         # create a parser for the command-line arguments
         parser = ArgumentParser(
             usage="{:s} [options]".format(path.basename(__file__)),
-            description="... " + sg.__longname__)
+            description="... " + sg.__name__ + " " + sg.__title__)
 
         # add arguments here
         parser.add_argument("-l", "--log_level",

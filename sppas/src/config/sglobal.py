@@ -33,43 +33,8 @@
 
 """
 import os
+import json
 from .settings import sppasBaseSettings
-
-# ---------------------------------------------------------------------------
-
-
-class sppasGlobalSettings(sppasBaseSettings):
-    """Representation of global non-modifiable settings of SPPAS.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    """
-
-    def __init__(self):
-        """Create the sppasGlobalSettings dictionary."""
-        super(sppasGlobalSettings, self).__init__()
-
-        self.__dict__ = dict(
-            __version__="2.0",
-            __author__="Brigitte Bigi",
-            __contact__="contact@sppas.org",
-            __copyright__="Copyright (C) 2011-2019 Brigitte Bigi",
-            __license__="GNU Public License, version 3",
-            __docformat__='reStructedText en',
-            __name__="SPPAS",
-            __longname__="SPPAS: the automatic annotation and analysis of speech",
-            __url__="http://www.sppas.org/",
-            __summary__=""
-"   SPPAS produces automatically annotations\n\
-from a recorded speech sound and its transcription\n\
-and performs the analysis of any annotated data.",
-            __title__="the automatic annotation and analysis of speech",
-            __encoding__="utf-8",
-        )
 
 # ---------------------------------------------------------------------------
 
@@ -103,6 +68,49 @@ class sppasPathSettings(sppasBaseSettings):
             samples=os.path.join(os.path.dirname(sppas_dir), "samples"),
             logs=os.path.join(os.path.dirname(sppas_dir), "logs")
         )
+
+# ---------------------------------------------------------------------------
+
+
+class sppasGlobalSettings(object):
+    """Representation of global non-modifiable settings of SPPAS.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    Includes the version, name, author, copyright, etc.
+
+    """
+
+    def __init__(self):
+        """Create the dictionary and load the main config file."""
+        self.__dict__ = dict()
+        self.load()
+
+    # -----------------------------------------------------------------------
+
+    def __enter__(self):
+        return self
+
+    # -----------------------------------------------------------------------
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        pass
+
+    # -----------------------------------------------------------------------
+
+    def load(self):
+        """Load the dictionary of settings from a file."""
+        with sppasPathSettings() as sp:
+            config = os.path.join(sp.etc, "sppas.json")
+            if os.path.exists(config) is False:
+                raise OSError("No such file or directory: {:s}".format(config))
+            else:
+                with open(config) as cfg:
+                    self.__dict__ = json.load(cfg)
 
 # ---------------------------------------------------------------------------
 

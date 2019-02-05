@@ -1,94 +1,13 @@
 {
-  "__annotate__": [
-    {
-      "id": "momel",
-      "config": "Momel.ini",
-      "api": "sppasMomel",
-      "cli": "momel.py",
-      "gui": "true"
-    },
-    {
-      "id": "intsint",
-      "config": "Intsint.ini",
-      "api": "sppasIntsint",
-      "cli": "intsint.py",
-      "gui": "true"
-    },
-    {
-      "id": "fillipus",
-      "config": "FillIPUs.ini",
-      "api": "sppasFillIPUs",
-      "cli": "fillipus.py",
-      "gui": "true"
-    },
-    {
-      "id": "searchipus",
-      "config": "SearchIPUs.ini",
-      "api": "sppasSearchIPUs",
-      "cli": "searchipus.py",
-      "gui": "true"
-    },
-    {
-      "id": "textnorm",
-      "config": "TextNorm.ini",
-      "api": "sppasTextNorm",
-      "cli": "normalize.py",
-      "gui": "true"
-    },
-    {
-      "id": "phonetize",
-      "config": "Phon.ini",
-      "api": "sppasPhon",
-      "cli": "phonetize.py",
-      "gui": "true"
-    },
-    {
-      "id": "align",
-      "config": "Align.ini",
-      "api": "sppasAlign",
-      "cli": "alignment.py",
-      "gui": "true"
-    },
-    {
-      "id": "syllabify",
-      "config": "Syll.ini",
-      "api": "sppasSyll",
-      "cli": "syllabify.py",
-      "gui": "true"
-    },
-    {
-      "id": "tga",
-      "config": "TGA.ini",
-      "api": "sppasTGA",
-      "cli": "tga.py",
-      "gui": "true"
-    },
-    {
-      "id": "selfrepet",
-      "config": "SelfRepet.ini",
-      "api": "sppasSelfRepet",
-      "cli": "selfrepetition.py",
-      "gui": "true"
-    },
-    {
-      "id": "otherrepet",
-      "config": "OtherRepet.ini",
-      "api": "sppasOtherRepet",
-      "cli": "otherrepetition.py",
-      "gui": "false"
-    }
-  ],
-
-  "__analyze__":
-  {
-    "id": "datastats",
-    "cli": "stats.py"
-  },
-
-  "__manage__":
-  {
-    "id": "convert",
-    "cli": "trsconvert.py"
-  }
-
+  "__version__": "2.1",
+  "__author__":  "Brigitte Bigi",
+  "__contact__": "contact@sppas.org",
+  "__copyright__": "Copyright (C) 2011-2019 Brigitte Bigi",
+  "__license__": "GNU Public License, version 3",
+  "__docformat__": "reStructedText en",
+  "__name__": "SPPAS",
+  "__title__": "the automatic annotation and analysis of speech",
+  "__url__": "http://www.sppas.org/",
+  "__summary__": "SPPAS produces automatically annotations\nfrom a recorded speech sound and its transcription\nand performs the analysis of any annotated data.",
+  "__encoding__": "utf-8"
 }
