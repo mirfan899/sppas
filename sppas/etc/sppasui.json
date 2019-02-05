@@ -9,7 +9,7 @@
     },
     {
       "id": "intsint",
-      "config": "Intsint.ini",
+      "config": "intsint.json",
       "api": "sppasIntsint",
       "cli": "intsint.py",
       "gui": true

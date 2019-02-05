@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
     
-    parameters = sppasParam(["Intsint.ini"])
+    parameters = sppasParam(["intsint.json"])
     ann_step_idx = parameters.activate_annotation("intsint")
     ann_options = parameters.get_options(ann_step_idx)
     

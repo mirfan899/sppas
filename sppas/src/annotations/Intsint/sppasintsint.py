@@ -70,6 +70,9 @@ class sppasIntsint(sppasBaseAnnotation):
 
         self.intsint = Intsint()
 
+        # Load default options (key/value) from a configuration file.
+        self.set_options("intsint.json")
+
     # -----------------------------------------------------------------------
     # Methods to annotate
     # -----------------------------------------------------------------------
@@ -175,6 +178,8 @@ class sppasIntsint(sppasBaseAnnotation):
     def get_pattern():
         """Pattern this annotation uses in an output filename."""
         return '-intsint'
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def get_input_pattern():
