@@ -74,14 +74,12 @@ class sppasMomel(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasMomel, self).__init__(logfile, "Momel")
+        super(sppasMomel, self).__init__(logfile, "momel")
         self.momel = Momel()
 
         # Load default options (key/value) from a configuration file.
         self.set_options("momel.json")
-
-        # Assign such values to the momel instance
-        self.fix_options(self._options)
+        self._options['elim_glitch'] = True
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -143,51 +141,45 @@ class sppasMomel(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     def set_option_win1(self, value):
-        self.momel.set_option_win1(value)
         self._options['win1'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_lo(self, value):
-        self.momel.set_option_lo(value)
         self._options['lo'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_hi(self, value):
-        self.momel.set_option_hi(value)
         self._options['hi'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_maxerr(self, value):
-        self.momel.set_option_maxerr(value)
         self._options['maxerr'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_win2(self, value):
-        self.momel.set_option_win2(value)
         self._options['win2'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_mind(self, value):
-        self.momel.set_option_mind(value)
         self._options['mind'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_minr(self, value):
-        self.momel.set_option_minr(value)
         self._options['minr'] = value
 
     # -----------------------------------------------------------------------
 
     def set_option_elim_glitch(self, value):
-        self.momel.set_option_elim_glitch(value)
         self._options['elim_glitch'] = value
 
+    # -----------------------------------------------------------------------
+    # Annotate
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -228,6 +220,15 @@ class sppasMomel(sppasBaseAnnotation):
         :returns: (list of Anchor)
 
         """
+        self.momel.set_option_win1(self._options['win1'])
+        self.momel.set_option_lo(self._options['lo'])
+        self.momel.set_option_hi(self._options['hi'])
+        self.momel.set_option_maxerr(self._options['maxerr'])
+        self.momel.set_option_win2(self._options['win2'])
+        self.momel.set_option_mind(self._options['mind'])
+        self.momel.set_option_minr(self._options['minr'])
+        self.momel.set_option_elim_glitch(self._options['elim_glitch'])
+
         # Estimates the real start time of the IPU
         ipu_start_time = current_time - (len(ipu_pitch)) + 1
 

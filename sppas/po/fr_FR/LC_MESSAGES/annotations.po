@@ -232,3 +232,9 @@ msgstr "Diatance minimale"
 
 msgid "Minimal frequency ratio"
 msgstr "Ratio minimum de fréquence"
+
+msgid "Initial minimum duration of an IPU (in seconds)"
+msgstr "Durée initiale minimale d'une IPU (en secondes)"
+
+msgid "Initial minimum duration of a silence (in seconds)"
+msgstr "Durée initiale minimale d'un silence (en secondes)"

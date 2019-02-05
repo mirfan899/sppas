@@ -16,7 +16,7 @@
     },
     {
       "id": "fillipus",
-      "config": "FillIPUs.ini",
+      "config": "fillipus.json",
       "api": "sppasFillIPUs",
       "cli": "fillipus.py",
       "gui": true

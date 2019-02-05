@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["FillIPUS.ini"])
+    parameters = sppasParam(["fillipus.json"])
     ann_step_idx = parameters.activate_annotation("fillipus")
     ann_options = parameters.get_options(ann_step_idx)
 

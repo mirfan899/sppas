@@ -75,13 +75,10 @@ class sppasFillIPUs(sppasBaseAnnotation):
         :param logfile: (sppasLog)
 
         """
-        super(sppasFillIPUs, self).__init__(logfile, "Fill in IPUs")
+        super(sppasFillIPUs, self).__init__(logfile, "fillipus")
 
-        # List of options to configure this automatic annotation
-        f = FillIPUs(None, [])
-        self._options = dict()
-        self._options['min_ipu'] = f.get_min_ipu_dur()
-        self._options['min_sil'] = f.get_min_sil_dur()
+        # Load default options (key/value) from a configuration file.
+        self.set_options("fillipus.json")
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -143,6 +140,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
         self._options['min_ipu'] = value
 
     # -----------------------------------------------------------------------
+    # Annotate
+    # -----------------------------------------------------------------------
 
     def _set_meta(self, filler, tier):
         """Set meta values to the tier."""
@@ -165,7 +164,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def fill_in(self, input_audio_filename, input_filename):
+    def convert(self, input_audio_filename, input_filename):
         """Return a tier with transcription aligned to the audio.
 
         :param input_audio_filename: (str) Input audio file
@@ -215,6 +214,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
             if a.get_best_tag().is_silence() is False:
                 a.set_labels([sppasLabel(sppasTag(ipus[i]))])
                 i += 1
+
         return tier
 
     # -----------------------------------------------------------------------
@@ -235,7 +235,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         input_audio_filename = input_file[0]
         input_trans_filename = input_file[1]
 
-        tier = self.fill_in(input_audio_filename, input_trans_filename)
+        tier = self.convert(input_audio_filename, input_trans_filename)
         if tier is None:
             msg = "Unable to align the audio with the given transcription."
             self.logfile.print_message(msg, indent=2, status=-1)
