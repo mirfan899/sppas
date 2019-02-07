@@ -64,13 +64,17 @@ class sppasBaseRepet(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, logfile=None, name="no-name"):
+    def __init__(self, config, log=None):
         """Create a new sppasRepetition instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param config: (str) Name of the JSON configuration file, without path.
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasBaseRepet, self).__init__(logfile, name)
+        super(sppasBaseRepet, self).__init__(config, log)
 
         self.max_span = 8
         self.max_alpha = 4.
