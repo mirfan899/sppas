@@ -177,7 +177,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        intsint = sppasIntsint(logfile=None)
+        intsint = sppasIntsint(log=None)
         intsint.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             intsint.run([args.i], output_file=args.o)

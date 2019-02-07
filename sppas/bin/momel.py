@@ -176,7 +176,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        melodie = sppasMomel(logfile=None)
+        melodie = sppasMomel(log=None)
         melodie.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             melodie.run([args.i], output_file=args.o)

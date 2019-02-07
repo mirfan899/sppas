@@ -79,27 +79,23 @@ class sppasPhon(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a sppasPhon instance without any linguistic resources.
 
-        :param logfile (sppasLog) is a log file utility class member.
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasPhon, self).__init__(logfile, "Phonetization")
-
-        # Mapping table (empty)
-        self.maptable = sppasMapping()
-
-        # Pronunciation dictionary (empty)
+        super(sppasPhon, self).__init__("phonetize.json", log)
         self.__phonetizer = None
+        self.maptable = sppasMapping()
         self.load_resources()
-
-        # Load default options (key/value) from a configuration file.
-        self.set_options("phon.json")
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -110,7 +106,7 @@ class sppasPhon(sppasBaseAnnotation):
 
         Available options are:
 
-            - unk
+            - phonunk
             - usesstdtokens
 
         :param options: (sppasOption)
@@ -120,7 +116,7 @@ class sppasPhon(sppasBaseAnnotation):
 
             key = opt.get_key()
 
-            if key == "unk":
+            if key == "phonunk":
                 self.set_unk(opt.get_value())
 
             elif key == "usestdtokens":
@@ -187,7 +183,7 @@ class sppasPhon(sppasBaseAnnotation):
 
     # -----------------------------------------------------------------------
 
-    def __phonetize(self, entry):
+    def _phonetize(self, entry):
         """Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
@@ -256,7 +252,7 @@ class sppasPhon(sppasBaseAnnotation):
                         phonetizations.append(SIL)
 
                     elif text.is_empty() is False:
-                        phones = self.__phonetize(text.get_content())
+                        phones = self._phonetize(text.get_content())
                         for p in phones:
                             phonetizations.extend(p.split(separators.variants))
 

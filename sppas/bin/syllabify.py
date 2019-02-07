@@ -65,8 +65,8 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["Syll.ini"])
-    ann_step_idx = parameters.activate_annotation("syll")
+    parameters = sppasParam(["syllabify.json"])
+    ann_step_idx = parameters.activate_annotation("syllabify")
     ann_options = parameters.get_options(ann_step_idx)
 
     # -----------------------------------------------------------------------
@@ -194,7 +194,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -r is required with option -i")
             sys.exit(1)
 
-        ann = sppasSyll(logfile=None)
+        ann = sppasSyll(log=None)
         ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
 

@@ -14,7 +14,7 @@
 
   "options": [
     {
-      "id": "unk",
+      "id": "phonunk",
       "type": "bool",
       "value": true,
       "text": "Let's try to phonetize unknown tokens"

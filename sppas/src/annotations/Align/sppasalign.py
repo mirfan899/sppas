@@ -89,7 +89,7 @@ class sppasAlign(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This class can produce 1 up to 5 tiers with names:
 
@@ -108,34 +108,19 @@ class sppasAlign(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasAlign instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        sppasBaseAnnotation.__init__(self, logfile, "Alignment")
-
-        self._options = dict()
-        self._options['aligner'] = "basic"
-        self._options['clean'] = True     # Remove temporary files
-        self._options['basic'] = False    # Perform a basic alignment if error
-        self._options['activity'] = True  # Add the Activity tier
-        self._options['activityduration'] = False
-
+        sppasBaseAnnotation.__init__(self, "alignment.json", log)
         self.mapping = sppasMapping()
         self._segmenter = TrackSegmenter(model=None, aligner_name="basic")
         self._tracksrw = TracksReaderWriter(sppasMapping())
-
-    # -----------------------------------------------------------------------
-
-    def reset(self):
-        """Reset the options to configure this automatic annotation."""
-        self._options = dict()
-        self._options['clean'] = True     # Remove temporary files
-        self._options['basic'] = False    # Perform a basic alignment if error
-        self._options['activity'] = True  # Add the Activity tier
-        self._options['activityduration'] = False
 
     # -----------------------------------------------------------------------
 
@@ -238,8 +223,7 @@ class sppasAlign(sppasBaseAnnotation):
         :param aligner_name: (str) Case-insensitive name of the aligner.
 
         """
-        self._segmenter.set_aligner(aligner_name)
-        self._options['aligner'] = self._segmenter.get_aligner_name()
+        self._options['aligner'] = aligner_name
 
     # -----------------------------------------------------------------------
 
@@ -349,6 +333,9 @@ class sppasAlign(sppasBaseAnnotation):
         :returns: tier_phn, tier_tok
 
         """
+        self._segmenter.set_aligner(self._options['aligner'])
+        self._options['aligner'] = self._segmenter.get_aligner_name()
+
         # Verify if the directory exists
         if os.path.exists(workdir) is False:
             raise NoDirectoryError(workdir)

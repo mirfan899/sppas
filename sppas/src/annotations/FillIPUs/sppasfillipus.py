@@ -65,20 +65,20 @@ class sppasFillIPUs(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasFillIPUs instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasFillIPUs, self).__init__(logfile, "fillipus")
-
-        # Load default options (key/value) from a configuration file.
-        self.set_options("fillipus.json")
+        super(sppasFillIPUs, self).__init__("fillipus.json", log)
 
     # -----------------------------------------------------------------------
     # Methods to fix options

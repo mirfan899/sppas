@@ -48,8 +48,6 @@ from sppas.src.audiodata.aio import extensions as audio_ext
 from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils.fileutils import sppasFileUtils
 
-from .cfgparser import sppasAnnotationConfigParser
-
 # ----------------------------------------------------------------------------
 
 _ = annotations_translation.gettext
@@ -104,6 +102,7 @@ class annotationParam(object):
 
         """
         if filename.endswith('.json'):
+
             config = os.path.join(paths.etc, filename)
             if os.path.exists(config) is False:
                 raise IOError('Installation error: the file to configure the '
@@ -131,17 +130,6 @@ class annotationParam(object):
                        new_resource.get('name', ''),
                        new_resource['ext'])
                 self.__resources.append(lr)
-
-        elif filename.endswith('.ini'):
-            p = sppasAnnotationConfigParser()
-            p.parse(filename)
-
-            self.__options = p.get_options()
-            self.__resources = p.get_resources()
-            conf = p.get_config()
-            self.__key = conf['id']
-            self.__name = conf.get('name', "")
-            self.__descr = conf.get('descr', "")
 
         else:
             raise IOError('Unknown extension for filename {:s}'.format(filename))

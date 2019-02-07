@@ -136,17 +136,17 @@ if args.ipus:
 if args.tok:
     parameters.activate_annotation("textnorm")
 if args.phon:
-    parameters.activate_annotation("phon")
+    parameters.activate_annotation("phonetize")
 if args.chunks:
     parameters.activate_annotation("chunks")
 if args.align:
-    parameters.activate_annotation("align")
+    parameters.activate_annotation("alignment")
 if args.syll:
-    parameters.activate_annotation("syll")
+    parameters.activate_annotation("syllabify")
 if args.tga:
     parameters.activate_annotation("tga")
 if args.repet:
-    parameters.activate_annotation("repet")
+    parameters.activate_annotation("selfrepet")
 if args.all:
     for step in range(parameters.get_step_numbers()):
         parameters.activate_step(step)

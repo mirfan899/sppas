@@ -49,6 +49,7 @@ from .term import ProcessProgressTerminal
 SETTINGS_FILE = os.path.join(paths.etc, "settings.dump")
 
 __all__ = (
+    "SETTINGS_FILE",
     "sppasTips",
     "TerminalController",
     "ProcessProgressTerminal"

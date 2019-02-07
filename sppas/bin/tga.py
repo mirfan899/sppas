@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["TGA.ini"])
+    parameters = sppasParam(["tga.json"])
     ann_step_idx = parameters.activate_annotation("tga")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -181,7 +181,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasTGA(logfile=None)
+        ann = sppasTGA(log=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)

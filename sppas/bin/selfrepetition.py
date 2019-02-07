@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["SelfRepet.ini"])
+    parameters = sppasParam(["selfrepet.json"])
     ann_step_idx = parameters.activate_annotation("selfrepet")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -189,7 +189,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasSelfRepet(logfile=None)
+        ann = sppasSelfRepet(log=None)
         if args.r:
             ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))

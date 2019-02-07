@@ -187,7 +187,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -t is required with option -i")
             sys.exit(1)
 
-        ann = sppasFillIPUs(logfile=None)
+        ann = sppasFillIPUs(log=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run((args.i, args.t), output_file=args.o)

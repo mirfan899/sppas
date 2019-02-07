@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["OtherRepet.ini"])
+    parameters = sppasParam(["otherrepet.json"])
     ann_step_idx = parameters.activate_annotation("otherrepet")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -159,7 +159,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasOtherRepet(logfile=None)
+        ann = sppasOtherRepet(log=None)
         ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:

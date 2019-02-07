@@ -73,27 +73,21 @@ class sppasSyll(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
-        """Create a new sppasSyll instance with only general rules.
+    def __init__(self, log=None):
+        """Create a new sppasSyll instance with only the general rules.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasSyll, self).__init__(logfile, "Syllabification")
-
-        # Default syllabifier with only general rules
-        self.syllabifier = Syllabifier()
-
-        # List of options to configure this automatic annotation
-        self._options = dict()
-        self._options['usesintervals'] = False
-        self._options['usesphons'] = True
-        self._options['tiername'] = "TokensAlign"
-        self._options['createclasses'] = True
+        super(sppasSyll, self).__init__("syllabify.json", log)
+        self.__syllabifier = Syllabifier()
 
     # -----------------------------------------------------------------------
 
@@ -103,7 +97,7 @@ class sppasSyll(sppasBaseAnnotation):
         :param config_filename: Name of the configuration file with the rules
 
         """
-        self.syllabifier = Syllabifier(config_filename)
+        self.__syllabifier = Syllabifier(config_filename)
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -247,7 +241,7 @@ class sppasSyll(sppasBaseAnnotation):
             location = syll.get_location().copy()
             syll_tag = syll.get_best_tag()
             class_tag = sppasTag(
-                self.syllabifier.classes_phonetized(
+                self.__syllabifier.classes_phonetized(
                     syll_tag.get_typed_content()))
             classes.create_annotation(location, sppasLabel(class_tag))
 
@@ -271,7 +265,7 @@ class sppasSyll(sppasBaseAnnotation):
             p.append(tag.get_typed_content())
 
         # create the sequence of syllables
-        s = self.syllabifier.annotate(p)
+        s = self.__syllabifier.annotate(p)
 
         # add the syllables into the tier
         for i, syll in enumerate(s):

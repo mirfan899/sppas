@@ -42,15 +42,15 @@
 
     {
       "id": "phonetize",
-      "config": "phon.json",
+      "config": "phonetize.json",
       "api": "sppasPhon",
       "cli": "phonetize.py",
       "gui": true
     },
 
     {
-      "id": "align",
-      "config": "Align.ini",
+      "id": "alignment",
+      "config": "alignment.json",
       "api": "sppasAlign",
       "cli": "alignment.py",
       "gui": true
@@ -58,7 +58,7 @@
 
     {
       "id": "syllabify",
-      "config": "Syll.ini",
+      "config": "syllabify.json",
       "api": "sppasSyll",
       "cli": "syllabify.py",
       "gui": true
@@ -66,7 +66,7 @@
 
     {
       "id": "tga",
-      "config": "TGA.ini",
+      "config": "tga.json",
       "api": "sppasTGA",
       "cli": "tga.py",
       "gui": true
@@ -74,7 +74,7 @@
 
     {
       "id": "selfrepet",
-      "config": "SelfRepet.ini",
+      "config": "selfrepet.json",
       "api": "sppasSelfRepet",
       "cli": "selfrepetition.py",
       "gui": true
@@ -82,7 +82,7 @@
 
     {
       "id": "otherrepet",
-      "config": "OtherRepet.ini",
+      "config": "otherrepet.json",
       "api": "sppasOtherRepet",
       "cli": "otherrepetition.py",
       "gui": false

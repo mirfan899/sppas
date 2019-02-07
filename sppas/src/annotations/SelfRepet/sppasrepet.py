@@ -62,7 +62,7 @@ class sppasSelfRepet(sppasBaseRepet):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Detect self-repetitions. The result has never been validated by an expert.
     This annotation is performed on the basis of time-aligned tokens or lemmas.
@@ -70,13 +70,16 @@ class sppasSelfRepet(sppasBaseRepet):
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasRepetition instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasSelfRepet, self).__init__(logfile, "Self Repetitions")
+        super(sppasSelfRepet, self).__init__("selfrepet.json", log)
 
     # -----------------------------------------------------------------------
     # Automatic Detection search

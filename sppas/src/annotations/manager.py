@@ -32,6 +32,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import logging
+import traceback
 import sys
 import json
 import os
@@ -67,7 +70,7 @@ class sppasAnnotationsManager(Thread):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Run annotations on a set of files.
 
@@ -172,10 +175,11 @@ class sppasAnnotationsManager(Thread):
                 self._progress.set_new()
 
             try:
+
                 if annotation_key == "fillipus":
                     ann_stats[i] = self._run_fillipus()
 
-                elif annotation_key == "align":
+                elif annotation_key == "alignment":
                     ann_stats[i] = self._run_alignment()
 
                 else:
@@ -184,6 +188,7 @@ class sppasAnnotationsManager(Thread):
             except Exception as e:
                 self._logfile.print_message(
                     "{:s}\n".format(str(e)), indent=1, status=-1)
+                logging.info(traceback.format_exc())
                 ann_stats[i] = 0
 
         # Log file & Merge
@@ -291,7 +296,7 @@ class sppasAnnotationsManager(Thread):
         :returns: number of files processed successfully
 
         """
-        a = self._create_ann_instance("align")
+        a = self._create_ann_instance("alignment")
 
         audio_files = self.get_annot_files(
             pattern="", extensions=sppas.src.audiodata.aio.extensions)

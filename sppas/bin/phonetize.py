@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["phon.json"])
+    parameters = sppasParam(["phonetize.json"])
     ann_step_idx = parameters.activate_annotation("phonetize")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -204,7 +204,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -r is required with option -i")
             sys.exit(1)
 
-        ann = sppasPhon(logfile=None)
+        ann = sppasPhon(log=None)
         ann.load_resources(args.r, args.m)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:

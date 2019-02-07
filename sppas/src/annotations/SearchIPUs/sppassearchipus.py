@@ -76,21 +76,21 @@ class sppasSearchIPUs(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasSearchIPUs instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasSearchIPUs, self).__init__(logfile, "searchipus")
+        super(sppasSearchIPUs, self).__init__("searchipus.json", log)
         self.__searcher = SearchIPUs(channel=None)
-
-        # Load default options (key/value) from a configuration file.
-        self.set_options("searchipus.json")
 
     # -----------------------------------------------------------------------
     # Methods to fix options

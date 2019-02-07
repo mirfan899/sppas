@@ -200,7 +200,7 @@ if __name__ == "__main__":
         else:
             lang = os.path.basename(args.r)[:3]
 
-        ann = sppasTextNorm(logfile=None)
+        ann = sppasTextNorm(log=None)
         ann.load_resources(args.r, lang=lang)
         ann.fix_options(parameters.get_options(ann_step_idx))
 

@@ -36,7 +36,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      Run the alignment automatic annotation
 
 """
@@ -64,8 +64,8 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["Align.ini"])
-    ann_step_idx = parameters.activate_annotation("align")
+    parameters = sppasParam(["alignment.json"])
+    ann_step_idx = parameters.activate_annotation("alignment")
     ann_options = parameters.get_options(ann_step_idx)
 
     # -----------------------------------------------------------------------
@@ -123,15 +123,15 @@ if __name__ == "__main__":
         help='Directory of the acoustic model of the language of the text')
 
     group_io.add_argument(
+        "-R",
+        metavar="model",
+        help='Directory of the acoustic model of the mother language of the speaker')
+
+    group_io.add_argument(
         "-I",
         metavar="file",
         action='append',
         help='Input transcription file name (append).')
-
-    group_io.add_argument(
-        "-R",
-        metavar="model",
-        help='Directory of the acoustic model of the mother language of the speaker')
 
     group_io.add_argument(
         "-l",
@@ -208,7 +208,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -p is required with option -i")
             sys.exit(1)
 
-        ann = sppasAlign(logfile=None)
+        ann = sppasAlign(log=None)
         if args.r:
             ann.load_resources(args.r, args.R)
         ann.fix_options(parameters.get_options(ann_step_idx))

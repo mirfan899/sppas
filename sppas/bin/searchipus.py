@@ -178,7 +178,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasSearchIPUs(logfile=None)
+        ann = sppasSearchIPUs(log=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)

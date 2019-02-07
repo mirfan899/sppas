@@ -65,30 +65,38 @@ class sppasBaseAnnotation(object):
 
     """
 
-    def __init__(self, logfile=None, name="Annotation"):
+    def __init__(self, config, log=None):
         """Base class for any SPPAS automatic annotation.
 
-        :param logfile: (sppasLog)
+        New in SPPAS 2.1 :
+        Load default options/member values from a configuration file.
+
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param config: (str) Name of the JSON configuration file, without path.
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        # The public name of the automatic annotation
-        self.name = name
-
         # Log messages for the user
-        if logfile is None:
+        if log is None:
             self.logfile = sppasLog()
         else:
-            self.logfile = logfile
+            self.logfile = log
 
-        # List of options to configure the automatic annotation
+        # Declare other members
         self._options = dict()
+        self.name = self.__class__.__name__
+
+        # Then, fill in the values from a configuration file
+        self.__load(config)
 
     # -----------------------------------------------------------------------
     # Shared methods to fix options and to annotate
     # -----------------------------------------------------------------------
 
-    def set_options(self, filename):
-        """Fix options from a configuration file.
+    def __load(self, filename):
+        """Fix members from a configuration file.
 
         :param filename: (str) Name of the configuration file (json)
         The filename must NOT contain the path. This file must be in
@@ -108,6 +116,9 @@ class sppasBaseAnnotation(object):
         # Extract options
         for opt in dict_cfg['options']:
             self._options[opt['id']] = opt['value']
+
+        # Extract other members
+        self.name = dict_cfg['name']
 
     # -----------------------------------------------------------------------
 
