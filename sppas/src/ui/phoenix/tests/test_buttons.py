@@ -6,8 +6,8 @@ SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM
 sys.path.append(SPPAS)
 
 from sppas.src.ui.phoenix import sppasApp
-from sppas.src.ui.phoenix.windows.buttons import sppasTextButton
-from sppas.src.ui.phoenix.windows.buttons import sppasBitmapTextButton
+from sppas.src.ui.phoenix.windows.button import sppasTextButton
+from sppas.src.ui.phoenix.windows.button import sppasBitmapTextButton
 
 
 class testButtonsFrame(wx.Frame):
@@ -29,6 +29,7 @@ class testButtonsFrame(wx.Frame):
 if __name__ == '__main__':
 
     app = sppasApp()
+    app.background_initialization()
     frame = testButtonsFrame()
     app.SetTopWindow(frame)
     app.MainLoop()

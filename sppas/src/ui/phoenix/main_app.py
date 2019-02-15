@@ -56,6 +56,8 @@ from .main_settings import WxAppSettings
 from .main_window import sppasMainWindow
 from .tools import sppasSwissKnife
 
+from ..logs import sppasLogSetup
+
 # ---------------------------------------------------------------------------
 
 
@@ -94,6 +96,7 @@ class sppasApp(wx.App):
 
         # Fix logging. Notice that Settings will be fixed at 'run'.
         self.settings = None
+        self._logging = None
         self.process_command_line_args()
         self.setup_python_logging()
 
@@ -146,19 +149,9 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def setup_python_logging(self):
-        """Setup python logging to stderr."""
-        # Fix the format of the messages
-        format_msg = "%(asctime)s [%(levelname)s] %(message)s"
-
-        handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter(format_msg))
-        handler.setLevel(self.__cfg.log_level)
-        logging.getLogger().addHandler(handler)
-        logging.getLogger().setLevel(self.__cfg.log_level)
-
-        # Show a welcome message on the console!
-        logging.info("{:s} logging set up level={:d}"
-                     "".format(self.GetAppDisplayName(), self.__cfg.log_level))
+        """Setup python logging to the standard stream handler."""
+        self._logging = sppasLogSetup(self.__cfg.log_level)
+        self._logging.stream_handler()
 
     # -----------------------------------------------------------------------
 
