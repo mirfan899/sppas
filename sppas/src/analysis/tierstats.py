@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 
-    presenters.tierstats.py
+    analysis.tierstats.py
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -40,14 +40,14 @@ from sppas.src.calculus.calculusexc import InsideIntervalError
 # ----------------------------------------------------------------------------
 
 
-class TierStats(object):
+class sppasTierStats(object):
     """Estimate descriptive statistics of annotations of a tier.
     
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Map a tier into a dictionary where:
     
@@ -163,7 +163,7 @@ class TierStats(object):
         ngrams = list()
         for t in ltup:
             ngrams.extend(self.__ngrams(t))
-        items = TierStats.tuple_to_dict(ngrams)
+        items = sppasTierStats.tuple_to_dict(ngrams)
         
         return sppasDescriptiveStatistics(items)
 

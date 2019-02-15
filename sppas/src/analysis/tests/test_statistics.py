@@ -10,7 +10,7 @@ from sppas.src.anndata import sppasInterval
 from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasTier
 
-from ..tierstats import TierStats
+from ..tierstats import sppasTierStats
 
 # ---------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ class TestStatistics(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_TierStats(self):
-        t = TierStats(self.tier)
+        t = sppasTierStats(self.tier)
         ds = t.ds()
 
         occurrences = ds.len()

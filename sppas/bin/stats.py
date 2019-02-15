@@ -56,7 +56,7 @@ sys.path.append(SPPAS)
 
 from sppas import sg
 from sppas.src.anndata import sppasRW
-from sppas.src.presenters.tierstats import TierStats
+from sppas.src.analysis.tierstats import sppasTierStats
 from sppas.src.utils.fileutils import setup_logging
 from sppas.src.config.ui import sppasAppConfig
 
@@ -259,7 +259,7 @@ if __name__ == "__main__":
     # Summary (=> sum stats of all files and print all estimated values)
     if mode == 0:
 
-        ts = TierStats(list(tiers), ngram, with_radius, with_alt)
+        ts = sppasTierStats(list(tiers), ngram, with_radius, with_alt)
         ds = ts.ds()
 
         occurrences = ds.len()
@@ -283,7 +283,7 @@ if __name__ == "__main__":
     else:
         data = list()
         for tier in tiers:
-            ts = TierStats(tier, ngram, with_radius, with_alt)
+            ts = sppasTierStats(tier, ngram, with_radius, with_alt)
             ds = ts.ds()
             data.append(ds)
 
@@ -291,7 +291,7 @@ if __name__ == "__main__":
         title.extend([tiers[t] for t in tiers])
         row_data.append(title)
 
-        # estimates descriptives statistics
+        # estimates descriptive statistics
         stat_values = list()
         items = list()  # the list of labels
         for ds in data:

@@ -42,7 +42,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import os.path
 import wx
 
-from sppas.src.presenters.tierstats import TierStats
+from sppas.src.analysis.tierstats import TierStats
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import SPREADSHEETS
