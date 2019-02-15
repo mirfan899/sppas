@@ -30,7 +30,7 @@ import sys
 import os.path
 sys.path.append(os.path.join("..", ".."))
 
-from sppas.src.anndata import sppasFilters
+from sppas.src.analysis import sppasTierFilters
 from sppas.src.utils.makeunicode import u
 from .ex15_annotations_label_filter import get_tier
 
@@ -50,7 +50,7 @@ verbose = True
 if __name__ == '__main__':
 
     tier = get_tier(filename, tier_name, verbose)
-    f = sppasFilters(tier)
+    f = sppasTierFilters(tier)
 
     # Apply a filter: Extract phonemes 'a' or 'e' during more than 100ms
     # ------------------------------------------------------------------

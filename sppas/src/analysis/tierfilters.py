@@ -34,19 +34,21 @@
 
 """
 
-from .anndataexc import AnnDataValueError
-from .anndataexc import AnnDataKeyError
+from sppas.src.anndata.anndataexc import AnnDataValueError
+from sppas.src.anndata.anndataexc import AnnDataKeyError
 
-from .ann.annset import sppasAnnSet
-from .ann.annlabel import sppasTagCompare
-from .ann.annlocation import sppasDurationCompare
-from .ann.annlocation import sppasLocalizationCompare
-from .ann.annlocation import sppasIntervalCompare
+from sppas.src.utils.makeunicode import u
+
+from sppas.src.anndata.ann.annset import sppasAnnSet
+from sppas.src.anndata.ann.annlabel import sppasTagCompare
+from sppas.src.anndata.ann.annlocation import sppasDurationCompare
+from sppas.src.anndata.ann.annlocation import sppasLocalizationCompare
+from sppas.src.anndata.ann.annlocation import sppasIntervalCompare
 
 # ---------------------------------------------------------------------------
 
 
-class sppasFilters(object):
+class sppasTierFilters(object):
     """This class implements the 'SPPAS tier' filter system.
 
     :author:       Brigitte Bigi
@@ -55,14 +57,14 @@ class sppasFilters(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Search in tiers. The class sppasFilters() allows to create several types
+    Search in tiers. The class sppasTierFilters() allows to create several types
     of filter (tag, duration, ...), and the class sppasAnnSet() is a data set
     manager, i.e. it contains the annotations selected by a filter and a
     string representing the filter.
 
     Create a filter:
 
-        >>> f = sppasFilters(tier)
+        >>> f = sppasTierFilters(tier)
 
     then, apply a filter with some pattern like in the following examples.
     sppasAnnSet() can be combined with operators & and |, like for any other
@@ -103,7 +105,7 @@ class sppasFilters(object):
     """
 
     def __init__(self, tier):
-        """Create a sppasFilters instance.
+        """Create a sppasTierFilters instance.
 
         :param tier: (sppasTier) The tier to be filtered.
 
@@ -131,11 +133,11 @@ class sppasFilters(object):
         comparator = sppasTagCompare()
 
         # extract the information from the arguments
-        sppasFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
-        tag_fct_values = sppasFilters.__fix_function_values(comparator,
+        sppasTierFilters.__test_args(comparator, **kwargs)
+        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
+        tag_fct_values = sppasTierFilters.__fix_function_values(comparator,
                                                             **kwargs)
-        tag_functions = sppasFilters.__fix_functions(comparator,
+        tag_functions = sppasTierFilters.__fix_functions(comparator,
                                                      **kwargs)
 
         data = sppasAnnSet()
@@ -170,11 +172,11 @@ class sppasFilters(object):
         comparator = sppasDurationCompare()
 
         # extract the information from the arguments
-        sppasFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
-        dur_fct_values = sppasFilters.__fix_function_values(comparator,
+        sppasTierFilters.__test_args(comparator, **kwargs)
+        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
+        dur_fct_values = sppasTierFilters.__fix_function_values(comparator,
                                                             **kwargs)
-        dur_functions = sppasFilters.__fix_functions(comparator,
+        dur_functions = sppasTierFilters.__fix_functions(comparator,
                                                      **kwargs)
 
         data = sppasAnnSet()
@@ -206,10 +208,10 @@ class sppasFilters(object):
         comparator = sppasLocalizationCompare()
 
         # extract the information from the arguments
-        sppasFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasFilters.__fix_logic_bool(**kwargs)
-        loc_fct_values = sppasFilters.__fix_function_values(comparator, **kwargs)
-        loc_functions = sppasFilters.__fix_functions(comparator, **kwargs)
+        sppasTierFilters.__test_args(comparator, **kwargs)
+        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
+        loc_fct_values = sppasTierFilters.__fix_function_values(comparator, **kwargs)
+        loc_functions = sppasTierFilters.__fix_functions(comparator, **kwargs)
 
         data = sppasAnnSet()
 
@@ -243,7 +245,7 @@ class sppasFilters(object):
         comparator = sppasIntervalCompare()
 
         # extract the information from the arguments
-        rel_functions = sppasFilters.__fix_relation_functions(comparator,
+        rel_functions = sppasTierFilters.__fix_relation_functions(comparator,
                                                               *args)
 
         data = sppasAnnSet()
@@ -252,7 +254,7 @@ class sppasFilters(object):
         for annotation in self.tier:
 
             location = annotation.get_location()
-            match_values = sppasFilters.__connect(location,
+            match_values = sppasTierFilters.__connect(location,
                                                   other_tier,
                                                   rel_functions,
                                                   **kwargs)
@@ -260,6 +262,40 @@ class sppasFilters(object):
                 data.append(annotation, list(set(match_values)))
 
         return data
+
+    # -----------------------------------------------------------------------
+    # Utilities
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def cast_data(tier, sfilter, entry):
+        """Return an entry into the appropriate type.
+
+        :param tier: (sppasTier)
+        :param sfilter: (str) Name of the filter (tag, loc, ...)
+        :param entry: (str) The entry to cast
+        :return: typed entry
+
+        """
+        if sfilter == "tag":
+            if tier.is_float():
+                return float(entry)
+            elif tier.is_int():
+                return int(entry)
+            elif tier.is_bool():
+                return bool(entry)
+
+        elif sfilter == "loc":
+            p = tier.get_first_point()
+            if isinstance(p.get_midpoint(), int):
+                return int(entry)
+            else:
+                return float(entry)
+
+        elif sfilter == "dur":
+            return float(entry)
+
+        return u(entry)
 
     # -----------------------------------------------------------------------
     # Private

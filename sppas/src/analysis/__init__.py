@@ -1,5 +1,7 @@
 from .tierstats import sppasTierStats
+from .tierfilters import sppasTierFilters
 
 __all__ = (
-    "TierStats"
+    "sppasTierStats",
+    "sppasTierFilters"
 )

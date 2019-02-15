@@ -36,37 +36,10 @@
 import wx
 import logging
 
-from sppas.src.utils.makeunicode import u
-from sppas.src.anndata import sppasFilters
+from sppas.src.analysis import sppasTierFilters
 from sppas.src.ui.wxgui.views.processprogress import ProcessProgressDialog
 
 # ----------------------------------------------------------------------------
-
-
-def cast_data(tier, sfilter, entry):
-
-    if sfilter == "tag":
-        if tier.is_float():
-            return float(entry)
-        elif tier.is_int():
-            return int(entry)
-        elif tier.is_bool():
-            return bool(entry)
-
-    elif sfilter == "loc":
-        p = tier.get_first_point()
-        if isinstance(p.get_midpoint(), int):
-            return int(entry)
-        else:
-            return float(entry)
-
-    elif sfilter == "dur":
-        return float(entry)
-
-    return u(entry)
-
-
-# ---------------------------------------------------------------------------
 
 
 class FilterProcess(object):
@@ -176,13 +149,13 @@ class SingleFilterProcess(FilterProcess):
 
         """
         logging.info("Apply sppasFilter() on tier: {:s}".format(tier.get_name()))
-        sfilter = sppasFilters(tier)
+        sfilter = sppasTierFilters(tier)
         ann_sets = list()
 
         for d in self.data:
 
             if len(d[2]) >= 1:
-                d2 = cast_data(tier, d[0], d[2][0])
+                d2 = sppasTierFilters.cast_data(tier, d[0], d[2][0])
 
                 # a little bit of doc:
                 #   - getattr() returns the value of the named attributed of object:
@@ -193,7 +166,7 @@ class SingleFilterProcess(FilterProcess):
 
                 ann_set = getattr(sfilter, d[0])(**{d[1]: d2})
                 for i in range(1, len(d[2])):
-                    d2 = cast_data(tier, d[0], d[2][i])
+                    d2 = sppasTierFilters.cast_data(tier, d[0], d[2][i])
                     logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(d[0], d[1], d2))
                     ann_set = ann_set | getattr(sfilter, d[0])(**{d[1]: d2})
             else:
@@ -238,7 +211,7 @@ class RelationFilterProcess(FilterProcess):
             return None
 
         logging.info("Apply sppasFilter() on tier: {:s}".format(tier.get_name()))
-        sfilter = sppasFilters(tier)
+        sfilter = sppasTierFilters(tier)
 
         logging.debug("Data in RelationFilterProcess: {:s}".format(self.data))
         ann_set = sfilter.rel(tier_y,

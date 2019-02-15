@@ -42,7 +42,7 @@ __copyright__ = """Copyright (C) 2011-2016  Brigitte Bigi"""
 import os.path
 import wx
 
-from sppas.src.analysis.tierstats import TierStats
+from sppas.src.analysis.tierstats import sppasTierStats
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import SPREADSHEETS
@@ -85,7 +85,7 @@ class DescriptivesStatsDialog(spBaseDialog):
             # k = filename
             # v = list of tiers
             for tier in v:
-                ts = TierStats(tier, self.n, self.withradius, self.withalt)
+                ts = sppasTierStats(tier, self.n, self.withradius, self.withalt)
                 self._data[ts] = k
                 # remark: statistics are not estimated yet.
                 # ts contains a pointer to the tier; ts.tier
@@ -289,7 +289,7 @@ class SummaryPanel(BaseStatPanel):
             n = ts.get_ngram()
             with_alt = ts.get_with_alt()
             with_radius = ts.get_with_radius()
-        return TierStats(tiers, n, with_radius, with_alt)
+        return sppasTierStats(tiers, n, with_radius, with_alt)
 
 # ----------------------------------------------------------------------------
 # Other tabs: details of each file

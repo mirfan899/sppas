@@ -46,17 +46,17 @@ import os.path
 import time
 
 from sppas.src.utils.makeunicode import u
-from ..aio.readwrite import sppasRW
-from ..tier import sppasTier
-from ..ann.annlocation import sppasLocation
-from ..ann.annlocation import sppasInterval
-from ..ann.annlocation import sppasPoint
-from ..ann.annlabel import sppasTag
-from ..ann.annlabel import sppasLabel
-from ..ann.annotation import sppasAnnotation
+from sppas.src.anndata.aio.readwrite import sppasRW
+from sppas.src.anndata.tier import sppasTier
+from sppas.src.anndata.ann.annlocation import sppasLocation
+from sppas.src.anndata.ann.annlocation import sppasInterval
+from sppas.src.anndata.ann.annlocation import sppasPoint
+from sppas.src.anndata.ann.annlabel import sppasTag
+from sppas.src.anndata.ann.annlabel import sppasLabel
+from sppas.src.anndata.ann.annotation import sppasAnnotation
 
-from ..filters import sppasFilters
-from ..ann.annset import sppasAnnSet
+from sppas.src.anndata.ann.annset import sppasAnnSet
+from ..tierfilters import sppasTierFilters
 
 # ---------------------------------------------------------------------------
 
@@ -237,11 +237,11 @@ class TestFilterTier(unittest.TestCase):
         tier = self.trs.find('P-Phonemes')
 
         with self.assertRaises(KeyError):
-            f = sppasFilters(tier)
+            f = sppasTierFilters(tier)
             f.tag(function="value")
 
         start_time = time.time()
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
         d1 = f.tag(startswith=u("l"))
         d2 = f.tag(endswith=u("l"))
         res = d1 | d2
@@ -250,14 +250,14 @@ class TestFilterTier(unittest.TestCase):
         # print("  - res size = {:d}".format(len(res)))
 
         start_time = time.time()
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
         res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="and")
         end_time = time.time()
         # print("  - elapsed time: {:f} seconds".format(end_time - start_time))
         # print("  - res size = {:d}".format(len(res)))
 
         start_time = time.time()
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
         res = f.tag(startswith=u("l"), endswith=u("l"), logic_bool="or")
         end_time = time.time()
         # print("  - elapsed time: {:f} seconds".format(end_time - start_time))
@@ -269,7 +269,7 @@ class TestFilterTier(unittest.TestCase):
         """Test tag is not matching str."""
 
         tier = self.trs.find('P-Phonemes')
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
         l = f.tag(exact=u("l"))
         not_l = f.tag(not_exact=u('l'))
         self.assertEqual(len(tier), len(l)+len(not_l))
@@ -280,7 +280,7 @@ class TestFilterTier(unittest.TestCase):
         """Test localization duration."""
 
         tier = self.trs.find('P-Phonemes')
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
 
         # phonemes during 30ms
         res = f.dur(eq=0.03)
@@ -295,7 +295,7 @@ class TestFilterTier(unittest.TestCase):
         """Test localization range."""
 
         tier = self.trs.find('P-Phonemes')
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
 
         # the first 10 phonemes
         res = f.loc(rangeto=0.858)
@@ -322,7 +322,7 @@ class TestFilterTier(unittest.TestCase):
         """Test both tag and duration."""
 
         tier = self.trs.find('P-Phonemes')
-        f = sppasFilters(tier)
+        f = sppasTierFilters(tier)
 
         # silences or pauses during more than 200ms
         res1 = (f.tag(exact=u("#")) | f.tag(exact=u("+"))) & f.dur(ge=0.2)
@@ -410,7 +410,7 @@ class TestFilterRelationTier(unittest.TestCase):
 
     def test_one_relation(self):
 
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
 
         # 'equals': [3,5]
         res = f.rel(self.rtier, "equals")
@@ -559,7 +559,7 @@ class TestFilterRelationTier(unittest.TestCase):
 
     def test_several_relations(self):
 
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby")
         self.assertEquals(1, len(res))
         ann = [a for a in res][0]
@@ -569,17 +569,17 @@ class TestFilterRelationTier(unittest.TestCase):
         self.assertTrue("overlaps" in values)
         self.assertTrue("overlappedby" in values)
 
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby", overlap_min=1)
         self.assertEquals(1, len(res))
         values = res.get_value(ann)
         self.assertTrue(2, len(values))
 
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby", overlap_min=2)
         self.assertEquals(0, len(res))
 
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby",
                     overlap_min=50,
                     percent=True)
@@ -591,7 +591,7 @@ class TestFilterRelationTier(unittest.TestCase):
     # -----------------------------------------------------------------------
 
     def test_combined_relations(self):
-        f = sppasFilters(self.tier)
+        f = sppasTierFilters(self.tier)
         res1 = f.rel(self.rtier, "overlaps", "overlappedby")
         res2 = f.rel(self.rtier, "overlaps") | f.rel(self.rtier, "overlappedby")
         self.assertEqual(res1, res2)
