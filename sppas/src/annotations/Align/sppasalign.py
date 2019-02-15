@@ -111,8 +111,9 @@ class sppasAlign(sppasBaseAnnotation):
     def __init__(self, log=None):
         """Create a new sppasAlign instance.
 
-        Log is used for a better communication of the annotation process and its
-        results. If None, logs are redirected to the default logging system.
+        Log is used for a better communication of the annotation process and
+        its results.
+        If None, logs are redirected to the default logging system.
 
         :param log: (sppasLog) Human-readable logs.
 
@@ -449,7 +450,7 @@ class sppasAlign(sppasBaseAnnotation):
         try:
             parser = sppasRW(opt_input_file[0])
             trs_input_tok = parser.read()
-            tok_tier = sppasFindTier.tokenization(trs_input_tok)
+            tok_tier = sppasFindTier.tokenization(trs_input_tok, "std")
         except:   # IOError, AttributeError:
             tok_tier = None
             self.logfile.print_message(
