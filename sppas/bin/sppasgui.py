@@ -106,7 +106,8 @@ try:
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
-    from sppas.src.utils.fileutils import setup_logging
+    from sppas.src.ui import sppasLogSetup
+    from sppas.src.config.ui import sppasAppConfig
 except Exception:
     exit_error("An unexpected error occurred.\n"
                "Verify the installation of SPPAS and try again. "
@@ -131,15 +132,9 @@ for f in args.files:
 # Logging
 # ----------------------------------------------------------------------------
 
-log_level = 15
-log_file = None
-try:
-    setup_logging(log_level, log_file)
-except Exception:
-    # stdin is not available if pythonw is used instead of python, on Windows!
-    log_file = path.join(path.dirname(
-        path.dirname(path.dirname(PROGRAM))), "sppas.log")
-    setup_logging(log_level, log_file)
+with sppasAppConfig() as cg:
+    lgs = sppasLogSetup(cg.log_level)
+    lgs.stream_handler()
 
 # GUI is here:
 # ----------------------------------------------------------------------------

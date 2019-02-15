@@ -59,7 +59,8 @@ sys.path.append(SPPAS)
 from sppas import sg
 from sppas.src.plugins import sppasPluginConfigParser
 from sppas.src.utils import sppasDirUtils
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
+from sppas.src.config.ui import sppasAppConfig
 
 
 if __name__ == "__main__":
@@ -95,7 +96,17 @@ if __name__ == "__main__":
                       "'{:s}' does not.".format(args.i))
 
     sd = sppasDirUtils(args.i)
-    setup_logging(10, None)
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            log_level = cg.log_level
+        else:
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Check if there's a README.txt file at the root directory
     # --------------------------------------------------------

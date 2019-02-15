@@ -39,7 +39,7 @@ import wx.lib.newevent
 import wx.lib.scrolledpanel
 
 from sppas.src.annotations.param import sppasParam
-from sppas.src.ui.log_file import sppasLogFile
+from sppas.src.ui.logs import sppasLogFile
 
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.cutils.ctrlutils import CreateGenButton

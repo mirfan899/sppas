@@ -53,7 +53,8 @@ sys.path.append(SPPAS)
 
 from sppas import sppasRW
 from sppas import sppasTranscription
-from sppas import setup_logging
+from sppas.src.ui import sppasLogSetup
+from sppas.src.config.ui import sppasAppConfig
 from sppas.src.anndata.aio.aioutils import unalign
 from sppas.src.annotations.searchtier import sppasFindTier
 
@@ -89,10 +90,18 @@ if len(sys.argv) <= 1:
 
 args = parser.parse_args()
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+
+# Redirect all messages to logging
+# --------------------------------
+
+with sppasAppConfig() as cg:
+    if not args.quiet:
+        log_level = cg.log_level
+    else:
+        log_level = cg.quiet_log_level
+    lgs = sppasLogSetup(log_level)
+    lgs.stream_handler()
+
 
 # ----------------------------------------------------------------------------
 # Read

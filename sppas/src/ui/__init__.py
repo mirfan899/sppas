@@ -41,7 +41,10 @@ ui: User Interface makes SPPAS available for all users.
 
 import os
 from sppas.src.config import paths
+
 from .tips import sppasTips
+from .logs import sppasLogFile
+from .logs import sppasLogSetup
 
 from .term import TerminalController
 from .term import ProcessProgressTerminal
@@ -51,6 +54,8 @@ SETTINGS_FILE = os.path.join(paths.etc, "settings.dump")
 __all__ = (
     "SETTINGS_FILE",
     "sppasTips",
+    "sppasLogFile",
+    "sppasLogSetup",
     "TerminalController",
     "ProcessProgressTerminal"
 )

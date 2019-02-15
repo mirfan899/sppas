@@ -56,7 +56,7 @@ from sppas.src.config import annots
 from sppas.src.annotations.param import sppasParam
 from sppas.src.config.ui import sppasAppConfig
 from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
 
 if __name__ == "__main__":
 
@@ -161,9 +161,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------

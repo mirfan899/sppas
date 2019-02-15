@@ -141,8 +141,10 @@ from sppas import sppasRW
 from sppas import sppasTranscription, sppasTier
 from sppas import sppasLocation, sppasInterval
 from sppas import sppasLabel, sppasTag
-from sppas import setup_logging
 import sppas.src.anndata.aio
+
+from sppas.src.ui import sppasLogSetup
+from sppas.src.config.ui import sppasAppConfig
 
 
 # ---------------------------------------------------------------------------
@@ -320,12 +322,16 @@ if __name__ == "__main__":
     # Redirect all messages to logging
     # --------------------------------
 
-    level = 15
-    if args.quiet:
-        level = 25
-    elif args.debug:
-        level = 0
-    setup_logging(level, None)
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            if args.debug:
+                log_level = 0
+            else:
+                log_level = cg.log_level
+        else:
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # -----------------------------------------------------------------------
     # Prepare file names to be analyzed, as a list of tuples (ref,hyp)

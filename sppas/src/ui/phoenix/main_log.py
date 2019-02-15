@@ -42,7 +42,7 @@ from sppas.src.config import sg
 from sppas.src.config import ui_translation
 from sppas.src.utils.datatype import sppasTime
 
-from ..log_file import sppasLogFile
+from ..logs import sppasLogFile
 from .tools import sppasSwissKnife
 from .windows import sppasPanel
 from .windows import sppasBitmapTextButton

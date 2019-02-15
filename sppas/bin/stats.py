@@ -57,7 +57,7 @@ sys.path.append(SPPAS)
 from sppas import sg
 from sppas.src.anndata import sppasRW
 from sppas.src.analysis.tierstats import sppasTierStats
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
 from sppas.src.config.ui import sppasAppConfig
 
 # ----------------------------------------------------------------------------
@@ -178,11 +178,14 @@ if __name__ == "__main__":
     with sppasAppConfig() as cg:
         if not args.quiet:
             if args.debug:
-                setup_logging(0, None)
+                log_level = 0
             else:
-                setup_logging(cg.log_level, None)
+                log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # -----------------------------------------------------------------------
     # Check args.
