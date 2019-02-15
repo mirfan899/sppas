@@ -607,7 +607,7 @@ class sppasEAF(sppasBaseIO):
 
         # We then parse ref tiers
         for tier_root in root.findall('TIER'):
-            if sppasEAF.__is_alignable_tier(tier_root) == 0:
+            if sppasEAF.__is_alignable_tier(tier_root) in [0, -1]:
                 self._parse_tier(tier_root, time_slots, removed_annotations)
 
         # We have to re-organize tiers:
@@ -796,12 +796,17 @@ class sppasEAF(sppasBaseIO):
         :param tier: (sppasTier) The tier to add the annotations
 
         """
-        # we expect that the parent tier has already been included in self
-        parent_tier_ref = tier_root.attrib['PARENT_REF']
-        parent_tier = self.find(parent_tier_ref)
-        if parent_tier is None:
-            raise AioFormatError('tier:{:s} parent:{:s}'
-                                 ''.format(tier.get_name(), parent_tier_ref))
+        if 'PARENT_REF' in tier_root.attrib:
+            # we expect that the parent tier has already been included in self
+            parent_tier_ref = tier_root.attrib['PARENT_REF']
+            parent_tier = self.find(parent_tier_ref)
+            if parent_tier is None:
+                raise AioFormatError('declaration of reference tier tier {:s} '
+                                     'has no parent {:s}'
+                                     ''.format(tier.get_name(), parent_tier_ref))
+        else:
+            raise AioFormatError('declaration of reference tier {:s} expects a parent.'
+                                 ''.format(tier.get_name()))
 
         # while we have the aligned parent, we can fill the child tier
         for i, annotation_root in enumerate(tier_root.findall('ANNOTATION')):
@@ -1619,6 +1624,12 @@ class sppasEAF(sppasBaseIO):
                     # a reference tier with a parent,
                     # not directly time-alignable.
                     return 0
+
+        else:
+            for annotation_root in tier_root.findall('ANNOTATION'):
+                if annotation_root.find('REF_ANNOTATION') is not None:
+                    # a reference tier without parent
+                    return -1
 
         # a time-alignable tier, without parent.
         return 2

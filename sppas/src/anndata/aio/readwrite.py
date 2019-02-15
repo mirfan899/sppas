@@ -157,6 +157,9 @@ class sppasRW(object):
             else:
                 raise
 
+        if os.path.exists(self.__filename) is False:
+            raise AioError(self.__filename)
+
         try:
             # Add metadata about the file
             fn = u(self.__filename)
@@ -172,7 +175,7 @@ class sppasRW(object):
         except UnicodeError as e:
             raise AioEncodingError(filename=self.__filename, error=str(e))
         except IOError:
-            raise AioError(self.__filename)
+            raise
         except Exception:
             raise
 
