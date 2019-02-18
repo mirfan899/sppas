@@ -35,10 +35,12 @@
 # File: msgdialogs.py
 # ---------------------------------------------------------------------------
 import sys
-import os.path
-sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
-
+import os
 import wx
+
+sppas=os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))))
+sys.path.append(sppas)
+
 
 from sppas.src.ui.wxgui.sp_icons import MESSAGE_ICON
 from sppas.src.ui.wxgui.sp_icons import DLG_INFO_ICON
@@ -46,7 +48,7 @@ from sppas.src.ui.wxgui.sp_icons import DLG_WARN_ICON
 from sppas.src.ui.wxgui.sp_icons import DLG_ERR_ICON
 from sppas.src.ui.wxgui.sp_icons import DLG_QUEST_ICON
 
-from basedialog import spBaseDialog
+from .basedialog import spBaseDialog
 
 # ----------------------------------------------------------------------------
 

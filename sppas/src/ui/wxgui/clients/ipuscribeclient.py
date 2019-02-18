@@ -72,6 +72,10 @@ from sppas.src.annotations.searchtier import sppasFindTier
 # ----------------------------------------------------------------------------
 
 IPU_BY_PAGE = 50
+try:
+    datacolor = wx.ColourRGB(0xd1d1d1)
+except:
+    datacolor = wx.Colour(0xd1d1d1)
 
 # ----------------------------------------------------------------------------
 
@@ -1070,7 +1074,7 @@ class IPUPanel(wx.Panel):
 
 class IPUData:
 
-    def __init__(self, trs, tier_idx, ann_idx, color=wx.ColourRGB(0xd1d1d1), nb_ipu=0):
+    def __init__(self, trs, tier_idx, ann_idx, color=datacolor, nb_ipu=0):
         self.trs = trs             # the transcription
         self.tier_idx = tier_idx   # the tier index
         self.ann_idx = ann_idx     # the annotation index

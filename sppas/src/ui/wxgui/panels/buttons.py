@@ -145,6 +145,7 @@ class ImgPanel( wx.Panel ):
     def ProcessEvent(self, evt):
         #evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
+        return False
 
 # ---------------------------------------------------------------------------
 

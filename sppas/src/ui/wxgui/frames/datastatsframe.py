@@ -35,7 +35,7 @@
     GUI statistics of annotated data.
 
 """
-from baseframe import ComponentFrame
+from .baseframe import ComponentFrame
 
 from sppas.src.ui.wxgui.sp_icons import STATISTICS_APP_ICON
 from sppas.src.ui.wxgui.clients.datastatsclient import DataStatsClient

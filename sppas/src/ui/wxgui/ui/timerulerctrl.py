@@ -45,10 +45,10 @@ import math
 import wx
 import wx.lib.newevent
 
-from spControl import spControl, FONT_SIZE_MIN
-
 from sppas.src.ui.wxgui.sp_icons import RULER_RED, RULER_GREEN, RULER_BLUE
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
+
+from .spControl import spControl, FONT_SIZE_MIN
 
 # ----------------------------------------------------------------------------
 # Constants

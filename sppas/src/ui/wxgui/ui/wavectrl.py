@@ -44,8 +44,8 @@ import logging
 
 import wx
 
-from spControl import spControl
-from channelctrl import ChannelCtrl, WavePreferences
+from .spControl import spControl
+from .channelctrl import ChannelCtrl, WavePreferences
 
 # ---------------------------------------------------------------------------
 

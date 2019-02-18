@@ -7,7 +7,7 @@ class SplitterPanel( wx.SplitterWindow ):
             wx.SplitterWindow.__init__(self,parent,-1,wx.Point(0,0),size=wx.DefaultSize,style=wx.SP_NOBORDER)
             self.proportion = proportion
             if not 0 < self.proportion < 1:
-                    raise ValueError, "proportion value for ProportionalSplitter must be between 0 and 1."
+                    raise ValueError("proportion value for ProportionalSplitter must be between 0 and 1.")
             self.ResetSash()
             self.Bind(wx.EVT_SIZE, self.OnReSize)
             self.Bind(wx.EVT_SPLITTER_SASH_POS_CHANGED, self.OnSashChanged)

@@ -25,10 +25,10 @@ import wx.lib.newevent
 from sppas.src.ui.wxgui.cutils.textutils import TextAsNumericValidator
 from sppas.src.ui.wxgui.cutils.colorutils import PickRandomColour, ContrastiveColour
 
-from spControl import spControl
-from pointctrl import PointCtrl
-from pointctrl import MIN_W as pointctrlMinWidth
-from labelctrl import LabelCtrl
+from .spControl import spControl
+from .pointctrl import PointCtrl
+from .pointctrl import MIN_W as pointctrlMinWidth
+from .labelctrl import LabelCtrl
 
 # ----------------------------------------------------------------------------
 # Constants

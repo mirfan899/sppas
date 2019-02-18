@@ -168,8 +168,7 @@ def GrayOut(anImage):
 
     for i in range(0, len(data), 3):
 
-        pixel = (data[i], data[i+1], data[i+2])
-        pixel = MakeGray(pixel, factor, maskColor)
+        pixel = MakeGray(data[i], data[i+1], data[i+2], factor, maskColor)
 
         for x in range(3):
             data[i+x] = pixel[x]
@@ -181,7 +180,7 @@ def GrayOut(anImage):
 # -----------------------------------------------------------------------
 
 
-def MakeGray((r,g,b), factor, maskColor):
+def MakeGray(r,g,b, factor, maskColor):
     """
     Make a pixel grayed-out. If the pixel matches the maskcolor, it won't be
     changed.

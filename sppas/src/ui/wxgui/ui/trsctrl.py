@@ -40,8 +40,8 @@ import wx
 
 from sppas.src.ui.wxgui.cutils.colorutils import PickRandomColour
 
-from tierctrl import TierCtrl
-from spControl import spControl
+from .tierctrl import TierCtrl
+from .spControl import spControl
 
 # ---------------------------------------------------------------------------
 
