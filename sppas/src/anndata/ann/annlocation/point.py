@@ -260,6 +260,13 @@ class sppasPoint(sppasBaseLocalization):
         return isinstance(x, type(y))
 
     # -----------------------------------------------------------------------
+    # overloads
+    # -----------------------------------------------------------------------
+
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
 
     def __repr__(self):
         if self.__radius is None:

@@ -282,13 +282,22 @@ class sppasTag(object):
     # Overloads
     # ------------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         return "Tag: {!s:s},{!s:s}".format(b(self.get_content()),
                                            self.get_type())
 
+    # -----------------------------------------------------------------------
+
     def __str__(self):
         return "{!s:s} ({!s:s})".format(b(self.get_content()),
                                         self.get_type())
+
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """Compare 2 tags."""
@@ -296,8 +305,12 @@ class sppasTag(object):
             return self.get_typed_content() == other.get_typed_content()
         return False
 
+    # -----------------------------------------------------------------------
+
     def __hash__(self):
         return hash((self.__tag_content, self.__tag_type))
+
+    # -----------------------------------------------------------------------
 
     def __ne__(self, other):
         if isinstance(other, sppasTag):

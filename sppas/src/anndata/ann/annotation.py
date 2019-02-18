@@ -588,6 +588,11 @@ class sppasAnnotation(sppasMetaData):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         return "Annotation {:s}: {:s} {:s}".format(self.get_meta('id'),
                                                    str(self.__location),

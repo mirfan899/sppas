@@ -221,6 +221,11 @@ class sppasDisjoint(sppasBaseLocalization):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         return "sppasDisjoint: {:s}" \
                "".format("".join([str(i) for i in self.get_intervals()]))

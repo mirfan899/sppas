@@ -453,6 +453,11 @@ class sppasLabel(object):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         st = ""
         if self.__tags is not None:
