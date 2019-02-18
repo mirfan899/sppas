@@ -58,7 +58,6 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg
-from sppas.src.plugins import sppasPluginConfigParser
 from sppas.src.utils import sppasDirUtils
 from sppas.src.ui import sppasLogSetup
 from sppas.src.config.ui import sppasAppConfig
@@ -138,60 +137,34 @@ if __name__ == "__main__":
     # Check if there's a .ini file at the root directory
     # --------------------------------------------------
 
-    ini_list = sd.get_files(".ini", recurs=False)
     json_list = sd.get_files(".json", recurs=False)
-    if (len(ini_list) + len(json_list)) != 1:
+    if len(json_list) != 1:
         logging.critical("A configuration file - and only one, is needed in "
                          "the directory of the plugin.")
         sys.exit(1)
 
     # ----------------------------------------------------------------------------
-    # Check if the .ini file can be parsed properly and get identifier
+    # Check if the .json file can be parsed properly and get identifier
     # ----------------------------------------------------------------------------
+    # Read the whole file content
+    with open(json_list[0]) as cfg:
+        config = json.load(cfg)
 
-    if len(ini_list) > 0:
-        parser = sppasPluginConfigParser(ini_list[0])
-        config = parser.get_config()
-
-        identifier = config['id']
-        logging.info("Plugin identifier: {:s}".format(identifier))
-        if "version" in config:
-            version = config['version']
-        else:
-            version = "1.0"
-
-        if "icon" not in config:
-            logging.warning("Plugin icon is missing.")
-
-        if "name" not in config:
-            logging.warning("Plugin name is missing of the configuration file.")
-
-        if "descr" not in config:
-            logging.warning("Plugin description is missing of the configuration file.")
-
+    identifier = config['id']
+    logging.info("Plugin identifier: {:s}".format(identifier))
+    if "version" in config:
+        version = config['version']
     else:
-        # ----------------------------------------------------------------------------
-        # Check if the .json file can be parsed properly and get identifier
-        # ----------------------------------------------------------------------------
-        # Read the whole file content
-        with open(json_list[0]) as cfg:
-            config = json.load(cfg)
+        version = "1.0"
 
-        identifier = config['id']
-        logging.info("Plugin identifier: {:s}".format(identifier))
-        if "version" in config:
-            version = config['version']
-        else:
-            version = "1.0"
+    if "icon" not in config:
+        logging.warning("Plugin icon is missing.")
 
-        if "icon" not in config:
-            logging.warning("Plugin icon is missing.")
+    if "name" not in config:
+        logging.warning("Plugin name is missing of the configuration file.")
 
-        if "name" not in config:
-            logging.warning("Plugin name is missing of the configuration file.")
-
-        if "descr" not in config:
-            logging.warning("Plugin description is missing of the configuration file.")
+    if "descr" not in config:
+        logging.warning("Plugin description is missing of the configuration file.")
 
     # ----------------------------------------------------------------------------
     # Create the plugin zip file

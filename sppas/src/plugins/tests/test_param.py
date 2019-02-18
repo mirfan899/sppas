@@ -16,7 +16,7 @@ DATA = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")
 class TestPluginParam(unittest.TestCase):
 
     def setUp(self):
-        self.param = sppasPluginParam(DATA, "plugin.ini")
+        self.param = sppasPluginParam(DATA, "plugin.json")
 
     def test_getters(self):
         self.assertEqual(self.param.get_key(), "pluginid")
@@ -26,7 +26,8 @@ class TestPluginParam(unittest.TestCase):
 
         opt = self.param.get_options()
         self.assertEqual(len(opt), 4)
-        self.assertEqual(opt["Option1"].get_key(), "-b")
-        self.assertEqual(opt["Option2"].get_key(), "--show-progress")
-        self.assertEqual(opt["Option3"].get_key(), "-i")
-        self.assertEqual(opt["Option3"].get_value(), u('C:\Windows'))
+
+        self.assertEqual(opt[0].get_key(), "-b")
+        self.assertEqual(opt[1].get_key(), "--show-progress")
+        self.assertEqual(opt[2].get_key(), "-i")
+        self.assertEqual(opt[3].get_value(), u('C:\Windows'))

@@ -43,7 +43,6 @@ from sppas.src.structs.baseoption import sppasOption
 from .pluginsexc import CommandExecError
 from .pluginsexc import CommandSystemError
 from .pluginsexc import OptionKeyError
-from .cfgparser import sppasPluginConfigParser
 
 # ----------------------------------------------------------------------------
 
@@ -55,7 +54,7 @@ class sppasPluginParam(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     The set of parameters of a plugin is made of a directory name, a
     configuration file name and a sppasPluginParser. This latter allows to
@@ -79,7 +78,6 @@ class sppasPluginParam(object):
         # The path where to find the plugin and its config
         self._directory = directory
         self._cfgfile = config_file
-        self._cfgparser = sppasPluginConfigParser()
 
         # Declare members and initialize:
 
@@ -94,7 +92,7 @@ class sppasPluginParam(object):
 
         # The command to be executed and its options
         self._command = ""
-        self._options = dict()
+        self._options = list()
         # OK... fill members from the given file
         self.parse()
 
@@ -108,7 +106,7 @@ class sppasPluginParam(object):
         self._icon = ""
 
         self._command = ""
-        self._options = dict()
+        self._options = list()
 
     # ------------------------------------------------------------------------
 
@@ -142,26 +140,7 @@ class sppasPluginParam(object):
                 opt.set_type(new_option['type'])
                 opt.set_value(str(new_option['value']))  # dangerous cast
                 opt.set_text(new_option.get('text', ""))
-                self._options[new_option['id']] = opt
-
-        elif filename.endswith('ini'):
-            self._cfgparser.parse(filename)
-
-            # get the command
-            command = self.__get_command(self._cfgparser.get_command())
-            if not self.__check_command(command):
-                raise CommandExecError(command)
-            self._command = command
-
-            # get the configuration
-            conf = self._cfgparser.get_config()
-            self._key = conf['id']
-            self._name = conf.get("name", "")
-            self._descr = conf.get("descr", "")
-            self._icon = conf.get("icon", "")
-
-            # get the options
-            self._options = self._cfgparser.get_options()
+                self._options.append(opt)
 
         else:
             raise IOError('Unknown extension for filename {:s}'.format(filename))
@@ -202,7 +181,7 @@ class sppasPluginParam(object):
 
     def get_option_from_key(self, key):
         """Get an option from its key."""
-        for option in self._options.values():
+        for option in self._options:
             if option.get_key() == key:
                 return option
         raise OptionKeyError(key)

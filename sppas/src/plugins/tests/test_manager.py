@@ -22,8 +22,8 @@ class TestPluginsManager(unittest.TestCase):
 
     def test_all(self):
 
-        # 5 plugins are already installed in the package of SPPAS
-        plg = 5
+        # some plugins are already installed in the package of SPPAS
+        plg = 6
         self.assertEqual(plg, len(self.manager.get_plugin_ids()))
 
         # Install a plugin

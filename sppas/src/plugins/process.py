@@ -34,7 +34,7 @@
 
 """
 
-import os.path
+import os
 import shlex
 from subprocess import Popen, PIPE, STDOUT
 
@@ -48,7 +48,7 @@ class sppasPluginProcess(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -75,7 +75,7 @@ class sppasPluginProcess(object):
         command = self._plugin.get_command()
 
         # append the options (sorted like in the configuration file)
-        for opt in self._plugin.get_options().values():
+        for opt in self._plugin.get_options():
             opt_id = opt.get_key()
 
             if opt_id == "input":

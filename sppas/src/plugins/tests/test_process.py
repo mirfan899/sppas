@@ -2,7 +2,6 @@
 
 import unittest
 import os.path
-import time
 
 from sppas.src.config import paths
 from ..param import sppasPluginParam
@@ -17,7 +16,7 @@ sample = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
 class TestPluginProcess(unittest.TestCase):
 
     def setUp(self):
-        param = sppasPluginParam(DATA, "plugin.ini")
+        param = sppasPluginParam(DATA, "plugin.json")
         self.process = sppasPluginProcess(param)
 
     def test_run(self):
