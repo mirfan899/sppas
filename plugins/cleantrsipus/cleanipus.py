@@ -57,7 +57,7 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 # -----------------------------------------------------------------------
 
 parser = ArgumentParser(
-    usage="%(prog)s [files] [options]",
+    usage="%(prog)s -i [file]",
     description="... a program to clean IPUs",
     add_help=True,
     epilog="This program is a plugin of {:s}. Contact the "
@@ -136,14 +136,19 @@ if tier is None:
 # Re-index right-IPUs
 ipu = 0
 for ann in tier:
+
     if ann.is_labelled() is False or ann.label_is_string() is False:
         continue
     if ann.get_best_tag().is_silence():
         continue
 
     old_label = ann.serialize_labels(separator=" ", empty="", alt=True)
-    if old_label.starts_with("ipu_"):
-        old_label = old_label[old_label.index(' '):].strip()
+    if old_label.startswith("ipu_"):
+        try:
+            space = old_label.index(' ')
+            old_label = old_label[space:].strip()
+        except ValueError:
+            old_label = ""
 
     if len(old_label) > 0:
         ipu += 1
@@ -154,24 +159,26 @@ for ann in tier:
     else:
         ann.set_labels(sppasLabel(sppasTag(SIL_ORTHO)))
 
+
 # Merge continuous silences
-i = len(tier)
+i = len(tier)-1
 while i >= 0:
     label = tier[i].serialize_labels()
+
     i -= 1
     c = i
-
     while label == SIL_ORTHO:
         label = tier[c].serialize_labels()
         c -= 1
+    c += 1
 
-    end_loc = tier[i].get_location().get_end().copy()
+    end_loc = tier[i].get_location().get_best().get_end().copy()
     # continuous silences
     if c < i:
         while c < i:
             tier.pop(i)
             i -= 1
-        tier[c].get_location().set_end(end_loc)
+        tier[c].get_location().get_best().set_end(end_loc)
 
 
 # -----------------------------------------------------------------------
@@ -179,9 +186,9 @@ while i >= 0:
 # -----------------------------------------------------------------------
 
 f, e = os.path.splitext(args.i)
-output = f + "-clean." + e
-logging.info("Write {:s}".format(args.o))
-parser = sppasRW(args.o)
+output = f + "-clean" + e
+logging.info("Write {:s}".format(output))
+parser = sppasRW(output)
 start_time = time.time()
 parser.write(trs_input)
 end_time = time.time()
