@@ -35,6 +35,7 @@
 
 import os
 import shutil
+import traceback
 import logging
 import zipfile
 from threading import Thread
@@ -137,6 +138,7 @@ class sppasPluginsManager(Thread):
             except Exception as e:
                 logging.info("Plugin {:s} loading error: {:s}"
                              "".format(plugin_folder, str(e)))
+                logging.error(traceback.format_exc())
 
     # ------------------------------------------------------------------------
 
@@ -207,6 +209,7 @@ class sppasPluginsManager(Thread):
         f = self.__get_config_file(plugin_path)
         if f is None:
             raise PluginConfigFileError
+        logging.info('Plugin {:s} loading.'.format(f))
 
         # Create the plugin instance
         p = sppasPluginParam(plugin_path, f)
@@ -312,9 +315,15 @@ class sppasPluginsManager(Thread):
     def __get_config_file(plugin_dir):
         """Return the config file of a given plugin."""
         sd = sppasDirUtils(plugin_dir)
-        files = sd.get_files(extension=".ini", recurs=False)
+
         # Find a file with the extension .ini, and only one
-        if len(files) == 1:
-            return files[0]
+        inifiles = sd.get_files(extension=".ini", recurs=False)
+        if len(inifiles) == 1:
+            return inifiles[0]
+
+        # Find a file with the extension .json, and only one
+        jsonfiles = sd.get_files(extension=".json", recurs=False)
+        if len(jsonfiles) == 1:
+            return jsonfiles[0]
 
         return None

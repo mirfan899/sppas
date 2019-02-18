@@ -47,7 +47,7 @@ from sppas.src.anndata import sppasTranscription, sppasRW
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -i file -m table"
+parser = ArgumentParser(usage="{:s} -i file"
                               "".format(os.path.basename(PROGRAM)),
                         description="... a program to map tags of labels.")
 

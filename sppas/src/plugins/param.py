@@ -33,12 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~
 
 """
-
+import json
 import os
 import platform
 import shlex
 from subprocess import Popen
 
+from sppas.src.structs.baseoption import sppasOption
 from .pluginsexc import CommandExecError
 from .pluginsexc import CommandSystemError
 from .pluginsexc import OptionKeyError
@@ -115,34 +116,55 @@ class sppasPluginParam(object):
         """Parse the configuration file of the plugin."""
         self.reset()
         filename = os.path.join(self._directory, self._cfgfile)
-        self._cfgparser.parse(filename)
+        if filename.endswith('json'):
 
-        # get the command
-        command = self.__get_command(self._cfgparser.get_command())
-        if not self.__check_command(command):
-            raise CommandExecError(command)
-        self._command = command
+            if os.path.exists(filename) is False:
+                raise IOError('Installation error: the file to configure the '
+                              'plugin does not exist.')
 
-        # get the configuration
-        conf = self._cfgparser.get_config()
-        self._key = conf['id']
-        self._name = conf.get("name", "")
-        self._descr = conf.get("descr", "")
-        self._icon = conf.get("icon", "")
+            # Read the whole file content
+            with open(filename) as cfg:
+                conf = json.load(cfg)
 
-        # get the options
-        self._options = self._cfgparser.get_options()
+            self._key = conf['id']
+            self._name = conf.get("name", "")
+            self._descr = conf.get("descr", "")
+            self._icon = conf.get("icon", "")
 
-    # ------------------------------------------------------------------------
+            # get the command
+            command = self.__get_command(conf['commands'])
+            if not self.__check_command(command):
+                raise CommandExecError(command)
+            self._command = command
 
-    def save(self):
-        """Save the configuration file.
+            for new_option in conf['options']:
+                opt = sppasOption(new_option['id'])
+                opt.set_type(new_option['type'])
+                opt.set_value(str(new_option['value']))  # dangerous cast
+                opt.set_text(new_option.get('text', ""))
+                self._options[new_option['id']] = opt
 
-        Copy the old one into a backup file.
+        elif filename.endswith('ini'):
+            self._cfgparser.parse(filename)
 
-        """
-        self._cfgparser.set_options(self._options)
-        self._cfgparser.save(backup=True)
+            # get the command
+            command = self.__get_command(self._cfgparser.get_command())
+            if not self.__check_command(command):
+                raise CommandExecError(command)
+            self._command = command
+
+            # get the configuration
+            conf = self._cfgparser.get_config()
+            self._key = conf['id']
+            self._name = conf.get("name", "")
+            self._descr = conf.get("descr", "")
+            self._icon = conf.get("icon", "")
+
+            # get the options
+            self._options = self._cfgparser.get_options()
+
+        else:
+            raise IOError('Unknown extension for filename {:s}'.format(filename))
 
     # ------------------------------------------------------------------------
     # Getters

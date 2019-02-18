@@ -4,8 +4,8 @@ program:    sampa2ipa
 author:     Brigitte Bigi
 contact:    develop@sppas.org
 date:       2018-10-10
-version:    2.0
-copyright:  Copyright (C) 2017-2018  Brigitte Bigi
+version:    2.1
+copyright:  Copyright (C) 2017-2019  Brigitte Bigi
 license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin to convert SAMPA into IPA phonemes encoding.
 
@@ -16,8 +16,9 @@ Phonetic Alphabet.
 It can convert either individual time-aligned phonemes or time-aligned
 strings of phonemes like syllables. The converted transcription is saved
 in a new file. Any symbol in the transcription tier which is not in the
-conversion file is not replaced. In case of TextGrid output, it converts
-into the Praat adaptation of the IPA.
+conversion file is not replaced.
+
+In case of TextGrid files, it converts into the Praat version of the IPA.
 
 ------------------------------------------------------------------------------
 
