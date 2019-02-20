@@ -327,9 +327,9 @@ if __name__ == "__main__":
             if args.debug:
                 log_level = 0
             else:
-                log_level = cg.log_level
+                log_level = 15
         else:
-            log_level = cg.quiet_log_level
+            log_level = 30
         lgs = sppasLogSetup(log_level)
         lgs.stream_handler()
 
