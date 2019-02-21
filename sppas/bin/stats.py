@@ -55,10 +55,10 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg
-from sppas.src.anndata import sppasRW
+from sppas import sppasRW
 from sppas.src.analysis.tierstats import sppasTierStats
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 # ----------------------------------------------------------------------------
 

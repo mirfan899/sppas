@@ -36,7 +36,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      develop@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
 Reference:
 
@@ -49,8 +49,9 @@ Reference:
 
 """
 from .rules import OtherRules
+from .sppasrepet import sppasOtherRepet
 
 __all__ = (
     "OtherRules",
+    'sppasOtherRepet'
 )
-

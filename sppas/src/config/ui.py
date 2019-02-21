@@ -33,8 +33,8 @@
 
 """
 
-from sppas.src.config import sg
-from sppas.src.config import sppasBaseSettings
+from .sglobal import sppasGlobalSettings
+from .settings import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
 
@@ -57,8 +57,11 @@ class sppasAppConfig(sppasBaseSettings):
         """Create the dictionary of key/value configuration."""
         super(sppasAppConfig, self).__init__()
 
+        with sppasGlobalSettings() as sg:
+            name = sg.__name__ + " " + sg.__version__
+
         self.__dict__ = dict(
-            name=sg.__name__ + " " + sg.__version__,
+            name=name,
             log_level=5,
             quiet_log_level=30,
             log_file=None,

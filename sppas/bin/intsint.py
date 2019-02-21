@@ -53,10 +53,10 @@ sys.path.append(SPPAS)
 from sppas import sg, annots
 from sppas import sppasIntsint
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.param import sppasParam
-from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
     

@@ -37,7 +37,7 @@
 """
 import wx
 
-from sppas.src.ui import SETTINGS_FILE
+from sppas.src.ui.wxgui import SETTINGS_FILE
 
 from sppas.src.ui.wxgui.sp_icons import SETTINGS_ICON
 from sppas.src.ui.wxgui.sp_icons import COMPONENTS_ICON
@@ -49,7 +49,7 @@ from sppas.src.ui.wxgui.sp_icons import ABOUT_ICON
 from sppas.src.ui.wxgui.sp_icons import HELP_ICON
 
 from sppas.src.ui.wxgui.sp_consts import DEFAULT_APP_NAME
-from sppas.src.ui.wxgui.sp_consts import MIN_PANEL_W,MIN_PANEL_H
+from sppas.src.ui.wxgui.sp_consts import MIN_PANEL_W, MIN_PANEL_H
 from sppas.src.ui.wxgui.sp_consts import MIN_FRAME_W
 from sppas.src.ui.wxgui.sp_consts import MIN_FRAME_H
 from sppas.src.ui.wxgui.sp_consts import FRAME_STYLE

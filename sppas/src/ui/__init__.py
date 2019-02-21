@@ -35,12 +35,9 @@ ui: User Interface makes SPPAS available for all users.
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
 """
-
-import os
-from sppas.src.config import paths
 
 from .tips import sppasTips
 from .logs import sppasLogFile
@@ -49,10 +46,8 @@ from .logs import sppasLogSetup
 from .term import TerminalController
 from .term import ProcessProgressTerminal
 
-SETTINGS_FILE = os.path.join(paths.etc, "settings.dump")
 
 __all__ = (
-    "SETTINGS_FILE",
     "sppasTips",
     "sppasLogFile",
     "sppasLogSetup",

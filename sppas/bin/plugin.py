@@ -65,7 +65,7 @@ sys.path.append(SPPAS)
 
 from sppas import sg
 from sppas.src.ui.term.terminalcontroller import TerminalController
-from sppas.src.plugins import sppasPluginsManager
+from sppas import sppasPluginsManager
 
 
 if __name__ == "__main__":
