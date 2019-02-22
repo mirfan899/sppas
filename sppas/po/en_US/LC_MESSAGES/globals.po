@@ -28,3 +28,6 @@ msgstr "List index {value} out of range [{min_value},{max_value}]"
 
 msgid ":ERROR 110: "
 msgstr "Unknown extension for filename {:s}"
+
+msgid ":ERROR 112: "
+msgstr "The directory {dirname} does not exist."

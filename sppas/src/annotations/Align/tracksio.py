@@ -37,6 +37,7 @@ import codecs
 import logging
 import traceback
 
+from sppas import NoDirectoryError
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata import sppasLocation
 from sppas.src.anndata import sppasInterval
@@ -51,7 +52,6 @@ import sppas.src.audiodata.autils as autils
 
 from ..annotationsexc import BadInputError
 from ..annotationsexc import SizeInputsError
-from ..annotationsexc import NoDirectoryError
 
 from .aligners.alignerio import AlignerIO
 

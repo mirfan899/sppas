@@ -51,9 +51,7 @@ from sppas.src.anndata.aio import sppasXRA
 from sppas.src.utils.fileutils import sppasFileUtils
 from sppas.src.resources import sppasMapping
 
-from ..annotationsexc import BadInputError
 from ..annotationsexc import SizeInputsError
-from ..annotationsexc import NoDirectoryError
 
 from ..Align.tracksio import ListOfTracks
 from ..Align.tracksio import TrackNamesGenerator

@@ -41,7 +41,7 @@ import zipfile
 from threading import Thread
 
 from sppas.src.config import paths
-from sppas.src.config import plugins_translation
+from sppas.src.config import info
 from sppas.src.utils.makeunicode import u
 from sppas.src.utils.fileutils import sppasDirUtils
 
@@ -54,13 +54,6 @@ from .pluginsexc import PluginFolderError
 from .pluginsexc import PluginKeyError
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
-
-# ----------------------------------------------------------------------------
-
-
-def info(msg_id):
-    """Return the info message from gettext."""
-    return u(plugins_translation.gettext(":INFO " + msg_id + ": "))
 
 # ----------------------------------------------------------------------------
 
@@ -248,7 +241,7 @@ class sppasPluginsManager(Thread):
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile) +
                                         " ("+str(i+1) + "/" + str(total)+")")
-            output_lines += info("4010").format(filename=pfile)
+            output_lines += (info(4010, "plugins")).format(filename=pfile)
             output_lines += "\n"
 
             # Apply the plugin
@@ -260,12 +253,12 @@ class sppasPluginsManager(Thread):
                 result = str(e)
 
             if len(result) == 0:
-                output_lines += info("4015")
+                output_lines += info(4015, "plugins")
             else:
                 try:
                     output_lines += u(result)
                 except Exception as e:
-                    output_lines += info("4100")
+                    output_lines += info(4100, "plugins")
                     logging.info(str(e))
                     logging.info(result)
 
@@ -276,7 +269,7 @@ class sppasPluginsManager(Thread):
 
         # Indicate completed!
         if self._progress is not None:
-            self._progress.update(1, info("4020") + "\n")
+            self._progress.update(1, info(4020, "plugins") + "\n")
             self._progress.set_header("")
 
         return output_lines

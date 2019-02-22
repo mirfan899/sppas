@@ -36,39 +36,20 @@
 
 """
 
-from sppas.src.config import plugins_translation
-
-# -----------------------------------------------------------------------
-
-_ = plugins_translation.gettext
-
-# -----------------------------------------------------------------------
-
-CFG_FILE_ERROR = ":ERROR 4010: "
-SECT_CFG_FILE_ERROR = ":ERROR 4014: "
-OPT_CFG_FILE_ERROR = ":ERROR 4016: "
-ARCHIVE_FILE_ERROR = ":ERROR 4020: "
-ARCHIVE_IO_ERROR = ":ERROR 4024: "
-DUPLICATE_ERROR = ":ERROR 4030: "
-PLUGIN_ID_ERROR = ":ERROR 4040: "
-PLUGIN_FOLDER_ERROR = ":ERROR 4050: "
-PLUGIN_KEY_ERROR = ":ERROR 4060: "
-CMD_EXEC_ERROR = ":ERROR 4070: "
-CMD_SYSTEM_ERROR = ":ERROR 4075: "
-OPTION_KEY_ERROR = ":ERROR 4080: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
 
 class PluginConfigFileError(IOError):
-    """:ERROR 4010: CFG_FILE_ERROR.
+    """:ERROR 4010:.
 
     Missing plugin configuration file.
 
     """
 
     def __init__(self):
-        self.parameter = CFG_FILE_ERROR + (_(CFG_FILE_ERROR))
+        self.parameter = error(4010) + (error(4010, "plugins"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -77,15 +58,15 @@ class PluginConfigFileError(IOError):
 
 
 class PluginSectionConfigFileError(ValueError):
-    """:ERROR 4014: SECT_CFG_FILE_ERROR.
+    """:ERROR 4014:.
 
     Missing section {section_name} in the configuration file.
 
     """
 
     def __init__(self, section_name):
-        self.parameter = SECT_CFG_FILE_ERROR + \
-                         (_(SECT_CFG_FILE_ERROR)).format(section_name=section_name)
+        self.parameter = error(4014) + \
+                         (error(4014, "plugins")).format(section_name=section_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -94,15 +75,15 @@ class PluginSectionConfigFileError(ValueError):
 
 
 class PluginOptionConfigFileError(ValueError):
-    """:ERROR 4016: OPT_CFG_FILE_ERROR.
+    """:ERROR 4016:.
 
     Missing option {:s} in section {:s} of the configuration file.
 
     """
 
     def __init__(self, section_name, option_name):
-        self.parameter = OPT_CFG_FILE_ERROR + \
-                         (_(OPT_CFG_FILE_ERROR)).format(
+        self.parameter = error(4016) + \
+                         (error(4016, "plugins")).format(
                              section_name=section_name,
                              option_name=option_name)
 
@@ -113,14 +94,15 @@ class PluginOptionConfigFileError(ValueError):
 
 
 class PluginArchiveFileError(Exception):
-    """:ERROR 4020: ARCHIVE_FILE_ERROR.
+    """:ERROR 4020:.
 
     Unsupported plugin file type.
 
     """
 
     def __init__(self):
-        self.parameter = ARCHIVE_FILE_ERROR + (_(ARCHIVE_FILE_ERROR))
+        self.parameter = error(4020) + \
+                         (error(4020, "plugins"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -129,14 +111,15 @@ class PluginArchiveFileError(Exception):
 
 
 class PluginArchiveIOError(IOError):
-    """:ERROR 4024: ARCHIVE_IO_ERROR.
+    """:ERROR 4024:.
 
     Unsupported plugin file type.
 
     """
 
     def __init__(self):
-        self.parameter = ARCHIVE_IO_ERROR + (_(ARCHIVE_IO_ERROR))
+        self.parameter = error(4024) + \
+                         (error(4024, "plugins"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -145,7 +128,7 @@ class PluginArchiveIOError(IOError):
 
 
 class PluginDuplicateError(IOError):
-    """:ERROR 4030: DUPLICATE_ERROR.
+    """:ERROR 4030:.
 
      A plugin with the same name is already existing in the plugins
      folder.
@@ -153,7 +136,8 @@ class PluginDuplicateError(IOError):
     """
 
     def __init__(self):
-        self.parameter = DUPLICATE_ERROR + (_(DUPLICATE_ERROR))
+        self.parameter = error(4030) + \
+                         (error(4030, "plugins"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -162,15 +146,15 @@ class PluginDuplicateError(IOError):
 
 
 class PluginIdError(ValueError):
-    """:ERROR 4040: PLUGIN_ID_ERROR.
+    """:ERROR 4040:.
 
     No plugin with identifier {plugin_id} is available.
 
     """
 
     def __init__(self, plugin_id):
-        self.parameter = PLUGIN_ID_ERROR + \
-                         (_(PLUGIN_ID_ERROR)).format(
+        self.parameter = error(4040) + \
+                         (error(4040, "plugins")).format(
                              plugin_id=plugin_id)
 
     def __str__(self):
@@ -180,15 +164,15 @@ class PluginIdError(ValueError):
 
 
 class PluginFolderError(IOError):
-    """:ERROR 4050: PLUGIN_FOLDER_ERROR.
+    """:ERROR 4050:.
 
     No such plugin folder: {:s}.
 
     """
 
     def __init__(self, plugin_folder):
-        self.parameter = PLUGIN_FOLDER_ERROR + \
-                         (_(PLUGIN_FOLDER_ERROR)).format(
+        self.parameter = error(4050) + \
+                         (error(4050, "plugins")).format(
                              plugin_folder=plugin_folder)
 
     def __str__(self):
@@ -198,7 +182,7 @@ class PluginFolderError(IOError):
 
 
 class PluginKeyError(KeyError):
-    """:ERROR 4060: PLUGIN_KEY_ERROR.
+    """:ERROR 4060:.
 
     A plugin with the same key is already existing or plugin already
     loaded.
@@ -206,7 +190,8 @@ class PluginKeyError(KeyError):
     """
 
     def __init__(self):
-        self.parameter = PLUGIN_KEY_ERROR + (_(PLUGIN_KEY_ERROR))
+        self.parameter = error(4060) + \
+                         (error(4060, "plugins"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -215,15 +200,15 @@ class PluginKeyError(KeyError):
 
 
 class CommandExecError(OSError):
-    """:ERROR 4070: CMD_EXEC_ERROR.
+    """:ERROR 4070:.
 
     {command_name} is not a valid command on your operating system.
 
     """
 
     def __init__(self, command_name):
-        self.parameter = CMD_EXEC_ERROR + \
-                         (_(CMD_EXEC_ERROR)).format(
+        self.parameter = error(4070) + \
+                         (error(4070, "plugins")).format(
                              command_name=command_name)
 
     def __str__(self):
@@ -233,7 +218,7 @@ class CommandExecError(OSError):
 
 
 class CommandSystemError(OSError):
-    """:ERROR 4075: CMD_SYSTEM_ERROR.
+    """:ERROR 4075:.
 
     No command was defined for the system: {:s}.
     Supported systems of this plugin are: {:s}.
@@ -242,8 +227,8 @@ class CommandSystemError(OSError):
 
     def __init__(self, current_system, supported_systems=[]):
         systems = ",".join(supported_systems)
-        self.parameter = CMD_SYSTEM_ERROR + \
-                         (_(CMD_SYSTEM_ERROR)).format(
+        self.parameter = error(4075) + \
+                         (error(4075, "plugins")).format(
                             current_system=current_system,
                             supported_systems=systems)
 
@@ -254,15 +239,15 @@ class CommandSystemError(OSError):
 
 
 class OptionKeyError(KeyError):
-    """:ERROR 4080: OPTION_KEY_ERROR.
+    """:ERROR 4080:.
 
     No option with key {:s}.
 
     """
 
     def __init__(self, key):
-        self.parameter = OPTION_KEY_ERROR + \
-                         (_(OPTION_KEY_ERROR)).format(key=key)
+        self.parameter = error(4080) + \
+                         (error(4080, "plugins")).format(key=key)
 
     def __str__(self):
         return repr(self.parameter)

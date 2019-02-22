@@ -36,7 +36,7 @@
 from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 
 from sppas import sppasRW
 from sppas import sppasTranscription
@@ -56,15 +56,6 @@ from ..searchtier import sppasFindTier
 from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_MISSING = (_(":INFO 1110: "))
-MSG_PHONETIZED = (_(":INFO 1112: "))
-MSG_NOT_PHONETIZED = (_(":INFO 1114: "))
-MSG_TRACK = (_(":INFO 1220: "))
 
 SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
@@ -202,16 +193,17 @@ class sppasPhon(sppasBaseAnnotation):
         for tex, p, s in tab:
             message = None
             if s == annots.error:
-                message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
+                message = (info(1110, "annotations")).format(tex) + \
+                          info(1114, "annotations")
                 self.logfile.print_message(message, indent=2, status=s)
                 return [unk]
             else:
                 if s == annots.warning:
-                    message = MSG_MISSING.format(tex)
+                    message = (info(1110, "annotations")).format(tex)
                     if len(p) > 0:
-                        message = message + MSG_PHONETIZED.format(p)
+                        message = message + (info(1112, "annotations")).format(p)
                     else:
-                        message = message + MSG_NOT_PHONETIZED
+                        message = message + info(1114, "annotations")
                         p = unk
                 tab_phones.append(p)
 
@@ -236,7 +228,8 @@ class sppasPhon(sppasBaseAnnotation):
 
         phones_tier = sppasTier("Phones")
         for i, ann in enumerate(tier):
-            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(
+                (info(1220, "annotations")).format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()

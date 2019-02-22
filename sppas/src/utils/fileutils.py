@@ -40,7 +40,7 @@ import tempfile
 from datetime import date
 
 from .makeunicode import sppasUnicode
-from .utilsexc import NoDirectoryError
+from sppas import NoDirectoryError
 
 # ----------------------------------------------------------------------------
 

@@ -17,8 +17,5 @@ msgstr ""
 "Language: en_US\n"
 "X-Generator: Poedit 1.8.11\n"
 
-msgid ":ERROR 1210: "
-msgstr "The directory {dirname} does not exist."
-
 msgid ":ERROR 7010: "
 msgstr "Expected a {data_name} of type {expected_type}. Got {data_type} instead."

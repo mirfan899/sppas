@@ -32,22 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.config import resources_translation
-
-# -----------------------------------------------------------------------
-
-_ = resources_translation.gettext
-
-# -----------------------------------------------------------------------
-
-FILE_UNICODE_ERROR = ":ERROR 5005: "
-FILE_IO_ERROR = ":ERROR 5010: "
-FILE_FORMAT_ERROR = ":ERROR 5015: "
-NGRAM_RANGE_ERROR = ":ERROR 5020: "
-GAP_RANGE_ERROR = ":ERROR 5022: "
-SCORE_RANGE_ERROR = ":ERROR 5024: "
-DUMP_EXTENSION_ERROR = ":ERROR 5030: "
-POSITIVE_VALUE_ERROR = ":ERROR 5040: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
@@ -60,8 +45,8 @@ class FileUnicodeError(UnicodeDecodeError):
     """
 
     def __init__(self, filename):
-        self.parameter = FILE_UNICODE_ERROR + \
-                         (_(FILE_UNICODE_ERROR)).format(name=filename)
+        self.parameter = error(5005) + \
+                         (error(5005, "resources")).format(name=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -77,8 +62,8 @@ class FileIOError(Exception):
     """
 
     def __init__(self, filename):
-        self.parameter = FILE_IO_ERROR + \
-                         (_(FILE_IO_ERROR)).format(name=filename)
+        self.parameter = error(5010) + \
+                         (error(5010, "resources")).format(name=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -95,8 +80,8 @@ class FileFormatError(ValueError):
 
     def __init__(self, line_number, filename):
         line_number = int(line_number)
-        self.parameter = FILE_FORMAT_ERROR + \
-                         (_(FILE_FORMAT_ERROR)).format(
+        self.parameter = error(5015) + \
+                         (error(5015, "resources")).format(
                              number=line_number,
                              string=filename)
 
@@ -117,8 +102,8 @@ class NgramRangeError(ValueError):
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = NGRAM_RANGE_ERROR + \
-                         (_(NGRAM_RANGE_ERROR)).format(
+        self.parameter = error(5020) + \
+                         (error(5020, "resources")).format(
                              maximum=maxi,
                              observed=value)
 
@@ -139,9 +124,10 @@ class GapRangeError(ValueError):
     def __init__(self, maxi, value):
         maxi = int(maxi)
         value = int(value)
-        self.parameter = GAP_RANGE_ERROR + \
-                         (_(GAP_RANGE_ERROR)).format(maximum=maxi,
-                                                     observed=value)
+        self.parameter = error(5022) + \
+                         (error(5022, "resources")).format(
+                             maximum=maxi,
+                             observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -159,8 +145,8 @@ class ScoreRangeError(ValueError):
 
     def __init__(self, value):
         value = float(value)
-        self.parameter = SCORE_RANGE_ERROR + \
-                         (_(SCORE_RANGE_ERROR)).format(observed=value)
+        self.parameter = error(5024) + \
+                         (error(5024, "resources")).format(observed=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -177,8 +163,8 @@ class DumpExtensionError(ValueError):
     """
 
     def __init__(self, extension):
-        self.parameter = DUMP_EXTENSION_ERROR + \
-                         (_(DUMP_EXTENSION_ERROR)).format(extension=extension)
+        self.parameter = error(5030) + \
+                         (error(5030, "resources")).format(extension=extension)
 
     def __str__(self):
         return repr(self.parameter)
@@ -194,8 +180,8 @@ class PositiveValueError(ValueError):
     """
 
     def __init__(self, count):
-        self.parameter = POSITIVE_VALUE_ERROR + \
-                         (_(POSITIVE_VALUE_ERROR)).format(count=count)
+        self.parameter = error(5040) + \
+                         (error(5040, "resources")).format(count=count)
 
     def __str__(self):
         return repr(self.parameter)

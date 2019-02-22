@@ -38,9 +38,10 @@ import os
 import logging
 import traceback
 
+from sppas import NoDirectoryError
 from sppas.src.config import paths
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasLabel, sppasTag, sppasLocation
@@ -52,7 +53,6 @@ from sppas.src.utils.fileutils import sppasFileUtils
 from ..baseannot import sppasBaseAnnotation
 from ..searchtier import sppasFindTier
 from ..annotationsexc import AnnotationOptionError
-from ..annotationsexc import NoDirectoryError
 from ..annotationsexc import EmptyDirectoryError
 from ..annotationsexc import NoInputError
 
@@ -62,22 +62,18 @@ from .activity import sppasActivity
 
 # ---------------------------------------------------------------------------
 
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_MODEL_L1_FAILED = (_(":INFO 1210: "))
-MSG_ALIGN_TRACK = (_(":INFO 1220: "))
-MSG_ALIGN_FAILED = (_(":INFO 1230: "))
-MSG_BASIC = (_(":INFO 1240: "))
-MSG_ACTION_SPLIT_INTERVALS = (_(":INFO 1250: "))
-MSG_ACTION_ALIGN_INTERVALS = (_(":INFO 1252: "))
-MSG_ACTION_MERGE_INTERVALS = (_(":INFO 1254: "))
-MSG_ACTION_EXTRA_TIER = (_(":INFO 1256: "))
-MSG_TOKENS_DISABLED = (_(":INFO 1260: "))
-MSG_NO_TOKENS_ALIGN = (_(":INFO 1262: "))
-MSG_EXTRA_TIER = (_(":INFO 1270: "))
-MSG_WORKDIR = (_(":INFO 1280: "))
+MSG_MODEL_L1_FAILED = (info(1210, "annotations"))
+MSG_ALIGN_TRACK = (info(1220, "annotations"))
+MSG_ALIGN_FAILED = (info(1230, "annotations"))
+MSG_BASIC = (info(1240, "annotations"))
+MSG_ACTION_SPLIT_INTERVALS = (info(1250, "annotations"))
+MSG_ACTION_ALIGN_INTERVALS = (info(1252, "annotations"))
+MSG_ACTION_MERGE_INTERVALS = (info(1254, "annotations"))
+MSG_ACTION_EXTRA_TIER = (info(1256, "annotations"))
+MSG_TOKENS_DISABLED = (info(1260, "annotations"))
+MSG_NO_TOKENS_ALIGN = (info(1262, "annotations"))
+MSG_EXTRA_TIER = (info(1270, "annotations"))
+MSG_WORKDIR = (info(1280, "annotations"))
 
 # ---------------------------------------------------------------------------
 

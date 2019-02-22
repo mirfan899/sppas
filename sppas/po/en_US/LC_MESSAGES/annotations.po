@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
+"Last-Translator: Brigitte Bigi <develop@sppas.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 2.1.1\n"
 
 msgid ":INFO 1000: "
 msgstr "Valid. "
@@ -123,6 +123,9 @@ msgstr "Procedure Outcome Report"
 msgid ":INFO 1056: "
 msgstr "File {!s:s}"
 
+msgid ":INFO 1058: "
+msgstr "Information: "
+
 msgid ":INFO 1110: "
 msgstr "{:s} is missing of the dictionary and "
 
@@ -142,7 +145,7 @@ msgid ":INFO 1222: "
 msgstr "Empty interval."
 
 msgid ":INFO 1224: "
-msgstr "Ignored invalid intervall: {:s!s}."
+msgstr "Ignored invalid interval: {:s!s}."
 
 msgid ":INFO 1230: "
 msgstr "The automatic aligner '{name}' failed to perform segmentation."
@@ -177,6 +180,24 @@ msgstr "{tiername} tier generation: {message}"
 msgid ":INFO 1280: "
 msgstr "The working directory is {dirname}."
 
+msgid ":INFO 1290: "
+msgstr "Threshold RMS value:        {:d}"
+
+msgid ":INFO 1292: "
+msgstr "Minimum silence duration: {:.3f}"
+
+msgid ":INFO 1294: "
+msgstr "Minimum IPUs duration:    {:.3f}"
+
+msgid ":INFO 1296: "
+msgstr "Unable to align the audio with the given transcription."
+
+msgid ":INFO 1298: "
+msgstr "A file with name {!s:s} is already existing."
+
+msgid ":INFO 1299: "
+msgstr "This file was exported to {!s:s}"
+
 msgid ":ERROR 1010: "
 msgstr "Unknown option with key {key}."
 
@@ -198,11 +219,11 @@ msgstr "Inconsistency between the number of intervals of the input tiers. Got: {
 msgid ":ERROR 1060: "
 msgstr "Not enough annotations in the input tier. At least {:d} are required."
 
+msgid ":ERROR 1070: "
+msgstr "An audio file with only one channel is expected. Got {nb} channels."
+
 msgid ":ERROR 1110: "
 msgstr "Unable to phonetize the unknown token {:s}."
-
-msgid ":ERROR 1210: "
-msgstr "The directory {dirname} does not exist."
 
 msgid ":ERROR 1220: "
 msgstr "The directory {dirname} does not contain relevant data."

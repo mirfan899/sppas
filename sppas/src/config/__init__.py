@@ -35,7 +35,7 @@ config: SPPAS configuration for global things.
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      develop@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
 """
 import sys
@@ -79,20 +79,73 @@ except AttributeError:  # Python 2.7
 # Fix the translation of each package
 # ---------------------------------------------------------------------------
 
-st = sppasTranslate()
-anndata_translation = st.translation("anndata")
-annotations_translation = st.translation("annotations")
-audiodata_translation = st.translation("audiodata")
-calculus_translation = st.translation("calculus")
-models_translation = st.translation("models")
-plugins_translation = st.translation("plugins")
-resources_translation = st.translation("resources")
-structs_translation = st.translation("structs")
-ui_translation = st.translation("ui")
-utils_translation = st.translation("utils")
-globals_translation = st.translation("globals")
+ui_translation = sppasTranslate().translation("ui")
 
 # ---------------------------------------------------------------------------
+
+
+def info(msg_id, domain=None):
+    """Return the info message from gettext.
+
+    :param msg_id: (str or int) Info id
+    :param domain: (str) Name of the domain
+
+    """
+    msg = ":INFO " + str(msg_id) + ": "
+    if domain is not None:
+        try:
+            st = sppasTranslate()
+            translation = st.translation(domain)
+            return translation.gettext(msg)
+        except:
+            pass
+
+    return msg
+
+# ---------------------------------------------------------------------------
+
+
+def error(msg_id, domain=None):
+    """Return the error message from gettext.
+
+    :param msg_id: (str or int) Error id
+    :param domain: (str) Name of the domain
+
+    """
+    msg = ":ERROR " + str(msg_id) + ": "
+    if domain is not None:
+        try:
+            st = sppasTranslate()
+            translation = st.translation(domain)
+            return translation.gettext(msg)
+        except:
+            pass
+
+    return msg
+
+# ---------------------------------------------------------------------------
+
+
+def msg(msg, domain=None):
+    """Return the message from gettext.
+
+    :param msg: (str or int) Message
+    :param domain: (str) Name of the domain
+
+    """
+    if domain is not None:
+        try:
+            st = sppasTranslate()
+            translation = st.translation(domain)
+            return translation.gettext(msg)
+        except:
+            pass
+
+    return msg
+
+
+# ---------------------------------------------------------------------------
+
 
 __all__ = (
     "sppasBaseSettings",
@@ -101,16 +154,9 @@ __all__ = (
     "symbols",
     "separators",
     "annots",
-    "st",
-    "anndata_translation",
-    "annotations_translation",
-    "audiodata_translation",
-    "models_translation",
-    "plugins_translation",
-    "resources_translation",
-    "structs_translation",
     "ui_translation",
-    "utils_translation",
-    "globals_translation",
-    "sppasAppConfig"
+    "sppasAppConfig",
+    "info",
+    "error",
+    "msg"
 )

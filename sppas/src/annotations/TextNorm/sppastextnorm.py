@@ -39,7 +39,7 @@ import os
 
 from sppas.src.config import paths
 from sppas.src.config import symbols
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 
 from sppas import sppasDictRepl
 from sppas import sppasVocabulary
@@ -59,12 +59,6 @@ from ..annotationsexc import EmptyOutputError
 from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_TRACK = _(":INFO 1220: ")
 
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
@@ -298,7 +292,8 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(
+                (info(1220, "annotations")).format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()

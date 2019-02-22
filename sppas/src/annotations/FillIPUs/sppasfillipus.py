@@ -44,9 +44,11 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.config import annots
 import sppas.src.anndata.aio
+from sppas.src.config import info
 
 from ..SearchIPUs.sppassearchipus import sppasSearchIPUs
 from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import AudioChannelError
 from ..baseannot import sppasBaseAnnotation
 
 from .fillipus import FillIPUs
@@ -152,13 +154,10 @@ class sppasFillIPUs(sppasBaseAnnotation):
         tier.set_meta('minimum_ipus_duration',
                       str(filler.get_min_ipu_dur()))
 
-        self.logfile.print_message("Information: ", indent=1)
-        m1 = "Threshold volume value:     {:d}" \
-             "".format(filler.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}" \
-             "".format(filler.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}" \
-             "".format(filler.get_min_ipu_dur())
+        self.logfile.print_message(info(1058, "annotations"), indent=1)
+        m1 = info(1290, "annotations").format(filler.get_vol_threshold())
+        m2 = info(1292, "annotations").format(filler.get_min_sil_dur())
+        m3 = info(1294, "annotations").format(filler.get_min_ipu_dur())
         for m in (m1, m2, m3):
             self.logfile.print_message(m, indent=2)
 
@@ -175,8 +174,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
         audio_speech = sppas.src.audiodata.aio.open(input_audio_filename)
         n = audio_speech.get_nchannels()
         if n != 1:
-            raise IOError("An audio file with only one channel is expected. "
-                          "Got {:d} channels.".format(n))
+            raise AudioChannelError(n)
+
         idx = audio_speech.extract_channel()
         channel = audio_speech.get_channel(idx)
 
@@ -237,8 +236,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
         tier = self.convert(input_audio_filename, input_trans_filename)
         if tier is None:
-            msg = "Unable to align the audio with the given transcription."
-            self.logfile.print_message(msg, indent=2, status=-1)
+            self.logfile.print_message(info(1296, "annotations"), indent=2, status=-1)
             return None
 
         # Create the transcription to put the result
@@ -288,8 +286,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
         if exists_out_name is not None:
             if exists_out_name == out_name:
                 self.logfile.print_message(
-                    "A file with name {:s} is already existing."
-                    "".format(exists_out_name), indent=2, status=annots.info)
+                    info(1298, "annotations").format(exists_out_name),
+                    indent=2, status=annots.info)
                 return None
 
             else:
@@ -299,9 +297,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     parser.set_filename(out_name)
                     parser.write(t)
                     self.logfile.print_message(
-                        "A file with name {:s} was already existing. "
-                        'This file was exported to {:s}'
-                        ''.format(exists_out_name, out_name),
+                        info(1298, "annotations").format(exists_out_name) +
+                        info(1299, "annotations").format(out_name),
                         indent=2, status=annots.info)
                     return out_name
                 except:

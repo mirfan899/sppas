@@ -35,19 +35,7 @@ Global exceptions for sppas.
 
 """
 
-from sppas.src.config import globals_translation
-
-# -----------------------------------------------------------------------
-
-_ = globals_translation.gettext
-
-# -----------------------------------------------------------------------
-
-NEG_VALUE_ERROR = ":ERROR 010: "
-INTERVAL_RANGE_ERROR = ":ERROR 012: "
-RANGE_INDEX_ERROR = ":ERROR 014: "
-
-IO_EXTENSION_ERROR = ":ERROR 110: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
@@ -60,8 +48,8 @@ class NegativeValueError(ValueError):
     """
 
     def __init__(self, value):
-        self.parameter = NEG_VALUE_ERROR + \
-                         (_(NEG_VALUE_ERROR)).format(value=value)
+        self.parameter = error('010') + \
+                         (error('010', "globals")).format(value=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -77,8 +65,8 @@ class RangeBoundsException(ValueError):
     """
 
     def __init__(self, min_value, max_value):
-        self.parameter = INTERVAL_RANGE_ERROR + \
-                         (_(INTERVAL_RANGE_ERROR)).format(
+        self.parameter = error('012') + \
+                         (error('012', "globals")).format(
                              min_value=min_value,
                              max_value=max_value)
 
@@ -97,15 +85,14 @@ class IndexRangeException(IndexError):
     """
 
     def __init__(self, value, min_value, max_value):
-        self.parameter = INTERVAL_RANGE_ERROR + \
-                         (_(INTERVAL_RANGE_ERROR)).format(
+        self.parameter = error('014') + \
+                         (error('014', "globals")).format(
                              value=value,
                              min_value=min_value,
                              max_value=max_value)
 
     def __str__(self):
         return repr(self.parameter)
-
 
 # -----------------------------------------------------------------------
 
@@ -118,9 +105,25 @@ class IOExtensionException(IOError):
     """
 
     def __init__(self, filename):
-        self.parameter = INTERVAL_RANGE_ERROR + \
-                         (_(INTERVAL_RANGE_ERROR)).format(filename)
+        self.parameter = error('110') + \
+                         (error('110', "globals")).format(filename)
 
     def __str__(self):
         return repr(self.parameter)
 
+# -----------------------------------------------------------------------
+
+
+class NoDirectoryError(IOError):
+    """:ERROR 112:.
+
+    The directory {dirname} does not exist.
+
+    """
+
+    def __init__(self, dirname):
+        self.parameter = error(112) + \
+                         (error(112, "globals")).format(dirname=dirname)
+
+    def __str__(self):
+        return repr(self.parameter)

@@ -35,7 +35,7 @@
 """
 from sppas.src.config import symbols
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 
 from sppas import sppasRW
 from sppas import sppasTranscription
@@ -53,15 +53,6 @@ from ..annotationsexc import AnnotationOptionError
 from ..annotationsexc import EmptyOutputError
 
 from .syllabify import Syllabifier
-
-# ----------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ----------------------------------------------------------------------------
-
-MSG_INVALID = (_(":INFO 1224: "))
-MSG_NO_TIER = (_(":INFO 1264: "))
 
 # ----------------------------------------------------------------------------
 
@@ -221,7 +212,8 @@ class sppasSyll(sppasBaseAnnotation):
                                         syllables)
             else:
                 self.logfile.print_message(
-                    MSG_INVALID.format(interval), indent=2, status=annots.warning)
+                    (info(1224, "annotations")).format(interval),
+                    indent=2, status=annots.warning)
 
         return syllables
 
@@ -317,7 +309,7 @@ class sppasSyll(sppasBaseAnnotation):
             intervals = trs_input.find(self._options['tiername'])
             if intervals is None:
                 self.logfile.print_message(
-                    MSG_NO_TIER.format(tiername=self._options['tiername']),
+                    (info(1264, "annotations")).format(tiername=self._options['tiername']),
                     indent=2,
                     status=annots.warning)
             else:

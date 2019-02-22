@@ -35,18 +35,10 @@
 import codecs
 
 from sppas.src.config import sg
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligners import sppasAligners
-
-# ---------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_EMPTY_INTERVAL = (_(":INFO 1222: "))
 
 # ---------------------------------------------------------------------------
 
@@ -191,7 +183,7 @@ class TrackSegmenter(object):
         # Do not align nothing!
         if len(phones) == 0:
             self._basic_aligner.run_alignment(audio_filename, align_name)
-            return MSG_EMPTY_INTERVAL
+            return info(1222, "annotations)")
 
         # Do not align only one phoneme!
         if len(phones.split()) <= 1 and "-" not in phones:

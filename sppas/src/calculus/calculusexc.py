@@ -35,18 +35,7 @@
 
 """
 
-from sppas.src.config import calculus_translation
-
-_ = calculus_translation.gettext
-
-# -----------------------------------------------------------------------
-
-VECTORS_ERROR = ":ERROR 3010: "
-PROBABILITY_VALUE_ERROR = ":ERROR 3015: "
-PROBABILITY_SUM_ERROR = ":ERROR 3015: "
-EUCLIDIAN_DISTANCE_ERROR = ":ERROR 3025: "
-EMPTY_LIST = ":ERROR 3030: "
-IN_INTERVAL_ERROR = ":ERROR 3040: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
@@ -60,7 +49,7 @@ class VectorsError(Exception):
     """
 
     def __init__(self):
-        self.parameter = VECTORS_ERROR + (_(VECTORS_ERROR))
+        self.parameter = error(3010) + (error(3010, "calculus"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -78,11 +67,11 @@ class ProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_VALUE_ERROR + \
-                             (_(PROBABILITY_VALUE_ERROR)).format(value=value)
+            self.parameter = error(3015) + \
+                             (error(3015, "calculus")).format(value=value)
         else:
-            self.parameter = PROBABILITY_VALUE_ERROR + \
-                             (_(PROBABILITY_VALUE_ERROR)).replace("{value}", "")
+            self.parameter = error(3015) + \
+                             (error(3015, "calculus")).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -100,11 +89,11 @@ class SumProbabilityError(Exception):
     def __init__(self, value=None):
         if value is not None:
             value = float(value)
-            self.parameter = PROBABILITY_SUM_ERROR + \
-                             (_(PROBABILITY_SUM_ERROR)).format(value=value)
+            self.parameter = error(3016) + \
+                             (error(3016, "calculus")).format(value=value)
         else:
-            self.parameter = PROBABILITY_SUM_ERROR + \
-                             (_(PROBABILITY_SUM_ERROR)).replace("{value}", "")
+            self.parameter = error(3016) + \
+                             (error(3016, "calculus")).replace("{value}", "")
 
     def __str__(self):
         return repr(self.parameter)
@@ -120,8 +109,7 @@ class EuclidianDistanceError(ValueError):
     """
 
     def __init__(self):
-        self.parameter = EUCLIDIAN_DISTANCE_ERROR + \
-                         (_(EUCLIDIAN_DISTANCE_ERROR))
+        self.parameter = error(3025) + (error(3025, "calculus"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -137,7 +125,7 @@ class EmptyError(Exception):
     """
 
     def __init__(self):
-        self.parameter = EMPTY_LIST + (_(EMPTY_LIST))
+        self.parameter = error(3030) + (error(3030, "calculus"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -157,10 +145,11 @@ class InsideIntervalError(ValueError):
         min_value = int(min_value)
         max_value = int(max_value)
         value = int(value)
-        self.parameter = IN_INTERVAL_ERROR + \
-                         (_(IN_INTERVAL_ERROR)).format(value=value,
-                                                       min_value=min_value,
-                                                       max_value=max_value)
+        self.parameter = error(3040) + \
+                         (error(3040, "calculus")).format(
+                             value=value,
+                             min_value=min_value,
+                             max_value=max_value)
 
     def __str__(self):
         return repr(self.parameter)

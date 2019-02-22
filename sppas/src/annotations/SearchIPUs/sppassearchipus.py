@@ -35,7 +35,6 @@
 """
 import os
 
-from sppas.src.config import annotations_translation
 from sppas.src.config import symbols
 
 import sppas.src.audiodata.aio
@@ -59,12 +58,6 @@ from .searchipus import SearchIPUs
 SIL_ORTHO = list(
     symbols.ortho.keys()
     )[list(symbols.ortho.values()).index("silence")]
-
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_NO_TIER = (_(":INFO 1264: "))
 
 # ---------------------------------------------------------------------------
 

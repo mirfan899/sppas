@@ -39,7 +39,7 @@ import os
 from sppas import paths
 from sppas import annots
 
-from sppas.src.config import annotations_translation
+from sppas.src.config import msg
 from sppas.src.structs.baseoption import sppasOption
 from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.lang import UNDETERMINED
@@ -47,10 +47,6 @@ from sppas.src.anndata.aio import extensions as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
 from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils.fileutils import sppasFileUtils
-
-# ----------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
 
 # ----------------------------------------------------------------------------
 
@@ -113,14 +109,14 @@ class annotationParam(object):
                 conf = json.load(cfg)
 
             self.__key = conf['id']
-            self.__name = conf.get(_('name'), '')        # translate the name
+            self.__name = msg(conf.get('name', ''), "annotations)")  # translate the name
             self.__descr = conf.get('descr', "")
 
             for new_option in conf['options']:
                 opt = sppasOption(new_option['id'])
                 opt.set_type(new_option['type'])
                 opt.set_value(str(new_option['value']))  # dangerous cast
-                opt.set_text(_(new_option['text']))      # translated
+                opt.set_text(msg(new_option.get('text', ''), "annotations"))   # translated
                 self.__options.append(opt)
 
             for new_resource in conf['resources']:

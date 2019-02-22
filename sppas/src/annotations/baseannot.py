@@ -39,17 +39,11 @@ import json
 import sppas.src.anndata.aio
 from sppas.src.config import annots
 from sppas.src.config import paths
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 from sppas.src.utils.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
 from .log import sppasLog
-
-# ---------------------------------------------------------------------------
-
-MSG_OPTIONS = annotations_translation.gettext(":INFO 1050: ")
-MSG_DIAGNOSIS = annotations_translation.gettext(":INFO 1052: ")
-MSG_ANN_FILE = (annotations_translation.gettext(":INFO 1056: "))
 
 # ---------------------------------------------------------------------------
 
@@ -393,15 +387,16 @@ class sppasBaseAnnotation(object):
         if self.logfile:
             fn = os.path.basename(filename)
             self.logfile.print_message(
-                MSG_ANN_FILE.format(fn), indent=0, status=None)
+                (info(1056, "annotations")).format(fn), indent=0, status=None)
         else:
-            logging.info(MSG_ANN_FILE.format(filename))
+            logging.info((info(1056, "annotations")).format(filename))
 
     # -----------------------------------------------------------------------
 
     def print_options(self):
         """Print the list of options in the user log."""
-        self.logfile.print_message(MSG_OPTIONS + ": ", indent=0, status=None)
+        self.logfile.print_message(info(1050, "annotations") + ": ",
+                                   indent=0, status=None)
 
         for k, v in self._options.items():
             msg = " ... {!s:s}: {!s:s}".format(k, v)
@@ -421,7 +416,7 @@ class sppasBaseAnnotation(object):
             if filename is not None and os.path.exists(filename):
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
-                msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
+                msg = (info(1056, "annotations")).format(fn) + ": {!s:s}".format(m)
                 self.logfile.print_message(msg, indent=0, status=None)
 
     # ------------------------------------------------------------------------
