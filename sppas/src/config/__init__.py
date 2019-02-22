@@ -54,6 +54,7 @@ from .sglobal import sppasSymbolSettings
 from .sglobal import sppasSeparatorSettings
 from .sglobal import sppasAnnotationsSettings
 from .po import sppasTranslate
+from .ui import sppasAppConfig
 
 # ---------------------------------------------------------------------------
 # Fix the global un-modifiable settings
@@ -110,5 +111,6 @@ __all__ = (
     "structs_translation",
     "ui_translation",
     "utils_translation",
-    "globals_translation"
+    "globals_translation",
+    "sppasAppConfig"
 )

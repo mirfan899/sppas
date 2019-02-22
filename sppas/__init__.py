@@ -35,9 +35,10 @@ sppas: Global imports and some settings for external use.
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
 """
+from sppas.src.config import *
 from sppas.src.anndata import *
 from sppas.src.audiodata import *
 from sppas.src.calculus import *
@@ -47,8 +48,8 @@ from sppas.src.resources import *
 from sppas.src.structs import *
 from sppas.src.utils import *
 from sppas.src.exc import *
-from sppas.src.config import *
 from sppas.src.annotations import *
+from sppas.src.ui import sppasLogSetup
 
 __version__ = sg.__version__
 __name__ = sg.__name__

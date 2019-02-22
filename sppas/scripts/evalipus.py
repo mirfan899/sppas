@@ -327,9 +327,9 @@ if __name__ == "__main__":
             if args.debug:
                 log_level = 0
             else:
-                log_level = cg.log_level
+                log_level = 15
         else:
-            log_level = cg.quiet_log_level
+            log_level = 30
         lgs = sppasLogSetup(log_level)
         lgs.stream_handler()
 
@@ -494,8 +494,9 @@ if __name__ == "__main__":
             # the ipu of the ref is matching several ipus in the hyp.
             else:
                 # This over-segmentation could correspond to a short-pause,
-                # or a silence into a laugh. this is an error but not a critical one.
-                nb_ref_several_match += len(ipus_hyp_anns) - 1
+                # or a silence into a laugh.
+                # This is an error but not a critical one.
+                nb_ref_several_match += 1
                 logging.debug('        REF IPU: [ {:f} ; {:f} ; {:s} ] has several HYPs:'
                               ''.format(rb, re, etiquette))
                 for i, h in enumerate(hyp_anns):
@@ -635,7 +636,7 @@ if __name__ == "__main__":
                 #    ref:    #   |  ipu    |  #  |  ipu  |   #
                 #    hyp:    #   |           ipu         |   #
                 _nb_splits = len(ipus_ref_anns) - 1
-                nb_hyp_split_ipus += _nb_splits
+                nb_hyp_split_ipus += 1
                 logging.debug('          HYP IPU: [ {:f} ; {:f} ; {:s} ] has several REFs:'
                               ''.format(hb, he, etiquette))
                 result_ann.append_label(sppasLabel(sppasTag('Split{:d}'.format(_nb_splits))))

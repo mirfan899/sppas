@@ -38,48 +38,48 @@
 import wx
 import logging
 
-from sppas.src.ui import SETTINGS_FILE
-
 import sppas.src.anndata.aio
 import sppas.src.audiodata.aio
 
-from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
-from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
-from sppas.src.ui.wxgui.sp_icons import APP_ICON
+from ..cutils.imageutils import spBitmap
+from ..structs.prefs import Preferences_IO
+from ..sp_icons import APP_ICON
 
-from sppas.src.ui.wxgui.sp_consts import MIN_FRAME_W
-from sppas.src.ui.wxgui.sp_consts import MIN_FRAME_H
-from sppas.src.ui.wxgui.sp_consts import FRAME_STYLE
-from sppas.src.ui.wxgui.sp_consts import FRAME_TITLE
+from ..sp_consts import MIN_FRAME_W
+from ..sp_consts import MIN_FRAME_H
+from ..sp_consts import FRAME_STYLE
+from ..sp_consts import FRAME_TITLE
 
-from sppas.src.ui.wxgui.sp_consts import ID_ANNOTATIONS
-from sppas.src.ui.wxgui.sp_consts import ID_COMPONENTS
-from sppas.src.ui.wxgui.sp_consts import ID_PLUGINS
-from sppas.src.ui.wxgui.sp_consts import ID_ACTIONS
-from sppas.src.ui.wxgui.sp_consts import ID_FILES
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_DATAROAMER
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_SNDROAMER
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_IPUSCRIBE
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_SPPASEDIT
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_STATISTICS
-from sppas.src.ui.wxgui.sp_consts import ID_FRAME_DATAFILTER
+from ..sp_consts import ID_ANNOTATIONS
+from ..sp_consts import ID_COMPONENTS
+from ..sp_consts import ID_PLUGINS
+from ..sp_consts import ID_ACTIONS
+from ..sp_consts import ID_FILES
+from ..sp_consts import ID_FRAME_DATAROAMER
+from ..sp_consts import ID_FRAME_SNDROAMER
+from ..sp_consts import ID_FRAME_IPUSCRIBE
+from ..sp_consts import ID_FRAME_SPPASEDIT
+from ..sp_consts import ID_FRAME_STATISTICS
+from ..sp_consts import ID_FRAME_DATAFILTER
 
-from sppas.src.ui.wxgui.panels.filetree import FiletreePanel
-from sppas.src.ui.wxgui.panels.mainbuttons import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
-from sppas.src.ui.wxgui.panels.components import AnalyzePanel
-from sppas.src.ui.wxgui.panels.aannotations import AnnotationsPanel
-from sppas.src.ui.wxgui.panels.pplugins import PluginsPanel
-from sppas.src.ui.wxgui.panels.about import AboutSPPASPanel
-from sppas.src.ui.wxgui.ui.splitterpanel import SplitterPanel
+from ..panels.filetree import FiletreePanel
+from ..panels.mainbuttons import MainActionsPanel, MainMenuPanel, MainActionsMenuPanel, MainTitlePanel, MainTooltips
+from ..panels.components import AnalyzePanel
+from ..panels.aannotations import AnnotationsPanel
+from ..panels.pplugins import PluginsPanel
+from ..panels.about import AboutSPPASPanel
+from ..ui.splitterpanel import SplitterPanel
 
-from sppas.src.ui.wxgui.frames.dataroamerframe import DataRoamerFrame
-from sppas.src.ui.wxgui.frames.audioroamerframe import AudioRoamerFrame
-from sppas.src.ui.wxgui.frames.ipuscribeframe import IPUscribeFrame
-from sppas.src.ui.wxgui.frames.sppaseditframe import SppasEditFrame
-from sppas.src.ui.wxgui.frames.datafilterframe import DataFilterFrame
-from sppas.src.ui.wxgui.frames.datastatsframe import DataStatsFrame
-from sppas.src.ui.wxgui.views.settings import SettingsDialog
-from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
+from ..frames.dataroamerframe import DataRoamerFrame
+from ..frames.audioroamerframe import AudioRoamerFrame
+from ..frames.ipuscribeframe import IPUscribeFrame
+from ..frames.sppaseditframe import SppasEditFrame
+from ..frames.datafilterframe import DataFilterFrame
+from ..frames.datastatsframe import DataStatsFrame
+from ..views.settings import SettingsDialog
+from ..dialogs.msgdialogs import ShowInformation
+
+from sppas.src.ui.wxgui import SETTINGS_FILE
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!

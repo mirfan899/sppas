@@ -57,8 +57,8 @@ from sppas import sg
 from sppas import sppasTranscription
 from sppas import sppasRW
 from sppas.src.anndata.aio import sppasXRA
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 
 if __name__ == "__main__":

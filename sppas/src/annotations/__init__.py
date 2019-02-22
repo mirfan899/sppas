@@ -42,21 +42,35 @@ annotations: SPPAS Automatic annotations.
 
 from .Momel import sppasMomel
 from .Intsint import sppasIntsint
+from .FillIPUs import sppasFillIPUs
+from .SearchIPUs import sppasSearchIPUs
 from .TextNorm import sppasTextNorm
 from .Phon import sppasPhon
 from .Syll import sppasSyll
 from .TGA import sppasTGA
+from .Align import sppasAlign
+from .SelfRepet import sppasSelfRepet
+from .OtherRepet import sppasOtherRepet
+
 from .searchtier import sppasFindTier
-# from .Align import sppasAlign
+from .param import sppasParam
+from .manager import sppasAnnotationsManager
 
 # ---------------------------------------------------------------------------
 #
 __all__ = (
     'sppasMomel',
     'sppasIntsint',
+    'sppasFillIPUs',
+    'sppasSearchIPUs',
     'sppasTextNorm',
     'sppasPhon',
+    'sppasAlign',
     'sppasSyll',
     'sppasTGA',
-    'sppasFindTier'
+    'sppasSelfRepet',
+    'sppasOtherRepet',
+    'sppasFindTier',
+    'sppasParam',
+    'sppasAnnotationsManager'
 )

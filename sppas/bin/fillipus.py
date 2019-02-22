@@ -37,7 +37,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      Search IPUs and fill in with a transcription
 
 """
@@ -52,12 +52,12 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg, annots
-from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
+from sppas import sppasFillIPUs
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.param import sppasParam
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 

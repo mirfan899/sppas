@@ -187,8 +187,11 @@ class sppasBasePraat(sppasBaseIO):
         if text.endswith('"'):
             text = text[:-1]
 
-        if re.match('^[A-Za-z ]+=[ ]?', text):
-            text = text[text.find('=') + 1:]
+        keywords = ["file type", "class", "text", "name", "xmin", "xmax", "size",
+                    "number", "mark", "value", "point"]
+        for k in keywords:
+            if k in text.lower() and re.match('^[A-Za-z ]+=[ ]?', text):
+                text = text[text.find('=') + 1:]
 
         text = text.strip()
         if text.startswith('"'):

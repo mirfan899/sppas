@@ -36,7 +36,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      Other-Repetitions automatic annotation.
 
 """
@@ -49,10 +49,10 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg
-from sppas.src.annotations.OtherRepet.sppasrepet import sppasOtherRepet
-from sppas.src.annotations.param import sppasParam
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas import sppasOtherRepet
+from sppas import sppasParam
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 

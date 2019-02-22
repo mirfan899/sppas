@@ -36,7 +36,7 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This is the main program to execute the Graphical User Interface of SPPAS.
 
@@ -88,7 +88,7 @@ if v == '4':
     except:
         exit_error("An unexpected error occurred.\n"
                    "Verify the the installation of SPPAS and try again.\n"
-                   "The error message is: %s" % traceback.format_exc())
+                   "The full error message is: %s" % traceback.format_exc())
 
     # Create and run the application
     app = sppasApp()
@@ -99,16 +99,18 @@ if v == '4':
 # If wxPython3 is installed...
 # ---------------------------------------------------------------------------
 
+
 try:
-    from sppas.bin import check_aligner
-    from sppas.src.ui import SETTINGS_FILE
+    from sppas.src.ui.wxgui import SETTINGS_FILE
     from sppas.src.ui.wxgui.frames.mainframe import FrameSPPAS
+    from sppas.bin import check_aligner
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
     from sppas.src.ui import sppasLogSetup
     from sppas.src.config.ui import sppasAppConfig
-except Exception:
+except Exception as e:
+    print(str(e))
     exit_error("An unexpected error occurred.\n"
                "Verify the installation of SPPAS and try again. "
                "The error message is: %s" % traceback.format_exc())

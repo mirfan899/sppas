@@ -37,7 +37,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      Text normalization automatic annotation.
 
 """
@@ -52,14 +52,14 @@ sys.path.append(SPPAS)
 
 from sppas import sg, paths, annots
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations import sppasTextNorm
+from sppas import sppasTextNorm
 from sppas.src.annotations.TextNorm.normalize import TextNormalizer
-from sppas.src.resources import sppasVocabulary
-from sppas.src.resources import sppasDictRepl
-from sppas.src.annotations.param import sppasParam
-from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sppasVocabulary
+from sppas import sppasDictRepl
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 
