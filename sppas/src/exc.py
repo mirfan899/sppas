@@ -47,6 +47,8 @@ NEG_VALUE_ERROR = ":ERROR 010: "
 INTERVAL_RANGE_ERROR = ":ERROR 012: "
 RANGE_INDEX_ERROR = ":ERROR 014: "
 
+IO_EXTENSION_ERROR = ":ERROR 110: "
+
 # -----------------------------------------------------------------------
 
 
@@ -100,6 +102,24 @@ class IndexRangeException(IndexError):
                              value=value,
                              min_value=min_value,
                              max_value=max_value)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+
+# -----------------------------------------------------------------------
+
+
+class IOExtensionException(IOError):
+    """:ERROR 110: IO_EXTENSION_ERROR.
+
+    Unknown extension for filename {:s}'
+
+    """
+
+    def __init__(self, filename):
+        self.parameter = INTERVAL_RANGE_ERROR + \
+                         (_(INTERVAL_RANGE_ERROR)).format(filename)
 
     def __str__(self):
         return repr(self.parameter)

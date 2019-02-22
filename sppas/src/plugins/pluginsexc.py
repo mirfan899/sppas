@@ -61,7 +61,7 @@ OPTION_KEY_ERROR = ":ERROR 4080: "
 
 
 class PluginConfigFileError(IOError):
-    """:ERROR 4010:.
+    """:ERROR 4010: CFG_FILE_ERROR.
 
     Missing plugin configuration file.
 
@@ -77,7 +77,7 @@ class PluginConfigFileError(IOError):
 
 
 class PluginSectionConfigFileError(ValueError):
-    """:ERROR 4014:.
+    """:ERROR 4014: SECT_CFG_FILE_ERROR.
 
     Missing section {section_name} in the configuration file.
 
@@ -94,7 +94,7 @@ class PluginSectionConfigFileError(ValueError):
 
 
 class PluginOptionConfigFileError(ValueError):
-    """:ERROR 4016:.
+    """:ERROR 4016: OPT_CFG_FILE_ERROR.
 
     Missing option {:s} in section {:s} of the configuration file.
 
@@ -113,7 +113,7 @@ class PluginOptionConfigFileError(ValueError):
 
 
 class PluginArchiveFileError(Exception):
-    """:ERROR 4020:.
+    """:ERROR 4020: ARCHIVE_FILE_ERROR.
 
     Unsupported plugin file type.
 
@@ -129,7 +129,7 @@ class PluginArchiveFileError(Exception):
 
 
 class PluginArchiveIOError(IOError):
-    """:ERROR 4024:.
+    """:ERROR 4024: ARCHIVE_IO_ERROR.
 
     Unsupported plugin file type.
 
@@ -145,7 +145,7 @@ class PluginArchiveIOError(IOError):
 
 
 class PluginDuplicateError(IOError):
-    """:ERROR 4030:.
+    """:ERROR 4030: DUPLICATE_ERROR.
 
      A plugin with the same name is already existing in the plugins
      folder.
@@ -162,7 +162,7 @@ class PluginDuplicateError(IOError):
 
 
 class PluginIdError(ValueError):
-    """:ERROR 4040:.
+    """:ERROR 4040: PLUGIN_ID_ERROR.
 
     No plugin with identifier {plugin_id} is available.
 
@@ -180,7 +180,7 @@ class PluginIdError(ValueError):
 
 
 class PluginFolderError(IOError):
-    """:ERROR 4050:.
+    """:ERROR 4050: PLUGIN_FOLDER_ERROR.
 
     No such plugin folder: {:s}.
 
@@ -198,7 +198,7 @@ class PluginFolderError(IOError):
 
 
 class PluginKeyError(KeyError):
-    """:ERROR 4060:.
+    """:ERROR 4060: PLUGIN_KEY_ERROR.
 
     A plugin with the same key is already existing or plugin already
     loaded.
@@ -215,7 +215,7 @@ class PluginKeyError(KeyError):
 
 
 class CommandExecError(OSError):
-    """:ERROR 4070:.
+    """:ERROR 4070: CMD_EXEC_ERROR.
 
     {command_name} is not a valid command on your operating system.
 
@@ -233,7 +233,7 @@ class CommandExecError(OSError):
 
 
 class CommandSystemError(OSError):
-    """:ERROR 4075:.
+    """:ERROR 4075: CMD_SYSTEM_ERROR.
 
     No command was defined for the system: {:s}.
     Supported systems of this plugin are: {:s}.
@@ -254,7 +254,7 @@ class CommandSystemError(OSError):
 
 
 class OptionKeyError(KeyError):
-    """:ERROR 4080:.
+    """:ERROR 4080: OPTION_KEY_ERROR.
 
     No option with key {:s}.
 

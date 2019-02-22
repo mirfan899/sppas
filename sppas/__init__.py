@@ -39,15 +39,15 @@ sppas: Global imports and some settings for external use.
 
 """
 from sppas.src.config import *
+from sppas.src.exc import *
+from sppas.src.structs import *
 from sppas.src.anndata import *
 from sppas.src.audiodata import *
 from sppas.src.calculus import *
 from sppas.src.models import *
 from sppas.src.plugins import *
 from sppas.src.resources import *
-from sppas.src.structs import *
 from sppas.src.utils import *
-from sppas.src.exc import *
 from sppas.src.annotations import *
 from sppas.src.ui import sppasLogSetup
 

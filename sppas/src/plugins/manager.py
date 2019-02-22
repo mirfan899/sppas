@@ -44,6 +44,7 @@ from sppas.src.config import paths
 from sppas.src.config import plugins_translation
 from sppas.src.utils.makeunicode import u
 from sppas.src.utils.fileutils import sppasDirUtils
+
 from .pluginsexc import PluginArchiveFileError
 from .pluginsexc import PluginArchiveIOError
 from .pluginsexc import PluginDuplicateError
@@ -71,7 +72,7 @@ class sppasPluginsManager(Thread):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -315,11 +316,6 @@ class sppasPluginsManager(Thread):
     def __get_config_file(plugin_dir):
         """Return the config file of a given plugin."""
         sd = sppasDirUtils(plugin_dir)
-
-        # Find a file with the extension .ini, and only one
-        inifiles = sd.get_files(extension=".ini", recurs=False)
-        if len(inifiles) == 1:
-            return inifiles[0]
 
         # Find a file with the extension .json, and only one
         jsonfiles = sd.get_files(extension=".json", recurs=False)

@@ -39,7 +39,10 @@ import platform
 import shlex
 from subprocess import Popen
 
-from sppas.src.structs.baseoption import sppasOption
+from sppas import sppasOption
+from sppas import IOExtensionException
+
+from .pluginsexc import PluginConfigFileError
 from .pluginsexc import CommandExecError
 from .pluginsexc import CommandSystemError
 from .pluginsexc import OptionKeyError
@@ -117,8 +120,7 @@ class sppasPluginParam(object):
         if filename.endswith('json'):
 
             if os.path.exists(filename) is False:
-                raise IOError('Installation error: the file to configure the '
-                              'plugin does not exist.')
+                raise PluginConfigFileError
 
             # Read the whole file content
             with open(filename) as cfg:
@@ -143,7 +145,7 @@ class sppasPluginParam(object):
                 self._options.append(opt)
 
         else:
-            raise IOError('Unknown extension for filename {:s}'.format(filename))
+            raise IOExtensionException(filename)
 
     # ------------------------------------------------------------------------
     # Getters

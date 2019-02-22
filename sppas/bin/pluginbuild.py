@@ -36,11 +36,11 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019 Brigitte Bigi
 :summary:      Main script to build a plugin for SPPAS.
 
 In SPPAS, a plugin is a ZIP archive of a directory content.
-This directory must contain a configuration file with extension ".ini".
+This directory must contain a configuration file with extension ".json".
 This directory should contain an icon, a README.txt file and a license
 in PDF format.
 
