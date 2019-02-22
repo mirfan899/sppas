@@ -100,7 +100,7 @@ class sppasFileToggleButton(wx.Window):
     def GetValue(self):
         """Gets the state of the toggle button."""
         return self._state
-    
+
     def process_event(self, evt):
         pass
 

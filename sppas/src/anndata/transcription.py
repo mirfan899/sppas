@@ -60,7 +60,7 @@ class sppasTranscription(sppasMetaData):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Transcriptions in SPPAS are represented with:
 
@@ -92,8 +92,9 @@ class sppasTranscription(sppasMetaData):
         >>> tier = trs.find("tier name")
 
     """
+
     def __init__(self, name=None):
-        """Creates a new sppasTranscription instance.
+        """Create a new sppasTranscription instance.
 
         :param name: (str) Name of the transcription.
 
@@ -119,7 +120,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_name(self):
         """Return the name of the transcription."""
-
         return self._name
 
     # -----------------------------------------------------------------------
@@ -144,7 +144,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_media_list(self):
         """Return the list of sppasMedia."""
-
         return self._media
 
     # ------------------------------------------------------------------------
@@ -226,7 +225,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_ctrl_vocab_list(self):
         """Return the list of controlled vocabularies."""
-
         return self._ctrlvocab
 
     # ------------------------------------------------------------------------
@@ -379,7 +377,6 @@ class sppasTranscription(sppasMetaData):
 
     def get_hierarchy(self):
         """Return the hierarchy."""
-
         return self._hierarchy
 
     # -----------------------------------------------------------------------
@@ -388,14 +385,12 @@ class sppasTranscription(sppasMetaData):
 
     def get_tier_list(self):
         """Return the list of tiers."""
-
         return self._tiers
 
     # -----------------------------------------------------------------------
 
     def is_empty(self):
         """Return True if the transcription does not contains tiers."""
-
         return len(self._tiers) == 0
 
     # -----------------------------------------------------------------------
@@ -533,11 +528,14 @@ class sppasTranscription(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def pop(self, index=-1):
-        """Remove the tier at the given position in the transcription,
-        and return it. If no index is specified, pop() removes
+        """Remove the tier at the given position in the transcription.
+
+        Return it. If no index is specified, pop() removes
         and returns the last tier in the transcription.
 
         :param index: (int) Index of the transcription to remove.
+        :return: (sppasTier)
+        :raise: AnnDataIndexError
 
         """
         try:

@@ -855,49 +855,6 @@ class sppasTier(sppasMetaData):
         return ""
 
     # -----------------------------------------------------------------------
-
-    def search(self, tags, pos=0, forward=True, any_tag=True, function='exact', reverse=False):
-        """Return the index in the tier of the first annotation whose a tag matches.
-
-        :param tags: (list) the list of sppasTag to search
-        :param pos: (int) the index of the annotation to start to search
-        :param forward: (bool) Search backward or forward from pos
-        :param: any_tag: (bool) "any" vs "all" tags of the list
-        :param function: (str) is:
-                -    exact (str): exact match
-                -    iexact (str): Case-insensitive exact match
-                -    startswith (str):
-                -    istartswith (str): Case-insensitive startswith
-                -    endswith (str):
-                -    iendswith: (str) Case-insensitive endswith
-                -    contains (str):
-                -    icontains: (str) Case-insensitive contains
-                -    equal (str): is equal
-                -    greater (str): is greater then
-                -    lower (str): is lower than
-        :param reverse: (bool) to apply "not function"
-
-        """
-        if pos < 0 or pos >= len(self.__ann):
-            raise AnnDataIndexError(pos)
-
-        while len(self.__ann) > pos >= 0:
-            contains = [self.__ann[pos].contains_tag(tag, function, reverse) for tag in tags]
-            if any_tag is True:
-                found = any(contains)
-            else:
-                found = all(contains)
-            if found is True:
-                return pos
-
-            if forward:
-                pos += 1
-            else:
-                pos -= 1
-
-        return -1
-
-    # -----------------------------------------------------------------------
     # Annotation validation
     # -----------------------------------------------------------------------
 

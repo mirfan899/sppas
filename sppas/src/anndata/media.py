@@ -53,8 +53,9 @@ class sppasMedia(sppasMetaData):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, filename, media_id=None, mime_type=None):
-        """Creates a new sppasMedia instance.
+        """Create a new sppasMedia instance.
 
         :param filename: (str) File name of the media
         :param media_id: (str) Identifier of the media
@@ -102,12 +103,17 @@ class sppasMedia(sppasMetaData):
         """Set the content of the media.
 
         :param content: (str)
-        """
 
+        """
         self.__content = u(content)
 
     # -----------------------------------------------------------------------
     # Overloads
+    # -----------------------------------------------------------------------
+
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
     # -----------------------------------------------------------------------
 
     def __repr__(self):
@@ -116,7 +122,6 @@ class sppasMedia(sppasMetaData):
 
     def __eq__(self, other):
         """Return True if other is strictly identical to self (even id)."""
-
         if isinstance(other, sppasMedia) is False:
             return False
         if self.__url != other.get_filename():

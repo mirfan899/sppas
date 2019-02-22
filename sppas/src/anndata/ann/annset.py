@@ -63,7 +63,6 @@ class sppasAnnSet(object):
 
     def __init__(self):
         """Create a sppasAnnSet instance."""
-
         self._data_set = collections.OrderedDict()
 
     # -----------------------------------------------------------------------
@@ -180,7 +179,6 @@ class sppasAnnSet(object):
 
     def __eq__(self, other):
         """Check if data sets are equals, i.e. share the same data."""
-
         # check len
         if len(self) != len(other):
             return False

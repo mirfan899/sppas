@@ -97,7 +97,6 @@ class sppasMetaData(object):
 
     def get_meta_keys(self):
         """Return the list of metadata keys."""
-
         return self.__metadata.keys()
 
     # -----------------------------------------------------------------------
@@ -136,7 +135,6 @@ class sppasMetaData(object):
 
     def add_license_metadata(self, idx):
         """Add metadata about the license applied to the object (GPLv3)."""
-
         # Elan
         self.set_meta('file_license_text_%s' % idx,
                       'GNU GPL V3')
@@ -147,7 +145,6 @@ class sppasMetaData(object):
 
     def add_software_metadata(self):
         """Add metadata about this software."""
-
         self.set_meta('software_name', sg.__name__)
         self.set_meta('software_version', sg.__version__)
         self.set_meta('software_url', sg.__url__)
@@ -159,7 +156,6 @@ class sppasMetaData(object):
 
     def add_language_metadata(self):
         """Add metadata about the language (und)."""
-
         # Elan
         self.set_meta('language_iso', "iso639-3")
         self.set_meta('language_code_0', "und")
@@ -187,8 +183,13 @@ class sppasMetaData(object):
     # -----------------------------------------------------------------------
 
     def add_annotator_metadata(self, name="", version="", version_date=""):
-        """Add metadata about an annotator."""
+        """Add metadata about an annotator.
 
+        :param name: (str)
+        :param version: (str)
+        :param version_date: (str)
+
+        """
         # subtitle, transcriber, elan
         self.set_meta("annotator_name", name)
 
@@ -227,7 +228,11 @@ class sppasDefaultMeta(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def speaker(self):
-        """Add metadata related to a speaker."""
+        """Add metadata related to a speaker.
+
+        For compatibility with sclite, transcriber, xtrans, elan
+
+        """
         # sclite, transcriber
         self.set_meta("speaker_id", "")
 
@@ -263,8 +268,11 @@ class sppasDefaultMeta(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def tier(self):
-        """Add metadata related to a tier."""
+        """Add metadata related to a tier.
 
+        For compatibility with audacity and annotation pro.
+
+        """
         # audacity, annotation pro
         self.set_meta("tier_is_closed", "")
 
@@ -277,8 +285,11 @@ class sppasDefaultMeta(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def media(self):
-        """Add metadata related to a media."""
+        """Add metadata related to a media.
 
+        For compatibility with sclite, xtrans, subtitle, elan, annotation pro.
+
+        """
         # sclite, xtrans
         self.set_meta("media_channel", "")
 

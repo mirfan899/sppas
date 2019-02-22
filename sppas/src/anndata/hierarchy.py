@@ -92,8 +92,7 @@ class sppasHierarchy(object):
     types = {"TimeAssociation", "TimeAlignment"}
 
     def __init__(self):
-        """Creates a new sppasHierarchy instance."""
-
+        """Create a new sppasHierarchy instance."""
         super(sppasHierarchy, self).__init__()
 
         # key = child tier ; value = tuple(parent, link_type)
@@ -318,7 +317,6 @@ class sppasHierarchy(object):
 
     def copy(self):
         """Return a deep copy of the hierarchy."""
-
         h = sppasHierarchy()
 
         for child_tier in self.__hierarchy:

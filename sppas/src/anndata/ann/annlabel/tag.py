@@ -43,7 +43,7 @@ from ...anndataexc import AnnUnkTypeError
 
 
 class sppasTag(object):
-    """Represents one of the possible tags of a label.
+    """Represent one of the possible tags of a label.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

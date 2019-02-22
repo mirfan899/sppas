@@ -42,7 +42,7 @@ from .tag import sppasTag
 
 
 class sppasLabel(object):
-    """Represents the content of an annotation.
+    """Represent the content of an annotation.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -335,77 +335,6 @@ class sppasLabel(object):
                 return True
 
         return is_matching
-
-    # -----------------------------------------------------------------------
-
-    # WILL BE DEPRECATED (when filter will be finished)
-    # USED ONLY BY "SEARCH" METHOD IN TIERS.
-    def contains(self, tag, search_function='exact'):
-        """Return True if the label contains a given tag.
-
-        * * *   WILL BE DEPRECATED (when filter will be finished)  * * *
-
-        :param tag: (sppasTag)
-        :param search_function: (str) Can be one of the followings:
-                -    exact (str): exact match
-                -    iexact (str): Case-insensitive exact match
-                -    startswith (str):
-                -    istartswith (str): Case-insensitive startswith
-                -    endswith (str):
-                -    iendswith: (str) Case-insensitive endswith
-                -    contains (str):
-                -    icontains: (str) Case-insensitive contains
-                -    equal (str): is equal (identical as exact)
-                -    greater (str): is greater then
-                -    lower (str): is lower than
-
-        """
-        if self.__tags is None:
-            return False
-        if not isinstance(tag, sppasTag):
-            raise AnnDataTypeError(tag, "sppasTag")
-
-        if search_function == "exact" or search_function == "equal":
-            return any([tag == t[0] for t in self.__tags])
-
-        if tag.get_type() == "str":
-            search_unicode_content = tag.get_content()
-            lsearch_unicode_content = search_unicode_content.lower()
-            for t, s in self.__tags:
-                unicode_content = t.get_content()
-                lunicode_content = unicode_content.lower()
-                if search_function == "iexact" and \
-                        lunicode_content == lsearch_unicode_content:
-                    return True
-                elif search_function == "startswith" and \
-                        unicode_content.startswith(search_unicode_content):
-                    return True
-                elif search_function == "istartswith" and \
-                        lunicode_content.startswith(lsearch_unicode_content):
-                    return True
-                elif search_function == "endswith" and \
-                        unicode_content.endswith(search_unicode_content):
-                    return True
-                elif search_function == "iendswith" and \
-                        lunicode_content.endswith(lsearch_unicode_content):
-                    return True
-                elif search_function == "contains" and \
-                        search_unicode_content in unicode_content:
-                    return True
-                elif search_function == "icontains" and \
-                        lsearch_unicode_content in lunicode_content:
-                    return True
-
-        elif tag.get_type() in ["float", "int"]:
-            for t, s in self.__tags:
-                if search_function == "greater" and \
-                   t.get_typed_content() > tag.get_typed_content():
-                    return True
-                if search_function == "lower" and \
-                   t.get_typed_content() < tag.get_typed_content():
-                    return True
-
-        return False
 
     # -----------------------------------------------------------------------
 

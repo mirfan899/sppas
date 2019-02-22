@@ -49,7 +49,6 @@ class sppasBaseCompare(object):
 
     def __init__(self):
         """Create a sppasBaseCompare instance."""
-
         self.methods = dict()
 
     # -----------------------------------------------------------------------
