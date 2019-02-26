@@ -17,6 +17,9 @@ msgstr ""
 msgid "Home"
 msgstr "Accueil"
 
+msgid "Help"
+msgstr "Aide"
+
 msgid "Files"
 msgstr "Fichiers"
 
@@ -64,6 +67,9 @@ msgstr "Envoyer"
 
 msgid "Settings"
 msgstr "Préférences"
+
+msgid "Configure"
+msgstr "Configurer"
 
 msgid "View logs"
 msgstr "Voir les logs"
@@ -133,6 +139,30 @@ msgstr "Autre"
 
 msgid "Confirm exit of {:s}"
 msgstr "Voulez-vous vraiment quitter {:s}?"
+
+msgid "Perform annotations"
+msgstr "Effectuer les annotations"
+
+msgid "Automatically annotate selected files"
+msgstr "Annoter automatiquement les fichier sélectionnés"
+
+msgid "Add files"
+msgstr "Ajouter fichier"
+
+msgid "Add dir"
+msgstr "Ajouter dossier"
+
+msgid "Remove"
+msgstr "Retirer"
+
+msgid "Delete"
+msgstr "Supprimer"
+
+msgid "Copy"
+msgstr "Copier"
+
+msgid "Export"
+msgstr "Exporter"
 
 msgid ":INFO 9000: "
 msgstr "Terminé. ({:d} / {:d} fichiers ont été traités avec succès)"

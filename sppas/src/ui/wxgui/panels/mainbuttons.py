@@ -38,9 +38,11 @@
 import wx
 import webbrowser
 
-from sppas.src.config import sg
-from sppas.src.ui.tips import sppasTips
+from sppas import msg
+from sppas import u
+from sppas import sg
 
+from sppas.src.ui.tips import sppasTips
 from sppas.src.ui.wxgui.panels.buttons import ButtonPanel, \
     ButtonMenuPanel, ImgPanel, ButtonCreator, ButtonToolbarPanel
 
@@ -69,6 +71,12 @@ from sppas.src.ui.wxgui.sp_consts import ID_FILES
 from sppas.src.ui.wxgui.views.feedback import ShowFeedbackDialog
 
 # ----------------------------------------------------------------------------
+
+
+def _(message):
+    return u(msg(message, "ui"))
+
+# -----------------------------------------------------------------------
 
 
 class MainMenuPanel(wx.Panel):
@@ -246,12 +254,42 @@ class MainActionsPanel(wx.Panel):
     def __create_buttons(self):
         """Create buttons to call tools."""
 
-        annotateButton = ButtonPanel(self, ID_ANNOTATIONS, self._prefs, ANNOTATIONS_ICON, "Annotate", "Segment speech, normalize text, ...")
-        analyzeButton = ButtonPanel(self, ID_COMPONENTS, self._prefs, COMPONENTS_ICON, "Analyze", "Statistics, data managers, ...")
-        pluginsButton = ButtonPanel(self, ID_PLUGINS, self._prefs, PLUGINS_ICON, "Plugins", "Extend SPPAS", activated=True)
-        settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,self._prefs, SETTINGS_ICON, "Settings", "Configuration, preferences")
-        helpButton = ButtonPanel(self, wx.ID_HELP, self._prefs, HELP_ICON, "Help", "Documentation")
-        aboutButton = ButtonPanel(self, wx.ID_ABOUT, self._prefs, ABOUT_ICON, "About", "Know more")
+        annotateButton = ButtonPanel(self, ID_ANNOTATIONS,
+                                     self._prefs,
+                                     ANNOTATIONS_ICON,
+                                     _("Annotate"),
+                                     "Create automatically\nannotations")
+
+        analyzeButton = ButtonPanel(self, ID_COMPONENTS,
+                                    self._prefs,
+                                    COMPONENTS_ICON,
+                                    _("Analyze"),
+                                    "Manage any\nannotated data")
+
+        pluginsButton = ButtonPanel(self, ID_PLUGINS,
+                                    self._prefs,
+                                    PLUGINS_ICON,
+                                    _("Plugins"),
+                                    "Extended features",
+                                    activated=True)
+
+        settingsButton = ButtonPanel(self, wx.ID_PREFERENCES,
+                                     self._prefs,
+                                     SETTINGS_ICON,
+                                     _("Settings"),
+                                     "Customization")
+
+        helpButton = ButtonPanel(self, wx.ID_HELP,
+                                 self._prefs,
+                                 HELP_ICON,
+                                 _("Help"),
+                                 "Documentation")
+
+        aboutButton = ButtonPanel(self, wx.ID_ABOUT,
+                                  self._prefs,
+                                  ABOUT_ICON,
+                                  _("About"),
+                                  "Know more")
 
         _box = wx.GridBagSizer()
         _box.Add(annotateButton, pos=(0, 0), flag=wx.ALL|wx.ALIGN_CENTER_HORIZONTAL|wx.ALIGN_CENTER_VERTICAL, border=2)
@@ -403,5 +441,3 @@ class MainTooltips(wx.Panel):
     def OnNext(self, event):
         self.text.SetValue(self.tips.get_message())
         self.Refresh()
-
-    # -----------------------------------------------------------------------

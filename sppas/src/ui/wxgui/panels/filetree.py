@@ -30,12 +30,15 @@
         ---------------------------------------------------------------------
 
     wxgui.panels.filetree.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import os.path
+import os
 import wx
 import logging
+
+from sppas import msg
+from sppas import u
 
 import sppas.src.audiodata.aio
 import sppas.src.anndata.aio
@@ -85,6 +88,12 @@ ID_TB_EXPORT = wx.NewId()
 # ----------------------------------------------------------------------------
 
 
+def _(message):
+    return u(msg(message, "ui"))
+
+# -----------------------------------------------------------------------
+
+
 class FiletreePanel(wx.Panel):
     """
     :author:       Brigitte Bigi, Cazembe Henry
@@ -125,12 +134,35 @@ class FiletreePanel(wx.Panel):
         """Simulate the creation of a toolbar."""
 
         toolbar = MainToolbarPanel(self, self._prefsIO)
-        toolbar.AddButton(wx.ID_ADD, ADD_FILE_ICON, "Add files", tooltip="Add files into the list.")
-        toolbar.AddButton(ID_TB_ADDDIR, ADD_DIR_ICON, "Add dir", tooltip="Add a folder into the list.")
-        toolbar.AddButton(wx.ID_REMOVE, REMOVE_ICON, "Remove", tooltip="Remove files of the list.")
-        toolbar.AddButton(wx.ID_DELETE, DELETE_ICON, "Delete", tooltip="Delete definitively files of the computer.")
-        toolbar.AddButton(wx.ID_SAVEAS, EXPORT_AS_ICON, "Copy", tooltip="Copy files.")
-        toolbar.AddButton(wx.ID_SAVE, EXPORT_ICON, "Export", tooltip="Export files.")
+        toolbar.AddButton(wx.ID_ADD,
+                          ADD_FILE_ICON,
+                          _("Add files"),
+                          tooltip="Add files into the list.")
+
+        toolbar.AddButton(ID_TB_ADDDIR,
+                          ADD_DIR_ICON,
+                          _("Add dir"),
+                          tooltip="Add a folder into the list.")
+
+        toolbar.AddButton(wx.ID_REMOVE,
+                          REMOVE_ICON,
+                          _("Remove"),
+                          tooltip="Remove files of the list.")
+
+        toolbar.AddButton(wx.ID_DELETE,
+                          DELETE_ICON,
+                          _("Delete"),
+                          tooltip="Delete definitively files of the computer.")
+
+        toolbar.AddButton(wx.ID_SAVEAS,
+                          EXPORT_AS_ICON,
+                          _("Copy"),
+                          tooltip="Copy files.")
+
+        toolbar.AddButton(wx.ID_SAVE,
+                          EXPORT_ICON,
+                          _("Export"),
+                          tooltip="Export files.")
         return toolbar
 
     # ------------------------------------------------------------------------
@@ -411,7 +443,7 @@ class FiletreePanel(wx.Panel):
                 IsDir = os.path.isdir(filename)
             except UnicodeEncodeError:
                 ShowInformation(None, self._prefsIO, 
-                                "File names can only contain ASCII characters.", 
+                                "File names can only contain US-ASCII characters.",
                                 style=wx.ICON_INFORMATION)
                 continue
 
@@ -485,7 +517,7 @@ class FiletreePanel(wx.Panel):
             files = os.listdir(txt)
         except WindowsError as e:
             logging.error('The following error occurred to Refresh the Tree '
-                          'for files {:s}: {:s}' % (txt, str(e)))
+                          'for files {:s}: {:s}'.format(txt, str(e)))
             return
         wavfile_list = []
 

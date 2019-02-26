@@ -38,6 +38,8 @@
 import wx
 import logging
 
+from sppas import msg
+from sppas import u
 import sppas.src.anndata.aio
 import sppas.src.audiodata.aio
 
@@ -83,6 +85,12 @@ from sppas.src.ui.wxgui import SETTINGS_FILE
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
+# -----------------------------------------------------------------------
+
+
+def _(message):
+    return u(msg(message, "ui"))
+
 # -----------------------------------------------------------------------
 
 
@@ -247,19 +255,19 @@ class FrameSPPAS(wx.Frame):
 
         elif ide == ID_COMPONENTS:
             self.actions = AnalyzePanel(self._right_panel, self.preferences)
-            self.actionsmenu.ShowBack(True, "   A N A L Y Z E ")
+            self.actionsmenu.ShowBack(True, "   " + _("Analyze"))
 
         elif ide == ID_ANNOTATIONS:
             self.actions = AnnotationsPanel(self._right_panel, self.preferences)
-            self.actionsmenu.ShowBack(True, "   A N N O T A T E ")
+            self.actionsmenu.ShowBack(True, "   " + _("Annotate"))
 
         elif ide == wx.ID_ABOUT:
             self.actions = AboutSPPASPanel(self._right_panel, self.preferences)
-            self.actionsmenu.ShowBack(True, "   A B O U T ")
+            self.actionsmenu.ShowBack(True, "   " + _("About"))
 
         elif ide == ID_PLUGINS:
             self.actions = PluginsPanel(self._right_panel, self.preferences)
-            self.actionsmenu.ShowBack(True, "   P L U G I N S ")
+            self.actionsmenu.ShowBack(True, "   " + _("Plugins"))
 
         self._rightsizer.Add(self.actions, proportion=1, flag=wx.ALL | wx.EXPAND, border=0)
         self._LayoutFrame()
