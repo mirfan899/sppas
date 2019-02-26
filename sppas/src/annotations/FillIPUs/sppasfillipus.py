@@ -286,7 +286,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
         if exists_out_name is not None:
             if exists_out_name == out_name:
                 self.logfile.print_message(
-                    info(1298, "annotations").format(exists_out_name),
+                    info(1300, "annotations").format(exists_out_name),
                     indent=2, status=annots.info)
                 return None
 
@@ -297,8 +297,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     parser.set_filename(out_name)
                     parser.write(t)
                     self.logfile.print_message(
-                        info(1298, "annotations").format(exists_out_name) +
-                        info(1299, "annotations").format(out_name),
+                        info(1300, "annotations").format(exists_out_name) +
+                        info(1302, "annotations").format(out_name),
                         indent=2, status=annots.info)
                     return out_name
                 except:

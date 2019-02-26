@@ -15,8 +15,11 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.1\n"
 
+# -----------------------------------------
+# :INFO:
+# -----------------------------------------
 msgid ":INFO 1000: "
 msgstr "Valid. "
 
@@ -135,6 +138,18 @@ msgstr "was automatically phonetized as {:s}"
 msgid ":INFO 1114: "
 msgstr "wasn't phonetized."
 
+msgid ":INFO 1160: "
+msgstr "The mapping table contains {:d} phonemes."
+
+msgid ":INFO 1162: "
+msgstr "The dictionary contains {:d} tokens."
+
+msgid ":INFO 1164: "
+msgstr "The vocabulary contains {:d} tokens."
+
+msgid ":INFO 1166: "
+msgstr "The replacement dictionary contains {:d} items."
+
 msgid ":INFO 1210: "
 msgstr "The model of L1 {:s} was ignored."
 
@@ -165,6 +180,9 @@ msgstr "Merge interval's:"
 msgid ":INFO 1256: "
 msgstr "Create activity tier:"
 
+msgid ":INFO 1258: "
+msgstr "Error while annotating interval number {:d}."
+
 msgid ":INFO 1260: "
 msgstr "Tokens alignment disabled."
 
@@ -192,12 +210,31 @@ msgstr "Minimum IPUs duration:    {:.3f}"
 msgid ":INFO 1296: "
 msgstr "Unable to align the audio with the given transcription."
 
-msgid ":INFO 1298: "
+msgid ":INFO 1300: "
 msgstr "A file with name {!s:s} is already existing."
 
-msgid ":INFO 1299: "
-msgstr "This file was exported to {!s:s}"
+msgid ":INFO 1302: "
+msgstr "This file was exported to {!s:s}."
 
+msgid ":INFO 1304: "
+msgstr "This file will be overridden."
+
+msgid ":INFO 1306: "
+msgstr "No file was created."
+
+msgid ":INFO 1308: "
+msgstr "File not found."
+
+msgid ":INFO 1310: "
+msgstr "This annotation expects a file with name {!s:s}"
+
+msgid ":INFO 1312: "
+msgstr "Annotation cancelled."
+
+# -----------------------------------------
+# :ERRORS:
+# -----------------------------------------
+#
 msgid ":ERROR 1010: "
 msgstr "Unknown option with key {key}."
 

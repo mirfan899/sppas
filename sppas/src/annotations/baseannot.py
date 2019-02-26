@@ -49,13 +49,13 @@ from .log import sppasLog
 
 
 class sppasBaseAnnotation(object):
-    """Base class for any automatic annotations integrated into SPPAS.
+    """Base class for any automatic annotation integrated into SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -64,6 +64,7 @@ class sppasBaseAnnotation(object):
 
         New in SPPAS 2.1 :
         Load default options/member values from a configuration file.
+        This file must be in paths.etc
 
         Log is used for a better communication of the annotation process and its
         results. If None, logs are redirected to the default logging system.
@@ -230,9 +231,8 @@ class sppasBaseAnnotation(object):
         # if out_name exists, it is overridden
         if os.path.exists(out_name):
             self.logfile.print_message(
-                "A file with name {:s} is already existing. "
-                "It will be overridden."
-                "".format(out_name), indent=2, status=annots.warning)
+                (info(1300, "annotations")).format(out_name) + " " +
+                info(1304, "annotations"), indent=2, status=annots.warning)
 
         # execute annotation
         try:
@@ -294,7 +294,7 @@ class sppasBaseAnnotation(object):
 
             if out_name is None:
                 self.logfile.print_message(
-                    "No file was created.", indent=1, status=annots.info)
+                    info(1306, "annotations"), indent=1, status=annots.info)
             else:
                 files_processed_success += 1
                 self.logfile.print_message(out_name, indent=1, status=annots.ok)
@@ -304,11 +304,8 @@ class sppasBaseAnnotation(object):
 
         # Indicate completed!
         if progress:
-            progress.update(
-                1,
-                "Completed ({:d} files successfully over {:d} files).\n"
-                "".format(files_processed_success, total)
-            )
+            progress.update(1, (info(9000, "ui").format(files_processed_success,
+                                                        total)))
             progress.set_header("")
 
         return files_processed_success
@@ -362,14 +359,12 @@ class sppasBaseAnnotation(object):
 
         for fn in required_inputs:
             if os.path.exists(fn) is False:
+                msg = info(1308, "annotations") + " " + (info(1310, "annotations")).format(fn)
                 self.print_filename(input_files[0])
-                self.logfile.print_message(
-                    "File not found. "
-                    "This annotation expects a file with name {:s}. "
-                    "".format(fn), indent=1, status=annots.error)
-                self.logfile.print_message(
-                    "Annotation cancelled.", indent=1, status=annots.ignore)
-                raise IOError
+                self.logfile.print_message(msg, indent=1, status=annots.error)
+                self.logfile.print_message(info(1312, "annotations"),
+                                           indent=1, status=annots.ignore)
+                raise IOError(msg)
 
         return required_inputs, optional_inputs
 

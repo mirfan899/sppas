@@ -159,16 +159,17 @@ class sppasPhon(sppasBaseAnnotation):
         if map_filename is not None:
             self.maptable = sppasMapping(map_filename)
             self.logfile.print_message(
-                "The mapping table contains {:d} phonemes"
-                "".format(len(self.maptable)), indent=0)
+                (info(1160, "annotations")).format(len(self.maptable)),
+                indent=0)
         else:
             self.maptable = sppasMapping()
 
         pdict = sppasDictPron(dict_filename, nodump=False)
         if dict_filename is not None:
             self.__phonetizer = sppasDictPhonetizer(pdict, self.maptable)
-            self.logfile.print_message("The dictionary contains {:d} tokens"
-                                       "".format(len(pdict)), indent=0)
+            self.logfile.print_message(
+                (info(1162, "annotations")).format(len(pdict)),
+                indent=0)
         else:
             self.__phonetizer = sppasDictPhonetizer(pdict)
 
@@ -222,7 +223,7 @@ class sppasPhon(sppasBaseAnnotation):
 
         """
         if tier is None:
-            raise IOError('No tier found.')
+            raise IOError('No given tier.')
         if tier.is_empty() is True:
             raise EmptyInputError(name=tier.get_name())
 

@@ -101,8 +101,9 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         voc = sppasVocabulary(vocab_filename)
         self.__normalizer = TextNormalizer(voc, lang)
-        self.logfile.print_message("The vocabulary contains {:d} tokens"
-                                   "".format(len(voc)), indent=0)
+        self.logfile.print_message(
+            (info(1164, "annotations")).format(len(voc)),
+            indent=0)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -112,8 +113,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             dict_replace = sppasDictRepl()
         self.__normalizer.set_repl(dict_replace)
         self.logfile.print_message(
-            "The replacement dictionary contains {:d} items"
-            "".format(len(dict_replace)), indent=0)
+            (info(1166, "annotations")).format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
@@ -309,8 +309,8 @@ class sppasTextNorm(sppasBaseAnnotation):
                     try:
                         tokens = self.__normalizer.normalize(text.get_content(), actions)
                     except Exception as e:
-                        message = "Error while normalizing interval {:d}: " \
-                                  "{:s}".format(i, str(e))
+                        message = (info(1258, "annotations")).format(i) + \
+                                  "{:s}".format(str(e))
                         self.logfile.print_message(message, indent=2)
 
                 elif text.is_silence():

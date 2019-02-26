@@ -15,7 +15,7 @@ msgstr ""
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.1\n"
 
 msgid ":INFO 1000: "
 msgstr "Valide. "
@@ -136,6 +136,18 @@ msgstr "a été phonétisé automatiquement {:s}"
 msgid ":INFO 1114: "
 msgstr "n'a pas pu être phonétisé automatiquement."
 
+msgid ":INFO 1160: "
+msgstr "La table de correspondance contient {:d} phonèmes."
+
+msgid ":INFO 1162: "
+msgstr "Le dictionnaire contient {:d} tokens."
+
+msgid ":INFO 1164: "
+msgstr "Le vocabulaire contient {:d} tokens."
+
+msgid ":INFO 1166: "
+msgstr "Le dictionnaire de substitution des tokens contient {:d} items."
+
 msgid ":INFO 1210: "
 msgstr "Le modèle donné pour la langue L1 {:s} a été ignoré."
 
@@ -166,6 +178,9 @@ msgstr "Fusion des alignements des intervalles."
 msgid ":INFO 1256: "
 msgstr "Création de la tier des activités."
 
+msgid ":INFO 1258: "
+msgstr "Erreur lors de l'annotation de l'intervalle numéro {:d}."
+
 msgid ":INFO 1260: "
 msgstr "Sans tokenization, les tokens seront remplacés par des index."
 
@@ -193,12 +208,31 @@ msgstr "Durée minimale des IPUs:     {:.3f}"
 msgid ":INFO 1296: "
 msgstr "Impossible d'aligner le contenu audio avec la transcription."
 
-msgid ":INFO 1298: "
+msgid ":INFO 1300: "
 msgstr "Le fichier de nom {!s:s} existe déjà."
 
-msgid ":INFO 1299: "
+msgid ":INFO 1302: "
 msgstr "Ce fichier a été exporté en {!s:s}"
 
+msgid ":INFO 1304: "
+msgstr "Ce fichier sera écrasé."
+
+msgid ":INFO 1306: "
+msgstr "Aucun fichier n'a été créé."
+
+msgid ":INFO 1308: "
+msgstr "Fichier non trouvé."
+
+msgid ":INFO 1310: "
+msgstr "Cette annotation requiert un fichier nommé {!s:s}"
+
+msgid ":INFO 1312: "
+msgstr "Annotation annulée."
+
+# -----------------------------------------
+# :ERRORS:
+# -----------------------------------------
+#
 msgid ":ERROR 1010: "
 msgstr "Option inconnue avec la clé {key}."
 
