@@ -44,7 +44,8 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.config import annots
 import sppas.src.anndata.aio
-from sppas.src.config import info
+from sppas import info
+from sppas import u
 
 from ..SearchIPUs.sppassearchipus import sppasSearchIPUs
 from ..annotationsexc import AnnotationOptionError
@@ -56,6 +57,12 @@ from .fillipus import FillIPUs
 # ---------------------------------------------------------------------------
 
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
+
+# ---------------------------------------------------------------------------
+
+
+def _info(msg_id):
+    return u(info(msg_id, "annotations"))
 
 # ---------------------------------------------------------------------------
 
@@ -154,10 +161,10 @@ class sppasFillIPUs(sppasBaseAnnotation):
         tier.set_meta('minimum_ipus_duration',
                       str(filler.get_min_ipu_dur()))
 
-        self.logfile.print_message(info(1058, "annotations"), indent=1)
-        m1 = info(1290, "annotations").format(filler.get_vol_threshold())
-        m2 = info(1292, "annotations").format(filler.get_min_sil_dur())
-        m3 = info(1294, "annotations").format(filler.get_min_ipu_dur())
+        self.logfile.print_message(_info(1058), indent=1)
+        m1 = _info(1290).format(filler.get_vol_threshold())
+        m2 = _info(1292).format(filler.get_min_sil_dur())
+        m3 = _info(1294).format(filler.get_min_ipu_dur())
         for m in (m1, m2, m3):
             self.logfile.print_message(m, indent=2)
 
@@ -236,7 +243,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
         tier = self.convert(input_audio_filename, input_trans_filename)
         if tier is None:
-            self.logfile.print_message(info(1296, "annotations"), indent=2, status=-1)
+            self.logfile.print_message(_info(1296), indent=2, status=-1)
             return None
 
         # Create the transcription to put the result
@@ -284,9 +291,9 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
         # it's existing... but not in the expected format: we convert!
         if exists_out_name is not None:
-            if exists_out_name == out_name:
+            if exists_out_name.lower() == out_name.lower():
                 self.logfile.print_message(
-                    info(1300, "annotations").format(exists_out_name),
+                    _info(1300).format(exists_out_name),
                     indent=2, status=annots.info)
                 return None
 
@@ -297,8 +304,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     parser.set_filename(out_name)
                     parser.write(t)
                     self.logfile.print_message(
-                        info(1300, "annotations").format(exists_out_name) +
-                        info(1302, "annotations").format(out_name),
+                        _info(1300).format(exists_out_name) +
+                        _info(1302).format(out_name),
                         indent=2, status=annots.info)
                     return out_name
                 except:

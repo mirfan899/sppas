@@ -47,7 +47,9 @@ from sppas.src.anndata import sppasPoint
 from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.anndata import sppasRW
-from sppas.src.config import annots
+from sppas import annots
+from sppas import info
+from sppas import u
 
 from ..annotationsexc import AnnotationOptionError
 from ..baseannot import sppasBaseAnnotation
@@ -58,6 +60,12 @@ from .searchipus import SearchIPUs
 SIL_ORTHO = list(
     symbols.ortho.keys()
     )[list(symbols.ortho.values()).index("silence")]
+
+# ---------------------------------------------------------------------------
+
+
+def _info(msg_id):
+    return u(info(msg_id, "annotations"))
 
 # ---------------------------------------------------------------------------
 
@@ -400,10 +408,9 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
         # it's existing... but not in the expected format: convert!
         if exist_out_name is not None:
-            if exist_out_name == out_name:
+            if exist_out_name.lower() == out_name.lower():
                 self.logfile.print_message(
-                    "A file with name {:s} is already existing."
-                    "".format(exist_out_name),
+                    _info(1300).format(exist_out_name),
                     indent=2, status=annots.info)
                 return None
 
@@ -414,9 +421,8 @@ class sppasSearchIPUs(sppasBaseAnnotation):
                     parser.set_filename(out_name)
                     parser.write(t)
                     self.logfile.print_message(
-                        "A file with name {:s} is already existing. "
-                        'This file was exported to {:s}'
-                        ''.format(exist_out_name, out_name),
+                        _info(1300).format(exist_out_name) +
+                        _info(1302).format(out_name),
                         indent=2, status=annots.warning)
                     return out_name
                 except:
