@@ -34,6 +34,7 @@
 
 """
 import re
+import logging
 
 from .dictrepl import sppasDictRepl
 
@@ -76,6 +77,12 @@ class sppasMapping(sppasDictRepl):
     def get_reverse(self):
         """Return the boolean value of reverse member."""
         return self._reverse
+
+    # -----------------------------------------------------------------------
+
+    def get_miss_symbol(self):
+        """Return the boolean value of reverse member."""
+        return self._miss_symbol
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -136,6 +143,7 @@ class sppasMapping(sppasDictRepl):
                 return s
 
         if self._keep_miss is False:
+            logging.info('Missing symbol {:s}.'.format(entry))
             return self._miss_symbol
 
         return entry
