@@ -76,7 +76,7 @@ class sppasRW(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Readers and writers of annotated data.
 
@@ -173,7 +173,7 @@ class sppasRW(object):
             trs.read(self.__filename)
 
         except UnicodeError as e:
-            raise AioEncodingError(filename=self.__filename, error=str(e))
+            raise AioEncodingError(filename=self.__filename, error_msg=str(e))
         except IOError:
             raise
         except Exception:
