@@ -52,7 +52,7 @@ class sppasMapping(sppasDictRepl):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     A mapping is an extended replacement dictionary.
     sppasMapping is used for the management of a mapping table of any set
@@ -143,7 +143,6 @@ class sppasMapping(sppasDictRepl):
                 return s
 
         if self._keep_miss is False:
-            logging.info('Missing symbol {:s}.'.format(entry))
             return self._miss_symbol
 
         return entry
@@ -163,18 +162,22 @@ class sppasMapping(sppasDictRepl):
             return mstr
 
         tab = []
-        # suppose that some punctuation are like a separator
-        # and we have to replace all strings between them
         if len(delimiters) > 0:
+            # Suppose that some punctuation are like a separator
+            # and we have to replace all strings between them
             pattern = "|".join(map(re.escape, delimiters))
-            pattern = "("+pattern+")\s*"
+            pattern = "(" + pattern + ")\s*"
             tab = re.split(pattern, mstr)
 
         else:
+            # No delimiters: we apply a longest matching to map.
+            # save the current members values to restore them later
             s = self._miss_symbol
             k = self._keep_miss
+            # fix values these members to work properly with them
             self._miss_symbol = "UNKNOWN"
             self._keep_miss = False
+            # longest matching to map
             i = 0
             j = 0
             maxi = len(mstr)
@@ -186,6 +189,7 @@ class sppasMapping(sppasDictRepl):
                     mapped = self.map_entry(mstr[j:i])
                 tab.append(mstr[j:i])
                 j = i
+            # restore initial members
             self._miss_symbol = s
             self._keep_miss = k
 
@@ -194,6 +198,10 @@ class sppasMapping(sppasDictRepl):
             if v in delimiters:
                 map_tab.append(v)
             else:
-                map_tab.append(self.map_entry(v))
+                mapped = self.map_entry(v)
+                if mapped == self._miss_symbol:
+                    logging.info('In {:s}, missing symbol {:s}. Mapped into {:s}.'
+                                 ''.format(mstr, v, mapped))
+                map_tab.append(mapped)
 
         return "".join(map_tab)
