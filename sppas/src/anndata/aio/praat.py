@@ -487,13 +487,22 @@ class sppasTextGrid(sppasBasePraat):
         """
         # read one line
         line = lines[start_line].strip()
+
+        # The text can starts with a carriage return... so line is:
+        # text = "
+        first = line.find('"')
+        last = line.rfind('"')
+
+        # parse this line
         text = sppasBasePraat._parse_string(line)
         start_line += 1
 
         # if the text continue on the following lines
-        while line.endswith('"') is False:
-
+        while first == last:   # line.endswith('"') is False:
             line = lines[start_line].strip()
+            first = line.find('"')
+            last = line.rfind('"')
+
             text += "\n" + sppasBasePraat._parse_string(line)
             start_line += 1
             if line.endswith('"'):

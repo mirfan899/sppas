@@ -67,7 +67,7 @@ class sppasBaseSubtitles(sppasBaseIO):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -194,7 +194,7 @@ class sppasSubRip(sppasBaseSubtitles):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     The SubRip text file format (SRT) is used by the SubRip program to save
     subtitles ripped from video files or DVDs.
