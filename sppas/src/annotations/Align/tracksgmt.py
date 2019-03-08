@@ -183,7 +183,7 @@ class TrackSegmenter(object):
         # Do not align nothing!
         if len(phones) == 0:
             self._basic_aligner.run_alignment(audio_filename, align_name)
-            return info(1222, "annotations)")
+            return info(1222, "annotations")
 
         # Do not align only one phoneme!
         if len(phones.split()) <= 1 and "-" not in phones:
