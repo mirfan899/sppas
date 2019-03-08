@@ -240,6 +240,10 @@ class sppasSubRip(sppasBaseSubtitles):
 
         tier = self.create_tier('Trans-SubRip')
 
+        # Ignore BOM
+        if lines[0].startswith(codecs.BOM_UTF8):
+            lines[0] = lines[0][1:]
+
         # Ignore an optional header (or blank lines)
         i = 0
         while sppasBaseIO.is_number(lines[i].strip()[0:1]) is False:
@@ -406,6 +410,10 @@ class sppasSubViewer(sppasBaseSubtitles):
             fp.close()
 
         tier = self.create_tier('Trans-SubViewer')
+
+        # Ignore BOM
+        if lines[0].startswith(codecs.BOM_UTF8):
+            lines[0] = lines[0][1:]
 
         # Header
         i = 0
