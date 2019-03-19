@@ -90,10 +90,13 @@ if v == '4':
                    "Verify the the installation of SPPAS and try again.\n"
                    "The full error message is: %s" % traceback.format_exc())
 
-    # Create and run the application
+    # Create and run the wx application
     app = sppasApp()
-    app.run()
-    sys.exit()
+    status = app.run()
+    if status != 0:
+        print("SPPAS exits with error status: {:d}"
+              "".format(status))
+    sys.exit(status)
 
 # ---------------------------------------------------------------------------
 # If wxPython3 is installed...
