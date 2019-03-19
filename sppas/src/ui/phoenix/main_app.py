@@ -156,7 +156,11 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def show_splash_screen(self):
-        """Create and show the splash image."""
+        """Create and show the splash image.
+
+        It is supposed that wx.adv is available (test it first!).
+
+        """
         delay = self.__cfg.splash_delay
         if delay <= 0:
             return
@@ -177,7 +181,11 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def background_initialization(self):
-        """Initialize the application. """
+        """Initialize the application.
+
+        Load the settings... and various other stuff to do.
+
+        """
         self.settings = WxAppSettings()
 
         # here, we only sleep some time to simulate we're doing something.
@@ -191,23 +199,45 @@ class sppasApp(wx.App):
         A splash screen is displayed while a background initialization is
         doing things, then the main frame is created.
 
+        :return: (int) Exit status
+
         """
-        splash = None
-        if adv_import:
-            splash = self.show_splash_screen()
-        self.background_initialization()
+        try:
 
-        # here we could fix things like:
-        #  - is first launch? No? so create config! and/or display a welcome msg!
-        #  - fix config dir,
-        #  - etc
+            splash = None
+            if adv_import:
+                splash = self.show_splash_screen()
+            self.background_initialization()
 
-        # Create the main frame of the application and show it.
-        window = sppasMainWindow()
-        self.SetTopWindow(window)
-        if splash:
-            splash.Close()
-        self.MainLoop()
+            # here we could fix things like:
+            #  - is first launch? No? so create config! and/or display a welcome msg!
+            #  - fix config dir,
+            #  - etc
+
+            # Create the main frame of the application and show it.
+            window = sppasMainWindow()
+            self.SetTopWindow(window)
+            if splash:
+                splash.Close()
+            self.MainLoop()
+
+        except Exception as e:
+            # All exception messages of SPPAS are normalized.
+            # We assign the error number at the exit status
+            msg = str(e)
+            error = -1
+            if msg.startswith(":ERROR "):
+                try:
+                    msg = msg[msg.index(" "):]
+                    if ':' in msg:
+                        msg = msg[:msg.index(":")]
+                        error = int(msg)
+                except:
+                    pass
+
+            return error
+
+        return 0
 
     # -----------------------------------------------------------------------
 
