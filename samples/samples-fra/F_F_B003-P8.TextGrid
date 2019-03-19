@@ -31,7 +31,7 @@ item []:
 		intervals [5]:
 			xmin = 8.4605955438
 			xmax = 9.1450000312
-			text = "#"
+			text = ""
 		intervals [6]:
 			xmin = 9.1450000312
 			xmax = 11.9485310906
