@@ -63,6 +63,7 @@ from ..anndataexc import AioEncodingError
 # ---------------------------------------------------------------------------
 
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
+SIL_PHONO = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
 
@@ -508,7 +509,7 @@ def point2interval(tier, radius=0.001):
 # ------------------------------------------------------------------------
 
 
-def unalign(aligned_tier, ipus_separators=[SIL_ORTHO, 'dummy']):
+def unalign(aligned_tier, ipus_separators=(SIL_ORTHO, SIL_PHONO, 'dummy')):
     """Convert a time-aligned tier into a non-aligned tier.
 
     :param aligned_tier: (sppasTier)
