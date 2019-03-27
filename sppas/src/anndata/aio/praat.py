@@ -358,6 +358,10 @@ class sppasTextGrid(sppasBasePraat):
         :param filename: is the input file name, ending by ".TextGrid"
 
         """
+        if not self.detect(filename):
+            raise IOError('{:s} is not of the expected TextGrid format.'
+                          ''.format(filename))
+        
         # get the content of the file
 
         try:
