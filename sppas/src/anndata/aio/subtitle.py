@@ -46,7 +46,8 @@ Precision in time is 1ms.
 import codecs
 import datetime
 
-from sppas.src.config import sg
+from sppas import sg
+from sppas.src.utils import b
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError
@@ -241,7 +242,7 @@ class sppasSubRip(sppasBaseSubtitles):
         tier = self.create_tier('Trans-SubRip')
 
         # Ignore BOM
-        if lines[0].startswith(codecs.BOM_UTF8):
+        if b(lines[0]).startswith(codecs.BOM_UTF8):
             lines[0] = lines[0][1:]
 
         # Ignore an optional header (or blank lines)
@@ -412,7 +413,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         tier = self.create_tier('Trans-SubViewer')
 
         # Ignore BOM
-        if lines[0].startswith(codecs.BOM_UTF8):
+        if b(lines[0]).startswith(codecs.BOM_UTF8):
             lines[0] = lines[0][1:]
 
         # Header

@@ -217,11 +217,11 @@ if __name__ == "__main__":
                 print(tier.get_name())
                 for a in tier:
                     if a.location_is_point():
-                        print("{:d}, {:s}".format(
+                        print("{}, {:s}".format(
                             a.get_location().get_best().get_midpoint(),
                             a.serialize_labels(" ")))
                     else:
-                        print("{:f}, {:f}, {:s}".format(
+                        print("{}, {}, {:s}".format(
                             a.get_location().get_best().get_begin().get_midpoint(),
                             a.get_location().get_best().get_end().get_midpoint(),
                             a.serialize_labels(" ")))

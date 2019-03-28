@@ -215,8 +215,8 @@ class sppasBasePraat(sppasBaseIO):
         header = 'File type = "ooTextFile"\n'
         header += 'Object class = "{:s}"\n'.format(file_class)
         header += '\n'
-        header += 'xmin = {:.18}\n'.format(xmin)
-        header += 'xmax = {:.18}\n'.format(xmax)
+        header += 'xmin = {}\n'.format(xmin)
+        header += 'xmax = {}\n'.format(xmax)
         return header
 
     # -----------------------------------------------------------------------
@@ -303,7 +303,7 @@ class sppasTextGrid(sppasBasePraat):
         file_type = sppasBasePraat._parse_string(line)
         line = fp.readline()
         object_class = sppasBasePraat._parse_string(line)
-        return file_type == "ooTextFile" and object_class == "TextGrid"
+        return file_type.startswith("ooTextFile") and object_class == "TextGrid"
 
     @staticmethod
     def detect(filename):
@@ -359,9 +359,9 @@ class sppasTextGrid(sppasBasePraat):
 
         """
         if not self.detect(filename):
-            raise IOError('{:s} is not of the expected TextGrid format.'
-                          ''.format(filename))
-        
+            raise IOError('{:s} is not of the expected {:s} format.'
+                          ''.format(filename, self.default_extension))
+
         # get the content of the file
 
         try:

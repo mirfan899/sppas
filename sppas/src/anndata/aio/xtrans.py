@@ -237,6 +237,7 @@ class sppasTDF(sppasBaseText):
             location = sppasLocation(sppasInterval(
                 sppasTDF.make_point(line[begin]),
                 sppasTDF.make_point(line[end])))
-            labels = format_labels(line[tag])
+
+            labels = format_labels(line[tag], separator="\n", empty="")
 
             tier.create_annotation(location, labels)

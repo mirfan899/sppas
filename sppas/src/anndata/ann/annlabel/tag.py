@@ -126,7 +126,11 @@ class sppasTag(object):
     # ------------------------------------------------------------------------
 
     def get_typed_content(self):
-        """Return the content value, in its appropriate type."""
+        """Return the content value, in its appropriate type.
+
+        Excepted for strings which are systematically returned as unicode.
+
+        """
         if self.__tag_type is not None:
 
             if self.__tag_type == "int":

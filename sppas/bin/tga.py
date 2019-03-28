@@ -192,7 +192,7 @@ if __name__ == "__main__":
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
+                    print("{} {} {:s}".format(
                         a.get_location().get_best().get_begin().get_midpoint(),
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))

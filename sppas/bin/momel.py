@@ -185,7 +185,7 @@ if __name__ == "__main__":
         else:
             trs = melodie.run([args.i])
             for a in trs[0]:
-                print("{:f} {:f}".format(
+                print("{} {:f}".format(
                     a.get_location().get_best().get_midpoint(),
                     a.get_best_tag().get_typed_content()))
 

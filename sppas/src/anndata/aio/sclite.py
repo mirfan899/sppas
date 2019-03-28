@@ -49,6 +49,7 @@ Because comments are possible, this class uses this function as an
 opportunity to store metadata.
 
 """
+import logging
 import codecs
 import os.path
 
@@ -66,7 +67,7 @@ from ..ann.annlabel import sppasLabel
 from ..ann.annlabel import sppasTag
 
 from .text import sppasBaseText
-from .aioutils import format_labels
+from .aioutils import format_labels, is_ortho_tier
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -289,6 +290,13 @@ class sppasCTM(sppasBaseSclite):
             # Create the tier and set metadata
             tier = self.create_tier(tier_name, media=media)
             tier.set_meta("media_channel", tab_line[1])
+
+            # Do some communication
+            if is_ortho_tier(tier_name) is False:
+                logging.info(
+                    'Tier {:s} is not an orthographic transcription. '
+                    'Whitespace in annotations are interpreted as a '
+                    'label separator.'.format(tier_name))
 
         return tier
 
@@ -724,9 +732,14 @@ class sppasSTM(sppasBaseSclite):
 
             # extract information of this annotation
             tab_line = line.split()
+            utterance = " ".join(tab_line[5:])
+
+            if is_ortho_tier(tier.get_name()) is False:
+                utterance = utterance.replace(" ", "\n")
+
             sppasSTM._create_annotation(tab_line[3],
                                         tab_line[4],
-                                        " ".join(tab_line[5:]),
+                                        utterance,
                                         tier)
 
     # -----------------------------------------------------------------------
@@ -734,8 +747,8 @@ class sppasSTM(sppasBaseSclite):
     @staticmethod
     def _create_annotation(begin, end, utterance, tier):
         """Add into the tier the annotation corresponding to data of a line."""
-        utterance = sppasUnicode(utterance).to_strip()
-        labels = format_labels(utterance)
+        labels = format_labels(utterance, separator="\n")
+
         location = sppasLocation(
             sppasInterval(sppasBaseSclite.make_point(begin),
                           sppasBaseSclite.make_point(end)))

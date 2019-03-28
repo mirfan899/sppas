@@ -52,7 +52,7 @@ from ..ann.annlocation import sppasInterval
 from ..media import sppasMedia
 
 from .basetrs import sppasBaseIO
-from .aioutils import format_labels
+from .aioutils import format_labels, is_ortho_tier
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -634,7 +634,6 @@ class sppasCSV(sppasBaseText):
         """Read a CSV file.
 
         :param filename: (str)
-        :param separator: (char)
         :param signed: (bool) Indicate if the encoding is UTF-8 signed.
         If False, the default encoding is used.
 
@@ -693,8 +692,12 @@ class sppasCSV(sppasBaseText):
                 if location is None:
                     continue
 
-                # Add the new annotation
-                tier.create_annotation(location, format_labels(content))
+                # Add the new annotation.
+                if is_ortho_tier(tier_name):
+                    label = format_labels(content, separator="\n")
+                else:
+                    label = format_labels(content, separator=" ")
+                tier.create_annotation(location, label)
 
                 i += 1
 
@@ -710,6 +713,9 @@ class sppasCSV(sppasBaseText):
 
     def write(self, filename, signed=True):
         """Write a CSV file.
+
+        Because the labels can be only on one line, the whitespace is used
+        to separate labels (instead of CR in other formats like textgrid).
 
         :param filename: (str)
         :param signed: (bool) Indicate if the encoding is UTF-8 signed.

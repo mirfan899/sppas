@@ -1591,7 +1591,7 @@ class sppasEAF(sppasBaseIO):
                 # Assign the label
                 label_ann_root = ET.SubElement(ref_ann_root,
                                                'ANNOTATION_VALUE')
-                label_ann_root.text = ann.serialize_labels()
+                label_ann_root.text = ann.serialize_labels(separator="\n")
 
     # -----------------------------------------------------------------------
     # PRIVATE

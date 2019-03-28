@@ -49,6 +49,7 @@ import codecs
 
 from sppas.src.config import sg
 from sppas.src.config import symbols
+from sppas.src.utils import sppasUnicode, u
 
 from ..tier import sppasTier
 from ..ann.annotation import sppasAnnotation
@@ -97,11 +98,37 @@ def load(filename, file_encoding=sg.__encoding__):
 # ---------------------------------------------------------------------------
 
 
+def is_ortho_tier(tier_name):
+    """Return true is the tier_name matches an ortho trans.
+
+    i.e. is containing either "ipu", "trans", "trs", "toe" or "ortho" in its name.
+
+    :param tier_name: (str)
+    :return: (bool)
+
+    """
+    tier_name = tier_name.lower()
+    if "trans" in tier_name:
+        return True
+    if "trs" in tier_name:
+        return True
+    if "toe" in tier_name:
+        return True
+    if "ortho" in tier_name:
+        return True
+    if "ipu" in tier_name:
+        return True
+
+    return False
+
+# ---------------------------------------------------------------------------
+
+
 def format_labels(text, separator="\n", empty=""):
     """Create a set of labels from a text.
 
     Use the separator to split the text into labels.
-    Use the "{ / }" system to parse the alternative tags.
+    Use the "{ | }" system to parse the alternative tags.
 
     :param text: (str)
     :param separator: (str) String to separate labels.
@@ -113,12 +140,13 @@ def format_labels(text, separator="\n", empty=""):
     if text is None:
         return []
     
-    text = text.strip()
+    su = sppasUnicode(text.strip())
+    text = su.unicode()
     if len(text) == 0:
         return []
 
     labels = list()
-    for line in text.split(separator):
+    for line in text.split(sppasUnicode(separator).unicode()):
         label = format_label(line, empty)
         labels.append(label)
 
@@ -130,7 +158,7 @@ def format_labels(text, separator="\n", empty=""):
 def format_label(text, empty=""):
     """Create a label from a text.
 
-    Use the "{ / }" system to parse the alternative tags.
+    Remark: use the "{ | }" system to parse the alternative tags.
 
     :param text: (str)
     :param empty: (str) The text representing an empty tag.
@@ -138,10 +166,20 @@ def format_label(text, empty=""):
     :returns: sppasLabel
 
     """
+    su = sppasUnicode(text.strip())
+    text = su.unicode()
     if len(text) == 0:
         return sppasLabel(sppasTag(""))
 
-    tag = sppasTag(text)
+    # Alternative tags
+    if text.startswith(u('{')) and text.endswith(u('}')) and u('|') in text:
+        text = text[1:-1]
+        tag = list()
+        for content in text.split(u('|')):
+            tag.append(sppasTag(content))
+    else:
+        tag = sppasTag(text)
+
     return sppasLabel(tag)
 
 # ---------------------------------------------------------------------------

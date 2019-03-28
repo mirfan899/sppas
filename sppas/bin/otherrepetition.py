@@ -170,7 +170,7 @@ if __name__ == "__main__":
             trs = ann.run([args.i, args.s])
             for tier in trs:
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
+                    print("{} {} {:s}".format(
                         a.get_location().get_best().get_begin().get_midpoint(),
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.get_best_tag().get_content()))

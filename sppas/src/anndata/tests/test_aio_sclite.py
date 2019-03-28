@@ -551,7 +551,27 @@ class TestScliteSTM(unittest.TestCase):
         self.assertEqual(stm[1].get_name(), "ma_0029-2-B")
         self.assertEqual(len(stm[0]), 4)
         self.assertEqual(len(stm[1]), 6)
-        self.assertEqual(stm[1][0].get_labels()[0].get_best().get_content(), u("对 因为"))
+
+        # Test labels (whitespace is the labels' separator)
+        self.assertEqual(len(stm[0][3].get_labels()), 3)
+        self.assertEqual(len(stm[1][0].get_labels()), 2)
+
+        # Check tags' content (unicode)
+        self.assertEqual(stm[1][0].get_labels()[0].get_best().get_content(), u("对"))
+        self.assertEqual(stm[1][0].get_labels()[1].get_best().get_content(), u("因为"))
+        self.assertEqual(stm[1][0].get_labels()[1].get_best().get_typed_content(), u("因为"))
+        self.assertEqual(stm[0][3].get_labels()[0].get_best().get_content(), u("OK"))
+        self.assertEqual(stm[0][3].get_labels()[2].get_best().get_content(), u("OK"))
+        self.assertEqual(stm[0][3].get_labels()[2].get_best().get_typed_content(), u("OK"))
+
+        # Alternative tags are interpreted yet!
+        self.assertEqual(len(stm[0][3].get_labels()[1]), 2)
+        self.assertEqual(stm[0][3].get_labels()[1][0][0].get_content(), u("um"))
+        self.assertEqual(stm[0][3].get_labels()[1][1][0].get_content(), u("uh"))
+
+        # their scores are set to None.
+        self.assertIsNone(stm[0][3].get_labels()[1][0][1])
+        self.assertIsNone(stm[0][3].get_labels()[1][1][1])
 
     # -----------------------------------------------------------------------
     # write

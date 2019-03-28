@@ -235,8 +235,18 @@ class sppasPhon(sppasBaseAnnotation):
             location = ann.get_location().copy()
             labels = list()
 
-            # Normalize all labels of the orthographic transcription
+            # Some labels can contain a whitespace and it's a token separator.
+            # (when transcription was read, the \n was used as separator but
+            # some file formats don't support it and are using whitespace)
+            normalized = list()
             for label in ann.get_labels():
+                if " " in label:
+                    normalized.extend(label.split())
+                else:
+                    normalized.append(label)
+
+            # Phonetize all labels of the normalized transcription
+            for label in normalized:
 
                 phonetizations = list()
                 for text, score in label:
