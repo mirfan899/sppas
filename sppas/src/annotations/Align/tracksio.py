@@ -150,7 +150,7 @@ class TracksReaderWriter(object):
     def split_into_tracks(self, input_audio, phon_tier, tok_tier, dir_align):
         """Write tracks from the given data.
 
-        :param input_audio: (str) Audio file name.
+        :param input_audio: (str) Audio file name. Or None if no needed (basic alignment).
         :param phon_tier: (sppasTier) The phonetization tier.
         :param tok_tier: (sppasTier) The tokenization tier, or None.
         :param dir_align: (str) Output directory to store files.
@@ -382,15 +382,27 @@ class TracksWriter:
         :returns: List of tracks with (start-time end-time)
 
         """
-        if phon_tier.is_interval() is False:
-            raise BadInputError
-        if tok_tier is not None:
-            if tok_tier.is_interval() is False:
+        # In any case, the phonetization is written
+        TracksWriter._write_text_tracks(phon_tier, tok_tier, dir_align)
+
+        # No need of an audio if basic alignment
+        if input_audio is not None:
+            if phon_tier.is_interval() is False:
                 raise BadInputError
 
-        TracksWriter._write_text_tracks(phon_tier, tok_tier, dir_align)
-        tracks = phon_tier.get_midpoint_intervals()
-        TracksWriter._write_audio_tracks(input_audio, tracks, dir_align)
+            if tok_tier is not None:
+                if tok_tier.is_interval() is False:
+                    raise BadInputError
+
+            tracks = phon_tier.get_midpoint_intervals()
+            TracksWriter._write_audio_tracks(input_audio, tracks, dir_align)
+
+        else:
+            if phon_tier.is_interval() is True:
+                tracks = phon_tier.get_midpoint_intervals()
+            else:
+                # probably basic alignment of a written text!
+                tracks = phon_tier.get_midpoint_points()
 
         # Write the time values of each track into a file
         ListOfTracks.write(dir_align, tracks)
@@ -561,6 +573,17 @@ class ListOfTracks:
         :param units: List of units to write.
 
         """
+        if len(units) == 0:
+            raise IOError('No filled tracks were founds in the annotations. ')
+
+        # convert points into intervals.
+        u = units[0]
+        if isinstance(u, list) is False:
+            u = list()
+            for i in range(1, len(units)):
+                u.append((i, i+1))
+            units = u
+
         filename = os.path.join(dir_name, ListOfTracks.DEFAULT_FILENAME)
         with open(filename, 'w') as fp:
             for start, end in units:

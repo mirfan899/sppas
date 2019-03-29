@@ -202,7 +202,7 @@ if __name__ == "__main__":
         if a not in ('i', 'o', 'p', 't', 'r', 'R', 'I', 'l', 'e', 'quiet', 'log'):
             parameters.set_option_value(ann_step_idx, a, str(arguments[a]))
 
-    if args.i:
+    if args.i or args.p:
 
         # Perform the annotation on a single file
         # ---------------------------------------

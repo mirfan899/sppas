@@ -473,6 +473,18 @@ class sppasTier(sppasMetaData):
 
     # -----------------------------------------------------------------------
 
+    def get_midpoint_points(self):
+        """Return midpoint values of all the points."""
+        units = list()
+        if self.is_point() is True:
+            for i in range(len(self)):
+                m = self.__ann[i].get_lowest_localization().get_midpoint()
+                units.append(m)
+
+        return units
+
+    # -----------------------------------------------------------------------
+
     def find(self, begin, end, overlaps=True):
         """Return a list of annotations between begin and end.
 

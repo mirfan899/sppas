@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+import os
 import codecs
 
 from sppas.src.config import sg
@@ -182,17 +183,22 @@ class TrackSegmenter(object):
 
         # Do not align nothing!
         if len(phones) == 0:
-            self._basic_aligner.run_alignment(audio_filename, align_name)
+            self._basic_aligner.run_alignment(0., align_name)
             return info(1222, "annotations")
 
-        # Do not align only one phoneme!
-        if len(phones.split()) <= 1 and "-" not in phones:
-            self._basic_aligner.run_alignment(audio_filename, align_name)
-            return ""
+        # If no audio available...
+        if os.path.exists(audio_filename) is False:
+            ret = self._basic_aligner.run_alignment(1., align_name)
 
-        # Execute Alignment
-        ret = self._aligner.check_data()
-        ret += self._aligner.run_alignment(audio_filename, align_name)
+        else:
+            # Do not align only one phoneme!
+            if len(phones.split()) <= 1 and "-" not in phones:
+                self._basic_aligner.run_alignment(audio_filename, align_name)
+                return ""
+
+            # Execute Alignment
+            ret = self._aligner.check_data()
+            ret += self._aligner.run_alignment(audio_filename, align_name)
 
         return ret
 

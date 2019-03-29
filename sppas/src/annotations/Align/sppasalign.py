@@ -403,7 +403,7 @@ class sppasAlign(sppasBaseAnnotation):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def fix_workingdir(inputaudio=""):
+    def fix_workingdir(inputaudio=None):
         """Fix the working directory to store temporarily the data.
 
         :param inputaudio: (str) Audio file name
@@ -413,13 +413,14 @@ class sppasAlign(sppasBaseAnnotation):
         workdir = sf.set_random()
         while os.path.exists(workdir) is True:
             workdir = sf.set_random()
-
-        audio_file = os.path.basename(inputaudio)
-        sf = sppasFileUtils(audio_file)
-        formatted_audio_file = sf.format()
-
         os.mkdir(workdir)
-        shutil.copy(inputaudio, os.path.join(workdir, formatted_audio_file))
+
+        if inputaudio is not None:
+
+            audio_file = os.path.basename(inputaudio)
+            sf = sppasFileUtils(audio_file)
+            formatted_audio_file = sf.format()
+            shutil.copy(inputaudio, os.path.join(workdir, formatted_audio_file))
 
         return workdir
 
@@ -435,8 +436,20 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         input_audio_filename = input_file[0]
-        audio = audioaio.open(input_audio_filename)
-        audio.close()
+        try:
+            audio = audioaio.open(input_audio_filename)
+            audio.close()
+        except Exception as e:
+            self.logfile.print_message(
+                "Audio file error: "+str(e), indent=2, status=annots.warning)
+            self.logfile.print_message(
+                "Audio is unavailable. Aligner is set to 'basic'. "
+                "No extra option available.",
+                indent=2, status=annots.info)
+            # Disable the alignment with audio but perform with basic.
+            input_audio_filename = None
+            self._options['aligner'] = "basic"
+
         input_phon_filename = input_file[1]
 
         # Get the tiers to be time-aligned
@@ -462,8 +475,10 @@ class sppasAlign(sppasBaseAnnotation):
                 MSG_WORKDIR.format(dirname=workdir), indent=3, status=None)
 
         # Set media
-        extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
-        media = sppasMedia(input_audio_filename, mime_type="audio/"+extm)
+        media = None
+        if input_audio_filename is not None:
+            extm = os.path.splitext(input_audio_filename)[1].lower()[1:]
+            media = sppasMedia(input_audio_filename, mime_type="audio/"+extm)
 
         # Processing...
         try:
@@ -473,7 +488,8 @@ class sppasAlign(sppasBaseAnnotation):
                 input_audio_filename,
                 workdir
             )
-            tier_phn.set_media(media)
+            if media is not None:
+                tier_phn.set_media(media)
 
             trs_output = sppasTranscription(self.name)
             trs_output.append(tier_phn)
@@ -507,7 +523,8 @@ class sppasAlign(sppasBaseAnnotation):
                 shutil.rmtree(workdir)
             raise
 
-        self.append_extra(trs_output)
+        if input_audio_filename is not None:
+            self.append_extra(trs_output)
 
         # Save results
         if output_file is not None:
