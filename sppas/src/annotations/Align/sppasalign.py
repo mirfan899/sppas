@@ -46,6 +46,7 @@ from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
 from sppas.src.anndata import sppasLabel, sppasTag, sppasLocation
 from sppas.src.anndata import sppasMedia
+import sppas.src.audiodata.aio as audioaio
 from sppas.src.resources.mapping import sppasMapping
 from sppas.src.models.acm.modelmixer import sppasModelMixer
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -434,6 +435,8 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         input_audio_filename = input_file[0]
+        audio = audioaio.open(input_audio_filename)
+        audio.close()
         input_phon_filename = input_file[1]
 
         # Get the tiers to be time-aligned
