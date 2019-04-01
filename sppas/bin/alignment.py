@@ -215,6 +215,7 @@ if __name__ == "__main__":
         if args.r:
             ann.load_resources(args.r, args.R)
         ann.fix_options(parameters.get_options(ann_step_idx))
+        ann.print_options()
 
         if args.o:
             if args.t:

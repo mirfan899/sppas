@@ -477,6 +477,7 @@ class TestAlign(unittest.TestCase):
 
         a = sppasAlign()
         a.load_resources(model)
+
         tier_phn, tier_tok, tier_pron = a.convert(phn_tier, tok_tier, audio, TEMP)
 
         self.assertEqual(123, len(tier_phn))

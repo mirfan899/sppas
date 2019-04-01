@@ -225,16 +225,19 @@ class sppasBaseAnnotation(object):
         :returns: output file name or None
 
         """
-        # fix the output file name
+        # Save a copy of the options ('run' could modify the current ones)
+        opt = self._options.copy()
+
+        # Fix the output file name
         out_name = self.get_out_name(input_file[0], output_format)
 
-        # if out_name exists, it is overridden
+        # If out_name exists, it is overridden
         if os.path.exists(out_name):
             self.logfile.print_message(
                 (info(1300, "annotations")).format(out_name) + " " +
                 info(1304, "annotations"), indent=2, status=annots.warning)
 
-        # execute annotation
+        # Execute annotation
         try:
             self.run(input_file, opt_input_file, out_name)
         except Exception as e:
@@ -243,6 +246,8 @@ class sppasBaseAnnotation(object):
                 "{:s}\n".format(str(e)),
                 indent=2, status=annots.error)
 
+        # Restore the options before returning the result
+        self._options = opt
         return out_name
 
     # -----------------------------------------------------------------------

@@ -429,6 +429,8 @@ class sppasAlign(sppasBaseAnnotation):
     def run(self, input_file, opt_input_file=None, output_file=None):
         """Run the automatic annotation process on an input.
 
+        Important: options could be changed!
+
         :param input_file: (list of str) (audio, phonemes)
         :param opt_input_file: (list of str) (tokens)
         :param output_file: (str) the output file name
@@ -436,18 +438,23 @@ class sppasAlign(sppasBaseAnnotation):
 
         """
         input_audio_filename = input_file[0]
-        try:
-            audio = audioaio.open(input_audio_filename)
-            audio.close()
-        except Exception as e:
+
+        if input_audio_filename is not None:
+            try:
+                audio = audioaio.open(input_audio_filename)
+                audio.close()
+            except Exception as e:
+                self.logfile.print_message(
+                    "Error with audio file: "+str(e), indent=2,
+                    status=annots.error)
+                input_audio_filename = None
+
+        if input_audio_filename is None:
             self.logfile.print_message(
-                "Audio file error: "+str(e), indent=2, status=annots.warning)
-            self.logfile.print_message(
-                "Audio is unavailable. Aligner is set to 'basic'. "
-                "No extra option available.",
-                indent=2, status=annots.info)
+                "Audio is unavailable. Aligner is set to 'basic' and "
+                "no extra option available.",
+                indent=1, status=annots.warning)
             # Disable the alignment with audio but perform with basic.
-            input_audio_filename = None
             self._options['aligner'] = "basic"
 
         input_phon_filename = input_file[1]

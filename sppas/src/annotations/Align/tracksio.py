@@ -299,14 +299,9 @@ class TracksReader:
                 _phons, _words, _prons = [], [], []
 
             # Append alignments in tiers
-            TracksReader._add_aligned_track_into_tier(
-                tier_phn, _phons, unit_start, unit_end)
-
-            TracksReader._add_aligned_track_into_tier(
-                tier_tok, _words, unit_start, unit_end)
-
-            TracksReader._add_aligned_track_into_tier(
-                tier_pron, _prons, unit_start, unit_end)
+            TracksReader._add_aligned_track_into_tier(tier_phn, _phons, unit_start, unit_end)
+            TracksReader._add_aligned_track_into_tier(tier_tok, _words, unit_start, unit_end)
+            TracksReader._add_aligned_track_into_tier(tier_pron, _prons, unit_start, unit_end)
 
             track_number += 1
 
@@ -353,6 +348,9 @@ class TracksReader:
                           '{:s} at position {:f}: {:s}'
                           ''.format(tier.get_name(), delta, str(tdata)))
             logging.error(traceback.format_exc())
+            return False
+
+        return True
 
 # ---------------------------------------------------------------------------
 
@@ -574,13 +572,13 @@ class ListOfTracks:
 
         """
         if len(units) == 0:
-            raise IOError('No filled tracks were founds in the annotations. ')
+            raise IOError('No filled tracks were founds in the annotations.')
 
         # convert points into intervals.
         u = units[0]
-        if isinstance(u, list) is False:
+        if isinstance(u, (tuple, list)) is False:
             u = list()
-            for i in range(1, len(units)):
+            for i in range(1, len(units)+1):
                 u.append((i, i+1))
             units = u
 

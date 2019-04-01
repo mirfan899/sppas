@@ -228,10 +228,8 @@ class sppasAnnotationsManager(Thread):
         step_idx = self._parameters.get_step_idx(annotation_key)
 
         # Create the instance and fix options
-        options = self._parameters.get_options(step_idx)
         auto_annot = self._get_instance(annotation_key)(self._logfile)
-        if len(options) > 0:
-            auto_annot.fix_options(options)
+        self._fix_ann_options(annotation_key, auto_annot)
 
         # Load language resources
         if self._progress:
@@ -241,6 +239,25 @@ class sppasAnnotationsManager(Thread):
                                   lang=step.get_lang())
 
         return auto_annot
+
+    # -----------------------------------------------------------------------
+
+    def _fix_ann_options(self, annotation_key, auto_annot):
+        """Set the options to an automatic annotation.
+
+        :param annotation_key: (str) Key of an annotation
+        :param auto_annot: (BaseAnnotation)
+
+        """
+        # Find the index of this annotation
+        step_idx = self._parameters.get_step_idx(annotation_key)
+
+        # Get options from the parameters
+        options = self._parameters.get_options(step_idx)
+
+        # Set options to the automatic annotation
+        if len(options) > 0:
+            auto_annot.fix_options(options)
 
     # -----------------------------------------------------------------------
 
@@ -385,7 +402,7 @@ class sppasAnnotationsManager(Thread):
                         trs.get_min_loc().get_midpoint(),
                         trs.get_max_loc().get_midpoint())
                     trs.append(tier)
-                    parser = sppasRW(basef + "-merge.xra")
+                    parser = sppasRW(basef + "-merge" + self._parameters.get_output_format())
                     parser.write(trs)
                     self._logfile.print_message(
                         basef + "-merge.xra", indent=1, status=0)

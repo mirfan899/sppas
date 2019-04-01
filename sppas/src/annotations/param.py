@@ -43,7 +43,7 @@ from sppas.src.config import msg
 from sppas.src.structs.baseoption import sppasOption
 from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.lang import UNDETERMINED
-from sppas.src.anndata.aio import extensions as annots_ext
+from sppas.src.anndata.aio import extensions_out as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
 from sppas.src.utils.fileutils import sppasDirUtils
 from sppas.src.utils.fileutils import sppasFileUtils
@@ -546,6 +546,7 @@ class sppasParam(object):
         :returns: the extension really set.
 
         """
+
         # Force to contain the dot
         if not output_format.startswith("."):
             output_format = "." + output_format
@@ -564,4 +565,3 @@ class sppasParam(object):
             output_format = annots.extension
 
         self._output_ext = output_format
-        return output_format
