@@ -93,14 +93,15 @@ class sppasAnnotationsManager(Thread):
         self.__do_merge = False
 
         # fix annotations: key,instance
-        self._annotations = self.__parse_config_file()
+        self._annotations = sppasAnnotationsManager.__parse_config_file()
 
         # start threading
         self.start()
 
     # ------------------------------------------------------------------------
 
-    def __parse_config_file(self):
+    @staticmethod
+    def __parse_config_file():
         """Parse the sppasui.json file.
 
         Parse the file to get the list of annotations.
@@ -306,8 +307,9 @@ class sppasAnnotationsManager(Thread):
     def _run_alignment(self):
         """Execute the Alignment automatic annotation.
 
-        Requires an audio file.
-        Requires a phonetization time-aligned with the IPUs.
+        Required: a phonetization time-aligned with the IPUs.
+        Optional: an audio file (required for speech time-alignment but not
+        for the alignment of a written text...).
         Optional: a text-normalization time-aligned with the IPUs.
 
         :returns: number of files processed successfully
@@ -315,23 +317,29 @@ class sppasAnnotationsManager(Thread):
         """
         a = self._create_ann_instance("alignment")
 
-        audio_files = self.get_annot_files(
-            pattern="", extensions=sppas.src.audiodata.aio.extensions)
+        # Required input file is a phonetization
+        phon_files = self.get_annot_files(
+            pattern=a.get_input_pattern(),
+            extensions=a.get_input_extensions())
 
+        # Get optional files
         files = list()
-        for f in audio_files:
+        for f in phon_files:
+            base_f = f.replace(a.get_input_pattern(), "")
 
-            # Get the input file
+            # Get the tokens input file
             extt = ['-token' + self._parameters.get_output_format()]
-            extp = [a.get_input_pattern() + self._parameters.get_output_format()]
             for e in sppas.src.anndata.aio.extensions_out:
                 extt.append('-token' + e)
-                extp.append(a.get_input_pattern() + e)
+            tok = sppasAnnotationsManager._get_filename(base_f, extt)
 
-            phon = self._get_filename(f, extp)
-            tok = self._get_filename(f, extt)
-            if phon is not None:
-                files.append(((f, phon), tok))
+            # Get the audio input file
+            audio = sppasAnnotationsManager._get_filename(
+                base_f,
+                sppas.src.audiodata.aio.extensions)
+
+            # Append all 3 files
+            files.append(([f], (audio, tok)))
 
         return a.batch_processing(
             files,
@@ -438,7 +446,7 @@ class sppasAnnotationsManager(Thread):
             ext = extensions
 
         for f in self._parameters.get_sppasinput():
-            new_file = self._get_filename(f, ext)
+            new_file = sppasAnnotationsManager._get_filename(f, ext)
             if new_file is not None and new_file not in files:
                 files.append(new_file)
 
@@ -446,7 +454,8 @@ class sppasAnnotationsManager(Thread):
 
     # ------------------------------------------------------------------------
 
-    def _get_filename(self, filename, extensions):
+    @staticmethod
+    def _get_filename(filename, extensions):
         """Return a filename corresponding to one of extensions.
 
         :param filename: input file name

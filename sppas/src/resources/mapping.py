@@ -200,8 +200,8 @@ class sppasMapping(sppasDictRepl):
             else:
                 mapped = self.map_entry(v)
                 if mapped == self._miss_symbol:
-                    logging.info('In {:s}, missing symbol {:s}. Mapped into {:s}.'
-                                 ''.format(mstr, v, mapped))
+                    logging.debug('In {:s}, missing symbol {:s}. Mapped into {:s}.'
+                                  ''.format(mstr, v, mapped))
                 map_tab.append(mapped)
 
         return "".join(map_tab)

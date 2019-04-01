@@ -431,23 +431,41 @@ class sppasAlign(sppasBaseAnnotation):
 
         Important: options could be changed!
 
-        :param input_file: (list of str) (audio, phonemes)
-        :param opt_input_file: (list of str) (tokens)
+        :param input_file: (list of str) (phonemes)
+        :param opt_input_file: (list of str) (audio, tokens)
         :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
         """
-        input_audio_filename = input_file[0]
+        # Get the phonemes tier to be time-aligned
+        parser = sppasRW(input_file[0])
+        trs_input = parser.read()
+        phon_tier = sppasFindTier.phonetization(trs_input)
+        if phon_tier is None:
+            raise NoInputError
 
-        if input_audio_filename is not None:
+        # Get the tokens tier to be time-aligned
+        try:
+            parser = sppasRW(opt_input_file[1])
+            trs_input_tok = parser.read()
+            tok_tier = sppasFindTier.tokenization(trs_input_tok, "std")
+        except:   # IOError, AttributeError:
+            tok_tier = None
+            self.logfile.print_message(
+                MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
+
+        # Get the audio file (check it first)
+        input_audio_filename = None
+        if opt_input_file is not None and len(opt_input_file) > 0 and\
+           opt_input_file[0] is not None:
             try:
-                audio = audioaio.open(input_audio_filename)
+                audio = audioaio.open(opt_input_file[0])
                 audio.close()
+                input_audio_filename = opt_input_file[0]
             except Exception as e:
                 self.logfile.print_message(
                     "Error with audio file: "+str(e), indent=2,
                     status=annots.error)
-                input_audio_filename = None
 
         if input_audio_filename is None:
             self.logfile.print_message(
@@ -456,24 +474,6 @@ class sppasAlign(sppasBaseAnnotation):
                 indent=1, status=annots.warning)
             # Disable the alignment with audio but perform with basic.
             self._options['aligner'] = "basic"
-
-        input_phon_filename = input_file[1]
-
-        # Get the tiers to be time-aligned
-        parser = sppasRW(input_phon_filename)
-        trs_input = parser.read()
-        phon_tier = sppasFindTier.phonetization(trs_input)
-        if phon_tier is None:
-            raise NoInputError
-
-        try:
-            parser = sppasRW(opt_input_file[0])
-            trs_input_tok = parser.read()
-            tok_tier = sppasFindTier.tokenization(trs_input_tok, "std")
-        except:   # IOError, AttributeError:
-            tok_tier = None
-            self.logfile.print_message(
-                MSG_TOKENS_DISABLED, indent=2, status=annots.warning)
 
         # Prepare data
         workdir = sppasAlign.fix_workingdir(input_audio_filename)

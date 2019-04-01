@@ -218,16 +218,10 @@ if __name__ == "__main__":
         ann.print_options()
 
         if args.o:
-            if args.t:
-                ann.run([args.i, args.p], [args.t], args.o)
-            else:
-                ann.run([args.i, args.p], None, args.o)
+            ann.run([args.p], [args.i, args.t], args.o)
 
         else:
-            if args.t:
-                trs = ann.run([args.i, args.p], [args.t])
-            else:
-                trs = ann.run([args.i, args.p])
+            trs = ann.run([args.p], [args.i, args.t])
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:

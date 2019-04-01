@@ -219,8 +219,8 @@ class sppasBaseAnnotation(object):
         output file, and call the run method.
         Can be overridden.
 
-        :param input_file: (list of str) the required input
-        :param opt_input_file: (list of str) the optional input
+        :param input_file: (list of str) the required inputs
+        :param opt_input_file: (list of str) the optional inputs
         :param output_format: (str) Extension of the output file
         :returns: output file name or None
 
@@ -353,6 +353,7 @@ class sppasBaseAnnotation(object):
                 # input_files is a list of required files
                 required_inputs = input_files
             else:
+
                 # input_files is a list with (required inputs, optional inputs)
                 required_inputs = input_files[0]
                 # optional inputs can be either a single file or a list
