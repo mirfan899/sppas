@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.utils.fileutils import sppasGUID
+from sppas.src.files.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .anndataexc import AnnDataTypeError

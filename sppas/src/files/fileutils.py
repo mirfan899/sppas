@@ -29,18 +29,24 @@
 
         ---------------------------------------------------------------------
 
-    utils.fileutils.py
-    ~~~~~~~~~~~~~~~~~~~
+    files.fileutils.py
+    ~~~~~~~~~~~~~~~~~~
+
+    Utility classes to manage file names.
 
 """
+
+import unittest
 import uuid
 import os
 import random
 import tempfile
 from datetime import date
 
-from .makeunicode import sppasUnicode
+from sppas.src.config import paths
+from sppas.src.utils.makeunicode import sppasUnicode
 from sppas import NoDirectoryError
+
 
 # ----------------------------------------------------------------------------
 
@@ -52,7 +58,7 @@ class sppasGUID(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This class is a manager for GUID - globally unique identifier.
 
@@ -274,3 +280,56 @@ class sppasDirUtils(object):
                     sppasDirUtils.dir_entries(dirfile, extension, subdir))
 
         return file_list
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+
+
+class TestFileUtils(unittest.TestCase):
+
+    def setUp(self):
+        self.sample_1 = os.path.join(paths.samples, "samples-eng", "oriana1.wav")
+        self.sample_2 = os.path.join(paths.samples, "samples-fra", "AG_éàç_0460.TextGrid")
+
+    def test_set_random(self):
+        sf = sppasFileUtils()
+        f = os.path.basename(sf.set_random())
+        self.assertTrue(f.startswith("sppas_tmp_"))
+        f = os.path.basename(sf.set_random(add_today=False, add_pid=False))
+        self.assertEqual(16, len(f))
+        f = os.path.basename(sf.set_random(root="toto", add_today=False, add_pid=False))
+        self.assertTrue(f.startswith("toto_"))
+        self.assertEqual(11, len(f))
+
+    def test_exists(self):
+        sf = sppasFileUtils(self.sample_1)
+        self.assertEqual(sf.exists(), self.sample_1)
+
+    def test_format(self):
+        sf = sppasFileUtils(" filename with some   whitespace ")
+        f = sf.clear_whitespace()
+        self.assertEqual("filename_with_some_whitespace", f)
+        sf = sppasFileUtils(self.sample_2)
+        f = sf.to_ascii()
+        self.assertTrue(f.endswith("AG_____0460.TextGrid"))
+
+# ---------------------------------------------------------------------------
+
+
+class TestDirUtils(unittest.TestCase):
+
+    def test_dir(self):
+        # normal situation
+        sd = sppasDirUtils(os.path.join(paths.samples, "samples-yue"))
+        fl = sd.get_files("wav")
+        self.assertEqual(len(fl), 1)
+
+        # directory does not exists
+        sd = sppasDirUtils("bad-directory-name")
+        with self.assertRaises(IOError):
+            sd.get_files("wav")
+
+        # no directory
+        sd = sppasDirUtils(None)
+        self.assertEqual(sd.get_files("wav"), [])

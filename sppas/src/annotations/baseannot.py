@@ -40,7 +40,7 @@ import sppas.src.anndata.aio
 from sppas.src.config import annots
 from sppas.src.config import paths
 from sppas.src.config import info
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
 from .log import sppasLog

@@ -40,11 +40,6 @@ from ..structsexc import LangTypeError
 from ..structsexc import LangNameError
 from ..structsexc import LangPathError
 
-from ..structsexc import META_KEY_ERROR
-from ..structsexc import LANG_TYPE_ERROR
-from ..structsexc import LANG_PATH_ERROR
-from ..structsexc import LANG_NAME_ERROR
-
 # ---------------------------------------------------------------------------
 
 
@@ -55,23 +50,23 @@ class TestExceptions(unittest.TestCase):
             raise MetaKeyError("clé")
         except Exception as e:
             self.assertTrue(isinstance(e, MetaKeyError))
-            self.assertTrue(META_KEY_ERROR in str(e))
+            self.assertTrue('6010' in str(e))
 
     def test_lang_exceptions(self):
         try:
             raise LangTypeError("français")
         except Exception as e:
             self.assertTrue(isinstance(e, LangTypeError))
-            self.assertTrue(LANG_TYPE_ERROR in str(e))
+            self.assertTrue('6020' in str(e))
 
         try:
             raise LangPathError("directory/folder")
         except Exception as e:
             self.assertTrue(isinstance(e, LangPathError))
-            self.assertTrue(LANG_PATH_ERROR in str(e))
+            self.assertTrue('6024' in str(e))
 
         try:
             raise LangNameError("iso639-3")
         except Exception as e:
             self.assertTrue(isinstance(e, LangNameError))
-            self.assertTrue(LANG_NAME_ERROR in str(e))
+            self.assertTrue('6028' in str(e))

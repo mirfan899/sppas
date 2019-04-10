@@ -45,8 +45,8 @@ from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.lang import UNDETERMINED
 from sppas.src.anndata.aio import extensions_out as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
-from sppas.src.utils.fileutils import sppasDirUtils
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasDirUtils
+from sppas.src.files.fileutils import sppasFileUtils
 
 # ----------------------------------------------------------------------------
 

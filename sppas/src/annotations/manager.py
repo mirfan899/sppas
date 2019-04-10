@@ -41,7 +41,7 @@ import os
 from threading import Thread
 
 from sppas import paths
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 from sppas.src.anndata import sppasTranscription, sppasRW
 
 import sppas.src.audiodata.aio

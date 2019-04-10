@@ -41,7 +41,7 @@ import shutil
 from sppas.src.config import symbols
 from sppas.src.config import paths
 from sppas.src.utils.compare import sppasCompare
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 from sppas.src.ui import sppasLogSetup
 
 from ..acm.acmodelhtkio import sppasHtkIO

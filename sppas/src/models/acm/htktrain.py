@@ -45,8 +45,8 @@ from sppas.src.config import sg
 from sppas.src.config import symbols
 from sppas.src.config import separators
 
-from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.files.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasDirUtils
 
 from sppas.src.annotations.searchtier import sppasFindTier
 from sppas.src.annotations.Phon.sppasphon import sppasPhon

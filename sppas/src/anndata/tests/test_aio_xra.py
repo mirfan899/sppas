@@ -47,7 +47,7 @@ import os.path
 import shutil
 
 from ..aio.xra import sppasXRA
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 
 # ---------------------------------------------------------------------------
 

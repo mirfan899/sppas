@@ -52,7 +52,7 @@ from datetime import datetime
 import xml.etree.cElementTree as ET
 
 from sppas.src.config import sg
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 from sppas.src.utils.datatype import bidict
 
 from ..media import sppasMedia

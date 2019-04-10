@@ -48,7 +48,7 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasAnnotation
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata.aio import sppasXRA
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 from sppas.src.resources import sppasMapping
 
 from ..annotationsexc import SizeInputsError
