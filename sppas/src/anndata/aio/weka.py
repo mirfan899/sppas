@@ -797,6 +797,7 @@ class sppasARFF(sppasWEKA):
         super(sppasARFF, self).__init__(name)
 
         self.default_extension = "arff"
+        self.software = "weka"
 
     # -----------------------------------------------------------------------
     # Write data

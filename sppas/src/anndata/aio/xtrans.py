@@ -137,6 +137,7 @@ class sppasTDF(sppasBaseText):
         super(sppasTDF, self).__init__(name)
 
         self.default_extension = "tdf"
+        self.software = "Xtrans"
 
         # override all
         self._accept_multi_tiers = True

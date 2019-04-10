@@ -226,6 +226,7 @@ class sppasSubRip(sppasBaseSubtitles):
         super(sppasSubRip, self).__init__(name)
 
         self.default_extension = "srt"
+        self.software = "SubRip"
 
     # -----------------------------------------------------------------------
 
@@ -397,6 +398,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         super(sppasSubViewer, self).__init__(name)
 
         self.default_extension = "sub"
+        self.software = "SubViewer"
 
     # -----------------------------------------------------------------------
 

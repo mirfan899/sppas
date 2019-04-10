@@ -143,6 +143,7 @@ class sppasEAF(sppasBaseIO):
         super(sppasEAF, self).__init__(name)
 
         self.default_extension = "eaf"
+        self.software = "Elan"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True

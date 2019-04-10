@@ -410,6 +410,7 @@ class sppasRawText(sppasBaseText):
         super(sppasRawText, self).__init__(name)
 
         self.default_extension = "txt"
+        self.software = "editor"
 
         self._accept_multi_tiers = False
 
@@ -625,6 +626,7 @@ class sppasCSV(sppasBaseText):
         super(sppasCSV, self).__init__(name)
 
         self.default_extension = "csv"
+        self.software = "speadsheet"
 
         self._accept_multi_tiers = True
 

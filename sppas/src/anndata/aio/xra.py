@@ -102,6 +102,7 @@ class sppasXRA(sppasBaseIO):
         super(sppasXRA, self).__init__(name)
 
         self.default_extension = "xra"
+        self.software = "SPPAS"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True

@@ -115,6 +115,8 @@ class sppasBasePraat(sppasBaseIO):
             name = self.__class__.__name__
         super(sppasBasePraat, self).__init__(name)
 
+        self.software = "Praat"
+
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
         self._accept_metadata = False
