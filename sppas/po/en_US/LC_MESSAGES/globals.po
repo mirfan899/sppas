@@ -11,11 +11,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "POT-Creation-Date: \n"
 "PO-Revision-Date: \n"
-"Last-Translator: Brigitte Bigi <develop@sppas.org>\n"
+"Last-Translator: Brigitte Bigi <brigitte.bigi@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Language: en_US\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 1.8.11\n"
 
 msgid ":ERROR 010: "
 msgstr "Expected a positive value. Got {value}."
@@ -26,11 +26,20 @@ msgstr "Min value {min_value} is bigger than max value {max_value}."
 msgid ":ERROR 014: "
 msgstr "List index {value} out of range [{min_value},{max_value}]"
 
+msgid ":ERROR 100: "
+msgstr "{!s:s} is not of the expected type '{:s}'."
+
 msgid ":ERROR 110: "
 msgstr "Unknown extension for filename {:s}"
 
 msgid ":ERROR 112: "
 msgstr "The directory {dirname} does not exist."
+
+msgid ":ERROR 200: "
+msgstr "Invalid index value {:d}."
+
+msgid ":ERROR 250: "
+msgstr "Invalid key '{!s:s}' for data '{!s:s}'"
 
 msgid ":ERROR 300: "
 msgstr "Invalid value '{!s:s}' for '{!s:s}'."

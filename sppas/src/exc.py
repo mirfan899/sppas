@@ -28,14 +28,66 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.sppasexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.sppasexc.py
+    ~~~~~~~~~~~~~~~
 
 Global exceptions for sppas.
 
 """
 
 from sppas.src.config import error
+
+
+# -----------------------------------------------------------------------
+
+
+class sppasTypeError(TypeError):
+    """:ERROR 100:.
+
+    {!s:s} is not of the expected type '{:s}'.
+
+    """
+
+    def __init__(self, rtype, expected):
+        self.parameter = error(100) + \
+                         (error(100, "globals")).format(rtype, expected)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class sppasIndexError(IndexError):
+    """:ERROR 200:.
+
+    Invalid index value {:d}.
+
+    """
+
+    def __init__(self, index):
+        self.parameter = error(200) + \
+                         (error(200, "globals")).format(index)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class sppasKeyError(KeyError):
+    """:ERROR 250:.
+
+    Invalid key '{!s:s}' for data '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = error(250) + \
+                         (error(250, "globals")).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 
 # -----------------------------------------------------------------------

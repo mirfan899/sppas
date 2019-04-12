@@ -33,9 +33,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import collections
 
-from ..anndataexc import AnnDataTypeError
+from sppas.src.structs.basefset import sppasBaseSet
+
 from ..tier import sppasTier
 
 from .annlabel import sppasLabel
@@ -44,7 +44,7 @@ from .annlabel import sppasTag
 # ---------------------------------------------------------------------------
 
 
-class sppasAnnSet(object):
+class sppasAnnSet(sppasBaseSet):
     """Manager for a set of annotations.
 
     :author:       Brigitte Bigi
@@ -53,7 +53,7 @@ class sppasAnnSet(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
-    Mainly used with the data that are the result of the filter system.
+    Mainly used with the data that are the result of the tier filter system.
     A sppasAnnSet() manages a dictionary with:
 
         - key: an annotation
@@ -63,60 +63,7 @@ class sppasAnnSet(object):
 
     def __init__(self):
         """Create a sppasAnnSet instance."""
-        self._data_set = collections.OrderedDict()
-
-    # -----------------------------------------------------------------------
-
-    def get_value(self, ann):
-        """Return the value corresponding to an annotation.
-
-        :param ann: (sppasAnnotation)
-        :returns: (list of str) the value corresponding to the annotation.
-
-        """
-        return self._data_set.get(ann, None)
-
-    # -----------------------------------------------------------------------
-
-    def append(self, ann, value):
-        """Append an annotation in the data set, with the given value.
-
-        :param ann: (sppasAnnotation)
-        :param value: (list of str) List of any string.
-
-        """
-        if value is None:
-            raise AnnDataTypeError(value, "list")
-        if isinstance(value, list) is False:
-            raise AnnDataTypeError(value, "list")
-
-        if ann in self._data_set:
-            old_value_list = self._data_set[ann]
-            self._data_set[ann] = list(set(old_value_list + value))
-        else:
-            self._data_set[ann] = value
-
-    # -----------------------------------------------------------------------
-
-    def remove(self, ann):
-        """Remove the annotation of the data set.
-
-        :param ann: (sppasAnnotation)
-
-        """
-        if ann in self._data_set:
-            del self._data_set[ann]
-
-    # -----------------------------------------------------------------------
-
-    def copy(self):
-        """Make a deep copy of self."""
-
-        d = sppasAnnSet()
-        for ann, value in self._data_set.items():
-            d.append(ann, value)
-
-        return d
+        super(sppasAnnSet, self).__init__()
 
     # -----------------------------------------------------------------------
 
@@ -156,71 +103,3 @@ class sppasAnnSet(object):
         # original tier and the filtered one.
 
         return tier
-
-    # -----------------------------------------------------------------------
-    # Overloads
-    # -----------------------------------------------------------------------
-
-    def __iter__(self):
-        for ann in list(self._data_set.keys()):
-            yield ann
-
-    # -----------------------------------------------------------------------
-
-    def __len__(self):
-        return len(self._data_set)
-
-    # -----------------------------------------------------------------------
-
-    def __contains__(self, ann):
-        return ann in self._data_set
-
-    # -----------------------------------------------------------------------
-
-    def __eq__(self, other):
-        """Check if data sets are equals, i.e. share the same data."""
-        # check len
-        if len(self) != len(other):
-            return False
-
-        # check keys and values
-        for key, value in self._data_set.items():
-            if key not in other:
-                return False
-            other_value = other.get_value(key)
-            if set(other_value) != set(value):
-                return False
-
-        return True
-
-    # -----------------------------------------------------------------------
-    # Operators
-    # -----------------------------------------------------------------------
-
-    def __or__(self, other):
-        """Implements the '|' operator between 2 data sets.
-
-        The operator '|' does the intersection operation.
-
-        """
-        d = self.copy()
-        for ann in other:
-            d.append(ann, other.get_value(ann))
-
-        return d
-
-    # -----------------------------------------------------------------------
-
-    def __and__(self, other):
-        """Implements the '&' operator between 2 data sets.
-
-        The operator '&' does the union operation.
-
-        """
-        d = sppasAnnSet()
-        for ann in self:
-            if ann in other:
-                d.append(ann, self.get_value(ann))
-                d.append(ann, other.get_value(ann))
-
-        return d
