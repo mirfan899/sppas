@@ -29,13 +29,12 @@
 
         ---------------------------------------------------------------------
 
-    anndata.filter.filters.py
+    src.analysis.tierfilters.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
-from sppas.src.anndata.anndataexc import AnnDataValueError
-from sppas.src.anndata.anndataexc import AnnDataKeyError
+from sppas import sppasKeyError
 
 from sppas.src.utils.makeunicode import u
 
@@ -45,11 +44,13 @@ from sppas.src.anndata.ann.annlocation import sppasDurationCompare
 from sppas.src.anndata.ann.annlocation import sppasLocalizationCompare
 from sppas.src.anndata.ann.annlocation import sppasIntervalCompare
 
+from .basefilters import sppasBaseFilters
+
 # ---------------------------------------------------------------------------
 
 
-class sppasTierFilters(object):
-    """This class implements the 'SPPAS tier' filter system.
+class sppasTierFilters(sppasBaseFilters):
+    """This class implements the 'SPPAS tier filter system'.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -104,13 +105,13 @@ class sppasTierFilters(object):
 
     """
 
-    def __init__(self, tier):
+    def __init__(self, obj):
         """Create a sppasTierFilters instance.
 
-        :param tier: (sppasTier) The tier to be filtered.
+        :param obj: (sppasTier) The tier to be filtered.
 
         """
-        self.tier = tier
+        super(sppasTierFilters, self).__init__(obj)
 
     # -----------------------------------------------------------------------
 
@@ -133,17 +134,15 @@ class sppasTierFilters(object):
         comparator = sppasTagCompare()
 
         # extract the information from the arguments
-        sppasTierFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
-        tag_fct_values = sppasTierFilters.__fix_function_values(comparator,
-                                                            **kwargs)
-        tag_functions = sppasTierFilters.__fix_functions(comparator,
-                                                     **kwargs)
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        tag_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        tag_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         data = sppasAnnSet()
 
-        # search the annotations to be returned:
-        for annotation in self.tier:
+        # search for the annotations to be returned:
+        for annotation in self.obj:
 
             # any label can match
             for label in annotation.get_labels():
@@ -172,17 +171,15 @@ class sppasTierFilters(object):
         comparator = sppasDurationCompare()
 
         # extract the information from the arguments
-        sppasTierFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
-        dur_fct_values = sppasTierFilters.__fix_function_values(comparator,
-                                                            **kwargs)
-        dur_functions = sppasTierFilters.__fix_functions(comparator,
-                                                     **kwargs)
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        dur_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        dur_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         data = sppasAnnSet()
 
-        # search the annotations to be returned:
-        for annotation in self.tier:
+        # search for the annotations to be returned:
+        for annotation in self.obj:
 
             location = annotation.get_location()
             is_matching = location.match_duration(dur_functions, logic_bool)
@@ -208,15 +205,15 @@ class sppasTierFilters(object):
         comparator = sppasLocalizationCompare()
 
         # extract the information from the arguments
-        sppasTierFilters.__test_args(comparator, **kwargs)
-        logic_bool = sppasTierFilters.__fix_logic_bool(**kwargs)
-        loc_fct_values = sppasTierFilters.__fix_function_values(comparator, **kwargs)
-        loc_functions = sppasTierFilters.__fix_functions(comparator, **kwargs)
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        loc_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        loc_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         data = sppasAnnSet()
 
-        # search the annotations to be returned:
-        for annotation in self.tier:
+        # search for the annotations to be returned:
+        for annotation in self.obj:
 
             location = annotation.get_location()
             is_matching = location.match_localization(loc_functions, logic_bool)
@@ -245,19 +242,18 @@ class sppasTierFilters(object):
         comparator = sppasIntervalCompare()
 
         # extract the information from the arguments
-        rel_functions = sppasTierFilters.__fix_relation_functions(comparator,
-                                                              *args)
+        rel_functions = sppasTierFilters.__fix_relation_functions(comparator, *args)
 
         data = sppasAnnSet()
 
-        # search the annotations to be returned:
-        for annotation in self.tier:
+        # search for the annotations to be returned:
+        for annotation in self.obj:
 
             location = annotation.get_location()
             match_values = sppasTierFilters.__connect(location,
-                                                  other_tier,
-                                                  rel_functions,
-                                                  **kwargs)
+                                                      other_tier,
+                                                      rel_functions,
+                                                      **kwargs)
             if len(match_values) > 0:
                 data.append(annotation, list(set(match_values)))
 
@@ -302,70 +298,8 @@ class sppasTierFilters(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def __test_args(comparator, **kwargs):
-        """Raise an exception if any of the args is not correct."""
-
-        names = ["logic_bool"] + comparator.get_function_names()
-        for func_name, value in kwargs.items():
-            if func_name.startswith("not_"):
-                func_name = func_name[4:]
-
-            if func_name not in names:
-                raise AnnDataKeyError("kwargs function name", func_name)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def __fix_logic_bool(**kwargs):
-        """Return the value of a logic boolean predicate."""
-
-        for func_name, value in kwargs.items():
-            if func_name == "logic_bool":
-                if value not in ['and', 'or']:
-                    raise AnnDataValueError(value, "logic bool")
-                return value
-        return "and"
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def __fix_function_values(comparator, **kwargs):
-        """Return the list of function names and the expected value."""
-
-        fct_values = list()
-        for func_name, value in kwargs.items():
-            if func_name in comparator.get_function_names():
-                fct_values.append("{:s} = {!s:s}".format(func_name, value))
-
-        return fct_values
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def __fix_functions(comparator, **kwargs):
-        """Parse the args to get the list of function/value/complement."""
-
-        f_functions = list()
-        for func_name, value in kwargs.items():
-
-            logical_not = False
-            if func_name.startswith("not_"):
-                logical_not = True
-                func_name = func_name[4:]
-
-            if func_name in comparator.get_function_names():
-                f_functions.append((comparator.get(func_name),
-                                    value,
-                                    logical_not))
-
-        return f_functions
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
     def __fix_relation_functions(comparator, *args):
         """Parse the arguments to get the list of function/complement."""
-
         f_functions = list()
         for func_name in args:
 
@@ -378,7 +312,7 @@ class sppasTierFilters(object):
                 f_functions.append((comparator.get(func_name),
                                     logical_not))
             else:
-                raise AnnDataKeyError("args function name", func_name)
+                raise sppasKeyError("args function name", func_name)
 
         return f_functions
 
@@ -387,7 +321,6 @@ class sppasTierFilters(object):
     @staticmethod
     def __connect(location, other_tier, rel_functions, **kwargs):
         """Find connections between location and the other tier."""
-
         values = list()
         for other_ann in other_tier:
             for localization, score in location:
