@@ -77,6 +77,54 @@
         More tests should be implemented, particularly FileData is not tested
         at all.
 
+    How to use these classes to filter data:
+    ========================================
+
+    A comparator must be implemented to define comparison functions. Then
+    the method 'match' of the FileBase class can be invoked.
+    The FileDataFilter() class is based on the use of this solution. It allows
+    to combine results and is a simplified way to write a request.
+    The use of the FileBase().match() is described in the next examples.
+
+    :Example: Search if a FilePath() is exactly matching "C:\\Users\myname":
+
+        >>> cmp = sppasPathCompare()
+        >>> fp.match([(cmp.exact, "C:\\Users\myname", False)])
+
+    :Example: Search if a FilePath() is starting with "C:\\Users\myname\Desktop"
+    and is checked:
+
+        >>> fp.match(
+        >>>     [(cmp.startswith, "C:\\Users\myname\Desktop", False),
+        >>>      (cmp.check, True, False)],
+        >>>     logic_bool="and")
+
+
+    :Example: Search if a FileRoot() is exactly matching "C:\Users\myname\toto":
+
+        >>> cmp = sppasRootCompare()
+        >>> fr.match([(cmp.exact, "C:\\Users\\myname\\toto", False)])
+
+    :Example: Search if a FileRoot() is starting with "C:\\Users\\myname\\toto"
+    and is checked:
+
+        >>> fr.match(
+        >>>     [(cmp.startswith, "C:\\Users\\myname\\toto", False),
+        >>>      (cmp.check, True, False)],
+        >>>     logic_bool="and")
+
+    :Example: Search if a FileName() is starting with "toto" and is not
+    a TextGrid and is checked:
+
+        >>> cmpn = sppasNameCompare()
+        >>> cmpe = sppasExtensionCompare()
+        >>> cmpp = sppasFileCompare()
+        >>> fn.match(
+        >>>    [(cmpn.startswith, "toto", False),
+        >>>     (cmpe.iexact, "textgrid", True),
+        >>>     (cmpp.check, True, False)],
+        >>>    logic_bool="and")
+
 """
 
 import unittest
@@ -124,6 +172,34 @@ class FileBase(object):
     def get_id(self):
         """Return the identifier of the file, i.e. the full name."""
         return self.__id
+
+    # -----------------------------------------------------------------------
+
+    def match(self, functions, logic_bool="and"):
+        """Return True if the file matches all or any of the functions.
+
+        Functions are defined in a comparator. They return a boolean.
+        The type of the value depends on the function.
+        The logical not is used to reverse the result of the function.
+
+        :param functions: list of (function, value, logical_not)
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :returns: (bool)
+
+        """
+        matches = list()
+        for func, value, logical_not in functions:
+            if logical_not is True:
+                matches.append(not func(self, value))
+            else:
+                matches.append(func(self, value))
+
+        if logic_bool == "and":
+            is_matching = all(matches)
+        else:
+            is_matching = any(matches)
+
+        return is_matching
 
     # -----------------------------------------------------------------------
     # Properties

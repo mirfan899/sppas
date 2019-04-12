@@ -37,14 +37,13 @@
 from sppas import sppasKeyError
 
 from sppas.src.utils.makeunicode import u
+from sppas.src.structs.basefilters import sppasBaseFilters
 
 from sppas.src.anndata.ann.annset import sppasAnnSet
 from sppas.src.anndata.ann.annlabel import sppasTagCompare
 from sppas.src.anndata.ann.annlocation import sppasDurationCompare
 from sppas.src.anndata.ann.annlocation import sppasLocalizationCompare
 from sppas.src.anndata.ann.annlocation import sppasIntervalCompare
-
-from .basefilters import sppasBaseFilters
 
 # ---------------------------------------------------------------------------
 
