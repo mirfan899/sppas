@@ -111,7 +111,10 @@ class sppasFileDataFilters(sppasBaseFilters):
 
             is_matching = path.match(path_functions, logic_bool)
             if is_matching is True:
-                data.append(path, path_fct_values)
+                # append all files of the path
+                for fr in path:
+                    for fn in fr:
+                        data.append(fn, path_fct_values)
 
         return data
 
