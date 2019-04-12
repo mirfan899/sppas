@@ -34,9 +34,8 @@
 """
 import wx
 
-from ..windows import sppasTitleText
-from ..windows import sppasMessageText
 from ..windows import sppasPanel
+from .filespck.filepanel import FileManager
 
 # ---------------------------------------------------------------------------
 
@@ -63,33 +62,16 @@ class sppasFilesPanel(sppasPanel):
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+        self.Layout()
 
     # ------------------------------------------------------------------------
 
     def _create_content(self):
         """"""
-        # Create a title
-        st = sppasTitleText(
-            parent=self,
-            label="Not implemented...")
-        st.SetName("title")
-
-        # Create the welcome message
-        txt = sppasMessageText(
-            self,
-            "In future versions, this will be a file browser."
-        )
+        fm = FileManager(self)
 
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
-        sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
+        sizer.Add(fm, 1, wx.EXPAND, 0)
 
         self.SetSizer(sizer)
-
-    # -----------------------------------------------------------------------
-
-    def SetFont(self, font):
-        sppasPanel.SetFont(self, font)
-        self.FindWindow("title").SetFont(wx.GetApp().settings.header_text_font)
-        self.Layout()

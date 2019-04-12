@@ -86,30 +86,29 @@
     to combine results and is a simplified way to write a request.
     The use of the FileBase().match() is described in the next examples.
 
-    :Example: Search if a FilePath() is exactly matching "C:\\Users\myname":
+    :Example: Search if a FilePath() is exactly matching "my_path":
 
         >>> cmp = sppasPathCompare()
-        >>> fp.match([(cmp.exact, "C:\\Users\myname", False)])
+        >>> fp.match([(cmp.exact, "my_path", False)])
 
-    :Example: Search if a FilePath() is starting with "C:\\Users\myname\Desktop"
-    and is checked:
+    :Example: Search if a FilePath() is starting with "my_path" and is checked:
 
         >>> fp.match(
-        >>>     [(cmp.startswith, "C:\\Users\myname\Desktop", False),
+        >>>     [(cmp.startswith, "my_path", False),
         >>>      (cmp.check, True, False)],
         >>>     logic_bool="and")
 
 
-    :Example: Search if a FileRoot() is exactly matching "C:\Users\myname\toto":
+    :Example: Search if a FileRoot() is exactly matching "my_path/toto":
 
         >>> cmp = sppasRootCompare()
-        >>> fr.match([(cmp.exact, "C:\\Users\\myname\\toto", False)])
+        >>> fr.match([(cmp.exact, "my_path", False)])
 
-    :Example: Search if a FileRoot() is starting with "C:\\Users\\myname\\toto"
+    :Example: Search if a FileRoot() is starting with "my_path/toto"
     and is checked:
 
         >>> fr.match(
-        >>>     [(cmp.startswith, "C:\\Users\\myname\\toto", False),
+        >>>     [(cmp.startswith, "my_path/toto", False),
         >>>      (cmp.check, True, False)],
         >>>     logic_bool="and")
 
