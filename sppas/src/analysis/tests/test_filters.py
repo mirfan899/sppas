@@ -414,112 +414,112 @@ class TestFilterRelationTier(unittest.TestCase):
 
         # 'equals': [3,5]
         res = f.rel(self.rtier, "equals")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[1], ann)
+        self.assertEqual(self.tier[1], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("equals", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("equals", values[0])
 
         # 'contains': [0,3]
         res = f.rel(self.rtier, "contains")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[0], ann)
+        self.assertEqual(self.tier[0], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("contains", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("contains", values[0])
 
         # 'during': [9,10]
         res = f.rel(self.rtier, "during")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[4], ann)
+        self.assertEqual(self.tier[4], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("during", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("during", values[0])
 
         # 'starts': [5,7]
         res = f.rel(self.rtier, "starts")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[2], ann)
+        self.assertEqual(self.tier[2], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("starts", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("starts", values[0])
 
         # 'startedby': [0,3]
         res = f.rel(self.rtier, "startedby")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[0], ann)
+        self.assertEqual(self.tier[0], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("startedby", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("startedby", values[0])
 
         # 'finishedby': [0,3]
         res = f.rel(self.rtier, "finishedby")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[0], ann)
+        self.assertEqual(self.tier[0], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("finishedby", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("finishedby", values[0])
 
         # 'finishes': [10,11]
         res = f.rel(self.rtier, "finishes")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[5], ann)
+        self.assertEqual(self.tier[5], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("finishes", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("finishes", values[0])
 
         # 'meets': [0,3]; [3,5]
         res = f.rel(self.rtier, "meets")
-        self.assertEquals(2, len(res))
+        self.assertEqual(2, len(res))
         self.assertTrue(self.tier[0] in res)
         self.assertTrue(self.tier[1] in res)
         values = res.get_value(self.tier[0])
-        self.assertEquals(1, len(values))
-        self.assertEquals("meets", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("meets", values[0])
         values = res.get_value(self.tier[1])
-        self.assertEquals(1, len(values))
-        self.assertEquals("meets", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("meets", values[0])
 
         # 'metby': [3,5]; [5,7]
         res = f.rel(self.rtier, "metby")
-        self.assertEquals(2, len(res))
+        self.assertEqual(2, len(res))
         self.assertTrue(self.tier[1] in res)
         self.assertTrue(self.tier[2] in res)
         values = res.get_value(self.tier[1])
-        self.assertEquals(1, len(values))
-        self.assertEquals("metby", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("metby", values[0])
         values = res.get_value(self.tier[2])
-        self.assertEquals(1, len(values))
-        self.assertEquals("metby", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("metby", values[0])
 
         # 'overlaps': [7,9]
         res = f.rel(self.rtier, "overlaps")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[3], ann)
+        self.assertEqual(self.tier[3], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("overlaps", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("overlaps", values[0])
 
         # 'overlappedby': [7,9]
         res = f.rel(self.rtier, "overlappedby")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[3], ann)
+        self.assertEqual(self.tier[3], ann)
         values = res.get_value(ann)
-        self.assertEquals(1, len(values))
-        self.assertEquals("overlappedby", values[0])
+        self.assertEqual(1, len(values))
+        self.assertEqual("overlappedby", values[0])
 
         # 'after': all except the first interval
         res = f.rel(self.rtier, "after")
-        self.assertEquals(5, len(res))
+        self.assertEqual(5, len(res))
         self.assertFalse(self.tier[0] in res)
         self.assertTrue(self.tier[1] in res)
         self.assertTrue(self.tier[2] in res)
@@ -529,7 +529,7 @@ class TestFilterRelationTier(unittest.TestCase):
 
         # 'before': [0,3], [3,5], [5,7]
         res = f.rel(self.rtier, "before")
-        self.assertEquals(3, len(res))
+        self.assertEqual(3, len(res))
         self.assertTrue(self.tier[0] in res)
         self.assertTrue(self.tier[1] in res)
         self.assertTrue(self.tier[2] in res)
@@ -539,16 +539,16 @@ class TestFilterRelationTier(unittest.TestCase):
 
         # 'before_equal': [0,3]
         res = f.rel(self.rtier, "before_equal")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         self.assertTrue(self.tier[0] in res)
 
         # 'before_greater':
         res = f.rel(self.rtier, "before_greater")
-        self.assertEquals(0, len(res))
+        self.assertEqual(0, len(res))
 
         # before_lower: [3,5], [5,7]
         res = f.rel(self.rtier, "before_lower")
-        self.assertEquals(2, len(res))
+        self.assertEqual(2, len(res))
         self.assertTrue(self.tier[1] in res)
         self.assertTrue(self.tier[2] in res)
 
@@ -561,9 +561,9 @@ class TestFilterRelationTier(unittest.TestCase):
 
         f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby")
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         ann = [a for a in res][0]
-        self.assertEquals(self.tier[3], ann)
+        self.assertEqual(self.tier[3], ann)
         values = res.get_value(ann)
         self.assertTrue(2, len(values))
         self.assertTrue("overlaps" in values)
@@ -571,19 +571,19 @@ class TestFilterRelationTier(unittest.TestCase):
 
         f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby", overlap_min=1)
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
         values = res.get_value(ann)
         self.assertTrue(2, len(values))
 
         f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby", overlap_min=2)
-        self.assertEquals(0, len(res))
+        self.assertEqual(0, len(res))
 
         f = sppasTierFilters(self.tier)
         res = f.rel(self.rtier, "overlaps", "overlappedby",
                     overlap_min=50,
                     percent=True)
-        self.assertEquals(1, len(res))
+        self.assertEqual(1, len(res))
 
         # Add tests with after/before for a better testing of options and results
         # after/before: max_delay

@@ -31,3 +31,6 @@ msgstr "L'extension du fichier {:s} est inconnue"
 
 msgid ":ERROR 112: "
 msgstr "Le dossier {dirname} n'existe pas."
+
+msgid ":ERROR 300: "
+msgstr "La valeur '{!s:s}' est incorrecte pour '{!s:s}'."

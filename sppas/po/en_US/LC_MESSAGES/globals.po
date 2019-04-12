@@ -31,3 +31,6 @@ msgstr "Unknown extension for filename {:s}"
 
 msgid ":ERROR 112: "
 msgstr "The directory {dirname} does not exist."
+
+msgid ":ERROR 300: "
+msgstr "Invalid value '{!s:s}' for '{!s:s}'."

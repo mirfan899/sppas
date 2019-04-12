@@ -37,9 +37,9 @@ import re
 
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.utils.datatype import sppasType
+from sppas.src.structs.basecompare import sppasBaseCompare
 
 from ...anndataexc import AnnDataTypeError
-from ...basecompare import sppasBaseCompare
 
 from .tag import sppasTag
 
@@ -53,7 +53,7 @@ class sppasTagCompare(sppasBaseCompare):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Label'tags can be of 3 types in anndata (str, num, bool) so
     that this class allows to create different comparison methods
@@ -67,9 +67,9 @@ class sppasTagCompare(sppasBaseCompare):
         >>> tc.get('exact')(sppasTag("abc"), u("abc"))
 
     """
+
     def __init__(self):
         """Create a sppasTagCompare instance."""
-
         super(sppasTagCompare, self).__init__()
 
         # Methods on strings

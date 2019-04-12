@@ -29,13 +29,31 @@
         ---------------------------------------------------------------------
 
     src.annotations.sppasexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Global exceptions for sppas.
 
 """
 
 from sppas.src.config import error
+
+
+# -----------------------------------------------------------------------
+
+
+class sppasValueError(ValueError):
+    """:ERROR 300:.
+
+    Invalid value '{!s:s}' for '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = error(300) + \
+                         (error(300, "globals")).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 # -----------------------------------------------------------------------
 
