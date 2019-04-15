@@ -61,6 +61,14 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
 
     """
     
+    default_renderers = {
+        "string": wx.dataview.DataViewTextRenderer,
+        "bool": wx.dataview.DataViewToggleRenderer,
+        "datetime": wx.dataview.DataViewDateRenderer,
+        "wxBitmap": wx.dataview.DataViewBitmapRenderer,
+        "wxDataViewIconText": wx.dataview.DataViewIconTextRenderer
+    }
+    
     def __init__(self, parent, data=None):
         """Constructor of the FileTreeCtrl.
 
@@ -78,52 +86,17 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
         self.AssociateModel(self._model)
         self._model.DecRef()
 
-        # Define the columns that the model wants in the view.
+        # Create the columns that the model wants in the view.
         for i in range(self._model.GetColumnCount()):
-            col = self.__CreateColumn(i)
+            col = FileTreeCtrl.__create_column(self._model, i)
             if i == self._model.GetExpanderColumn():
                 self.SetExpanderColumn(col)
             wx.dataview.DataViewCtrl.AppendColumn(self, col)
 
+        # Bind events.
         # Used to remember the expend/collapse status of items after a refresh.
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)        
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
-        
-    # ------------------------------------------------------------------------
-
-    def __CreateColumn(self, index):
-        """Return the DataViewColumn matching the given index in the model.
-            
-        """
-        logging.debug('Create column: {:d}: {:s}'.format(index, self._model.GetColumnName(index)))
-        renderers = {
-            "string": wx.dataview.DataViewTextRenderer,
-            "bool": wx.dataview.DataViewToggleRenderer,
-            "datetime": wx.dataview.DataViewDateRenderer,
-            "wxBitmap": wx.dataview.DataViewBitmapRenderer,
-            "wxDataViewIconText": wx.dataview.DataViewIconTextRenderer
-        }
-        stype = self._model.GetColumnType(index)
-        render = self._model.GetColumnRenderer(index)
-        if render is None:
-            if stype not in renderers:
-                stype = "string"
-            render = renderers[stype](
-                varianttype=stype, 
-                mode=self._model.GetColumnMode(index),
-                align=self._model.GetColumnAlign(index))
-
-        col = wx.dataview.DataViewColumn(
-                self._model.GetColumnName(index),
-                render,
-                index,
-                width=self._model.GetColumnWidth(index))
-        col.Reorderable = True
-        col.Sortable = False
-        if stype in ("string", "datetime"):
-            col.Sortable = True
-
-        return col
 
     # ------------------------------------------------------------------------
     # Public methods
@@ -292,3 +265,41 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
 
     def PrependToggleColumn(self, *args, **kw):
         raise FileAttributeError(self.__class__.__format__, "PrependToggleColumn")
+
+    # ------------------------------------------------------------------------
+    # Private
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def __create_column(model, index):
+        """Return the DataViewColumn matching the given index in the model.
+
+        :param index: (int) Index of the column to create. It must match an
+        existing column number of the model.
+        :return: (wx.dataview.DataViewColumn)
+
+        """
+        logging.debug('Create column: {:d}: {:s}'
+                      ''.format(index, model.GetColumnName(index)))
+
+        stype = model.GetColumnType(index)
+        render = model.GetColumnRenderer(index)
+        if render is None:
+            if stype not in FileTreeCtrl.default_renderers:
+                stype = "string"
+            render = FileTreeCtrl.default_renderers[stype](
+                varianttype=stype,
+                mode=model.GetColumnMode(index),
+                align=model.GetColumnAlign(index))
+
+        col = wx.dataview.DataViewColumn(
+            model.GetColumnName(index),
+            render,
+            index,
+            width=model.GetColumnWidth(index))
+        col.Reorderable = True
+        col.Sortable = False
+        if stype in ("string", "datetime"):
+            col.Sortable = True
+
+        return col

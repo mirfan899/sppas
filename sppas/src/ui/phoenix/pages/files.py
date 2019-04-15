@@ -47,7 +47,7 @@ class sppasFilesPanel(sppasPanel):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -58,10 +58,6 @@ class sppasFilesPanel(sppasPanel):
             style=wx.BORDER_NONE
         )
         self._create_content()
-
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -75,3 +71,4 @@ class sppasFilesPanel(sppasPanel):
         sizer.Add(fm, 1, wx.EXPAND, 0)
 
         self.SetSizer(sizer)
+

@@ -31,12 +31,14 @@
 
 """
 
+import logging
 import os
 import wx
 import wx.dataview as dv
 
 from sppas.src.ui.phoenix import sppasSwissKnife
-from sppas.src.ui.phoenix import sppasPanel
+from sppas.src.ui.phoenix.windows.panel import sppasPanel
+from sppas.src.ui.phoenix.windows.button import BitmapTextButton, sppasBitmapTextButton
 from .filetree import FileTreeCtrl
 
 # ----------------------------------------------------------------------------
@@ -52,26 +54,15 @@ class FileManager(sppasPanel):
             parent, id=wx.ID_ANY,
             pos=wx.DefaultPosition, size=wx.DefaultSize,
             style=wx.NO_BORDER, name=wx.PanelNameStr)
-        self._create_content(data)
 
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
+        self._create_content(data)
         self.Layout()
 
     # ------------------------------------------------------------------------
 
     def _create_content(self, data):
         """"""
-        self.tb = wx.ToolBar(self)
-        self.tb.SetBackgroundColour(wx.Colour(230, 230, 230))
-        self.tb.AddTool(wx.ID_ADD, 'Add', sppasSwissKnife.get_bmp_icon('add.png'))
-        self.tb.AddTool(wx.ID_REMOVE, 'Remove', sppasSwissKnife.get_bmp_icon('remove.png'))
-        self.tb.Realize()
-
-        self.Bind(wx.EVT_TOOL, self.OnButtonClick)
-        self.GetTopLevelParent().Bind(wx.EVT_CHAR_HOOK, self.OnKeyPress)
-
+        self.tb = self.__create_toolbar()
         self.fv = FileTreeCtrl(self, data)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
@@ -83,6 +74,35 @@ class FileManager(sppasPanel):
         self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
+
+    def __create_toolbar(self):
+        tb = MainToolbarPanel(self)
+        tb.AddButton("add", "Add")
+        tb.AddButton("remove", "Remove")
+        tb.AddButton("delete", "Delete")
+
+        tb.AddSpacer(3)
+        tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+        return tb
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        self.tb.SetForegroundColour(colour)
+        self.fv.SetForegroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, colour):
+        self.tb.SetBackgroundColour(colour)
+        self.fv.SetBackgroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        self.tb.SetFont(font)
+        self.fv.SetFont(font)
+        self.Layout()
 
     # -----------------------------------------------------------------------
 
@@ -114,19 +134,15 @@ class FileManager(sppasPanel):
 
     def OnButtonClick(self, event):
 
-        ide = event.GetId()
-        if ide == wx.ID_ADD:
+        name = event.GetButtonObject().GetName()
+        if name == "add":
             self._add_file()
 
-        elif ide == wx.ID_REMOVE:
+        elif name == "remove":
             self.fv.Remove()
 
-        elif ide == wx.ID_DELETE:
+        elif name == "delete":
             self._delete()
-        elif ide == wx.ID_SAVEAS:
-            self._copy()
-        elif ide == wx.ID_SAVE:
-            self._export()
 
         event.Skip()
 
@@ -154,6 +170,98 @@ class FileManager(sppasPanel):
         if len(filenames) > 0:
             for f in filenames:
                 self.fv.Add(f)
+
+    # ------------------------------------------------------------------------
+
+    def _delete(self):
+        logging.info('Not implemented')
+        pass
+
+
+# ----------------------------------------------------------------------------
+
+
+class MainToolbarPanel(wx.Panel):
+    """Panel imitating the behaviors of a toolbar.
+
+    """
+    def __init__(self, parent):
+        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
+
+        self.buttons = []
+        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.SetSizer(self.sizer)
+        self.SetMinSize((32, -1))
+        self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+
+    # -----------------------------------------------------------------------
+
+    def OnButtonClick(self, evt):
+        evt.Skip()
+        """obj = evt.GetEventObject()
+        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)"""
+
+    def AddButton(self, icon, text, tooltip=None, activated=True):
+        print(icon)
+        btn = self.create_button(icon, text)
+        btn.SetToolTip(tooltip)
+        btn.Enable(activated)
+        self.sizer.Add(btn, proportion=1, flag=wx.ALL, border=2)
+        self.buttons.append(btn)
+        self.Layout()
+
+    def AddSpacer(self, proportion=1):
+        self.sizer.AddStretchSpacer(proportion)
+
+    # -----------------------------------------------------------------------
+
+    def create_button(self, icon, text):
+        print(icon)
+        btn = BitmapTextButton(self, label=text, name=icon)
+        btn.SetBorderWidth(0)
+        return btn
+
+# ----------------------------------------------------------------------------
+
+
+class ButtonEvent(wx.PyCommandEvent):
+    """Base class for an event sent when the button is activated."""
+
+    def __init__(self, eventType, eventId):
+        """Default class constructor.
+
+        :param eventType: the event type;
+        :param eventId: the event identifier.
+
+        """
+        super(ButtonEvent, self).__init__(eventType, eventId)
+        self.__button = None
+
+    # ------------------------------------------------------------------------
+
+    def SetButtonObject(self, btn):
+        """Set the event object for the event.
+
+        :param `btn`: the button object, an instance of L{FileButton}.
+
+        """
+        self.__button = btn
+
+    # ------------------------------------------------------------------------
+
+    def GetButtonObject(self):
+        """Return the object associated with this event."""
+        return self.__button
+
+    # ------------------------------------------------------------------------
+
+    Button = property(GetButtonObject, SetButtonObject)
+
+
+# ----------------------------------------------------------------------------
 
 
 # ----------------------------------------------------------------------------

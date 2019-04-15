@@ -39,6 +39,7 @@ import logging
 import wx
 import wx.dataview
 
+from sppas import sppasTypeError
 from sppas.src.anndata import sppasRW
 from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileData
 
@@ -178,6 +179,7 @@ class FileColumnProperties(object):
         self.__renderer = None
         self.__align = wx.ALIGN_LEFT
         self.__fct = dict()  # functions to get values
+
     # -----------------------------------------------------------------------
 
     def get_id(self):
@@ -333,52 +335,17 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
         if data is None:
             data = FileData()
         if isinstance(data, FileData) is False:
-            raise TypeError('Expected a FileData instance, got {!s:s} instead'.format(type(data)))
+            raise sppasTypeError("FileData", type(data))
         self.__data = data
 
-        col_file_icon = FileColumnProperties("Soft", "icon", "wxBitmap")
-        col_file_icon.width = 36
-        col_file_icon.align = wx.ALIGN_CENTRE
-        col_file_icon.renderer = FileIconRenderer(log=None)
-
-        col_file = FileColumnProperties("File", "file")
-        col_file.add_fct_name(FilePath, "get_id")
-        col_file.add_fct_name(FileRoot, "get_id")
-        col_file.add_fct_name(FileName, "get_name")
-        col_file.width = 320
-        
-        col_check = FileColumnProperties("Check", "check", "bool")
-        col_check.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
-        col_check.align = wx.ALIGN_CENTRE
-        col_check.add_fct_name(FileName, "get_check")
-        col_check.add_fct_name(FileRoot, "get_check")
-        col_check.add_fct_name(FilePath, "get_check")
-
-        col_type = FileColumnProperties("Type", "type")
-        col_type.add_fct_name(FileName, "get_extension")
-        col_type.width = 120
-
-        col_date = FileColumnProperties("Modified", "date")
-        col_date.add_fct_name(FileName, "get_date")
-        col_date.width = 140
-        col_date.align = wx.ALIGN_CENTRE
-
-        col_size = FileColumnProperties("Size", "size")
-        col_size.add_fct_name(FileName, "get_size")
-        col_size.width = 80
-        col_size.align = wx.ALIGN_RIGHT
-
-        col_to_fill = FileColumnProperties("", "spacer")
-        col_to_fill.width = 400
-
         self.__mapper = dict()
-        self.__mapper[0] = col_file_icon
-        self.__mapper[1] = col_file
-        self.__mapper[2] = col_check
-        self.__mapper[3] = col_type
-        self.__mapper[4] = col_date
-        self.__mapper[5] = col_size
-        self.__mapper[6] = col_to_fill
+        self.__mapper[0] = fileTreeModel.__create_col('icon')
+        self.__mapper[1] = fileTreeModel.__create_col('file')
+        self.__mapper[2] = fileTreeModel.__create_col('check')
+        self.__mapper[3] = fileTreeModel.__create_col('type')
+        self.__mapper[4] = fileTreeModel.__create_col('date')
+        self.__mapper[5] = fileTreeModel.__create_col('size')
+        self.__mapper[6] = fileTreeModel.__create_col('')
 
     # -----------------------------------------------------------------------
     # Manage column properties
@@ -615,8 +582,16 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
             if isinstance(node, FileName):
                 root_parent = self.GetParent(item)
                 fr = self.ItemToObject(root_parent)
-                fr.update_check()
+                # instead of simply updating the root, we set the check
+                # value to all files of this root
+                # fr.update_check() is replaced by
+                fr.check = value
                 path_parent = self.GetParent(root_parent)
+                fp = self.ItemToObject(path_parent)
+                fp.update_check()
+
+            if isinstance(node, FileRoot):
+                path_parent = self.GetParent(item)
                 fp = self.ItemToObject(path_parent)
                 fp.update_check()
 
@@ -679,8 +654,8 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
     def Check(self, value=True, entry=None):
         """Check or uncheck all or any file.
 
-        :param `value`: (bool) Toggle value
-        :param `entry`: (str) Absolute or relative name of a file or a file root
+        :param value: (bool) Toggle value
+        :param entry: (str) Absolute or relative name of a file or a file root
         
         """
         self.__data.check(value, entry)
@@ -690,7 +665,7 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
     def Expand(self, value=True, item=None):
         """Expand or collapse an item or all items.
 
-        :param `value`: (bool) Expanded (True) or Collapsed (False)
+        :param value: (bool) Expanded (True) or Collapsed (False)
         :param item: (wx.dataview.DataViewItem)
 
         """
@@ -724,6 +699,60 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
             return wx.dataview.NullDataViewItem
         return self.ObjectToItem(obj)
 
+    # -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __create_col(name):
+        if name == "icon":
+            col = FileColumnProperties("Soft", name, "wxBitmap")
+            col.width = 36
+            col.align = wx.ALIGN_CENTRE
+            col.renderer = FileIconRenderer(log=None)
+            return col
+
+        if name == "file":
+            col_file = FileColumnProperties("File", name)
+            col_file.add_fct_name(FilePath, "get_id")
+            col_file.add_fct_name(FileRoot, "get_id")
+            col_file.add_fct_name(FileName, "get_name")
+            col_file.width = 320
+            return col_file
+
+        if name == "check":
+            col = FileColumnProperties("Check", name, "bool")
+            col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
+            col.align = wx.ALIGN_CENTRE
+            col.width = 36
+            col.add_fct_name(FileName, "get_check")
+            col.add_fct_name(FileRoot, "get_check")
+            col.add_fct_name(FilePath, "get_check")
+            return col
+
+        if name == "type":
+            col = FileColumnProperties("Type", name)
+            col.add_fct_name(FileName, "get_extension")
+            col.width = 120
+            return col
+
+        if name == "date":
+            col = FileColumnProperties("Modified", name)
+            col.add_fct_name(FileName, "get_date")
+            col.width = 140
+            col.align = wx.ALIGN_CENTRE
+            return col
+
+        if name == "size":
+            col = FileColumnProperties("Size", name)
+            col.add_fct_name(FileName, "get_size")
+            col.width = 80
+            col.align = wx.ALIGN_RIGHT
+            return col
+
+        col = FileColumnProperties("", name)
+        col.width = 200
+        return col
+
 # ---------------------------------------------------------------------------
 
 
@@ -733,4 +762,3 @@ class TestFileAnnotIcon(unittest.TestCase):
         f = FileAnnotIcon()
         self.assertEqual("SPPAS.png", f.get_icon_name(".xra"))
         self.assertEqual("praat.png", f.get_icon_name(".TextGrid"))
-

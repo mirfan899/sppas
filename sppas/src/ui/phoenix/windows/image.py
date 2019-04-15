@@ -75,9 +75,10 @@ def ColorizeImage(img, current, colour):
 
 class sppasStaticBitmap(wx.StaticBitmap):
 
-    def __init__(self, parent, bmp_name):
+    def __init__(self, parent, bmp_name, height=None):
 
-        height = int(parent.GetSize()[1])
+        if height is None:
+            height = int(parent.GetSize()[1]) - 2
         bmp = sppasSwissKnife.get_bmp_icon(bmp_name, height)
 
         super(sppasStaticBitmap, self).__init__(
