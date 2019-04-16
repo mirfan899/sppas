@@ -535,36 +535,36 @@ class sppasRootCompare(sppasBaseCompare):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def check(path, value):
+    def check(root, value):
         """Compare check member to the given value.
 
-        :param path: (FilePath) Path to compare.
+        :param root: (FileRoot) Root to compare.
         :param value: (bool) Boolean to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(path, FilePath) is False:
-            raise sppasTypeError(path, "FilePath")
+        if isinstance(root, FileRoot) is False:
+            raise sppasTypeError(root, "FileRoot")
 
-        return path.check is bool(value)
+        return root.check is bool(value)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def expand(path, value):
+    def expand(root, value):
         """Compare expand member to the given value.
 
-        :param path: (FilePath) Path to compare.
+        :param root: (FileRoot) Root to compare.
         :param value: (bool) Boolean to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(path, FilePath) is False:
-            raise sppasTypeError(path, "FilePath")
+        if isinstance(root, FileRoot) is False:
+            raise sppasTypeError(root, "FileRoot")
 
-        return path.expand is bool(value)
+        return root.expand is bool(value)
 
 
 # ---------------------------------------------------------------------------
