@@ -77,7 +77,12 @@ class FileManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = MainToolbarPanel(self)
-        tb.AddButton("add", "Add")
+        add = tb.AddButton("add", "Add")
+        add.FocusStyle = wx.PENSTYLE_SOLID
+        add.FocusWidth = 1
+        add.BorderWidth = 0
+        add.FocusColour = wx.Colour(220, 220, 120)
+
         tb.AddButton("remove", "Remove")
         tb.AddButton("delete", "Delete")
 
@@ -205,13 +210,13 @@ class MainToolbarPanel(wx.Panel):
         wx.PostEvent(self.GetParent(), evt)"""
 
     def AddButton(self, icon, text, tooltip=None, activated=True):
-        print(icon)
         btn = self.create_button(icon, text)
         btn.SetToolTip(tooltip)
         btn.Enable(activated)
         self.sizer.Add(btn, proportion=1, flag=wx.ALL, border=2)
         self.buttons.append(btn)
-        self.Layout()
+        #self.Layout()
+        return btn
 
     def AddSpacer(self, proportion=1):
         self.sizer.AddStretchSpacer(proportion)
@@ -225,48 +230,9 @@ class MainToolbarPanel(wx.Panel):
         return btn
 
 # ----------------------------------------------------------------------------
-
-
-class ButtonEvent(wx.PyCommandEvent):
-    """Base class for an event sent when the button is activated."""
-
-    def __init__(self, eventType, eventId):
-        """Default class constructor.
-
-        :param eventType: the event type;
-        :param eventId: the event identifier.
-
-        """
-        super(ButtonEvent, self).__init__(eventType, eventId)
-        self.__button = None
-
-    # ------------------------------------------------------------------------
-
-    def SetButtonObject(self, btn):
-        """Set the event object for the event.
-
-        :param `btn`: the button object, an instance of L{FileButton}.
-
-        """
-        self.__button = btn
-
-    # ------------------------------------------------------------------------
-
-    def GetButtonObject(self):
-        """Return the object associated with this event."""
-        return self.__button
-
-    # ------------------------------------------------------------------------
-
-    Button = property(GetButtonObject, SetButtonObject)
-
-
-# ----------------------------------------------------------------------------
-
-
-# ----------------------------------------------------------------------------
 # Panel to test
 # ----------------------------------------------------------------------------
+
 
 class TestPanel(FileManager):
     MIN_WIDTH = 240
