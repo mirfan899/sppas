@@ -21,25 +21,25 @@ class TestRootCompare (unittest.TestCase):
         #fp matches with upper case d
         self.assertFalse(fp.match([(self.cmp.iexact, d.upper(), True)]))
 
-    def test_startwith (self):
+    def test_startswith (self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
         #fp begins with d's first character
         self.assertTrue(fp.match([(self.cmp.startswith, d[0], False)]))
 
-    def test_istartwith (self):
+    def test_istartswith (self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
         #fp starts with d's first character in any case
         self.assertTrue(fp.match([(self.cmp.istartswith, d[0].upper(), False)]))
 
-    def test_endwith (self):
+    def test_endswith (self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
         #fp finishes with d's last character
         self.assertFalse(fp.match([(self.cmp.endswith, d[-1], True)]))
 
-    def test_iendwith (self):
+    def test_iendswith (self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
         #fp finishes with d's last character in any case

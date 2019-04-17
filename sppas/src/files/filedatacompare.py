@@ -582,10 +582,10 @@ class sppasFileNameComparator(sppasBaseCompare):
         self.methods['startswith'] = sppasFileNameComparator.startswith
         self.methods['istartswith'] = sppasFileNameComparator.istartswith
         self.methods['endswith'] = sppasFileNameComparator.endswith
-        self.methods['iendswith'] = sppasFileNameNameComparator.iendswith
-        self.methods['contains'] = sppasFileNameNameComparator.contains
-        self.methods['icontains'] = sppasFileNameNameComparator.icontains
-        self.methods['regexp'] = sppasFileNameNameComparator.regexp
+        self.methods['iendswith'] = sppasFileNameComparator.iendswith
+        self.methods['contains'] = sppasFileNameComparator.contains
+        self.methods['icontains'] = sppasFileNameComparator.icontains
+        self.methods['regexp'] = sppasFileNameComparator.regexp
 
     # -----------------------------------------------------------------------
     # FileName name
