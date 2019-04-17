@@ -56,6 +56,9 @@ class FileManager(sppasPanel):
             style=wx.NO_BORDER, name=wx.PanelNameStr)
 
         self._create_content(data)
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -84,25 +87,6 @@ class FileManager(sppasPanel):
         tb.AddSpacer(3)
         tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         return tb
-
-    # -----------------------------------------------------------------------
-
-    def SetForegroundColour(self, colour):
-        self.tb.SetForegroundColour(colour)
-        self.fv.SetForegroundColour(colour)
-
-    # -----------------------------------------------------------------------
-
-    def SetBackgroundColour(self, colour):
-        self.tb.SetBackgroundColour(colour)
-        self.fv.SetBackgroundColour(colour)
-
-    # -----------------------------------------------------------------------
-
-    def SetFont(self, font):
-        self.tb.SetFont(font)
-        self.fv.SetFont(font)
-        self.Layout()
 
     # -----------------------------------------------------------------------
 
@@ -181,7 +165,7 @@ class FileManager(sppasPanel):
 # ----------------------------------------------------------------------------
 
 
-class MainToolbarPanel(wx.Panel):
+class MainToolbarPanel(sppasPanel):
     """Panel imitating the behaviors of a toolbar.
 
     """
@@ -242,6 +226,7 @@ class TestPanel(FileManager):
 
     def __init__(self, parent):
         super(TestPanel, self).__init__(parent, data=None)
+        self.add_test_data()
 
     # ------------------------------------------------------------------------
 

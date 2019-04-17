@@ -127,7 +127,6 @@
 """
 
 import unittest
-import random
 import mimetypes
 
 from os.path import isfile, isdir, exists
@@ -439,17 +438,6 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def get_bgcolor(self):
-        return self.__bgcolor
-    
-    def set_bgcolor(self, r, g, b):
-        # we should check values (0-255)
-        self.__bgcolor = (r, g, b)
-
-    bg_color = property(get_bgcolor, set_bgcolor)
-
-    # -----------------------------------------------------------------------
-
     def get_check(self):
         """Return true if the fileroot is checked."""
         return self.__check
@@ -464,7 +452,20 @@ class FileRoot(FileBase):
         for fn in self.__files:
             fn.check = value
 
+    def get_bgcolor(self):
+        return self.__bgcolor
+
+    def set_bgcolor(self, r, g, b):
+        # Can be used only by a FilePath.
+        # we should check values (0-255)
+        self.__bgcolor = (r, g, b)
+
+    # -----------------------------------------------------------------------
+    # Properties
+    # -----------------------------------------------------------------------
+
     check = property(get_check, set_check)
+    bg_color = property(get_bgcolor, set_bgcolor)
 
     # -----------------------------------------------------------------------
     # -----------------------------------------------------------------------
@@ -665,14 +666,8 @@ class FilePath(FileBase):
 
         self.__check = False
         self.expand = True
-        self.fgcolor = (
-            random.randint(180, 240),
-            random.randint(180, 240),
-            random.randint(180, 240))
-        self.__bgcolor = (
-            random.randint(15, 30),
-            random.randint(15, 30),
-            random.randint(15, 30))
+        self.__fgcolor = (230, 230, 230)
+        self.__bgcolor = (30, 30, 30)
 
     # -----------------------------------------------------------------------
 
@@ -698,6 +693,17 @@ class FilePath(FileBase):
             self.set_root_bgcolor(fr)
 
     bg_color = property(get_bgcolor, set_bgcolor)
+
+    # -----------------------------------------------------------------------
+
+    def get_fgcolor(self):
+        return self.__fgcolor
+
+    def set_fgcolor(self, r, g, b):
+        # we should check values (0-255)
+        self.__fgcolor = (r, g, b)
+
+    fg_color = property(get_fgcolor, set_fgcolor)
 
     # -----------------------------------------------------------------------
 
@@ -801,12 +807,15 @@ class FilePath(FileBase):
             r = max(10, min(245, self.__bgcolor[0] + 4))
             g = max(10, min(245, self.__bgcolor[1] + 4))
             b = max(10, min(245, self.__bgcolor[2] + 4))
-            root.bgcolor = (r, g, b)
+            root.set_bgcolor(r, g, b)
+            print('set root bg color: {:d} {:d} {:d}'.format(r, g, b))
+
         else:
             r = max(10, min(245, self.__bgcolor[0] - 4))
             g = max(10, min(245, self.__bgcolor[1] - 4))
             b = max(10, min(245, self.__bgcolor[2] - 4))
-            root.bgcolor = (r, g, b)
+            root.set_bgcolor(r, g, b)
+            print('set root bg color: {:d} {:d} {:d}'.format(r, g, b))
 
     # -----------------------------------------------------------------------
 

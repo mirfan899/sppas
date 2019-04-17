@@ -51,8 +51,8 @@ class TestPanel(wx.Choicebook):
         wx.Choicebook.__init__(self, parent)
 
         # Make the bunch of test panels for the choice book
-        self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "button")
         self.AddPage(sppas.src.ui.phoenix.pages.filespck.filepanel.TestPanel(self), "file manager")
+        self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "button")
 
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGING, self.OnPageChanging)

@@ -98,6 +98,10 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)        
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
 
+        # Colors&font
+        self.SetBackgroundColour(parent.GetBackgroundColour())
+        self.SetForegroundColour(parent.GetForegroundColour())
+
     # ------------------------------------------------------------------------
     # Public methods
     # ------------------------------------------------------------------------
@@ -113,6 +117,16 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
         return self._model.GetCheckedFiles(False)
 
     # ------------------------------------------------------------------------
+
+    def SetBackgroundColour(self, color):
+        wx.Window.SetBackgroundColour(self, color)
+        self.RefreshData()
+
+    # ------------------------------------------------------------------------
+
+    def SetForegroundColour(self, color):
+        wx.Window.SetForegroundColour(self, color)
+        self.RefreshData()
 
     # ------------------------------------------------------------------------
 
@@ -181,6 +195,8 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
 
     def RefreshData(self):
         # Update the data and clear the tree
+        self._model.SetBackgroundColour(self.GetBackgroundColour())
+        self._model.SetForegroundColour(self.GetForegroundColour())
         self._model.UpdateFiles()
         # But clearing the tree means to forget which are the expanded items!
         # so, re-expand/re-collapse properly.

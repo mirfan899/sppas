@@ -321,7 +321,7 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
     def __init__(self, data=FileData()):
         """Constructor of a fileTreeModel.
 
-        :param `data`: (FileData)
+        :param data: (FileData)
 
         """
         wx.dataview.PyDataViewModel.__init__(self)
@@ -423,6 +423,18 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
     # Manage the tree
+    # -----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, color):
+        for fp in self.__data:
+            fp.set_bgcolor(color.Red(), color.Green(), color.Blue())
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, color):
+        for fp in self.__data:
+            fp.set_fgcolor(color.Red(), color.Green(), color.Blue())
+
     # -----------------------------------------------------------------------
 
     def GetChildren(self, parent, children):
@@ -603,23 +615,23 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
         node = self.ItemToObject(item)
 
         if isinstance(node, FilePath):
-            attr.SetColour(wx.Colour(node.fgcolor))
-            # attr.SetBackgroundColour(node.bgcolor)
+            attr.SetColour(wx.Colour(node.fg_color))
+            attr.SetBackgroundColour(node.bg_color)
             attr.SetBold(True)
             return True
         if isinstance(node, FileRoot):
             parent = self.GetParent(item)
-            attr.SetColour(wx.Colour(self.ItemToObject(parent).fgcolor))
-            attr.SetBackgroundColour(node.bgcolor)
+            attr.SetColour(wx.Colour(self.ItemToObject(parent).fg_color))
+            attr.SetBackgroundColour(node.bg_color)
             return True
         if isinstance(node, FileName):
             parent_root = self.GetParent(item)
             parent_path = self.GetParent(parent_root)
-            attr.SetColour(wx.Colour(self.ItemToObject(parent_path).fgcolor))
+            attr.SetColour(wx.Colour(self.ItemToObject(parent_path).fg_color))
             if node.lock:
                 attr.SetBackgroundColour(wx.Colour(128, 128, 128))
             else:
-                attr.SetBackgroundColour(wx.Colour(self.ItemToObject(parent_root).bgcolor))
+                attr.SetBackgroundColour(wx.Colour(self.ItemToObject(parent_root).bg_color))
             return True
         
         return False

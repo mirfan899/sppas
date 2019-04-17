@@ -1288,15 +1288,22 @@ class BitmapTextButton(BaseButton):
         else:
             tw, th = self.getTextExtend(dc, gc, self._label)
 
-            if self._labelpos == wx.BOTTOM:
-                self.__drawLabel(dc, gc, (w - tw) // 2, h - th)
-                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y, w, h - th - 2)
-                self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+            if self._labelpos == wx.BOTTOM or self._labelpos == wx.TOP:
+                # we need to know the available room to distribute it in margins
+                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(
+                    x, y + th + self._spacing,
+                    w, h - th - 2 * self._spacing)
+                if bmp_size > 15:
+                    margin = h - bmp_size - th - self._spacing
+                    y += (margin // 2)
 
-            if self._labelpos == wx.TOP:
-                self.__drawLabel(dc, gc, (w - tw) // 2, y)
-                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y + th + 2, w, h - th - 2)
-                self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+                if self._labelpos == wx.BOTTOM:
+                    self.__drawLabel(dc, gc, (w - tw) // 2, h - th)
+                    self.__draw_bitmap(dc, gc, (w - bmp_size) // 2, y, bmp_size)
+
+                if self._labelpos == wx.TOP:
+                    self.__drawLabel(dc, gc, (w - tw) // 2, y)
+                    self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
 
             if self._labelpos == wx.LEFT or self._labelpos == wx.RIGHT:
                 # we need to know the available room to distribute it in margins
