@@ -63,10 +63,12 @@
 import wx
 import logging
 import wx.lib.newevent
+import random
 
 from wx.lib.buttons import GenBitmapTextButton, GenButton, GenBitmapButton
 
 from ..tools import sppasSwissKnife
+from ..windows.panel import sppasPanel
 from .image import ColorizeImage
 
 # ---------------------------------------------------------------------------
@@ -329,7 +331,7 @@ class BaseButton(wx.Window):
         """
         super(BaseButton, self).__init__(
             parent, id, pos, size,
-            style=wx.BORDER_NONE | wx.TRANSPARENT_WINDOW | wx.CLIP_CHILDREN,
+            style=wx.BORDER_NONE | wx.TRANSPARENT_WINDOW | wx.CLIP_CHILDREN | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
             name=name)
 
         # Preceding state and current one
@@ -516,6 +518,19 @@ class BaseButton(wx.Window):
 
         return wx.Colour(r, g, b, 50).ChangeLightness(100 + delta)
 
+    # -----------------------------------------------------------------------
+
+    def GetBorderColour(self):
+        """Return the colour of the border all around the button.
+
+        :return: (int)
+
+        """
+        return self._borderwidth
+
+    def SetBorderColour(self, color):
+        self._bordercolor = color
+
     # ------------------------------------------------------------------------
 
     def GetHighlightedBackgroundColour(self):
@@ -531,9 +546,22 @@ class BaseButton(wx.Window):
         return self._focuscolor
 
     def SetFocusColour(self, color):
-        if color == self.GetBackgroundColour():
+        if color == self.GetParent().GetBackgroundColour():
             return
         self._focuscolor = color
+
+    # ------------------------------------------------------------------------
+
+    def GetBorderStyle(self):
+        return self._focusstyle
+
+    def SetBorderStyle(self, style):
+        if style not in [wx.PENSTYLE_SOLID, wx.PENSTYLE_LONG_DASH,
+                         wx.PENSTYLE_SHORT_DASH, wx.PENSTYLE_DOT_DASH,
+                         wx.PENSTYLE_HORIZONTAL_HATCH]:
+            logging.warning("Invalid focus style.")
+            return
+        self._borderstyle = style
 
     # ------------------------------------------------------------------------
 
@@ -551,6 +579,7 @@ class BaseButton(wx.Window):
     # ------------------------------------------------------------------------
 
     BorderWidth = property(GetBorderWidth, SetBorderWidth)
+    BorderColour = property(GetBorderColour, SetBorderColour)
     FocusWidth = property(GetFocusWidth, SetFocusWidth)
     FocusColour = property(GetFocusColour, SetFocusColour)
     FocusStyle = property(GetFocusStyle, SetFocusStyle)
@@ -934,11 +963,11 @@ class BaseButton(wx.Window):
 
         self.DrawBackground(dc, gc)
 
-        if self._borderwidth > 0:
-            self.DrawBorder(dc, gc)
-
         if self._state[1] == BaseButton.HIGHLIGHT:
             self.DrawFocusIndicator(dc, gc)
+
+        if self._borderwidth > 0:
+            self.DrawBorder(dc, gc)
 
         return dc, gc
 
@@ -947,13 +976,15 @@ class BaseButton(wx.Window):
     def DrawBorder(self, dc, gc):
         w, h = self.GetClientSize()
 
-        pen = wx.Pen(self._bordercolor, self._borderwidth, self._borderstyle)
+        pen = wx.Pen(self._bordercolor, 1, self._borderstyle)
         dc.SetPen(pen)
 
         # draw the upper left sides
         for i in range(self._borderwidth):
-            dc.DrawLine(i, 0, i, w - i)
+            # upper
             dc.DrawLine(0, i, w - i, i)
+            # left
+            dc.DrawLine(i, 0, i, h - i)
 
         # draw the lower right sides
         for i in range(self._borderwidth):
@@ -984,12 +1015,6 @@ class BaseButton(wx.Window):
                            self._focuswidth,
                            self._focusstyle)
 
-        if wx.Platform == "__WXMAC__":
-            dc.SetLogicalFunction(wx.XOR)
-        else:
-            focus_pen.SetColour(self._focuscolor)
-            dc.SetLogicalFunction(wx.INVERT)
-
         w, h = self.GetClientSize()
         dc.SetPen(focus_pen)
         gc.SetPen(focus_pen)
@@ -997,7 +1022,6 @@ class BaseButton(wx.Window):
                     h - self._borderwidth - self._focuswidth - 2,
                     w - (2 * self._borderwidth) - 2,
                     h - self._borderwidth - self._focuswidth - 2)
-        # dc.SetLogicalFunction(wx.COPY)
 
     # ------------------------------------------------------------------------
     # Private
@@ -1015,7 +1039,6 @@ class BaseButton(wx.Window):
             self.GetParent().RefreshRect(self.Rect, False)
         else:
             self.Refresh()
-
 
 # ----------------------------------------------------------------------------
 
@@ -1070,7 +1093,7 @@ class BaseToggleButton(BaseButton):
     # ------------------------------------------------------------------------
 
     def OnMouseLeftDown(self, event):
-        """Handle the ``wx.EVT_LEFT_DOWN`` event.
+        """Handle the wx.EVT_LEFT_DOWN event.
 
         :param event: a wx.MouseEvent event to be processed.
 
@@ -1082,7 +1105,7 @@ class BaseToggleButton(BaseButton):
     # ------------------------------------------------------------------------
 
     def OnMouseLeftUp(self, event):
-        """Handle the ``wx.EVT_LEFT_UP`` event.
+        """Handle the wx.EVT_LEFT_UP event.
 
         :param event: a wx.MouseEvent event to be processed.
 
@@ -1161,11 +1184,19 @@ class BitmapTextButton(BaseButton):
         :param size: the size;
         :param name: the name of the bitmap.
 
+        The name of the button is the name of its bitmap (required).
+
+        The label is optional.
+        The label is under the bitmap.
+
         """
         super(BitmapTextButton, self).__init__(
             parent, id, pos, size, name)
 
         self._label = label
+        self._labelpos = wx.BOTTOM
+        self._spacing = 4
+        self._bitmapcolor = self.GetParent().GetForegroundColour()
 
     # ------------------------------------------------------------------------
 
@@ -1188,6 +1219,41 @@ class BitmapTextButton(BaseButton):
 
     # ------------------------------------------------------------------------
 
+    def GetBitmapColour(self):
+        return self._bitmapcolor
+
+    def SetBitmapColour(self, color):
+        if color == self.GetParent().GetBackgroundColour():
+            return
+        self._bitmapcolor = color
+
+    # ------------------------------------------------------------------------
+
+    def GetSpacing(self):
+        return self._spacing
+
+    def SetSpacing(self, value):
+        self._spacing = max(int(value), 2)
+
+    # ------------------------------------------------------------------------
+
+    def GetLabelPosition(self):
+        return self._labelpos
+
+    def SetLabelPosition(self, pos=wx.BOTTOM):
+        """Set the position of the label: top, bottom, left, right."""
+        if pos not in [wx.TOP, wx.BOTTOM, wx.LEFT, wx.RIGHT]:
+            return
+        self._labelpos = pos
+
+    # ------------------------------------------------------------------------
+
+    LabelPosition = property(GetLabelPosition, SetLabelPosition)
+    BitmapColour = property(GetBitmapColour, SetBitmapColour)
+    Spacing = property(GetSpacing, SetSpacing)
+
+    # ------------------------------------------------------------------------
+
     def Draw(self):
         """Draw some parts of the button.
 
@@ -1203,39 +1269,91 @@ class BitmapTextButton(BaseButton):
 
         self.DrawBackground(dc, gc)
 
-        if self._borderwidth > 0:
-            self.DrawBorder(dc, gc)
-
         if self._state[1] == BaseButton.HIGHLIGHT:
             self.DrawFocusIndicator(dc, gc)
 
         x, y, w, h = self.GetClientRect()
-        tw, th = self.getTextExtend(dc, gc, self._label)
+        bd = max(self.BorderWidth, 2)
+        x += bd
+        y += bd
+        w -= (2 * bd)
+        h -= ((2 * bd) + self.FocusWidth + 2)
 
-        # Draw horizontally
-        if h < w:
-            btn_height = int(0.7 * h)
-            img = sppasSwissKnife.get_image(self.GetName())
-            sppasSwissKnife.rescale_image(img, btn_height)
-            bitmap = wx.Bitmap(img)
-            if wx.Platform == '__WXGTK__':
-                dc.DrawBitmap(bitmap, x + 4, (h - btn_height) // 2)
-            else:
-                gc.DrawBitmap(bitmap, x + 4, (h - btn_height) // 2)
-            label_h = int(0.35 * h)
-            self.__drawLabel(dc, gc, x + btn_height + 8, ((h * 0.9) - label_h) // 2)
+        # No label is defined. 
+        # Draw the square bitmap icon at the center with a 5% margin all around
+        if self._label is None:
+            x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y, w, h)
+            self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
 
-        # Draw vertically (not tested)
         else:
-            btn_height = int(0.6 * w)
-            bitmap = sppasSwissKnife.get_bmp_icon(self.GetName(), height=btn_height)
-            if wx.Platform == '__WXGTK__':
-                dc.DrawBitmap(bitmap, (w - btn_height) // 2, y+2)
-            else:
-                gc.DrawBitmap(bitmap, (w - btn_height) // 2, y+2)
+            tw, th = self.getTextExtend(dc, gc, self._label)
 
-            label_h = int(0.35 * h)
-            self.__drawLabel(dc, gc, (w - tw) // 2, (h - label_h) // 2)
+            if self._labelpos == wx.BOTTOM:
+                self.__drawLabel(dc, gc, (w - tw) // 2, h - th)
+                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y, w, h - th - 2)
+                self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+
+            if self._labelpos == wx.TOP:
+                self.__drawLabel(dc, gc, (w - tw) // 2, y)
+                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y + th + 2, w, h - th - 2)
+                self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+
+            if self._labelpos == wx.LEFT or self._labelpos == wx.RIGHT:
+                # we need to know the available room to distribute it in margins
+                x_pos, y_pos, bmp_size = self.__get_bitmap_properties(
+                    x + tw + self._spacing, y,
+                    w - tw - self._spacing, h)
+
+                if bmp_size > 15:
+                    margin = w - bmp_size - tw - self._spacing
+                    x += (margin // 2)
+
+                    if self._labelpos == wx.LEFT:
+                        self.__drawLabel(dc, gc, x, (h - th) // 2)
+                        self.__draw_bitmap(dc, gc, x + tw + self._spacing, y_pos, bmp_size)
+
+                    if self._labelpos == wx.RIGHT:
+                        self.__drawLabel(dc, gc, w - tw - (margin // 2), (h - th) // 2)
+                        self.__draw_bitmap(dc, gc, x, y_pos, bmp_size)
+
+                else:
+                    # not enough room for a bitmap. Center the text.
+                    self.__drawLabel(dc, gc, (w - tw) // 2, (h - th) // 2)
+
+        if self._borderwidth > 0:
+            self.DrawBorder(dc, gc)
+
+    # ------------------------------------------------------------------------
+
+    def __get_bitmap_properties(self, x, y, w, h):
+        bmp_size = min(w, h)
+        margin = max(int(bmp_size * 0.1), 2)
+        bmp_size -= margin
+        x_pos = x + (margin // 2)
+        y_pos = y + (margin // 2)
+        if w < h:
+            y_pos = (h - bmp_size + margin) // 2
+        else:
+            x_pos = (w - bmp_size + margin) // 2
+
+        return x_pos, y_pos, bmp_size
+
+    # ------------------------------------------------------------------------
+
+    def __draw_bitmap(self, dc, gc, x, y, btn_size):
+        # get the image from its name
+        img = sppasSwissKnife.get_image(self.GetName())
+        # re-scale the image to the expected size
+        sppasSwissKnife.rescale_image(img, btn_size)
+        # re-colorize
+        ColorizeImage(img, wx.BLACK, self._bitmapcolor)
+        # convert to bitmap
+        bitmap = wx.Bitmap(img)
+        # draw it to the dc or gc
+        if wx.Platform == '__WXGTK__':
+            dc.DrawBitmap(bitmap, x, y)
+        else:
+            gc.DrawBitmap(bitmap, x, y)
 
     # ------------------------------------------------------------------------
 
@@ -1248,7 +1366,7 @@ class BitmapTextButton(BaseButton):
     # ------------------------------------------------------------------------
 
     def __drawLabel(self, dc, gc, x, y):
-        font = self.GetFont()
+        font = self.GetParent().GetFont()
         gc.SetFont(font)
         dc.SetFont(font)
         if wx.Platform == '__WXGTK__':
@@ -1450,10 +1568,7 @@ class CheckButton(BaseToggleButton):
     def GetBackgroundBrush(self, dc):
         """Get the brush for drawing the background of the button.
 
-        :return: :class:`Brush`
-
-        ..note::
-            used internally when on gtk
+        :return: (wx.Brush)
 
         """
         color = self.GetParent().GetBackgroundColour()
@@ -1482,47 +1597,214 @@ class CheckButton(BaseToggleButton):
 
 
 # ----------------------------------------------------------------------------
-# Panel to test
+# Panels to test
 # ----------------------------------------------------------------------------
 
 
-class TestPanel(wx.Panel):
+class TestPanelBaseButton(wx.Panel):
+    MIN_WIDTH = 700
+    MIN_HEIGHT = 200
+
+    # ------------------------------------------------------------------------
+
+    def __init__(self, parent):
+        super(TestPanelBaseButton, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test BaseButton")
+
+        self.SetForegroundColour(wx.Colour(150, 160, 170))
+        st = [wx.PENSTYLE_SHORT_DASH,
+              wx.PENSTYLE_LONG_DASH,
+              wx.PENSTYLE_DOT_DASH,
+              wx.PENSTYLE_SOLID,
+              wx.PENSTYLE_HORIZONTAL_HATCH]
+
+        # play with the border
+        x = 10
+        w = 100
+        h = 50
+        c = 10
+        for i in range(1, 6):
+            btn = BaseButton(self, pos=(x, 10), size=(w, h))
+            btn.SetBorderWidth(i)
+            btn.SetBorderColour(wx.Colour(c, c, c))
+            btn.SetBorderStyle(st[i-1])
+            c += 40
+            x += w + 10
+            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+        # play with the focus
+        x = 10
+        w = 100
+        h = 50
+        c = 10
+        for i in range(1, 6):
+            btn = BaseButton(self, pos=(x, 70), size=(w, h))
+            btn.SetBorderWidth(1)
+            btn.SetFocusWidth(i)
+            btn.SetFocusColour(wx.Colour(c, c, c))
+            btn.SetFocusStyle(st[i-1])
+            c += 40
+            x += w + 10
+            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+        vertical = BaseButton(self, pos=(560, 10), size=(50, 110))
+
+    # -----------------------------------------------------------------------
+
+    def on_btn_event(self, event):
+        obj = event.GetEventObject()
+        logging.debug('* * * PANEL: Button Event received by {:s} * * *'.format(obj.GetName()))
+
+# ----------------------------------------------------------------------------
+
+
+class TestPanelBaseToggleButton(wx.Panel):
+    MIN_WIDTH = 700
+    MIN_HEIGHT = 200
+
+    # ------------------------------------------------------------------------
+
+    def __init__(self, parent):
+        super(TestPanelBaseToggleButton, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test BaseButton")
+
+        st = [wx.PENSTYLE_SHORT_DASH,
+              wx.PENSTYLE_LONG_DASH,
+              wx.PENSTYLE_DOT_DASH,
+              wx.PENSTYLE_SOLID,
+              wx.PENSTYLE_HORIZONTAL_HATCH]
+
+        # play with the border
+        x = 10
+        w = 100
+        h = 50
+        c = 10
+        for i in range(1, 6):
+            btn = BaseToggleButton(self, pos=(x, 10), size=(w, h))
+            btn.SetBorderWidth(i)
+            btn.SetBorderColour(wx.Colour(c, c, c))
+            btn.SetBorderStyle(st[i-1])
+            c += 40
+            x += w + 10
+            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+        # play with the focus
+        x = 10
+        w = 100
+        h = 50
+        c = 10
+        for i in range(1, 6):
+            btn = BaseToggleButton(self, pos=(x, 70), size=(w, h))
+            btn.SetBorderWidth(1)
+            btn.SetFocusWidth(i)
+            btn.SetFocusColour(wx.Colour(c, c, c))
+            btn.SetFocusStyle(st[i-1])
+            c += 40
+            x += w + 10
+            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+        vertical = BaseToggleButton(self, pos=(560, 10), size=(50, 110))
+
+    # -----------------------------------------------------------------------
+
+    def on_btn_event(self, event):
+        obj = event.GetEventObject()
+        logging.debug('* * * PANEL: Button Event received by {:s} * * *'.format(obj.GetName()))
+
+# ----------------------------------------------------------------------------
+
+
+class TestPanelBitmapButton(wx.Panel):
+    MIN_WIDTH = 700
+    MIN_HEIGHT = 200
+
+    # ------------------------------------------------------------------------
+
+    def __init__(self, parent):
+        super(TestPanelBitmapButton, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test BitmapButton")
+
+        b1 = BitmapTextButton(self, pos=(10, 10), size=(50, 50))
+        b2 = BitmapTextButton(self, pos=(70, 10), size=(50, 50))
+        b3 = BitmapTextButton(self, pos=(130, 10), size=(100, 50), name="like")
+        b4 = BitmapTextButton(self, pos=(240, 10), size=(30, 50), name="like")
+        b5 = BitmapTextButton(self, pos=(280, 10), size=(30, 30), name="like")
+        b6 = BitmapTextButton(self, pos=(320, 10), size=(50, 30), name="like")
+        b7 = BitmapTextButton(self, pos=(380, 10), size=(50, 50), name="add")
+        b7.SetBorderWidth(0)
+        b7.SetFocusColour(wx.Colour(30, 120, 240))
+        b7.SetFocusWidth(3)
+        b7.SetFocusStyle(wx.PENSTYLE_SOLID)
+        b8 = BitmapTextButton(self, pos=(440, 10), size=(50, 50), name="remove")
+        b8.SetBorderWidth(0)
+        b8.SetFocusColour(wx.Colour(30, 120, 240))
+        b8.SetBitmapColour(wx.Colour(230, 120, 40))
+        b8.SetFocusWidth(3)
+        b8.SetFocusStyle(wx.PENSTYLE_SOLID)
+        b9 = BitmapTextButton(self, pos=(500, 10), size=(50, 50), name="delete")
+        b9.SetBorderWidth(0)
+        b9.SetFocusColour(wx.Colour(30, 120, 240))
+        b9.SetBitmapColour(wx.Colour(240, 10, 10))
+        b9.SetFocusWidth(3)
+        b9.SetFocusStyle(wx.PENSTYLE_SOLID)
+
+# ----------------------------------------------------------------------------
+
+
+class TestPanelBitmapTextButton(wx.Panel):
+    MIN_WIDTH = 700
+    MIN_HEIGHT = 200
+
+    # ------------------------------------------------------------------------
+
+    def __init__(self, parent):
+        super(TestPanelBitmapTextButton, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test TextBitmapButton")
+
+        b1 = BitmapTextButton(self, label="SPPAS", pos=(10, 10), size=(50, 50))
+        b2 = BitmapTextButton(self, label="SPPAS", pos=(70, 10), size=(100, 50))
+        b3 = BitmapTextButton(self, label="SPPAS", pos=(180, 10), size=(50, 50))
+        b3.SetLabelPosition(wx.TOP)
+        b4 = BitmapTextButton(self, label="Add", pos=(240, 10), size=(100, 50), name="add")
+        b4.SetLabelPosition(wx.RIGHT)
+        b5 = BitmapTextButton(self, label="Add", pos=(350, 10), size=(100, 50), name="add")
+        b5.SetLabelPosition(wx.LEFT)
+        b6 = BitmapTextButton(self, label="Room for a tiny bitmap", pos=(460, 10), size=(150, 50), name="add")
+        b6.SetLabelPosition(wx.LEFT)
+
+# ----------------------------------------------------------------------------
+
+
+class TestCheckButton(wx.Panel):
     MIN_WIDTH = 240
     MIN_HEIGHT = 64
 
     # ------------------------------------------------------------------------
 
-    def __init__(self, parent,
-                 id=wx.ID_ANY,
-                 pos=wx.DefaultPosition, size=wx.DefaultSize,
-                 style=0,
-                 name=wx.PanelNameStr):
-        super(TestPanel, self).__init__(
-            parent, id, pos, size,
+    def __init__(self, parent):
+        super(TestCheckButton, self).__init__(
+            parent,
             style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
-            name="Test BaseButton")
+            name="Test CheckButton")
 
         self.SetForegroundColour(wx.Colour(150, 160, 170))
 
-        btn = BaseButton(self, pos=(20, 10), size=(256, 96), name="nomal")
-        btn.SetBorderWidth(2)
-        btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
-
-        btn_disabled = BaseButton(self, pos=(325, 10), size=(128, 96), name="disabled")
-        btn_disabled.Enable(False)
-        btn_disabled.Bind(wx.EVT_BUTTON, self.on_btn_event)
-
-        btn_toggle = BaseToggleButton(self, pos=(25, 130), size=(256, 96), name="toggle")
-        btn_toggle.Bind(wx.EVT_BUTTON, self.on_btn_event)
-
-        btn_check_xs = CheckButton(self, pos=(25, 270), size=(32, 32), name="xscheck")
+        btn_check_xs = CheckButton(self, pos=(25, 270), size=(32, 32), name="yes")
         btn_check_xs.Check(True)
         btn_check_xs.Bind(wx.EVT_BUTTON, self.on_btn_event)
 
-        btn_check_s = CheckButton(self, label="disabled", pos=(100, 270), size=(128, 64), name="scheck")
+        btn_check_s = CheckButton(self, label="disabled", pos=(100, 270), size=(128, 64), name="yes")
         btn_check_s.Enable(False)
 
-        btn_check_m = CheckButton(self, label='The text label', pos=(200, 300), size=(384, 128), name="mcheck")
+        btn_check_m = CheckButton(self, label='The text label', pos=(200, 300), size=(384, 128), name="yes")
         font = self.GetFont().MakeBold().Scale(1.4)
         btn_check_m.SetFont(font)
         btn_check_m.Bind(wx.EVT_BUTTON, self.on_btn_event)
@@ -1531,42 +1813,81 @@ class TestPanel(wx.Panel):
         obj = event.GetEventObject()
         logging.debug('* * * PANEL: Button Event received by {:s} * * *'.format(obj.GetName()))
 
-
-# ----------------------------------------------------------------------------
-# App to test
 # ----------------------------------------------------------------------------
 
 
-class TestApp(wx.App):
+class TestPanel(sppasPanel):
+    MIN_WIDTH = 700
+    MIN_HEIGHT = 200
 
-    def __init__(self):
-        """Create a customized application."""
-        # ensure the parent's __init__ is called with the args we want
-        wx.App.__init__(self,
-                        redirect=False,
-                        filename=None,
-                        useBestVisual=True,
-                        clearSigInt=True)
+    # ------------------------------------------------------------------------
 
-        # create the frame
-        frm = wx.Frame(None, title='Test frame', size=(640, 480))
-        self.SetTopWindow(frm)
+    def __init__(self, parent):
+        super(TestPanel, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test Buttons")
 
-        # Fix language and translation
-        self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
+        sizer = wx.BoxSizer(wx.VERTICAL)
 
-        # create a panel in the frame
-        sizer = wx.BoxSizer()
-        sizer.Add(TestPanel(frm), 1, wx.EXPAND, 0)
-        frm.SetSizer(sizer)
+        tbpanel = wx.Panel(self, size=(-1, 32), )
+        tbsizer = wx.BoxSizer(wx.HORIZONTAL)
+        bgbtn = BitmapTextButton(tbpanel, name="bg_color")
+        fgbtn = BitmapTextButton(tbpanel, name="font_color")
+        fontbtn = BitmapTextButton(tbpanel, name="font")
+        self.Bind(wx.EVT_BUTTON, self.on_bg_color, bgbtn)
+        self.Bind(wx.EVT_BUTTON, self.on_fg_color, fgbtn)
+        self.Bind(wx.EVT_BUTTON, self.on_font, fontbtn)
+        tbsizer.AddSpacer(3)
+        tbsizer.Add(bgbtn, 0, wx.LEFT | wx.RIGHT, 4)
+        tbsizer.Add(fgbtn, 0, wx.LEFT | wx.RIGHT, 4)
+        tbsizer.Add(fontbtn, 0, wx.LEFT | wx.RIGHT, 4)
+        tbsizer.AddSpacer(3)
+        tbpanel.SetSizer(tbsizer)
+        sizer.Add(tbpanel, 0, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
 
-        # show result
-        frm.Show()
+        sizer.Add(wx.StaticText(self, label="BaseButton()"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelBaseButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticLine(self))
+        sizer.Add(wx.StaticText(self, label="BaseToggleButton()"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelBaseToggleButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticLine(self))
+        sizer.Add(wx.StaticText(self, label="BitmapTextButton() - no text"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelBitmapButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticLine(self))
+        sizer.Add(wx.StaticText(self, label="BitmapTextButton() - with text"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelBitmapTextButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
 
+        self.SetSizer(sizer)
 
-# ---------------------------------------------------------------------------
+    def on_bg_color(self, event):
+        self.SetBackgroundColour(wx.Colour(
+            random.randint(10, 250),
+            random.randint(10, 250),
+            random.randint(10, 250)
+        ))
+        self.Refresh()
 
+    def on_fg_color(self, event):
+        self.SetForegroundColour(wx.Colour(
+            random.randint(10, 250),
+            random.randint(10, 250),
+            random.randint(10, 250)
+        ))
+        self.Refresh()
 
-if __name__ == '__main__':
-    app = TestApp()
-    app.MainLoop()
+    def on_font(self, event):
+
+        data = wx.FontData()
+        data.EnableEffects(True)
+        data.SetColour(wx.GetApp().settings.fg_color)
+        data.SetInitialFont(wx.GetApp().settings.text_font)
+
+        dlg = wx.FontDialog(self, data)
+
+        if dlg.ShowModal() == wx.ID_OK:
+            data = dlg.GetFontData()
+            font = data.GetChosenFont()
+            self.SetFont(font)
+
+        self.Refresh()

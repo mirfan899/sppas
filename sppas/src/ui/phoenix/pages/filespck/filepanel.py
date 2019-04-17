@@ -77,12 +77,7 @@ class FileManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = MainToolbarPanel(self)
-        add = tb.AddButton("add", "Add")
-        add.FocusStyle = wx.PENSTYLE_SOLID
-        add.FocusWidth = 1
-        add.BorderWidth = 0
-        add.FocusColour = wx.Colour(220, 220, 120)
-
+        tb.AddButton("add", "Add")
         tb.AddButton("remove", "Remove")
         tb.AddButton("delete", "Delete")
 
@@ -211,11 +206,10 @@ class MainToolbarPanel(wx.Panel):
 
     def AddButton(self, icon, text, tooltip=None, activated=True):
         btn = self.create_button(icon, text)
-        btn.SetToolTip(tooltip)
+        # btn.SetToolTip(tooltip)
         btn.Enable(activated)
         self.sizer.Add(btn, proportion=1, flag=wx.ALL, border=2)
         self.buttons.append(btn)
-        #self.Layout()
         return btn
 
     def AddSpacer(self, proportion=1):
@@ -227,6 +221,12 @@ class MainToolbarPanel(wx.Panel):
         print(icon)
         btn = BitmapTextButton(self, label=text, name=icon)
         btn.SetBorderWidth(0)
+        btn.FocusStyle = wx.PENSTYLE_SOLID
+        btn.FocusWidth = 3
+        btn.BorderWidth = 0
+        btn.FocusColour = wx.Colour(220, 220, 120)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
         return btn
 
 # ----------------------------------------------------------------------------
