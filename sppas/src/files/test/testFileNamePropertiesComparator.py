@@ -3,7 +3,7 @@ from sppas.src.files.filedatacompare import *
 class TestFileNameExtensionCompare (unittest.TestCase):
 
     def setUp(self):
-        self.cmp = sppasFileNamePropertiesComparator()
+        self.cmp = sppasFileNamePropertiesCompare()
 
     def test_lock (self):
         d = __file__

@@ -570,22 +570,22 @@ class sppasRootCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasFileNameComparator(sppasBaseCompare):
+class sppasFileNameCompare(sppasBaseCompare):
 
     def __init__(self):
         """Create a sppasRootCompare instance."""
-        super(sppasFileNameComparator, self).__init__()
+        super(sppasFileNameCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['exact'] = sppasFileNameComparator.exact
-        self.methods['iexact'] = sppasFileNameComparator.iexact
-        self.methods['startswith'] = sppasFileNameComparator.startswith
-        self.methods['istartswith'] = sppasFileNameComparator.istartswith
-        self.methods['endswith'] = sppasFileNameComparator.endswith
-        self.methods['iendswith'] = sppasFileNameComparator.iendswith
-        self.methods['contains'] = sppasFileNameComparator.contains
-        self.methods['icontains'] = sppasFileNameComparator.icontains
-        self.methods['regexp'] = sppasFileNameComparator.regexp
+        self.methods['exact'] = sppasFileNameCompare.exact
+        self.methods['iexact'] = sppasFileNameCompare.iexact
+        self.methods['startswith'] = sppasFileNameCompare.startswith
+        self.methods['istartswith'] = sppasFileNameCompare.istartswith
+        self.methods['endswith'] = sppasFileNameCompare.endswith
+        self.methods['iendswith'] = sppasFileNameCompare.iendswith
+        self.methods['contains'] = sppasFileNameCompare.contains
+        self.methods['icontains'] = sppasFileNameCompare.icontains
+        self.methods['regexp'] = sppasFileNameCompare.regexp
 
     # -----------------------------------------------------------------------
     # FileName name
@@ -762,22 +762,22 @@ class sppasFileNameComparator(sppasBaseCompare):
 
 # ---------------------------------------------------------------------------
 
-class sppasFileNameExtensionComparator(sppasBaseCompare):
+class sppasFileNameExtensionCompare(sppasBaseCompare):
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
-        super(sppasFileNameExtensionComparator, self).__init__()
+        super(sppasFileNameExtensionCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['exact'] = sppasFileNameExtensionComparator.exact
-        self.methods['iexact'] = sppasFileNameExtensionComparator.iexact
-        self.methods['startswith'] = sppasFileNameExtensionComparator.startswith
-        self.methods['istartswith'] = sppasFileNameExtensionComparator.istartswith
-        self.methods['endswith'] = sppasFileNameExtensionComparator.endswith
-        self.methods['iendswith'] = sppasFileNameExtensionComparator.iendswith
-        self.methods['contains'] = sppasFileNameExtensionComparator.contains
-        self.methods['icontains'] = sppasFileNameExtensionComparator.icontains
-        self.methods['regexp'] = sppasFileNameExtensionComparator.regexp
+        self.methods['exact'] = sppasFileNameExtensionCompare.exact
+        self.methods['iexact'] = sppasFileNameExtensionCompare.iexact
+        self.methods['startswith'] = sppasFileNameExtensionCompare.startswith
+        self.methods['istartswith'] = sppasFileNameExtensionCompare.istartswith
+        self.methods['endswith'] = sppasFileNameExtensionCompare.endswith
+        self.methods['iendswith'] = sppasFileNameExtensionCompare.iendswith
+        self.methods['contains'] = sppasFileNameExtensionCompare.contains
+        self.methods['icontains'] = sppasFileNameExtensionCompare.icontains
+        self.methods['regexp'] = sppasFileNameExtensionCompare.regexp
 
     # -----------------------------------------------------------------------
     # FileName Extension
@@ -955,14 +955,14 @@ class sppasFileNameExtensionComparator(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasFileNamePropertiesComparator(sppasBaseCompare):
+class sppasFileNamePropertiesCompare(sppasBaseCompare):
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
-        super(sppasFileNamePropertiesComparator, self).__init__()
+        super(sppasFileNamePropertiesCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['lock'] = sppasFileNamePropertiesComparator.lock
+        self.methods['lock'] = sppasFileNamePropertiesCompare.lock
 
     # -----------------------------------------------------------------------
     # FileName Properties

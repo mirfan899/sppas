@@ -33,11 +33,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-
+from sppas.src.files.filedata import FileRoot
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
-from .filedatacompare import sppasPathCompare
+from .filedatacompare import sppasPathCompare, sppasRootCompare, sppasFileNameCompare, sppasFileNameExtensionCompare, \
+    sppasFileNamePropertiesCompare
+
 
 # ---------------------------------------------------------------------------
 
@@ -123,10 +125,30 @@ class sppasFileDataFilters(sppasBaseFilters):
     def root(self, **kwargs):
         """Apply functions on all roots of the object.
 
-        Not Implemented.
+
 
         """
-        return sppasBaseSet()
+        comparator = sppasRootCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+            for root in path:
+                is_matching = root.match(path_functions, logic_bool)
+                if is_matching is True:
+                    # append all files of the path
+                    for fn in root:
+                        data.append(fn, path_fct_values)
+
+        return data
 
     # -----------------------------------------------------------------------
 
@@ -136,25 +158,90 @@ class sppasFileDataFilters(sppasBaseFilters):
         Not Implemented.
 
         """
-        return sppasBaseSet()
+
+        comparator = sppasFileNameCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+            # append all files of the path
+            for fr in path:
+                for fn in fr:
+                    is_matching = fn.match(path_functions, logic_bool)
+                    if is_matching is True:
+                        data.append(fn, path_fct_values)
+
+        return data
 
     # -----------------------------------------------------------------------
 
     def extension(self, **kwargs):
         """Apply functions on all extensions of the files of the object.
 
-        Not Implemented.
+
 
         """
-        return sppasBaseSet()
+
+        comparator = sppasFileNameExtensionCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+
+                # append all files of the path
+                for fr in path:
+                    for fn in fr:
+                        is_matching = fn.match(path_functions, logic_bool)
+                        if is_matching is True:
+                            data.append(fn, path_fct_values)
+
+        return data
 
     # -----------------------------------------------------------------------
 
     def file(self, **kwargs):
         """Apply functions on all file properties of the object.
 
-        Not Implemented.
+
 
         """
-        return sppasBaseSet()
 
+        comparator = sppasFileNamePropertiesCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+            # append all files of the path
+            for fr in path:
+                for fn in fr:
+                    is_matching = fn.match(path_functions, logic_bool)
+                    if is_matching is True:
+                        data.append(fn, path_fct_values)
+
+        return data
+
+# ---------------------------------------------------------------------------

@@ -5,7 +5,7 @@ from sppas.src.files.filedatacompare import *
 class TestFileNameExtensionCompare (unittest.TestCase):
 
     def setUp(self):
-        self.cmp = sppasFileNameExtensionComparator()
+        self.cmp = sppasFileNameExtensionCompare()
         self.extenstion = path.splitext(__file__)[1].upper()
 
     def test_exact(self):

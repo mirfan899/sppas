@@ -6,7 +6,7 @@ from sppas.src.files.filedatacompare import *
 class TestFileNameCompare (unittest.TestCase):
 
     def setUp(self):
-        self.cmp = sppasFileNameComparator()
+        self.cmp = sppasFileNameCompare()
         self.fileName = 'testFileNameCompare'
 
     def test_exact(self):
