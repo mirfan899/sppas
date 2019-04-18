@@ -1,3 +1,4 @@
+import sppas
 from sppas.src.files.filedata import FileData
 from sppas.src.files.filedatacompare import *
 from sppas.src.files.filedatafilters import sppasFileDataFilters
@@ -8,10 +9,9 @@ class TestsFileDataFilter (unittest.TestCase):
     def setUp(self):
         self.files = FileData()
         self.files.add_file(__file__)
-        #change here C:\Users\drabczuk by where you installed sppas file
-        self.files.add_file('C:\\Users\\drabczuk\\sppas\\samples\\samples-fra\\AC track_0379.PitchTier')
-        self.files.add_file('C:\\Users\\drabczuk\\sppas\\samples\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
-        self.files.add_file('C:\\Users\\drabczuk\\sppas\\samples\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
+        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-fra\\AC track_0379.PitchTier')
+        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
+        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
 
         self.data_filter = sppasFileDataFilters(self.files)
 
