@@ -64,7 +64,7 @@ class FileAnnotIcon(object):
 
         Set the name of the icon for all known extensions of annotations.
 
-        Create a dictionary linking a file extension to the name of the 
+        Create a dictionary linking a file extension to the name of the
         software it comes from. It is supposed this name is matching an
         an icon in PNG format.
 

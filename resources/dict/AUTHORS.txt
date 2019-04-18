@@ -46,7 +46,7 @@ yue.dict:
     Linguistic Society of Hong Kong.
     "The copyright of the Jyutping phrase box belongs to the Linguistic 
     Society of Hong Kong.  We would like to thank the Jyutping Group of the 
-    Linguistic Society of Hong Kong for permission to use the electronic file 
+    Linguistic Society of Hong Kong for permission to use the electronic file
     in our research and/or product development."
     
     

@@ -37,7 +37,7 @@ class TestsFileDataFilter (unittest.TestCase):
 
     def test_fileNameProperties (self):
         self.assertTrue(
-            len(self.data_filter.file(not_lock='true')) == 4
+            len(self.data_filter.fprop(not_lock='true')) == 4
         )
 
     def test_mixed_filter_sets_way (self):

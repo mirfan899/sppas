@@ -245,7 +245,7 @@ class sppasFileDataFilters(sppasBaseFilters):
 
     # -----------------------------------------------------------------------
 
-    def file(self, **kwargs):
+    def fprop(self, **kwargs):
         """Apply functions on all file properties of the object.
 
         Each argument is made of a function name and its expected value.

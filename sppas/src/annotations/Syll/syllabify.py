@@ -67,7 +67,7 @@ class Syllabifier(object):
         """Return the syllable boundaries of a sequence of phonemes.
 
         >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
-        >>> Syllabifier("fra-config-file").annotate(phonemes)
+        >>> Syllabifier(file).annotate(phonemes)
         >>> [(0, 3), (4, 6)]
 
         :param phonemes: (list)
@@ -126,7 +126,7 @@ class Syllabifier(object):
         """Return the phonetized sequence of syllables.
 
         >>> phonemes = ['a', 'p', 's', 'k', 'm', 'w', 'a']
-        >>> syllables = Syllabifier("fra-config-file").annotate(phonemes)
+        >>> syllables = Syllabifier(file).annotaprophonemes)
         >>> Syllabifier.phonetize_syllables(phonemes, syllables)
         >>> "a-p-s-k.m-w-a"
 

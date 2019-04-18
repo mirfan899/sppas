@@ -499,7 +499,7 @@ class FileRoot(FileBase):
     def append(self, filename):
         """Append a filename in the list of files.
 
-        Given filename must be the absolute name of a file or an instance 
+        Given filename must be the absolute name of a file or an instance
         of FileName.
 
         :param filename: (str, FileName) Absolute name of a file
@@ -529,7 +529,7 @@ class FileRoot(FileBase):
     def remove(self, filename):
         """Remove a filename of the list of files.
 
-        Given filename must be the absolute name of a file or an instance 
+        Given filename must be the absolute name of a file or an instance
         of FileName.
 
         :param filename: (str, FileName) Absolute name of a file

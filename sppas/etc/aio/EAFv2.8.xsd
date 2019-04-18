@@ -604,7 +604,7 @@
 	<xsd:complexType name="licenseType">
 		<xsd:annotation>
 			<xsd:documentation xml:lang="en">
-				The license element can be used to include license information in the eaf file itself.  
+				The license element can be used to include license information in the eaf file itself.
 			</xsd:documentation>			
 		</xsd:annotation>
 		<xsd:simpleContent>

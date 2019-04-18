@@ -62,7 +62,7 @@ def OpenAnnotationFiles(multiple=True):
     files = list()
     if multiple is True:
         dlg = wx.FileDialog(None, 
-                            "Select annotation file(s)", 
+                            "Select annotation file(s)",
                             os.getcwd(), 
                             "", 
                             wildcard, 
@@ -72,7 +72,7 @@ def OpenAnnotationFiles(multiple=True):
 
     else:
         dlg = wx.FileDialog(None, 
-                            "Select annotation file", 
+                            "Select annotation file",
                             paths.samples, 
                             "", 
                             wildcard, 
@@ -97,7 +97,7 @@ def OpenSoundFiles():
 
     files = list()
     dlg = wx.FileDialog(None, 
-                        "Select sound file(s)", 
+                        "Select sound file(s)",
                         paths.samples, 
                         "", 
                         wildcard, 
@@ -119,7 +119,7 @@ def OpenAnyFiles():
 
     files = []
     dlg = wx.FileDialog(None, 
-                        "Select file(s)", 
+                        "Select file(s)",
                         paths.samples, 
                         "", 
                         wildcard, 
@@ -140,7 +140,7 @@ def OpenSpecificFiles(name, extensions):
 
     afile = ""
     dlg = wx.FileDialog(None, 
-                        "Select a file", 
+                        "Select a file",
                         os.getcwd(), 
                         "", 
                         wildcard, 

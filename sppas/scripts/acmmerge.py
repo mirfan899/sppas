@@ -50,7 +50,7 @@ from sppas.src.models.acm.acmodelhtkio import sppasHtkIO
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="%s -i file1/dir1 -I file2/dir2 -g gamma -o file" % os.path.basename(PROGRAM), 
+parser = ArgumentParser(usage="%s -i file1/dir1 -I file2/dir2 -g gamma -o file" % os.path.basename(PROGRAM),
                         description="... a script to merge 2 hmmdefs files.")
 
 parser.add_argument("-i",
