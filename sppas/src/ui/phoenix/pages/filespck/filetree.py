@@ -36,7 +36,6 @@ import logging
 import wx
 import wx.dataview as dv
 
-from sppas import sppasLogSetup
 from sppas.src.files.fileexc import FileAttributeError
 
 from .filemodel import fileTreeModel

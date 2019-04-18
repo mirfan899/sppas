@@ -79,8 +79,9 @@ class FileManager(sppasPanel):
     def __create_toolbar(self):
         tb = MainToolbarPanel(self)
         tb.AddButton("add", "Add")
-        tb.AddButton("remove", "Remove")
-        tb.AddButton("delete", "Delete")
+        tb.AddButton("remove", "Remove checked")
+        tb.AddButton("delete", "Delete checked")
+        tb.AddButton("check", "Check files...")
 
         tb.AddSpacer(3)
         tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
