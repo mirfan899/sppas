@@ -10,7 +10,7 @@ license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin for AudioSegmenter.
 
 AudioSegmenter is a tool to segment audio files into several tracks. Bounds
-of the tracks are indicated in an annotated file of any format supported by 
+of the tracks are indicated in an annotated file of any format supported by
 SPPAS (xra, TextGrid, eaf, ...).
 
 ------------------------------------------------------------------------------
