@@ -96,9 +96,11 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
-    def __init__(self, log, *args, **kw):
-        wx.dataview.DataViewCustomRenderer.__init__(self, *args, **kw)
-        self.log = log
+    def __init__(self,
+                 varianttype="wxBitmap",
+                 mode=wx.dataview.DATAVIEW_CELL_INERT,
+                 align=wx.dataview.DVR_DEFAULT_ALIGNMENT):
+        super(FileIconRenderer, self).__init__(varianttype, mode, align)
         self.value = None
 
     def SetValue(self, value):
@@ -159,12 +161,17 @@ class FileColumnProperties(object):
         :param stype: (str) String representing the type of the data
 
         """
+        try:  # wx4
+            bmp = wx.Bitmap(16, 16, 32)
+        except TypeError:  # wx3
+            bmp = wx.EmptyBitmap(16, 16)
+
         # The data types and their default values
         self.default = {
             "string": "",
             "bool": False,
             "datetime": "",
-            "wxBitmap": wx.Bitmap(16, 16, 32),
+            "wxBitmap": bmp,
             "wxDataViewIconText": ""
         }
 
@@ -720,7 +727,7 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
             col = FileColumnProperties("Soft", name, "wxBitmap")
             col.width = 36
             col.align = wx.ALIGN_CENTRE
-            col.renderer = FileIconRenderer(log=None)
+            col.renderer = FileIconRenderer()
             return col
 
         if name == "file":

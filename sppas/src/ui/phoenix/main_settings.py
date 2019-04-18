@@ -64,7 +64,12 @@ class WxAppSettings(sppasBaseSettings):
 
     def reset(self):
         """Fill the dictionary with the default values."""
-        font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        # No font defined? So use the default GUI font provided by the system
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+
         font_height = font.GetPixelSize()[1]
 
         self.__dict__ = dict(
@@ -101,7 +106,12 @@ class WxAppSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def __text_font(self):
-        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+
+        s = font.GetPointSize()
         text_font = wx.Font(s,                      # point size
                             wx.FONTFAMILY_DEFAULT,  # family,
                             wx.FONTSTYLE_NORMAL,    # style,
@@ -114,7 +124,12 @@ class WxAppSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def __header_font(self):
-        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        s = font.GetPointSize()
+
         title_font = wx.Font(s*2,                    # point size
                              wx.FONTFAMILY_DEFAULT,  # family,
                              wx.FONTSTYLE_NORMAL,    # style,
@@ -127,7 +142,12 @@ class WxAppSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def __action_font(self):
-        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        s = font.GetPointSize()
+
         button_font = wx.Font(int(s*1.2),             # point size
                               wx.FONTFAMILY_DEFAULT,  # family,
                               wx.FONTSTYLE_NORMAL,    # style,
@@ -140,7 +160,11 @@ class WxAppSettings(sppasBaseSettings):
     # -----------------------------------------------------------------------
 
     def __mono_font(self):
-        s = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT).GetPointSize()
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        s = font.GetPointSize()
         mono_font = wx.Font(int(s * 0.9),           # point size
                             wx.FONTFAMILY_MODERN,   # family,
                             wx.FONTSTYLE_NORMAL,    # style,

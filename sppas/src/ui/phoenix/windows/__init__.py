@@ -6,8 +6,6 @@ from .text import sppasMessageText
 from .text import sppasTitleText
 from .text import sppasTextCtrl
 from .image import sppasStaticBitmap
-from .book import sppasNotebook
-from .book import sppasSimplebook
 from .panel import sppasPanel
 from .panel import sppasScrolledPanel
 from .dialog import sppasDialog
@@ -21,8 +19,6 @@ __all__ = (
     "sppasMessageText",
     "sppasTextCtrl",
     "sppasStaticBitmap",
-    "sppasNotebook",
-    "sppasSimplebook",
     "sppasPanel",
     "sppasScrolledPanel",
     "sppasDialog"

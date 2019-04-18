@@ -40,10 +40,10 @@ from sppas.src.config import ui_translation
 
 from .windows import sppasBitmapTextButton
 from .windows import sppasTextButton
-from .windows import sppasSimplebook
 from .windows import sppasBitmapButton
 from .windows import sppasPanel
 from .windows import sppasDialog
+from .windows.book import sppasSimplebook
 
 from .pages import sppasHomePanel
 from .pages import sppasFilesPanel

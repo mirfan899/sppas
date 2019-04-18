@@ -48,7 +48,7 @@ import sppas.src.ui.phoenix.pages.filespck.filepanel
 
 class TestPanel(wx.Choicebook):
     def __init__(self, parent):
-        wx.Choicebook.__init__(self, parent)
+        wx.Choicebook.__init__(self, parent, wx.ID_ANY)
 
         # Make the bunch of test panels for the choice book
         self.AddPage(sppas.src.ui.phoenix.pages.filespck.filepanel.TestPanel(self), "file manager")

@@ -32,16 +32,12 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from .tools import sppasSwissKnife
-from .windows import sppasPanel
 
-from .main_app import sppasApp
+from .tools import sppasSwissKnife
 from .main_settings import WxAppSettings
 
 
 __all__ = (
     'sppasSwissKnife',
     'WxAppSettings',
-    'sppasPanel',
-    'sppasApp'
 )

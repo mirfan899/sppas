@@ -39,8 +39,9 @@ from sppas.src.config import ui_translation
 
 from ..windows import sppasDialog
 from ..windows import sppasPanel
-from ..windows import sppasNotebook
 from ..windows import sppasBitmapButton
+from ..windows.book import sppasNotebook
+
 from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------

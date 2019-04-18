@@ -34,11 +34,9 @@
 import logging
 import os
 import wx
-import wx.dataview as dv
 
-from sppas.src.ui.phoenix import sppasSwissKnife
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton, sppasBitmapTextButton
+from sppas.src.ui.phoenix.windows.button import BitmapTextButton
 from .filetree import FileTreeCtrl
 
 # ----------------------------------------------------------------------------
@@ -173,45 +171,47 @@ class MainToolbarPanel(sppasPanel):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
 
         self.buttons = []
-        self.sizer = wx.BoxSizer(wx.HORIZONTAL)
-
-        self.SetSizer(self.sizer)
+        self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
         self.SetMinSize((32, -1))
-        self.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
 
     # -----------------------------------------------------------------------
-
-    def OnButtonClick(self, evt):
-        evt.Skip()
-        """obj = evt.GetEventObject()
-        evt = wx.CommandEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, obj.GetId())
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)"""
 
     def AddButton(self, icon, text, tooltip=None, activated=True):
         btn = self.create_button(icon, text)
         # btn.SetToolTip(tooltip)
         btn.Enable(activated)
-        self.sizer.Add(btn, proportion=1, flag=wx.ALL, border=2)
+        self.GetSizer().Add(btn, proportion=1, flag=wx.ALL, border=2)
         self.buttons.append(btn)
         return btn
 
     def AddSpacer(self, proportion=1):
-        self.sizer.AddStretchSpacer(proportion)
+        self.GetSizer().AddStretchSpacer(proportion)
 
     # -----------------------------------------------------------------------
 
     def create_button(self, icon, text):
-        print(icon)
         btn = BitmapTextButton(self, label=text, name=icon)
-        btn.SetBorderWidth(0)
         btn.FocusStyle = wx.PENSTYLE_SOLID
         btn.FocusWidth = 3
-        btn.BorderWidth = 0
         btn.FocusColour = wx.Colour(220, 220, 120)
         btn.LabelPosition = wx.RIGHT
         btn.Spacing = 12
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
         return btn
+
+    # -----------------------------------------------------------------------
+
+    def get_button(self, name):
+        for b in self.GetSizer().GetChildren():
+            if b.GetName() == name:
+                return b
+
+        return None
 
 # ----------------------------------------------------------------------------
 # Panel to test
