@@ -21,7 +21,7 @@ class TestFileDataCompare (unittest.TestCase):
         #for FilePathCompare
         self.cmpPath = sppasPathCompare()
 
-        #for FIleRootComapre
+        #for FileRootComapre
         self.cmpRoot = sppasRootCompare
 
     def test_exact_fn(self):
