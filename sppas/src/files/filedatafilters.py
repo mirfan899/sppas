@@ -125,7 +125,17 @@ class sppasFileDataFilters(sppasBaseFilters):
     def root(self, **kwargs):
         """Apply functions on all roots of the object.
 
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
 
+        :Example:
+
+            >>> f.root(startswith="myfile", not_endswith='a', logic_bool="and")
+            >>> f.root(startswith="myfile") & f.root(not_endswith='a')
+            >>> f.root(startswith="myfile") | f.root(startswith="ta")
+
+        :param kwargs: logic_bool/any sppasRootCompare() method.
+        :returns: (sppasDataSet)
 
         """
         comparator = sppasRootCompare()
@@ -155,7 +165,17 @@ class sppasFileDataFilters(sppasBaseFilters):
     def name(self, **kwargs):
         """Apply functions on all names of the files of the object.
 
-        Not Implemented.
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
+
+        :Example:
+
+            >>> f.name(iexact="myfile-phon", not_startswith='a', logic_bool="and")
+            >>> f.name(iexact="myfile-phon") & f.name(not_startswith='a')
+            >>> f.name(iexact="myfile-phon") | f.name(startswith="ta")
+
+        :param kwargs: logic_bool/any sppasFileNameCompare() method.
+        :returns: (sppasDataSet)
 
         """
 
@@ -186,7 +206,17 @@ class sppasFileDataFilters(sppasBaseFilters):
     def extension(self, **kwargs):
         """Apply functions on all extensions of the files of the object.
 
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
 
+        :Example:
+
+            >>> f.extension(startswith=".TEXT", not_endswith='a', logic_bool="and")
+            >>> f.extension(startswith=".TEXT") & f.extension(not_endswith='a')
+            >>> f.extension(startswith=".TEXT") | f.extension(startswith="ta")
+
+        :param kwargs: logic_bool/any sppasFileNameExtensionCompare() method.
+        :returns: (sppasDataSet)
 
         """
 
@@ -218,7 +248,15 @@ class sppasFileDataFilters(sppasBaseFilters):
     def file(self, **kwargs):
         """Apply functions on all file properties of the object.
 
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
 
+        :Example:
+
+            >>> f.file(lock='true')
+
+        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :returns: (sppasDataSet)
 
         """
 
