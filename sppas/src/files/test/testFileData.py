@@ -5,7 +5,7 @@ import unittest
 from os.path import dirname
 
 from sppas import u
-from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue
+from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Category
 from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
@@ -162,21 +162,43 @@ class TestFilePath(unittest.TestCase):
 class TestAttValue(unittest.TestCase):
 
     def setUp(self):
-        self.valint = AttValue('12', 'age du locuteur', 'int')
-        self.valfloat = AttValue('0.002', 'fréquence d\'apparition du mot', 'float')
-        self.valbool = AttValue('false', 'le locuteur est majeur', 'bool')
-        self.valstr = AttValue('Salut à tous !', 'premier token')
+        self.valint = AttValue('12', 'int', 'speaker\'s age')
+        self.valfloat = AttValue('0.002', 'float', 'word appearance frequency')
+        self.valbool = AttValue('false', 'bool', 'speaker is minor')
+        self.valstr = AttValue('Hi everyone !', None, 'first token')
 
     def testInt(self):
-        print(self.valint.get_value() is str)
-        print(type(self.valint.get_value()))
-        self.assertTrue(self.valint.get_typed_value() is int and self.valint.get_value() == '12')
+        self.assertTrue(isinstance(self.valint.get_typed_value(), int))
+        self.assertTrue(self.valint.get_value() == '12')
 
     def testFloat(self):
-        self.assertFalse(self.valfloat.get_typed_value() is float and self.valfloat.get_value() == 0.002)
+        self.assertTrue(isinstance(self.valfloat.get_typed_value(), float))
+        self.assertFalse(self.valfloat.get_value() == 0.002)
 
     def testBool(self):
         self.assertFalse(self.valbool.get_typed_value())
 
     def testStr(self):
-        self.assertTrue(self.valstr.get_typed_value() == 'Salut à tous !' and self.valstr.get_value() == 'Salut à tous !')
+        self.assertTrue(self.valstr.get_typed_value() == 'Hi everyone !')
+        self.assertTrue(self.valstr.get_value() == 'Hi everyone !')
+
+# ---------------------------------------------------------------------------
+
+
+class TestCategories(unittest.TestCase):
+
+    def setUp(self):
+        self.micros = Category('microphone')
+        self.micros.append_values(['1', 'first mic', 'int'], ['2', 'second mic', 'int'])
+
+    def testName(self):
+        self.assertTrue(
+            self.micros.name == 'microphone'
+        )
+
+    def testValues(self):
+        self.assertFalse(
+            len(self.micros.values) == 3
+        )
+
+# ---------------------------------------------------------------------------

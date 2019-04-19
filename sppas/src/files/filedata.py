@@ -1119,7 +1119,7 @@ class AttValue :
 
     """
 
-    def __init__(self, att_value, att_description='', att_type=None):
+    def __init__(self, att_value, att_type=None, att_description=''):
         self.__value = att_value
         self.__valuetype = att_type
         self.__description = u(att_description)
@@ -1147,17 +1147,29 @@ class Category(FileBase):
 
     """
 
-    def __init__(self, filename):
-        super(Category, self).__init__(filename)
+    def __init__(self, name):
+        super(Category, self).__init__(name)
+        self.__name = name
         self.__attributs = dict()
+        self.__attributs[name] = list()
 
-    def append(self, id, value):
-        if id not in self.__attributs.keys():
-            self.__attributs[id] = value
+    def append_values(self, *args):
+        for value in args:
+            if isinstance(value, list):
+                if len(value) == 3:
+                    self.__attributs[self.__name].append(AttValue(value[0], value[1], value[2]))
+                elif len(value) == 2:
+                    self.__attributs[self.__name].append(AttValue(value[0], value[1]))
+                else:
+                    self.__attributs[self.__name].append(AttValue(value[0]))
 
-    def get_attributs(self):
-        return self.__attributs
+    def get_name(self):
+        return self.__name
 
-    attributs = property(get_attributs, None)
+    def get_values(self):
+        return self.__attributs[self.__name]
+
+    name = property(get_name, None)
+    values = property(get_values, None)
 
 # ---------------------------------------------------------------------------
