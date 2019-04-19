@@ -2,8 +2,11 @@
 # Unittests
 # ---------------------------------------------------------------------------
 import unittest
-from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath
-from sppas.src.files.fileexc import FileOSError
+from os.path import dirname
+
+from sppas import u
+from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue
+from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
 class TestFileBase(unittest.TestCase):
@@ -156,6 +159,24 @@ class TestFilePath(unittest.TestCase):
 
 # ---------------------------------------------------------------------------
 
+class TestAttValue(unittest.TestCase):
 
-if __name__ == '__main__':
-    unittest.main()
+    def setUp(self):
+        self.valint = AttValue('12', 'age du locuteur', 'int')
+        self.valfloat = AttValue('0.002', 'fréquence d\'apparition du mot', 'float')
+        self.valbool = AttValue('false', 'le locuteur est majeur', 'bool')
+        self.valstr = AttValue('Salut à tous !', 'premier token')
+
+    def testInt(self):
+        print(self.valint.get_value() is str)
+        print(type(self.valint.get_value()))
+        self.assertTrue(self.valint.get_typed_value() is int and self.valint.get_value() == '12')
+
+    def testFloat(self):
+        self.assertFalse(self.valfloat.get_typed_value() is float and self.valfloat.get_value() == 0.002)
+
+    def testBool(self):
+        self.assertFalse(self.valbool.get_typed_value())
+
+    def testStr(self):
+        self.assertTrue(self.valstr.get_typed_value() == 'Salut à tous !' and self.valstr.get_value() == 'Salut à tous !')

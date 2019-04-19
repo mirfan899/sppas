@@ -136,6 +136,7 @@ from os.path import getsize, getmtime
 from os.path import basename, dirname
 from datetime import datetime
 
+from sppas import u
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 
@@ -1110,4 +1111,53 @@ class FileData(object):
     def __len__(self):
         return len(self.__data)
     
+# ---------------------------------------------------------------------------
+
+class AttValue :
+
+    """Represents an attribute in the reference catalog
+
+    """
+
+    def __init__(self, att_value, att_description='', att_type=None):
+        self.__value = att_value
+        self.__valuetype = att_type
+        self.__description = u(att_description)
+
+    def get_value(self):
+        return str(self.__value)
+
+    def get_typed_value(self):
+        if self.__valuetype is not None:
+            if self.__valuetype == 'int':
+                return int(self.__value)
+            elif self.__valuetype == 'float':
+                return float(self.__value)
+            elif self.__valuetype == 'bool':
+                return self.__value.lower() == 'true'
+
+        return self.__value
+
+# ---------------------------------------------------------------------------
+
+
+class Category(FileBase):
+
+    """Represents a catalog of references about files
+
+    """
+
+    def __init__(self, filename):
+        super(Category, self).__init__(filename)
+        self.__attributs = dict()
+
+    def append(self, id, value):
+        if id not in self.__attributs.keys():
+            self.__attributs[id] = value
+
+    def get_attributs(self):
+        return self.__attributs
+
+    attributs = property(get_attributs, None)
+
 # ---------------------------------------------------------------------------
