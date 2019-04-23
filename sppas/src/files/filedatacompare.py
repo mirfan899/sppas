@@ -65,7 +65,7 @@ from sppas import sppasTypeError
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.structs.basecompare import sppasBaseCompare
 
-from .filedata import FilePath, FileRoot, FileName
+from .filedata import FilePath, FileRoot, FileName, Category
 
 
 # ---------------------------------------------------------------------------
@@ -981,5 +981,198 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
             raise sppasTypeError(fn, "FileName")
 
         return fn.lock is bool(value)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasReferenceCompare(sppasBaseCompare):
+
+    def __init__(self):
+        """Create a sppasFileNameExtensionComparator instance."""
+        super(sppasReferenceCompare, self).__init__()
+
+        # Compare the id to a text value
+        self.methods['exact'] = sppasReferenceCompare.exact
+        self.methods['iexact'] = sppasReferenceCompare.iexact
+        self.methods['startswith'] = sppasReferenceCompare.startswith
+        self.methods['istartswith'] = sppasReferenceCompare.istartswith
+        self.methods['endswith'] = sppasReferenceCompare.endswith
+        self.methods['iendswith'] = sppasReferenceCompare.iendswith
+        self.methods['contains'] = sppasReferenceCompare.contains
+        self.methods['icontains'] = sppasReferenceCompare.icontains
+        self.methods['regexp'] = sppasReferenceCompare.regexp
+
+    # -----------------------------------------------------------------------
+    # Reference Id
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def exact(cat, value):
+        """Test if the id strictly matches value.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        # perhaps we should test with all systems separators ( '/' or '\' )
+        return cat.id == value
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def iexact(cat, value):
+        """Test if the id matches value without case sensitive.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return cat.id.lower() == value.lower()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def startswith(cat, value):
+        """Test if the id starts with the characters of the value.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return cat.id.startswith(value)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def istartswith(cat, value):
+        """Case-insensitive startswith.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return cat.id.lower().startswith(value.lower())
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def endswith(cat, value):
+        """Test if the id ends with the characters of the value.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return cat.id.endswith(value)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def iendswith(cat, value):
+        """Case-insensitive endswith.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return cat.id.lower().endswith(value.lower())
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def contains(cat, value):
+        """Test if the id contains the value.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return value in cat.id
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def icontains(cat, value):
+        """Case-insensitive contains.
+
+        :param cat: (Category) Extension to compare.
+        :param value: (unicode) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "Category")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return value.lower() in cat.id.lower()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def regexp(cat, pattern):
+        """Test if id matches pattern.
+
+        :param cat: (Category) Extension to compare.
+        :param pattern: (unicode) Pattern to search.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(cat, Category) is False:
+            raise sppasTypeError(cat, "FileName")
+        text = cat.id
+
+        return True if re.match(pattern, text) else False
 
 # ---------------------------------------------------------------------------
