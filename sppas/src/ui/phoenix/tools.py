@@ -116,8 +116,8 @@ class sppasSwissKnife:
     @staticmethod
     def rescale_image(img, height):
         """Rescale proportionally an image."""
-        proportion = height / img.GetHeight()
-        w = int(img.GetWidth() * proportion)
+        proportion = float(height) / float(img.GetHeight())
+        w = int(float(img.GetWidth()) * proportion)
         img.Rescale(w, height, wx.IMAGE_QUALITY_HIGH)
 
     # ------------------------------------------------------------------------

@@ -38,6 +38,8 @@ Create and run the application:
 >>> app.run()
 
 """
+
+import traceback
 import time
 import wx
 import logging
@@ -227,6 +229,7 @@ class sppasApp(wx.App):
             msg = str(e)
             error = -1
             if msg.startswith(":ERROR "):
+                logging.error(msg)
                 try:
                     msg = msg[msg.index(" "):]
                     if ':' in msg:
@@ -234,7 +237,8 @@ class sppasApp(wx.App):
                         error = int(msg)
                 except:
                     pass
-
+            else:
+                logging.error(traceback.format_exc())
             return error
 
         return 0

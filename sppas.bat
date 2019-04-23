@@ -44,6 +44,8 @@ GOTO EndHeader
 
 @echo off
 
+SET PYTHONIOENCODING=UTF-8
+
 if exist c:\Python27\python.exe (
     start "" c:\Python27\python.exe .\sppas\bin\sppasgui.py
 ) else (

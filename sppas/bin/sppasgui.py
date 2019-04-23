@@ -84,7 +84,7 @@ except ImportError:
 v = wx.version().split()[0][0]
 if v == '4':
     try:
-        from sppas.src.ui.phoenix import sppasApp
+        from sppas.src.ui.phoenix.main_app import sppasApp
     except:
         exit_error("An unexpected error occurred.\n"
                    "Verify the the installation of SPPAS and try again.\n"
