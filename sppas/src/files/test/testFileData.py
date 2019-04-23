@@ -189,16 +189,25 @@ class TestCategories(unittest.TestCase):
 
     def setUp(self):
         self.micros = Category('microphone')
-        self.micros.append_values(['1', 'first mic', 'int'], ['2', 'second mic', 'int'])
+        self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
+        self.micros.add('mic2', 'AKG D5')
 
-    def testName(self):
+    def testGetItem(self):
         self.assertTrue(
-            self.micros.name == 'microphone'
+            self.micros['mic1'].description == '最初のインタビューで使えていましたマイク'
         )
 
-    def testValues(self):
+    def testAttValue(self):
         self.assertFalse(
-            len(self.micros.values) == 3
+            isinstance(self.micros['mic2'].get_typed_value(), int)
+        )
+
+    def testAddKey(self):
+        with self.assertRaises(FileTypeError) as AsciiError:
+            self.micros.add('**asaà', 'Blue Yeti')
+
+        self.assertTrue(
+            isinstance(AsciiError.exception, FileTypeError)
         )
 
 # ---------------------------------------------------------------------------

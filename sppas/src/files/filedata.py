@@ -125,7 +125,7 @@
         >>>    logic_bool="and")
 
 """
-
+import re
 import unittest
 import random
 import mimetypes
@@ -136,7 +136,7 @@ from os.path import getsize, getmtime
 from os.path import basename, dirname
 from datetime import datetime
 
-from sppas import u
+from sppas import u, sppasUnicode
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 
@@ -154,18 +154,18 @@ class FileBase(object):
 
     """
 
-    def __init__(self, filename):
+    def __init__(self, identifier):
         """Constructor of a FileBase.
         
-        :param `filename`: (str) Full name of a file/directory
-        :raise: OSError if filename does not match a file nor a directory
+        :param `identifier`: (str) Full name of a file/directory
+        :raise: OSError if identifier does not match a file nor a directory
         
         The following members are stored:
 
-            - id (str) Identifier - the absolute filename [private]
+            - id (str) Identifier - the absolute identifier [private]
 
         """
-        self.__id = filename
+        self.__id = identifier
 
     # -----------------------------------------------------------------------
 
@@ -236,13 +236,13 @@ class FileName(FileBase):
 
     """
 
-    def __init__(self, filename):
+    def __init__(self, identifier):
         """Constructor of a FileName.
 
-        From the filename, the following properties are extracted:
+        From the identifier, the following properties are extracted:
 
-            0. id (str) Identifier - the absolute filename (from FileBase)
-            1. filename (str) The base name of the file, without path nor ext
+            0. id (str) Identifier - the absolute identifier (from FileBase)
+            1. identifier (str) The base name of the file, without path nor ext
             2. ext (str) The extension of the file, or the mime type
             3. date (str) Time of the last modification
             4. filesize (str) Size of the file
@@ -252,20 +252,20 @@ class FileName(FileBase):
             - check (bool) File is selected or not
             - lock (bool) File is locked or not (enable/disable)
 
-        :param `filename`: (str) Full name of a file (from FileBase)
-        :raise: OSError if filename does not match a file (not dir/link)
+        :param `identifier`: (str) Full name of a file (from FileBase)
+        :raise: OSError if identifier does not match a file (not dir/link)
 
         """
-        super(FileName, self).__init__(filename)
-        if exists(filename) is False:
-            raise FileOSError(filename)
+        super(FileName, self).__init__(identifier)
+        if exists(identifier) is False:
+            raise FileOSError(identifier)
         if isfile(self.get_id()) is False:
-            raise FileTypeError(filename)
+            raise FileTypeError(identifier)
 
         # Properties of the file (protected)
         # ----------------------------------
 
-        # The displayed filename (no path, no extension) 
+        # The displayed identifier (no path, no extension)
         fn, ext = splitext(self.get_id())
         self.__name = basename(fn)
 
@@ -1113,19 +1113,20 @@ class FileData(object):
     
 # ---------------------------------------------------------------------------
 
-class AttValue :
+class AttValue(object):
 
     """Represents an attribute in the reference catalog
 
     """
 
-    def __init__(self, att_value, att_type=None, att_description=''):
-        self.__value = att_value
+    def __init__(self, att_value, att_type=None, att_description=None):
+        su = sppasUnicode(att_value)
+        self.__value = su.to_strip()
         self.__valuetype = att_type
         self.__description = u(att_description)
 
     def get_value(self):
-        return str(self.__value)
+        return self.__value
 
     def get_typed_value(self):
         if self.__valuetype is not None:
@@ -1138,6 +1139,20 @@ class AttValue :
 
         return self.__value
 
+    def set_value(self, value):
+        su = sppasUnicode(value)
+        self.__value = su.to_strip()
+
+    def get_description(self):
+        su = sppasUnicode(self.__description)
+        return su.to_strip()
+
+    def set_description(self, description):
+        su = sppasUnicode(description)
+        self.__description = su.to_strip()
+
+    description = property(get_description, set_description)
+
 # ---------------------------------------------------------------------------
 
 
@@ -1147,29 +1162,53 @@ class Category(FileBase):
 
     """
 
-    def __init__(self, name):
-        super(Category, self).__init__(name)
-        self.__name = name
+    def __init__(self, identifier):
+        super(Category, self).__init__(identifier)
         self.__attributs = dict()
-        self.__attributs[name] = list()
 
-    def append_values(self, *args):
-        for value in args:
-            if isinstance(value, list):
-                if len(value) == 3:
-                    self.__attributs[self.__name].append(AttValue(value[0], value[1], value[2]))
-                elif len(value) == 2:
-                    self.__attributs[self.__name].append(AttValue(value[0], value[1]))
-                else:
-                    self.__attributs[self.__name].append(AttValue(value[0]))
+    def add(self, key, value):
+        def is_restricted_ascii(key_to_test):
+            ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
+            return key_to_test == ra
 
-    def get_name(self):
-        return self.__name
+        if is_restricted_ascii(key):
+            if isinstance(value, AttValue):
+                self.__attributs[key] = value
+            else:
+                self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
+        else:
+            raise FileTypeError('Non ASCII characters')
 
-    def get_values(self):
-        return self.__attributs[self.__name]
+    def pop(self, key):
+        if key in self.__attributs.keys():
+            self.__attributs.pop(key)
+        else:
+            raise ValueError('index not in Category')
 
-    name = property(get_name, None)
-    values = property(get_values, None)
+    #---------------------------------------------------------
+    # overloads
+    #----------------------------------------------------------
+
+    def __len__(self):
+        return len(self.__attributs.keys())
+
+    def __str__(self):
+        return '{!s:s}'.format(self.__attributs)
+
+    def __repr__(self):
+        return 'Category: {!s:s}'.format(self.__attributs)
+
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    def __getitem__(self, key):
+        return self.__attributs[key]
+
+    def __iter__(self):
+        for key, value in self.__attributs.items():
+            yield key, value
+
+    def __contains__(self, key):
+        return key in self.__attributs.keys()
 
 # ---------------------------------------------------------------------------
