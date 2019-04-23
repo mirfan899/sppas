@@ -70,11 +70,14 @@ class FileAnnotIcon(object):
 
         """
         self.__exticon = dict()
+        self.__exticon['.WAV'] = "Audio"
+        self.__exticon['.WAVE'] = "Audio"
+
         for ext in sppasRW.TRANSCRIPTION_SOFTWARE:
             software = sppasRW.TRANSCRIPTION_SOFTWARE[ext]
             if ext.startswith(".") is False:
                 ext = "." + ext
-            self.__exticon[ext.upper()] = software + ".png"
+            self.__exticon[ext.upper()] = software
 
     # -----------------------------------------------------------------------
 
@@ -101,7 +104,7 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
                  mode=wx.dataview.DATAVIEW_CELL_INERT,
                  align=wx.dataview.DVR_DEFAULT_ALIGNMENT):
         super(FileIconRenderer, self).__init__(varianttype, mode, align)
-        self.value = None
+        self.value = ""
 
     def SetValue(self, value):
         self.value = value
@@ -117,15 +120,13 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
 
     def Render(self, rect, dc, state):
         """Draw the bitmap, adjusting its size. """
+        print(' ... FileIconRenderer. Render the value {}'.format(self.value))
         if self.value == "":
-            return False
-        
-        if os.path.isfile(self.value) is False:
             return False
 
         x, y, w, h = rect
         s = min(w, h)
-        s = int(0.8 * s)
+        s = int(0.6 * s)
 
         bmp = sppasSwissKnife.get_bmp_icon(self.value, s)
         dc.DrawBitmap(bmp, x + (w-s)//2, y + (h-s)//2)
@@ -542,8 +543,11 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
 
         if self.__mapper[col].id == "icon":
             if isinstance(node, FileName) is True:
+                print("GetValue of an icon of a filename.")
                 ext = node.get_extension()
+                print(' ... extension is {}'.format(ext))
                 icon_name = self.exticon.get_icon_name(ext)
+                print(' ... icon name is {}'.format(icon_name))
                 return icon_name
             return ""
 

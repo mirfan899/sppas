@@ -150,7 +150,7 @@ class sppasTRS(sppasBaseIO):
         super(sppasTRS, self).__init__(name)
 
         self.default_extension = "trs"
-        self.software = "transcriber"
+        self.software = "Transcriber"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = False

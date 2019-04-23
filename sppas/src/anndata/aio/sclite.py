@@ -96,7 +96,7 @@ class sppasBaseSclite(sppasBaseText):
             name = self.__class__.__name__
         super(sppasBaseSclite, self).__init__(name)
 
-        self.software = "sclite"
+        self.software = "SCTK"
 
         # override all
         self._accept_multi_tiers = True

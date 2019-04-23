@@ -98,6 +98,8 @@ class sppasBaseText(sppasBaseIO):
         self._accept_gaps = True
         self._accept_overlaps = True
 
+        self.software = "Text"
+
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -410,7 +412,6 @@ class sppasRawText(sppasBaseText):
         super(sppasRawText, self).__init__(name)
 
         self.default_extension = "txt"
-        self.software = "editor"
 
         self._accept_multi_tiers = False
 
@@ -626,7 +627,6 @@ class sppasCSV(sppasBaseText):
         super(sppasCSV, self).__init__(name)
 
         self.default_extension = "csv"
-        self.software = "speadsheet"
 
         self._accept_multi_tiers = True
 

@@ -133,6 +133,8 @@ class sppasWEKA(sppasBaseIO):
         self._accept_gaps = True    # is True only for the reference tier
         self._accept_overlaps = True
 
+        self.software = "weka"
+
     # -----------------------------------------------------------------------
     # Getters and setters
     # -----------------------------------------------------------------------
@@ -797,7 +799,6 @@ class sppasARFF(sppasWEKA):
         super(sppasARFF, self).__init__(name)
 
         self.default_extension = "arff"
-        self.software = "weka"
 
     # -----------------------------------------------------------------------
     # Write data

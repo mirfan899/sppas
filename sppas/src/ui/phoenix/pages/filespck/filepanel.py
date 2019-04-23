@@ -37,6 +37,7 @@ import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
 from sppas.src.ui.phoenix.windows.button import BitmapTextButton
+from sppas.src.ui.phoenix.windows.button import sppasBitmapTextButton
 from .filetree import FileTreeCtrl
 
 # ----------------------------------------------------------------------------
@@ -78,12 +79,12 @@ class FileManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = MainToolbarPanel(self)
+        tb.AddSpacer(1)
         tb.AddButton("add", "Add")
         tb.AddButton("remove", "Remove checked")
         tb.AddButton("delete", "Delete checked")
         tb.AddButton("check", "Check files...")
-
-        tb.AddSpacer(3)
+        tb.AddSpacer(1)
         tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         return tb
 
@@ -117,7 +118,7 @@ class FileManager(sppasPanel):
 
     def OnButtonClick(self, event):
 
-        name = event.GetButtonObject().GetName()
+        name = event.GetButtonObj().GetName()
         if name == "add":
             self._add_file()
 
@@ -171,13 +172,14 @@ class MainToolbarPanel(sppasPanel):
     def __init__(self, parent):
         wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
 
-        self.buttons = []
         self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-        self.SetMinSize((32, -1))
 
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+
+        self.SetMinSize((-1, 32))
+        self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
@@ -185,8 +187,7 @@ class MainToolbarPanel(sppasPanel):
         btn = self.create_button(icon, text)
         # btn.SetToolTip(tooltip)
         btn.Enable(activated)
-        self.GetSizer().Add(btn, proportion=1, flag=wx.ALL, border=2)
-        self.buttons.append(btn)
+        self.GetSizer().Add(btn, 2, wx.LEFT | wx.EXPAND, 0)
         return btn
 
     def AddSpacer(self, proportion=1):
@@ -195,14 +196,15 @@ class MainToolbarPanel(sppasPanel):
     # -----------------------------------------------------------------------
 
     def create_button(self, icon, text):
-        btn = BitmapTextButton(self, label=text, name=icon)
-        btn.FocusStyle = wx.PENSTYLE_SOLID
+        btn = sppasBitmapTextButton(self, label=text, name=icon)
+        """btn.FocusStyle = wx.PENSTYLE_SOLID
         btn.FocusWidth = 3
         btn.FocusColour = wx.Colour(220, 220, 120)
         btn.LabelPosition = wx.RIGHT
         btn.Spacing = 12
         btn.BorderWidth = 0
-        btn.BitmapColour = self.GetForegroundColour()
+        btn.BitmapColour = self.GetForegroundColour()"""
+        btn.SetMinSize((64, -1))
         return btn
 
     # -----------------------------------------------------------------------

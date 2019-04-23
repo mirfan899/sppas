@@ -377,7 +377,7 @@ class sppasDialog(wx.Dialog):
             wx.ID_CLOSE: (MSG_ACTION_CLOSE, "close-window"),
             wx.ID_SAVE: (MSG_ACTION_SAVE, "save"),
         }
-        btn = sppasBitmapTextButton(parent, btns[flag][0], btns[flag][1])
+        btn = sppasBitmapTextButton(parent, label=btns[flag][0], name=btns[flag][1])
         btn.SetId(flag)
 
         if flag == wx.CANCEL:
