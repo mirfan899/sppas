@@ -480,7 +480,7 @@ class FileRoot(FileBase):
     # -----------------------------------------------------------------------
 
     def get_categories(self):
-        """If the reference catalog is not set yet instead of returning None the method returns an empty list."""
+        """If the reference catalog is not set yet, instead of returning None the method returns an empty list."""
         return self.__categories if self.__categories is not None else list()
 
     def set_categories(self, list_of_categories):
