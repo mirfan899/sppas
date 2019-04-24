@@ -69,7 +69,7 @@ class BitmapTextToolbar(sppasPanel):
     # -----------------------------------------------------------------------
 
     def AddButton(self, icon, text="", tooltip=None, activated=True):
-        btn = self.create_button(icon, text)
+        btn = self.create_button(text, icon)
         # btn.SetToolTip(tooltip)
         btn.Enable(activated)
         self.GetSizer().Add(btn, 2, wx.LEFT | wx.EXPAND, 0)
@@ -84,15 +84,15 @@ class BitmapTextToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def create_button(self, icon, text):
-        btn = sppasBitmapTextButton(self, label=text, name=icon)
-        """btn.FocusStyle = wx.PENSTYLE_SOLID
+    def create_button(self, text, icon):
+        btn = BitmapTextButton(self, label=text, name=icon)
+        btn.FocusStyle = wx.PENSTYLE_SOLID
         btn.FocusWidth = 3
         btn.FocusColour = wx.Colour(220, 220, 120)
         btn.LabelPosition = wx.RIGHT
         btn.Spacing = 12
         btn.BorderWidth = 0
-        btn.BitmapColour = self.GetForegroundColour()"""
+        btn.BitmapColour = self.GetForegroundColour()
         btn.SetMinSize((64, -1))
         return btn
 

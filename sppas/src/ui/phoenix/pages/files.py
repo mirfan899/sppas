@@ -38,6 +38,7 @@ from ..windows import sppasPanel
 from .filespck.filesmanager import FilesManager
 from .filespck.catsmanager import CataloguesManager
 from ..windows.button import sppasBitmapButton
+from ..windows.button import BitmapTextButton
 from ..windows.button import sppasBitmapTextButton
 
 # ---------------------------------------------------------------------------
@@ -119,9 +120,9 @@ class sppasFilesPanel(sppasPanel):
     def __create_workspace_panel(self):
         wp = sppasPanel(self, name="wokspace")
 
-        open = sppasBitmapTextButton(self, "Import...", "open_book")
-        pin = sppasBitmapTextButton(self, "Pin&Save", "pin")
-        ren = sppasBitmapTextButton(self, "Rename", "rename")
+        open = self.__create_button("Import...", "open_book")
+        pin = self.__create_button("Pin&Save", "pin")
+        ren = self.__create_button("Rename", "rename")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(wx.StaticText(self, label="Workspaces: "), 0, wx.LEFT | wx.TOP | wx.BOTTOM, 8)
@@ -133,3 +134,17 @@ class sppasFilesPanel(sppasPanel):
         wp.SetSizer(sizer)
         wp.SetMinSize((128, -1))
         return wp
+
+    # ------------------------------------------------------------------------
+
+    def __create_button(self, text, icon):
+        btn = sppasBitmapTextButton(self, label=text, name=icon)
+        """btn.FocusStyle = wx.PENSTYLE_SOLID
+        btn.FocusWidth = 1
+        btn.FocusColour = wx.Colour(200, 20, 20)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 0
+        # btn.BitmapColour = wx.Colour(200, 20, 20)"""
+        btn.SetMinSize((-1, 32))
+        return btn

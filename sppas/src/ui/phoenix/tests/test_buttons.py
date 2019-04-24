@@ -5,7 +5,7 @@ PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM)))))
 sys.path.append(SPPAS)
 
-from sppas.src.ui.phoenix import sppasApp
+from sppas.src.ui.phoenix.main_app import sppasApp
 from sppas.src.ui.phoenix.windows.button import sppasTextButton
 from sppas.src.ui.phoenix.windows.button import sppasBitmapTextButton
 

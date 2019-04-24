@@ -232,7 +232,7 @@ class ButtonEvent(wx.PyCommandEvent):
 
     # ------------------------------------------------------------------------
 
-    def SetButtonObject(self, btn):
+    def SetButtonObj(self, btn):
         """Set the event object for the event.
 
         :param `btn`: the button object, an instance of L{FileButton}.
@@ -242,13 +242,13 @@ class ButtonEvent(wx.PyCommandEvent):
 
     # ------------------------------------------------------------------------
 
-    def GetButtonObject(self):
+    def GetButtonObj(self):
         """Return the object associated with this event."""
         return self.__button
 
     # ------------------------------------------------------------------------
 
-    Button = property(GetButtonObject, SetButtonObject)
+    Button = property(GetButtonObj, SetButtonObj)
 
 
 # ----------------------------------------------------------------------------
@@ -594,13 +594,6 @@ class BaseButton(wx.Window):
         :param event: a wx.SizeEvent event to be processed.
 
         """
-        (w, h) = event.GetSize()
-        if w < BaseButton.MIN_WIDTH:
-            w = BaseButton.MIN_WIDTH
-        if h < BaseButton.MIN_HEIGHT:
-            h = BaseButton.MIN_HEIGHT
-        wx.Window.SetMinSize(self, wx.Size(w, h))
-
         event.Skip()
         self.Refresh()
 
@@ -864,7 +857,7 @@ class BaseButton(wx.Window):
     def Notify(self):
         """Sends a wx.EVT_BUTTON event to the listener (if any)."""
         evt = ButtonEvent(wx.wxEVT_COMMAND_BUTTON_CLICKED, self.GetId())
-        evt.SetButtonObject(self)
+        evt.SetButtonObj(self)
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
@@ -1197,6 +1190,17 @@ class BitmapTextButton(BaseButton):
         self._labelpos = wx.BOTTOM
         self._spacing = 4
         self._bitmapcolor = self.GetParent().GetForegroundColour()
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """Override. Apply fg colour to both the image and the text.
+
+        :param colour: (wx.Colour)
+
+        """
+        self._bitmapcolor = colour
+        wx.Window.SetForegroundColour(self, colour)
 
     # ------------------------------------------------------------------------
 
@@ -1823,6 +1827,30 @@ class TestCheckButton(wx.Panel):
 # ----------------------------------------------------------------------------
 
 
+class TestPanelButtonsInSizer(wx.Panel):
+
+    # ------------------------------------------------------------------------
+
+    def __init__(self, parent):
+        super(TestPanelButtonsInSizer, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
+            name="Test CheckButton")
+
+        self.SetForegroundColour(wx.Colour(150, 160, 170))
+        # b1 = BitmapTextButton(self, label="SPPAS")
+        # b2 = BitmapTextButton(self, name="like")
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(BaseButton(self), 2, wx.LEFT | wx.EXPAND, 0)
+        sizer.Add(BaseButton(self), 2, wx.LEFT | wx.EXPAND, 0)
+        sizer.Add(BaseButton(self), 2, wx.LEFT | wx.EXPAND, 0)
+        self.SetSizer(sizer)
+        self.SetAutoLayout(True)
+
+# ----------------------------------------------------------------------------
+
+
 class TestPanel(sppasPanel):
     MIN_WIDTH = 700
     MIN_HEIGHT = 200
@@ -1864,6 +1892,8 @@ class TestPanel(sppasPanel):
         sizer.Add(wx.StaticLine(self))
         sizer.Add(wx.StaticText(self, label="BitmapTextButton() - with text"), 0, wx.TOP | wx.BOTTOM, 2)
         sizer.Add(TestPanelBitmapTextButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticText(self, label="Buttons without fixed size:"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelButtonsInSizer(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
 
         self.SetSizer(sizer)
 
