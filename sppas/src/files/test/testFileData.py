@@ -165,7 +165,7 @@ class TestAttValue(unittest.TestCase):
         self.valint = AttValue('12', 'int', 'speaker\'s age')
         self.valfloat = AttValue('0.002', 'float', 'word appearance frequency')
         self.valbool = AttValue('false', 'bool', 'speaker is minor')
-        self.valstr = AttValue('Hi everyone !', None, 'first token')
+        self.valstr = AttValue('Hi everyone !', None, 'первый токен')
 
     def testInt(self):
         self.assertTrue(isinstance(self.valint.get_typed_value(), int))
@@ -181,6 +181,18 @@ class TestAttValue(unittest.TestCase):
     def testStr(self):
         self.assertTrue(self.valstr.get_typed_value() == 'Hi everyone !')
         self.assertTrue(self.valstr.get_value() == 'Hi everyone !')
+
+    def testRepr(self):
+        self.assertTrue(str(self.valint) == '12, speaker\'s age')
+
+    def testSetTypeValue(self):
+        with self.assertRaises(FileTypeError) as error:
+            self.valbool.set_value_type('AttValue')
+
+        self.assertTrue(isinstance(error.exception, FileTypeError))
+
+    def testGetValuetype(self):
+        self.assertTrue(self.valstr.get_value_type() == 'str')
 
 # ---------------------------------------------------------------------------
 
@@ -204,10 +216,17 @@ class TestCategories(unittest.TestCase):
 
     def testAddKey(self):
         with self.assertRaises(FileTypeError) as AsciiError:
-            self.micros.add('**asaà', 'Blue Yeti')
+            self.micros.add('i*asaà', 'Blue Yeti')
 
         self.assertTrue(
             isinstance(AsciiError.exception, FileTypeError)
+        )
+
+    def testPopKey(self):
+        self.micros.pop('mic1')
+
+        self.assertFalse(
+            len(self.micros) == 2
         )
 
 # ---------------------------------------------------------------------------

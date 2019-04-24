@@ -129,6 +129,7 @@ import re
 import unittest
 import random
 import mimetypes
+from collections import OrderedDict
 
 from os.path import isfile, isdir, exists
 from os.path import splitext, abspath, join
@@ -1123,13 +1124,30 @@ class AttValue(object):
         su = sppasUnicode(att_value)
         self.__value = su.to_strip()
         self.__valuetype = att_type
-        self.__description = u(att_description)
+        if att_description is None:
+            self.__description = att_description
+        else:
+            su = sppasUnicode(att_description)
+            self.__description = su.to_strip()
 
     def get_value(self):
         return self.__value
 
+    def set_value(self, value):
+        su = sppasUnicode(value)
+        self.__value = su.to_strip()
+
+    def get_value_type(self):
+        return self.__valuetype if self.__valuetype is not None else 'str'
+
+    def set_value_type(self, type):
+        if type in ('int', 'float', 'bool', 'str'):
+            self.__valuetype = type
+        else:
+            raise FileTypeError('Not a valid type')
+
     def get_typed_value(self):
-        if self.__valuetype is not None:
+        if self.__valuetype is not None or self.__valuetype != 'str':
             if self.__valuetype == 'int':
                 return int(self.__value)
             elif self.__valuetype == 'float':
@@ -1139,19 +1157,31 @@ class AttValue(object):
 
         return self.__value
 
-    def set_value(self, value):
-        su = sppasUnicode(value)
-        self.__value = su.to_strip()
-
     def get_description(self):
-        su = sppasUnicode(self.__description)
-        return su.to_strip()
+        if self.__description is not None:
+            su = sppasUnicode(self.__description)
+            return su.to_strip()
+        else:
+            return self.__description
 
     def set_description(self, description):
         su = sppasUnicode(description)
         self.__description = su.to_strip()
 
     description = property(get_description, set_description)
+
+    # ---------------------------------------------------------
+    # overloads
+    # ----------------------------------------------------------
+
+    def __str__(self):
+        return '{!s:s}, {!s:s}'.format(self.__value, self.description) if self.description is not None else '{!s:s}'.format(self.__value)
+
+    def __repr__(self):
+        return 'AttValue: {!s:s}, {:s}'.format(self.__value, self.description) if self.description is not None else 'AttValue: {!s:s}'.format(self.__value)
+
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
 
 # ---------------------------------------------------------------------------
 
@@ -1164,10 +1194,12 @@ class Category(FileBase):
 
     def __init__(self, identifier):
         super(Category, self).__init__(identifier)
-        self.__attributs = dict()
+        self.__attributs = OrderedDict()
 
     def add(self, key, value):
+        #used once hence declared inside add method
         def is_restricted_ascii(key_to_test):
+            #if the string contains any other character than lower case a to z, upper case a to z and underscore it becomes a *
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
