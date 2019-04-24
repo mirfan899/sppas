@@ -285,3 +285,13 @@ class sppasOtherRepet(sppasBaseRepet):
     def get_input_pattern():
         """Pattern this annotation expects for its input filename."""
         return '-palign'
+
+    @staticmethod
+    def get_dependent_reference_type():
+        """Return the type of the reference required in a sppasCatalog.
+
+        This annotation is expecting an echo-ing speaker, i.e. a file with
+        time-aligned tokens of the same interaction as the given one.
+
+        """
+        return "interaction"

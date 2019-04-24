@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import logging
 import os
 import json
@@ -160,6 +161,16 @@ class sppasBaseAnnotation(object):
     def get_input_pattern():
         """Pattern that the annotation expects for its input filename."""
         return ''
+
+    @staticmethod
+    def get_dependent_reference_type():
+        """Return a type of a reference in a sppasCatalog.
+
+        If this annotation is expecting another file, the type allow to
+        find it by using the references of the catalogs.
+
+        """
+        return None
 
     # -----------------------------------------------------------------------
 
