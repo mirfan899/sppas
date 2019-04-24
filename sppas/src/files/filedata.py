@@ -415,6 +415,9 @@ class FileRoot(FileBase):
         # A list of FileName instances, i.e. files sharing this root.
         self.__files = list()
 
+        #References
+        self.__categories = None
+
         # States of the path
         # ------------------
 
@@ -473,6 +476,30 @@ class FileRoot(FileBase):
             fn.check = value
 
     check = property(get_check, set_check)
+
+    # -----------------------------------------------------------------------
+
+    def get_categories(self):
+        """If the reference catalog is not set yet instead of returning None the method returns an empty list."""
+        return self.__categories if self.__categories is not None else list()
+
+    def set_categories(self, list_of_categories):
+        """In order to set the categories one must provide a list of category or an empty list
+
+        :param list_of_categories: (list)
+
+        """
+        if isinstance(list_of_categories, list):
+            if len(list_of_categories) > 0:
+                for category in list_of_categories:
+                    if not isinstance(category, Category):
+                        raise FileTypeError('Not a Category')
+
+            self.__categories = list_of_categories
+        else:
+            raise FileTypeError('Not a list')
+
+    categories = property(get_categories, set_categories)
 
     # -----------------------------------------------------------------------
     # -----------------------------------------------------------------------
