@@ -126,10 +126,10 @@
 
 """
 import re
-import unittest
 import random
 import mimetypes
 from collections import OrderedDict
+from enum import Enum
 
 from os.path import isfile, isdir, exists
 from os.path import splitext, abspath, join
@@ -143,7 +143,13 @@ from .fileexc import FileRootValueError
 
 # -----------------------------------------------------------------------
 
-    
+
+class FileStates(Enum):
+    NORMAL = 0
+    CHECKED = 1
+    LOCKED = 2
+
+
 class FileBase(object):
     """Represents any type of data linked to a filename.
     
