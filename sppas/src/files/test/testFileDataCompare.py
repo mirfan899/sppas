@@ -1,10 +1,11 @@
 from os import *
 from random import randint
-from unittest import *
+
+from sppas.src.files.filedata import AttValue
 from sppas.src.files.filedatacompare import *
 
 
-class TestFileDataCompare (unittest.TestCase):
+class TestFileDataCompare(unittest.TestCase):
 
     def setUp(self):
         #for FileNameCompare
@@ -206,3 +207,43 @@ class TestFileDataCompare (unittest.TestCase):
         fp = FileRoot(d)
         #fp isn't expanded
         self.assertFalse(fp.match([(self.cmpRoot.expand, True, True)]))
+
+
+class TestFileDataReferencesCompare(unittest.TestCase):
+
+    def setUp(self):
+        self.micros = Category('microphone')
+        self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
+        self.micros.add('mic2', 'AKG D5')
+        self.cmp = sppasReferenceCompare()
+
+    def test_exact_id(self):
+        self.assertTrue(self.micros.match([(self.cmp.exact, 'microphone', False)]))
+
+    def test_iexact_id(self):
+        name = 'microphone'
+        self.assertFalse(self.micros.match([(self.cmp.iexact, name.upper(), True)]))
+
+    def test_startswith_id(self):
+        name = 'microphone'
+        self.assertTrue(self.micros.match([(self.cmp.startswith, name[0], False)]))
+
+    def test_istartswith_id(self):
+        name = 'microphone'
+        self.assertFalse(self.micros.match([(self.cmp.istartswith, name[0].upper(), True)]))
+
+    def test_endswith_id(self):
+        name = 'microphone'
+        self.assertTrue(self.micros.match([(self.cmp.endswith, name[-1], False)]))
+
+    def test_iendswith_id(self):
+        name = 'microphone'
+        self.assertFalse(self.micros.match([(self.cmp.iendswith, name[-1].upper(), True)]))
+
+    def test_contains_id(self):
+        name = 'microphone'
+        self.assertTrue(self.micros.match([(self.cmp.contains, name[randint(0, len(name) - 1)], False)]))
+
+    def test_regexp_id(self):
+        regexp = '[^*_ç]'
+        self.assertTrue(self.micros.match([(self.cmp.regexp, regexp, False)]))
