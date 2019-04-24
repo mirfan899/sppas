@@ -76,15 +76,16 @@ class WxAppSettings(sppasBaseSettings):
             frame_style=wx.DEFAULT_FRAME_STYLE | wx.CLOSE_BOX,
             frame_size=self.__frame_size(),
 
+            default_icons_theme="Refine",
             icons_theme="Refine",
 
-            fg_color=wx.Colour(230, 230, 230),
+            fg_color=wx.Colour(190, 190, 190),
             header_fg_color=wx.Colour(160, 160, 160),
             action_fg_color=wx.Colour(130, 130, 130),
 
-            bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
+            bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
             header_bg_color=wx.Colour(40, 40, 40, alpha=wx.ALPHA_OPAQUE),
-            action_bg_color=wx.Colour(30, 30, 30, alpha=wx.ALPHA_OPAQUE),
+            action_bg_color=wx.Colour(20, 20, 20, alpha=wx.ALPHA_OPAQUE),
 
             text_font=self.__text_font(),
             header_text_font=self.__header_font(),

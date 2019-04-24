@@ -35,7 +35,10 @@
 import wx
 
 from ..windows import sppasPanel
-from .filespck.filepanel import FileManager
+from .filespck.filesmanager import FilesManager
+from .filespck.catsmanager import CataloguesManager
+from ..windows.button import sppasBitmapButton
+from ..windows.button import sppasBitmapTextButton
 
 # ---------------------------------------------------------------------------
 
@@ -58,17 +61,75 @@ class sppasFilesPanel(sppasPanel):
             style=wx.BORDER_NONE
         )
         self._create_content()
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
         self.Layout()
 
     # ------------------------------------------------------------------------
 
     def _create_content(self):
         """"""
-        fm = FileManager(self)
+        wp = self.__create_workspace_panel()
+        fm = FilesManager(self, name="files")
+        ap = self.__create_associate_panel()
+        cm = CataloguesManager(self, name="catalogues")
 
         # Organize the title and message
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(fm, 1, wx.EXPAND, 0)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(wp, 0, wx.EXPAND, 0)
+        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(fm, 2, wx.EXPAND, 0)
+        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(ap, 0, wx.EXPAND, 0)
+        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(cm, 1, wx.EXPAND, 0)
 
         self.SetSizer(sizer)
+        self.SetMinSize((680, 380))   # width = 128 + 320 + 32 + 200
+        self.SetAutoLayout(True)
 
+    # ------------------------------------------------------------------------
+
+    def __create_associate_panel(self):
+        ap = sppasPanel(self, name="associate")
+
+        filter = sppasBitmapButton(ap, "check_filter")
+        check = sppasBitmapButton(ap, "checklist")
+        link = sppasBitmapButton(ap, "link_add")
+        unlink = sppasBitmapButton(ap, "link_del")
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.AddStretchSpacer(4)
+        sizer.Add(filter, 1, wx.TOP | wx.ALIGN_CENTRE)
+        sizer.Add(check, 1, wx.TOP | wx.ALIGN_CENTRE)
+        sizer.AddStretchSpacer(2)
+        sizer.Add(link, 1, wx.ALIGN_CENTRE)
+        sizer.Add(unlink, 1, wx.ALIGN_CENTRE)
+        sizer.AddStretchSpacer(4)
+
+        ap.SetSizer(sizer)
+        ap.SetMinSize((32, -1))
+        return ap
+
+    # ------------------------------------------------------------------------
+
+    def __create_workspace_panel(self):
+        wp = sppasPanel(self, name="wokspace")
+
+        open = sppasBitmapTextButton(self, "Import...", "open_book")
+        pin = sppasBitmapTextButton(self, "Pin&Save", "pin")
+        ren = sppasBitmapTextButton(self, "Rename", "rename")
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(wx.StaticText(self, label="Workspaces: "), 0, wx.LEFT | wx.TOP | wx.BOTTOM, 8)
+        sizer.Add(open, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
+        sizer.Add(pin, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
+        sizer.Add(ren, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
+        sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
+
+        wp.SetSizer(sizer)
+        wp.SetMinSize((128, -1))
+        return wp

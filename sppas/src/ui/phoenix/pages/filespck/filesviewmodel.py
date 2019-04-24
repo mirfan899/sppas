@@ -306,7 +306,7 @@ class FileColumnProperties(object):
 # ----------------------------------------------------------------------------
 
 
-class fileTreeModel(wx.dataview.PyDataViewModel):
+class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     """A class that is a DataViewModel combined with an object mapper.
 
     :author:       Brigitte Bigi
@@ -347,13 +347,13 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
         self.__data = data
 
         self.__mapper = dict()
-        self.__mapper[0] = fileTreeModel.__create_col('icon')
-        self.__mapper[1] = fileTreeModel.__create_col('file')
-        self.__mapper[2] = fileTreeModel.__create_col('check')
-        self.__mapper[3] = fileTreeModel.__create_col('type')
-        self.__mapper[4] = fileTreeModel.__create_col('date')
-        self.__mapper[5] = fileTreeModel.__create_col('size')
-        self.__mapper[6] = fileTreeModel.__create_col('')
+        self.__mapper[0] = FilesTreeViewModel.__create_col('icon')
+        self.__mapper[1] = FilesTreeViewModel.__create_col('file')
+        self.__mapper[2] = FilesTreeViewModel.__create_col('check')
+        self.__mapper[3] = FilesTreeViewModel.__create_col('type')
+        self.__mapper[4] = FilesTreeViewModel.__create_col('date')
+        self.__mapper[5] = FilesTreeViewModel.__create_col('size')
+        self.__mapper[6] = FilesTreeViewModel.__create_col('')
 
     # -----------------------------------------------------------------------
     # Manage column properties

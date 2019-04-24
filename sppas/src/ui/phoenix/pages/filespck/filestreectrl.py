@@ -38,14 +38,14 @@ import wx.dataview as dv
 
 from sppas.src.files.fileexc import FileAttributeError
 
-from .filemodel import fileTreeModel
+from .filesviewmodel import FilesTreeViewModel
 
 # ----------------------------------------------------------------------------
 # Control to store the data matching the model
 # ----------------------------------------------------------------------------
 
 
-class FileTreeCtrl(wx.dataview.DataViewCtrl):
+class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
     """A control to display data files in a tree-spreadsheet style.
     
     :author:       Brigitte Bigi
@@ -68,26 +68,27 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
         "wxDataViewIconText": wx.dataview.DataViewIconTextRenderer
     }
     
-    def __init__(self, parent, data=None):
+    def __init__(self, parent, data=None, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
         :param `parent`: (wx.Window) 
         :param `data`: (FileData)
 
         """
-        super(FileTreeCtrl, self).__init__(
+        super(FilesTreeViewCtrl, self).__init__(
             parent,
-            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE  # wx.dataview.DV_VERT_RULES |
+            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE,  # wx.dataview.DV_VERT_RULES |
+            name=name
             )
 
         # Create an instance of our model and associate to the view.
-        self._model = fileTreeModel(data)
+        self._model = FilesTreeViewModel(data)
         self.AssociateModel(self._model)
         self._model.DecRef()
 
         # Create the columns that the model wants in the view.
         for i in range(self._model.GetColumnCount()):
-            col = FileTreeCtrl.__create_column(self._model, i)
+            col = FilesTreeViewCtrl.__create_column(self._model, i)
             if i == self._model.GetExpanderColumn():
                 self.SetExpanderColumn(col)
             wx.dataview.DataViewCtrl.AppendColumn(self, col)
@@ -300,9 +301,9 @@ class FileTreeCtrl(wx.dataview.DataViewCtrl):
         stype = model.GetColumnType(index)
         render = model.GetColumnRenderer(index)
         if render is None:
-            if stype not in FileTreeCtrl.default_renderers:
+            if stype not in FilesTreeViewCtrl.default_renderers:
                 stype = "string"
-            render = FileTreeCtrl.default_renderers[stype](
+            render = FilesTreeViewCtrl.default_renderers[stype](
                 varianttype=stype,
                 mode=model.GetColumnMode(index),
                 align=model.GetColumnAlign(index))

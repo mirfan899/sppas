@@ -26,8 +26,10 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.filetree.py
+    src.ui.phoenix.filespck.filesmanager.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Main panel to manage the tree of files.
 
 """
 
@@ -36,40 +38,42 @@ import os
 import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton
-from sppas.src.ui.phoenix.windows.button import sppasBitmapTextButton
-from .filetree import FileTreeCtrl
+from .filestreectrl import FilesTreeViewCtrl
+from .btntxttoolbar import BitmapTextToolbar
 
 # ----------------------------------------------------------------------------
 
 
-class FileManager(sppasPanel):
-    """
+class FilesManager(sppasPanel):
+    """Manage the tree of files and actions on perform on them.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, parent, data=None):
-        super(FileManager, self).__init__(
+    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+        super(FilesManager, self).__init__(
             parent, id=wx.ID_ANY,
             pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.NO_BORDER, name=wx.PanelNameStr)
+            style=wx.NO_BORDER, name=name)
 
         self._create_content(data)
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
         self.Layout()
 
     # ------------------------------------------------------------------------
 
     def _create_content(self, data):
         """"""
-        self.tb = self.__create_toolbar()
-        self.fv = FileTreeCtrl(self, data)
+        tb = self.__create_toolbar()
+        fv = FilesTreeViewCtrl(self, data, name="fileview")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.tb, proportion=0, flag=wx.EXPAND, border=0)
-        sizer.Add(self.fv, proportion=1, flag=wx.EXPAND, border=0)
+        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
+        sizer.Add(fv, proportion=1, flag=wx.EXPAND, border=0)
         self.SetSizer(sizer)
 
         self.SetMinSize((320, 200))
@@ -78,13 +82,11 @@ class FileManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = MainToolbarPanel(self)
-        tb.AddSpacer(1)
-        tb.AddButton("add", "Add")
-        tb.AddButton("remove", "Remove checked")
-        tb.AddButton("delete", "Delete checked")
-        tb.AddButton("check", "Check files...")
-        tb.AddSpacer(1)
+        tb = BitmapTextToolbar(self)
+        tb.AddText("Files: ")
+        tb.AddButton("files-add", "Add")
+        tb.AddButton("checkno", "Remove checked")
+        tb.AddButton("files-delete", "Delete checked")
         tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         return tb
 
@@ -96,11 +98,12 @@ class FileManager(sppasPanel):
         Selecting a folder item equals to select all its items.
 
         :param extension: Extension of the selected file
-        :return: The filepath of each selected regular file (not folders)
+        :return: The fileroot of each selected regular file (not folders)
         from the data.
 
         """
-        checked = self.fv.GetSelections()
+        # TODO: return the checked files (or roots), not the selected ones
+        checked = self.FindWindow("fileview").GetSelections()
         return checked
 
     # ------------------------------------------------------------------------
@@ -110,7 +113,7 @@ class FileManager(sppasPanel):
         keycode = event.GetKeyCode()
         if keycode == wx.WXK_F5:
             print('Refresh the data')
-            self.fv.RefreshData()
+            self.FindWindow("fileview").RefreshData()
 
         event.Skip()
 
@@ -123,7 +126,7 @@ class FileManager(sppasPanel):
             self._add_file()
 
         elif name == "remove":
-            self.fv.Remove()
+            self.FindWindow("fileview").Remove()
 
         elif name == "delete":
             self._delete()
@@ -153,7 +156,7 @@ class FileManager(sppasPanel):
 
         if len(filenames) > 0:
             for f in filenames:
-                self.fv.Add(f)
+                self.FindWindow('fileview').Add(f)
 
     # ------------------------------------------------------------------------
 
@@ -163,65 +166,11 @@ class FileManager(sppasPanel):
 
 
 # ----------------------------------------------------------------------------
-
-
-class MainToolbarPanel(sppasPanel):
-    """Panel imitating the behaviors of a toolbar.
-
-    """
-    def __init__(self, parent):
-        wx.Panel.__init__(self, parent, -1, style=wx.NO_BORDER)
-
-        self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
-
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
-
-        self.SetMinSize((-1, 32))
-        self.SetAutoLayout(True)
-
-    # -----------------------------------------------------------------------
-
-    def AddButton(self, icon, text, tooltip=None, activated=True):
-        btn = self.create_button(icon, text)
-        # btn.SetToolTip(tooltip)
-        btn.Enable(activated)
-        self.GetSizer().Add(btn, 2, wx.LEFT | wx.EXPAND, 0)
-        return btn
-
-    def AddSpacer(self, proportion=1):
-        self.GetSizer().AddStretchSpacer(proportion)
-
-    # -----------------------------------------------------------------------
-
-    def create_button(self, icon, text):
-        btn = sppasBitmapTextButton(self, label=text, name=icon)
-        """btn.FocusStyle = wx.PENSTYLE_SOLID
-        btn.FocusWidth = 3
-        btn.FocusColour = wx.Colour(220, 220, 120)
-        btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
-        btn.BorderWidth = 0
-        btn.BitmapColour = self.GetForegroundColour()"""
-        btn.SetMinSize((64, -1))
-        return btn
-
-    # -----------------------------------------------------------------------
-
-    def get_button(self, name):
-        for b in self.GetSizer().GetChildren():
-            if b.GetName() == name:
-                return b
-
-        return None
-
-# ----------------------------------------------------------------------------
-# Panel to test
+# Panel tested by test_glob.py
 # ----------------------------------------------------------------------------
 
 
-class TestPanel(FileManager):
+class TestPanel(FilesManager):
     MIN_WIDTH = 240
     MIN_HEIGHT = 64
 
@@ -240,9 +189,9 @@ class TestPanel(FileManager):
             fullname = os.path.join(here, f)
             print('add {:s}'.format(fullname))
             if os.path.isfile(fullname):
-                self.fv.Add(fullname)
+                self.FindWindow('fileview').Add(fullname)
 
-        self.fv.ExpandAll()
+        self.FindWindow('fileview').ExpandAll()
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
 
