@@ -67,6 +67,20 @@ class sppasAnnSet(sppasBaseSet):
 
     # -----------------------------------------------------------------------
 
+    def copy(self):
+        """Make a deep copy of self.
+
+        Overridden to return a sppasAnnSet() instead of a sppasBaseSet().
+
+        """
+        d = sppasAnnSet()
+        for data, value in self._data_set.items():
+            d.append(data, value)
+
+        return d
+
+    # -----------------------------------------------------------------------
+
     def to_tier(self, name="AnnSet", annot_value=False):
         """Create a tier from the data set.
 
@@ -103,3 +117,19 @@ class sppasAnnSet(sppasBaseSet):
         # original tier and the filtered one.
 
         return tier
+
+    # -----------------------------------------------------------------------
+
+    def __and__(self, other):
+        """Implements the '&' operator between 2 data sets.
+
+        Overridden to return a sppasAnnSet() instead of a sppasBaseSet().
+
+        """
+        d = sppasAnnSet()
+        for data in self:
+            if data in other:
+                d.append(data, self.get_value(data))
+                d.append(data, other.get_value(data))
+
+        return d
