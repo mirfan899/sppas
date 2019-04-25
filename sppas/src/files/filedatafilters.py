@@ -33,12 +33,14 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+from operator import contains
+
 from sppas.src.files.filedata import FileRoot
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
 from .filedatacompare import sppasPathCompare, sppasRootCompare, sppasFileNameCompare, sppasFileNameExtensionCompare, \
-    sppasFileNamePropertiesCompare
+    sppasFileNamePropertiesCompare, sppasReferenceCompare, sppasAttValueCompare
 
 
 # ---------------------------------------------------------------------------
@@ -279,6 +281,127 @@ class sppasFileDataFilters(sppasBaseFilters):
                     is_matching = fn.match(path_functions, logic_bool)
                     if is_matching is True:
                         data.append(fn, path_fct_values)
+
+        return data
+
+    # -----------------------------------------------------------------------
+
+    def ref(self, **kwargs):
+        """Apply functions on all file properties of the object.
+
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
+
+        :Example:
+
+            >>> f.file(lock='true')
+
+        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :returns: (sppasDataSet)
+
+        """
+
+        comparator = sppasReferenceCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+            # append all files of the path
+            for fr in path:
+                for ref in fr.categories:
+                    is_matching = ref.match(path_functions, logic_bool)
+                    if is_matching is True:
+                        data.append(ref, path_fct_values)
+
+        return data
+
+
+    # -----------------------------------------------------------------------
+
+    def att(self, **kwargs):
+        """
+
+        """
+
+        # -----------------------------------------------------------------------
+
+        def exctrat_function_name(function):
+            function = function.split('_')
+            function_name = function[-1]
+            del function[-1]
+            '_'.join(function)
+            return function_name, function
+
+        # -----------------------------------------------------------------------
+
+        def fix_att_function_values(comparator, **kwargs):
+            """Return the list of function names and the expected value.
+
+            :param comparator: (sppasBaseComparator)
+
+            """
+            fct_values = list()
+            att_names = list()
+            for function, value in kwargs.items():
+                function_name, att = exctrat_function_name(function)
+                att_names.append(att)
+                if function_name in comparator.get_function_names():
+                    fct_values.append("{:s} = {!s:s}".format(function_name, value))
+
+            return att_names, fct_values
+
+        # -----------------------------------------------------------------------
+
+        def fix_att_functions(comparator, **kwargs):
+            """Parse the args to get the list of function/value/complement.
+
+            :param comparator: (sppasBaseComparator)
+
+            """
+            f_functions = list()
+            for func_name, value in kwargs.items():
+                func, att = exctrat_function_name(func_name)
+                logical_not = False
+                if func.startswith("not_"):
+                    logical_not = True
+                    func = func[4:]
+
+                if func in comparator.get_function_names():
+                    f_functions.append((comparator.get(func),
+                                        value,
+                                        logical_not))
+
+            return f_functions
+
+        comparator = sppasAttValueCompare()
+
+        # extract the information from the arguments
+        sppasBaseFilters.test_args(comparator, **kwargs)
+        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
+        key_values, ref_fct_values = fix_att_function_values(comparator, **kwargs)
+        ref_functions = fix_att_functions(comparator, **kwargs)
+
+        # the set of results
+        data = sppasBaseSet()
+
+        # search for the data to be returned:
+        for path in self.obj:
+            # append all files of the path
+            for fr in path:
+                for ref in fr.categories:
+                    for key in key_values:
+                        is_matching = ref[key].match(ref_functions, logic_bool)
+                        print(is_matching)
+                        if is_matching is True:
+                            data.append(ref, ref_fct_values)
 
         return data
 

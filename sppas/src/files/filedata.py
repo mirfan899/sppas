@@ -1203,6 +1203,32 @@ class AttValue(object):
 
     description = property(get_description, set_description)
 
+    def match(self, functions, logic_bool="and"):
+        """Return True if the file matches all or any of the functions.
+
+        Functions are defined in a comparator. They return a boolean.
+        The type of the value depends on the function.
+        The logical not is used to reverse the result of the function.
+
+        :param functions: list of (function, value, logical_not)
+        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
+        :returns: (bool)
+
+        """
+        matches = list()
+        for func, value, logical_not in functions:
+            if logical_not is True:
+                matches.append(not func(self, value))
+            else:
+                matches.append(func(self, value))
+
+        if logic_bool == "and":
+            is_matching = all(matches)
+        else:
+            is_matching = any(matches)
+
+        return is_matching
+
     # ---------------------------------------------------------
     # overloads
     # ----------------------------------------------------------
