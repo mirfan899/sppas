@@ -145,7 +145,7 @@ from .fileexc import FileRootValueError
 
 
 class FileStates(Enum):
-    NORMAL = 0
+    UNCHEKED = 0
     CHECKED = 1
     LOCKED = 2
 
@@ -287,7 +287,7 @@ class FileName(FileBase):
         # States of the file
         # ------------------
 
-        self.__check = False
+        self.__state = FileStates.UNCHEKED
         self.lock = False
 
     # -----------------------------------------------------------------------
@@ -338,7 +338,7 @@ class FileName(FileBase):
 
     def get_check(self):
         """Return true if the file is checked."""
-        return self.__check
+        return self.__state == FileStates.CHECKED
     
     def set_check(self, value):
         """Set a value to represent a toggle meaning the file is checked.
@@ -346,7 +346,10 @@ class FileName(FileBase):
         :param value: (bool)
 
         """
-        self.__check = bool(value)
+        if value:
+            self.__state = FileStates.CHECKED
+        else:
+            self.__state = FileStates.UNCHEKED
 
     # -----------------------------------------------------------------------
 
@@ -424,6 +427,9 @@ class FileRoot(FileBase):
         self.__check = False
         self.expand = True
         self.__bgcolor = (30, 30, 30)
+
+        #a free to use dictionary to expand the class
+        self.__subjoined = dict()
 
     # -----------------------------------------------------------------------
 
@@ -708,6 +714,9 @@ class FilePath(FileBase):
             random.randint(15, 30),
             random.randint(15, 30),
             random.randint(15, 30))
+
+        # a free to use dictionary to expand the class
+        self.__subjoined = dict()
 
     # -----------------------------------------------------------------------
 
@@ -1202,32 +1211,6 @@ class AttValue(object):
         self.__description = su.to_strip()
 
     description = property(get_description, set_description)
-
-    def match(self, functions, logic_bool="and"):
-        """Return True if the file matches all or any of the functions.
-
-        Functions are defined in a comparator. They return a boolean.
-        The type of the value depends on the function.
-        The logical not is used to reverse the result of the function.
-
-        :param functions: list of (function, value, logical_not)
-        :param logic_bool: (str) Apply a logical "and" or a logical "or" between the functions.
-        :returns: (bool)
-
-        """
-        matches = list()
-        for func, value, logical_not in functions:
-            if logical_not is True:
-                matches.append(not func(self, value))
-            else:
-                matches.append(func(self, value))
-
-        if logic_bool == "and":
-            is_matching = all(matches)
-        else:
-            is_matching = any(matches)
-
-        return is_matching
 
     # ---------------------------------------------------------
     # overloads
