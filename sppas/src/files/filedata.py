@@ -716,7 +716,7 @@ class FilePath(FileBase):
             random.randint(15, 30))
 
         # a free to use dictionary to expand the class
-        self.__subjoined = dict()
+        self.subjoined = dict()
 
     # -----------------------------------------------------------------------
 
