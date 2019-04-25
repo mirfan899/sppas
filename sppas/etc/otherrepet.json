@@ -1,7 +1,8 @@
 {
   "id": "otherrepet",
   "name": "Other-Repetitions",
-  "descr": "Other-repetitions searches for sources and echos of two speakers. Requires time-aligned tokens of 2 speakers.",
+  "descr": "Searches for sources and echos of two speakers. Requires time-aligned tokens of 2 speakers.",
+  "required": "alignment",
 
   "resources": [
     {

@@ -1,7 +1,8 @@
 {
   "id": "tga",
   "name": "Time Group Analysis",
-  "descr": "Proposed by D. Gibbon, Time Group Analyzer calculates mean, median, nPVI, slope and intercept functions within inter-pausal groups. Requires time aligned syllables.",
+  "descr": "Calculates mean, median, nPVI, slope and intercept functions within inter-unit groups. Proposed by D. Gibbon. Requires time aligned syllables.",
+  "required": "syllabify",
 
   "resources": [
   ],
@@ -18,7 +19,7 @@
       "id": "annotationpro",
       "type": "bool",
       "value": true,
-      "text": "Use the estimation of intercept and slope proposed in AnnotationPro"
+      "text": "Use the estimation of intercept and slope proposed in Annotation Pro (annotationpro.org)"
     },
 
     {

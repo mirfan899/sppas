@@ -1,7 +1,8 @@
 {
   "id": "searchipus",
   "name": "Search for IPUs",
-  "descr": "Search for Inter-Pausal Units in an audio file.",
+  "descr": "Marks segments containing speech activity in the audio recording: search for Inter-Pausal Units. Requires an audio file",
+  "required": "",
 
   "resources": [
   ],

@@ -1,7 +1,8 @@
 {
   "id": "textnorm",
   "name": "Text Normalization",
-  "descr": "Text normalization segments the orthographic transcription into tokens and remove punctuation, convert numbers, etc. Requires an orthographic transcription into IPUs.",
+  "descr": "Converts orthography into a tokenized form: word segmented, numerals converted into words, expanded abbreviations, punctuation removed, etc. Requires IPUs with the orthographic transcription.",
+  "required": "",
 
   "resources": [
     {

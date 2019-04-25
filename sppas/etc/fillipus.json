@@ -1,7 +1,8 @@
 {
   "id": "fillipus",
   "name": "Fill in IPUs",
-  "descr": "Search for Inter-Pausal Units and fill in with a transcription. Requires an audio file and a .txt file with the transcription.",
+  "descr": "Searches for Inter-Pausal Units and fills in with a transcription. Requires an audio file and a .txt file with the transcription.",
+  "required": "",
 
   "resources": [
   ],

@@ -1,7 +1,8 @@
 {
   "id": "syllabify",
   "name": "Syllabification",
-  "descr": "Syllabification converts phonemes into classes then groups them thanks to rules. Requires time-aligned phones.",
+  "descr": "Uses of rules to group aligned phonemes into syllables. Requires time-aligned phonemes.",
+  "required": "alignment",
 
   "resources": [
     {

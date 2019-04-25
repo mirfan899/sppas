@@ -1,7 +1,8 @@
 {
   "id": "phonetize",
   "name": "Phonetization",
-  "descr": "Grapheme to phoneme conversion represents sounds with phonetic signs. Requires a Text Normalization.",
+  "descr": "Converts a tokenized text into phonetic signs from a pronunciation dictionary. Requires Text Normalization.",
+  "required": "textnorm",
 
   "resources": [
     {
