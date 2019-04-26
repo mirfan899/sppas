@@ -39,6 +39,7 @@ import logging
 from sppas.src.config.ui import sppasAppConfig
 from sppas.src.ui.phoenix.main_settings import WxAppSettings
 import sppas.src.ui.phoenix.windows.button
+import sppas.src.ui.phoenix.windows.line
 import sppas.src.ui.phoenix.pages.filespck.filesmanager
 
 # ----------------------------------------------------------------------------
@@ -51,8 +52,9 @@ class TestPanel(wx.Choicebook):
         wx.Choicebook.__init__(self, parent, wx.ID_ANY)
 
         # Make the bunch of test panels for the choice book
-        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "file manager")
+        self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "line")
         self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "button")
+#        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "file manager")
 
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGING, self.OnPageChanging)
