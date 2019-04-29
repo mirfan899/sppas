@@ -78,6 +78,25 @@ class sppasFilesPanel(sppasPanel):
         self.Layout()
 
     # ------------------------------------------------------------------------
+    # Public methods
+    # ------------------------------------------------------------------------
+
+    def GetFileData(self):
+        """Return the data of the current workspace."""
+        wp = self.FindWindow("workspaces")
+        return wp.get_data()
+
+    def SetFileData(self):
+        """Set the data of the current workspace to the other panels."""
+        data = self.GetFileData()
+        fm = self.FindWindow("files")
+        fm.set_data(data)
+        cm = self.FindWindow("catalogues")
+        cm.set_data(data)
+
+    # ------------------------------------------------------------------------
+    # Private methods
+    # ------------------------------------------------------------------------
 
     def _create_content(self):
         """"""
@@ -148,6 +167,8 @@ class sppasFilesPanel(sppasPanel):
         btn.SetMinSize((-1, 32))
         return btn
 
+    # ------------------------------------------------------------------------
+    # Callbacks to events
     # ------------------------------------------------------------------------
 
     def on_key_press(self, event):

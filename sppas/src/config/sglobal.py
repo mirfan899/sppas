@@ -66,7 +66,8 @@ class sppasPathSettings(sppasBaseSettings):
             plugins=os.path.join(os.path.dirname(sppas_dir), "plugins"),
             resources=os.path.join(os.path.dirname(sppas_dir), "resources"),
             samples=os.path.join(os.path.dirname(sppas_dir), "samples"),
-            logs=os.path.join(os.path.dirname(sppas_dir), "logs")
+            logs=os.path.join(os.path.dirname(sppas_dir), "logs"),
+            wkps=os.path.join(os.path.dirname(sppas_dir), "workspaces")
         )
 
 # ---------------------------------------------------------------------------

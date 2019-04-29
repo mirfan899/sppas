@@ -59,17 +59,17 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
     """
 
-    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+    def __init__(self, parent, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
         :param `parent`: (wx.Window)
         :param `data`: (FileData)
 
         """
-        super(FilesTreeViewCtrl, self).__init__(parent, data, name)
+        super(FilesTreeViewCtrl, self).__init__(parent, name)
 
         # Create an instance of our model and associate to the view.
-        self._model = FilesTreeViewModel(data)
+        self._model = FilesTreeViewModel()
         self.AssociateModel(self._model)
         self._model.DecRef()
 

@@ -111,7 +111,7 @@ class sppasValueError(ValueError):
 
 
 class NegativeValueError(ValueError):
-    """:ERROR 010: NEG_VALUE_ERROR.
+    """:ERROR 010:.
 
     Expected a positive value. Got {value}.
 
@@ -128,7 +128,7 @@ class NegativeValueError(ValueError):
 
 
 class RangeBoundsException(ValueError):
-    """:ERROR 012: INTERVAL_RANGE_ERROR.
+    """:ERROR 012:.
 
     Min value {} is bigger than max value {}.'
 
@@ -148,7 +148,7 @@ class RangeBoundsException(ValueError):
 
 
 class IndexRangeException(IndexError):
-    """:ERROR 014: RANGE_INDEX_ERROR.
+    """:ERROR 014:.
 
     List index {} out of range [{},{}].
 
@@ -168,7 +168,7 @@ class IndexRangeException(IndexError):
 
 
 class IOExtensionException(IOError):
-    """:ERROR 110: IO_EXTENSION_ERROR.
+    """:ERROR 110:.
 
     Unknown extension for filename {:s}'
 

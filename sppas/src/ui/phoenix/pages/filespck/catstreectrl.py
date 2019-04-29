@@ -60,25 +60,24 @@ class CataloguesTreeViewCtrl(BaseTreeViewCtrl):
 
     """
 
-    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+    def __init__(self, parent, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
         :param `parent`: (wx.Window)
-        :param `data`: (FileData)
 
         """
-        super(CataloguesTreeViewCtrl, self).__init__(parent, data, name)
+        super(CataloguesTreeViewCtrl, self).__init__(parent, name)
 
         # Create an instance of our model and associate to the view.
-        self._model = CataloguesTreeViewModel(data)
+        self._model = CataloguesTreeViewModel()
         self.AssociateModel(self._model)
         self._model.DecRef()
 
         # Create the columns that the model wants in the view.
         for i in range(self._model.GetColumnCount()):
             col = BaseTreeViewCtrl._create_column(self._model, i)
-            if i == self._model.GetExpanderColumn():
-                self.SetExpanderColumn(col)
+            #if i == self._model.GetExpanderColumn():
+            #    self.SetExpanderColumn(col)
             wx.dataview.DataViewCtrl.AppendColumn(self, col)
 
     # ------------------------------------------------------------------------

@@ -44,6 +44,7 @@ from sppas.src.anndata import sppasRW
 from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileData
 
 from sppas.src.ui.phoenix import sppasSwissKnife
+from .basectrls import ColumnProperties
 
 # -----------------------------------------------------------------------
 
@@ -132,174 +133,6 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
         
         return True
 
-# ---------------------------------------------------------------------------
-
-
-class FileColumnProperties(object):
-    """Represents the properties of a column.
-    
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    To be used like an object mapper.
-
-    """
-
-    def __init__(self, name, idt, stype="string"):
-        """Constructor of a FileColumnProperties.
-
-        Some members of this class are associated to the wx.dataview package.
-        
-        All members are private so that the get/set methods are always called
-        and they have properties in order to be able to access them in a
-        simplest way. These members can't be modified by inheritance.
-
-        :param name: (str) Name of the column
-        :param stype: (str) String representing the type of the data
-
-        """
-        try:  # wx4
-            bmp = wx.Bitmap(16, 16, 32)
-        except TypeError:  # wx3
-            bmp = wx.EmptyBitmap(16, 16)
-
-        # The data types and their default values
-        self.default = {
-            "string": "",
-            "bool": False,
-            "datetime": "",
-            "wxBitmap": bmp,
-            "wxDataViewIconText": ""
-        }
-
-        self.__id = idt
-        self.__name = ""
-        self.set_name(name)
-        self.__stype = ""
-        self.set_stype(stype)
-
-        self.__width = 40
-        self.__mode = wx.dataview.DATAVIEW_CELL_INERT
-        self.__renderer = None
-        self.__align = wx.ALIGN_LEFT
-        self.__fct = dict()  # functions to get values
-
-    # -----------------------------------------------------------------------
-
-    def get_id(self):
-        return self.__id
-
-    # -----------------------------------------------------------------------
-
-    def get_name(self):
-        return self.__name
-
-    def set_name(self, value):
-        self.__name = str(value)
-
-    # -----------------------------------------------------------------------
-
-    def get_stype(self):
-        return self.__stype
-    
-    def set_stype(self, value):
-        if value is None or value not in self.default:
-            value = "string"
-        self.__stype = value
-
-    # -----------------------------------------------------------------------
-
-    def get_width(self):
-        return self.__width
-
-    def set_width(self, value):
-        value = int(value)
-        value = min(max(40, value), 400)
-        self.__width = value
-    
-    # -----------------------------------------------------------------------
-    # wx.dataview.DataViewCellMode  
-    # -----------------------------------------------------------------------
-
-    def get_mode(self):
-        """Get the mode of the cells. """
-        return self.__mode
-    
-    # -----------------------------------------------------------------------
-
-    def set_mode(self, value):
-        """Fix the mode of the cells.
-
-        :param value: 
-        
-            - wx.dataview.DATAVIEW_CELL_INERT 	
-            The cell only displays information and cannot be manipulated or 
-            otherwise interacted with in any way.
-            - wx.dataview.DATAVIEW_CELL_ACTIVATABLE 	
-            Indicates that the cell can be activated by clicking it or using 
-            keyboard.
-            - wx.dataview.DATAVIEW_CELL_EDITABLE 	
-            Indicates that the user can edit the data in-place in an inline 
-            editor control that will show up when the user wants to edit the cell.
-
-        """
-        modes = (
-            wx.dataview.DATAVIEW_CELL_INERT, 
-            wx.dataview.DATAVIEW_CELL_ACTIVATABLE,
-            wx.dataview.DATAVIEW_CELL_EDITABLE)
-        if value is None or value not in modes:
-            value = modes[0]
-        self.__mode = value
-
-    # -----------------------------------------------------------------------
-
-    def get_renderer(self):
-        return self.__renderer
-    
-    def set_renderer(self, r):
-        self.__renderer = r
-
-    # -----------------------------------------------------------------------
-
-    def get_align(self):
-        return self.__align
-    
-    def set_align(self, value):
-        aligns = (
-            wx.ALIGN_LEFT, 
-            wx.ALIGN_RIGHT,
-            wx.ALIGN_CENTRE)
-        if value is None or value not in aligns:
-            value = aligns[0]
-        self.__align = value
-
-    # -----------------------------------------------------------------------
-
-    def add_fct_name(self, key, fct_name):
-        self.__fct[key] = fct_name
-
-    def get_value(self, data):
-        for key in self.__fct:
-            if key == type(data):
-                return getattr(data, self.__fct[key])()
-        # return the default value of this column type
-        return self.default[self.__stype]
-    
-    # -----------------------------------------------------------------------
-    # Properties
-    # -----------------------------------------------------------------------
-
-    id = property(get_id, None)
-    name = property(get_name, set_name)
-    stype = property(get_stype, set_stype)
-    mode = property(get_mode, set_mode)
-    width = property(get_width, set_width)
-    renderer = property(get_renderer, set_renderer)
-    align = property(get_align, set_align)
-
 # ----------------------------------------------------------------------------
 # Model
 # ----------------------------------------------------------------------------
@@ -325,7 +158,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     """
 
-    def __init__(self, data=FileData()):
+    def __init__(self):
         """Constructor of a fileTreeModel.
 
         :param data: (FileData) Workspace to be managed by the mapper
@@ -341,11 +174,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         self.exticon = FileAnnotIcon()
 
         # The workspace to display
-        if data is None:
-            data = FileData()
-        if isinstance(data, FileData) is False:
-            raise sppasTypeError("FileData", type(data))
-        self.__data = data
+        self.__data = FileData()
 
         # Map between displayed columns and workspace
         self.__mapper = dict()
@@ -360,6 +189,14 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         # GUI information which can be managed by the mapper
         self._bgcolor = None
         self._fgcolor = None
+
+    # -----------------------------------------------------------------------
+
+    def set_data(self, data):
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        self.__data = data
+        self.Cleared()
 
     # -----------------------------------------------------------------------
     # Manage column properties
@@ -730,14 +567,14 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     @staticmethod
     def __create_col(name):
         if name == "icon":
-            col = FileColumnProperties("Soft", name, "wxBitmap")
+            col = ColumnProperties("Soft", name, "wxBitmap")
             col.width = 36
             col.align = wx.ALIGN_CENTRE
             col.renderer = FileIconRenderer()
             return col
 
         if name == "file":
-            col_file = FileColumnProperties("File", name)
+            col_file = ColumnProperties("File", name)
             col_file.add_fct_name(FilePath, "get_id")
             col_file.add_fct_name(FileRoot, "get_id")
             col_file.add_fct_name(FileName, "get_name")
@@ -745,7 +582,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             return col_file
 
         if name == "check":
-            col = FileColumnProperties("Check", name, "bool")
+            col = ColumnProperties("Check", name, "bool")
             col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
             col.align = wx.ALIGN_CENTRE
             col.width = 36
@@ -755,26 +592,26 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "type":
-            col = FileColumnProperties("Type", name)
+            col = ColumnProperties("Type", name)
             col.add_fct_name(FileName, "get_extension")
             col.width = 120
             return col
 
         if name == "date":
-            col = FileColumnProperties("Modified", name)
+            col = ColumnProperties("Modified", name)
             col.add_fct_name(FileName, "get_date")
             col.width = 140
             col.align = wx.ALIGN_CENTRE
             return col
 
         if name == "size":
-            col = FileColumnProperties("Size", name)
+            col = ColumnProperties("Size", name)
             col.add_fct_name(FileName, "get_size")
             col.width = 80
             col.align = wx.ALIGN_RIGHT
             return col
 
-        col = FileColumnProperties("", name)
+        col = ColumnProperties("", name)
         col.width = 200
         return col
 

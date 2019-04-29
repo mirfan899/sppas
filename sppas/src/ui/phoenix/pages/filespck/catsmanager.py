@@ -34,11 +34,11 @@
 """
 
 import logging
-import os
 import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
 from .btntxttoolbar import BitmapTextToolbar
+from .catstreectrl import CataloguesTreeViewCtrl
 
 # ----------------------------------------------------------------------------
 
@@ -69,10 +69,20 @@ class CataloguesManager(sppasPanel):
 
     # ------------------------------------------------------------------------
 
+    def set_data(self, data):
+        """Assign new data to display to this panel.
+
+        :param data: (FileData)
+
+        """
+        pass  # self.FindWindow('catsview').set_data(data)
+
+    # ------------------------------------------------------------------------
+
     def _create_content(self, data):
         """"""
         tb = self.__create_toolbar()
-        cv = sppasPanel(self, name="catsview")  #, data)
+        cv = CataloguesTreeViewCtrl(self, name="catsview")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)

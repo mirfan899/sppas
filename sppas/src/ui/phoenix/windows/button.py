@@ -1157,6 +1157,15 @@ class BaseToggleButton(BaseButton):
 
         self._pressed = False
 
+    # ------------------------------------------------------------------------
+
+    def Notify(self):
+        """Sends a wx.EVT_TOGGLEBUTTON event to the listener (if any)."""
+        evt = ToggleButtonEvent(wx.wxEVT_COMMAND_TOGGLEBUTTON_CLICKED, self.GetId())
+        evt.SetButtonObj(self)
+        evt.SetEventObject(self)
+        self.GetEventHandler().ProcessEvent(evt)
+
 # ----------------------------------------------------------------------------
 
 
@@ -1463,6 +1472,11 @@ class CheckButton(BaseToggleButton):
 
     # ------------------------------------------------------------------------
 
+    def SetValue(self, value):
+        self._pressed = bool(value)
+
+    # ------------------------------------------------------------------------
+
     def GetValue(self):
         return self._pressed
 
@@ -1492,24 +1506,14 @@ class CheckButton(BaseToggleButton):
 
         prop_size = int(min(h * 0.7, 32))
         img_size = max(16, prop_size)
-        logging.debug('Image size={:d}'.format(img_size))
 
         box_x = self._borderwidth + 2
         box_y = (h - img_size) // 2
 
-        # Draw square box
-        c = self.GetPenForegroundColour()
-        pen = wx.Pen(c, self._borderwidth, wx.SOLID)
-        dc.SetPen(pen)
-        dc.SetBrush(wx.TRANSPARENT_BRUSH)
-        gc.SetBrush(wx.TRANSPARENT_BRUSH)
-        gc.SetBackgroundMode(wx.TRANSPARENT)
-        dc.DrawRectangle(box_x, box_y, img_size - 1, img_size - 1)
-
         # Adjust image size then draw
         if self._pressed:
 
-            img = sppasSwissKnife.get_image('check')
+            img = sppasSwissKnife.get_image('checked')
             sppasSwissKnife.rescale_image(img, img_size - 4)
             # ColorizeImage(img, wx.BLACK, c)
 
@@ -1602,7 +1606,7 @@ class CheckButton(BaseToggleButton):
     def Notify(self):
         """Actually sends the wx.wxEVT_COMMAND_CHECKBOX_CLICKED event."""
         evt = ButtonEvent(wx.wxEVT_COMMAND_CHECKBOX_CLICKED, self.GetId())
-        evt.SetButtonObject(self)
+        evt.SetButtonObj(self)
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
@@ -1613,10 +1617,6 @@ class CheckButton(BaseToggleButton):
 
 
 class TestPanelBaseButton(wx.Panel):
-    MIN_WIDTH = 700
-    MIN_HEIGHT = 200
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
         super(TestPanelBaseButton, self).__init__(
@@ -1672,10 +1672,6 @@ class TestPanelBaseButton(wx.Panel):
 
 
 class TestPanelBaseToggleButton(wx.Panel):
-    MIN_WIDTH = 700
-    MIN_HEIGHT = 200
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
         super(TestPanelBaseToggleButton, self).__init__(
@@ -1701,7 +1697,7 @@ class TestPanelBaseToggleButton(wx.Panel):
             btn.SetBorderStyle(st[i-1])
             c += 40
             x += w + 10
-            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+            btn.Bind(wx.EVT_TOGGLEBUTTON, self.on_btn_event)
 
         # play with the focus
         x = 10
@@ -1716,7 +1712,7 @@ class TestPanelBaseToggleButton(wx.Panel):
             btn.SetFocusStyle(st[i-1])
             c += 40
             x += w + 10
-            btn.Bind(wx.EVT_BUTTON, self.on_btn_event)
+            btn.Bind(wx.EVT_TOGGLEBUTTON, self.on_btn_event)
 
         vertical = BaseToggleButton(self, pos=(560, 10), size=(50, 110))
 
@@ -1730,10 +1726,6 @@ class TestPanelBaseToggleButton(wx.Panel):
 
 
 class TestPanelBitmapButton(wx.Panel):
-    MIN_WIDTH = 700
-    MIN_HEIGHT = 200
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
         super(TestPanelBitmapButton, self).__init__(
@@ -1769,10 +1761,6 @@ class TestPanelBitmapButton(wx.Panel):
 
 
 class TestPanelBitmapTextButton(wx.Panel):
-    MIN_WIDTH = 700
-    MIN_HEIGHT = 200
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
         super(TestPanelBitmapTextButton, self).__init__(
@@ -1794,48 +1782,42 @@ class TestPanelBitmapTextButton(wx.Panel):
 # ----------------------------------------------------------------------------
 
 
-class TestCheckButton(wx.Panel):
-    MIN_WIDTH = 240
-    MIN_HEIGHT = 64
-
-    # ------------------------------------------------------------------------
+class TestPanelCheckButton(wx.Panel):
 
     def __init__(self, parent):
-        super(TestCheckButton, self).__init__(
+        super(TestPanelCheckButton, self).__init__(
             parent,
             style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
             name="Test CheckButton")
 
         self.SetForegroundColour(wx.Colour(150, 160, 170))
 
-        btn_check_xs = CheckButton(self, pos=(25, 270), size=(32, 32), name="yes")
+        btn_check_xs = CheckButton(self, pos=(25, 10), size=(32, 32), name="yes")
         btn_check_xs.Check(True)
         btn_check_xs.Bind(wx.EVT_BUTTON, self.on_btn_event)
 
-        btn_check_s = CheckButton(self, label="disabled", pos=(100, 270), size=(128, 64), name="yes")
+        btn_check_s = CheckButton(self, label="disabled", pos=(100, 10), size=(128, 64), name="yes")
         btn_check_s.Enable(False)
 
-        btn_check_m = CheckButton(self, label='The text label', pos=(200, 300), size=(384, 128), name="yes")
+        btn_check_m = CheckButton(self, label='The text label', pos=(200, 10), size=(384, 128), name="yes")
         font = self.GetFont().MakeBold().Scale(1.4)
         btn_check_m.SetFont(font)
         btn_check_m.Bind(wx.EVT_BUTTON, self.on_btn_event)
 
     def on_btn_event(self, event):
         obj = event.GetEventObject()
-        logging.debug('* * * PANEL: Button Event received by {:s} * * *'.format(obj.GetName()))
+        logging.debug('* * * PANEL: Check Button Event received by {:s} * * *'.format(obj.GetName()))
 
 # ----------------------------------------------------------------------------
 
 
 class TestPanelButtonsInSizer(wx.Panel):
 
-    # ------------------------------------------------------------------------
-
     def __init__(self, parent):
         super(TestPanelButtonsInSizer, self).__init__(
             parent,
             style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
-            name="Test CheckButton")
+            name="Test SizerButton")
 
         self.SetForegroundColour(wx.Colour(150, 160, 170))
         # b1 = BitmapTextButton(self, label="SPPAS")
@@ -1852,10 +1834,6 @@ class TestPanelButtonsInSizer(wx.Panel):
 
 
 class TestPanel(sppasPanel):
-    MIN_WIDTH = 700
-    MIN_HEIGHT = 200
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
         super(TestPanel, self).__init__(
@@ -1894,6 +1872,8 @@ class TestPanel(sppasPanel):
         sizer.Add(TestPanelBitmapTextButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
         sizer.Add(wx.StaticText(self, label="Buttons without fixed size:"), 0, wx.TOP | wx.BOTTOM, 2)
         sizer.Add(TestPanelButtonsInSizer(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticText(self, label="Checked buttons:"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelCheckButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
 
         self.SetSizer(sizer)
 

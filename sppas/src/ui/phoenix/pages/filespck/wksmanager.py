@@ -37,8 +37,13 @@ import logging
 import os
 import wx
 
-from sppas.src.ui.phoenix.windows.panel import sppasPanel
+from sppas.src.ui.wkps import sppasWorkspaces
+from sppas.src.ui.phoenix.windows import sppasStaticLine
+from sppas.src.ui.phoenix.windows import sppasPanel
+from sppas.src.ui.phoenix.windows.button import CheckButton
+
 from .btntxttoolbar import BitmapTextToolbar
+
 
 # ----------------------------------------------------------------------------
 
@@ -63,6 +68,7 @@ class WorkspacesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
+        self.__wkps = sppasWorkspaces()
         self._create_content(data)
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
@@ -72,10 +78,32 @@ class WorkspacesManager(sppasPanel):
     def _create_content(self, data):
         """"""
         tb = self.__create_toolbar()
-        cv = sppasPanel(self, name="wksview")  #, data)
 
-        sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
+        cv = sppasPanel(self, name="wksview")
+        s = wx.BoxSizer(wx.VERTICAL)
+        for w in self.__wkps:
+            btn = CheckButton(cv, label=w, name=w)
+            btn.SetSpacing(12)
+            btn.SetMinSize(wx.Size(-1, 32))
+            btn.SetSize(wx.Size(-1, 32))
+            s.Add(btn, 0, wx.EXPAND | wx.ALL, 2)
+
+            btn.Bind(wx.EVT_CHECKBOX, self.on_wkp_changed)
+        cv.SetSizer(s)
+
+        # current workspace is the blank one
+        #font = self.GetFont().MakeBold().Scale(1.4)
+
+        line = sppasStaticLine(self, wx.HORIZONTAL)
+        line.SetMinSize(wx.Size(4, -1))
+        line.SetSize(wx.Size(4, -1))
+        line.SetPenStyle(wx.PENSTYLE_DOT_DASH)
+        line.SetDepth(2)
+        line.SetForegroundColour(self.GetForegroundColour())
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(tb, proportion=1, flag=wx.EXPAND, border=0)
+        sizer.Add(line, proportion=0, flag=wx.EXPAND, border=0)
         sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
         self.SetSizer(sizer)
         self.SetMinSize((196, 200))
@@ -128,6 +156,50 @@ class WorkspacesManager(sppasPanel):
             pass
 
         event.Skip()
+
+    # ------------------------------------------------------------------------
+
+    def on_wkp_changed(self, event):
+
+        # which workspace is clicked
+        btn = event.GetButtonObj()
+
+        # hum... user clicked the current one!
+        if btn.GetValue() is True:
+            logging.warning('Workspace {:s} is active and can not be disabled.'
+                            ''.format(btn.GetLabel()))
+            return
+
+        wkp_name = btn.GetLabel()
+        wkp_index = self.__wkps.index(wkp_name)
+        logging.debug('Workspace {:s} clicked'.format(wkp_name))
+
+        # get data and save the current workspace
+        # data = self.GetParent().GetFileData()
+        # check if the state of data is ok (no file is locked)
+        # save the wkp
+        # self.__wkps.save(data)
+
+        # switch to the clicked workspace
+        p = self.FindWindow('wksview')
+        for child in p.GetChildren():
+            if child.GetValue() is True:
+                child.SetValue(False)
+                child.Refresh()
+                logging.debug('Workspace {:s} un-checked'.format(child.GetLabel()))
+                break
+
+        logging.debug('Workspace {:s} checked'.format(btn.GetLabel()))
+        btn.SetValue(True)
+        btn.Refresh()
+
+        # send the new data to the parent
+        data = self.__wkps.get_data(wkp_index)
+        try:
+            self.GetParent().SetFileData(data)
+        except AttributeError:
+            # the parent is not of the expected type
+            pass
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

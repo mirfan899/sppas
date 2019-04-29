@@ -29,10 +29,11 @@
 
         ---------------------------------------------------------------------
 
-    structs.tips.py
-    ~~~~~~~~~~~~~~~~
+    ui.tips.py
+    ~~~~~~~~~~
 
 """
+
 import os.path
 import codecs
 import random

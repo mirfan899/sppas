@@ -40,6 +40,8 @@ import wx
 import wx.dataview
 
 from sppas.src.files.filedata import FileData
+from sppas import sppasTypeError
+from .basectrls import ColumnProperties
 
 # ----------------------------------------------------------------------------
 # Model
@@ -87,14 +89,118 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
 
         # Map between displayed columns and workspace
         self.__mapper = dict()
-        self.__mapper[0] = FilesTreeViewModel.__create_col('icon')
-        self.__mapper[1] = FilesTreeViewModel.__create_col('file')
-        self.__mapper[2] = FilesTreeViewModel.__create_col('check')
-        self.__mapper[3] = FilesTreeViewModel.__create_col('type')
-        self.__mapper[4] = FilesTreeViewModel.__create_col('date')
-        self.__mapper[5] = FilesTreeViewModel.__create_col('size')
-        self.__mapper[6] = FilesTreeViewModel.__create_col('')
+        self.__mapper[0] = CataloguesTreeViewModel.__create_col('ref')
+        self.__mapper[1] = CataloguesTreeViewModel.__create_col('value')
+        self.__mapper[2] = CataloguesTreeViewModel.__create_col('descr')
 
         # GUI information which can be managed by the mapper
         self._bgcolor = None
         self._fgcolor = None
+
+    # -----------------------------------------------------------------------
+
+    def set_data(self, data):
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        self.__data = data
+        self.Cleared()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __create_col(name):
+        col = ColumnProperties(name, name)
+        col.width = 100
+        return col
+
+    # -----------------------------------------------------------------------
+
+    def IsContainer(self, item):
+        """Return True if the item has children, False otherwise.
+
+        :param item: (wx.dataview.DataViewItem)
+
+        """
+        return False
+
+    # -----------------------------------------------------------------------
+    # Manage column properties
+    # -----------------------------------------------------------------------
+
+    def GetColumnCount(self):
+        """Override. Report how many columns this model provides data for."""
+        return len(self.__mapper)
+
+    # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnType(self, col):
+        """Override. Map the data column number to the data type.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].stype
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnName(self, col):
+        """Map the data column number to the data name.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].name
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnMode(self, col):
+        """Map the data column number to the cell mode.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].mode
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnWidth(self, col):
+        """Map the data column number to the col width.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].width
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnRenderer(self, col):
+        """Map the data column numbers to the col renderer.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].renderer
+
+    # -----------------------------------------------------------------------
+
+    def GetColumnAlign(self, col):
+        """Map the data column numbers to the col alignment.
+
+        :param col: (int)
+
+        """
+        return self.__mapper[col].align
+
+    # -----------------------------------------------------------------------
+    # Manage the tree
+    # -----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, color):
+        self._bgcolor = color
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, color):
+        self._fgcolor = color
