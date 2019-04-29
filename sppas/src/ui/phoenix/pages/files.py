@@ -32,9 +32,13 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import wx
+import logging
 
 from ..windows import sppasPanel
+from ..windows import sppasStaticLine
+from .filespck.wksmanager import WorkspacesManager
 from .filespck.filesmanager import FilesManager
 from .filespck.catsmanager import CataloguesManager
 from ..windows.button import sppasBitmapButton
@@ -58,8 +62,11 @@ class sppasFilesPanel(sppasPanel):
     def __init__(self, parent):
         super(sppasFilesPanel, self).__init__(
             parent=parent,
-            name="page_files",
-            style=wx.BORDER_NONE
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            name="page_files"
         )
         self._create_content()
 
@@ -67,13 +74,14 @@ class sppasFilesPanel(sppasPanel):
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
 
+        self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
     # ------------------------------------------------------------------------
 
     def _create_content(self):
         """"""
-        wp = self.__create_workspace_panel()
+        wp = WorkspacesManager(self, name='workspaces')
         fm = FilesManager(self, name="files")
         ap = self.__create_associate_panel()
         cm = CataloguesManager(self, name="catalogues")
@@ -81,16 +89,27 @@ class sppasFilesPanel(sppasPanel):
         # Organize the title and message
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(wp, 0, wx.EXPAND, 0)
-        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
         sizer.Add(fm, 2, wx.EXPAND, 0)
-        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
         sizer.Add(ap, 0, wx.EXPAND, 0)
-        sizer.Add(wx.StaticLine(self, style=wx.LI_VERTICAL), 0, wx.EXPAND, 0)
+        sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
         sizer.Add(cm, 1, wx.EXPAND, 0)
 
         self.SetSizer(sizer)
         self.SetMinSize((680, 380))   # width = 128 + 320 + 32 + 200
         self.SetAutoLayout(True)
+
+    # ------------------------------------------------------------------------
+
+    def __create_vline(self):
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(2, -1))
+        line.SetSize(wx.Size(2, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(2)
+        line.SetForegroundColour(wx.Colour(128, 128, 128))
+        return line
 
     # ------------------------------------------------------------------------
 
@@ -117,26 +136,6 @@ class sppasFilesPanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def __create_workspace_panel(self):
-        wp = sppasPanel(self, name="wokspace")
-
-        open = self.__create_button("Import...", "open_book")
-        pin = self.__create_button("Pin&Save", "pin")
-        ren = self.__create_button("Rename", "rename")
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(wx.StaticText(self, label="Workspaces: "), 0, wx.LEFT | wx.TOP | wx.BOTTOM, 8)
-        sizer.Add(open, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
-        sizer.Add(pin, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
-        sizer.Add(ren, 0, wx.ALIGN_LEFT | wx.ALIGN_TOP)
-        sizer.Add(wx.StaticLine(self, style=wx.LI_HORIZONTAL), 0, wx.EXPAND, 0)
-
-        wp.SetSizer(sizer)
-        wp.SetMinSize((128, -1))
-        return wp
-
-    # ------------------------------------------------------------------------
-
     def __create_button(self, text, icon):
         btn = sppasBitmapTextButton(self, label=text, name=icon)
         """btn.FocusStyle = wx.PENSTYLE_SOLID
@@ -148,3 +147,17 @@ class sppasFilesPanel(sppasPanel):
         # btn.BitmapColour = wx.Colour(200, 20, 20)"""
         btn.SetMinSize((-1, 32))
         return btn
+
+    # ------------------------------------------------------------------------
+
+    def on_key_press(self, event):
+        """Respond to a keypress event."""
+        key_code = event.GetKeyCode()
+        cmd_down = event.CmdDown()
+        shift_down = event.ShiftDown()
+
+        if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
+            logging.debug('Refresh all the files [F5 keys pressed]')
+            self.FindWindow("files").RefreshData()
+
+        event.Skip()

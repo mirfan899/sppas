@@ -38,9 +38,13 @@ import logging
 
 from sppas.src.config.ui import sppasAppConfig
 from sppas.src.ui.phoenix.main_settings import WxAppSettings
-import sppas.src.ui.phoenix.windows.button
+
+# Tested files are the ones with a TestPanel class:
 import sppas.src.ui.phoenix.windows.line
+import sppas.src.ui.phoenix.windows.button
 import sppas.src.ui.phoenix.pages.filespck.filesmanager
+import sppas.src.ui.phoenix.pages.filespck.catsmanager
+import sppas.src.ui.phoenix.pages.filespck.wksmanager
 
 # ----------------------------------------------------------------------------
 # Panel to test
@@ -52,9 +56,11 @@ class TestPanel(wx.Choicebook):
         wx.Choicebook.__init__(self, parent, wx.ID_ANY)
 
         # Make the bunch of test panels for the choice book
-        self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "line")
-        self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "button")
-        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "file manager")
+        self.AddPage(sppas.src.ui.phoenix.pages.filespck.wksmanager.TestPanel(self), "Workspaces manager")
+        self.AddPage(sppas.src.ui.phoenix.pages.filespck.catsmanager.TestPanel(self), "Catalogues manager")
+        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "Files manager")
+        self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "Buttons")
+        self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "Lines")
 
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGING, self.OnPageChanging)
@@ -98,15 +104,7 @@ class TestApp(wx.App):
         self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
         self.__cfg = sppasAppConfig()
         self.settings = WxAppSettings()
-
-        logger = logging.getLogger()
-        handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
-        handler.setFormatter(formatter)
-        logger.addHandler(handler)
-        logger.setLevel(logging.DEBUG)
-        logging.debug('Logging set to DEBUG level')
+        self.setup_debug_logging()
 
         # create a panel in the frame
         sizer = wx.BoxSizer()
@@ -116,6 +114,16 @@ class TestApp(wx.App):
         # show result
         frm.Show()
 
+    @staticmethod
+    def setup_debug_logging():
+        logger = logging.getLogger()
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
+        logging.debug('Logging set to DEBUG level')
 
 # ---------------------------------------------------------------------------
 

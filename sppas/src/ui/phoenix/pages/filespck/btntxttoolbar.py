@@ -38,10 +38,7 @@ import os
 import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
-from sppas.src.ui.phoenix.windows.button import sppasBitmapTextButton  # sub-class GenButton
-from sppas.src.ui.phoenix.windows.button import sppasBitmapButton  # sub-class GenButton
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton   # custom button
-
+from sppas.src.ui.phoenix.windows.button import BitmapTextButton
 
 # ----------------------------------------------------------------------------
 
@@ -56,45 +53,23 @@ class BitmapTextToolbar(sppasPanel):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
-    def __init__(self, parent):
+    def __init__(self, parent, orient=wx.HORIZONTAL):
         super(BitmapTextToolbar, self).__init__(
-            parent, id=wx.ID_ANY,
-            pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.NO_BORDER, name=wx.PanelNameStr)
+            parent,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=wx.NO_BORDER | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            name=wx.PanelNameStr)
 
-        self.SetSizer(wx.BoxSizer(wx.HORIZONTAL))
+        # Focus Color&Style
+        self._fs = wx.PENSTYLE_SOLID
+        self._fw = 3
+        self._fc = wx.Colour(128, 128, 128, 128)
+
+        self.SetSizer(wx.BoxSizer(orient))
         self.SetMinSize((-1, 32))
         self.SetAutoLayout(True)
-
-    # -----------------------------------------------------------------------
-
-    def AddButton(self, icon, text="", tooltip=None, activated=True):
-        btn = self.create_button(text, icon)
-        # btn.SetToolTip(tooltip)
-        btn.Enable(activated)
-        self.GetSizer().Add(btn, 2, wx.LEFT | wx.EXPAND, 0)
-        return btn
-
-    def AddSpacer(self, proportion=1):
-        self.GetSizer().AddStretchSpacer(proportion)
-
-    def AddText(self, text=""):
-        st = wx.StaticText(self, label=text)
-        self.GetSizer().Add(st, 0, wx.LEFT | wx.TOP | wx.BOTTOM, 8)
-
-    # -----------------------------------------------------------------------
-
-    def create_button(self, text, icon):
-        btn = BitmapTextButton(self, label=text, name=icon)
-        btn.FocusStyle = wx.PENSTYLE_SOLID
-        btn.FocusWidth = 3
-        btn.FocusColour = wx.Colour(220, 220, 120)
-        btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
-        btn.BorderWidth = 0
-        btn.BitmapColour = self.GetForegroundColour()
-        btn.SetMinSize((64, -1))
-        return btn
 
     # -----------------------------------------------------------------------
 
@@ -104,3 +79,51 @@ class BitmapTextToolbar(sppasPanel):
                 return b
 
         return None
+
+    # -----------------------------------------------------------------------
+
+    def AddButton(self, icon, text="", tooltip=None, activated=True):
+        btn = self.create_button(text, icon)
+        # btn.SetToolTip(tooltip)
+        btn.Enable(activated)
+        if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.EXPAND, 0)
+        else:
+            self.GetSizer().Add(btn, 0, wx.LEFT | wx.EXPAND, 0)
+        return btn
+
+    def AddSpacer(self, proportion=1):
+        self.GetSizer().AddStretchSpacer(proportion)
+
+    def AddText(self, text=""):
+        st = wx.StaticText(self, label=text)
+        self.GetSizer().Add(st, 0, wx.LEFT | wx.TOP | wx.BOTTOM, 6)
+
+    # -----------------------------------------------------------------------
+
+    def set_focus_color(self, value):
+        self._fc = value
+
+    def set_focus_penstyle(self, value):
+        self._fs = value
+
+    def set_focus_width(self, value):
+        self._fw = value
+
+    # -----------------------------------------------------------------------
+
+    def create_button(self, text, icon):
+        btn = BitmapTextButton(self, label=text, name=icon)
+        btn.FocusStyle = self._fs
+        btn.FocusWidth = self._fw
+        btn.FocusColour = self._fc
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
+            btn.SetMinSize((64, -1))
+        else:
+            btn.SetMinSize((-1, 32))
+
+        return btn

@@ -26,26 +26,25 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.lib.filetree.py
-    ~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.lib.filestreectrl.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 import os
 import logging
 import wx
-import wx.dataview as dv
-
-from sppas.src.files.fileexc import FileAttributeError
+import wx.dataview
 
 from .filesviewmodel import FilesTreeViewModel
+from .basectrls import BaseTreeViewCtrl
 
 # ----------------------------------------------------------------------------
 # Control to store the data matching the model
 # ----------------------------------------------------------------------------
 
 
-class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
+class FilesTreeViewCtrl(BaseTreeViewCtrl):
     """A control to display data files in a tree-spreadsheet style.
     
     :author:       Brigitte Bigi
@@ -59,27 +58,15 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
     Append/Insert/Prepend/Delete columns: such methods are disabled.
 
     """
-    
-    default_renderers = {
-        "string": wx.dataview.DataViewTextRenderer,
-        "bool": wx.dataview.DataViewToggleRenderer,
-        "datetime": wx.dataview.DataViewDateRenderer,
-        "wxBitmap": wx.dataview.DataViewBitmapRenderer,
-        "wxDataViewIconText": wx.dataview.DataViewIconTextRenderer
-    }
-    
+
     def __init__(self, parent, data=None, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
-        :param `parent`: (wx.Window) 
+        :param `parent`: (wx.Window)
         :param `data`: (FileData)
 
         """
-        super(FilesTreeViewCtrl, self).__init__(
-            parent,
-            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE,  # wx.dataview.DV_VERT_RULES |
-            name=name
-            )
+        super(FilesTreeViewCtrl, self).__init__(parent, data, name)
 
         # Create an instance of our model and associate to the view.
         self._model = FilesTreeViewModel(data)
@@ -88,7 +75,7 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
 
         # Create the columns that the model wants in the view.
         for i in range(self._model.GetColumnCount()):
-            col = FilesTreeViewCtrl.__create_column(self._model, i)
+            col = BaseTreeViewCtrl._create_column(self._model, i)
             if i == self._model.GetExpanderColumn():
                 self.SetExpanderColumn(col)
             wx.dataview.DataViewCtrl.AppendColumn(self, col)
@@ -97,10 +84,6 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
         # Used to remember the expend/collapse status of items after a refresh.
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)        
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
-
-        # Colors&font
-        self.SetBackgroundColour(parent.GetBackgroundColour())
-        self.SetForegroundColour(parent.GetForegroundColour())
 
     # ------------------------------------------------------------------------
     # Public methods
@@ -115,18 +98,6 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
     def GetUnChecked(self):
         """Return un-checked filenames."""
         return self._model.GetCheckedFiles(False)
-
-    # ------------------------------------------------------------------------
-
-    def SetBackgroundColour(self, color):
-        wx.Window.SetBackgroundColour(self, color)
-        self.RefreshData()
-
-    # ------------------------------------------------------------------------
-
-    def SetForegroundColour(self, color):
-        wx.Window.SetForegroundColour(self, color)
-        self.RefreshData()
 
     # ------------------------------------------------------------------------
 
@@ -195,8 +166,6 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
 
     def RefreshData(self):
         # Update the data and clear the tree
-        self._model.SetBackgroundColour(self.GetBackgroundColour())
-        self._model.SetForegroundColour(self.GetForegroundColour())
         self._model.UpdateFiles()
         # But clearing the tree means to forget which are the expanded items!
         # so, re-expand/re-collapse properly.
@@ -225,97 +194,3 @@ class FilesTreeViewCtrl(wx.dataview.DataViewCtrl):
         """
         self._model.Expand(False, evt.GetItem())
         evt.Skip()
-
-    # ------------------------------------------------------------------------
-    # Override methods to manage columns. No parent nor children will have the 
-    # possibility to Append/Insert/Prepend/Delete columns.
-    # ------------------------------------------------------------------------
-
-    def DeleteColumn(self, column):
-        raise FileAttributeError(self.__class__.__format__, "DeleteColumn")
-
-    def ClearColumns(self):
-        raise FileAttributeError(self.__class__.__format__, "ClearColumns")
-
-    def AppendColumn(self, col):
-        raise FileAttributeError(self.__class__.__format__, "AppendColumn")
-
-    def AppendBitmapColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendBitmapColumn")
-
-    def AppendDateColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendDateColumn")
-
-    def AppendIconTextColumn(self,*args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendIconTextColumn")
-
-    def AppendProgressColumn(self,*args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendProgressColumn")
-
-    def AppendTextColumn(self,*args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendTextColumn")
-
-    def AppendToggleColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "AppendToggleColumn")
-
-    def InsertColumn(self, pos, col):
-        raise FileAttributeError(self.__class__.__format__, "InsertColumn")
-
-    def PrependBitmapColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependBitmapColumn")
-
-    def PrependColumn(self, col):
-        raise FileAttributeError(self.__class__.__format__, "PrependColumn")
-
-    def PrependDateColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependDateColumn")
-
-    def PrependIconTextColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependIconTextColumn")
-
-    def PrependProgressColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependProgressColumn")
-
-    def PrependTextColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependTextColumn")
-
-    def PrependToggleColumn(self, *args, **kw):
-        raise FileAttributeError(self.__class__.__format__, "PrependToggleColumn")
-
-    # ------------------------------------------------------------------------
-    # Private
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def __create_column(model, index):
-        """Return the DataViewColumn matching the given index in the model.
-
-        :param index: (int) Index of the column to create. It must match an
-        existing column number of the model.
-        :return: (wx.dataview.DataViewColumn)
-
-        """
-        logging.debug('Create column: {:d}: {:s}'
-                      ''.format(index, model.GetColumnName(index)))
-
-        stype = model.GetColumnType(index)
-        render = model.GetColumnRenderer(index)
-        if render is None:
-            if stype not in FilesTreeViewCtrl.default_renderers:
-                stype = "string"
-            render = FilesTreeViewCtrl.default_renderers[stype](
-                varianttype=stype,
-                mode=model.GetColumnMode(index),
-                align=model.GetColumnAlign(index))
-
-        col = wx.dataview.DataViewColumn(
-            model.GetColumnName(index),
-            render,
-            index,
-            width=model.GetColumnWidth(index))
-        col.Reorderable = True
-        col.Sortable = False
-        if stype in ("string", "datetime"):
-            col.Sortable = True
-
-        return col

@@ -213,7 +213,13 @@ class sppasStaticLine(wx.Window):
         :param size: an instance of wx.Size.
 
         """
-        self.SetMinSize(wx.Size(3, 3))
+        if self.__orient == wx.LI_VERTICAL:
+            self.SetMinSize(wx.Size(-1, 4))
+        elif self.__orient == wx.LI_VERTICAL:
+            self.SetMinSize(wx.Size(4, -1))
+        else:
+            self.SetMinSize(wx.Size(4, 4))
+
         if size is None:
             size = wx.DefaultSize
 

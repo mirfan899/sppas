@@ -44,6 +44,7 @@ from sppas.src.utils.datatype import sppasTime
 
 from ..logs import sppasLogFile
 from .tools import sppasSwissKnife
+from .windows import sppasStaticLine
 from .windows import sppasPanel
 from .windows import sppasBitmapTextButton
 from .dialogs import Feedback
@@ -749,13 +750,11 @@ class sppasLogActionPanel(sppasPanel):
         send_btn = sppasBitmapTextButton(self, MSG_ACTION_SEND, name="mail-at")
 
         # organize buttons in a sizer
-        line1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        line2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
         action_sizer.Add(clear_btn, 2, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(line1, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(save_btn, 2, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(line2, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(send_btn, 2, wx.ALL | wx.EXPAND, 1)
 
         self.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
@@ -763,3 +762,14 @@ class sppasLogActionPanel(sppasPanel):
         self.SetFont(wx.GetApp().settings.action_text_font)
 
         self.SetSizer(action_sizer)
+
+    # ------------------------------------------------------------------------
+
+    def VertLine(self):
+        """Return a vertical static line."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(1, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line

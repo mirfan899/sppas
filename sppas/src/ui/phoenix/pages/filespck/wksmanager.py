@@ -43,8 +43,8 @@ from .btntxttoolbar import BitmapTextToolbar
 # ----------------------------------------------------------------------------
 
 
-class CataloguesManager(sppasPanel):
-    """Manage the catalogues and actions on perform on them.
+class WorkspacesManager(sppasPanel):
+    """Manage the workspaces and actions on perform on them.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,7 +55,7 @@ class CataloguesManager(sppasPanel):
     """
 
     def __init__(self, parent, data=None, name=wx.PanelNameStr):
-        super(CataloguesManager, self).__init__(
+        super(WorkspacesManager, self).__init__(
             parent,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
@@ -72,25 +72,27 @@ class CataloguesManager(sppasPanel):
     def _create_content(self, data):
         """"""
         tb = self.__create_toolbar()
-        cv = sppasPanel(self, name="catsview")  #, data)
+        cv = sppasPanel(self, name="wksview")  #, data)
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
         sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
         self.SetSizer(sizer)
-
-        self.SetMinSize((220, 200))
+        self.SetMinSize((196, 200))
+        self.SetSize((196, -1))
         self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = BitmapTextToolbar(self)
-        tb.set_focus_color(wx.Colour(128, 196, 128))
-        tb.AddText("Catalogues: ")
-        tb.AddButton("cats-add", "Create")
-        tb.AddButton("cats-edit", "Edit")
-        tb.AddButton("cats-delete", "Delete")
+        tb = BitmapTextToolbar(self, orient=wx.VERTICAL)
+        tb.set_focus_color(wx.Colour(128, 128, 196))
+
+        tb.AddText("Workspaces: ")
+        tb.AddButton("workspace_import", "Import from")
+        tb.AddButton("workspace_export", "Export to")
+        tb.AddButton("pin", "Pin & Save")
+        tb.AddButton("rename", "Rename")
         tb.Bind(wx.EVT_BUTTON, self.on_button_click)
         return tb
 
@@ -113,17 +115,17 @@ class CataloguesManager(sppasPanel):
     def on_button_click(self, event):
 
         name = event.GetButtonObj().GetName()
-        if name == "cats-add":
-            # create a reference
-            pass  # self._add_catalogue()
+        if name == "workspace_import":
+            pass
 
-        elif name == "cats-delete":
-            # delete a reference
-            pass  # self._delete()
+        elif name == "workspace_export":
+            pass
 
-        elif name == "cats-edit":
-            # add/remove attributes of the selected references
-            pass  # self._delete()
+        elif name == "pin":
+            pass
+
+        elif name == "rename":
+            pass
 
         event.Skip()
 
@@ -132,11 +134,12 @@ class CataloguesManager(sppasPanel):
 # ----------------------------------------------------------------------------
 
 
-class TestPanel(CataloguesManager):
+class TestPanel(WorkspacesManager):
 
     def __init__(self, parent):
         super(TestPanel, self).__init__(parent, data=None)
         self.add_test_data()
+        self.SetBackgroundColour(wx.Colour(128, 128, 128))
 
     # ------------------------------------------------------------------------
 

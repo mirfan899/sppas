@@ -57,11 +57,15 @@ class FilesManager(sppasPanel):
 
     def __init__(self, parent, data=None, name=wx.PanelNameStr):
         super(FilesManager, self).__init__(
-            parent, id=wx.ID_ANY,
-            pos=wx.DefaultPosition, size=wx.DefaultSize,
-            style=wx.NO_BORDER, name=name)
+            parent,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            name=name)
 
         self._create_content(data)
+        self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -83,11 +87,12 @@ class FilesManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self)
+        tb.set_focus_color(wx.Colour(196, 128, 128))
         tb.AddText("Files: ")
         tb.AddButton("files-add", "Add")
         tb.AddButton("files-remove", "Remove checked")
         tb.AddButton("files-delete", "Delete checked")
-        tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
+        tb.Bind(wx.EVT_BUTTON, self.on_button_click)
         return tb
 
     # -----------------------------------------------------------------------
@@ -108,18 +113,19 @@ class FilesManager(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def OnKeyPress(self, event):
+    def on_key_press(self, event):
         """Respond to a keypress event."""
-        keycode = event.GetKeyCode()
-        if keycode == wx.WXK_F5:
-            print('Refresh the data')
+        key_code = event.GetKeyCode()
+        cmd_down = event.CmdDown()
+        if key_code == wx.WXK_F5 and cmd_down is True:
+            logging.debug('Refresh the data files [CMD+F5 keys pressed]')
             self.FindWindow("fileview").RefreshData()
 
         event.Skip()
 
     # ------------------------------------------------------------------------
 
-    def OnButtonClick(self, event):
+    def on_button_click(self, event):
 
         name = event.GetButtonObj().GetName()
         logging.debug("Event received of button: {:s}".format(name))
@@ -135,6 +141,8 @@ class FilesManager(sppasPanel):
 
         event.Skip()
 
+    # ------------------------------------------------------------------------
+    # Private
     # ------------------------------------------------------------------------
 
     def _add_file(self):

@@ -38,6 +38,7 @@ import webbrowser
 from sppas.src.config import sg
 from sppas.src.config import ui_translation
 
+from .windows import sppasStaticLine
 from .windows import sppasBitmapTextButton
 from .windows import sppasTextButton
 from .windows import sppasBitmapButton
@@ -256,7 +257,7 @@ class sppasMainWindow(sppasDialog):
             event.Skip()
 
     # -----------------------------------------------------------------------
-    # Callbaks to events
+    # Callbacks to events
     # -----------------------------------------------------------------------
 
     def on_exit(self, event):
@@ -434,16 +435,24 @@ class sppasActionsPanel(sppasPanel):
         log_btn = sppasBitmapTextButton(
             self, MSG_ACTION_VIEWLOGS, name="view_log")
 
-        vertical_line_1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        vertical_line_2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        vertical_line_3 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-
         sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_1, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(settings_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_2, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_3, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
+
+    # ------------------------------------------------------------------------
+
+    def VertLine(self):
+        """Return a vertical static line."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(1, -1))
+        line.SetSize(wx.Size(1, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line

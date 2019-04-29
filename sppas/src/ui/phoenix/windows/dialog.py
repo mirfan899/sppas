@@ -41,6 +41,7 @@ from sppas.src.config import ui_translation
 from ..tools import sppasSwissKnife
 from . import sppasBitmapTextButton
 from . import sppasStaticBitmap
+from . import sppasStaticLine
 from . import sppasPanel
 
 # ----------------------------------------------------------------------------
@@ -256,8 +257,7 @@ class sppasDialog(wx.Dialog):
                 button = self.__create_button(panel, flag)
                 sizer.Add(button, 2, wx.LEFT | wx.EXPAND, 0)
                 if len(right_flags) > 0 or i+1 < len(left_flags):
-                    line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
-                    sizer.Add(line, 0, wx.EXPAND, 0)
+                    sizer.Add(self.VertLine(panel), 0, wx.EXPAND, 0)
 
         if len(right_flags) > 0:
             if len(left_flags) > 0:
@@ -265,8 +265,7 @@ class sppasDialog(wx.Dialog):
 
             for flag in right_flags:
                 button = self.__create_button(panel, flag)
-                line = wx.StaticLine(panel, style=wx.LI_VERTICAL)
-                sizer.Add(line, 0, wx.EXPAND, 0)
+                sizer.Add(self.VertLine(panel), 0, wx.EXPAND, 0)
                 sizer.Add(button, 2, wx.RIGHT | wx.EXPAND, 0)
 
         # This action panel properties
@@ -286,6 +285,30 @@ class sppasDialog(wx.Dialog):
         window.SetForegroundColour(wx.GetApp().settings.action_fg_color)
         window.SetFont(wx.GetApp().settings.action_text_font)
 
+    # ------------------------------------------------------------------------
+
+    def VertLine(self, parent, depth=1):
+        """Return a vertical static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(depth, -1))
+        line.SetSize(wx.Size(depth, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
+
+    # ------------------------------------------------------------------------
+
+    def HorizLine(self, parent, depth=3):
+        """Return an horizontal static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, depth))
+        line.SetSize(wx.Size(-1, depth))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
+
     # ---------------------------------------------------------------------------
     # Put the whole content of the dialog in a sizer
     # ---------------------------------------------------------------------------
@@ -298,8 +321,7 @@ class sppasDialog(wx.Dialog):
         header = self.FindWindow("header")
         if header is not None:
             sizer.Add(header, 0, wx.EXPAND, 0)
-            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-            sizer.Add(h_line, 0, wx.EXPAND, 0)
+            sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
 
         # Add content
         content = self.FindWindow("content")
@@ -311,8 +333,7 @@ class sppasDialog(wx.Dialog):
         # Add action buttons
         actions = self.FindWindow("actions")
         if actions is not None:
-            h_line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-            sizer.Add(h_line, 0, wx.ALL | wx.EXPAND, 0)
+            sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
             # proportion is 0 to ask the sizer to never hide the buttons
             sizer.Add(actions, 0, wx.EXPAND, 0)
 
