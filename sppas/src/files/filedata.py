@@ -1159,9 +1159,18 @@ class FileData(object):
     
 # ---------------------------------------------------------------------------
 
+
 class AttValue(object):
 
     """Represents an attribute in the reference catalog
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    AttValue embeds a value its type and a description.
 
     """
 
@@ -1235,6 +1244,14 @@ class Category(FileBase):
 
     """Represents a catalog of references about files
 
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    Category is a dictionary with a name. Its values are all AttValue objects.
+
     """
 
     def __init__(self, identifier):
@@ -1254,7 +1271,7 @@ class Category(FileBase):
             else:
                 self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
         else:
-            raise sppasTypeError('Non ASCII characters')
+            raise ValueError('Non ASCII characters')
 
     def pop(self, key):
         if key in self.__attributs.keys():

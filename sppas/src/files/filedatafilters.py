@@ -57,14 +57,6 @@ class sppasFileDataFilters(sppasBaseFilters):
 
     Search in file data.
 
-    Methods to be implemented (and tested):
-    =======================================
-
-        - root()       for FileRoot().id, FileRoot().state, FileRoot().expand
-        - name()       for FileName().name
-        - extension()  for FileName().extension
-        - file()       for FileName().state, FileName().lock, ...
-
     :Example:
 
         >>> # Search for all checked TextGrid files in a path containing 'corpus'
