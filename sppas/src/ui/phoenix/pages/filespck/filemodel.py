@@ -311,7 +311,7 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
 
         0. icon:     wxBitmap
         1. file:     string
-        2. check:    bool
+        2. state:    bool
         3. type:     string
         4. data:     string
         5. size:     string
@@ -341,7 +341,7 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
         self.__mapper = dict()
         self.__mapper[0] = fileTreeModel.__create_col('icon')
         self.__mapper[1] = fileTreeModel.__create_col('file')
-        self.__mapper[2] = fileTreeModel.__create_col('check')
+        self.__mapper[2] = fileTreeModel.__create_col('state')
         self.__mapper[3] = fileTreeModel.__create_col('type')
         self.__mapper[4] = fileTreeModel.__create_col('date')
         self.__mapper[5] = fileTreeModel.__create_col('size')
@@ -575,14 +575,14 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
         if isinstance(node, (FileName, FileRoot, FilePath)) is False:
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
 
-        if self.__mapper[col].id == "check":
-            node.check = value
-            # Search for the parent. It has to verify if it's check value
+        if self.__mapper[col].id == "state":
+            node.state = value
+            # Search for the parent. It has to verify if it's state value
             # is still correct.
             if isinstance(node, FileName):
                 root_parent = self.GetParent(item)
                 fr = self.ItemToObject(root_parent)
-                # instead of simply updating the root, we set the check
+                # instead of simply updating the root, we set the state
                 # value to all files of this root
                 # fr.update_check() is replaced by
                 fr.check = value
@@ -719,14 +719,14 @@ class fileTreeModel(wx.dataview.PyDataViewModel):
             col_file.width = 320
             return col_file
 
-        if name == "check":
+        if name == "state":
             col = FileColumnProperties("Check", name, "bool")
             col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
             col.align = wx.ALIGN_CENTRE
             col.width = 36
-            col.add_fct_name(FileName, "get_check")
-            col.add_fct_name(FileRoot, "get_check")
-            col.add_fct_name(FilePath, "get_check")
+            col.add_fct_name(FileName, "set_state")
+            col.add_fct_name(FileRoot, "set_state")
+            col.add_fct_name(FilePath, "set_state")
             return col
 
         if name == "type":
