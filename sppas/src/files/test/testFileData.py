@@ -4,8 +4,8 @@
 import unittest
 from os.path import dirname
 
-from sppas import u
-from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Category
+from sppas import u, sppasTypeError
+from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Category, FileStates
 from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
@@ -38,7 +38,7 @@ class TestFileName(unittest.TestCase):
         # Normal situation
         fn = FileName(__file__)
         self.assertEqual(__file__, fn.get_id())
-        self.assertFalse(fn.state)
+        self.assertFalse(fn.state == FileStates.CHECKED)
 
     def test_extension(self):
         fn = FileName(__file__)
@@ -92,7 +92,7 @@ class TestFilePath(unittest.TestCase):
         d = dirname(__file__)
         fp = FilePath(d)
         self.assertEqual(d, fp.id)
-        self.assertFalse(fp.state)
+        self.assertFalse(fp.state is FileStates.CHECKED)
         self.assertEqual(fp.id, fp.get_id())
 
         # Property is only defined for 'get' (set is not implemented).
@@ -186,10 +186,10 @@ class TestAttValue(unittest.TestCase):
         self.assertTrue(str(self.valint) == '12, speaker\'s age')
 
     def testSetTypeValue(self):
-        with self.assertRaises(FileTypeError) as error:
+        with self.assertRaises(sppasTypeError) as error:
             self.valbool.set_value_type('AttValue')
 
-        self.assertTrue(isinstance(error.exception, FileTypeError))
+        self.assertTrue(isinstance(error.exception, sppasTypeError))
 
     def testGetValuetype(self):
         self.assertTrue(self.valstr.get_value_type() == 'str')
@@ -215,11 +215,11 @@ class TestCategories(unittest.TestCase):
         )
 
     def testAddKey(self):
-        with self.assertRaises(FileTypeError) as AsciiError:
+        with self.assertRaises(ValueError) as AsciiError:
             self.micros.add('i*asaà', 'Blue Yeti')
 
         self.assertTrue(
-            isinstance(AsciiError.exception, FileTypeError)
+            isinstance(AsciiError.exception, ValueError)
         )
 
     def testPopKey(self):

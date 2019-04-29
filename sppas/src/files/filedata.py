@@ -873,20 +873,20 @@ class FilePath(FileBase):
     def update_check(self):
         """Modify state depending on the checked root names."""
         if len(self.__roots) == 0:
-            self.state = False
+            self.state = FileStates.NORMAL
             return
         all_checked = True
         all_unchecked = True
         for fr in self.__roots:
-            if fr.check is True:
+            if fr.state == FileStates.CHECKED:
                 all_unchecked = False
             else:
                 all_checked = False
 
         if all_checked:
-            self.state = True
+            self.state = FileStates.CHECKED
         if all_unchecked:
-            self.state = False
+            self.state = FileStates.NORMAL
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -1008,7 +1008,7 @@ class FileData(object):
  
     # -----------------------------------------------------------------------
 
-    def get_checked_files(self, value=True):
+    def get_checked_files(self, value=FileStates.CHECKED):
         """Return the list of checked or unchecked file names.
 
         :param value: (bool) Toggle state
@@ -1019,7 +1019,7 @@ class FileData(object):
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
-                    if fn.check == value:
+                    if fn.state == value:
                         checked.append(fn.id)
         return checked
 

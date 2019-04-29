@@ -65,7 +65,7 @@ from sppas import sppasTypeError
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.structs.basecompare import sppasBaseCompare
 
-from .filedata import FilePath, FileRoot, FileName, Category, AttValue
+from .filedata import FilePath, FileRoot, FileName, Category, AttValue, FileStates
 
 
 # ---------------------------------------------------------------------------
@@ -105,7 +105,7 @@ class sppasPathCompare(sppasBaseCompare):
         self.methods['regexp'] = sppasPathCompare.regexp
 
         # Compare state/expand to a boolean value
-        self.methods['state'] = sppasPathCompare.check
+        self.methods['check'] = sppasPathCompare.check
         self.methods['expand'] = sppasPathCompare.expand
 
     # -----------------------------------------------------------------------
@@ -298,7 +298,7 @@ class sppasPathCompare(sppasBaseCompare):
         if isinstance(fp, FilePath) is False:
             raise sppasTypeError(fp, "FilePath")
 
-        return fp.state is bool(value)
+        return (fp.state is FileStates.CHECKED) == value
 
     # -----------------------------------------------------------------------
 
@@ -354,7 +354,7 @@ class sppasRootCompare(sppasBaseCompare):
         self.methods['regexp'] = sppasRootCompare.regexp
 
         # Compare state/expand to a boolean value
-        self.methods['state'] = sppasRootCompare.check
+        self.methods['check'] = sppasRootCompare.check
         self.methods['expand'] = sppasRootCompare.expand
 
     # -----------------------------------------------------------------------
@@ -547,7 +547,7 @@ class sppasRootCompare(sppasBaseCompare):
         if isinstance(fr, FileRoot) is False:
             raise sppasTypeError(fr, "FileRoot")
 
-        return fr.check is bool(value)
+        return (fr.state is FileStates.CHECKED) == value
 
     # -----------------------------------------------------------------------
 

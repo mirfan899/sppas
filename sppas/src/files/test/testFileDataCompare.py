@@ -188,7 +188,7 @@ class TestFileDataCompare(unittest.TestCase):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
         #fp contains any d's character
-        self.assertTrue(fp.match([(self.cmpRoot.contains, d[randint(0, len(d) -1)], False)]))
+        self.assertTrue(fp.match([(self.cmpRoot.contains, d[randint(0, len(d) - 1)], False)]))
 
     def test_regexp_fr(self):
         d = path.splitext(__file__)[0]
