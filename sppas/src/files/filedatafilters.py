@@ -333,61 +333,30 @@ class sppasFileDataFilters(sppasBaseFilters):
 
         # -----------------------------------------------------------------------
 
-        def exctrat_function_name(function):
-            function = function.split('_')
-            function_name = function[-1]
-            del function[-1]
-            '_'.join(function)
-            return function_name, function
+        def exctract_function_info(functions):
+            functions_att = list()
+            functions_name = list()
+            functions_value = list()
+            for function in functions:
+                function_value = function[function.rindex('='):]
+                function = function[:function.rindex('=')]
+                function_name = function[function.rindex('_') + 1:]
+                function_att = function[:function.rindex('_')]
+                functions_att.append(function_att)
+                functions_name.append(function_name)
+                functions_value.append(function_value)
+            return functions_att, functions_name, functions_value
 
         # -----------------------------------------------------------------------
-
-        def fix_att_function_values(comparator, **kwargs):
-            """Return the list of function names and the expected value.
-
-            :param comparator: (sppasBaseComparator)
-
-            """
-            fct_values = list()
-            att_names = list()
-            for function, value in kwargs.items():
-                function_name, att = exctrat_function_name(function)
-                att_names.append(att)
-                if function_name in comparator.get_function_names():
-                    fct_values.append("{:s} = {!s:s}".format(function_name, value))
-
-            return att_names, fct_values
-
-        # -----------------------------------------------------------------------
-
-        def fix_att_functions(comparator, **kwargs):
-            """Parse the args to get the list of function/value/complement.
-
-            :param comparator: (sppasBaseComparator)
-
-            """
-            f_functions = list()
-            for func_name, value in kwargs.items():
-                func, att = exctrat_function_name(func_name)
-                logical_not = False
-                if func.startswith("not_"):
-                    logical_not = True
-                    func = func[4:]
-
-                if func in comparator.get_function_names():
-                    f_functions.append((comparator.get(func),
-                                        value,
-                                        logical_not))
-
-            return f_functions
 
         comparator = sppasAttValueCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
         logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        key_values, ref_fct_values = fix_att_function_values(comparator, **kwargs)
-        ref_functions = fix_att_functions(comparator, **kwargs)
+        ref_function_value = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        ref_function = sppasBaseFilters.fix_functions(comparator, **kwargs)
+        function_atts, function_names, function_values = exctract_function_info(ref_function_value)
 
         # the set of results
         data = sppasBaseSet()
@@ -397,11 +366,11 @@ class sppasFileDataFilters(sppasBaseFilters):
             # append all files of the path
             for fr in path:
                 for ref in fr.categories:
-                    for key in key_values:
-                        is_matching = ref[key].match(ref_functions, logic_bool)
+                    for key in function_atts:
+                        is_matching = ref[key].match(function_names, logic_bool)
                         print(is_matching)
                         if is_matching is True:
-                            data.append(ref, ref_fct_values)
+                            data.append(ref, function_values)
 
         return data
 

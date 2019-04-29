@@ -137,7 +137,7 @@ from os.path import getsize, getmtime
 from os.path import basename, dirname
 from datetime import datetime
 
-from sppas import u, sppasUnicode
+from sppas import u, sppasUnicode, sppasTypeError
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 
@@ -499,11 +499,11 @@ class FileRoot(FileBase):
             if len(list_of_categories) > 0:
                 for category in list_of_categories:
                     if not isinstance(category, Category):
-                        raise FileTypeError('Not a Category')
+                        raise sppasTypeError('Not a Category')
 
             self.__categories = list_of_categories
         else:
-            raise FileTypeError('Not a list')
+            raise sppasTypeError('Not a list')
 
     categories = property(get_categories, set_categories)
 
@@ -1186,7 +1186,7 @@ class AttValue(object):
         if type in ('int', 'float', 'bool', 'str'):
             self.__valuetype = type
         else:
-            raise FileTypeError('Not a valid type')
+            raise sppasTypeError('Not a valid type')
 
     def get_typed_value(self):
         if self.__valuetype is not None or self.__valuetype != 'str':
@@ -1251,7 +1251,7 @@ class Category(FileBase):
             else:
                 self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
         else:
-            raise FileTypeError('Non ASCII characters')
+            raise sppasTypeError('Non ASCII characters')
 
     def pop(self, key):
         if key in self.__attributs.keys():
