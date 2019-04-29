@@ -60,16 +60,16 @@ class sppasFileDataFilters(sppasBaseFilters):
     Methods to be implemented (and tested):
     =======================================
 
-        - root()       for FileRoot().id, FileRoot().check, FileRoot().expand
+        - root()       for FileRoot().id, FileRoot().state, FileRoot().expand
         - name()       for FileName().name
         - extension()  for FileName().extension
-        - file()       for FileName().check, FileName().lock, ...
+        - file()       for FileName().state, FileName().lock, ...
 
     :Example:
 
         >>> # Search for all checked TextGrid files in a path containing 'corpus'
         >>> f = sppasFileDataFilters(data)
-        >>> f.path(contains='corpus') & f.file(check=True) & f.extension(iexact='textgrid')
+        >>> f.path(contains='corpus') & f.file(state=True) & f.extension(iexact='textgrid')
 
     """
 

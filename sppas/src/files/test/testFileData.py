@@ -38,7 +38,7 @@ class TestFileName(unittest.TestCase):
         # Normal situation
         fn = FileName(__file__)
         self.assertEqual(__file__, fn.get_id())
-        self.assertFalse(fn.check)
+        self.assertFalse(fn.state)
 
     def test_extension(self):
         fn = FileName(__file__)
@@ -92,7 +92,7 @@ class TestFilePath(unittest.TestCase):
         d = dirname(__file__)
         fp = FilePath(d)
         self.assertEqual(d, fp.id)
-        self.assertFalse(fp.check)
+        self.assertFalse(fp.state)
         self.assertEqual(fp.id, fp.get_id())
 
         # Property is only defined for 'get' (set is not implemented).

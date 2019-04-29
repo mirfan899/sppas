@@ -36,13 +36,13 @@
     ========
 
         - sppasPathCompare() to search for a value in a path name
-          (FilePath.id, FilePath.check, FilePath.expand)
+          (FilePath.id, FilePath.state, FilePath.expand)
 
     To do:
     =====
 
         - sppasRootCompare() to search for a value in a root name
-          (FileRoot.id, FileRoot.check, FileRoot.expand)
+          (FileRoot.id, FileRoot.state, FileRoot.expand)
 
         - sppasNameCompare() to search for a value in a file name
           (FileName.name)
@@ -51,7 +51,7 @@
           file name (FileName.ext)
 
         - sppasFileCompare() to search for a value in the members of a
-          file name (FileName.check, FileName.lock, FileName....)
+          file name (FileName.state, FileName.lock, FileName....)
 
         - the unitests for all classes and methods.
 
@@ -104,8 +104,8 @@ class sppasPathCompare(sppasBaseCompare):
         self.methods['icontains'] = sppasPathCompare.icontains
         self.methods['regexp'] = sppasPathCompare.regexp
 
-        # Compare check/expand to a boolean value
-        self.methods['check'] = sppasPathCompare.check
+        # Compare state/expand to a boolean value
+        self.methods['state'] = sppasPathCompare.check
         self.methods['expand'] = sppasPathCompare.expand
 
     # -----------------------------------------------------------------------
@@ -287,7 +287,7 @@ class sppasPathCompare(sppasBaseCompare):
 
     @staticmethod
     def check(fp, value):
-        """Compare check member to the given value.
+        """Compare state member to the given value.
 
         :param fp: (FilePath) Path to compare.
         :param value: (bool) Boolean to be compared with.
@@ -298,7 +298,7 @@ class sppasPathCompare(sppasBaseCompare):
         if isinstance(fp, FilePath) is False:
             raise sppasTypeError(fp, "FilePath")
 
-        return fp.check is bool(value)
+        return fp.state is bool(value)
 
     # -----------------------------------------------------------------------
 
@@ -353,8 +353,8 @@ class sppasRootCompare(sppasBaseCompare):
         self.methods['icontains'] = sppasRootCompare.icontains
         self.methods['regexp'] = sppasRootCompare.regexp
 
-        # Compare check/expand to a boolean value
-        self.methods['check'] = sppasRootCompare.check
+        # Compare state/expand to a boolean value
+        self.methods['state'] = sppasRootCompare.check
         self.methods['expand'] = sppasRootCompare.expand
 
     # -----------------------------------------------------------------------
@@ -536,7 +536,7 @@ class sppasRootCompare(sppasBaseCompare):
 
     @staticmethod
     def check(fr, value):
-        """Compare check member to the given value.
+        """Compare state member to the given value.
 
         :param fr: (FileRoot) Root to compare.
         :param value: (bool) Boolean to be compared with.

@@ -293,7 +293,7 @@
 		     CONTROLLED_VOCABULARY/@CV_ID and this is the CONTROLLED_VOCABULARY which should
 		     contain (in CVE_ENTRY_ML/@CVE_ID) the value from @CVE_REF.
 
-		     A weaker check could just try to find any matching CONTROLLED_VOCABULARY/CVE_ENTRY_ML/@CVE_ID,
+		     A weaker state could just try to find any matching CONTROLLED_VOCABULARY/CVE_ENTRY_ML/@CVE_ID,
 		     without checking if this is in the correct CONTROLLED_VOCABULARY.
 
 		     According to O'Reilly's book about schemas, ch. 9.2 (XPath-Based Identity Checks),

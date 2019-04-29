@@ -95,7 +95,7 @@
 
         >>> fp.match(
         >>>     [(cmp.startswith, "my_path", False),
-        >>>      (cmp.check, True, False)],
+        >>>      (cmp.state, True, False)],
         >>>     logic_bool="and")
 
 
@@ -109,7 +109,7 @@
 
         >>> fr.match(
         >>>     [(cmp.startswith, "my_path/toto", False),
-        >>>      (cmp.check, True, False)],
+        >>>      (cmp.state, True, False)],
         >>>     logic_bool="and")
 
     :Example: Search if a FileName() is starting with "toto" and is not
@@ -121,7 +121,7 @@
         >>> fn.match(
         >>>    [(cmpn.startswith, "toto", False),
         >>>     (cmpe.iexact, "textgrid", True),
-        >>>     (cmpp.check, True, False)],
+        >>>     (cmpp.state, True, False)],
         >>>    logic_bool="and")
 
 """
@@ -145,7 +145,7 @@ from .fileexc import FileRootValueError
 
 
 class FileStates(Enum):
-    UNCHEKED = 0
+    NORMAL = 0
     CHECKED = 1
     LOCKED = 2
 
@@ -256,7 +256,7 @@ class FileName(FileBase):
         
         Some states of the file are also stored:
 
-            - check (bool) File is selected or not
+            - state (bool) File is selected or not
             - lock (bool) File is locked or not (enable/disable)
 
         :param `identifier`: (str) Full name of a file (from FileBase)
@@ -287,7 +287,7 @@ class FileName(FileBase):
         # States of the file
         # ------------------
 
-        self.__state = FileStates.UNCHEKED
+        self.__state = FileStates.NORMAL
         self.lock = False
 
     # -----------------------------------------------------------------------
@@ -336,20 +336,24 @@ class FileName(FileBase):
     
     # -----------------------------------------------------------------------
 
-    def get_check(self):
+    def get_state(self):
         """Return true if the file is checked."""
-        return self.__state == FileStates.CHECKED
+        return self.__state
     
-    def set_check(self, value):
+    def set_state(self, value):
         """Set a value to represent a toggle meaning the file is checked.
         
         :param value: (bool)
 
         """
-        if value:
+        if value == FileStates.NORMAL:
+            self.__state = FileStates.NORMAL
+        elif value == FileStates.CHECKED:
             self.__state = FileStates.CHECKED
+        elif value == FileStates.LOCKED:
+            self.__state = FileStates.LOCKED
         else:
-            self.__state = FileStates.UNCHEKED
+            raise sppasTypeError(type(value), FileStates)
 
     # -----------------------------------------------------------------------
 
@@ -371,7 +375,7 @@ class FileName(FileBase):
     # Properties
     # -----------------------------------------------------------------------
 
-    check = property(get_check, set_check)
+    state = property(get_state, set_state)
     size = property(get_size, None)
     date = property(get_date, None)
     extension = property(get_extension, None)
@@ -424,7 +428,7 @@ class FileRoot(FileBase):
         # States of the path
         # ------------------
 
-        self.__check = False
+        self.__state = FileStates.NORMAL
         self.expand = True
         self.__bgcolor = (30, 30, 30)
 
@@ -460,28 +464,32 @@ class FileRoot(FileBase):
         return self.__bgcolor
     
     def set_bgcolor(self, r, g, b):
-        # we should check values (0-255)
+        # we should state values (0-255)
         self.__bgcolor = (r, g, b)
 
     bg_color = property(get_bgcolor, set_bgcolor)
 
     # -----------------------------------------------------------------------
 
-    def get_check(self):
+    def get_state(self):
         """Return true if the fileroot is checked."""
-        return self.__check
+        return self.__state
     
-    def set_check(self, value):
+    def set_state(self, value):
         """Set a value to represent a toggle meaning the fileroot is checked.
         
-        :param value: (bool)
+        :param value: (int)
 
         """
-        self.__check = bool(value)
-        for fn in self.__files:
-            fn.check = value
+        if isinstance(value, FileStates):
+            self.__state = value
+        else:
+            raise sppasTypeError(type(value), FileStates)
 
-    check = property(get_check, set_check)
+        for fn in self.__files:
+            fn.state = value
+
+    state = property(get_state, set_state)
 
     # -----------------------------------------------------------------------
 
@@ -499,11 +507,11 @@ class FileRoot(FileBase):
             if len(list_of_categories) > 0:
                 for category in list_of_categories:
                     if not isinstance(category, Category):
-                        raise sppasTypeError('Not a Category')
+                        raise sppasTypeError(type(category), Category)
 
             self.__categories = list_of_categories
         else:
-            raise sppasTypeError('Not a list')
+            raise sppasTypeError(type(list_of_categories), list)
 
     categories = property(get_categories, set_categories)
 
@@ -619,7 +627,7 @@ class FileRoot(FileBase):
     # -----------------------------------------------------------------------
 
     def update_check(self):
-        """Modify check depending on the checked filenames."""
+        """Modify state depending on the checked filenames."""
         if len(self.__files) == 0:
             self.check = False
             return
@@ -704,31 +712,26 @@ class FilePath(FileBase):
         # States of the path
         # ------------------
 
-        self.__check = False
-        self.expand = True
-        self.fgcolor = (
-            random.randint(180, 240),
-            random.randint(180, 240),
-            random.randint(180, 240))
-        self.__bgcolor = (
-            random.randint(15, 30),
-            random.randint(15, 30),
-            random.randint(15, 30))
+        self.__state = FileStates.NORMAL
 
         # a free to use dictionary to expand the class
         self.subjoined = dict()
 
     # -----------------------------------------------------------------------
 
-    def get_check(self):
-        return self.__check
+    def get_state(self):
+        return self.__state
     
-    def set_check(self, value):
-        self.__check = value
-        for fr in self.__roots:
-            fr.check = value
+    def set_state(self, value):
+        if isinstance(value, FileStates):
+            self.__state = value
+        else:
+            raise sppasTypeError(type(value), FileStates)
 
-    check = property(get_check, set_check)
+        for fr in self.__roots:
+            fr.state = value
+
+    state = property(get_state, set_state)
     
     # -----------------------------------------------------------------------
 
@@ -736,7 +739,7 @@ class FilePath(FileBase):
         return self.__bgcolor
     
     def set_bgcolor(self, r, g, b):
-        # we should check values (0-255)
+        # we should state values (0-255)
         self.__bgcolor = (r, g, b)
         for fr in self.__roots:
             self.set_root_bgcolor(fr)
@@ -909,9 +912,9 @@ class FilePath(FileBase):
     # -----------------------------------------------------------------------
 
     def update_check(self):
-        """Modify check depending on the checked root names."""
+        """Modify state depending on the checked root names."""
         if len(self.__roots) == 0:
-            self.check = False
+            self.state = False
             return
         all_checked = True
         all_unchecked = True
@@ -922,9 +925,9 @@ class FilePath(FileBase):
                 all_checked = False
 
         if all_checked:
-            self.check = True
+            self.state = True
         if all_unchecked:
-            self.check = False
+            self.state = False
 
     # -----------------------------------------------------------------------
     # Overloads
