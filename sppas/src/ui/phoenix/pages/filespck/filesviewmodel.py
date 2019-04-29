@@ -120,7 +120,6 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
 
     def Render(self, rect, dc, state):
         """Draw the bitmap, adjusting its size. """
-        print(' ... FileIconRenderer. Render the value {}'.format(self.value))
         if self.value == "":
             return False
 
@@ -329,7 +328,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def __init__(self, data=FileData()):
         """Constructor of a fileTreeModel.
 
-        :param data: (FileData)
+        :param data: (FileData) Workspace to be managed by the mapper
 
         """
         wx.dataview.PyDataViewModel.__init__(self)
@@ -337,15 +336,18 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             self.UseWeakRefs(True)
         except AttributeError:
             pass
-        
+
+        # The icons to display depending on the file extension
         self.exticon = FileAnnotIcon()
-        
+
+        # The workspace to display
         if data is None:
             data = FileData()
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
         self.__data = data
 
+        # Map between displayed columns and workspace
         self.__mapper = dict()
         self.__mapper[0] = FilesTreeViewModel.__create_col('icon')
         self.__mapper[1] = FilesTreeViewModel.__create_col('file')
@@ -354,6 +356,10 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         self.__mapper[4] = FilesTreeViewModel.__create_col('date')
         self.__mapper[5] = FilesTreeViewModel.__create_col('size')
         self.__mapper[6] = FilesTreeViewModel.__create_col('')
+
+        # GUI information which can be managed by the mapper
+        self._bgcolor = None
+        self._fgcolor = None
 
     # -----------------------------------------------------------------------
     # Manage column properties
@@ -434,14 +440,12 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def SetBackgroundColour(self, color):
-        for fp in self.__data:
-            fp.set_bgcolor(color.Red(), color.Green(), color.Blue())
+        self._bgcolor = color
 
     # -----------------------------------------------------------------------
 
     def SetForegroundColour(self, color):
-        for fp in self.__data:
-            fp.set_fgcolor(color.Red(), color.Green(), color.Blue())
+        self._fgcolor = color
 
     # -----------------------------------------------------------------------
 
@@ -543,11 +547,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         if self.__mapper[col].id == "icon":
             if isinstance(node, FileName) is True:
-                print("GetValue of an icon of a filename.")
                 ext = node.get_extension()
-                print(' ... extension is {}'.format(ext))
                 icon_name = self.exticon.get_icon_name(ext)
-                print(' ... icon name is {}'.format(icon_name))
                 return icon_name
             return ""
 
@@ -625,24 +626,25 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetAttr(self, item, col, attr):
         node = self.ItemToObject(item)
 
+        # default colors for foreground and background
+        if self._fgcolor is not None:
+            attr.SetColour(self._fgcolor)
+        if self._bgcolor is not None:
+            attr.SetBackgroundColour(self._bgcolor)
+
         if isinstance(node, FilePath):
-            attr.SetColour(wx.Colour(node.fg_color))
-            attr.SetBackgroundColour(node.bg_color)
             attr.SetBold(True)
             return True
+
         if isinstance(node, FileRoot):
-            parent = self.GetParent(item)
-            attr.SetColour(wx.Colour(self.ItemToObject(parent).fg_color))
-            attr.SetBackgroundColour(node.bg_color)
+            attr.SetItalic(True)
             return True
+
         if isinstance(node, FileName):
-            parent_root = self.GetParent(item)
-            parent_path = self.GetParent(parent_root)
-            attr.SetColour(wx.Colour(self.ItemToObject(parent_path).fg_color))
-            if node.lock:
-                attr.SetBackgroundColour(wx.Colour(128, 128, 128))
-            else:
-                attr.SetBackgroundColour(wx.Colour(self.ItemToObject(parent_root).bg_color))
+            # parent_root = self.GetParent(item)
+            # parent_path = self.GetParent(parent_root)
+            # if node.lock:
+            #    attr.SetColour(wx.Colour(128, 128, 128))
             return True
         
         return False

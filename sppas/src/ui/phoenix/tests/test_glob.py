@@ -54,7 +54,7 @@ class TestPanel(wx.Choicebook):
         # Make the bunch of test panels for the choice book
         self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "line")
         self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "button")
-#        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "file manager")
+        self.AddPage(sppas.src.ui.phoenix.pages.filespck.filesmanager.TestPanel(self), "file manager")
 
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGING, self.OnPageChanging)
@@ -96,9 +96,17 @@ class TestApp(wx.App):
 
         # Fix language and translation
         self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
-
         self.__cfg = sppasAppConfig()
         self.settings = WxAppSettings()
+
+        logger = logging.getLogger()
+        handler = logging.StreamHandler()
+        formatter = logging.Formatter(
+            '%(asctime)s %(name)-12s %(levelname)-8s %(message)s')
+        handler.setFormatter(formatter)
+        logger.addHandler(handler)
+        logger.setLevel(logging.DEBUG)
+        logging.debug('Logging set to DEBUG level')
 
         # create a panel in the frame
         sizer = wx.BoxSizer()

@@ -85,7 +85,7 @@ class FilesManager(sppasPanel):
         tb = BitmapTextToolbar(self)
         tb.AddText("Files: ")
         tb.AddButton("files-add", "Add")
-        tb.AddButton("checkno", "Remove checked")
+        tb.AddButton("files-remove", "Remove checked")
         tb.AddButton("files-delete", "Delete checked")
         tb.Bind(wx.EVT_BUTTON, self.OnButtonClick)
         return tb
@@ -122,13 +122,15 @@ class FilesManager(sppasPanel):
     def OnButtonClick(self, event):
 
         name = event.GetButtonObj().GetName()
-        if name == "add":
+        logging.debug("Event received of button: {:s}".format(name))
+
+        if name == "files-add":
             self._add_file()
 
-        elif name == "remove":
+        elif name == "files-remove":
             self.FindWindow("fileview").Remove()
 
-        elif name == "delete":
+        elif name == "files-delete":
             self._delete()
 
         event.Skip()
@@ -187,7 +189,7 @@ class TestPanel(FilesManager):
 
         for f in os.listdir(here):
             fullname = os.path.join(here, f)
-            print('add {:s}'.format(fullname))
+            logging.info('add {:s}'.format(fullname))
             if os.path.isfile(fullname):
                 self.FindWindow('fileview').Add(fullname)
 

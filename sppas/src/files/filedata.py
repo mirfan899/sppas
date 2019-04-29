@@ -808,14 +808,12 @@ class FilePath(FileBase):
             g = max(10, min(245, self.__bgcolor[1] + 4))
             b = max(10, min(245, self.__bgcolor[2] + 4))
             root.set_bgcolor(r, g, b)
-            print('set root bg color: {:d} {:d} {:d}'.format(r, g, b))
 
         else:
             r = max(10, min(245, self.__bgcolor[0] - 4))
             g = max(10, min(245, self.__bgcolor[1] - 4))
             b = max(10, min(245, self.__bgcolor[2] - 4))
             root.set_bgcolor(r, g, b)
-            print('set root bg color: {:d} {:d} {:d}'.format(r, g, b))
 
     # -----------------------------------------------------------------------
 
