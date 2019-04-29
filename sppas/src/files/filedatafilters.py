@@ -50,6 +50,7 @@ class sppasFileDataFilters(sppasBaseFilters):
     """This class implements the 'SPPAS file data filter system'.
 
     :author:       Brigitte Bigi
+    :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
@@ -286,7 +287,9 @@ class sppasFileDataFilters(sppasBaseFilters):
 
         :Example:
 
-            >>> f.file(lock='true')
+            >>> f.ref(startswith="toto", not_endswith="tutu", logic_bool="and")
+            >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
+            >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
         :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
         :returns: (sppasDataSet)
@@ -319,8 +322,19 @@ class sppasFileDataFilters(sppasBaseFilters):
     # -----------------------------------------------------------------------
 
     def att(self, **kwargs):
-        """
+        """Apply functions on all file properties of the object.
 
+                Each argument is made of a function name and its expected value.
+                Each function can be prefixed with 'not_', like in the next example.
+
+                :Example:
+
+                    >>> f.ref(startswith="toto", not_endswith="tutu", logic_bool="and")
+                    >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
+                    >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
+
+                :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+                :returns: (sppasDataSet)
         """
 
         # -----------------------------------------------------------------------

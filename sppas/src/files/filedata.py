@@ -353,7 +353,7 @@ class FileName(FileBase):
         elif value == FileStates.LOCKED:
             self.__state = FileStates.LOCKED
         else:
-            raise sppasTypeError(type(value), FileStates)
+            raise sppasTypeError(value, 'FileStates')
 
     # -----------------------------------------------------------------------
 
@@ -460,17 +460,6 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def get_bgcolor(self):
-        return self.__bgcolor
-    
-    def set_bgcolor(self, r, g, b):
-        # we should state values (0-255)
-        self.__bgcolor = (r, g, b)
-
-    bg_color = property(get_bgcolor, set_bgcolor)
-
-    # -----------------------------------------------------------------------
-
     def get_state(self):
         """Return true if the fileroot is checked."""
         return self.__state
@@ -484,7 +473,7 @@ class FileRoot(FileBase):
         if isinstance(value, FileStates):
             self.__state = value
         else:
-            raise sppasTypeError(type(value), FileStates)
+            raise sppasTypeError(value, 'FileStates')
 
         for fn in self.__files:
             fn.state = value
@@ -507,11 +496,11 @@ class FileRoot(FileBase):
             if len(list_of_categories) > 0:
                 for category in list_of_categories:
                     if not isinstance(category, Category):
-                        raise sppasTypeError(type(category), Category)
+                        raise sppasTypeError(category, 'Category')
 
             self.__categories = list_of_categories
         else:
-            raise sppasTypeError(type(list_of_categories), list)
+            raise sppasTypeError(list_of_categories, 'list')
 
     categories = property(get_categories, set_categories)
 
@@ -726,26 +715,13 @@ class FilePath(FileBase):
         if isinstance(value, FileStates):
             self.__state = value
         else:
-            raise sppasTypeError(type(value), FileStates)
+            raise sppasTypeError(value, 'FileStates')
 
         for fr in self.__roots:
             fr.state = value
 
     state = property(get_state, set_state)
     
-    # -----------------------------------------------------------------------
-
-    def get_bgcolor(self):
-        return self.__bgcolor
-    
-    def set_bgcolor(self, r, g, b):
-        # we should state values (0-255)
-        self.__bgcolor = (r, g, b)
-        for fr in self.__roots:
-            self.set_root_bgcolor(fr)
-
-    bg_color = property(get_bgcolor, set_bgcolor)
-
     # -----------------------------------------------------------------------
 
     def get_object(self, filename):
@@ -834,26 +810,9 @@ class FilePath(FileBase):
         if fr is None:
             fr = FileRoot(root_id)
             self.__roots.append(fr)
-            self.set_root_bgcolor(fr)
         
         # Append this file to the root
         return fr.append(filename)
-
-    # -----------------------------------------------------------------------
-
-    def set_root_bgcolor(self, root):
-        """Fix the bgcolor of a root."""
-        index = self.__roots.index(root)
-        if index % 2:
-            r = max(10, min(245, self.__bgcolor[0] + 4))
-            g = max(10, min(245, self.__bgcolor[1] + 4))
-            b = max(10, min(245, self.__bgcolor[2] + 4))
-            root.bgcolor = (r, g, b)
-        else:
-            r = max(10, min(245, self.__bgcolor[0] - 4))
-            g = max(10, min(245, self.__bgcolor[1] - 4))
-            b = max(10, min(245, self.__bgcolor[2] - 4))
-            root.bgcolor = (r, g, b)
 
     # -----------------------------------------------------------------------
 
@@ -1162,7 +1121,7 @@ class FileData(object):
 
 class AttValue(object):
 
-    """Represents an attribute in the reference catalog
+    """Represents an attribute in the reference catalog.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -1175,6 +1134,13 @@ class AttValue(object):
     """
 
     def __init__(self, att_value, att_type=None, att_description=None):
+        """
+        constructor of AttValue.
+        :param att_value: (str)
+        :param att_type: (str)
+        :param att_description: (st)
+
+        """
         su = sppasUnicode(att_value)
         self.__value = su.to_strip()
         self.__valuetype = att_type
@@ -1185,22 +1151,40 @@ class AttValue(object):
             self.__description = su.to_strip()
 
     def get_value(self):
+        """
+        :return: current non-typed value. (str)
+        """
         return self.__value
 
     def set_value(self, value):
+        """
+        set a new value.
+        :param value: (string)
+
+        """
         su = sppasUnicode(value)
         self.__value = su.to_strip()
 
     def get_value_type(self):
+        """
+        :return: current type of the value. (str | int | float | bool)
+        """
         return self.__valuetype if self.__valuetype is not None else 'str'
 
     def set_value_type(self, type):
+        """
+        set a new type for the current value
+        :param type: (str) the new type name
+        """
         if type in ('int', 'float', 'bool', 'str'):
             self.__valuetype = type
         else:
-            raise sppasTypeError('Not a valid type')
+            raise sppasTypeError(type, 'int or float of bool or str')
 
     def get_typed_value(self):
+        """
+        :return: return the current typed value.
+        """
         if self.__valuetype is not None or self.__valuetype != 'str':
             if self.__valuetype == 'int':
                 return int(self.__value)
@@ -1212,6 +1196,9 @@ class AttValue(object):
         return self.__value
 
     def get_description(self):
+        """
+        :return: return current description. (str)
+        """
         if self.__description is not None:
             su = sppasUnicode(self.__description)
             return su.to_strip()
@@ -1219,6 +1206,10 @@ class AttValue(object):
             return self.__description
 
     def set_description(self, description):
+        """
+        set a new value for the description
+        :param description: (str)
+        """
         su = sppasUnicode(description)
         self.__description = su.to_strip()
 
@@ -1255,10 +1246,19 @@ class Category(FileBase):
     """
 
     def __init__(self, identifier):
+        """
+        Constructor of the Category class.
+        :param identifier: (str) identifier for the object, the name of the category
+        """
         super(Category, self).__init__(identifier)
         self.__attributs = OrderedDict()
 
     def add(self, key, value):
+        """
+        Add a new pair of key/value in the current dictionary
+        :param key: (str) should be only with alphanumeric characters and underscores
+        :param value: (str | AttValue) will always be converted in AttValue object
+        """
         #used once hence declared inside add method
         def is_restricted_ascii(key_to_test):
             #if the string contains any other character than lower case a to z, upper case a to z and underscore it becomes a *
@@ -1274,6 +1274,10 @@ class Category(FileBase):
             raise ValueError('Non ASCII characters')
 
     def pop(self, key):
+        """
+        Delete a pair of key/value
+        :param key: (str) is the key in the dictionary to delete
+        """
         if key in self.__attributs.keys():
             self.__attributs.pop(key)
         else:

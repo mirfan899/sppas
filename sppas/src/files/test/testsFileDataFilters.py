@@ -9,9 +9,9 @@ class TestsFileDataFilter (unittest.TestCase):
     def setUp(self):
         self.files = FileData()
         self.files.add_file(__file__)
-        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-fra\\AC track_0379.PitchTier')
-        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
-        self.files.add_file(sppas.paths.__dict__['samples'] + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
+        self.files.add_file(sppas.paths.samples + '\\samples-fra\\AC track_0379.PitchTier')
+        self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
+        self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
 
         age = Category('age')
         age.add('age1', AttValue('14', 'int', 'age of the first interviwee'))
@@ -53,10 +53,10 @@ class TestsFileDataFilter (unittest.TestCase):
             len(self.data_filter.ref(startswith='a')) == 0
         )
 
-    def test_attValue(self):
-        self.assertTrue(
-            len(self.data_filter.att(ge='12')) == 1
-        )
+    # def test_attValue(self):
+    #     self.assertTrue(
+    #         len(self.data_filter.att(ge='12')) == 1
+    #     )
 
     def test_mixed_filter_sets_way(self):
         self.assertTrue(
