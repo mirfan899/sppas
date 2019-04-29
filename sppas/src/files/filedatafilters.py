@@ -173,7 +173,6 @@ class sppasFileDataFilters(sppasBaseFilters):
         :returns: (sppasDataSet)
 
         """
-
         comparator = sppasFileNameCompare()
 
         # extract the information from the arguments
@@ -214,7 +213,6 @@ class sppasFileDataFilters(sppasBaseFilters):
         :returns: (sppasDataSet)
 
         """
-
         comparator = sppasFileNameExtensionCompare()
 
         # extract the information from the arguments
@@ -254,7 +252,6 @@ class sppasFileDataFilters(sppasBaseFilters):
         :returns: (sppasDataSet)
 
         """
-
         comparator = sppasFileNamePropertiesCompare()
 
         # extract the information from the arguments
@@ -295,7 +292,6 @@ class sppasFileDataFilters(sppasBaseFilters):
         :returns: (sppasDataSet)
 
         """
-
         comparator = sppasReferenceCompare()
 
         # extract the information from the arguments
@@ -324,21 +320,18 @@ class sppasFileDataFilters(sppasBaseFilters):
     def att(self, **kwargs):
         """Apply functions on all file properties of the object.
 
-                Each argument is made of a function name and its expected value.
-                Each function can be prefixed with 'not_', like in the next example.
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
 
-                :Example:
+        :Example:
 
-                    >>> f.ref(startswith="toto", not_endswith="tutu", logic_bool="and")
-                    >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
-                    >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
+        >>> f.ref(startswith="toto", not_endswith="tutu", logic_bool="and")
+        >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
+        >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
-                :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
-                :returns: (sppasDataSet)
+        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :returns: (sppasDataSet)
         """
-
-        # -----------------------------------------------------------------------
-
         def exctract_function_info(functions):
             functions_att = list()
             functions_name = list()

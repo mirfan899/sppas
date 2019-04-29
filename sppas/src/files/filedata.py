@@ -145,6 +145,8 @@ from .fileexc import FileRootValueError
 
 
 class FileStates(Enum):
+    """List all of the file states."""
+
     NORMAL = 0
     CHECKED = 1
     LOCKED = 2
@@ -219,12 +221,28 @@ class FileBase(object):
     # -----------------------------------------------------------------------
 
     def __format__(self, fmt):
+        """
+        Allow to show the class at a given format.
+
+        :param fmt: (str) the wanted format of string
+        :return: (str)
+        """
         return str(self).__format__(fmt)
 
     def __str__(self):
+        """
+        The string conversion of the object.
+
+        :return: (str)
+        """
         return '{!s:s}'.format(self.__id)
 
     def __repr__(self):
+        """
+        Function called by print.
+
+        :return: (str) printed representation of the object.
+        """
         return 'File: {!s:s}'.format(self.__id)
 
 # ---------------------------------------------------------------------------
@@ -487,7 +505,7 @@ class FileRoot(FileBase):
         return self.__categories if self.__categories is not None else list()
 
     def set_categories(self, list_of_categories):
-        """In order to set the categories one must provide a list of category or an empty list
+        """In order to set the categories one must provide a list of category or an empty list.
 
         :param list_of_categories: (list)
 
@@ -1120,7 +1138,6 @@ class FileData(object):
 
 
 class AttValue(object):
-
     """Represents an attribute in the reference catalog.
 
     :author:       Barthélémy Drabczuk
@@ -1136,9 +1153,10 @@ class AttValue(object):
     def __init__(self, att_value, att_type=None, att_description=None):
         """
         constructor of AttValue.
+
         :param att_value: (str)
         :param att_type: (str)
-        :param att_description: (st)
+        :param att_description: (str)
 
         """
         su = sppasUnicode(att_value)
@@ -1151,14 +1169,13 @@ class AttValue(object):
             self.__description = su.to_strip()
 
     def get_value(self):
-        """
-        :return: current non-typed value. (str)
-        """
+        """:return: current non-typed value (str)."""
         return self.__value
 
     def set_value(self, value):
         """
         set a new value.
+
         :param value: (string)
 
         """
@@ -1166,14 +1183,13 @@ class AttValue(object):
         self.__value = su.to_strip()
 
     def get_value_type(self):
-        """
-        :return: current type of the value. (str | int | float | bool)
-        """
+        """:return: current type of the value. (str, int, float, bool)."""
         return self.__valuetype if self.__valuetype is not None else 'str'
 
     def set_value_type(self, type):
         """
-        set a new type for the current value
+        set a new type for the current value.
+
         :param type: (str) the new type name
         """
         if type in ('int', 'float', 'bool', 'str'):
@@ -1182,9 +1198,7 @@ class AttValue(object):
             raise sppasTypeError(type, 'int or float of bool or str')
 
     def get_typed_value(self):
-        """
-        :return: return the current typed value.
-        """
+        """:return: return the current typed value."""
         if self.__valuetype is not None or self.__valuetype != 'str':
             if self.__valuetype == 'int':
                 return int(self.__value)
@@ -1196,9 +1210,7 @@ class AttValue(object):
         return self.__value
 
     def get_description(self):
-        """
-        :return: return current description. (str)
-        """
+        """:return: return current description (str)."""
         if self.__description is not None:
             su = sppasUnicode(self.__description)
             return su.to_strip()
@@ -1207,8 +1219,9 @@ class AttValue(object):
 
     def set_description(self, description):
         """
-        set a new value for the description
-        :param description: (str)
+        set a new value for the description.
+
+        :param description: (str).
         """
         su = sppasUnicode(description)
         self.__description = su.to_strip()
@@ -1232,8 +1245,7 @@ class AttValue(object):
 
 
 class Category(FileBase):
-
-    """Represents a catalog of references about files
+    """Represents a catalog of references about files.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -1241,13 +1253,15 @@ class Category(FileBase):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    Category is a dictionary with a name. Its values are all AttValue objects.
+    Category is a dictionary with a name. Its keys are only alphanumerics characters
+    spaced with underscores and its values are all AttValue objects.
 
     """
 
     def __init__(self, identifier):
         """
         Constructor of the Category class.
+
         :param identifier: (str) identifier for the object, the name of the category
         """
         super(Category, self).__init__(identifier)
@@ -1255,7 +1269,8 @@ class Category(FileBase):
 
     def add(self, key, value):
         """
-        Add a new pair of key/value in the current dictionary
+        Add a new pair of key/value in the current dictionary.
+
         :param key: (str) should be only with alphanumeric characters and underscores
         :param value: (str | AttValue) will always be converted in AttValue object
         """
@@ -1275,7 +1290,8 @@ class Category(FileBase):
 
     def pop(self, key):
         """
-        Delete a pair of key/value
+        Delete a pair of key/value.
+
         :param key: (str) is the key in the dictionary to delete
         """
         if key in self.__attributs.keys():

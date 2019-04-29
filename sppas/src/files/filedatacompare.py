@@ -82,10 +82,10 @@ class sppasPathCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-        >>> tc = sppasPathCompare()
-        >>> tc.exact(FilePath("c:\\Users"), u("c:\\Users"))
-        >>> tc.methods['exact'](FilePath("c:\\Users"), u("c:\\Users"))
-        >>> tc.get('exact')(FilePath("c:\\Users"), u("c:\\Users"))
+    >>> tc = sppasPathCompare()
+    >>> tc.exact(FilePath("c:\\Users"), u("c:\\Users"))
+    >>> tc.methods['exact'](FilePath("c:\\Users"), u("c:\\Users"))
+    >>> tc.get('exact')(FilePath("c:\\Users"), u("c:\\Users"))
 
     """
 
@@ -323,20 +323,20 @@ class sppasPathCompare(sppasBaseCompare):
 class sppasRootCompare(sppasBaseCompare):
     """Comparison methods for FileRoot.
 
-        :author:       Brigitte Bigi
-        :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-        :contact:      develop@sppas.org
-        :license:      GPL, v3
-        :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-        :Example: Three different ways to compare a file data content to a given string
+    :Example: Three different ways to compare a file data content to a given string
 
-            >>> tc = sppasRootCompare()
-            >>> tc.exact(FileRoot("oriana1"), u("oriana1"))
-            >>> tc.methods['exact'](FileRoot("oriana1"), u("oriana1"))
-            >>> tc.get('exact')(FileRoot("oriana1"), u("oriana1"))
+    >>> tc = sppasRootCompare()
+    >>> tc.exact(FileRoot("oriana1"), u("oriana1"))
+    >>> tc.methods['exact'](FileRoot("oriana1"), u("oriana1"))
+    >>> tc.get('exact')(FileRoot("oriana1"), u("oriana1"))
 
-        """
+    """
 
     def __init__(self):
         """Create a sppasRootCompare instance."""
@@ -571,6 +571,22 @@ class sppasRootCompare(sppasBaseCompare):
 
 
 class sppasFileNameCompare(sppasBaseCompare):
+    """
+    Comparison methods for FileName id.
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    :Example: Three different ways to compare a file data content to a given string
+
+    >>> tc = sppasFileNameCompare()
+    >>> tc.exact(FileName("oriana1"), u("oriana1"))
+    >>> tc.methods['exact'](FileName("oriana1"), u("oriana1"))
+    >>> tc.get('exact')(FileName("oriana1"), u("oriana1"))
+    """
 
     def __init__(self):
         """Create a sppasRootCompare instance."""
@@ -763,6 +779,22 @@ class sppasFileNameCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 class sppasFileNameExtensionCompare(sppasBaseCompare):
+    """
+    Comparison methods for FileName extension.
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    :Example: Three different ways to compare a file data content to a given string
+
+    >>> tc = sppasFileNameExtensionCompare()
+    >>> tc.exact(FileName("oriana1"), u("oriana1"))
+    >>> tc.methods['exact'](FileName("oriana1"), u("oriana1"))
+    >>> tc.get('exact')(FileName("oriana1"), u("oriana1"))
+    """
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
@@ -956,6 +988,22 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 
 
 class sppasFileNamePropertiesCompare(sppasBaseCompare):
+    """
+    Comparison methods for FileName properties.
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    :Example: Three different ways to compare a file data content to a given string
+
+    >>> tc = sppasFileNamePropertiesCompare()
+    >>> tc.lock(FileName("oriana1"), u("oriana1"))
+    >>> tc.methods['lock'](FileName("oriana1"), u("oriana1"))
+    >>> tc.get('lock')(FileName("oriana1"), u("oriana1"))
+    """
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
@@ -970,7 +1018,7 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
 
     @staticmethod
     def lock(fn, value):
-        """Compare lock member to the given value
+        """Compare lock member to the given value.
 
         :param fn: (FileName) File to compare.
         :param value: (bool) Boolean to be compared with.
@@ -986,6 +1034,22 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
 
 
 class sppasReferenceCompare(sppasBaseCompare):
+    """
+    Comparison methods for Category id.
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    :Example: Three different ways to compare a file data content to a given string
+
+    >>> tc = sppasReferenceCompare()
+    >>> tc.exact(Category("mic"), u("mic"))
+    >>> tc.methods['exact'](Category("mic"), u(mic"))
+    >>> tc.get('exact')(Category("mic"), u("mic"))
+    """
 
     def __init__(self):
         """Create a sppasReferenceCompare instance."""
@@ -1179,6 +1243,16 @@ class sppasReferenceCompare(sppasBaseCompare):
 
 
 class sppasAttValueCompare(sppasBaseCompare):
+    """
+    Comparison methods for AttValue.
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
 
     def __init__(self):
         """Create a sppasAttValueCompare instance."""
@@ -1380,7 +1454,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def iequals(att_value, value):
-        """Test if att_value equals the given value
+        """Test if att_value equals the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
@@ -1399,7 +1473,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def fequals(att_value, value, precision):
-        """Test if att_value equals the given value
+        """Test if att_value equals the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
@@ -1418,7 +1492,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def gt(att_value, value):
-        """Test if att_value is strictly greater than the given value
+        """Test if att_value is strictly greater than the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
@@ -1437,7 +1511,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def ge(att_value, value):
-        """Test if att_value is greater than or equal to the given value
+        """Test if att_value is greater than or equal to the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
@@ -1456,7 +1530,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def lt(att_value, value):
-        """Test if att_value is less than the given value
+        """Test if att_value is less than the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
@@ -1475,7 +1549,7 @@ class sppasAttValueCompare(sppasBaseCompare):
 
     @staticmethod
     def le(att_value, value):
-        """Test if att_value is less than or equal to the given value
+        """Test if att_value is less than or equal to the given value.
 
         :param att_value: (AttValue) Extension to compare.
         :param value: (number) Pattern to search.
