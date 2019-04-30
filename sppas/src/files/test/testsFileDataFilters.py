@@ -18,6 +18,10 @@ class TestsFileDataFilter (unittest.TestCase):
         age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
         age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
 
+        # for fp in self.files:
+        #     for fr in fp:
+        #         fr.categories.append(age)
+
         fr = FileRoot(sppas.paths.__dict__['samples'] + '\\samples-fra\\AC track_0379.PitchTier')
         fr.categories.append(age)
 
@@ -55,7 +59,7 @@ class TestsFileDataFilter (unittest.TestCase):
 
     # def test_attValue(self):
     #     self.assertTrue(
-    #         len(self.data_filter.att(ge='12')) == 1
+    #         len(self.data_filter.att(age_ge='12')) == 1
     #     )
 
     def test_mixed_filter_sets_way(self):
