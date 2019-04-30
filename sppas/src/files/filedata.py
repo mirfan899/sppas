@@ -520,7 +520,7 @@ class FileRoot(FileBase):
         if isinstance(list_of_categories, list):
             if len(list_of_categories) > 0:
                 for category in list_of_categories:
-                    if not isinstance(category, Category):
+                    if not isinstance(category, Reference):
                         raise sppasTypeError(category, 'Category')
 
             self.__categories = list_of_categories
@@ -1259,7 +1259,7 @@ class AttValue(object):
 # ---------------------------------------------------------------------------
 
 
-class Category(FileBase):
+class Reference(FileBase):
     """Represents a catalog of references about files.
 
     :author:       Barthélémy Drabczuk
@@ -1279,7 +1279,7 @@ class Category(FileBase):
 
         :param identifier: (str) identifier for the object, the name of the category
         """
-        super(Category, self).__init__(identifier)
+        super(Reference, self).__init__(identifier)
         self.__attributs = OrderedDict()
 
     def add(self, key, value):

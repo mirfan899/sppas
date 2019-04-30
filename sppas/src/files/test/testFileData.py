@@ -5,7 +5,7 @@ import unittest
 from os.path import dirname
 
 from sppas import u, sppasTypeError
-from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Category
+from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Reference
 from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
@@ -200,7 +200,7 @@ class TestAttValue(unittest.TestCase):
 class TestCategories(unittest.TestCase):
 
     def setUp(self):
-        self.micros = Category('microphone')
+        self.micros = Reference('microphone')
         self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
         self.micros.add('mic2', 'AKG D5')
 

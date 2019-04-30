@@ -13,7 +13,7 @@ class TestsFileDataFilter (unittest.TestCase):
         self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
         self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
 
-        age = Category('age')
+        age = Reference('age')
         age.add('age1', AttValue('14', 'int', 'age of the first interviwee'))
         age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
         age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
