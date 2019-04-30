@@ -2,6 +2,16 @@
 
 import sys
 import os
+import time
+
+try:
+    import wx
+except ImportError:
+    msg = "WxPython is not installed on your system.\n"\
+          "The Graphical User Interface of SPPAS can't work."
+    print("[ ERROR ] {:s}".format(msg))
+    time.sleep(5)
+    sys.exit(1)
 
 sppasDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, sppasDir)
