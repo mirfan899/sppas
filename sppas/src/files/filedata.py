@@ -144,14 +144,6 @@ from .fileexc import FileRootValueError
 # -----------------------------------------------------------------------
 
 
-class FileStates(Enum):
-    """List all of the file states."""
-
-    NORMAL = 0
-    CHECKED = 1
-    LOCKED = 2
-
-
 class FileBase(object):
     """Represents any type of data linked to a filename.
     
@@ -261,6 +253,13 @@ class FileName(FileBase):
 
     """
 
+    class States(Enum):
+        """List all of the file name states."""
+
+        UNUSED = 0
+        CHECKED = 1
+        LOCKED = 2
+
     def __init__(self, identifier):
         """Constructor of a FileName.
 
@@ -305,7 +304,7 @@ class FileName(FileBase):
         # States of the file
         # ------------------
 
-        self.__state = FileStates.NORMAL
+        self.__state = self.States.UNUSED
         self.lock = False
 
     # -----------------------------------------------------------------------
@@ -364,12 +363,12 @@ class FileName(FileBase):
         :param value: (bool)
 
         """
-        if value == FileStates.NORMAL:
-            self.__state = FileStates.NORMAL
-        elif value == FileStates.CHECKED:
-            self.__state = FileStates.CHECKED
-        elif value == FileStates.LOCKED:
-            self.__state = FileStates.LOCKED
+        if value == self.States.UNUSED:
+            self.__state = self.States.UNUSED
+        elif value == self.States.CHECKED:
+            self.__state = self.States.CHECKED
+        elif value == self.States.LOCKED:
+            self.__state = self.States.LOCKED
         else:
             raise sppasTypeError(value, 'FileStates')
 
@@ -416,6 +415,14 @@ class FileRoot(FileBase):
 
     """
 
+    class States(Enum):
+        UNUSED = 0
+        AT_LEAST_ONE_CHECKED = 1
+        AT_LEAST_ONE_LOCKED = 2
+        ALL_CHECKED = 3
+        ALL_LOCKED = 4
+
+
     # if we create dynamically this list from the existing annotations, we'll
     # have circular imports.
     # solutions to implement are either:
@@ -446,7 +453,7 @@ class FileRoot(FileBase):
         # States of the path
         # ------------------
 
-        self.__state = FileStates.NORMAL
+        self.__state = self.States.UNUSED
         self.expand = True
         self.__bgcolor = (30, 30, 30)
 
@@ -488,7 +495,7 @@ class FileRoot(FileBase):
         :param value: (int)
 
         """
-        if isinstance(value, FileStates):
+        if isinstance(value, self.States):
             self.__state = value
         else:
             raise sppasTypeError(value, 'FileStates')
@@ -700,6 +707,13 @@ class FilePath(FileBase):
 
     """
 
+    class States(Enum):
+        UNUSED = 0
+        AT_LEAST_ONE_CHECKED = 1
+        AT_LEAST_ONE_LOCKED = 2
+        ALL_CHECKED = 3
+        ALL_LOCKED = 4
+
     def __init__(self, filepath):
         """Constructor of a FilePath.
         
@@ -707,6 +721,7 @@ class FilePath(FileBase):
         :raise: OSError if filepath does not match a directory (not file/link)
 
         """
+
         super(FilePath, self).__init__(abspath(filepath))
         if exists(filepath) is False:
             raise FileOSError(filepath)
@@ -719,7 +734,7 @@ class FilePath(FileBase):
         # States of the path
         # ------------------
 
-        self.__state = FileStates.NORMAL
+        self.__state = self.States.UNUSED
 
         # a free to use dictionary to expand the class
         self.subjoined = dict()
@@ -730,7 +745,7 @@ class FilePath(FileBase):
         return self.__state
     
     def set_state(self, value):
-        if isinstance(value, FileStates):
+        if isinstance(value, self.States):
             self.__state = value
         else:
             raise sppasTypeError(value, 'FileStates')
@@ -891,20 +906,20 @@ class FilePath(FileBase):
     def update_check(self):
         """Modify state depending on the checked root names."""
         if len(self.__roots) == 0:
-            self.state = FileStates.NORMAL
+            self.state = self.States.UNUSED
             return
         all_checked = True
         all_unchecked = True
         for fr in self.__roots:
-            if fr.state == FileStates.CHECKED:
+            if fr.state == FileRoot.States.CHECKED:
                 all_unchecked = False
             else:
                 all_checked = False
 
         if all_checked:
-            self.state = FileStates.CHECKED
+            self.state = self.States.CHECKED
         if all_unchecked:
-            self.state = FileStates.NORMAL
+            self.state = self.States.UNUSED
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -1026,7 +1041,7 @@ class FileData(object):
  
     # -----------------------------------------------------------------------
 
-    def get_checked_files(self, value=FileStates.CHECKED):
+    def get_checked_files(self, value=FileName.States.CHECKED):
         """Return the list of checked or unchecked file names.
 
         :param value: (bool) Toggle state

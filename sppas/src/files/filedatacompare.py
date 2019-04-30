@@ -65,7 +65,7 @@ from sppas import sppasTypeError
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.structs.basecompare import sppasBaseCompare
 
-from .filedata import FilePath, FileRoot, FileName, Category, AttValue, FileStates
+from .filedata import FilePath, FileRoot, FileName, Category, AttValue
 
 
 # ---------------------------------------------------------------------------
@@ -298,7 +298,7 @@ class sppasPathCompare(sppasBaseCompare):
         if isinstance(fp, FilePath) is False:
             raise sppasTypeError(fp, "FilePath")
 
-        return (fp.state is FileStates.CHECKED) == value
+        return (fp.state is FilePath.States.ALL_CHECKED) == value
 
     # -----------------------------------------------------------------------
 
@@ -547,7 +547,7 @@ class sppasRootCompare(sppasBaseCompare):
         if isinstance(fr, FileRoot) is False:
             raise sppasTypeError(fr, "FileRoot")
 
-        return (fr.state is FileStates.CHECKED) == value
+        return (fr.state is FileRoot.States.ALL_CHECKED) == value
 
     # -----------------------------------------------------------------------
 
