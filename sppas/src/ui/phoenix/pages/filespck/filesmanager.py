@@ -55,7 +55,7 @@ class FilesManager(sppasPanel):
 
     """
 
-    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+    def __init__(self, parent, name=wx.PanelNameStr):
         super(FilesManager, self).__init__(
             parent,
             id=wx.ID_ANY,
@@ -64,9 +64,28 @@ class FilesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
-        self._create_content(data)
+        self._create_content()
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
+
+    # -----------------------------------------------------------------------
+    # Public methods to access the data
+    # -----------------------------------------------------------------------
+
+    def GetSelected(self, extension=""):
+        """Get a list containing checked filenames.
+
+        Selecting a folder item equals to select all its items.
+
+        :param extension: Extension of the selected file
+        :return: The fileroot of each selected regular file (not folders)
+        from the data.
+
+        """
+        # TODO: return the checked files (or roots), not the selected ones
+        fv = self.FindWindow("fileview")
+        checked = fv.GetSelections()
+        return checked
 
     # ------------------------------------------------------------------------
 
@@ -76,12 +95,15 @@ class FilesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        self.FindWindow('fileview').set_data(data)
+        fv = self.FindWindow('fileview')
+        fv.set_data(data)
 
     # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
 
-    def _create_content(self, data):
-        """"""
+    def _create_content(self):
+        """Create the main content."""
         tb = self.__create_toolbar()
         fv = FilesTreeViewCtrl(self, name="fileview")
 
@@ -96,8 +118,9 @@ class FilesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
+        """Create the toolbar."""
         tb = BitmapTextToolbar(self)
-        tb.set_focus_color(wx.Colour(196, 128, 128))
+        tb.set_focus_color(wx.Colour(196, 96, 96, 128))
         tb.AddText("Files: ")
         tb.AddButton("files-add", "Add")
         tb.AddButton("files-remove", "Remove checked")
@@ -105,22 +128,8 @@ class FilesManager(sppasPanel):
         tb.Bind(wx.EVT_BUTTON, self.on_button_click)
         return tb
 
-    # -----------------------------------------------------------------------
-
-    def GetSelected(self, extension=""):
-        """Get a list containing checked filenames.
-
-        Selecting a folder item equals to select all its items.
-
-        :param extension: Extension of the selected file
-        :return: The fileroot of each selected regular file (not folders)
-        from the data.
-
-        """
-        # TODO: return the checked files (or roots), not the selected ones
-        checked = self.FindWindow("fileview").GetSelections()
-        return checked
-
+    # ------------------------------------------------------------------------
+    # Callbacks to events
     # ------------------------------------------------------------------------
 
     def on_key_press(self, event):
@@ -152,7 +161,7 @@ class FilesManager(sppasPanel):
         event.Skip()
 
     # ------------------------------------------------------------------------
-    # Private
+    # GUI methods to perform actions on the data
     # ------------------------------------------------------------------------
 
     def _add_file(self):
@@ -191,13 +200,9 @@ class FilesManager(sppasPanel):
 
 
 class TestPanel(FilesManager):
-    MIN_WIDTH = 240
-    MIN_HEIGHT = 64
-
-    # ------------------------------------------------------------------------
 
     def __init__(self, parent):
-        super(TestPanel, self).__init__(parent, data=None)
+        super(TestPanel, self).__init__(parent)
         self.add_test_data()
 
     # ------------------------------------------------------------------------

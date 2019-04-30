@@ -32,6 +32,8 @@
     ui.wkps.py
     ~~~~~~~~~~
 
+    Management of the workspaces of the software.
+
 """
 
 import os
@@ -54,12 +56,21 @@ class sppasWorkspaces(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
+    A workspace is made of:
+
+        - a file in which data are saved and loaded when needed;
+        - a name, matching the filename without path nor extension.
+
+    The extension of a workspace JSON files is: wjson
+
     """
+
+    ext = ".wjson"
 
     def __init__(self):
         """Create a sppasWorkspaces instance.
 
-        Load the list of existing xrw file names of the workspaces folder
+        Load the list of existing wjson file names of the workspaces folder
         of the software.
 
         """
@@ -81,10 +92,12 @@ class sppasWorkspaces(object):
 
         """
         for fn in os.listdir(paths.wkps):
-            if fn.endswith('.xrw'):
-                fn = fn[:-4]
-                self.__wkps.append(fn)
-                logging.debug('Founded workspace {:s}'.format(fn))
+            if fn.endswith(sppasWorkspaces.ext):
+                # remove path and extension to set the name of the workspace
+                wkp_name = os.path.basename(os.path.splitext(fn)[0])
+                # append in the list
+                self.__wkps.append(wkp_name)
+                logging.debug('Founded workspace {:s}'.format(wkp_name))
 
     # -----------------------------------------------------------------------
 
@@ -104,35 +117,37 @@ class sppasWorkspaces(object):
                              ''.format(u_name))
 
         # create the empty workspace data & save
-        # data = FileData(u_name)
-        # data.save(u_name + ".xrw")
+        fn = os.path.join(paths.wkps, u_name) + sppasWorkspaces.ext
+        data = FileData()
+        # data.save(fn)
 
         self.__wkps.append(u_name)
         return u_name
 
     # -----------------------------------------------------------------------
 
-    def save(self, data):
+    def save(self, data, index=-1):
         """Save data into a workspace.
 
         The data can already match an existing workspace or a new workspace
         is created.
 
         :param data: (FileData) Data of a workspace to save
+        :param index: (int) Index of the workspace to save data in
         :returns: The real name used to save the workspace
-        :raises: IOError, ValueError
+        :raises: IOError, IndexError
 
         """
-        # set the name in unicode and check it
-        su = sppasUnicode(data.id)
-        u_name = su.to_strip()
-        if u_name not in self.__wkps:
-            self.__wkps.append(u_name)
-        elif u_name == "Blank":
+        if index == 0:
             raise IOError('It is not allowed to save the Blank workspace.')
 
-        # data.save(u_name + ".xrw")
-        self.__wkps.append(u_name)
+        if index == -1:
+            u_name = self.new("New workspace")
+        else:
+            u_name = self[index]
+
+        fn = os.path.join(paths.wkps, u_name) + sppasWorkspaces.ext
+        # data.save(fn)
 
         return u_name
 
@@ -184,7 +199,7 @@ class sppasWorkspaces(object):
         :raises: IndexError, OSerror
 
         """
-        fn = os.path.join(paths.wkps, self[index]) + ".xrw"
+        fn = os.path.join(paths.wkps, self[index]) + sppasWorkspaces.ext
         if os.path.exists(fn) is False:
             self.__wkps.pop(index)
             raise OSError('The file matching the workspace {:s} is not '
@@ -201,7 +216,7 @@ class sppasWorkspaces(object):
 
         :param index: (int) Index of the workspace
         :returns: (str)
-        :raises: IndexError, OSerror
+        :raises: IndexError, OSError
 
         """
         if index == 0:

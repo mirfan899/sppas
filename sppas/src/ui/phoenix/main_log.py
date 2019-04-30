@@ -206,7 +206,8 @@ class sppasLogWindow(wx.TopLevelWindow):
         super(sppasLogWindow, self).__init__(
             parent=parent,
             title='{:s} Log'.format(sg.__name__),
-            style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
+            style=wx.CAPTION | wx.RESIZE_BORDER)
+            #style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
         # To fade-in and fade-out the opacity
         self.opacity_in = 0

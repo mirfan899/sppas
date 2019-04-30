@@ -82,7 +82,7 @@ class sppasMainWindow(sppasDialog):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This class:
 
@@ -90,19 +90,28 @@ class sppasMainWindow(sppasDialog):
         - does not inherit of wx.Frame because we don't need neither a
         status bar, nor a toolbar, nor a menu.
 
+    Styles:
+
+        - wx.CAPTION: Puts a caption on the dialog box
+        - wx.RESIZE_BORDER: Display a resizable frame around the window
+        - wx.CLOSE_BOX: Displays a close box on the frame
+        - wx.MAXIMIZE_BOX: Displays a maximize box on the dialog
+        - wx.MINIMIZE_BOX: Displays a minimize box on the dialog
+        - wx.DIALOG_NO_PARENT: Create an orphan dialog
+
     """
 
     def __init__(self):
         super(sppasMainWindow, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
-            style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
+            style=wx.CAPTION | wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.MAXIMIZE_BOX | wx.MINIMIZE_BOX | wx.DIALOG_NO_PARENT)
 
         # Members
         self._init_infos()
 
         # Create the log window of the application and show it.
-        self.log_window = sppasLogWindow(self, wx.GetApp().GetAppLogLevel())
+        self.log_window = sppasLogWindow(self, wx.GetApp().get_log_level())
 
         # Fix this frame content
         self._create_content()

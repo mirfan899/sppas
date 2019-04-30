@@ -64,7 +64,7 @@ class sppasPanel(wx.Panel):
         self.SetForegroundColour(s.fg_color)
         self.SetFont(s.text_font)
         self.SetAutoLayout(True)
-        self.SetMinSize((320, 200))
+        self.SetMinSize(wx.Size(320, 200))
 
     # -----------------------------------------------------------------------
 

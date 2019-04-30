@@ -70,7 +70,7 @@ class sppasApp(wx.App):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -106,8 +106,8 @@ class sppasApp(wx.App):
     # Public methods
     # -----------------------------------------------------------------------
 
-    def GetAppLogLevel(self):
-        """Return the log level."""
+    def get_log_level(self):
+        """Return the current level of the logging."""
         return self.__cfg.log_level
 
     # -----------------------------------------------------------------------
@@ -115,7 +115,7 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def process_command_line_args(self):
-        """Process the command line...
+        """Process the command line.
 
         This is an opportunity for users to fix some args.
 
@@ -246,7 +246,7 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """Optional. Override the already existing method to kill the app.
+        """Override the already existing method to kill the app.
 
         This method is invoked when the user:
 

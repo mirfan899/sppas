@@ -96,7 +96,7 @@ class CataloguesManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self)
-        tb.set_focus_color(wx.Colour(128, 196, 128))
+        tb.set_focus_color(wx.Colour(64, 64, 196, 128))
         tb.AddText("Catalogues: ")
         tb.AddButton("cats-add", "Create")
         tb.AddButton("cats-edit", "Edit")

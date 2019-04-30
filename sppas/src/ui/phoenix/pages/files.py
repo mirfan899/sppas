@@ -38,24 +38,30 @@ import logging
 
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
+
 from .filespck.wksmanager import WorkspacesManager
 from .filespck.filesmanager import FilesManager
 from .filespck.catsmanager import CataloguesManager
-from ..windows.button import sppasBitmapButton
-from ..windows.button import BitmapTextButton
-from ..windows.button import sppasBitmapTextButton
+from .filespck.associate import AssociatePanel
 
 # ---------------------------------------------------------------------------
 
 
 class sppasFilesPanel(sppasPanel):
-    """Create a panel to browse and select files.
+    """Main panel to browse and select workspaces and their content.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    This panel is managing 4 areas:
+
+        1. the workspaces;
+        2. the files;
+        3. an association toolbar to link files and catalogues;
+        4. the catalogues.
 
     """
 
@@ -65,7 +71,7 @@ class sppasFilesPanel(sppasPanel):
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name="page_files"
         )
         self._create_content()
@@ -78,31 +84,31 @@ class sppasFilesPanel(sppasPanel):
         self.Layout()
 
     # ------------------------------------------------------------------------
-    # Public methods
+    # Public methods to access the data
     # ------------------------------------------------------------------------
 
-    def GetFileData(self):
+    def get_data(self):
         """Return the data of the current workspace."""
         wp = self.FindWindow("workspaces")
         return wp.get_data()
 
-    def SetFileData(self):
+    def set_data(self):
         """Set the data of the current workspace to the other panels."""
-        data = self.GetFileData()
+        data = self.get_data()
         fm = self.FindWindow("files")
         fm.set_data(data)
         cm = self.FindWindow("catalogues")
         cm.set_data(data)
 
     # ------------------------------------------------------------------------
-    # Private methods
+    # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """"""
+        """Create the main content."""
         wp = WorkspacesManager(self, name='workspaces')
         fm = FilesManager(self, name="files")
-        ap = self.__create_associate_panel()
+        ap = AssociatePanel(self, name="associate")
         cm = CataloguesManager(self, name="catalogues")
 
         # Organize the title and message
@@ -115,13 +121,13 @@ class sppasFilesPanel(sppasPanel):
         sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
         sizer.Add(cm, 1, wx.EXPAND, 0)
 
+        # self.SetMinSize((680, 380))   # width = 128 + 320 + 32 + 200
         self.SetSizer(sizer)
-        self.SetMinSize((680, 380))   # width = 128 + 320 + 32 + 200
-        self.SetAutoLayout(True)
 
     # ------------------------------------------------------------------------
 
     def __create_vline(self):
+        """Create a vertical line, used to separate the panels."""
         line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
         line.SetMinSize(wx.Size(2, -1))
         line.SetSize(wx.Size(2, -1))
@@ -129,43 +135,6 @@ class sppasFilesPanel(sppasPanel):
         line.SetDepth(2)
         line.SetForegroundColour(wx.Colour(128, 128, 128))
         return line
-
-    # ------------------------------------------------------------------------
-
-    def __create_associate_panel(self):
-        ap = sppasPanel(self, name="associate")
-
-        filter = sppasBitmapButton(ap, "check_filter")
-        check = sppasBitmapButton(ap, "checklist")
-        link = sppasBitmapButton(ap, "link_add")
-        unlink = sppasBitmapButton(ap, "link_del")
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.AddStretchSpacer(4)
-        sizer.Add(filter, 1, wx.TOP | wx.ALIGN_CENTRE)
-        sizer.Add(check, 1, wx.TOP | wx.ALIGN_CENTRE)
-        sizer.AddStretchSpacer(2)
-        sizer.Add(link, 1, wx.ALIGN_CENTRE)
-        sizer.Add(unlink, 1, wx.ALIGN_CENTRE)
-        sizer.AddStretchSpacer(4)
-
-        ap.SetSizer(sizer)
-        ap.SetMinSize((32, -1))
-        return ap
-
-    # ------------------------------------------------------------------------
-
-    def __create_button(self, text, icon):
-        btn = sppasBitmapTextButton(self, label=text, name=icon)
-        """btn.FocusStyle = wx.PENSTYLE_SOLID
-        btn.FocusWidth = 1
-        btn.FocusColour = wx.Colour(200, 20, 20)
-        btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
-        btn.BorderWidth = 0
-        # btn.BitmapColour = wx.Colour(200, 20, 20)"""
-        btn.SetMinSize((-1, 32))
-        return btn
 
     # ------------------------------------------------------------------------
     # Callbacks to events

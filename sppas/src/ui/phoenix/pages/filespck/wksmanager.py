@@ -26,24 +26,23 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.catsmanager.py
+    src.ui.phoenix.filespck.wksmanager.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Main panel to manage the catalogues.
+    Main panel to manage the workspaces.
 
 """
 
 import logging
-import os
 import wx
 
 from sppas.src.ui.wkps import sppasWorkspaces
+
 from sppas.src.ui.phoenix.windows import sppasStaticLine
 from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows.button import CheckButton
 
 from .btntxttoolbar import BitmapTextToolbar
-
 
 # ----------------------------------------------------------------------------
 
@@ -59,7 +58,7 @@ class WorkspacesManager(sppasPanel):
 
     """
 
-    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+    def __init__(self, parent, name=wx.PanelNameStr):
         super(WorkspacesManager, self).__init__(
             parent,
             id=wx.ID_ANY,
@@ -68,27 +67,45 @@ class WorkspacesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
+        # manager of the list of available workspaces in the software
         self.__wkps = sppasWorkspaces()
-        self._create_content(data)
+        self.__data = self.__wkps.get_data(0)
+        self.__current = 0
+
+        self._create_content()
+
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
+    # -----------------------------------------------------------------------
+    # Public methods to access the data
+    # -----------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data of the currently displayed workspace."""
+        return self.__data
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
-    def _create_content(self, data):
-        """"""
+    def _create_content(self):
+        """Create the main content."""
         tb = self.__create_toolbar()
 
         cv = sppasPanel(self, name="wksview")
         s = wx.BoxSizer(wx.VERTICAL)
-        for w in self.__wkps:
+        for i, w in enumerate(self.__wkps):
             btn = CheckButton(cv, label=w, name=w)
             btn.SetSpacing(12)
             btn.SetMinSize(wx.Size(-1, 32))
             btn.SetSize(wx.Size(-1, 32))
             s.Add(btn, 0, wx.EXPAND | wx.ALL, 2)
-
             btn.Bind(wx.EVT_CHECKBOX, self.on_wkp_changed)
+            if i == 0:
+                btn.SetValue(True)
+            else:
+                btn.SetValue(False)
         cv.SetSizer(s)
 
         # current workspace is the blank one
@@ -97,7 +114,7 @@ class WorkspacesManager(sppasPanel):
         line = sppasStaticLine(self, wx.HORIZONTAL)
         line.SetMinSize(wx.Size(4, -1))
         line.SetSize(wx.Size(4, -1))
-        line.SetPenStyle(wx.PENSTYLE_DOT_DASH)
+        #line.SetPenStyle(wx.PENSTYLE_DOT_DASH)
         line.SetDepth(2)
         line.SetForegroundColour(self.GetForegroundColour())
 
@@ -105,16 +122,60 @@ class WorkspacesManager(sppasPanel):
         sizer.Add(tb, proportion=1, flag=wx.EXPAND, border=0)
         sizer.Add(line, proportion=0, flag=wx.EXPAND, border=0)
         sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
+
+        self.SetMinSize((128, 200))
         self.SetSizer(sizer)
-        self.SetMinSize((196, 200))
-        self.SetSize((196, -1))
-        self.SetAutoLayout(True)
+
+    # -----------------------------------------------------------------------
+
+    def __set_current_wkp(self, index):
+        """Set the current workspace at the given index.
+
+        Switch to the corresponding workspace and load the new data.
+
+        """
+        wkp_name = self.__wkps[index]
+
+        # un-check the current button
+        p = self.FindWindow('wksview')
+        c = p.GetSizer().GetItem(self.__current).GetWindow()
+        # TODO: verify if data where not saved (some locked files)
+        # if len(self.__data.get_state(state=FileData.LOCKED) > 0:
+        # If the state of some of the data is not ok (files locked)
+        #     c = p.GetSizer().GetItem(index).GetWindow()
+        #     c.SetValue(False)
+        #     return
+
+        # save the data of the current wkp
+        if self.__current > 0:
+            self.__wkps.save(self.__data, self.__current)
+
+        c.SetValue(False)
+        c.Refresh()
+        logging.debug('Workspace {:s} un-checked'.format(c.GetLabel()))
+
+        # load the data of the new workspace
+        self.__data = self.__wkps.get_data(index)
+        self.__current = index
+
+        # check the one we want to switch on
+        # c = p.GetSizer().GetItem(self.__current).GetWindow()
+        # c.SetValue(True)
+        # c.Refresh()
+
+        # send the new data to the parent
+        try:
+            self.GetParent().set_data()
+        except AttributeError:
+            # the parent is not of the expected type
+            logging.error('Data of the current workspace not sent to the parent.')
+            pass
 
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self, orient=wx.VERTICAL)
-        tb.set_focus_color(wx.Colour(128, 128, 196))
+        tb.set_focus_color(wx.Colour(128, 196, 96, 128))  # yellow-green
 
         tb.AddText("Workspaces: ")
         tb.AddButton("workspace_import", "Import from")
@@ -164,42 +225,17 @@ class WorkspacesManager(sppasPanel):
         # which workspace is clicked
         btn = event.GetButtonObj()
 
-        # hum... user clicked the current one!
-        if btn.GetValue() is True:
-            logging.warning('Workspace {:s} is active and can not be disabled.'
+        if btn.GetLabel() != self.__wkps[self.__current]:
+            wkp_name = btn.GetLabel()
+            wkp_index = self.__wkps.index(wkp_name)
+            logging.debug(' ... Workspace {:s} clicked'.format(wkp_name))
+            self.__set_current_wkp(wkp_index)
+
+        else:
+            # user clicked the current one!
+            logging.warning('Workspace {:s} is already active.'
                             ''.format(btn.GetLabel()))
-            return
-
-        wkp_name = btn.GetLabel()
-        wkp_index = self.__wkps.index(wkp_name)
-        logging.debug('Workspace {:s} clicked'.format(wkp_name))
-
-        # get data and save the current workspace
-        # data = self.GetParent().GetFileData()
-        # check if the state of data is ok (no file is locked)
-        # save the wkp
-        # self.__wkps.save(data)
-
-        # switch to the clicked workspace
-        p = self.FindWindow('wksview')
-        for child in p.GetChildren():
-            if child.GetValue() is True:
-                child.SetValue(False)
-                child.Refresh()
-                logging.debug('Workspace {:s} un-checked'.format(child.GetLabel()))
-                break
-
-        logging.debug('Workspace {:s} checked'.format(btn.GetLabel()))
-        btn.SetValue(True)
-        btn.Refresh()
-
-        # send the new data to the parent
-        data = self.__wkps.get_data(wkp_index)
-        try:
-            self.GetParent().SetFileData(data)
-        except AttributeError:
-            # the parent is not of the expected type
-            pass
+            btn.SetValue(True)
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py
@@ -209,7 +245,7 @@ class WorkspacesManager(sppasPanel):
 class TestPanel(WorkspacesManager):
 
     def __init__(self, parent):
-        super(TestPanel, self).__init__(parent, data=None)
+        super(TestPanel, self).__init__(parent)
         self.add_test_data()
         self.SetBackgroundColour(wx.Colour(128, 128, 128))
 
