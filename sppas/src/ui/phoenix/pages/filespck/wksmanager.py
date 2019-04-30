@@ -111,17 +111,9 @@ class WorkspacesManager(sppasPanel):
         # current workspace is the blank one
         #font = self.GetFont().MakeBold().Scale(1.4)
 
-        line = sppasStaticLine(self, wx.HORIZONTAL)
-        line.SetMinSize(wx.Size(4, -1))
-        line.SetSize(wx.Size(4, -1))
-        #line.SetPenStyle(wx.PENSTYLE_DOT_DASH)
-        line.SetDepth(2)
-        line.SetForegroundColour(self.GetForegroundColour())
-
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tb, proportion=1, flag=wx.EXPAND, border=0)
-        sizer.Add(line, proportion=0, flag=wx.EXPAND, border=0)
-        sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
+        sizer.Add(cv, proportion=2, flag=wx.EXPAND, border=0)
 
         self.SetMinSize((128, 200))
         self.SetSizer(sizer)
