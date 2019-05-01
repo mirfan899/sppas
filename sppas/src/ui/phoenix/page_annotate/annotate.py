@@ -117,6 +117,8 @@ class sppasAnnotatePanel(sppasPanel):
         shift_down = event.ShiftDown()
         logging.debug('Annotate page received a key event. key_code={:d}'.format(key_code))
 
+        event.Skip()
+
     # -----------------------------------------------------------------------
 
     def SetFont(self, font):

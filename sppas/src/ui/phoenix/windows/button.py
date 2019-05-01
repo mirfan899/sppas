@@ -331,7 +331,7 @@ class BaseButton(wx.Window):
         """
         super(BaseButton, self).__init__(
             parent, id, pos, size,
-            style=wx.BORDER_NONE | wx.TRANSPARENT_WINDOW | wx.CLIP_CHILDREN | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
+            style=wx.BORDER_NONE | wx.TRANSPARENT_WINDOW | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
             name=name)
 
         # Preceding state and current one
@@ -637,8 +637,9 @@ class BaseButton(wx.Window):
             elif event.RightUp():
                 self.OnMouseRightUp(event)
 
-        wx.PostEvent(self.GetParent().GetEventHandler(), event)
-        event.Skip()
+        if self:
+            wx.PostEvent(self.GetParent().GetEventHandler(), event)
+            event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -1032,7 +1033,8 @@ class BaseButton(wx.Window):
         if wx.Platform == '__WXMSW__':
             self.GetParent().RefreshRect(self.Rect, False)
         else:
-            self.Refresh()
+            if self:
+                self.Refresh()
 
 # ----------------------------------------------------------------------------
 

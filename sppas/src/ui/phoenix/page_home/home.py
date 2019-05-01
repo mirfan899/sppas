@@ -62,7 +62,7 @@ class sppasHomePanel(sppasPanel):
         super(sppasHomePanel, self).__init__(
             parent=parent,
             name="page_home",
-            style=wx.BORDER_NONE
+            style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.TAB_TRAVERSAL
         )
         self._create_content()
         self._setup_events()
@@ -136,6 +136,8 @@ class sppasHomePanel(sppasPanel):
         #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
         #    logging.debug('Refresh all the files [F5 keys pressed]')
         #    self.FindWindow("files").RefreshData()
+
+        event.Skip()
 
     # -----------------------------------------------------------------------
 

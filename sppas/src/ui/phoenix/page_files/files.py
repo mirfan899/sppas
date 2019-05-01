@@ -167,3 +167,4 @@ class sppasFilesPanel(sppasPanel):
         #    logging.debug('Refresh all the files [F5 keys pressed]')
         #    self.FindWindow("files").RefreshData()
 
+        event.Skip()

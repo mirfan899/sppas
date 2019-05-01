@@ -103,7 +103,7 @@ class sppasDialog(wx.Dialog):
 
         """
         # Fix frame properties
-        self.SetMinSize((320, 200))
+        self.SetMinSize(wx.Size(320, 200))
         w = int(wx.GetApp().settings.frame_size[0] * 0.7)
         h = int(wx.GetApp().settings.frame_size[1] * 0.8)
         self.SetSize(wx.Size(w, h))

@@ -78,9 +78,9 @@ class sppasBaseMessageDialog(sppasDialog):
         self._create_buttons()
 
         # Fix frame properties
-        self.SetMinSize((320, 200))
-        w = int(wx.GetApp().settings.frame_size[0] * 0.3)
-        h = int(wx.GetApp().settings.frame_size[1] * 0.3)
+        #self.SetMinSize(wx.Size(320, 200))
+        w = int(wx.GetApp().settings.frame_size[0] * 0.4)
+        h = int(wx.GetApp().settings.frame_size[1] * 0.4)
         self.SetSize(wx.Size(w, h))
 
         self.LayoutComponents()
@@ -108,6 +108,7 @@ class sppasBaseMessageDialog(sppasDialog):
         s.Add(txt, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 10)
         p.SetSizer(s)
         p.SetName("content")
+        p.SetMinSize(wx.Size(-1, 128))
 
     # -----------------------------------------------------------------------
 

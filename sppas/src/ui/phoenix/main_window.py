@@ -41,9 +41,9 @@ from sppas.src.config import sg
 from sppas.src.config import ui_translation
 
 from .windows import sppasStaticLine
-from .windows import sppasBitmapTextButton
+from .windows import BitmapTextButton
 from .windows import sppasTextButton
-from .windows import sppasBitmapButton
+from .windows import sppasBitmapButton, sppasBitmapTextButton
 from .windows import sppasPanel
 from .windows import sppasDialog
 from .windows.book import sppasSimplebook
@@ -107,7 +107,7 @@ class sppasMainWindow(sppasDialog):
         super(sppasMainWindow, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
-            style=wx.CAPTION | wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.MAXIMIZE_BOX | wx.MINIMIZE_BOX | wx.DIALOG_NO_PARENT)
+            style=wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.CAPTION | wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.MAXIMIZE_BOX | wx.MINIMIZE_BOX | wx.DIALOG_NO_PARENT)
 
         # Members
         self._init_infos()
@@ -235,7 +235,7 @@ class sppasMainWindow(sppasDialog):
                       "".format(event_id, event_name))
 
         if event_name == "exit":
-            self.exit()
+            wx.CallLater(200, self.exit)
 
         elif event_name == "view_log":
             self.log_window.focus()
@@ -276,12 +276,8 @@ class sppasMainWindow(sppasDialog):
             self.exit()
 
         else:
-            event.StopPropagation()
-            # Keeps on going the event to the current page of the book only.
-            # DANGER: if the page skip() the event, we'll resend, and it'll never stop
-            w = self.FindWindow("content").GetCurrentPage()
-            logging.debug('current page: {:s}'.format(w.GetName()))
-            wx.PostEvent(w, event)
+            # Keeps on going the event to the current page of the book.
+            event.Skip()
 
     # -----------------------------------------------------------------------
     # Callbacks to events
@@ -375,6 +371,7 @@ class sppasMenuPanel(sppasPanel):
     def __init__(self, parent):
         super(sppasMenuPanel, self).__init__(
             parent=parent,
+            style=wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.NO_BORDER,
             name="header")
 
         self.SetMinSize(wx.Size(-1, wx.GetApp().settings.title_height))
@@ -445,6 +442,7 @@ class sppasActionsPanel(sppasPanel):
 
         super(sppasActionsPanel, self).__init__(
             parent=parent,
+            style = wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.NO_BORDER,
             name="actions")
 
         settings = wx.GetApp().settings
@@ -453,14 +451,10 @@ class sppasActionsPanel(sppasPanel):
         self.SetMinSize(wx.Size(-1, settings.action_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        exit_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_EXIT, name="exit")
-        about_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_ABOUT, name="about")
-        settings_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_SETTINGS, name="settings")
-        log_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_VIEWLOGS, name="view_log")
+        exit_btn = sppasBitmapTextButton(self, MSG_ACTION_EXIT, "exit")
+        about_btn = self.create_button(MSG_ACTION_ABOUT, "about")
+        settings_btn = self.create_button(MSG_ACTION_SETTINGS, "settings")
+        log_btn = self.create_button(MSG_ACTION_VIEWLOGS, "view_log")
 
         sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
@@ -471,6 +465,18 @@ class sppasActionsPanel(sppasPanel):
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def create_button(self, text, icon):
+        btn = BitmapTextButton(self, label=text, name=icon)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize((32, 32))
+
+        return btn
 
     # ------------------------------------------------------------------------
 
