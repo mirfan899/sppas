@@ -28,34 +28,38 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.pages.analyze.py
+    ui.phoenix.page_files.welcome.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 
-from ..windows import sppasTitleText
-from ..windows import sppasMessageText
-from ..windows import sppasPanel
+from sppas.src.config import sg
+
+from sppas.src.ui.phoenix.windows import sppasTitleText
+from sppas.src.ui.phoenix.windows import sppasMessageText
+from sppas.src.ui.phoenix.windows import sppasPanel
+
+from sppas.src.ui.phoenix.tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
 
 
-class sppasAnalyzePanel(sppasPanel):
-    """Create a panel to analyze the selected files.
+class sppasHomePanel(sppasPanel):
+    """Create a panel to display a welcome message.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
     def __init__(self, parent):
-        super(sppasAnalyzePanel, self).__init__(
+        super(sppasHomePanel, self).__init__(
             parent=parent,
-            name="page_analyze",
+            name="page_home",
             style=wx.BORDER_NONE
         )
         self._create_content()
@@ -65,23 +69,35 @@ class sppasAnalyzePanel(sppasPanel):
         self.SetFont(wx.GetApp().settings.text_font)
 
     # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """"""
+        """Create the main content."""
+        # create a banner
+        bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
+        sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
+
         # Create a title
         st = sppasTitleText(
             parent=self,
-            label="Not implemented...")
+            label="Welcome")
         st.SetName("title")
 
         # Create the welcome message
-        txt = sppasMessageText(
-            self,
-            "In future versions, analyzing annotated data will be here!"
-        )
+        message = \
+            "This is the new and experimental version of the GUI - "\
+            "The Graphical User Interface, of {:s}. This version is" \
+            "using WxPython version 4.\n\n"\
+            "The stable version of the GUI requires WxPython version 3.\n\n" \
+            "For any help, see the web page for installation instructions " \
+            "and chapter 2 of the documentation.\n\n"\
+            "{:s}".format(sg.__name__, sg.__url__)
+        txt = sppasMessageText(self, message)
 
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(sbmp, 2, wx.ALIGN_CENTER_HORIZONTAL | wx.ALL, 15)
         sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
         sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 

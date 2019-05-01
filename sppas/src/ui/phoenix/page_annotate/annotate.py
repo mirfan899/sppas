@@ -28,21 +28,21 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.pages.plugins.py
+    ui.phoenix.page_files.annotate.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 import wx
 
-from ..windows import sppasTitleText
-from ..windows import sppasMessageText
-from ..windows import sppasPanel
+from sppas.src.ui.phoenix.windows import sppasTitleText
+from sppas.src.ui.phoenix.windows import sppasMessageText
+from sppas.src.ui.phoenix.windows import sppasPanel
 
 # ---------------------------------------------------------------------------
 
 
-class sppasPluginsPanel(sppasPanel):
-    """Create a panel to work with plugins on the selected files.
+class sppasAnnotatePanel(sppasPanel):
+    """Create a panel to annotate automatically the selected files.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -53,9 +53,9 @@ class sppasPluginsPanel(sppasPanel):
     """
 
     def __init__(self, parent):
-        super(sppasPluginsPanel, self).__init__(
+        super(sppasAnnotatePanel, self).__init__(
             parent=parent,
-            name="page_plugins",
+            name="page_annotate",
             style=wx.BORDER_NONE
         )
         self._create_content()
@@ -77,7 +77,7 @@ class sppasPluginsPanel(sppasPanel):
         # Create the welcome message
         txt = sppasMessageText(
             self,
-            "In future versions, plugins will be here!"
+            "In future versions, automatic annotations will be here!."
         )
 
         # Organize the title and message

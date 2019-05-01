@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.pages.files.py
+    ui.phoenix.page_files.files.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -39,10 +39,10 @@ import logging
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
 
-from .filespck.wksmanager import WorkspacesManager
-from .filespck.filesmanager import FilesManager
-from .filespck.catsmanager import CataloguesManager
-from .filespck.associate import AssociatePanel
+from sppas.src.ui.phoenix.page_files.wksmanager import WorkspacesManager
+from sppas.src.ui.phoenix.page_files.filesmanager import FilesManager
+from sppas.src.ui.phoenix.page_files.catsmanager import CataloguesManager
+from sppas.src.ui.phoenix.page_files.associate import AssociatePanel
 
 # ---------------------------------------------------------------------------
 

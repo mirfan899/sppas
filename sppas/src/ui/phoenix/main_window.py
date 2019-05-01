@@ -46,11 +46,11 @@ from .windows import sppasPanel
 from .windows import sppasDialog
 from .windows.book import sppasSimplebook
 
-from .pages import sppasHomePanel
-from .pages import sppasFilesPanel
-from .pages import sppasAnnotatePanel
-from .pages import sppasAnalyzePanel
-from .pages import sppasPluginsPanel
+from .page_home import sppasHomePanel
+from .page_files import sppasFilesPanel
+from .page_annotate import sppasAnnotatePanel
+from .page_analyze import sppasAnalyzePanel
+from .page_plugins import sppasPluginsPanel
 
 from .dialogs import YesNoQuestion
 from .dialogs import About
@@ -169,7 +169,7 @@ class sppasMainWindow(sppasDialog):
     def _create_book(self):
         """Create the simple book to manage the several pages of the frame.
 
-        Names of the pages are:
+        Names of the page_files are:
         page_welcome, page_files, page_annotate, page_analyze, page_plugins
 
         """

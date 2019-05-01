@@ -273,8 +273,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         title = sppasLogTitlePanel(self)
         title.SetName('header')
         top_sizer.Add(title, 0, wx.EXPAND, 0)
-        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line_top, 0, wx.EXPAND, 0)
+        top_sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
 
         # add a panel for the messages
         msg_panel = sppasLogMessagePanel(
@@ -285,8 +284,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         self.txt = msg_panel.txt
 
         # separate top and the rest with a line
-        line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line, 0, wx.EXPAND, 0)
+        top_sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
 
         # add some action buttons
         actions = sppasLogActionPanel(self)
@@ -296,6 +294,18 @@ class sppasLogWindow(wx.TopLevelWindow):
         # Layout the content
         self.SetSizer(top_sizer)
         self.Layout()
+
+    # ------------------------------------------------------------------------
+
+    def HorizLine(self, parent, depth=3):
+        """Return an horizontal static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, depth))
+        line.SetSize(wx.Size(-1, depth))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
 
     # -----------------------------------------------------------------------
 

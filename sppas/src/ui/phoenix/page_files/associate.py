@@ -28,7 +28,7 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.pages.filespck.associate.py
+    ui.phoenix.page_files.filespck.associate.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Actions to associate files and references of the catalogues.
