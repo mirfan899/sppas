@@ -539,6 +539,7 @@ class BaseButton(wx.Window):
         delta = 20
         if (r + g + b) > 384:
             return wx.Colour(r, g, b, 50).ChangeLightness(100 - delta)
+        return wx.Colour(r, g, b, 50).ChangeLightness(delta)
 
     # ------------------------------------------------------------------------
 
@@ -886,7 +887,7 @@ class BaseButton(wx.Window):
                 brush = wx.Brush(color, wx.SOLID)
 
         else:
-            # this line assumes that a pressed button should be hilighted with
+            # this line assumes that a pressed button should be highlighted with
             # a solid colour even if the background is supposed to be transparent
             c = self.GetHighlightedBackgroundColour()
             brush = wx.Brush(c, wx.SOLID)
@@ -1601,7 +1602,6 @@ class CheckButton(BaseToggleButton):
 
         return brush
 
-    # ------------------------------------------------------------------------
 
     def Notify(self):
         """Actually sends the wx.wxEVT_COMMAND_CHECKBOX_CLICKED event."""

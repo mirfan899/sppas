@@ -59,7 +59,7 @@ class BitmapTextToolbar(sppasPanel):
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.NO_BORDER | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            style=wx.NO_BORDER | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=wx.PanelNameStr)
 
         # Focus Color&Style
@@ -68,7 +68,7 @@ class BitmapTextToolbar(sppasPanel):
         self._fc = wx.Colour(128, 128, 128, 128)
 
         self.SetSizer(wx.BoxSizer(orient))
-        self.SetMinSize((-1, 32))
+        #self.SetMinSize((-1, 32))
         self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------
@@ -121,9 +121,7 @@ class BitmapTextToolbar(sppasPanel):
         btn.Spacing = 12
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
-        if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
-            btn.SetMinSize((64, -1))
-        else:
-            btn.SetMinSize((-1, 32))
+        btn.SetMinSize((32, 32))
 
         return btn
+

@@ -10,8 +10,9 @@ except ImportError:
     msg = "WxPython is not installed on your system.\n"\
           "The Graphical User Interface of SPPAS can't work."
     print("[ ERROR ] {:s}".format(msg))
+    print("SPPAS exits with error status: -1")
     time.sleep(5)
-    sys.exit(1)
+    sys.exit(-1)
 
 sppasDir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, sppasDir)

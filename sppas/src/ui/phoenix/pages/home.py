@@ -69,9 +69,11 @@ class sppasHomePanel(sppasPanel):
         self.SetFont(wx.GetApp().settings.text_font)
 
     # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """"""
+        """Create the main content."""
         # create a banner
         bmp = sppasSwissKnife.get_bmp_image('splash_transparent', 100)
         sbmp = wx.StaticBitmap(self, wx.ID_ANY, bmp)
@@ -84,9 +86,10 @@ class sppasHomePanel(sppasPanel):
 
         # Create the welcome message
         message = \
-            "The Graphical User Interface can't work because "\
-            "{:s} requires WxPython version 3 but version 4 is installed.\n" \
-            "Yet the Command-Line User Interface still works.\n\n"\
+            "This is the new and experimental version of the GUI - "\
+            "The Graphical User Interface, of {:s}. This version is" \
+            "using WxPython version 4.\n\n"\
+            "The stable version of the GUI requires WxPython version 3.\n\n" \
             "For any help, see the web page for installation instructions " \
             "and chapter 2 of the documentation.\n\n"\
             "{:s}".format(sg.__name__, sg.__url__)

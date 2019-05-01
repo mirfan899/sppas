@@ -112,8 +112,8 @@ class WorkspacesManager(sppasPanel):
         #font = self.GetFont().MakeBold().Scale(1.4)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(tb, proportion=1, flag=wx.EXPAND, border=0)
-        sizer.Add(cv, proportion=2, flag=wx.EXPAND, border=0)
+        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
+        sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
 
         self.SetMinSize((128, 200))
         self.SetSizer(sizer)

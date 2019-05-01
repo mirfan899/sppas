@@ -299,7 +299,7 @@ class sppasMainWindow(sppasDialog):
         # Stop redirecting logging to this application
         self.log_window.redirect_logging(False)
         # Terminate all frames
-        self.DestroyChildren()
+        # self.DestroyChildren()
         self.DestroyFadeOut(deltaN=-6)
 
     # -----------------------------------------------------------------------
