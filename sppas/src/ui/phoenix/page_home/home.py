@@ -32,6 +32,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import logging
 import wx
 
 from sppas.src.config import sg
@@ -63,6 +65,7 @@ class sppasHomePanel(sppasPanel):
             style=wx.BORDER_NONE
         )
         self._create_content()
+        self._setup_events()
 
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
@@ -102,6 +105,37 @@ class sppasHomePanel(sppasPanel):
         sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 
         self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Capture keys
+        self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_key_event(self, event):
+        """Process a key event.
+
+        :param event: (wx.Event)
+
+        """
+        key_code = event.GetKeyCode()
+        cmd_down = event.CmdDown()
+        shift_down = event.ShiftDown()
+        logging.debug('Home page received a key event. key_code={:d}'.format(key_code))
+
+        #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
+        #    logging.debug('Refresh all the files [F5 keys pressed]')
+        #    self.FindWindow("files").RefreshData()
 
     # -----------------------------------------------------------------------
 

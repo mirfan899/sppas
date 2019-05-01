@@ -32,6 +32,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import logging
 import wx
 import webbrowser
 
@@ -259,11 +261,27 @@ class sppasMainWindow(sppasDialog):
 
         """
         key_code = event.GetKeyCode()
+        logging.debug('Main window received a key event. key_code={:d}'.format(key_code))
 
         if key_code == wx.WXK_F4 and event.AltDown():
+            # ALT+F4 on Windows to exit with confirmation
             self.on_exit(event)
+
+        elif key_code == 87 and event.CmdDown():
+            # CMD+w on MacOS to exit with confirmation
+            self.on_exit(event)
+
+        elif key_code == 81 and event.CmdDown():
+            # CMD+q on MacOS to force exit
+            self.exit()
+
         else:
-            event.Skip()
+            event.StopPropagation()
+            # Keeps on going the event to the current page of the book only.
+            # DANGER: if the page skip() the event, we'll resend, and it'll never stop
+            w = self.FindWindow("content").GetCurrentPage()
+            logging.debug('current page: {:s}'.format(w.GetName()))
+            wx.PostEvent(w, event)
 
     # -----------------------------------------------------------------------
     # Callbacks to events

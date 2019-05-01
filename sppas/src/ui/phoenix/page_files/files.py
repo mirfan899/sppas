@@ -75,12 +75,12 @@ class sppasFilesPanel(sppasPanel):
             name="page_files"
         )
         self._create_content()
+        self._setup_events()
 
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
 
-        self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -136,18 +136,34 @@ class sppasFilesPanel(sppasPanel):
         line.SetForegroundColour(wx.Colour(128, 128, 128))
         return line
 
-    # ------------------------------------------------------------------------
-    # Callbacks to events
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
 
-    def on_key_press(self, event):
-        """Respond to a keypress event."""
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Capture keys
+        self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_key_event(self, event):
+        """Process a key event.
+
+        :param event: (wx.Event)
+
+        """
         key_code = event.GetKeyCode()
         cmd_down = event.CmdDown()
         shift_down = event.ShiftDown()
+        logging.debug('Files page received a key event. key_code={:d}'.format(key_code))
 
-        if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
-            logging.debug('Refresh all the files [F5 keys pressed]')
-            self.FindWindow("files").RefreshData()
+        #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
+        #    logging.debug('Refresh all the files [F5 keys pressed]')
+        #    self.FindWindow("files").RefreshData()
 
-        event.Skip()
