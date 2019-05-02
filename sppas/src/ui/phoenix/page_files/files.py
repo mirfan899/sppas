@@ -59,7 +59,7 @@ class sppasFilesPanel(sppasPanel):
     This panel is managing 4 areas:
 
         1. the workspaces;
-        2. the files;
+        2. the tree view of files;
         3. an association toolbar to link files and catalogues;
         4. the catalogues.
 
@@ -88,17 +88,49 @@ class sppasFilesPanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data of the current workspace."""
-        wp = self.FindWindow("workspaces")
-        return wp.get_data()
+        """Return the data currently displayed in the tree-view.
 
-    def set_data(self):
+        :return: (FileData)
+
+        """
+        fm = self.FindWindow("filesview")
+        return fm.get_data()
+
+    # ------------------------------------------------------------------------
+
+    def set_data_from_workspace(self, data=None):
         """Set the data of the current workspace to the other panels."""
-        data = self.get_data()
-        fm = self.FindWindow("files")
+        data = None
+        if data is None:
+            wp = self.FindWindow("workspaces")
+            data = wp.get_data()
+            print(data)
+
+        fm = self.FindWindow("filesview")
         fm.set_data(data)
+
         cm = self.FindWindow("catalogues")
         cm.set_data(data)
+
+    # ------------------------------------------------------------------------
+
+    def set_data_from_fileview(self, to_wkp=True, to_cat=True):
+        """Set the currently displayed data to the other panels.
+
+        :param to_wkp: (bool) send to the workspaces
+        :param to_cat: (bool) send to the catalogues
+
+        """
+        fm = self.FindWindow("filesview")
+        data = fm.get_data()
+
+        if to_wkp:
+            wp = self.FindWindow("workspaces")
+            data = wp.set_data(data)
+
+        if to_cat:
+            cm = self.FindWindow("catalogues")
+            cm.set_data(data)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -107,7 +139,7 @@ class sppasFilesPanel(sppasPanel):
     def _create_content(self):
         """Create the main content."""
         wp = WorkspacesManager(self, name='workspaces')
-        fm = FilesManager(self, name="files")
+        fm = FilesManager(self, name="filesview")
         ap = AssociatePanel(self, name="associate")
         cm = CataloguesManager(self, name="catalogues")
 
@@ -165,6 +197,6 @@ class sppasFilesPanel(sppasPanel):
 
         #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
         #    logging.debug('Refresh all the files [F5 keys pressed]')
-        #    self.FindWindow("files").RefreshData()
+        #    self.FindWindow("filesview").RefreshData()
 
         event.Skip()

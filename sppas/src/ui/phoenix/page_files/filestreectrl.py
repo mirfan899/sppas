@@ -89,6 +89,12 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     # Public methods
     # ------------------------------------------------------------------------
 
+    def get_data(self):
+        """Return the data displayed into the tree."""
+        return self._model.get_data()
+
+    # ------------------------------------------------------------------------
+
     def GetChecked(self):
         """Return checked filenames."""
         return self._model.GetCheckedFiles(True)

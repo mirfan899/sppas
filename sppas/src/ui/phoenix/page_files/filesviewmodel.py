@@ -192,6 +192,12 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
+    def get_data(self):
+        """Return the data displayed into the tree."""
+        return self.__data
+
+    # -----------------------------------------------------------------------
+
     def set_data(self, data):
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
@@ -504,12 +510,12 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def RemoveCheckedFiles(self):
-        self.__data.remove_checked_files()
- 
+        self.__data.remove(FileName.CHECKED)
+
     # -----------------------------------------------------------------------
 
-    def GetCheckedFiles(self, value=True):
-        return self.__data.get_checked_files(value)
+    def GetCheckedFiles(self):
+        return self.__data.get_state(FileName.CHECKED)
 
     # -----------------------------------------------------------------------
 

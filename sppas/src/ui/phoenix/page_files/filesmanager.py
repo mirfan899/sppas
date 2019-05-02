@@ -89,6 +89,13 @@ class FilesManager(sppasPanel):
 
     # ------------------------------------------------------------------------
 
+    def get_data(self):
+        """Return the data like they are currently displayed."""
+        fv = self.FindWindow('fileview')
+        return fv.get_data()
+
+    # ------------------------------------------------------------------------
+
     def set_data(self, data):
         """Assign new data to display to this panel.
 

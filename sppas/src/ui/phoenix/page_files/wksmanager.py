@@ -33,6 +33,7 @@
 
 """
 
+import os
 import logging
 import wx
 
@@ -72,12 +73,12 @@ class WorkspacesManager(sppasPanel):
         self.Layout()
 
     # -----------------------------------------------------------------------
-    # Public methods to access the data
+    # Public methods to access the data saved in the workspace files
     # -----------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data of the currently displayed workspace."""
-        return self.FindWindow("wkslist").get_data()
+        """Return the data of the current workspace."""
+        return self.FindWindow("wkpslist").get_data()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -144,11 +145,6 @@ class WorkspacesManager(sppasPanel):
 
         """
         key_code = event.GetKeyCode()
-        shift_down = event.ShiftDown()
-        if key_code == wx.WXK_F5 and shift_down is True:
-            logging.debug('Refresh the workspaces [SHIFT+F5 keys pressed]')
-            #self.FindWindow("wkpslist").RefreshData()
-
         event.Skip()
 
     # ------------------------------------------------------------------------
@@ -160,7 +156,8 @@ class WorkspacesManager(sppasPanel):
 
         """
         try:
-            self.GetParent().set_data()
+            p = self.GetParent()
+            p.set_data_from_workspace()
         except AttributeError:
             # the parent is not of the expected type
             logging.error('Data of the current workspace not sent to the parent.')
@@ -181,40 +178,106 @@ class WorkspacesManager(sppasPanel):
             self.import_wkp()
 
         elif name == "workspace_export":
-            pass
+            self.export_wkp()
 
         elif name == "pin":
-            pass
+            self.pin_save()
 
         elif name == "rename":
             self.rename_wkp()
 
     # ------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def import_wkp(self):
         """Import a file and append into the list of workspaces."""
         # get the name of the file to be imported
-        dlg = wx.FileDialog(
+        with wx.FileDialog(
             self,
             "Import workspace",
             wildcard="Workspace files (*.wjson)|*.wjson",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
-        if dlg.ShowModal() == wx.ID_CANCEL:
-            return
-        pathname = dlg.GetPath()
-        dlg.Destroy()
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) \
+                as dlg:
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return
+            pathname = dlg.GetPath()
 
-        # import the selected file in the workspaces
+            # import the selected file in the workspaces
+            try:
+                self.FindWindow("wkpslist").import_from(pathname)
+            except Exception as e:
+                wx.LogError("File '{:s}' can't be imported due to the following "
+                            "error: {!s:s}".format(pathname, str(e)))
+
+    # ------------------------------------------------------------------------
+
+    def export_wkp(self):
+        """Export a workspace file to a folder."""
+        # get the name of the file to be exported in
+        with wx.FileDialog(
+            self,
+            "Export workspace",
+            wildcard="Workspace files (*.wjson)|*.wjson",
+            style=wx.FD_SAVE) \
+                as dlg:
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return
+            pathname = dlg.GetPath()
+
+        if os.path.exists(pathname):
+            dlg = wx.MessageDialog(
+                self,
+                'A file with name {:s} is already existing. Override it?'.format(pathname),
+                caption="Confirm workspace name?",
+                style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
+            )
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return
+
         try:
-            self.FindWindow("wkpslist").import_file(pathname)
+            self.FindWindow("wkpslist").export_to(pathname)
         except Exception as e:
-            wx.LogError("File '{:s}' can't be imported due to the following "
+            wx.LogError("File '{:s}' can't be exported due to the following "
                         "error: {!s:s}".format(pathname, str(e)))
 
     # ------------------------------------------------------------------------
 
+    def pin_save(self):
+        """Pin and save the currently displayed workspace."""
+        # Ask for a name if current is the Blank one
+        wkps = self.FindWindow("wkpslist")
+        if wkps.get_wkp_current_index() == 0:
+            dlg = wx.TextEntryDialog(
+                self,
+                "New name of the workspace: ",
+                caption=wx.GetTextFromUserPromptStr,
+                value="Corpus",
+                style=wx.OK | wx.CANCEL)
+            dlg.SetMaxLength(24)
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return
+            wkp_name = dlg.GetValue()
+            dlg.Destroy()
+
+            try:
+                wkps.pin(wkp_name)
+            except Exception as e:
+                wx.LogError("Pin of workspace '{:s}' is not possible due to the "
+                            "following error: {!s:s}".format(wkp_name, str(e)))
+
+        else:
+            wkp_name = wkps.get_wkp_current_name()
+
+        try:
+            wkps.save()
+        except Exception as e:
+            wx.LogError("Workspace '{:s}' can't be saved due to the "
+                        "following error: {!s:s}".format(wkp_name, str(e)))
+
+    # ------------------------------------------------------------------------
+
     def rename_wkp(self):
-        """"""
+        """Rename the currently displayed workspace."""
         current_name = self.FindWindow("wkpslist").get_wkp_current_name()
         dlg = wx.TextEntryDialog(
             self,
@@ -222,9 +285,9 @@ class WorkspacesManager(sppasPanel):
             caption=wx.GetTextFromUserPromptStr,
             value=current_name,
             style=wx.OK | wx.CANCEL)
+        dlg.SetMaxLength(24)
         if dlg.ShowModal() == wx.ID_CANCEL:
             return
-
         new_name = dlg.GetValue()
         dlg.Destroy()
 
@@ -266,7 +329,6 @@ class WorkspacesPanel(sppasPanel):
         self.SetFont(wx.GetApp().settings.text_font)
 
         self.__wkps = sppasWorkspaces()
-        self.__data = self.__wkps.get_data(0)
         self.__current = 0
 
         self._create_content()
@@ -278,8 +340,8 @@ class WorkspacesPanel(sppasPanel):
     # -----------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data of the currently displayed workspace."""
-        return self.__data
+        """Return the data saved in the current workspace."""
+        return self.__wkps.get_data(self.__current)
 
     # -----------------------------------------------------------------------
 
@@ -287,19 +349,40 @@ class WorkspacesPanel(sppasPanel):
         """Return the name of the current workspace."""
         return self.__wkps[self.__current]
 
+    def get_wkp_current_index(self):
+        """Return the index of the current workspace."""
+        return self.__current
+
     # -----------------------------------------------------------------------
 
-    def import_file(self, filename):
+    def pin(self, new_name):
+        """Append a new empty workspace.
+
+        """
+        wkp_name = self.__wkps.new(new_name)
+        self.__add_wkp(wkp_name)
+        self.Layout()
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
+
+    def import_from(self, filename):
         """Append a new imported workspace."""
         try:
             with open(filename, 'r'):
                 pass
         except IOError:
             raise  # TODO: raise a sppasIOError (to get translation!)
-        wkp_name = self.__wkps.import_file(filename)
+        wkp_name = self.__wkps.import_from_file(filename)
         self.__add_wkp(wkp_name)
         self.Layout()
         self.Refresh()
+
+    # -----------------------------------------------------------------------
+
+    def export_to(self, filename):
+        """Save the current workspace into an external file."""
+        self.__wkps.export_to_file(self.__current, filename)
 
     # -----------------------------------------------------------------------
 
@@ -312,6 +395,25 @@ class WorkspacesPanel(sppasPanel):
         btn.SetLabel(u_name)
         btn.Refresh()
 
+    # -----------------------------------------------------------------------
+
+    def save(self):
+        """Save the currently displayed data to the active workspace."""
+        data = self.__get_displayed_data()
+        if data is None:
+            logging.warning('Currently displayed data not found.')
+        else:
+            # TODO: verify if data contain locked files
+            # if len(data.get_state(state=FileData.LOCKED) > 0:
+            #   # switch back the clicked button
+            #   idx_btn.SetValue(False)
+            #   raise ValueError('Current workspace has locked files.')
+            if self.__current > 0:
+                self.__wkps.save(data, self.__current)
+                logging.info('Currently displayed data of workspace {:s}'
+                             'were successfully saved.'
+                             ''.format(self.__wkps[self.__current]))
+
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
     # ------------------------------------------------------------------------
@@ -320,15 +422,14 @@ class WorkspacesPanel(sppasPanel):
         """Create the main content."""
         sizer = wx.BoxSizer(wx.VERTICAL)
         self.SetSizer(sizer)
-
         for w in self.__wkps:
             self.__add_wkp(w)
-
         self.SetMinSize(wx.Size(128, 32*len(self.__wkps)))
 
     # -----------------------------------------------------------------------
 
     def __add_wkp(self, name):
+        """Add a button corresponding to the name of a workspace."""
         btn = CheckButton(self, label=name, name=name)
         btn.SetSpacing(12)
         btn.SetMinSize(wx.Size(-1, 32))
@@ -349,11 +450,12 @@ class WorkspacesPanel(sppasPanel):
         button.BorderWidth = 1
         button.BorderColour = self.GetForegroundColour()
         button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = wx.Colour(128, 196, 96, 128)  # yellow-green
 
     # -----------------------------------------------------------------------
 
     def __set_active_btn_style(self, button):
-        """Set style to the currently checked button."""
+        """Set a special style to the currently checked button."""
         button.BorderWidth = 2
         button.BorderColour = self.GetForegroundColour()
         button.BorderStyle = wx.PENSTYLE_SOLID
@@ -376,6 +478,9 @@ class WorkspacesPanel(sppasPanel):
     def __process_wkp_changed(self, event):
         """Process a checkbox event.
 
+        Skip the event in order to allow the parent to handle it: it's to
+        update the other windows with data of the new selected workspace.
+
         :param event: (wx.Event)
 
         """
@@ -387,10 +492,9 @@ class WorkspacesPanel(sppasPanel):
             wkp_name = btn.GetLabel()
             wkp_index = self.__wkps.index(wkp_name)
             logging.debug(' ... Workspace {:s} clicked'.format(wkp_name))
-            r = self.__set_current_wkp(wkp_index)
-            if r == 0:
-                # everything went normally. Say it to the parent.
-                event.Skip()
+            self.__set_current_wkp(wkp_index)
+            # everything went normally. Say it to the parent.
+            event.Skip()
 
         else:
             # user clicked the current one!
@@ -402,44 +506,47 @@ class WorkspacesPanel(sppasPanel):
     # Private methods to manage the data/displayed button
     # -----------------------------------------------------------------------
 
+    def __get_displayed_data(self):
+        """Get the data displayed in another panel."""
+        data = None
+        try:
+            w = self.GetParent().GetParent()
+            data = w.get_data()
+        except AttributeError:
+            logging.warning("Windows {:s} doesn't have a get_data() method"
+                            "".format(w.GetName()))
+        return data
+
+    # -----------------------------------------------------------------------
+
     def __set_current_wkp(self, index):
         """Set the current workspace at the given index.
 
-        Switch to the corresponding workspace and load the new data.
+        Save current data then switch to the given workspace.
+        The data of the new workspace are not loaded. We're join pointing
+        on their filename.
 
         """
-        wkp_name = self.__wkps[index]
-
-        # un-check the current button
-        c = self.GetSizer().GetItem(self.__current).GetWindow()
-        # TODO: verify if data where not saved (some locked files)
-        # if len(self.__data.get_state(state=FileData.LOCKED) > 0:
-        # If the state of some of the data is not ok (files locked)
-        #     c = p.GetSizer().GetItem(index).GetWindow()
-        #     c.SetValue(False)
-        #     return -1
+        # the currently displayed button
+        cur_btn = self.GetSizer().GetItem(self.__current).GetWindow()
+        # the one we want to switch on
+        idx_btn = self.GetSizer().GetItem(index).GetWindow()
 
         # save the data of the current wkp
-        if self.__current > 0:
-            self.__wkps.save(self.__data, self.__current)
+        self.save()
 
-        self.__set_normal_btn_style(c)
-        c.SetValue(False)
-        c.Refresh()
-        logging.debug('Workspace {:s} un-checked'.format(c.GetLabel()))
+        # set the current button in a normal state
+        self.__set_normal_btn_style(cur_btn)
+        cur_btn.SetValue(False)
+        cur_btn.Refresh()
+        logging.debug('Workspace {:s} un-checked'.format(cur_btn.GetLabel()))
 
-        # load the data of the new workspace
-        self.__data = self.__wkps.get_data(index)
+        # assign the new workspace
         self.__current = index
-
-        # check the one we want to switch on
-        n = self.GetSizer().GetItem(self.__current).GetWindow()
-        self.__set_active_btn_style(n)
+        self.__set_active_btn_style(idx_btn)
         # n.SetValue(True)
-        n.Refresh()
-        logging.debug('Workspace {:s} checked'.format(n.GetLabel()))
-
-        return 0
+        idx_btn.Refresh()
+        logging.debug('Workspace {:s} checked'.format(idx_btn.GetLabel()))
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

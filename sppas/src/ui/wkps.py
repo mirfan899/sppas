@@ -105,7 +105,7 @@ class sppasWorkspaces(object):
 
     # -----------------------------------------------------------------------
 
-    def import_file(self, filename):
+    def import_from_file(self, filename):
         """Import and append an external workspace.
 
         :param filename: (str)
@@ -187,8 +187,32 @@ class sppasWorkspaces(object):
 
         fn = os.path.join(paths.wkps, u_name) + sppasWorkspaces.ext
         # data.save(fn)
+        with open(fn, "w") as fp:
+            fp.write("[]")
 
         return u_name
+
+    # -----------------------------------------------------------------------
+
+    def export_to_file(self, index, filename):
+        """Save the an existing workspace into an external file.
+
+        Override filename if the file already exists.
+
+        :param index: (int) Index of the workspace to save data in
+        :param filename: (str)
+        :raises: IOError
+
+        """
+        if index == 0:
+            raise IndexError('It is not allowed to export the Blank workspace.')
+
+        u_name = self[index]
+        fn = os.path.join(paths.wkps, u_name) + sppasWorkspaces.ext
+        if fn == filename:
+            raise IOError("'{!s:s}' and '{!s:s}' are the same file"
+                          "".format(fn, filename))
+        shutil.copyfile(fn, filename)
 
     # -----------------------------------------------------------------------
 
@@ -291,7 +315,7 @@ class sppasWorkspaces(object):
 
         """
         if index == 0:
-            return FileData()  #"Blank")
+            return FileData()
 
         fn = self.check_filename(index)
         data = FileData()
