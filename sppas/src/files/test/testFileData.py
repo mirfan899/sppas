@@ -252,6 +252,9 @@ class TestFileData(unittest.TestCase):
             hello == world
         )
 
+        self.files.set_state(FilePath.States.ALL_LOCKED)
+        self.files.load('save.txt')
+
     def testState(self):
         self.files.set_state(FilePath.States.ALL_LOCKED)
 

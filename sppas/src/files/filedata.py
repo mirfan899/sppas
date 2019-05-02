@@ -1394,6 +1394,7 @@ class FileData(object):
                 self.__data = save
 
         else:
+            #TODO : make an exception or something to make the user realize
             print('are you sure you want to load the new workspace with '+\
                         'open file(s) ?')
 
