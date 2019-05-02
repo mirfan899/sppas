@@ -56,8 +56,8 @@ class TestPanel(wx.Choicebook):
         wx.Choicebook.__init__(self, parent, wx.ID_ANY)
 
         # Make the bunch of test panels for the choice book
-        self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
         self.AddPage(sppas.src.ui.phoenix.page_files.catsmanager.TestPanel(self), "Catalogues manager")
+        self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
         self.AddPage(sppas.src.ui.phoenix.page_files.filesmanager.TestPanel(self), "Files manager")
         self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "Buttons")
         self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "Lines")

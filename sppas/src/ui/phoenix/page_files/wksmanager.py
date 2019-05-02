@@ -106,8 +106,8 @@ class WorkspacesManager(sppasPanel):
         tb.AddText("Workspaces: ")
         tb.AddButton("workspace_import", "Import from")
         tb.AddButton("workspace_export", "Export to")
-        tb.AddButton("pin", "Pin & Save")
-        tb.AddButton("rename", "Rename")
+        tb.AddButton("workspace_pin", "Pin & Save")
+        tb.AddButton("workspace_rename", "Rename")
         return tb
 
     # ------------------------------------------------------------------------
@@ -180,10 +180,10 @@ class WorkspacesManager(sppasPanel):
         elif name == "workspace_export":
             self.export_wkp()
 
-        elif name == "pin":
+        elif name == "workspace_pin":
             self.pin_save()
 
-        elif name == "rename":
+        elif name == "workspace_rename":
             self.rename_wkp()
 
     # ------------------------------------------------------------------------

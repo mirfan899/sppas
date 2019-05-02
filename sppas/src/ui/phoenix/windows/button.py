@@ -1419,6 +1419,7 @@ class CheckButton(BaseToggleButton):
 
         self._borderwidth = 1
         self._label = label
+        self._radio = False
 
         # Set the spacing between the check bitmap and the label to 4 by default.
         # This can be changed using SetSpacing later.
@@ -1509,19 +1510,27 @@ class CheckButton(BaseToggleButton):
 
         # Adjust image size then draw
         if self._pressed:
-
-            img = sppasSwissKnife.get_image('checked')
-            sppasSwissKnife.rescale_image(img, img_size - 4)
-            # ColorizeImage(img, wx.BLACK, c)
-
-            # Draw image as bitmap
-            bmp = wx.Bitmap(img)
-            bmp_x = box_x + 2
-            bmp_y = box_y + 2
-            if wx.Platform == '__WXGTK__':
-                dc.DrawBitmap(bmp, bmp_x, bmp_y)
+            if self._radio:
+                img = sppasSwissKnife.get_image('radio_checked')
             else:
-                gc.DrawBitmap(bmp, bmp_x, bmp_y)
+                img = sppasSwissKnife.get_image('choice_checked')
+        else:
+            if self._radio:
+                img = sppasSwissKnife.get_image('radio_unchecked')
+            else:
+                img = sppasSwissKnife.get_image('choice_checkbox')
+
+        sppasSwissKnife.rescale_image(img, img_size - 4)
+        ColorizeImage(img, wx.BLACK, self.GetForegroundColour())
+
+        # Draw image as bitmap
+        bmp = wx.Bitmap(img)
+        bmp_x = box_x + 2
+        bmp_y = box_y + 2
+        if wx.Platform == '__WXGTK__':
+            dc.DrawBitmap(bmp, bmp_x, bmp_y)
+        else:
+            gc.DrawBitmap(bmp, bmp_x, bmp_y)
 
         return img_size
 

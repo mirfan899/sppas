@@ -313,7 +313,8 @@ class sppasMainWindow(sppasDialog):
         # Stop redirecting logging to this application
         self.log_window.redirect_logging(False)
         # Terminate all frames
-        self.DestroyChildren()
+        if wx.Platform == "__WXMSW__":
+            self.DestroyChildren()
         self.DestroyFadeOut(deltaN=-6)
 
     # -----------------------------------------------------------------------
