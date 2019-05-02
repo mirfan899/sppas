@@ -67,14 +67,8 @@ class WorkspacesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
-        # manager of the list of available workspaces in the software
-        self.__wkps = sppasWorkspaces()
-        self.__data = self.__wkps.get_data(0)
-        self.__current = 0
-
         self._create_content()
-
-        self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
+        self._setup_events()
         self.Layout()
 
     # -----------------------------------------------------------------------
@@ -83,7 +77,7 @@ class WorkspacesManager(sppasPanel):
 
     def get_data(self):
         """Return the data of the currently displayed workspace."""
-        return self.__data
+        return self.FindWindow("wkslist").get_data()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -92,76 +86,15 @@ class WorkspacesManager(sppasPanel):
     def _create_content(self):
         """Create the main content."""
         tb = self.__create_toolbar()
-
-        cv = sppasPanel(self, name="wksview")
-        s = wx.BoxSizer(wx.VERTICAL)
-        for i, w in enumerate(self.__wkps):
-            btn = CheckButton(cv, label=w, name=w)
-            btn.SetSpacing(12)
-            btn.SetMinSize(wx.Size(-1, 32))
-            btn.SetSize(wx.Size(-1, 32))
-            s.Add(btn, 0, wx.EXPAND | wx.ALL, 2)
-            btn.Bind(wx.EVT_CHECKBOX, self.on_wkp_changed)
-            if i == 0:
-                btn.SetValue(True)
-            else:
-                btn.SetValue(False)
-        cv.SetSizer(s)
-
-        # current workspace is the blank one
-        #font = self.GetFont().MakeBold().Scale(1.4)
+        cv = WorkspacesPanel(self, name="wkpslist")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
-        sizer.Add(cv, proportion=1, flag=wx.EXPAND, border=0)
+        sizer.Add(tb, 0, wx.EXPAND, 0)
+        sizer.Add(self.__create_hline(), 0, wx.EXPAND, 0)
+        sizer.Add(cv, 1, wx.EXPAND, 0)
 
-        self.SetMinSize((128, 200))
+        self.SetMinSize(wx.Size(128, -1))
         self.SetSizer(sizer)
-
-    # -----------------------------------------------------------------------
-
-    def __set_current_wkp(self, index):
-        """Set the current workspace at the given index.
-
-        Switch to the corresponding workspace and load the new data.
-
-        """
-        wkp_name = self.__wkps[index]
-
-        # un-check the current button
-        p = self.FindWindow('wksview')
-        c = p.GetSizer().GetItem(self.__current).GetWindow()
-        # TODO: verify if data where not saved (some locked files)
-        # if len(self.__data.get_state(state=FileData.LOCKED) > 0:
-        # If the state of some of the data is not ok (files locked)
-        #     c = p.GetSizer().GetItem(index).GetWindow()
-        #     c.SetValue(False)
-        #     return
-
-        # save the data of the current wkp
-        if self.__current > 0:
-            self.__wkps.save(self.__data, self.__current)
-
-        c.SetValue(False)
-        c.Refresh()
-        logging.debug('Workspace {:s} un-checked'.format(c.GetLabel()))
-
-        # load the data of the new workspace
-        self.__data = self.__wkps.get_data(index)
-        self.__current = index
-
-        # check the one we want to switch on
-        # c = p.GetSizer().GetItem(self.__current).GetWindow()
-        # c.SetValue(True)
-        # c.Refresh()
-
-        # send the new data to the parent
-        try:
-            self.GetParent().set_data()
-        except AttributeError:
-            # the parent is not of the expected type
-            logging.error('Data of the current workspace not sent to the parent.')
-            pass
 
     # -----------------------------------------------------------------------
 
@@ -174,26 +107,68 @@ class WorkspacesManager(sppasPanel):
         tb.AddButton("workspace_export", "Export to")
         tb.AddButton("pin", "Pin & Save")
         tb.AddButton("rename", "Rename")
-        tb.Bind(wx.EVT_BUTTON, self.on_button_click)
         return tb
 
     # ------------------------------------------------------------------------
-    # Callbacks to events
-    # ------------------------------------------------------------------------
 
-    def on_key_press(self, event):
-        """Respond to a keypress event."""
+    def __create_hline(self):
+        """Create an horizontal line, used to separate the panels."""
+        line = sppasStaticLine(self, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, 20))
+        line.SetPenStyle(wx.PENSTYLE_SHORT_DASH)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        self.Bind(wx.EVT_KEY_DOWN, self._process_key_event)
+        self.Bind(wx.EVT_CHECKBOX, self._process_wkp_changed)
+        self.Bind(wx.EVT_BUTTON, self._process_action)
+
+    # -----------------------------------------------------------------------
+
+    def _process_key_event(self, event):
+        """Process a key event.
+
+        :param event: (wx.Event)
+
+        """
         key_code = event.GetKeyCode()
         shift_down = event.ShiftDown()
         if key_code == wx.WXK_F5 and shift_down is True:
-            logging.debug('Refresh the data catalogs [SHIFT+F5 keys pressed]')
-            self.FindWindow("catsview").RefreshData()
+            logging.debug('Refresh the workspaces [SHIFT+F5 keys pressed]')
+            #self.FindWindow("wkpslist").RefreshData()
 
         event.Skip()
 
     # ------------------------------------------------------------------------
 
-    def on_button_click(self, event):
+    def _process_wkp_changed(self, event):
+        """Process a checkbox event: the active workspace changed.
+
+        :param event: (wx.Event)
+
+        """
+        try:
+            self.GetParent().set_data()
+        except AttributeError:
+            # the parent is not of the expected type
+            logging.error('Data of the current workspace not sent to the parent.')
+            pass
+
+    # ------------------------------------------------------------------------
+
+    def _process_action(self, event):
 
         name = event.GetButtonObj().GetName()
         if name == "workspace_import":
@@ -210,24 +185,171 @@ class WorkspacesManager(sppasPanel):
 
         event.Skip()
 
+# ----------------------------------------------------------------------------
+# Panel to display the existing workspaces
+# ----------------------------------------------------------------------------
+
+
+class WorkspacesPanel(sppasPanel):
+    """Manager of the list of available workspaces in the software.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+    def __init__(self, parent, name=wx.PanelNameStr):
+        super(WorkspacesPanel, self).__init__(
+            parent,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=wx.BORDER_NONE | wx.NO_FULL_REPAINT_ON_RESIZE,
+            name=name)
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+        self.__wkps = sppasWorkspaces()
+        self.__data = self.__wkps.get_data(0)
+        self.__current = 0
+
+        self._create_content()
+        self._setup_events()
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+    # Public methods to access the data
+    # -----------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data of the currently displayed workspace."""
+        return self.__data
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
-    def on_wkp_changed(self, event):
+    def _create_content(self):
+        """Create the main content."""
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        for i, w in enumerate(self.__wkps):
+            btn = CheckButton(self, label=w, name=w)
+            btn.SetSpacing(12)
+            btn.SetMinSize(wx.Size(-1, 32))
+            btn.SetSize(wx.Size(-1, 32))
+            if i == self.__current:
+                self.__set_active_btn_style(btn)
+                btn.SetValue(True)
+            else:
+                self.__set_normal_btn_style(btn)
+                btn.SetValue(False)
+            sizer.Add(btn, 0, wx.EXPAND | wx.ALL, 2)
 
+        self.SetMinSize(wx.Size(128, 32*len(self.__wkps)))
+        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def __set_normal_btn_style(self, button):
+        """Set a normal style to a button."""
+        button.BorderWidth = 1
+        button.BorderColour = self.GetForegroundColour()
+        button.BorderStyle = wx.PENSTYLE_SOLID
+
+    # -----------------------------------------------------------------------
+
+    def __set_active_btn_style(self, button):
+        """Set style to the currently checked button."""
+        button.BorderWidth = 2
+        button.BorderColour = self.GetForegroundColour()
+        button.BorderStyle = wx.PENSTYLE_SOLID
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        self.Bind(wx.EVT_CHECKBOX, self.__process_wkp_changed)
+
+    # -----------------------------------------------------------------------
+
+    def __process_wkp_changed(self, event):
+        """Process a checkbox event.
+
+        :param event: (wx.Event)
+
+        """
         # which workspace is clicked
         btn = event.GetButtonObj()
 
         if btn.GetLabel() != self.__wkps[self.__current]:
+            # user clicked a different workspace
             wkp_name = btn.GetLabel()
             wkp_index = self.__wkps.index(wkp_name)
             logging.debug(' ... Workspace {:s} clicked'.format(wkp_name))
-            self.__set_current_wkp(wkp_index)
+            r = self.__set_current_wkp(wkp_index)
+            if r == 0:
+                # everything went normally. Say it to the parent.
+                event.Skip()
 
         else:
             # user clicked the current one!
             logging.warning('Workspace {:s} is already active.'
                             ''.format(btn.GetLabel()))
             btn.SetValue(True)
+
+    # -----------------------------------------------------------------------
+    # Private methods to manage the data/displayed button
+    # -----------------------------------------------------------------------
+
+    def __set_current_wkp(self, index):
+        """Set the current workspace at the given index.
+
+        Switch to the corresponding workspace and load the new data.
+
+        """
+        wkp_name = self.__wkps[index]
+
+        # un-check the current button
+        c = self.GetSizer().GetItem(self.__current).GetWindow()
+        # TODO: verify if data where not saved (some locked files)
+        # if len(self.__data.get_state(state=FileData.LOCKED) > 0:
+        # If the state of some of the data is not ok (files locked)
+        #     c = p.GetSizer().GetItem(index).GetWindow()
+        #     c.SetValue(False)
+        #     return -1
+
+        # save the data of the current wkp
+        if self.__current > 0:
+            self.__wkps.save(self.__data, self.__current)
+
+        self.__set_normal_btn_style(c)
+        c.SetValue(False)
+        c.Refresh()
+        logging.debug('Workspace {:s} un-checked'.format(c.GetLabel()))
+
+        # load the data of the new workspace
+        self.__data = self.__wkps.get_data(index)
+        self.__current = index
+
+        # check the one we want to switch on
+        n = self.GetSizer().GetItem(self.__current).GetWindow()
+        self.__set_active_btn_style(n)
+        # n.SetValue(True)
+        n.Refresh()
+        logging.debug('Workspace {:s} checked'.format(n.GetLabel()))
+
+        return 0
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

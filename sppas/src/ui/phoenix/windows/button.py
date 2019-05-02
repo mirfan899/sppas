@@ -581,6 +581,7 @@ class BaseButton(wx.Window):
 
     BorderWidth = property(GetBorderWidth, SetBorderWidth)
     BorderColour = property(GetBorderColour, SetBorderColour)
+    BorderStyle = property(GetBorderStyle, SetBorderStyle)
     FocusWidth = property(GetFocusWidth, SetFocusWidth)
     FocusColour = property(GetFocusColour, SetFocusColour)
     FocusStyle = property(GetFocusStyle, SetFocusStyle)
