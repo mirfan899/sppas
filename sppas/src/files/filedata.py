@@ -1506,7 +1506,6 @@ class FileData(object):
             for fr in fp:
                 if fr.state == FileRoot.States.AT_LEAST_ONE_CHECKED\
                         or fr.state == FileRoot.States.ALL_CHECKED:
-                    print(fr.references.extend(['hello']))
                     if fr.references is not None:
                         fr.references = set(fr.references.extend(ref_checked))
                     else:
