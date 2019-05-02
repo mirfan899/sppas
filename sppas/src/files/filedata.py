@@ -1094,7 +1094,8 @@ class Reference(FileBase):
         CHECKED = 1
 
     # ---------------------------------------------------------------------------
-    class Values(Enum):
+
+    class Types(Enum):
         NONE = 0
         SPEAKER = 1
         INTERACTION = 2
@@ -1108,6 +1109,7 @@ class Reference(FileBase):
         """
         super(Reference, self).__init__(identifier)
         self.__attributs = OrderedDict()
+        self.__type = self.Types.NONE
         self.__state = self.States.UNUSED
 
     # ---------------------------------------------------------------------------
@@ -1115,7 +1117,7 @@ class Reference(FileBase):
     def add(self, key, value):
         """Add a new pair of key/value in the current dictionary.
 
-        :param key: (Reference.Values) should be in the Values enum
+        :param key: (str) should be only with alphanumeric characters and underscores
         :param value: (str, AttValue) will always be converted in AttValue object
         """
         #used once hence declared inside add method
@@ -1124,25 +1126,25 @@ class Reference(FileBase):
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
-        if key in self.Values:
+        if is_restricted_ascii(key):
             if isinstance(value, AttValue):
                 self.__attributs[key] = value
             else:
                 self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
         else:
-            raise sppasValueError(key, self.Values)
+            raise ValueError('Non ASCII characters')
 
     # ---------------------------------------------------------------------------
 
     def pop(self, key):
         """Delete a pair of key/value.
 
-        :param key: (Reference.Values) is the key in the dictionary to delete
+        :param key: (str) is the key in the dictionary to delete
         """
         if key in self.__attributs.keys():
             self.__attributs.pop(key)
         else:
-            raise sppasValueError(key, self.Values)
+            raise ValueError('index not in Category')
 
     # ---------------------------------------------------------------------------
 
@@ -1164,6 +1166,23 @@ class Reference(FileBase):
             raise sppasTypeError(state, 'Reference.States')
 
     state = property(get_state, set_state)
+
+    # ---------------------------------------------------------------------------
+
+    def get_type(self):
+        """Returns its current type"""
+        return self.__type
+
+    # ---------------------------------------------------------------------------
+
+    def set_type(self, ref_type):
+        """Set the type of the Reference to a new value within the authorized ones"""
+        if isinstance(ref_type, self.Types):
+            self.__type = ref_type
+        else:
+            raise sppasTypeError(ref_type, self.Types)
+
+    type = property(get_type, set_type)
 
     #---------------------------------------------------------
     # overloads
