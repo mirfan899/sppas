@@ -211,8 +211,7 @@ class FileBase(object):
     # -----------------------------------------------------------------------
 
     def __format__(self, fmt):
-        """
-        Allow to show the class at a given format.
+        """Allow to show the class at a given format.
 
         :param fmt: (str) the wanted format of string
         :return: (str)
@@ -220,16 +219,14 @@ class FileBase(object):
         return str(self).__format__(fmt)
 
     def __str__(self):
-        """
-        The string conversion of the object.
+        """The string conversion of the object.
 
         :return: (str)
         """
         return '{!s:s}'.format(self.__id)
 
     def __repr__(self):
-        """
-        Function called by print.
+        """Function called by print.
 
         :return: (str) printed representation of the object.
         """
@@ -987,8 +984,7 @@ class AttValue(object):
     """
 
     def __init__(self, att_value, att_type=None, att_description=None):
-        """
-        constructor of AttValue.
+        """constructor of AttValue.
 
         :param att_value: (str)
         :param att_type: (str)
@@ -1023,8 +1019,7 @@ class AttValue(object):
         return self.__valuetype if self.__valuetype is not None else 'str'
 
     def set_value_type(self, type):
-        """
-        set a new type for the current value.
+        """Set a new type for the current value.
 
         :param type: (str) the new type name
         """
@@ -1054,8 +1049,7 @@ class AttValue(object):
             return self.__description
 
     def set_description(self, description):
-        """
-        set a new value for the description.
+        """set a new value for the description.
 
         :param description: (str).
         """
@@ -1095,8 +1089,7 @@ class Reference(FileBase):
     """
 
     def __init__(self, identifier):
-        """
-        Constructor of the Category class.
+        """Constructor of the Category class.
 
         :param identifier: (str) identifier for the object, the name of the category
         """
@@ -1104,8 +1097,7 @@ class Reference(FileBase):
         self.__attributs = OrderedDict()
 
     def add(self, key, value):
-        """
-        Add a new pair of key/value in the current dictionary.
+        """Add a new pair of key/value in the current dictionary.
 
         :param key: (str) should be only with alphanumeric characters and underscores
         :param value: (str | AttValue) will always be converted in AttValue object
@@ -1125,8 +1117,7 @@ class Reference(FileBase):
             raise ValueError('Non ASCII characters')
 
     def pop(self, key):
-        """
-        Delete a pair of key/value.
+        """Delete a pair of key/value.
 
         :param key: (str) is the key in the dictionary to delete
         """
@@ -1340,6 +1331,11 @@ class FileData(object):
     # -----------------------------------------------------------------------
 
     def get_state(self, file_obj):
+        """Return the state of any File within the FileData.
+
+        :param file_obj: (FileBase) The object which one enquire the state
+        :return: FilePath.States, FileRoot.States, FileName.States
+        """
 
         if not isinstance(file_obj, FilePath)\
             and not isinstance(file_obj, FileRoot)\
@@ -1351,13 +1347,18 @@ class FileData(object):
     # -----------------------------------------------------------------------
 
     def set_state(self, state, file_obj=None):
+        """Set the state of any File within FileData. The default case is to set the state to all FilePath.
+
+        :param state: (FilePath.States, FileRoot.States, FileName.States) state to set the file to
+        :param file_obj: (FileBase) the specific file to set the state to
+        """
         if file_obj is None:
             for fp in self.__data:
                 if not fp.state == FilePath.States.AT_LEAST_ONE_LOCKED:
                     if isinstance(state, FilePath.States):
                         fp.state = state
                     else:
-                        raise sppasTypeError(state, 'FilePath.State')
+                        raise sppasTypeError(state, 'FilePath.States')
                 else:
                     raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
         else:
@@ -1374,12 +1375,21 @@ class FileData(object):
     # -----------------------------------------------------------------------
 
     def save(self, file_name):
+        """Save the current FileData in a serialized file.
+
+        :param file_name: (str) the name of the save file.
+        """
         with open(file_name, 'wb') as save:
             pickle.dump(self.__data, save)
 
     # -----------------------------------------------------------------------
 
     def load(self, file_name, force=False):
+        """Load a saved FileData object from a save file.
+
+        :param file_name: (str) the name of the save file.
+        :param force:  (bool) permit to the user to load a new FileData object even if there is locked files within.
+        """
         at_least_one_fp_is_locked = False
 
         for fp in self.__data:

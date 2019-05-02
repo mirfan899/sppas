@@ -57,9 +57,7 @@
 
 """
 
-import unittest
 import re
-from os.path import dirname
 
 from sppas import sppasTypeError
 from sppas.src.utils.makeunicode import text_type
@@ -571,8 +569,7 @@ class sppasRootCompare(sppasBaseCompare):
 
 
 class sppasFileNameCompare(sppasBaseCompare):
-    """
-    Comparison methods for FileName id.
+    """Comparison methods for FileName id.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -778,9 +775,9 @@ class sppasFileNameCompare(sppasBaseCompare):
 
 # ---------------------------------------------------------------------------
 
+
 class sppasFileNameExtensionCompare(sppasBaseCompare):
-    """
-    Comparison methods for FileName extension.
+    """Comparison methods for FileName extension.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -988,8 +985,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 
 
 class sppasFileNamePropertiesCompare(sppasBaseCompare):
-    """
-    Comparison methods for FileName properties.
+    """Comparison methods for FileName properties.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -1034,8 +1030,7 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
 
 
 class sppasReferenceCompare(sppasBaseCompare):
-    """
-    Comparison methods for Category id.
+    """Comparison methods for Category id.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -1243,8 +1238,7 @@ class sppasReferenceCompare(sppasBaseCompare):
 
 
 class sppasAttValueCompare(sppasBaseCompare):
-    """
-    Comparison methods for AttValue.
+    """Comparison methods for AttValue.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France

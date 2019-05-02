@@ -33,9 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from operator import contains
 
-from sppas.src.files.filedata import FileRoot
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
