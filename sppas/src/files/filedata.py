@@ -511,25 +511,25 @@ class FileRoot(FileBase):
         """If the reference catalog is not set yet, instead of returning None the method returns an empty list."""
         return self.__references if self.__references is not None else list()
 
-    def set_categories(self, list_of_categories):
+    def set_categories(self, list_of_references):
         """In order to set the categories one must provide a list of category or an empty list.
 
-        :param list_of_categories: (list)
+        :param list_of_references: (list)
 
         """
-        if isinstance(list_of_categories, list):
-            if len(list_of_categories) > 0:
-                for category in list_of_categories:
-                    if not isinstance(category, Reference):
-                        raise sppasTypeError(category, 'Category')
+        self.__references = list()
+        if isinstance(list_of_references, list):
+            if len(list_of_references) > 0:
+                for reference in list_of_references:
+                    if not isinstance(reference, Reference):
+                        raise sppasTypeError(reference, 'Reference')
 
-            self.__references = list_of_categories
+            self.__references = list_of_references
         else:
-            raise sppasTypeError(list_of_categories, 'list')
+            raise sppasTypeError(list_of_references, 'list')
 
-    categories = property(get_categories, set_categories)
+    references = property(get_categories, set_categories)
 
-    # -----------------------------------------------------------------------
     # -----------------------------------------------------------------------
 
     def get_object(self, filename):
@@ -1094,6 +1094,12 @@ class Reference(FileBase):
         CHECKED = 1
 
     # ---------------------------------------------------------------------------
+    class Values(Enum):
+        NONE = 0
+        SPEAKER = 1
+        INTERACTION = 2
+
+    # ---------------------------------------------------------------------------
 
     def __init__(self, identifier):
         """Constructor of the Category class.
@@ -1109,7 +1115,7 @@ class Reference(FileBase):
     def add(self, key, value):
         """Add a new pair of key/value in the current dictionary.
 
-        :param key: (str) should be only with alphanumeric characters and underscores
+        :param key: (Reference.Values) should be in the Values enum
         :param value: (str, AttValue) will always be converted in AttValue object
         """
         #used once hence declared inside add method
@@ -1118,25 +1124,25 @@ class Reference(FileBase):
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
-        if is_restricted_ascii(key):
+        if key in self.Values:
             if isinstance(value, AttValue):
                 self.__attributs[key] = value
             else:
                 self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
         else:
-            raise ValueError('Non ASCII characters')
+            raise sppasValueError(key, self.Values)
 
     # ---------------------------------------------------------------------------
 
     def pop(self, key):
         """Delete a pair of key/value.
 
-        :param key: (str) is the key in the dictionary to delete
+        :param key: (Reference.Values) is the key in the dictionary to delete
         """
         if key in self.__attributs.keys():
             self.__attributs.pop(key)
         else:
-            raise ValueError('index not in Category')
+            raise sppasValueError(key, self.Values)
 
     # ---------------------------------------------------------------------------
 
@@ -1468,6 +1474,40 @@ class FileData(object):
             #TODO : make an exception or something to make the user realize
             print('are you sure you want to load the new workspace with '+\
                         'open file(s) ?')
+
+    # -----------------------------------------------------------------------
+
+    def associate(self):
+        ref_checked = list()
+        for ref in self.__refs:
+            if ref.state == Reference.States.CHECKED:
+                ref_checked.append(ref)
+
+        for fp in self.__data:
+            for fr in fp:
+                if fr.state == FileRoot.States.AT_LEAST_ONE_CHECKED\
+                        or fr.state == FileRoot.States.ALL_CHECKED:
+                    print(fr.references.extend(['hello']))
+                    if fr.references is not None:
+                        fr.references = set(fr.references.extend(ref_checked))
+                    else:
+                        fr.references = ref_checked
+
+    # -----------------------------------------------------------------------
+
+    def dissociate(self):
+        ref_checked = list()
+        for ref in self.__refs:
+            if ref.state == Reference.States.CHECKED:
+                ref_checked.append(ref)
+
+        for fp in self.__data:
+            for fr in fp:
+                if fr.state == FileRoot.States.AT_LEAST_ONE_CHECKED \
+                        or fr.state == FileRoot.States.ALL_CHECKED:
+                    for ref in ref_checked:
+                        if ref in fr.references:
+                            fr.references.remove(ref)
 
     # -----------------------------------------------------------------------
     # Overloads

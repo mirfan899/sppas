@@ -274,4 +274,20 @@ class TestFileData(unittest.TestCase):
             len(self.files.get_refs()) == 1
         )
 
+    def testAssocations(self):
+        self.files.add_ref(self.age)
+
+        for ref in self.files.get_refs():
+            ref.state = Reference.States.CHECKED
+
+        self.files.set_state(FilePath.States.ALL_CHECKED)
+
+        self.files.associate()
+
+        for fp in self.files:
+            for fr in fp:
+                self.assertTrue(
+                    fr.references.contains(self.age)
+                )
+
 # ---------------------------------------------------------------------------
