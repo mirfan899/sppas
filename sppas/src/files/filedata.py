@@ -74,9 +74,6 @@
         - python 2.7.15
         - python 3.7.0
 
-        More tests should be implemented, particularly FileData is not tested
-        at all.
-
     How to use these classes to filter data:
     ========================================
 
@@ -961,197 +958,6 @@ class FilePath(FileBase):
 
 # ---------------------------------------------------------------------------
 
-
-class FileData(object):
-    """Represent the data linked to a list of files.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      contact@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    FileData is the manager of a list of file names.
-    It organizes them hierarchically as a collection of FilePath instances, 
-    each of which is a collection of FileRoot instances, each of which is a 
-    collection of FileName. 
-
-    """
-
-    def __init__(self):
-        """Constructor of a FileData."""
-        self.__data = list()
-
-    # -----------------------------------------------------------------------
-
-    def add_file(self, filename):
-        """Add a file in the list from its file name.
-
-        :param filename: (str) Absolute or relative name of a file
-        :return: (FileName)
-        :raises: OSError
-
-        """
-        new_fp = FilePath(dirname(filename))
-        for fp in self.__data:
-            if fp.id == new_fp.id:
-                new_fp = fp
-        
-        if new_fp not in self.__data:
-            # this is a new path to add
-            self.__data.append(new_fp)
-
-        return new_fp.append(filename)
-
-    # -----------------------------------------------------------------------
-
-    def update(self):
-        """Update the data: missing files, properties changed."""
-        for fp in self.__data:
-            for fr in reversed(fp):
-                for fn in reversed(fr):
-                    if exists(fn.id):
-                        fn.update_properties()
-                    else:
-                        fp.remove(fn)
-                if len(fr) == 0:
-                    fp.remove(fr)
-            # reset bg colors of the roots
-            for fr in fp:
-                fp.set_root_bgcolor(fr)
-
-        # Remove empty FilePath
-        for fp in reversed(self.__data):
-            if len(fp) == 0:
-                self.__data.remove(fp)
-    
-    # -----------------------------------------------------------------------
-
-    def remove_checked_files(self):
-        """Remove all checked files.
-        
-        Do not update: empty roots or paths are not removed.
-
-        """
-        for fp in self.__data:
-            for fr in reversed(fp):
-                for fn in reversed(fr):
-                    if fn.check is True:
-                        fr.remove(fn)
- 
-    # -----------------------------------------------------------------------
-
-    def get_checked_files(self, value=FileName.States.CHECKED):
-        """Return the list of checked or unchecked file names.
-
-        :param value: (bool) Toggle state
-        :return: (list of str)
-
-        """
-        checked = list()
-        for fp in self.__data:
-            for fr in fp:
-                for fn in fr:
-                    if fn.state == value:
-                        checked.append(fn.id)
-        return checked
-
-    # -----------------------------------------------------------------------
-
-    def check(self, value=True, entry=None):
-        """Check or uncheck all or any entry.
-
-        If no entry is given, this method toggles all the data.
-
-        :param value: (bool) Toggle value
-        :param entry: (str) Absolute or relative name of a file or a file root
-
-        """
-        if entry is not None:
-            try:
-                path = dirname(entry)
-            except TypeError:
-                raise FileOSError(entry)
-
-            new_fp = FilePath(path)
-            for fp in self.__data:
-                if fp.id == new_fp.id:
-                    fp.do_check(value, entry)
-        else:
-            for fp in self.__data:
-                fp.do_check(value)
-
-    # -----------------------------------------------------------------------
-
-    def get_expanded_objects(self, value=True):
-        """Return the list of expanded or collapsed FilePath and FileRoot.
-
-        :param value: (bool) Toggle state
-        :return: (list of FilePath and FileRoot objects)
-
-        """
-        expanded = list()
-        for fp in self.__data:
-            if fp.expand == value:
-                expanded.append(fp)
-            for fr in fp:
-                if fr.expand == value:
-                    expanded.append(fr)
-        return expanded
-
-    # -----------------------------------------------------------------------
-
-    def expand(self, value=True):
-        """Expand or collapse all the FilePath instances."""
-        for fp in self.__data:
-            fp.expand = bool(value)
-
-    # -----------------------------------------------------------------------
-
-    def expand_all(self, value=True):
-        """Expand or collapse all the FilePath and FileRoot instances."""
-        for fp in self.__data:
-            fp.expand = bool(value)
-            for fr in fp:
-                fr.expand = bool(value)
-
-    # -----------------------------------------------------------------------
-
-    def get_object(self, entry):
-        """Return the file object matching the given entry.
-        
-        :return: (FilePath, FileRoot, FileName)
-
-        """
-        try:
-            path = dirname(entry)
-            new_fp = FilePath(path)
-        except TypeError:
-            return None
-
-        for fp in self.__data:
-            if fp.id == new_fp.id:
-                return fp.get_object(entry)
-        
-        return None
-
-    # -----------------------------------------------------------------------
-    # Overloads
-    # -----------------------------------------------------------------------
-
-    def __iter__(self):
-        for a in self.__data:
-            yield a
-
-    def __getitem__(self, i):
-        return self.__data[i]
-
-    def __len__(self):
-        return len(self.__data)
-    
-# ---------------------------------------------------------------------------
-
-
 class AttValue(object):
     """Represents an attribute in the reference catalog.
 
@@ -1339,5 +1145,195 @@ class Reference(FileBase):
 
     def __contains__(self, key):
         return key in self.__attributs.keys()
+
+# ---------------------------------------------------------------------------
+
+
+class FileData(object):
+    """Represent the data linked to a list of files.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    FileData is the manager of a list of file names.
+    It organizes them hierarchically as a collection of FilePath instances, 
+    each of which is a collection of FileRoot instances, each of which is a 
+    collection of FileName. 
+
+    """
+
+    def __init__(self):
+        """Constructor of a FileData."""
+        self.__data = list()
+
+    # -----------------------------------------------------------------------
+
+    def add_file(self, filename):
+        """Add a file in the list from its file name.
+
+        :param filename: (str) Absolute or relative name of a file
+        :return: (FileName)
+        :raises: OSError
+
+        """
+        new_fp = FilePath(dirname(filename))
+        for fp in self.__data:
+            if fp.id == new_fp.id:
+                new_fp = fp
+        
+        if new_fp not in self.__data:
+            # this is a new path to add
+            self.__data.append(new_fp)
+
+        return new_fp.append(filename)
+
+    # -----------------------------------------------------------------------
+
+    def update(self):
+        """Update the data: missing files, properties changed."""
+        for fp in self.__data:
+            for fr in reversed(fp):
+                for fn in reversed(fr):
+                    if exists(fn.id):
+                        fn.update_properties()
+                    else:
+                        fp.remove(fn)
+                if len(fr) == 0:
+                    fp.remove(fr)
+            # reset bg colors of the roots
+            for fr in fp:
+                fp.set_root_bgcolor(fr)
+
+        # Remove empty FilePath
+        for fp in reversed(self.__data):
+            if len(fp) == 0:
+                self.__data.remove(fp)
+    
+    # -----------------------------------------------------------------------
+
+    def remove_checked_files(self):
+        """Remove all checked files.
+        
+        Do not update: empty roots or paths are not removed.
+
+        """
+        for fp in self.__data:
+            for fr in reversed(fp):
+                for fn in reversed(fr):
+                    if fn.check is True:
+                        fr.remove(fn)
+ 
+    # -----------------------------------------------------------------------
+
+    def get_checked_files(self, value=FileName.States.CHECKED):
+        """Return the list of checked or unchecked file names.
+
+        :param value: (bool) Toggle state
+        :return: (list of str)
+
+        """
+        checked = list()
+        for fp in self.__data:
+            for fr in fp:
+                for fn in fr:
+                    if fn.state == value:
+                        checked.append(fn.id)
+        return checked
+
+    # -----------------------------------------------------------------------
+
+    def check(self, value=True, entry=None):
+        """Check or uncheck all or any entry.
+
+        If no entry is given, this method toggles all the data.
+
+        :param value: (bool) Toggle value
+        :param entry: (str) Absolute or relative name of a file or a file root
+
+        """
+        if entry is not None:
+            try:
+                path = dirname(entry)
+            except TypeError:
+                raise FileOSError(entry)
+
+            new_fp = FilePath(path)
+            for fp in self.__data:
+                if fp.id == new_fp.id:
+                    fp.do_check(value, entry)
+        else:
+            for fp in self.__data:
+                fp.do_check(value)
+
+    # -----------------------------------------------------------------------
+
+    def get_expanded_objects(self, value=True):
+        """Return the list of expanded or collapsed FilePath and FileRoot.
+
+        :param value: (bool) Toggle state
+        :return: (list of FilePath and FileRoot objects)
+
+        """
+        expanded = list()
+        for fp in self.__data:
+            if fp.expand == value:
+                expanded.append(fp)
+            for fr in fp:
+                if fr.expand == value:
+                    expanded.append(fr)
+        return expanded
+
+    # -----------------------------------------------------------------------
+
+    def expand(self, value=True):
+        """Expand or collapse all the FilePath instances."""
+        for fp in self.__data:
+            fp.expand = bool(value)
+
+    # -----------------------------------------------------------------------
+
+    def expand_all(self, value=True):
+        """Expand or collapse all the FilePath and FileRoot instances."""
+        for fp in self.__data:
+            fp.expand = bool(value)
+            for fr in fp:
+                fr.expand = bool(value)
+
+    # -----------------------------------------------------------------------
+
+    def get_object(self, entry):
+        """Return the file object matching the given entry.
+        
+        :return: (FilePath, FileRoot, FileName)
+
+        """
+        try:
+            path = dirname(entry)
+            new_fp = FilePath(path)
+        except TypeError:
+            return None
+
+        for fp in self.__data:
+            if fp.id == new_fp.id:
+                return fp.get_object(entry)
+        
+        return None
+
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __iter__(self):
+        for a in self.__data:
+            yield a
+
+    def __getitem__(self, i):
+        return self.__data[i]
+
+    def __len__(self):
+        return len(self.__data)
 
 # ---------------------------------------------------------------------------

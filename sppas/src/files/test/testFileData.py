@@ -5,7 +5,7 @@ import unittest
 from os.path import dirname
 
 from sppas import u, sppasTypeError
-from sppas.src.files.filedata import FileBase, FileName, FileRoot, FilePath, AttValue, Reference
+from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileBase, AttValue, Reference
 from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
