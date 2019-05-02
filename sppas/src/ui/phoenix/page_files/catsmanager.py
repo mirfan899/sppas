@@ -125,7 +125,10 @@ class CataloguesManager(sppasPanel):
         name = event.GetButtonObj().GetName()
         if name == "cats-add":
             # create a reference
-            pass  # self._add_catalogue()
+            dlg = wx.MessageDialog(self, 'add a reference to the catalogue')
+            dlg.ShowModal()
+            dlg.Destroy()
+            # self._add_catalogue()
 
         elif name == "cats-delete":
             # delete a reference

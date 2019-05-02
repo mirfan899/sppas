@@ -169,10 +169,16 @@ class WorkspacesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def _process_action(self, event):
+        """Process a button event: an action has to be performed.
 
+        :param event: (wx.Event)
+
+        """
         name = event.GetButtonObj().GetName()
+        event.Skip()
+
         if name == "workspace_import":
-            pass
+            self.import_wkp()
 
         elif name == "workspace_export":
             pass
@@ -181,9 +187,55 @@ class WorkspacesManager(sppasPanel):
             pass
 
         elif name == "rename":
-            pass
+            self.rename_wkp()
 
-        event.Skip()
+    # ------------------------------------------------------------------------
+
+    def import_wkp(self):
+        """Import a file and append into the list of workspaces."""
+        # get the name of the file to be imported
+        dlg = wx.FileDialog(
+            self,
+            "Import workspace",
+            wildcard="Workspace files (*.wjson)|*.wjson",
+            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST)
+        if dlg.ShowModal() == wx.ID_CANCEL:
+            return
+        pathname = dlg.GetPath()
+        dlg.Destroy()
+
+        # import the selected file in the workspaces
+        try:
+            self.FindWindow("wkpslist").import_file(pathname)
+        except Exception as e:
+            wx.LogError("File '{:s}' can't be imported due to the following "
+                        "error: {!s:s}".format(pathname, str(e)))
+
+    # ------------------------------------------------------------------------
+
+    def rename_wkp(self):
+        """"""
+        current_name = self.FindWindow("wkpslist").get_wkp_current_name()
+        dlg = wx.TextEntryDialog(
+            self,
+            "New name of the workspace: ",
+            caption=wx.GetTextFromUserPromptStr,
+            value=current_name,
+            style=wx.OK | wx.CANCEL)
+        if dlg.ShowModal() == wx.ID_CANCEL:
+            return
+
+        new_name = dlg.GetValue()
+        dlg.Destroy()
+
+        if new_name == current_name:
+            return
+
+        try:
+            self.FindWindow("wkpslist").rename(new_name)
+        except Exception as e:
+            wx.LogError("Workspace can't be renamed to '{:s}' due to the following "
+                        "error: {!s:s}".format(new_name, str(e)))
 
 # ----------------------------------------------------------------------------
 # Panel to display the existing workspaces
@@ -229,6 +281,37 @@ class WorkspacesPanel(sppasPanel):
         """Return the data of the currently displayed workspace."""
         return self.__data
 
+    # -----------------------------------------------------------------------
+
+    def get_wkp_current_name(self):
+        """Return the name of the current workspace."""
+        return self.__wkps[self.__current]
+
+    # -----------------------------------------------------------------------
+
+    def import_file(self, filename):
+        """Append a new imported workspace."""
+        try:
+            with open(filename, 'r'):
+                pass
+        except IOError:
+            raise  # TODO: raise a sppasIOError (to get translation!)
+        wkp_name = self.__wkps.import_file(filename)
+        self.__add_wkp(wkp_name)
+        self.Layout()
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
+
+    def rename(self, new_name):
+        """Set a new name to the current workspace."""
+        # rename the workspace
+        u_name = self.__wkps.rename(self.__current, new_name)
+        # rename the button
+        btn = self.GetSizer().GetItem(self.__current).GetWindow()
+        btn.SetLabel(u_name)
+        btn.Refresh()
+
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
     # ------------------------------------------------------------------------
@@ -236,21 +319,28 @@ class WorkspacesPanel(sppasPanel):
     def _create_content(self):
         """Create the main content."""
         sizer = wx.BoxSizer(wx.VERTICAL)
-        for i, w in enumerate(self.__wkps):
-            btn = CheckButton(self, label=w, name=w)
-            btn.SetSpacing(12)
-            btn.SetMinSize(wx.Size(-1, 32))
-            btn.SetSize(wx.Size(-1, 32))
-            if i == self.__current:
-                self.__set_active_btn_style(btn)
-                btn.SetValue(True)
-            else:
-                self.__set_normal_btn_style(btn)
-                btn.SetValue(False)
-            sizer.Add(btn, 0, wx.EXPAND | wx.ALL, 2)
+        self.SetSizer(sizer)
+
+        for w in self.__wkps:
+            self.__add_wkp(w)
 
         self.SetMinSize(wx.Size(128, 32*len(self.__wkps)))
-        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def __add_wkp(self, name):
+        btn = CheckButton(self, label=name, name=name)
+        btn.SetSpacing(12)
+        btn.SetMinSize(wx.Size(-1, 32))
+        btn.SetSize(wx.Size(-1, 32))
+        i = self.__wkps.index(name)
+        if i == self.__current:
+            self.__set_active_btn_style(btn)
+            btn.SetValue(True)
+        else:
+            self.__set_normal_btn_style(btn)
+            btn.SetValue(False)
+        self.GetSizer().Add(btn, 0, wx.EXPAND | wx.ALL, 2)
 
     # -----------------------------------------------------------------------
 

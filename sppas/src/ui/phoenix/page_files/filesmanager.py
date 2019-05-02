@@ -165,6 +165,7 @@ class FilesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def _add_file(self):
+
         filenames = list()
         with wx.Dialog(self, style=wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.STAY_ON_TOP, size=(640, 480)) as dlg:
             fc = wx.FileCtrl(dlg,  # defaultDirectory="", defaultFilename="", wildCard="",

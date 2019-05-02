@@ -607,40 +607,51 @@ class BaseButton(wx.Window):
         Do not accept the event if the button is disabled.
 
         """
+
         if self.IsEnabled() is True:
 
             if event.Entering():
+                logging.debug('{:s} Entering'.format(self.GetName()))
                 self.OnMouseEnter(event)
 
             elif event.Leaving():
+                logging.debug('{:s} Leaving'.format(self.GetName()))
                 self.OnMouseLeave(event)
 
             elif event.LeftDown():
+                logging.debug('{:s} LeftDown'.format(self.GetName()))
                 self.OnMouseLeftDown(event)
 
             elif event.LeftUp():
+                logging.debug('{:s} LeftUp'.format(self.GetName()))
                 self.OnMouseLeftUp(event)
 
             elif event.Moving():
+                logging.debug('{:s} Moving'.format(self.GetName()))
                 # a motion event and no mouse buttons were pressed.
                 self.OnMotion(event)
 
             elif event.Dragging():
+                logging.debug('{:s} Dragging'.format(self.GetName()))
                 # motion while a button was pressed
                 self.OnDragging(event)
 
             elif event.ButtonDClick():
+                logging.debug('{:s} ButtonDClick'.format(self.GetName()))
                 self.OnMouseDoubleClick(event)
 
             elif event.RightDown():
+                logging.debug('{:s} RightDown'.format(self.GetName()))
                 self.OnMouseRightDown(event)
 
             elif event.RightUp():
+                logging.debug('{:s} RightUp'.format(self.GetName()))
                 self.OnMouseRightUp(event)
 
-        if self:
-            wx.PostEvent(self.GetParent().GetEventHandler(), event)
-            event.Skip()
+            else:
+                logging.debug('{:s} Other'.format(self.GetName()))
+
+        event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -650,7 +661,7 @@ class BaseButton(wx.Window):
         :param event: a wx.MouseEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -660,7 +671,7 @@ class BaseButton(wx.Window):
         :param event: a wx.MouseEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -677,7 +688,6 @@ class BaseButton(wx.Window):
         self.CaptureMouse()
         self.SetFocus()
         self.Refresh()
-        event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -694,13 +704,10 @@ class BaseButton(wx.Window):
             return
 
         self.ReleaseMouse()
-
         # If the button was down when the mouse was released...
-        logging.debug('  ... OnMouseLeftUp: {:s} current'.format(str(self._state)))
         if self._state[1] == BaseButton.PRESSED:
             self.Notify()
             self._set_state(self._state[0])
-            logging.debug('  ... OnMouseLeftUp: {:s} new set'.format(str(self._state)))
 
     # ------------------------------------------------------------------------
 
@@ -712,7 +719,7 @@ class BaseButton(wx.Window):
         :param event: a :class:wx.MouseEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -724,7 +731,7 @@ class BaseButton(wx.Window):
         :param event: a :class:wx.MouseEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -737,7 +744,6 @@ class BaseButton(wx.Window):
         if self._state[1] == BaseButton.NORMAL:
             self._set_state(BaseButton.HIGHLIGHT)
             self.Refresh()
-            event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -747,13 +753,8 @@ class BaseButton(wx.Window):
         :param event: a wx.MouseEvent event to be processed.
 
         """
-        if self._state[1] == BaseButton.HIGHLIGHT:
-            self._set_state(BaseButton.NORMAL)
-            event.Skip()
-
-        elif self._state[1] == BaseButton.PRESSED:
-            self._state[0] = BaseButton.NORMAL
-            event.Skip()
+        self._set_state(BaseButton.NORMAL)
+        self.Refresh()
 
     # ------------------------------------------------------------------------
 
@@ -779,7 +780,6 @@ class BaseButton(wx.Window):
         if self._state[1] == BaseButton.HIGHLIGHT:
             self._set_state(self._state[0])
             self.Refresh()
-            event.Skip()
 
     # ------------------------------------------------------------------------
 
@@ -789,7 +789,7 @@ class BaseButton(wx.Window):
         :param event: a wx.KeyEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -808,9 +808,6 @@ class BaseButton(wx.Window):
             self._set_state(BaseButton.PRESSED)
             wx.CallLater(100, self._set_state, BaseButton.HIGHLIGHT)
 
-        else:
-            event.Skip()
-
     # ------------------------------------------------------------------------
 
     def OnMouseDoubleClick(self, event):
@@ -819,7 +816,7 @@ class BaseButton(wx.Window):
         :param event: a wx.MouseEvent event to be processed.
 
         """
-        event.Skip()
+        pass
 
     # ------------------------------------------------------------------------
 
@@ -1031,10 +1028,12 @@ class BaseButton(wx.Window):
         """
         self._state[0] = self._state[1]
         self._state[1] = state
-        if wx.Platform == '__WXMSW__':
-            self.GetParent().RefreshRect(self.Rect, False)
-        else:
-            if self:
+
+        # if it's not an 'exit' button, we still exist!
+        if self:
+            if wx.Platform == '__WXMSW__':
+                self.GetParent().RefreshRect(self.Rect, False)
+            else:
                 self.Refresh()
 
 # ----------------------------------------------------------------------------
@@ -1118,7 +1117,6 @@ class BaseToggleButton(BaseButton):
         self.ReleaseMouse()
 
         # If the button was down when the mouse was released...
-        logging.debug('  ... OnMouseLeftUp: {:s} current'.format(str(self._state)))
         if self._state[1] == BaseButton.PRESSED:
             self.Notify()
 
@@ -1126,11 +1124,10 @@ class BaseToggleButton(BaseButton):
                 self._set_state(BaseButton.PRESSED)
             else:
                 self._set_state(BaseButton.HIGHLIGHT)
-            logging.debug('  ... OnMouseLeftUp: {:s} new set'.format(str(self._state)))
 
             # test self, in case the button was destroyed in the eventhandler
             if self:
-                self.Refresh()
+                # self.Refresh()  # done in set_state
                 event.Skip()
 
     # ------------------------------------------------------------------------
@@ -1141,21 +1138,17 @@ class BaseToggleButton(BaseButton):
         :param event: a wx.MouseEvent event to be processed.
 
         """
-        logging.debug('  ... OnMouseLeave: {:s} current'.format(str(self._state)))
         if self._pressed is True:
             self._set_state(BaseButton.PRESSED)
-            logging.debug('  ... OnMouseLeave: {:s} set new'.format(str(self._state)))
             return
 
         if self._state[1] == BaseButton.HIGHLIGHT:
             self._set_state(BaseButton.NORMAL)
-            logging.debug('  ... OnMouseLeave: {:s} set new'.format(str(self._state)))
             self.Refresh()
             event.Skip()
 
         elif self._state[1] == BaseButton.PRESSED:
             self._state[0] = BaseButton.NORMAL
-            logging.debug('  ... OnMouseLeave: {:s} set new'.format(str(self._state)))
             self.Refresh()
             event.Skip()
 
@@ -1605,6 +1598,7 @@ class CheckButton(BaseToggleButton):
 
         return brush
 
+    # ------------------------------------------------------------------------
 
     def Notify(self):
         """Actually sends the wx.wxEVT_COMMAND_CHECKBOX_CLICKED event."""

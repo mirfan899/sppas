@@ -38,6 +38,7 @@
 
 import os
 import logging
+import shutil
 
 from sppas.src.files.filedata import FileData
 from sppas import paths
@@ -62,6 +63,8 @@ class sppasWorkspaces(object):
         - a name, matching the filename without path nor extension.
 
     The extension of a workspace JSON files is: wjson
+
+    TODO: Use sppas exceptions
 
     """
 
@@ -92,12 +95,48 @@ class sppasWorkspaces(object):
 
         """
         for fn in os.listdir(paths.wkps):
-            if fn.endswith(sppasWorkspaces.ext):
+            fn_observed, ext_observed = os.path.splitext(fn)
+            if ext_observed.lower() == sppasWorkspaces.ext:
                 # remove path and extension to set the name of the workspace
-                wkp_name = os.path.basename(os.path.splitext(fn)[0])
+                wkp_name = os.path.basename(fn_observed)
                 # append in the list
                 self.__wkps.append(wkp_name)
                 logging.debug('Founded workspace {:s}'.format(wkp_name))
+
+    # -----------------------------------------------------------------------
+
+    def import_file(self, filename):
+        """Import and append an external workspace.
+
+        :param filename: (str)
+        :returns: The real name used to save the workspace
+
+        """
+        if os.path.exists(filename) is False:
+            raise IOError('Invalid filename {:s}'.format(filename))
+
+        name, ext = os.path.splitext(os.path.basename(filename))
+        if ext.lower() != sppasWorkspaces.ext:
+            raise IOError('{:s} is not a valid extension for workspace files'
+                          ''.format(ext))
+
+        # Check if a workspace with the same name is not already existing
+        sp = sppasUnicode(name)
+        u_name = sp.to_strip()
+        if u_name in self:
+            raise ValueError('A workspace with name {:s} is already existing.'
+                             ''.format(u_name))
+
+        # Copy the file -- modify the filename if any
+        try:
+            dest = os.path.join(paths.wkps, u_name + sppasWorkspaces.ext)
+            shutil.copyfile(filename, dest)
+        except:
+            raise
+
+        # append in the list
+        self.__wkps.append(u_name)
+        return u_name
 
     # -----------------------------------------------------------------------
 
@@ -112,7 +151,7 @@ class sppasWorkspaces(object):
         # set the name in unicode and with the appropriate extension
         su = sppasUnicode(name)
         u_name = su.to_strip()
-        if u_name in self.__wkps:
+        if u_name in self:
             raise ValueError('A workspace with name {:s} is already existing.'
                              ''.format(u_name))
 
@@ -139,7 +178,7 @@ class sppasWorkspaces(object):
 
         """
         if index == 0:
-            raise IOError('It is not allowed to save the Blank workspace.')
+            raise IndexError('It is not allowed to save the Blank workspace.')
 
         if index == -1:
             u_name = self.new("New workspace")
@@ -161,7 +200,7 @@ class sppasWorkspaces(object):
 
         """
         if index == 0:
-            raise IOError('It is not allowed to delete the Blank workspace.')
+            raise IndexError('It is not allowed to delete the Blank workspace.')
 
         try:
             fn = self.check_filename(index)
@@ -178,8 +217,8 @@ class sppasWorkspaces(object):
         """Return the index of the workspace with the given name."""
         su = sppasUnicode(name)
         u_name = su.to_strip()
-        if u_name not in self.__wkps:
-            raise ValueError('Name {:s} not found.')
+        if u_name not in self:
+            raise ValueError("Workspace name '{:s}' not found.".format(name))
 
         i = 0
         while self.__wkps[i] != u_name:
@@ -189,14 +228,46 @@ class sppasWorkspaces(object):
 
     # -----------------------------------------------------------------------
 
+    def rename(self, index, new_name):
+        """Set a new name to the workspace at the given index.
+
+        :param index: (int) Index of the workspace
+        :param new_name: (str) New name of the workspace
+        :returns: (str)
+        :raises: IndexError, OSError
+
+        """
+        if index == 0:
+            raise IndexError('It is not allowed to rename the Blank workspace.')
+
+        su = sppasUnicode(new_name)
+        u_name = su.to_strip()
+
+        if u_name in self:
+            raise ValueError('A workspace with name {:s} is already existing.'
+                             ''.format(u_name))
+
+        cur_name = self[index]
+        if cur_name == new_name:
+            return
+
+        src = self.check_filename(index)
+        dest = os.path.join(paths.wkps, u_name) + sppasWorkspaces.ext
+        shutil.move(src, dest)
+        self.__wkps[index] = u_name
+
+        return u_name
+
+    # -----------------------------------------------------------------------
+
     def check_filename(self, index):
         """Get the filename of the workspace at the given index.
 
         In case the filename is not existing, the workspace is removed.
 
         :param index: (int) Index of the workspace
-        :returns: (str)
-        :raises: IndexError, OSerror
+        :returns: (str) name of the file
+        :raises: IndexError, OSError
 
         """
         fn = os.path.join(paths.wkps, self[index]) + sppasWorkspaces.ext
@@ -215,7 +286,7 @@ class sppasWorkspaces(object):
         In case the filename is not existing, the workspace is removed.
 
         :param index: (int) Index of the workspace
-        :returns: (str)
+        :returns: (str) FileData()
         :raises: IndexError, OSError
 
         """
@@ -245,3 +316,11 @@ class sppasWorkspaces(object):
         except IndexError:
             raise sppasIndexError(i)
         return item
+
+    def __contains__(self, name):
+        sp = sppasUnicode(name)
+        u_name = sp.to_strip()
+        for a in self.__wkps:
+            if a.lower() == u_name.lower():
+                return True
+        return False
