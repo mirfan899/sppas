@@ -122,6 +122,7 @@
         >>>    logic_bool="and")
 
 """
+import pickle
 import re
 import random
 import mimetypes
@@ -134,7 +135,7 @@ from os.path import getsize, getmtime
 from os.path import basename, dirname
 from datetime import datetime
 
-from sppas import u, sppasUnicode, sppasTypeError
+from sppas import u, sppasUnicode, sppasTypeError, sppasValueError
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 
@@ -498,7 +499,12 @@ class FileRoot(FileBase):
             raise sppasTypeError(value, 'FileStates')
 
         for fn in self.__files:
-            fn.state = value
+            if value == self.States.UNUSED:
+                fn.state = FileName.States.UNUSED
+            elif value == self.States.ALL_CHECKED:
+                fn.state = FileName.States.CHECKED
+            elif value == self.States.ALL_LOCKED:
+                fn.state = FileName.States.LOCKED
 
     state = property(get_state, set_state)
 
@@ -748,7 +754,16 @@ class FilePath(FileBase):
             raise sppasTypeError(value, 'FileStates')
 
         for fr in self.__roots:
-            fr.state = value
+            if value == self.States.ALL_LOCKED:
+                fr.state = FileRoot.States.ALL_LOCKED
+            elif value == self.States.AT_LEAST_ONE_LOCKED:
+                fr.state = FileRoot.States.AT_LEAST_ONE_LOCKED
+            elif value == self.States.ALL_CHECKED:
+                fr.state = FileRoot.States.ALL_CHECKED
+            elif value == self.States.AT_LEAST_ONE_CHECKED:
+                fr.state = FileRoot.States.AT_LEAST_ONE_CHECKED
+            elif value == self.States.UNUSED:
+                fr.state = FileRoot.States.UNUSED
 
     state = property(get_state, set_state)
     
@@ -1321,6 +1336,66 @@ class FileData(object):
                 return fp.get_object(entry)
         
         return None
+
+    # -----------------------------------------------------------------------
+
+    def get_state(self, file_obj):
+
+        if not isinstance(file_obj, FilePath)\
+            and not isinstance(file_obj, FileRoot)\
+                and not isinstance(file_obj, FileName):
+            raise sppasTypeError(file_obj, 'FilePath or FileRoot or FileName')
+        else:
+            return file_obj.get_state()
+
+    # -----------------------------------------------------------------------
+
+    def set_state(self, state, file_obj=None):
+        if file_obj is None:
+            for fp in self.__data:
+                if not fp.state == FilePath.States.AT_LEAST_ONE_LOCKED:
+                    if isinstance(state, FilePath.States):
+                        fp.state = state
+                    else:
+                        raise sppasTypeError(state, 'FilePath.State')
+                else:
+                    raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
+        else:
+            if issubclass(file_obj, FileBase):
+                if isinstance(state, FilePath.States)\
+                    or isinstance(state, FileRoot.States)\
+                        or isinstance(state, FileName.States):
+                    file_obj.state = state
+                else:
+                    raise sppasTypeError(state, 'FilePath.State or FileRoot.State or FileName.State')
+            else:
+                raise sppasTypeError(file_obj, 'inherited from FileBase')
+
+    # -----------------------------------------------------------------------
+
+    def save(self, file_name):
+        with open(file_name, 'wb') as save:
+            pickle.dump(self.__data, save)
+
+    # -----------------------------------------------------------------------
+
+    def load(self, file_name, force=False):
+        at_least_one_fp_is_locked = False
+
+        for fp in self.__data:
+            if fp.state == FilePath.States.AT_LEAST_ONE_LOCKED\
+                    or fp.state == FilePath.States.ALL_LOCKED:
+                at_least_one_fp_is_locked = True
+
+        if force is True or at_least_one_fp_is_locked is False:
+            self.__data.clear()
+            with open(file_name, 'rb') as save:
+                save = pickle.load(save)
+                self.__data = save
+
+        else:
+            print('are you sure you want to load the new workspace with '+\
+                        'open file(s) ?')
 
     # -----------------------------------------------------------------------
     # Overloads

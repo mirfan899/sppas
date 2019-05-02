@@ -4,8 +4,9 @@
 import unittest
 from os.path import dirname
 
+import sppas
 from sppas import u, sppasTypeError
-from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileBase, AttValue, Reference
+from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileBase, AttValue, Reference, FileData
 from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
 
 
@@ -227,6 +228,35 @@ class TestCategories(unittest.TestCase):
 
         self.assertFalse(
             len(self.micros) == 2
+        )
+
+# ---------------------------------------------------------------------------
+
+
+class TestFileData(unittest.TestCase):
+
+    def setUp(self):
+        self.files = FileData()
+        self.files.add_file(__file__)
+        self.files.add_file(sppas.paths.samples + '\\samples-fra\\AC track_0379.PitchTier')
+        self.files.add_file(sppas.paths.samples + '\\samples-fra\\AC track_0379.TextGrid')
+        self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
+        self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
+
+    def testSave(self):
+        self.files.save('save.txt')
+        hello = self.files
+        self.files.load('save.txt')
+        world = self.files
+        self.assertTrue(
+            hello == world
+        )
+
+    def testState(self):
+        self.files.set_state(FilePath.States.ALL_LOCKED)
+
+        self.assertTrue(
+            self.files.get_state(self.files[0]) == FilePath.States.ALL_LOCKED
         )
 
 # ---------------------------------------------------------------------------
