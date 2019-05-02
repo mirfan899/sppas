@@ -243,6 +243,11 @@ class TestFileData(unittest.TestCase):
         self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
         self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
 
+        self.age = Reference('age')
+        self.age.add('age1', AttValue('14', 'int', 'age of the first interviwee'))
+        self.age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
+        self.age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
+
     def testSave(self):
         self.files.save('save.txt')
         hello = self.files
@@ -260,6 +265,13 @@ class TestFileData(unittest.TestCase):
 
         self.assertTrue(
             self.files.get_state(self.files[0]) == FilePath.States.ALL_LOCKED
+        )
+
+    def testRef(self):
+        self.files.add_ref(self.age)
+
+        self.assertTrue(
+            len(self.files.get_refs()) == 1
         )
 
 # ---------------------------------------------------------------------------

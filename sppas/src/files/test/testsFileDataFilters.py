@@ -1,5 +1,7 @@
+import unittest
+
 import sppas
-from sppas.src.files.filedata import FileData, AttValue, Reference
+from sppas.src.files.filedata import FileData
 from sppas.src.files.filedatacompare import *
 from sppas.src.files.filedatafilters import sppasFileDataFilters
 

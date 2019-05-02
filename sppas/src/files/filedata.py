@@ -443,7 +443,7 @@ class FileRoot(FileBase):
         self.__files = list()
 
         #References
-        self.__categories = None
+        self.__references = None
 
         # States of the path
         # ------------------
@@ -509,7 +509,7 @@ class FileRoot(FileBase):
 
     def get_categories(self):
         """If the reference catalog is not set yet, instead of returning None the method returns an empty list."""
-        return self.__categories if self.__categories is not None else list()
+        return self.__references if self.__references is not None else list()
 
     def set_categories(self, list_of_categories):
         """In order to set the categories one must provide a list of category or an empty list.
@@ -523,7 +523,7 @@ class FileRoot(FileBase):
                     if not isinstance(category, Reference):
                         raise sppasTypeError(category, 'Category')
 
-            self.__categories = list_of_categories
+            self.__references = list_of_categories
         else:
             raise sppasTypeError(list_of_categories, 'list')
 
@@ -1088,6 +1088,13 @@ class Reference(FileBase):
 
     """
 
+    # ---------------------------------------------------------------------------
+    class States(Enum):
+        UNUSED = 0
+        CHECKED = 1
+
+    # ---------------------------------------------------------------------------
+
     def __init__(self, identifier):
         """Constructor of the Category class.
 
@@ -1095,12 +1102,15 @@ class Reference(FileBase):
         """
         super(Reference, self).__init__(identifier)
         self.__attributs = OrderedDict()
+        self.__state = self.States.UNUSED
+
+    # ---------------------------------------------------------------------------
 
     def add(self, key, value):
         """Add a new pair of key/value in the current dictionary.
 
         :param key: (str) should be only with alphanumeric characters and underscores
-        :param value: (str | AttValue) will always be converted in AttValue object
+        :param value: (str, AttValue) will always be converted in AttValue object
         """
         #used once hence declared inside add method
         def is_restricted_ascii(key_to_test):
@@ -1116,6 +1126,8 @@ class Reference(FileBase):
         else:
             raise ValueError('Non ASCII characters')
 
+    # ---------------------------------------------------------------------------
+
     def pop(self, key):
         """Delete a pair of key/value.
 
@@ -1125,6 +1137,27 @@ class Reference(FileBase):
             self.__attributs.pop(key)
         else:
             raise ValueError('index not in Category')
+
+    # ---------------------------------------------------------------------------
+
+    def get_state(self):
+        """Return its current state."""
+        return self.__state
+
+    # ---------------------------------------------------------------------------
+
+    def set_state(self, state):
+        """Set the current state to a new one.
+
+        :param state: (Reference.States)
+        :raises (sppasTypeError)
+        """
+        if isinstance(state, self.States):
+            self.__state = state
+        else:
+            raise sppasTypeError(state, 'Reference.States')
+
+    state = property(get_state, set_state)
 
     #---------------------------------------------------------
     # overloads
@@ -1174,6 +1207,7 @@ class FileData(object):
     def __init__(self):
         """Constructor of a FileData."""
         self.__data = list()
+        self.__refs = list()
 
     # -----------------------------------------------------------------------
 
@@ -1195,6 +1229,33 @@ class FileData(object):
             self.__data.append(new_fp)
 
         return new_fp.append(filename)
+
+    # -----------------------------------------------------------------------
+
+    def add_ref(self, ref):
+        """Add a reference in the list from its file name.
+
+        :param ref: (Reference) Reference to add
+        """
+        if isinstance(ref, Reference):
+            if ref not in self.__refs:
+                self.__refs.append(ref)
+        else:
+            raise sppasTypeError(ref, 'Reference')
+
+    # -----------------------------------------------------------------------
+
+    def remove_checked_ref(self):
+        """Remove all checked ref from the list"""
+        for ref in self.__refs:
+            if ref.state == Reference.States.CHECKED:
+                del self.__refs[self.__refs.index(ref)]
+
+    # -----------------------------------------------------------------------
+
+    def get_refs(self):
+        """Return the current ref list"""
+        return self.__refs
 
     # -----------------------------------------------------------------------
 
@@ -1229,7 +1290,7 @@ class FileData(object):
         for fp in self.__data:
             for fr in reversed(fp):
                 for fn in reversed(fr):
-                    if fn.check is True:
+                    if fn.state == FileName.States.CHECKED:
                         fr.remove(fn)
  
     # -----------------------------------------------------------------------

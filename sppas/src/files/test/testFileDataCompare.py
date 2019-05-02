@@ -1,7 +1,8 @@
+import unittest
 from os import *
+from os.path import dirname
 from random import randint
 
-from sppas.src.files.filedata import AttValue
 from sppas.src.files.filedatacompare import *
 
 
