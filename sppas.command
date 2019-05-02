@@ -12,7 +12,7 @@
 #
 # ---------------------------------------------------------------------------
 #            Laboratoire Parole et Langage, Aix-en-Provence, France
-#                   Copyright (C) 2011-2018  Brigitte Bigi
+#                   Copyright (C) 2011-2019  Brigitte Bigi
 #
 #                   This banner notice must not be removed
 # ---------------------------------------------------------------------------
@@ -56,66 +56,84 @@ export PYTHONIOENCODING=UTF-8
 
 PYTHON=""
 
-# Search for pythonw, v2
+echo -n "Search for 'pythonw' command for Python 2: "
 for cmd in `which -a pythonw`;
 do
-    v=`$cmd -c "import sys; print(sys.version_info[0])"`;
-    if [ $v == "2" ]; then
+    v=$($cmd -c "import sys; print(sys.version_info[0])");
+    if [[ "$v" == "2" ]]; then
         PYTHON=$cmd;
     fi;
 done
 
 # Search for pythonw, v3
-if [ $PYTHON == "" ]; then
+if [ -z "$PYTHON" ]; then
+    echo "not found.";
+    echo -n "Search for 'pythonw' command for Python 3: ";
     for cmd in `which -a pythonw`;
     do
-        v=`$cmd -c "import sys; print(sys.version_info[0])"`;
-        if [ $v == "3" ]; then
+        v=$($cmd -c "import sys; print(sys.version_info[0])");
+        if [[ "$v" == "3" ]]; then
             PYTHON=$cmd;
         fi;
     done
+else
+    echo "OK";
 fi
 
 # Search for python, v2
-if [ $PYTHON == "" ]; then
+if [ -z "$PYTHON" ]; then
+    echo "not found.";
+    echo -n "Search for 'python' command for Python 2: ";
     for cmd in `which -a python`;
     do
-        v=`$cmd -c "import sys; print(sys.version_info[0])"`;
-        if [ $v == "2" ]; then
+        v=$($cmd -c "import sys; print(sys.version_info[0])");
+        if [[ "$v" == "2" ]]; then
             PYTHON=$cmd;
         fi;
     done
+else
+    echo "OK";
 fi
 
 # Search for python, v3
-if [ $PYTHON == "" ]; then
+if [ -z "$PYTHON" ]; then
+    echo "not found."
+    echo -n "Search for 'python' command for Python 3: "
     for cmd in `which -a python`;
     do
-        v=`$cmd -c "import sys; print(sys.version_info[0])"`;
-        if [ $v == "3" ]; then
+        v=$($cmd -c "import sys; print(sys.version_info[0])");
+        if [[ "$v" == "3" ]]; then
             PYTHON=$cmd;
         fi;
     done
+else
+    echo "OK";
 fi
 
-if [ $PYTHON == "" ]; then
-    echo "Python is not an internal command of your operating system."
-    echo "For any help, take a look at the SPPAS installation page: http://www.sppas.org."
-    exit -1
+if [ -z "$PYTHON" ]; then
+    echo "not found.";
+    echo "Python is not an internal command of your operating system.";
+    echo "For any help, take a look at the SPPAS installation page: http://www.sppas.org.";
+    exit -1;
 fi
 
 # Get the name of the system
-unamestr="`uname | cut -f1 -d'_'`"
+unamestr=`uname | cut -f1 -d'_'`;
 
-echo "Command: "$PYTHON
-echo "System:  "$unamestr
+echo "SPPAS will start with: ";
+echo "  - Command: '$PYTHON' (Python version $v)";
+echo "  - System:  $unamestr";
+echo "  - Display:  $DISPLAY";
+echo "  - Location: $PROGRAM_DIR";
+echo "  - Program: sppas/bin/sppasgui.py";
 
-# Cygwin
-if [[ "$unamestr" == 'CYGWIN' ]]; then
-   if [ -z $DISPLAY ]; then
-       echo "Unable to access the X Display. Did you enabled XWin server?"
-       exit -1
-   fi
+if [ "$unamestr" == "CYGWIN" ]; then
+    if [ -z $DISPLAY ]; then
+       echo "[ ERROR ] Unable to access the X Display.";
+       echo "Did you enabled XWin server?";
+       exit -1;
+    fi
 fi
 
+echo "Graphical User Interface of SPPAS.";
 $PYTHON $PROGRAM_DIR/sppas/bin/sppasgui.py
