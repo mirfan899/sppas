@@ -235,7 +235,7 @@ class sppasMainWindow(sppasDialog):
                       "".format(event_id, event_name))
 
         if event_name == "exit":
-            wx.CallLater(200, self.exit)
+            self.exit()
 
         elif event_name == "view_log":
             self.log_window.focus()
@@ -263,15 +263,15 @@ class sppasMainWindow(sppasDialog):
         key_code = event.GetKeyCode()
         logging.debug('Main window received a key event. key_code={:d}'.format(key_code))
 
-        if key_code == wx.WXK_F4 and event.AltDown():
+        if key_code == wx.WXK_F4 and event.AltDown() and wx.Platform == "__WXMSW__":
             # ALT+F4 on Windows to exit with confirmation
             self.on_exit(event)
 
-        elif key_code == 87 and event.CmdDown():
+        elif key_code == 87 and event.CmdDown() and wx.Platform != "__WXMSW__":
             # CMD+w on MacOS to exit with confirmation
             self.on_exit(event)
 
-        elif key_code == 81 and event.CmdDown():
+        elif key_code == 81 and event.CmdDown() and wx.Platform != "__WXMSW__":
             # CMD+q on MacOS to force exit
             self.exit()
 
@@ -313,7 +313,7 @@ class sppasMainWindow(sppasDialog):
         # Stop redirecting logging to this application
         self.log_window.redirect_logging(False)
         # Terminate all frames
-        # self.DestroyChildren()
+        self.DestroyChildren()
         self.DestroyFadeOut(deltaN=-6)
 
     # -----------------------------------------------------------------------
