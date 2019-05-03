@@ -37,9 +37,9 @@
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
-from .filedatacompare import sppasPathCompare, sppasRootCompare, sppasFileNameCompare, sppasFileNameExtensionCompare, \
-    sppasFileNamePropertiesCompare, sppasReferenceCompare, sppasAttValueCompare
-
+from .filedatacompare import sppasPathCompare, sppasRootCompare
+from .filedatacompare import sppasFileNameCompare, sppasFileNameExtensionCompare
+from .filedatacompare import sppasFileNamePropertiesCompare, sppasReferenceCompare, sppasAttValueCompare
 
 # ---------------------------------------------------------------------------
 
@@ -239,6 +239,8 @@ class sppasFileDataFilters(sppasBaseFilters):
     def fprop(self, **kwargs):
         """Apply functions on all file properties of the object.
 
+        TODO : CONVERT TO STATE
+
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with 'not_', like in the next example.
 
@@ -305,7 +307,7 @@ class sppasFileDataFilters(sppasBaseFilters):
         for path in self.obj:
             # append all files of the path
             for fr in path:
-                for ref in fr.categories:
+                for ref in fr.references:
                     is_matching = ref.match(path_functions, logic_bool)
                     if is_matching is True:
                         data.append(ref, path_fct_values)

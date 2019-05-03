@@ -122,12 +122,6 @@ class TestFileDataCompare(unittest.TestCase):
         # fp looks like the regex
         self.assertFalse(fp.match([(self.cmpFileNameExtension.regexp, "^\.", True)]))
 
-    def test_lock_fprop (self):
-        d = __file__
-        fp = FileName(d)
-
-        self.assertTrue(fp.match([(self.cmpFileNameProperties.lock, True, True)]))
-
     def test_match_fp(self):
         d = dirname(__file__)
         fp = FilePath(d)
@@ -202,12 +196,6 @@ class TestFileDataCompare(unittest.TestCase):
         fp = FileRoot(d)
         #fp isn't checked
         self.assertTrue(fp.match([(self.cmpRoot.check, False, False)]))
-
-    def test_expand_fr(self):
-        d = path.splitext(__file__)[0]
-        fp = FileRoot(d)
-        #fp isn't expanded
-        self.assertFalse(fp.match([(self.cmpRoot.expand, True, True)]))
 
 
 class TestFileDataReferencesCompare(unittest.TestCase):

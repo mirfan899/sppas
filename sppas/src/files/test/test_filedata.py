@@ -1,13 +1,18 @@
 # ---------------------------------------------------------------------------
 # Unittests
 # ---------------------------------------------------------------------------
+
+
 import unittest
 from os.path import dirname
 
 import sppas
-from sppas import u, sppasTypeError
-from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileBase, AttValue, Reference, FileData
-from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError
+from sppas import sppasTypeError
+from ..fileref import AttValue, Reference
+from ..filedata import FileData
+from ..filebase import FileBase
+from ..filestructure import FileName, FileRoot, FilePath
+from ..fileexc import FileOSError, FileTypeError, PathTypeError
 
 
 class TestFileBase(unittest.TestCase):
@@ -20,7 +25,6 @@ class TestFileBase(unittest.TestCase):
         f = FileBase(__file__)
         self.assertEqual(__file__, str(f))
         self.assertEqual(__file__, "{!s:s}".format(f))
-
 
 # ---------------------------------------------------------------------------
 

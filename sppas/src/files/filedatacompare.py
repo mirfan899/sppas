@@ -63,7 +63,8 @@ from sppas import sppasTypeError
 from sppas.src.utils.makeunicode import text_type
 from sppas.src.structs.basecompare import sppasBaseCompare
 
-from .filedata import FilePath, FileRoot, FileName, Reference, AttValue
+from .filestructure import FilePath, FileRoot, FileName
+from .fileref import Reference, AttValue
 
 
 # ---------------------------------------------------------------------------
@@ -104,7 +105,6 @@ class sppasPathCompare(sppasBaseCompare):
 
         # Compare state/expand to a boolean value
         self.methods['check'] = sppasPathCompare.check
-        self.methods['expand'] = sppasPathCompare.expand
 
     # -----------------------------------------------------------------------
     # Path identifier
@@ -298,23 +298,6 @@ class sppasPathCompare(sppasBaseCompare):
 
         return (fp.state is FilePath.States.ALL_CHECKED) == value
 
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def expand(fp, value):
-        """Compare expand member to the given value.
-
-        :param fp: (FilePath) Path to compare.
-        :param value: (bool) Boolean to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
-
-        return fp.expand is bool(value)
-
 # ---------------------------------------------------------------------------
 
 
@@ -353,7 +336,6 @@ class sppasRootCompare(sppasBaseCompare):
 
         # Compare state/expand to a boolean value
         self.methods['check'] = sppasRootCompare.check
-        self.methods['expand'] = sppasRootCompare.expand
 
     # -----------------------------------------------------------------------
     # Root identifier
@@ -546,24 +528,6 @@ class sppasRootCompare(sppasBaseCompare):
             raise sppasTypeError(fr, "FileRoot")
 
         return (fr.state is FileRoot.States.ALL_CHECKED) == value
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def expand(fr, value):
-        """Compare expand member to the given value.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (bool) Boolean to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-
-        return fr.expand is bool(value)
-
 
 # ---------------------------------------------------------------------------
 
@@ -987,6 +951,8 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 class sppasFileNamePropertiesCompare(sppasBaseCompare):
     """Comparison methods for FileName properties.
 
+    TODO : CONVERT TO STATE
+
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
@@ -1006,25 +972,7 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
         super(sppasFileNamePropertiesCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['lock'] = sppasFileNamePropertiesCompare.lock
-
-    # -----------------------------------------------------------------------
-    # FileName Properties
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def lock(fn, value):
-        """Compare lock member to the given value.
-
-        :param fn: (FileName) File to compare.
-        :param value: (bool) Boolean to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-        """
-        if isinstance(fn, FileName) is False:
-            raise sppasTypeError(fn, "FileName")
-
-        return fn.lock is bool(value)
+        #self.methods['lock'] = sppasFileNamePropertiesCompare.lock
 
 # ---------------------------------------------------------------------------
 

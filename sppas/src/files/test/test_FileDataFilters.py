@@ -25,7 +25,7 @@ class TestsFileDataFilter (unittest.TestCase):
         #         fr.categories.append(age)
 
         fr = FileRoot(sppas.paths.__dict__['samples'] + '\\samples-fra\\AC track_0379.PitchTier')
-        fr.categories.append(age)
+        fr.references.append(age)
 
         self.data_filter = sppasFileDataFilters(self.files)
 
@@ -48,11 +48,11 @@ class TestsFileDataFilter (unittest.TestCase):
         self.assertTrue(
             len(self.data_filter.extension(not_exact='.PY')) == 3
         )
-
-    def test_fileNameProperties(self):
-        self.assertTrue(
-            len(self.data_filter.fprop(not_lock='true')) == 4
-        )
+    #
+    # def test_fileNameProperties(self):
+    #     self.assertTrue(
+    #         len(self.data_filter.fprop(not_lock='true')) == 4
+    #     )
 
     def test_ref_id(self):
         self.assertTrue(
