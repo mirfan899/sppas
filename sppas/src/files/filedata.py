@@ -124,7 +124,6 @@
 """
 
 import json
-import pickle
 
 from os.path import isfile, isdir, exists
 from os.path import basename, dirname
@@ -350,16 +349,32 @@ class FileData(object):
 
     # -----------------------------------------------------------------------
 
+    def toJSON(self):
+        my_fp = dict()
+        for fp in self.__data:
+            my_fr = dict()
+            for fr in fp:
+                my_fn = list()
+                my_ref = list()
+                for fn in fr:
+                    my_fn.append(fn.id)
+                for ref in fr.references:
+                    my_ref.append(ref)
+
+                my_fr[fr.id] = (my_fn, my_ref)
+            my_fp[fp.id] = my_fr
+        return my_fp
+
+    # -----------------------------------------------------------------------
+
     def save(self, file_name):
         """Save the current FileData in a serialized file.
-
-        TODO: json ASCII file
 
         :param file_name: (str) the name of the save file.
 
         """
-        with open(file_name, 'wb') as save:
-            pickle.dump(self.__data, save)
+        with open(file_name, 'w') as save:
+            json.dump(self.toJSON(), save)
 
     # -----------------------------------------------------------------------
 
@@ -383,9 +398,10 @@ class FileData(object):
 
         if force is True or at_least_one_fp_is_locked is False:
             self.__data.clear()
-            with open(file_name, 'rb') as save:
-                save = pickle.load(save)
-                self.__data = save
+            with open(file_name, 'r') as save:
+                savee = json.loads(save.read())
+                for value, hello in savee:
+                    print(value, hello)
 
         else:
             raise ValueError('Locked files')
