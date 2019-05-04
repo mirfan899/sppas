@@ -28,13 +28,13 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.main_config.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~
+    ui.cfg.py
+    ~~~~~~~~~
 
 """
 
-from .sglobal import sppasGlobalSettings
-from .settings import sppasBaseSettings
+from sppas.src.config.sglobal import sppasGlobalSettings
+from sppas.src.config.settings import sppasBaseSettings
 
 # ---------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ class sppasAppConfig(sppasBaseSettings):
             log_level=5,
             quiet_log_level=30,
             log_file=None,
-            splash_delay=3,
+            splash_delay=3
         )
 
     # -----------------------------------------------------------------------

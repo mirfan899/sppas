@@ -11,7 +11,7 @@ from sppas.src.ui import sppasLogSetup
 from sppas.src.ui.phoenix.dialogs.settings import sppasSettingsDialog
 
 from sppas.src.ui.phoenix import WxAppSettings
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 
 # ---------------------------------------------------------------------------
 

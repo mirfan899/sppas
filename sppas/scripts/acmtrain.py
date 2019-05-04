@@ -47,7 +47,7 @@ sys.path.append(SPPAS)
 
 from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasTrainingCorpus, sppasDataTrainer
 from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 
 
 # ----------------------------------------------------------------------------

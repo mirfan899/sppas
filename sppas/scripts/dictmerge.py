@@ -47,7 +47,7 @@ sys.path.append(SPPAS)
 from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
 from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:

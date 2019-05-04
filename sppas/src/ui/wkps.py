@@ -43,7 +43,7 @@ import shutil
 from sppas.src.files.filedata import FileData
 from sppas import paths
 from sppas import sppasIndexError
-from sppas.src.utils.makeunicode import sppasUnicode
+from sppas import sppasUnicode
 
 # ---------------------------------------------------------------------------
 

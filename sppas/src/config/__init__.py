@@ -54,11 +54,14 @@ from .sglobal import sppasSymbolSettings
 from .sglobal import sppasSeparatorSettings
 from .sglobal import sppasAnnotationsSettings
 from .po import sppasTranslate
-from .ui import sppasAppConfig
+from .support import PostInstall
 
 # ---------------------------------------------------------------------------
 # Fix the global un-modifiable settings
 # ---------------------------------------------------------------------------
+
+# create missing directories
+PostInstall().sppas_directories()
 
 sg = sppasGlobalSettings()
 paths = sppasPathSettings()
@@ -155,7 +158,6 @@ __all__ = (
     "separators",
     "annots",
     "ui_translation",
-    "sppasAppConfig",
     "info",
     "error",
     "msg"

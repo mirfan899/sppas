@@ -54,7 +54,7 @@ sys.path.append(SPPAS)
 from sppas import sppasRW
 from sppas import sppasTranscription
 from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 from sppas.src.anndata.aio.aioutils import unalign
 from sppas.src.annotations.searchtier import sppasFindTier
 

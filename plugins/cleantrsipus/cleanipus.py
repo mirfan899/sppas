@@ -47,7 +47,7 @@ from sppas import sppasRW
 from sppas import sppasTag, sppasLabel
 from sppas import sppasFindTier
 from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 from sppas.src.config import symbols
 
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]

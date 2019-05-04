@@ -111,7 +111,7 @@ try:
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
     from sppas.src.ui import sppasLogSetup
-    from sppas.src.config.ui import sppasAppConfig
+    from sppas.src.ui.cfg import sppasAppConfig
 except Exception as e:
     print(str(e))
     exit_error("An unexpected error occurred.\n"

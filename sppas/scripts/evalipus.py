@@ -144,7 +144,7 @@ from sppas import sppasLabel, sppasTag
 import sppas.src.anndata.aio
 
 from sppas.src.ui import sppasLogSetup
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 
 
 # ---------------------------------------------------------------------------
