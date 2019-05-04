@@ -1447,14 +1447,16 @@ class CheckButton(BaseToggleButton):
         if spacing < 0:
             spacing = 0
         if spacing > 20:
+            logging.warning('Spacing of a button is maximum 20px width. '
+                            'Got {:d}.'.format(spacing))
             spacing = 20
-        # we should check if spacing < self height
+        # we should check if spacing < self height or width
         self._spacing = spacing
 
     # ------------------------------------------------------------------------
 
     def GetSpacing(self):
-        """Return the spacing between the check bitmap and the text."""
+        """Return the spacing between the bitmap and the text."""
         return self._spacing
 
     # ------------------------------------------------------------------------
@@ -1577,8 +1579,11 @@ class CheckButton(BaseToggleButton):
     # ------------------------------------------------------------------------
 
     def OnEraseBackground(self, event):
-        """Handle the wx.EVT_ERASE_BACKGROUND event for CustomCheckBox."""
+        """Handle the wx.EVT_ERASE_BACKGROUND event for CustomCheckBox.
 
+        Override the base method.
+
+        """
         # This is intentionally empty, because we are using the combination
         # of wx.BufferedPaintDC + an empty OnEraseBackground event to
         # reduce flicker

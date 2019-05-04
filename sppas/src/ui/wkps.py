@@ -169,7 +169,8 @@ class sppasWorkspaces(object):
         """Save data into a workspace.
 
         The data can already match an existing workspace or a new workspace
-        is created.
+        is created. Raises indexerror if is attempted to save the 'Blank'
+        workspace.
 
         :param data: (FileData) Data of a workspace to save
         :param index: (int) Index of the workspace to save data in
@@ -178,7 +179,7 @@ class sppasWorkspaces(object):
 
         """
         if index == 0:
-            raise IndexError('It is not allowed to save the Blank workspace.')
+            raise IndexError("It is not allowed to save the 'Blank' workspace.")
 
         if index == -1:
             u_name = self.new("New workspace")
