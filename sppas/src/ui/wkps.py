@@ -229,11 +229,11 @@ class sppasWorkspaces(object):
 
         try:
             fn = self.check_filename(index)
+            os.remove(fn)
         except OSError:
-            # The file was not existing.
-            return
+            # The file was not existing. no need to remove!
+            pass
 
-        os.remove(fn)
         self.__wkps.pop(index)
 
     # -----------------------------------------------------------------------
@@ -288,8 +288,6 @@ class sppasWorkspaces(object):
     def check_filename(self, index):
         """Get the filename of the workspace at the given index.
 
-        In case the filename is not existing, the workspace is removed.
-
         :param index: (int) Index of the workspace
         :returns: (str) name of the file
         :raises: IndexError, OSError
@@ -297,7 +295,6 @@ class sppasWorkspaces(object):
         """
         fn = os.path.join(paths.wkps, self[index]) + sppasWorkspaces.ext
         if os.path.exists(fn) is False:
-            self.__wkps.pop(index)
             raise OSError('The file matching the workspace {:s} is not '
                           'existing'.format(fn[:-4]))
 
@@ -308,17 +305,19 @@ class sppasWorkspaces(object):
     def get_data(self, index):
         """Return the data of the workspace at the given index.
 
-        In case the filename is not existing, the workspace is removed.
-
         :param index: (int) Index of the workspace
         :returns: (str) FileData()
-        :raises: IndexError, OSError
+        :raises: IndexError
 
         """
         if index == 0:
             return FileData()
 
-        fn = self.check_filename(index)
+        try:
+            fn = self.check_filename(index)
+        except OSError:
+            return FileData()
+
         data = FileData()
         #data.load(fn)
         return data

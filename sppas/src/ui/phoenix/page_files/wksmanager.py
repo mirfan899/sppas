@@ -56,7 +56,7 @@ WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEven
 
 
 class WorkspacesManager(sppasPanel):
-    """Manage the workspaces and actions on perform on them.
+    """Manage the workspaces and actions to perform on them.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -139,9 +139,15 @@ class WorkspacesManager(sppasPanel):
         will be called.
 
         """
+        # The user pressed a key of its keyboard
         self.Bind(wx.EVT_KEY_DOWN, self._process_key_event)
-        self.Bind(EVT_WKP_CHANGED, self._process_wkp_changed)
+
+        # The user clicked (LeftDown - LeftUp) an action button of the toolbar
         self.Bind(wx.EVT_BUTTON, self._process_action)
+
+        # The workspaces has changed.
+        # This event is sent by the 'wkpslist' child window.
+        self.Bind(EVT_WKP_CHANGED, self._process_wkp_changed)
 
     # -----------------------------------------------------------------------
 
@@ -152,6 +158,8 @@ class WorkspacesManager(sppasPanel):
 
         """
         key_code = event.GetKeyCode()
+        logging.debug('Workspaces manager received the key event {:d}'
+                      ''.format(key_code))
         event.Skip()
 
     # ------------------------------------------------------------------------
@@ -159,42 +167,81 @@ class WorkspacesManager(sppasPanel):
     def _process_wkp_changed(self, event):
         """Process a change of workspace event: the active workspace changed.
 
-        :param event: (wx.Event)
+        The event must contain 'from_wkp' and 'to_wkp' integer members.
+
+        :param event: (wx.Event) WkpChangedEvent
 
         """
-        logging.debug('Process a change of workspace')
+        logging.debug('Workspaces manager processes a change of workspace '
+                      'from {:d} to {:d}'.format(event.from_wkp, event.to_wkp))
+        wkpslist = event.GetEventObject()
+        wkp_name = wkpslist.get_wkp_name(event.to_wkp)
         # Save the currently displayed data (they correspond to the previous wkp)
         data = self.__get_displayed_data()
-        if data.has_locked_files() or \
-                (event.from_wkp == 0 and data.is_empty() is False):
+        if event.from_wkp == 0:
+                #data.has_locked_files() or \
+                #(event.from_wkp == 0 and data.is_empty() is False):
+
             # User must confirm to really switch
             dlg = wx.MessageDialog(
                 self,
-                'The current workspace contains not saved work that will be lost.'
+                'The current workspace contains not saved work that will be lost. '
                 'Are you sure you want to change workspace?',
                 caption="Confirm switch of workspace?",
                 style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
             )
             if dlg.ShowModal() == wx.ID_CANCEL:
                 # the workspace panel has to switch back to the current
-                self.FindWindow('wkpslist').switch_to(event.from_wkp)
+                wkpslist.switch_to(event.from_wkp)
                 return
+            dlg.Destroy()
 
         # The user really intended to switch workspace. Update the current data.
-        if event.from_wkp > 0:
+        if event.from_wkp > 0: # and data is not None:
+            # the 'Blank' workspace can't be saved... the others can
             try:
-                self.FindWindow('wkpslist').save(data)
+                wkpslist.save(data, event.from_wkp)
             except Exception as e:
-                wx.LogError('Data not saved due to the following error: {:s}'
-                            ''.format(str(e)))
+
+                # User must confirm to really switch
+                dlg = wx.MessageDialog(
+                    self,
+                    'The current workspace can not be saved due to the following error: {:s}\n'
+                    'Are you sure you want to change workspace?'.format(str(e)),
+                    caption="Confirm switch of workspace?",
+                    style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
+                )
+                if dlg.ShowModal() == wx.ID_CANCEL:
+                    # the workspace panel has to switch back to the current
+                    wkpslist.switch_to(event.from_wkp)
+                    return
+                dlg.Destroy()
 
         try:
-            p = self.GetParent()
-            p.set_data_from_workspace()
-        except AttributeError:
-            # the parent is not of the expected type
-            logging.error('Data of the current workspace not sent to the parent.')
-            pass
+            new_data = wkpslist.get_data()
+
+            # the parent has to be informed of this change of content
+            evt = WkpChangedEvent(data=new_data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+        except Exception as e:
+            # the workspace panel has to switch back to the current
+            wkpslist.switch_to(event.from_wkp)
+
+            # Propose to the user to remove the failing wkp
+            dlg = wx.MessageDialog(
+                self,
+                "Data of the workspace {:s} can't be loaded due to the following error: {:s}.\n"\
+                "Do you want to delete it?"\
+                "".format(wkp_name, str(e)),
+                caption="Confirm delete of workspace?",
+                style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
+            )
+            if dlg.ShowModal() == wx.ID_CANCEL:
+                return
+            dlg.Destroy()
+            wkpslist.remove(event.to_wkp)
 
     # ------------------------------------------------------------------------
 
@@ -299,7 +346,7 @@ class WorkspacesManager(sppasPanel):
                             "following error: {!s:s}".format(wkp_name, str(e)))
 
         else:
-            wkp_name = wkps.get_wkp_current_name()
+            wkp_name = wkps.get_wkp_name()
 
         try:
             data = self.__get_displayed_data()
@@ -312,7 +359,7 @@ class WorkspacesManager(sppasPanel):
 
     def rename_wkp(self):
         """Rename the currently displayed workspace."""
-        current_name = self.FindWindow("wkpslist").get_wkp_current_name()
+        current_name = self.FindWindow("wkpslist").get_wkp_name()
         dlg = wx.TextEntryDialog(
             self,
             "New name of the workspace: ",
@@ -364,8 +411,8 @@ class WorkspacesPanel(sppasPanel):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    The parent has to handle sppasEVT_CHANGED event to be informed that a workspace
-    changed.
+    The parent has to handle EVT_WKP_CHANGED event to be informed that a
+    workspace changed.
 
     """
     def __init__(self, parent, name=wx.PanelNameStr):
@@ -392,18 +439,42 @@ class WorkspacesPanel(sppasPanel):
     # Public methods to access the data
     # -----------------------------------------------------------------------
 
-    def get_data(self):
-        """Return the data saved in the current workspace."""
-        return self.__wkps.get_data(self.__current)
+    def get_data(self, index=None):
+        """Return the data saved in the current workspace.
+
+        If the file of the workspace does not exists, return an empty
+        instance of FileData.
+
+        :param index: (int) Index of the workspace to get data
+        :returns: (FileData)
+        :raises: IndexError
+
+        """
+        if index is None:
+            index = self.__current
+        return self.__wkps.get_data(index)
 
     # -----------------------------------------------------------------------
 
-    def get_wkp_current_name(self):
-        """Return the name of the current workspace."""
-        return self.__wkps[self.__current]
+    def get_wkp_name(self, index=None):
+        """Return the name of the current workspace.
+
+        :param index: (int) Index of the workspace to get name
+        :returns: (str)
+
+        """
+        if index is None:
+            index = self.__current
+        return self.__wkps[index]
+
+    # -----------------------------------------------------------------------
 
     def get_wkp_current_index(self):
-        """Return the index of the current workspace."""
+        """Return the index of the current workspace.
+
+        :returns: (int)
+
+        """
         return self.__current
 
     # -----------------------------------------------------------------------
@@ -418,6 +489,9 @@ class WorkspacesPanel(sppasPanel):
         :param index: (int) Index of the workspace to switch on
 
         """
+        # check if the given index is a valid one
+        wkp_name = self.__wkps[index]
+
         # the currently displayed button
         cur_btn = self.GetSizer().GetItem(self.__current).GetWindow()
         # the one we want to switch on
@@ -495,14 +569,40 @@ class WorkspacesPanel(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def save(self, data):
-        """Save the given data to the active workspace.
+    def save(self, data, index=None):
+        """Save the given data to the active workspace or to the given one.
 
         :param data: (FileData)
+        :param index: (int) Save data to the workspace with this index
         :raises: IndexError, IOError
 
         """
-        self.__wkps.save(data, self.__current)
+        if index is None:
+            index = self.__current
+        self.__wkps.save(data, index)
+
+    # -----------------------------------------------------------------------
+
+    def remove(self, index):
+        """Remove a workspace of the list and delete the corresponding file.
+
+        :param index: (int)
+
+        """
+        if index == self.__current:
+            raise IndexError("The currently displayed workspace can't be removed")
+
+        if index == 0:
+            raise IndexError("The 'Blank' workspace can't be removed")
+
+        # Delete of the list
+        self.__wkps.delete(index)
+
+        # Remove of the sizer
+        self.GetSizer().Remove(index)
+
+        self.Layout()
+        self.Refresh()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -584,13 +684,15 @@ class WorkspacesPanel(sppasPanel):
         wkp_btn = event.GetButtonObj()
         wkp_name = wkp_btn.GetLabel()
         wkp_index = self.__wkps.index(wkp_name)
-        logging.debug(' ... Workspace {:s} clicked'.format(wkp_name))
 
         # the current button
         cur_btn = self.GetSizer().GetItem(self.__current).GetWindow()
 
         # user clicked a different workspace
         if cur_btn != wkp_btn:
+
+            evt = WkpChangedEvent(from_wkp=self.__current, to_wkp=wkp_index)
+            evt.SetEventObject(self)
 
             # set the current button in a normal state
             self.__btn_set_state(cur_btn, False)
@@ -599,8 +701,6 @@ class WorkspacesPanel(sppasPanel):
             self.__btn_set_state(wkp_btn, True)
 
             # the parent will decide what to exactly do with this change
-            evt = WkpChangedEvent(from_wkp=wkp_index)
-            evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
         else:

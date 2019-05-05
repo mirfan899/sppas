@@ -223,8 +223,8 @@ class ButtonEvent(wx.PyCommandEvent):
     def __init__(self, eventType, eventId):
         """Default class constructor.
 
-        :param `eventType`: the event type;
-        :param `eventId`: the event identifier.
+        :param eventType: the event type;
+        :param eventId: the event identifier.
 
         """
         super(ButtonEvent, self).__init__(eventType, eventId)
@@ -260,8 +260,8 @@ class ToggleButtonEvent(ButtonEvent):
     def __init__(self, eventType, eventId):
         """Default class constructor.
 
-        :param `eventType`: the event type;
-        :param `eventId`: the event identifier.
+        :param eventType: the event type;
+        :param eventId: the event identifier.
 
         """
         super(ToggleButtonEvent, self).__init__(eventType, eventId)
@@ -272,7 +272,7 @@ class ToggleButtonEvent(ButtonEvent):
     def SetIsDown(self, isDown):
         """Set the button toggle status as 'down' or 'up'.
 
-        :param `isDown`: (bool) ``True`` if the button is clicked, ``False`` otherwise.
+        :param isDown: (bool) True if the button is clicked, False otherwise.
 
         """
         self.__isdown = bool(isDown)
@@ -627,7 +627,7 @@ class BaseButton(wx.Window):
                 self.OnMouseLeftUp(event)
 
             elif event.Moving():
-                logging.debug('{:s} Moving'.format(self.GetName()))
+                # logging.debug('{:s} Moving'.format(self.GetName()))
                 # a motion event and no mouse buttons were pressed.
                 self.OnMotion(event)
 
