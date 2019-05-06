@@ -41,6 +41,8 @@
     This is the main program to execute the Graphical User Interface of SPPAS.
 
 """
+
+import logging
 import traceback
 from argparse import ArgumentParser
 import sys
@@ -110,7 +112,7 @@ try:
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
-    from sppas.src.ui import sppasLogSetup
+    from sppas.src.ui import sppasLogSetup, sppasLogFile
     from sppas.src.ui.cfg import sppasAppConfig
 except Exception as e:
     print(str(e))
@@ -134,14 +136,7 @@ for f in args.files:
         p = getcwd()
     filenames.append(path.abspath(path.join(p, b)))
 
-# Logging
-# ----------------------------------------------------------------------------
-
-with sppasAppConfig() as cg:
-    lgs = sppasLogSetup(cg.log_level)
-    lgs.stream_handler()
-
-# GUI is here:
+# Application:
 # ----------------------------------------------------------------------------
 
 sppas = wx.App(redirect=True)
@@ -163,7 +158,27 @@ if check_aligner() is False:
                     'The Alignment automatic annotation WONT WORK normally.',
                     style=wx.ICON_ERROR)
 
+# Logging
+# ----------------------------------------------------------------------------
+
+# fix wx log messages
+wx.Log.EnableLogging(False)
+
+with sppasAppConfig() as cg:
+    level = int(cg.log_level)
+
+log = sppasLogFile()
+logfn = log.get_filename()
+
+handler = logging.FileHandler(filename=logfn, mode='a+', delay=True)
+handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s"))
+handler.setLevel(level)
+logging.getLogger().addHandler(handler)
+
 # Main frame
+# ----------------------------------------------------------------------------
+logging.info(log.get_header())
+
 frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
     frame.flp.RefreshTree(filenames)
@@ -171,3 +186,6 @@ if len(filenames) > 0:
 frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()
+
+handler.close()
+logging.getLogger().removeHandler(handler)

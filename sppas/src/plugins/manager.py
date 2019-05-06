@@ -199,7 +199,7 @@ class sppasPluginsManager(Thread):
         if os.path.exists(plugin_path) is False:
             raise PluginFolderError(plugin_path)
 
-        # Find a file with the extension .ini
+        # Find a file with the extension .json
         f = self.__get_config_file(plugin_path)
         if f is None:
             raise PluginConfigFileError

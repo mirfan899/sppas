@@ -185,9 +185,8 @@ class sppasLogSetup(object):
 
     def stream_handler(self):
         """Starts to redirect to logging StreamHandler."""
-
         self.__stop_handler()
-        self._handler = logging.StreamHandler()
+        self._handler = logging.StreamHandler()  # sys.stderr
         self._handler.setFormatter(self._formatter)
         self._handler.setLevel(self._log_level)
         logging.getLogger().addHandler(self._handler)
@@ -199,7 +198,6 @@ class sppasLogSetup(object):
 
     def null_handler(self):
         """Starts to redirect to logging NullHandler."""
-
         self.__stop_handler()
         self._handler = logging.NullHandler()
         logging.getLogger().addHandler(self._handler)
