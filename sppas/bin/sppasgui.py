@@ -112,8 +112,8 @@ try:
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
-    from sppas.src.ui import sppasLogSetup, sppasLogFile
-    from sppas.src.ui.cfg import sppasAppConfig
+    # from sppas.src.ui import sppasLogSetup, sppasLogFile
+    # from sppas.src.ui.cfg import sppasAppConfig
 except Exception as e:
     print(str(e))
     exit_error("An unexpected error occurred.\n"
@@ -161,23 +161,13 @@ if check_aligner() is False:
 # Logging
 # ----------------------------------------------------------------------------
 
-# fix wx log messages
-wx.Log.EnableLogging(False)
+# Disable redirection of messages to logging because sppas is launched with
+# pythonw!
+logging.getLogger().addHandler(logging.NullHandler())
 
-with sppasAppConfig() as cg:
-    level = int(cg.log_level)
-
-log = sppasLogFile()
-logfn = log.get_filename()
-
-handler = logging.FileHandler(filename=logfn, mode='a+', delay=True)
-handler.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(message)s"))
-handler.setLevel(level)
-logging.getLogger().addHandler(handler)
 
 # Main frame
 # ----------------------------------------------------------------------------
-logging.info(log.get_header())
 
 frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
@@ -186,6 +176,3 @@ if len(filenames) > 0:
 frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()
-
-handler.close()
-logging.getLogger().removeHandler(handler)

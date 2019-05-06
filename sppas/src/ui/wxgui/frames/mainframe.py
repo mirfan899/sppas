@@ -144,6 +144,9 @@ class FrameSPPAS(wx.Frame):
 
         self.Show(True)
 
+        # fix wx log messages
+        wx.Log.EnableLogging(False)
+
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members
     # ------------------------------------------------------------------------
