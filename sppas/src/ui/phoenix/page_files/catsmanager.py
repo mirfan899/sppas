@@ -54,16 +54,16 @@ class CataloguesManager(sppasPanel):
 
     """
 
-    def __init__(self, parent, data=None, name=wx.PanelNameStr):
+    def __init__(self, parent, name=wx.PanelNameStr):
         super(CataloguesManager, self).__init__(
             parent,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
-        self._create_content(data)
+        self._create_content()
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
@@ -75,11 +75,11 @@ class CataloguesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        pass  # self.FindWindow('catsview').set_data(data)
+        self.FindWindow('catsview').set_data(data)
 
     # ------------------------------------------------------------------------
 
-    def _create_content(self, data):
+    def _create_content(self):
         """"""
         tb = self.__create_toolbar()
         cv = CataloguesTreeViewCtrl(self, name="catsview")

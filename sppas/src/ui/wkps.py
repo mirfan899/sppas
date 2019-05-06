@@ -302,7 +302,7 @@ class sppasWorkspaces(object):
 
     # -----------------------------------------------------------------------
 
-    def get_data(self, index):
+    def load_data(self, index):
         """Return the data of the workspace at the given index.
 
         :param index: (int) Index of the workspace

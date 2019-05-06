@@ -102,6 +102,7 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
     def set_data(self, data):
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the catsview.')
         self.__data = data
         self.Cleared()
 

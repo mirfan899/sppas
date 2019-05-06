@@ -39,10 +39,12 @@ import logging
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
 
-from sppas.src.ui.phoenix.page_files.wksmanager import WorkspacesManager
-from sppas.src.ui.phoenix.page_files.filesmanager import FilesManager
-from sppas.src.ui.phoenix.page_files.catsmanager import CataloguesManager
-from sppas.src.ui.phoenix.page_files.associate import AssociatePanel
+from .wksmanager import WorkspacesManager
+from .filesmanager import FilesManager
+from .catsmanager import CataloguesManager
+from .associate import AssociatePanel
+
+from .filesevent import EVT_DATA_CHANGED
 
 # ---------------------------------------------------------------------------
 
@@ -95,22 +97,6 @@ class sppasFilesPanel(sppasPanel):
         """
         fm = self.FindWindow("filesview")
         return fm.get_data()
-
-    # ------------------------------------------------------------------------
-
-    def set_data_from_workspace(self, data=None):
-        """Set the data of the current workspace to the other panels."""
-        data = None
-        if data is None:
-            wp = self.FindWindow("workspaces")
-            data = wp.get_data()
-            print(data)
-
-        fm = self.FindWindow("filesview")
-        fm.set_data(data)
-
-        cm = self.FindWindow("catalogues")
-        cm.set_data(data)
 
     # ------------------------------------------------------------------------
 
@@ -182,6 +168,10 @@ class sppasFilesPanel(sppasPanel):
         # Capture keys
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
+        # The data have changed.
+        # This event is sent by any of the children
+        self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
+
     # -----------------------------------------------------------------------
 
     def _process_key_event(self, event):
@@ -205,3 +195,39 @@ class sppasFilesPanel(sppasPanel):
             self.FindWindow("workspaces").pin_save()
 
         event.Skip()
+
+    # -----------------------------------------------------------------------
+
+    def _process_data_changed(self, event):
+        """Process a change of data.
+
+        Set the data of the event to the other panels.
+
+        :param event: (wx.Event)
+
+        """
+        emitted = event.GetEventObject()
+        try:
+            data = event.data
+        except AttributeError:
+            logging.error('Data were not sent in the event.')
+            return
+
+        wp = self.FindWindow("workspaces")
+        if emitted != wp:
+            wp.set_data(data)
+
+        fm = self.FindWindow("filesview")
+        if emitted != fm:
+            fm.set_data(data)
+
+        ap = self.FindWindow("associate")
+        if emitted != ap:
+            ap.set_data(data)
+
+        cm = self.FindWindow("catalogues")
+        if emitted != cm:
+            cm.set_data(data)
+
+
+

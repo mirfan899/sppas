@@ -38,8 +38,12 @@
 import wx
 import logging
 
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton
+from sppas import sppasTypeError
+from sppas.src.files.filedata import FileData  #, States
+from ..windows import sppasPanel
+from ..windows.button import BitmapTextButton
+
+from .filesevent import DataChangedEvent
 
 # ---------------------------------------------------------------------------
 
@@ -68,9 +72,23 @@ class AssociatePanel(sppasPanel):
 
         # State of the button to check all or none of the filenames
         self._checkall = False
+        self.__data = FileData()
 
         self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to this panel.
+
+        :param data: (FileData)
+
+        """
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the associate.')
+        self.__data = data
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -145,17 +163,21 @@ class AssociatePanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def check_all(self):
-        """Check all or any of the filenames."""
+        """Check all or any of the filenames and catalogues."""
         # reverse the current state
         self._checkall = not self._checkall
 
-        # get the current data of the workspace
-        fd = self.GetParent().get_data()
-
         # ask the data to change their state
-        fd.check(value=self._checkall)
+        # if self._checkall is True:
+        #     state = States.CHECKED
+        # else:
+        #     state = States.UNUSED
+        # self.__data.set_sate(value=self._checkall)
 
-        # TODO: update the list of checked catalogues
+        # update the view of checked catalogues & checked files
+        evt = DataChangedEvent(data=self.__data)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
 
     # ------------------------------------------------------------------------
 

@@ -38,6 +38,8 @@ import logging
 import wx
 import wx.lib.newevent
 
+from sppas import sppasTypeError
+from sppas.src.files.filedata import FileData
 from sppas.src.ui import sppasWorkspaces
 
 from ..dialogs import Confirm, Error
@@ -46,12 +48,14 @@ from ..windows import sppasPanel
 from ..windows.button import CheckButton
 
 from .btntxttoolbar import BitmapTextToolbar
+from .filesevent import DataChangedEvent
 
-# ----------------------------------------------------------------------------
-
+# ---------------------------------------------------------------------------
+# Internal use of an event, when the workspace has changed.
 
 WkpChangedEvent, EVT_WKP_CHANGED = wx.lib.newevent.NewEvent()
 WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
+
 
 # ----------------------------------------------------------------------------
 # List of displayed messages:
@@ -79,6 +83,7 @@ class WorkspacesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
+        self.__data = FileData()
         self._create_content()
         self._setup_events()
         self.Layout()
@@ -89,7 +94,20 @@ class WorkspacesManager(sppasPanel):
 
     def get_data(self):
         """Return the data of the current workspace."""
-        return self.FindWindow("wkpslist").get_data()
+        return self.__data
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to this panel.
+
+        :param data: (FileData)
+
+        """
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the workspace.')
+        self.__data = data
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -181,10 +199,9 @@ class WorkspacesManager(sppasPanel):
         wkpslist = event.GetEventObject()
         wkp_name = wkpslist.get_wkp_name(event.to_wkp)
         # Save the currently displayed data (they correspond to the previous wkp)
-        data = self.__get_displayed_data()
         if event.from_wkp == 0:
-                #data.has_locked_files() or \
-                #(event.from_wkp == 0 and data.is_empty() is False):
+                #self.__data.has_locked_files() or \
+                #(event.from_wkp == 0 and self.__data.is_empty() is False):
 
             # User must confirm to really switch
             title = "Confirm switch of workspace?"
@@ -196,10 +213,10 @@ class WorkspacesManager(sppasPanel):
                 return
 
         # The user really intended to switch workspace. Update the current data.
-        if event.from_wkp > 0: # and data is not None:
+        if event.from_wkp > 0:
             # the 'Blank' workspace can't be saved... the others can
             try:
-                wkpslist.save(data, event.from_wkp)
+                wkpslist.save(self.__data, event.from_wkp)
             except Exception as e:
 
                 # User must confirm to really switch
@@ -212,10 +229,12 @@ class WorkspacesManager(sppasPanel):
                     return
 
         try:
-            new_data = wkpslist.get_data()
+            # Load the data of the workspace from its file
+            d = wkpslist.load_data()
+            self.__data = d
 
             # the parent has to be informed of this change of content
-            evt = WkpChangedEvent(data=new_data)
+            evt = DataChangedEvent(data=self.__data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -280,7 +299,12 @@ class WorkspacesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def export_wkp(self):
-        """Export a workspace file to a folder."""
+        """Export a workspace file to a folder.
+
+        It is different of a "save as...": here we export the workspace file,
+        not the currently displayed data.
+
+        """
         # get the name of the file to be exported in
         with wx.FileDialog(
             self,
@@ -309,7 +333,7 @@ class WorkspacesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def pin_save(self):
-        """Pin and/or save the currently displayed workspace."""
+        """Pin and/or save the currently displayed data into a workspace."""
         # Ask for a name if current is the Blank one
         wkps = self.FindWindow("wkpslist")
         if wkps.get_wkp_current_index() == 0:
@@ -334,8 +358,7 @@ class WorkspacesManager(sppasPanel):
             wkp_name = wkps.get_wkp_name()
 
         try:
-            data = self.__get_displayed_data()
-            wkps.save(data)
+            wkps.save(self.__data)
         except Exception as e:
             message = "Workspace '{:s}' can't be saved due to the following error: {!s:s}".format(wkp_name, str(e))
             Error(message, "Save error")
@@ -365,22 +388,6 @@ class WorkspacesManager(sppasPanel):
         except Exception as e:
             message = "Workspace can't be renamed to '{:s}' due to the following error: {!s:s}".format(new_name, str(e))
             Error(message, "Rename error")
-
-    # -----------------------------------------------------------------------
-    # Private methods to manage the data
-    # -----------------------------------------------------------------------
-
-    def __get_displayed_data(self):
-        """Get the data displayed in another panel."""
-        data = None
-        try:
-            w = self.GetParent()
-            data = w.get_data()
-        except AttributeError:
-            logging.warning("Windows {:s} doesn't have a get_data() method"
-                            "".format(w.GetName()))
-        return data
-
 
 # ----------------------------------------------------------------------------
 # Panel to display the existing workspaces
@@ -424,7 +431,7 @@ class WorkspacesPanel(sppasPanel):
     # Public methods to access the data
     # -----------------------------------------------------------------------
 
-    def get_data(self, index=None):
+    def load_data(self, index=None):
         """Return the data saved in the current workspace.
 
         If the file of the workspace does not exists, return an empty
@@ -437,7 +444,7 @@ class WorkspacesPanel(sppasPanel):
         """
         if index is None:
             index = self.__current
-        return self.__wkps.get_data(index)
+        return self.__wkps.load_data(index)
 
     # -----------------------------------------------------------------------
 
@@ -717,11 +724,5 @@ class TestPanel(WorkspacesManager):
 
     def __init__(self, parent):
         super(TestPanel, self).__init__(parent)
-        self.add_test_data()
         self.SetBackgroundColour(wx.Colour(128, 128, 128))
 
-    # ------------------------------------------------------------------------
-
-    def add_test_data(self):
-        pass
-        # self.FindWindow('catsview').Add(cat)
