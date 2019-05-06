@@ -62,11 +62,6 @@ class FileName(FileBase):
 
     """
 
-    class States(Enum):
-        UNUSED = 0
-        CHECKED = 1
-        LOCKED = 2
-
     def __init__(self, identifier):
         """Constructor of a FileName.
 
@@ -159,8 +154,10 @@ class FileName(FileBase):
         :param value: (bool)
 
         """
+        print("FileName set_state() parameter: ", value)
         if value in self.states:
-            self.__state = value
+            print("FileName set_state(): ", value)
+            FileBase.state = value
         else:
             raise sppasTypeError(value, 'States')
 
@@ -184,7 +181,7 @@ class FileName(FileBase):
     # Properties
     # -----------------------------------------------------------------------
 
-    state = property(FileBase.get_state, set_state)
+    statefn = property(FileBase.get_state, set_state)
     size = property(get_size, None)
     date = property(get_date, None)
     extension = property(get_extension, None)
@@ -220,13 +217,6 @@ class FileRoot(FileBase):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
-
-    class States(Enum):
-        UNUSED = 0
-        AT_LEAST_ONE_CHECKED = 1
-        AT_LEAST_ONE_LOCKED = 2
-        ALL_CHECKED = 3
-        ALL_LOCKED = 4
 
     # if we create dynamically this list from the existing annotations, we'll
     # have circular imports.
@@ -296,20 +286,21 @@ class FileRoot(FileBase):
         :param value: (int) A state of FileRoot.
 
         """
-        if isinstance(value, self.States):
-            self.__state = value
+        if isinstance(value, int):
+            FileBase.state = value
+            print("FileRoot set_state(): ", FileBase.state)
         else:
             raise sppasTypeError(value, 'States')
 
         for fn in self.__files:
-            if value == self.States.UNUSED:
-                fn.state = FileName.States.UNUSED
-            elif value == self.States.ALL_CHECKED:
-                fn.state = FileName.States.CHECKED
-            elif value == self.States.ALL_LOCKED:
-                fn.state = FileName.States.LOCKED
+            if value == States().UNUSED:
+                fn.state = States().UNUSED
+            elif value == States().ALL_CHECKED:
+                fn.state = States().CHECKED
+            elif value == States().ALL_LOCKED:
+                fn.state = States().LOCKED
 
-    state = property(FileBase.get_state, set_state)
+    statefr = property(FileBase.get_state, set_state)
 
     # -----------------------------------------------------------------------
 
@@ -425,27 +416,30 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def update_check(self):
-        """Modify state depending on the checked filenames.
-
-        TODO: convert into update_state()
-
-        """
+    def update_state(self):
+        """Modify state depending on the checked filenames."""
         if len(self.__files) == 0:
-            self.check = False
+            self.set_state(States().UNUSED)
             return
-        all_checked = True
-        all_unchecked = True
-        for fn in self.__files:
-            if fn.check is True:
-                all_unchecked = False
-            else:
-                all_checked = False
 
-        if all_checked:
-            self.check = True
-        if all_unchecked:
-            self.check = False
+        checked = 0
+        locked = 0
+        for fn in self.__files:
+            if fn.get_state() == States().CHECKED:
+                checked += 1
+            elif fn.get_state() == States().LOCKED:
+                locked += 1
+
+        if locked == len(self.__files):
+            self.set_state(States().ALL_LOCKED)
+        elif locked > 1:
+            self.set_state(States().AT_LEAST_ONE_LOCKED)
+        elif checked == len(self.__files):
+            self.set_state(States().ALL_CHECKED)
+        elif checked > 1:
+            self.set_state(States().AT_LEAST_ONE_CHECKED)
+        else:
+            self.set_state(States().UNUSED)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -497,13 +491,6 @@ class FilePath(FileBase):
 
     """
 
-    class States(Enum):
-        UNUSED = 0
-        AT_LEAST_ONE_CHECKED = 1
-        AT_LEAST_ONE_LOCKED = 2
-        ALL_CHECKED = 3
-        ALL_LOCKED = 4
-
     def __init__(self, filepath):
         """Constructor of a FilePath.
 
@@ -524,7 +511,14 @@ class FilePath(FileBase):
         # States of the path
         # ------------------
 
-        self.__state = self.States.UNUSED
+        self.states = (States().UNUSED,
+                       States().CHECKED,
+                       States().LOCKED,
+                       States().ALL_CHECKED,
+                       States().ALL_LOCKED,
+                       States().AT_LEAST_ONE_CHECKED,
+                       States().AT_LEAST_ONE_LOCKED
+                       )
 
         # a free to use dictionary to expand the class
         self.subjoined = dict()
@@ -532,24 +526,17 @@ class FilePath(FileBase):
     # -----------------------------------------------------------------------
 
     def set_state(self, value):
-        if isinstance(value, self.States):
-            self.__state = value
+        if isinstance(value, int):
+            self._state = value
+            print("FilePath set_state(): ", self._state)
         else:
             raise sppasTypeError(value, 'States')
 
         for fr in self.__roots:
-            if value == self.States.ALL_LOCKED:
-                fr.state = FileRoot.States.ALL_LOCKED
-            elif value == self.States.AT_LEAST_ONE_LOCKED:
-                fr.state = FileRoot.States.AT_LEAST_ONE_LOCKED
-            elif value == self.States.ALL_CHECKED:
-                fr.state = FileRoot.States.ALL_CHECKED
-            elif value == self.States.AT_LEAST_ONE_CHECKED:
-                fr.state = FileRoot.States.AT_LEAST_ONE_CHECKED
-            elif value == self.States.UNUSED:
-                fr.state = FileRoot.States.UNUSED
+            if value in self.states:
+                fr.set_state(value)
 
-    state = property(FileBase.get_state, set_state)
+    statefp = property(FileBase.get_state, set_state)
 
     # -----------------------------------------------------------------------
 
@@ -670,27 +657,32 @@ class FilePath(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def update_check(self):
-        """Modify state depending on the checked root names.
-
-        TODO: convert into update_state()
-
-        """
+    def update_state(self):
+        """Modify state depending on the checked root names."""
         if len(self.__roots) == 0:
-            self.state = self.States.UNUSED
+            self._state = States().UNUSED
             return
-        all_checked = True
-        all_unchecked = True
-        for fr in self.__roots:
-            if fr.state == FileRoot.States.CHECKED:
-                all_unchecked = False
-            else:
-                all_checked = False
 
-        if all_checked:
-            self.state = self.States.CHECKED
-        if all_unchecked:
-            self.state = self.States.UNUSED
+        checked = 0
+        locked = 0
+        for fr in self.__roots:
+            if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
+                    or fr.get_state() == States().ALL_CHECKED:
+                checked += 1
+            elif fr.get_state() == States().AT_LEAST_ONE_LOCKED\
+                    or fr.get_state() == States().ALL_LOCKED:
+                locked += 1
+
+        if locked == len(self.__roots):
+            self.set_state(States().ALL_LOCKED)
+        elif locked > 1:
+            self.set_state(States().AT_LEAST_ONE_LOCKED)
+        elif checked == len(self.__roots):
+            self.set_state(States().ALL_CHECKED)
+        elif checked > 1:
+            self.set_state(States().AT_LEAST_ONE_CHECKED)
+        else:
+            self.set_state(States().UNUSED)
 
     # -----------------------------------------------------------------------
     # Overloads

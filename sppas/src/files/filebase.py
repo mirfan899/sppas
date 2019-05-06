@@ -57,7 +57,7 @@ class FileBase(object):
 
         """
         self.__id = identifier
-        self.__state = States().UNUSED
+        self._state = States().UNUSED
 
     # -----------------------------------------------------------------------
 
@@ -69,7 +69,7 @@ class FileBase(object):
 
     def get_state(self):
         """Return the state."""
-        return self.__state
+        return self._state
 
     # -----------------------------------------------------------------------
 
@@ -161,7 +161,9 @@ class States(object):
             CHECKED=1,
             LOCKED=2,
             ALL_CHECKED=3,
-            ALL_LOCKED=4
+            ALL_LOCKED=4,
+            AT_LEAST_ONE_CHECKED=5,
+            AT_LEAST_ONE_LOCKED=6,
         )
 
     # -----------------------------------------------------------------------

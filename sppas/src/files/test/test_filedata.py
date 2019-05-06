@@ -10,7 +10,7 @@ import sppas
 from sppas import sppasTypeError
 from ..fileref import AttValue, Reference
 from ..filedata import FileData
-from ..filebase import FileBase
+from ..filebase import FileBase, States
 from ..filestructure import FileName, FileRoot, FilePath
 from ..fileexc import FileOSError, FileTypeError, PathTypeError
 
@@ -275,10 +275,16 @@ class TestFileData(unittest.TestCase):
         # self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
 
     def testState(self):
-        self.files.set_state(FilePath.States.ALL_LOCKED)
+        self.files.set_state(States().ALL_LOCKED)
+
+        for fp in self.files:
+            print(fp.state == States().ALL_LOCKED)
+
+        print(self.files.get_state(self.files[0]))
+        print(self.files[0].state)
 
         self.assertTrue(
-            self.files.get_state(self.files[0]) == FilePath.States.ALL_LOCKED
+            self.files.get_state(self.files[0]) == States().ALL_LOCKED
         )
 
     def testRef(self):

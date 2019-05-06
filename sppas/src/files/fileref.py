@@ -257,12 +257,12 @@ class Reference(FileBase):
         :raises (sppasTypeError)
 
         """
-        if isinstance(state, self.States):
-            self.__state = state
+        if isinstance(state, int):
+            FileBase.state = state
         else:
-            raise sppasTypeError(state, 'Reference.States')
+            raise sppasTypeError(state, 'States')
 
-    state = property(get_state, set_state)
+    stateref = property(get_state, set_state)
 
     # ---------------------------------------------------------------------------
 

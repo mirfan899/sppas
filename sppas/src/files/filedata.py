@@ -125,10 +125,11 @@
 
 import json
 
-from os.path import isfile, isdir, exists
-from os.path import basename, dirname
+from os.path import exists
+from os.path import dirname
 
 from sppas import sppasTypeError, sppasValueError
+from .fileutils import sppasGUID
 
 from .filebase import FileBase, States
 from .fileref import Reference
@@ -137,7 +138,7 @@ from .filestructure import FileName, FileRoot, FilePath
 # ---------------------------------------------------------------------------
 
 
-class FileData(object):
+class FileData(FileBase):
     """Represent the data linked to a list of files.
 
     :author:       Brigitte Bigi
@@ -155,6 +156,7 @@ class FileData(object):
 
     def __init__(self):
         """Constructor of a FileData."""
+        super().__init__(sppasGUID().get)
         self.__data = list()
         self.__refs = list()
         self.states = States()
@@ -188,6 +190,11 @@ class FileData(object):
         :param ref: (Reference) Reference to add
 
         """
+
+        for refe in self.__refs:
+            if refe.id == ref.id:
+                return
+
         if isinstance(ref, Reference):
             if ref not in self.__refs:
                 self.__refs.append(ref)
@@ -197,7 +204,7 @@ class FileData(object):
     # -----------------------------------------------------------------------
 
     def remove_checked_ref(self):
-        """Remove all checked ref from the list"""
+        """Remove all checked ref from the list."""
         for ref in self.__refs:
             if ref.state == Reference.States.CHECKED:
                 del self.__refs[self.__refs.index(ref)]
@@ -205,17 +212,13 @@ class FileData(object):
     # -----------------------------------------------------------------------
 
     def get_refs(self):
-        """Return the current ref list"""
+        """Return the current ref list."""
         return self.__refs
 
     # -----------------------------------------------------------------------
 
     def update(self):
-        """Update the data: missing files, properties changed.
-
-        TODO: Update states too
-
-        """
+        """Update the data: missing files, properties changed."""
         for fp in self.__data:
             for fr in reversed(fp):
                 for fn in reversed(fr):
@@ -231,9 +234,14 @@ class FileData(object):
             if len(fp) == 0:
                 self.__data.remove(fp)
 
+        for fp in self.__data:
+            for fr in reversed(fp):
+                fr.update_state()
+            fp.update_state()
+
     # -----------------------------------------------------------------------
 
-    def remove_files(self, state=FileName.States.CHECKED):
+    def remove_files(self, state=States().CHECKED):
         """Remove all files of the given state.
 
         Do not update: empty roots or paths are not removed.
@@ -249,7 +257,7 @@ class FileData(object):
 
     # -----------------------------------------------------------------------
 
-    def get_files(self, value=FileName.States.CHECKED):
+    def get_files(self, value=States().CHECKED):
         """Return the list of file names of the given state.
 
         :param value: (bool) Toggle state
@@ -308,7 +316,7 @@ class FileData(object):
         """Return the state of any File within the FileData.
 
         :param file_obj: (FileBase) The object which one enquire the state
-        :return: FilePath.States, FileRoot.States, FileName.States
+        :return: States
 
         """
         if not isinstance(file_obj, FilePath)\
@@ -331,19 +339,21 @@ class FileData(object):
         """
         if file_obj is None:
             for fp in self.__data:
-                if not fp.state == FilePath.States.AT_LEAST_ONE_LOCKED:
-                    if isinstance(state, FilePath.States):
-                        fp.state = state
+                if not fp._state == States().AT_LEAST_ONE_LOCKED:
+                    if isinstance(state, int):
+                        print("FileData set_state() parameter: ", state)
+                        fp.set_state(state)
+                        print("FileData set_state(): ", fp._state)
                     else:
-                        raise sppasTypeError(state, 'FilePath.States')
+                        raise sppasTypeError(state, 'States')
                 else:
                     raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
         else:
             if issubclass(file_obj, FileBase):
-                if isinstance(state, (FilePath.States, FileRoot.States, FileName.States)):
+                if isinstance(state, States):
                     file_obj.state = state
                 else:
-                    raise sppasTypeError(state, 'FilePath.State or FileRoot.State or FileName.State')
+                    raise sppasTypeError(state, 'States')
             else:
                 raise sppasTypeError(file_obj, 'inherited from FileBase')
 
@@ -443,6 +453,43 @@ class FileData(object):
                     for ref in ref_checked:
                         if ref in fr.references:
                             fr.references.remove(ref)
+
+    # -----------------------------------------------------------------------
+
+    def is_empty(self):
+        return len(self.__data) + len(self.__refs) == 0
+
+    # -----------------------------------------------------------------------
+
+    def get_filepath_from_state(self, state):
+        for fp in self.__data:
+            if fp.state == state:
+                yield fp
+    # -----------------------------------------------------------------------
+
+    def get_fileroot_from_state(self, state):
+        for fp in self.__data:
+            for fr in fp:
+                if fr.state == state:
+                    yield fr
+
+    # -----------------------------------------------------------------------
+
+    def get_filename_from_state(self, state):
+        for fp in self.__data:
+            for fr in fp:
+                for fn in fr:
+                    if fn.state == state:
+                        yield fn
+
+    # -----------------------------------------------------------------------
+
+    def get_reference_from_state(self, state):
+        for fp in self.__data:
+            for fr in fp:
+                for ref in fr:
+                    if ref.state == state:
+                        yield ref
 
     # -----------------------------------------------------------------------
     # Overloads
