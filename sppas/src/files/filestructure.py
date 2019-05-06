@@ -41,6 +41,7 @@ from os.path import isfile, isdir, exists
 from os.path import basename, dirname
 
 from sppas import sppasTypeError
+from .fileref import Reference
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 from .filebase import FileBase, States
@@ -189,6 +190,19 @@ class FileName(FileBase):
     extension = property(get_extension, None)
     name = property(get_name, None)
 
+    # -----------------------------------------------------------------------
+    # Overloads
+    # -----------------------------------------------------------------------
+
+    def __eq__(self, other):
+        if other is not None:
+            return self.id == other.id
+
+        return False
+
+    def __ne__(self, other):
+        if other is not None:
+            return self.id != other.id
 
 # ---------------------------------------------------------------------------
 

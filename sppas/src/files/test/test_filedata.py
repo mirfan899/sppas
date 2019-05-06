@@ -253,16 +253,26 @@ class TestFileData(unittest.TestCase):
         self.age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
 
     def testSave(self):
+        current_file_list = list()
+        saved_file_list = list()
         self.files.save(sppas.paths.sppas + '\\src\\files\\test\\save.json')
-        hello = self.files
+        for fp in self.files:
+            for fr in fp:
+                for fn in fr:
+                    current_file_list.append(fn)
         self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
-        # world = self.files
-        # self.assertTrue(
-        #     hello == world
-        # )
+        for fp in self.files:
+            for fr in fp:
+                for fn in fr:
+                    saved_file_list.append(fn)
 
-        self.files.set_state(FilePath.States.ALL_LOCKED)
-        self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
+        for i in range(len(current_file_list)):
+            self.assertTrue(
+                current_file_list[i] == saved_file_list[i]
+            )
+
+        # self.files.set_state(FilePath.States.ALL_LOCKED)
+        # self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
 
     def testState(self):
         self.files.set_state(FilePath.States.ALL_LOCKED)

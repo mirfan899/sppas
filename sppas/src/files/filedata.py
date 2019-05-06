@@ -398,10 +398,14 @@ class FileData(object):
 
         if force is True or at_least_one_fp_is_locked is False:
             self.__data.clear()
-            with open(file_name, 'r') as save:
-                savee = json.loads(save.read())
-                for value, hello in savee:
-                    print(value, hello)
+            with open(file_name, 'r') as save_file:
+                save = json.loads(save_file.read())
+                for value in save.values():
+                    for in_value in value.values():
+                        for path in in_value[0]:
+                            self.add_file(path)
+                        for ref in in_value[1]:
+                            self.add_ref(ref)
 
         else:
             raise ValueError('Locked files')
