@@ -131,7 +131,7 @@ class WxAppSettings(sppasBaseSettings):
             font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         s = font.GetPointSize()
 
-        title_font = wx.Font(s*2,                    # point size
+        title_font = wx.Font(int(float(s)*1.5),      # point size
                              wx.FONTFAMILY_DEFAULT,  # family,
                              wx.FONTSTYLE_NORMAL,    # style,
                              wx.FONTWEIGHT_BOLD,     # weight,
@@ -149,7 +149,7 @@ class WxAppSettings(sppasBaseSettings):
             font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
         s = font.GetPointSize()
 
-        button_font = wx.Font(int(s*1.2),             # point size
+        button_font = wx.Font(s,                      # point size
                               wx.FONTFAMILY_DEFAULT,  # family,
                               wx.FONTSTYLE_NORMAL,    # style,
                               wx.FONTWEIGHT_NORMAL,   # weight,

@@ -38,11 +38,12 @@ import logging
 import wx
 import wx.lib.newevent
 
-from sppas.src.ui.wkps import sppasWorkspaces
+from sppas.src.ui import sppasWorkspaces
 
-from sppas.src.ui.phoenix.windows import sppasStaticLine
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows.button import CheckButton
+from ..dialogs import Confirm, Error
+from ..windows import sppasStaticLine
+from ..windows import sppasPanel
+from ..windows.button import CheckButton
 
 from .btntxttoolbar import BitmapTextToolbar
 
@@ -53,7 +54,10 @@ WkpChangedEvent, EVT_WKP_CHANGED = wx.lib.newevent.NewEvent()
 WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
 
 # ----------------------------------------------------------------------------
+# List of displayed messages:
 
+
+# ----------------------------------------------------------------------------
 
 class WorkspacesManager(sppasPanel):
     """Manage the workspaces and actions to perform on them.
@@ -72,7 +76,7 @@ class WorkspacesManager(sppasPanel):
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
         self._create_content()
@@ -183,18 +187,13 @@ class WorkspacesManager(sppasPanel):
                 #(event.from_wkp == 0 and data.is_empty() is False):
 
             # User must confirm to really switch
-            dlg = wx.MessageDialog(
-                self,
-                'The current workspace contains not saved work that will be lost. '
-                'Are you sure you want to change workspace?',
-                caption="Confirm switch of workspace?",
-                style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
-            )
-            if dlg.ShowModal() == wx.ID_CANCEL:
+            title = "Confirm switch of workspace?"
+            message = "The current workspace contains not saved work that will be lost. Are you sure you want to change workspace?"
+            response = Confirm(message, title)
+            if response == wx.ID_CANCEL:
                 # the workspace panel has to switch back to the current
                 wkpslist.switch_to(event.from_wkp)
                 return
-            dlg.Destroy()
 
         # The user really intended to switch workspace. Update the current data.
         if event.from_wkp > 0: # and data is not None:
@@ -204,18 +203,13 @@ class WorkspacesManager(sppasPanel):
             except Exception as e:
 
                 # User must confirm to really switch
-                dlg = wx.MessageDialog(
-                    self,
-                    'The current workspace can not be saved due to the following error: {:s}\n'
-                    'Are you sure you want to change workspace?'.format(str(e)),
-                    caption="Confirm switch of workspace?",
-                    style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
-                )
-                if dlg.ShowModal() == wx.ID_CANCEL:
+                title = "Confirm switch of workspace?"
+                message = "The current workspace can not be saved due to the following error: {:s}\nAre you sure you want to change workspace?".format(str(e))
+                response = Confirm(message, title)
+                if response == wx.ID_CANCEL:
                     # the workspace panel has to switch back to the current
                     wkpslist.switch_to(event.from_wkp)
                     return
-                dlg.Destroy()
 
         try:
             new_data = wkpslist.get_data()
@@ -230,18 +224,11 @@ class WorkspacesManager(sppasPanel):
             wkpslist.switch_to(event.from_wkp)
 
             # Propose to the user to remove the failing wkp
-            dlg = wx.MessageDialog(
-                self,
-                "Data of the workspace {:s} can't be loaded due to the following error: {:s}.\n"\
-                "Do you want to delete it?"\
-                "".format(wkp_name, str(e)),
-                caption="Confirm delete of workspace?",
-                style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
-            )
-            if dlg.ShowModal() == wx.ID_CANCEL:
-                return
-            dlg.Destroy()
-            wkpslist.remove(event.to_wkp)
+            title = "Confirm delete of workspace?"
+            message = "Data of the workspace {:s} can't be loaded due to the following error: {:s}.\nDo you want to delete it?".format(wkp_name, str(e)),
+            response = Confirm(message, title)
+            if response == wx.ID_YES:
+                wkpslist.remove(event.to_wkp)
 
     # ------------------------------------------------------------------------
 
@@ -286,8 +273,9 @@ class WorkspacesManager(sppasPanel):
             try:
                 self.FindWindow("wkpslist").import_from(pathname)
             except Exception as e:
-                wx.LogError("File '{:s}' can't be imported due to the following "
-                            "error: {!s:s}".format(pathname, str(e)))
+                message = "File '{:s}' can't be imported due to the following" \
+                          " error:\n{!s:s}".format(pathname, str(e))
+                Error(message, "Import error")
 
     # ------------------------------------------------------------------------
 
@@ -305,20 +293,18 @@ class WorkspacesManager(sppasPanel):
             pathname = dlg.GetPath()
 
         if os.path.exists(pathname):
-            dlg = wx.MessageDialog(
-                self,
-                'A file with name {:s} is already existing. Override it?'.format(pathname),
-                caption="Confirm workspace name?",
-                style=wx.OK | wx.CANCEL | wx.CANCEL_DEFAULT | wx.ICON_QUESTION
-            )
-            if dlg.ShowModal() == wx.ID_CANCEL:
+            message = "A file with name {:s} is already existing. Override it?".format(pathname)
+            title = "Confirm workspace name?"
+            response = Confirm(message, title)
+            if response == wx.ID_CANCEL:
                 return
 
         try:
             self.FindWindow("wkpslist").export_to(pathname)
         except Exception as e:
-            wx.LogError("File '{:s}' can't be exported due to the following "
-                        "error: {!s:s}".format(pathname, str(e)))
+            message = "File '{:s}' can't be exported due to the following" \
+                      " error: {!s:s}".format(pathname, str(e))
+            Error(message, "Export error")
 
     # ------------------------------------------------------------------------
 
@@ -342,9 +328,8 @@ class WorkspacesManager(sppasPanel):
             try:
                 wkps.pin(wkp_name)
             except Exception as e:
-                wx.LogError("Pin of workspace '{:s}' is not possible due to the "
-                            "following error: {!s:s}".format(wkp_name, str(e)))
-
+                message = "Pin of workspace '{:s}' is not possible due to the following error: {!s:s}".format(wkp_name, str(e))
+                Error(message, "Save error")
         else:
             wkp_name = wkps.get_wkp_name()
 
@@ -352,8 +337,8 @@ class WorkspacesManager(sppasPanel):
             data = self.__get_displayed_data()
             wkps.save(data)
         except Exception as e:
-            wx.LogError("Workspace '{:s}' can't be saved due to the "
-                        "following error: {!s:s}".format(wkp_name, str(e)))
+            message = "Workspace '{:s}' can't be saved due to the following error: {!s:s}".format(wkp_name, str(e))
+            Error(message, "Save error")
 
     # ------------------------------------------------------------------------
 
@@ -378,8 +363,8 @@ class WorkspacesManager(sppasPanel):
         try:
             self.FindWindow("wkpslist").rename(new_name)
         except Exception as e:
-            wx.LogError("Workspace can't be renamed to '{:s}' due to the following "
-                        "error: {!s:s}".format(new_name, str(e)))
+            message = "Workspace can't be renamed to '{:s}' due to the following error: {!s:s}".format(new_name, str(e))
+            Error(message, "Rename error")
 
     # -----------------------------------------------------------------------
     # Private methods to manage the data

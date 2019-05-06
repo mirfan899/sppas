@@ -197,6 +197,7 @@ class sppasMainWindow(sppasDialog):
         # 5th: plugins
         book.AddPage(sppasPluginsPanel(book), text="")
 
+        book.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
         return book
 
     # -----------------------------------------------------------------------

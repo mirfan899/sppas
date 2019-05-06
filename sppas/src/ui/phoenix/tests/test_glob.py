@@ -53,7 +53,10 @@ import sppas.src.ui.phoenix.page_files.wksmanager
 
 class TestPanel(wx.Choicebook):
     def __init__(self, parent):
-        wx.Choicebook.__init__(self, parent, wx.ID_ANY)
+        wx.Choicebook.__init__(
+            self,
+            parent,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
 
         # Make the bunch of test panels for the choice book
         self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
@@ -64,6 +67,23 @@ class TestPanel(wx.Choicebook):
 
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGED, self.OnPageChanged)
         self.Bind(wx.EVT_CHOICEBOOK_PAGE_CHANGING, self.OnPageChanging)
+        self.Bind(wx.EVT_KEY_DOWN, self._process_key_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_key_event(self, event):
+        """Process a key event.
+
+        :param event: (wx.Event)
+
+        """
+        key_code = event.GetKeyCode()
+        logging.debug('Test panel received the key event {:d}'.format(key_code))
+
+        # Keeps on going the event to the current page of the book.
+        event.Skip()
+
+    # -----------------------------------------------------------------------
 
     def OnPageChanged(self, event):
         old = event.GetOldSelection()

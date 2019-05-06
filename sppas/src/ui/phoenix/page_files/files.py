@@ -199,4 +199,9 @@ class sppasFilesPanel(sppasPanel):
         #    logging.debug('Refresh all the files [F5 keys pressed]')
         #    self.FindWindow("filesview").RefreshData()
 
+        # CMD+S: Pin&Save the workspace
+        if key_code == 83 and cmd_down is True:
+            logging.debug('Key event: Pin&Save the workspace')
+            self.FindWindow("workspaces").pin_save()
+
         event.Skip()
