@@ -339,11 +339,9 @@ class FileData(FileBase):
         """
         if file_obj is None:
             for fp in self.__data:
-                if not fp._state == States().AT_LEAST_ONE_LOCKED:
+                if not fp.statefp == States().AT_LEAST_ONE_LOCKED:
                     if isinstance(state, int):
-                        print("FileData set_state() parameter: ", state)
                         fp.set_state(state)
-                        print("FileData set_state(): ", fp._state)
                     else:
                         raise sppasTypeError(state, 'States')
                 else:
@@ -390,8 +388,8 @@ class FileData(FileBase):
 
     def has_locked_files(self):
         for fp in self.__data:
-            if fp.state == FilePath.States.AT_LEAST_ONE_LOCKED\
-                    or fp.state == FilePath.States.ALL_LOCKED:
+            if fp.statefp == States().AT_LEAST_ONE_LOCKED\
+                    or fp.statefp == States().ALL_LOCKED:
                 return True
         return False
 
@@ -426,15 +424,15 @@ class FileData(FileBase):
     def associate(self):
         ref_checked = list()
         for ref in self.__refs:
-            if ref.state == Reference.States.CHECKED:
+            if ref.state == States().CHECKED:
                 ref_checked.append(ref)
 
         for fp in self.__data:
             for fr in fp:
-                if fr.state == FileRoot.States.AT_LEAST_ONE_CHECKED\
-                        or fr.state == FileRoot.States.ALL_CHECKED:
+                if fr.state == States().AT_LEAST_ONE_CHECKED\
+                        or fr.state == States().ALL_CHECKED:
                     if fr.references is not None:
-                        fr.references = set(fr.references.extend(ref_checked))
+                        fr.set_references(set(fr.get_references().extend(ref_checked)))
                     else:
                         fr.references = ref_checked
 

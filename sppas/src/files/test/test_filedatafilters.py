@@ -48,7 +48,7 @@ class TestsFileDataFilter (unittest.TestCase):
         self.assertTrue(
             len(self.data_filter.extension(not_exact='.PY')) == 3
         )
-    #
+
     # def test_fileNameProperties(self):
     #     self.assertTrue(
     #         len(self.data_filter.fprop(not_lock='true')) == 4

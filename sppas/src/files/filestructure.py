@@ -154,9 +154,7 @@ class FileName(FileBase):
         :param value: (bool)
 
         """
-        print("FileName set_state() parameter: ", value)
         if value in self.states:
-            print("FileName set_state(): ", value)
             FileBase.state = value
         else:
             raise sppasTypeError(value, 'States')
@@ -288,7 +286,6 @@ class FileRoot(FileBase):
         """
         if isinstance(value, int):
             FileBase.state = value
-            print("FileRoot set_state(): ", FileBase.state)
         else:
             raise sppasTypeError(value, 'States')
 
@@ -528,7 +525,6 @@ class FilePath(FileBase):
     def set_state(self, value):
         if isinstance(value, int):
             self._state = value
-            print("FilePath set_state(): ", self._state)
         else:
             raise sppasTypeError(value, 'States')
 

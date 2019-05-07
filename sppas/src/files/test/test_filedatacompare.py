@@ -11,7 +11,7 @@ class TestFileDataCompare(unittest.TestCase):
     def setUp(self):
         #for FileNameCompare
         self.cmpFileName = sppasFileNameCompare()
-        self.fileName = 'testFileDataCompare'
+        self.fileName = 'test_filedatacompare'
 
         #for FileNameExtensionCompare
         self.cmpFileNameExtension = sppasFileNameExtensionCompare()

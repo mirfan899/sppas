@@ -43,7 +43,7 @@ class TestFileName(unittest.TestCase):
         # Normal situation
         fn = FileName(__file__)
         self.assertEqual(__file__, fn.get_id())
-        self.assertFalse(fn.state == FileName.States.CHECKED)
+        self.assertFalse(fn.statefn == States().CHECKED)
 
     def test_extension(self):
         fn = FileName(__file__)
@@ -97,7 +97,7 @@ class TestFilePath(unittest.TestCase):
         d = dirname(__file__)
         fp = FilePath(d)
         self.assertEqual(d, fp.id)
-        self.assertFalse(fp.state is FilePath.States.ALL_CHECKED)
+        self.assertFalse(fp.statefp is States().ALL_CHECKED)
         self.assertEqual(fp.id, fp.get_id())
 
         # Property is only defined for 'get' (set is not implemented).
@@ -277,12 +277,6 @@ class TestFileData(unittest.TestCase):
     def testState(self):
         self.files.set_state(States().ALL_LOCKED)
 
-        for fp in self.files:
-            print(fp.state == States().ALL_LOCKED)
-
-        print(self.files.get_state(self.files[0]))
-        print(self.files[0].state)
-
         self.assertTrue(
             self.files.get_state(self.files[0]) == States().ALL_LOCKED
         )
@@ -298,9 +292,9 @@ class TestFileData(unittest.TestCase):
         self.files.add_ref(self.age)
 
         for ref in self.files.get_refs():
-            ref.state = Reference.States.CHECKED
+            ref.state = States().CHECKED
 
-        self.files.set_state(FilePath.States.ALL_CHECKED)
+        self.files.set_state(States().ALL_CHECKED)
 
         self.files.associate()
 
