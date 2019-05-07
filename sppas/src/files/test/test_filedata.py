@@ -202,7 +202,7 @@ class TestAttValue(unittest.TestCase):
 # ---------------------------------------------------------------------------
 
 
-class TestCategories(unittest.TestCase):
+class TestReferences(unittest.TestCase):
 
     def setUp(self):
         self.micros = Reference('microphone')
@@ -254,8 +254,8 @@ class TestFileData(unittest.TestCase):
 
     def test_init(self):
         data = FileData()
-        self.assertEquals(36, len(data.id))
-        self.assertEquals(0, len(data))
+        self.assertEqual(36, len(data.id))
+        self.assertEqual(0, len(data))
 
     def testSave(self):
         current_file_list = list()
