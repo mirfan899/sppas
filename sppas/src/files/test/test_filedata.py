@@ -276,8 +276,13 @@ class TestFileData(unittest.TestCase):
                 current_file_list[i] == saved_file_list[i]
             )
 
-        # self.files.set_state(FilePath.States.ALL_LOCKED)
-        # self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
+        with self.assertRaises(ValueError) as error:
+            self.files.set_state(States().ALL_LOCKED)
+            self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
+
+        self.assertTrue(
+            isinstance(error.exception, ValueError)
+        )
 
     def testState(self):
         self.files.set_state(States().ALL_LOCKED)
