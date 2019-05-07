@@ -414,7 +414,6 @@ class FileData(FileBase):
                 if fr.state == States().AT_LEAST_ONE_CHECKED\
                         or fr.state == States().ALL_CHECKED:
                     if fr.get_references() is not None:
-                        fr.get_references()
                         fr.set_references(set(fr.get_references().extend(ref_checked)))
                     else:
                         fr.set_references(ref_checked)

@@ -189,6 +189,14 @@ class FileName(FileBase):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __hash__(self):
+        return hash((self.__name,
+                     self.__date,
+                     self.__extension,
+                     self.__filesize,
+                     self._state,
+                     self.id))
+
     def __eq__(self, other):
         if other is not None:
             return self.id == other.id
@@ -303,7 +311,9 @@ class FileRoot(FileBase):
 
     def get_references(self):
         """If the reference catalog is not set yet, instead of returning None the method returns an empty list."""
-        return self.__references if self.__references is not None else list()
+        if self.__references is None:
+            return list()
+        return self.__references
 
     def set_references(self, list_of_references):
         """In order to set the references one must provide a list of category or an empty list.

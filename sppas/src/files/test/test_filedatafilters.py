@@ -36,7 +36,7 @@ class TestsFileDataFilter (unittest.TestCase):
 
     def test_root(self):
         self.assertTrue(
-            len(self.data_filter.root(contains='_')) == 3
+            len(self.data_filter.root(contains='_')) == 4
         )
 
     def test_fileName(self):
