@@ -129,6 +129,7 @@ from os.path import exists
 from os.path import dirname
 
 from sppas import sppasTypeError, sppasValueError
+from .fileexc import FileLockedError
 from .fileutils import sppasGUID
 
 from .filebase import FileBase, States
@@ -398,8 +399,7 @@ class FileData(FileBase):
                             self.add_ref(ref)
 
         else:
-            raise ValueError('Locked files')
-            # TODO : make a SPPAS exception in fileexc
+            raise FileLockedError(file_name)
 
     # -----------------------------------------------------------------------
 
