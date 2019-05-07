@@ -472,6 +472,18 @@ class FileData(FileBase):
                         yield ref
 
     # -----------------------------------------------------------------------
+
+    def unlock(self, list_of_files):
+        if isinstance(list_of_files, list):
+            for file in list_of_files:
+                file.set_state(States().UNUSED)
+
+            for fp in self.__data:
+                for fr in reversed(fp):
+                    fr.update_state()
+                fp.update_state()
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 
