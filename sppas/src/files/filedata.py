@@ -206,7 +206,7 @@ class FileData(FileBase):
     def remove_checked_ref(self):
         """Remove all checked ref from the list."""
         for ref in self.__refs:
-            if ref.state == Reference.States.CHECKED:
+            if ref.stateref == States().CHECKED:
                 del self.__refs[self.__refs.index(ref)]
 
     # -----------------------------------------------------------------------
@@ -333,7 +333,7 @@ class FileData(FileBase):
 
         The default case is to set the state to all FilePath.
 
-        :param state: (FilePath.States, FileRoot.States, FileName.States) state to set the file to
+        :param state: (States) state to set the file to
         :param file_obj: (FileBase) the specific file to set the state to
 
         """
@@ -348,7 +348,7 @@ class FileData(FileBase):
                     raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
         else:
             if issubclass(file_obj, FileBase):
-                if isinstance(state, States):
+                if isinstance(state, int):
                     file_obj.state = state
                 else:
                     raise sppasTypeError(state, 'States')
@@ -431,23 +431,24 @@ class FileData(FileBase):
             for fr in fp:
                 if fr.state == States().AT_LEAST_ONE_CHECKED\
                         or fr.state == States().ALL_CHECKED:
-                    if fr.references is not None:
+                    if fr.get_references() is not None:
+                        fr.get_references()
                         fr.set_references(set(fr.get_references().extend(ref_checked)))
                     else:
-                        fr.references = ref_checked
+                        fr.set_references(ref_checked)
 
     # -----------------------------------------------------------------------
 
     def dissociate(self):
         ref_checked = list()
         for ref in self.__refs:
-            if ref.state == Reference.States.CHECKED:
+            if ref.stateref == States().CHECKED:
                 ref_checked.append(ref)
 
         for fp in self.__data:
             for fr in fp:
-                if fr.state == FileRoot.States.AT_LEAST_ONE_CHECKED \
-                        or fr.state == FileRoot.States.ALL_CHECKED:
+                if fr.statefr == States().AT_LEAST_ONE_CHECKED \
+                        or fr.statefr == States().ALL_CHECKED:
                     for ref in ref_checked:
                         if ref in fr.references:
                             fr.references.remove(ref)
