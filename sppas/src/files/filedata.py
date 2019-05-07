@@ -437,17 +437,20 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def is_empty(self):
+        """Return if the instance contains information."""
         return len(self.__data) + len(self.__refs) == 0
 
     # -----------------------------------------------------------------------
 
     def get_filepath_from_state(self, state):
+        """Return every FilePath in the given state."""
         for fp in self.__data:
             if fp.statefp == state:
                 yield fp
     # -----------------------------------------------------------------------
 
     def get_fileroot_from_state(self, state):
+        """Return every FileRoot in the given state."""
         for fp in self.__data:
             for fr in fp:
                 if fr.statefr == state:
@@ -456,6 +459,7 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def get_filename_from_state(self, state):
+        """Return every FileName in the given state."""
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
@@ -465,6 +469,7 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def get_reference_from_state(self, state):
+        """Return every Reference in the given state."""
         for fp in self.__data:
             for fr in fp:
                 for ref in fr:
@@ -474,6 +479,11 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def unlock(self, list_of_files):
+        """Unlocks the given list of file.
+
+        :param list_of_files (list) the list of file to unlock
+
+        """
         if isinstance(list_of_files, list):
             for file in list_of_files:
                 file.set_state(States().UNUSED)
