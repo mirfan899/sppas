@@ -77,6 +77,7 @@ from sppas.src.ui.wxgui.sp_icons import EXPORT_AS_ICON
 from sppas.src.ui.wxgui.sp_icons import EXPORT_ICON
 
 from sppas.src.ui.wxgui.panels.mainbuttons import MainToolbarPanel
+from sppas.src.ui.trash import sppasTrash
 
 # ----------------------------------------------------------------------------
 # Constants
@@ -277,11 +278,13 @@ class FiletreePanel(wx.Panel):
         # Yes, the user wants to delete...
         if dlg == wx.ID_YES:
 
-            errors = [] # list of not deleted files
+            trash = sppasTrash()
+            errors = []  # list of not deleted files
             for filename in selection:
                 try:
-                    os.remove(filename)
-                except Exception as e:
+                    trash.put_file_into(filename)
+                    # os.remove(filename)
+                except:
                     errors.append(filename)
                     for item in self._filestree.GetSelections():
                         f = self._filestree.GetItemText(item)

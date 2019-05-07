@@ -276,8 +276,14 @@ class sppasSilences(object):
             else:
                 threshold = int(vmin) + int((vmean - vcvar))
 
+        # For distributions with a too low variability
+        elif vmedian < (vmean * 0.2):
+            threshold = int(vmin) + int((vmean - vmedian))
+
         elif (2. * vvar) > vmean:
             vcvar = 1.25 * vvar
+            if vcvar > vmean:
+                vcvar = vmean * 0.5
             threshold = int(vmin) + int((vmean - vcvar))
 
         else:

@@ -33,7 +33,7 @@
     ~~~~~~~~~~
 
 """
-
+import logging
 import os
 import time
 import shutil
@@ -77,8 +77,13 @@ class sppasTrash(object):
     def do_empty():
         """Empty the trash, i.e. delete all files."""
         for f in os.listdir(paths.trash):
-            os.remove(os.path.join(paths.trahs, f))
-            # shutil.copytree()
+            full_name = os.path.join(paths.trahs, f)
+            if os.path.isdir(full_name):
+                logging.debug('Delete folder {!s:s}'.format(full_name))
+                shutil.rmtree(full_name)
+            if os.path.isfile(full_name):
+                logging.debug('Delete file {!s:s}'.format(full_name))
+                os.remove(full_name)
 
     # -----------------------------------------------------------------------
 
@@ -103,5 +108,4 @@ class sppasTrash(object):
     def put_folder_into(folder):
         """Put all files of a folder into the trash."""
         now = time.strftime("-%a-%d-%b-%Y_%H%M%S_0000", time.localtime())
-        shutil.move(folder, paths.trash)
-
+        shutil.move(folder, os.path.join(paths.trash, now))
