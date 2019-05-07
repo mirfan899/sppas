@@ -156,7 +156,7 @@ class FileData(FileBase):
 
     def __init__(self):
         """Constructor of a FileData."""
-        super().__init__(sppasGUID().get)
+        super().__init__(sppasGUID().get())
         self.__data = list()
         self.__refs = list()
         self.states = States()
@@ -271,24 +271,6 @@ class FileData(FileBase):
                     if fn.state == value:
                         checked.append(fn.id)
         return checked
-
-    # -----------------------------------------------------------------------
-
-    def get_expanded_objects(self, value=True):
-        """Return the list of expanded or collapsed FilePath and FileRoot.
-
-        :param value: (bool) Toggle state
-        :return: (list of FilePath and FileRoot objects)
-
-        """
-        expanded = list()
-        for fp in self.__data:
-            if fp.expand == value:
-                expanded.append(fp)
-            for fr in fp:
-                if fr.expand == value:
-                    expanded.append(fr)
-        return expanded
 
     # -----------------------------------------------------------------------
 

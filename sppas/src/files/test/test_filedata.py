@@ -252,6 +252,11 @@ class TestFileData(unittest.TestCase):
         self.age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
         self.age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
 
+    def test_init(self):
+        data = FileData()
+        self.assertEquals(36, len(data.id))
+        self.assertEquals(0, len(data))
+
     def testSave(self):
         current_file_list = list()
         saved_file_list = list()
