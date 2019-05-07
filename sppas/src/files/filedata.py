@@ -444,14 +444,14 @@ class FileData(FileBase):
 
     def get_filepath_from_state(self, state):
         for fp in self.__data:
-            if fp.state == state:
+            if fp.statefp == state:
                 yield fp
     # -----------------------------------------------------------------------
 
     def get_fileroot_from_state(self, state):
         for fp in self.__data:
             for fr in fp:
-                if fr.state == state:
+                if fr.statefr == state:
                     yield fr
 
     # -----------------------------------------------------------------------
@@ -460,7 +460,7 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
-                    if fn.state == state:
+                    if fn.statefn == state:
                         yield fn
 
     # -----------------------------------------------------------------------
@@ -469,7 +469,7 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in fp:
                 for ref in fr:
-                    if ref.state == state:
+                    if ref.stateref == state:
                         yield ref
 
     # -----------------------------------------------------------------------
