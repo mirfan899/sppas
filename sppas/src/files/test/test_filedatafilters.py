@@ -1,9 +1,9 @@
 import unittest
 
 import sppas
-from sppas.src.files.filedata import FileData
-from sppas.src.files.filedatacompare import *
-from sppas.src.files.filedatafilters import sppasFileDataFilters
+from ..filedata import FileData
+from ..filedatacompare import *
+from ..filedatafilters import sppasFileDataFilters
 
 
 class TestsFileDataFilter (unittest.TestCase):

@@ -32,7 +32,6 @@
 """
 
 import mimetypes
-from enum import Enum
 from datetime import datetime
 
 from os.path import splitext, abspath, join
