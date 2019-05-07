@@ -311,7 +311,16 @@ class TestFileData(unittest.TestCase):
         for fp in self.files:
             for fr in fp:
                 self.assertTrue(
-                    fr.references.contains(self.age)
+                    self.age in fr.references
+                )
+
+        self.files.dissociate()
+
+        for fp in self.files:
+            for fr in fp:
+                print(fr.references)
+                self.assertTrue(
+                    len(fr.references) == 0
                 )
 
 # ---------------------------------------------------------------------------

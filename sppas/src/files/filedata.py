@@ -414,7 +414,9 @@ class FileData(FileBase):
                 if fr.state == States().AT_LEAST_ONE_CHECKED\
                         or fr.state == States().ALL_CHECKED:
                     if fr.get_references() is not None:
-                        fr.set_references(set(fr.get_references().extend(ref_checked)))
+                        ref_extended = fr.get_references()
+                        ref_extended.extend(ref_checked)
+                        fr.set_references(list(set(ref_extended)))
                     else:
                         fr.set_references(ref_checked)
 
@@ -423,11 +425,13 @@ class FileData(FileBase):
     def dissociate(self):
         ref_checked = list()
         for ref in self.__refs:
+            print(ref.get_state())
             if ref.stateref == States().CHECKED:
                 ref_checked.append(ref)
 
         for fp in self.__data:
             for fr in fp:
+                print(fr.statefr)
                 if fr.statefr == States().AT_LEAST_ONE_CHECKED \
                         or fr.statefr == States().ALL_CHECKED:
                     for ref in ref_checked:

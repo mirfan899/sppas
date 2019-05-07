@@ -292,7 +292,7 @@ class Reference(FileBase):
         return '{!s:s}'.format(self.__attributs)
 
     def __repr__(self):
-        return 'Category: {!s:s}'.format(self.__attributs)
+        return 'Reference: {!s:s}'.format(self.__attributs)
 
     def __format__(self, fmt):
         return str(self).__format__(fmt)
