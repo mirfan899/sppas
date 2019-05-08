@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import math
+
 import logging
 from sppas.src.audiodata.channel import sppasChannel
 from sppas.src.audiodata.channelvolume import sppasChannelVolume
@@ -235,21 +235,21 @@ class sppasSilences(object):
         :returns: (int) volume value
 
         """
+        volumes = sorted(self.__volume_stats.volumes())
         vmin = max(self.__volume_stats.min(), 0)  # provide negative values
-        logging.debug("RMS min={:d}".format(vmin))
+        logging.info("RMS min={:d}".format(vmin))
         vmean = self.__volume_stats.mean()
-        logging.debug("RMS mean={:.2f}".format(vmean))
+        logging.info("RMS mean={:.2f}".format(vmean))
         vmedian = self.__volume_stats.median()
-        logging.debug("RMS median={:2f}".format(vmedian))
+        logging.info("RMS median={:2f}".format(vmedian))
         vvar = self.__volume_stats.coefvariation()
-        logging.debug("RMS coef. var={:2f}".format(vvar))
+        logging.info("RMS coef. var={:2f}".format(vvar))
 
         # Remove very high volume values (outliers)
         # only for distributions with a too high variability
         if vmedian > vmean:
             logging.debug('The RMS distribution need to be normalized.')
 
-            volumes = sorted(self.__volume_stats.volumes())
             rms_threshold = volumes[int(0.85 * len(volumes))]
             nb = 0
             for i, v in enumerate(self.__volume_stats):
@@ -260,39 +260,33 @@ class sppasSilences(object):
             vmean = self.__volume_stats.mean()
             vmedian = self.__volume_stats.median()
             vvar = self.__volume_stats.coefvariation()
-            vcvar = 2. * vvar
-            if vcvar > vmean:
-                vcvar = 1.25 * vvar
 
-            # alternative, in case the audio is not as good as expected!
-            # (too low volume, or outliers which make the coeff var very high)
-            if vmedian > vmean:
-                # often means a lot of low volume values
-                index = 0.55 * len(volumes)
-                threshold = volumes[int(index)]
-            elif vcvar > vmean:
-                # often means some crazy values (very rare).
-                threshold = int((vmean-vmin) / 5.)
+        # Normal situation... (more than 75% of the files!!!)
+        vcvar = 1.5 * vvar
+        threshold = int(vmin) + int((vmean - vcvar))
+
+        # Alternative, in case the audio is not as good as expected!
+        # (too low volume, or outliers which make the coeff var very high)
+        if vmedian > vmean:
+            # often means a lot of low volume values and some very high
+            median_index = 0.55 * len(volumes)
+            threshold = volumes[int(median_index)]
+            logging.debug(' ... threshold: estimator exception 1 - median > mean')
+        elif vcvar > vmean:
+            if vmedian < (vmean * 0.2):
+                # for distributions with a too low variability
+                threshold = int(vmin) + int((vmean - vmedian))
+                logging.debug(' ... threshold: estimator exception 2 - median < 0.2*mean')
             else:
-                threshold = int(vmin) + int((vmean - vcvar))
-
-        # For distributions with a too low variability
-        elif vmedian < (vmean * 0.2):
-            threshold = int(vmin) + int((vmean - vmedian))
-
-        elif (2. * vvar) > vmean:
-            vcvar = 1.25 * vvar
-            if vcvar > vmean:
-                vcvar = vmean * 0.5
-            threshold = int(vmin) + int((vmean - vcvar))
-
+                # often means some crazy values (very rare)
+                threshold = int(vmin) + int(0.2 * float(vmean))
+                logging.debug(' ... threshold: estimator exception 3 - vcvar > mean')
         else:
-            # Normal situation... (more than 75% of the files!!!)
-            vcvar = 1.5 * vvar
-            threshold = int(vmin) + int((vmean - vcvar))
+            logging.debug(' ... threshold: normal estimator')
 
         logging.info('Threshold value for the search of silences: {:d}'
                      ''.format(threshold))
+
         return threshold
 
     # -----------------------------------------------------------------------

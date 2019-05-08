@@ -286,8 +286,10 @@ class sppasSearchIPUs(sppasBaseAnnotation):
 
     def _set_meta(self, tier):
         """Set meta values to the tier."""
-        tier.set_meta('threshold_volume',
+        tier.set_meta('required_threshold_volume',
                       str(self.__searcher.get_vol_threshold()))
+        tier.set_meta('estimated_threshold_volume',
+                      str(self.__searcher.get_effective_threshold()))
         tier.set_meta('minimum_silence_duration',
                       str(self.__searcher.get_min_sil_dur()))
         tier.set_meta('minimum_ipus_duration',
@@ -297,17 +299,19 @@ class sppasSearchIPUs(sppasBaseAnnotation):
         tier.set_meta('shift_ipus_end',
                       str(self.__searcher.get_shift_end()))
 
+        meta = ("rms_min", "rms_max", "rms_mean", "rms_median", "rms_coefvar")
+        for key, value in zip(meta, self.__searcher.get_rms_stats()):
+            tier.set_meta(str(key), str(value))
+
         self.logfile.print_message("Information: ", indent=1)
-        m1 = "Threshold volume value:     {:d}" \
-             "".format(self.__searcher.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}" \
-             "".format(self.__searcher.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}" \
-             "".format(self.__searcher.get_min_ipu_dur())
-        m4 = "Number of IPUs found:       {:s}" \
-             "".format(tier.get_meta("number_of_ipus"))
-        for m in (m4, m1, m2, m3):
-            self.logfile.print_message(m, indent=2)
+        if self.__searcher.get_vol_threshold() == 0:
+            self.logfile.print_message(
+                "Automatically estimated threshold volume value: {:d}"\
+                "".format(self.__searcher.get_effective_threshold()),
+                indent=2)
+        self.logfile.print_message(
+            "Number of IPUs found: {:s}".format(tier.get_meta("number_of_ipus")),
+            indent=2)
 
     # -----------------------------------------------------------------------
     # Apply the annotation on one or several given files

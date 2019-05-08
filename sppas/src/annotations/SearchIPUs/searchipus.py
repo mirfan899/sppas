@@ -74,6 +74,7 @@ class SearchIPUs(sppasSilences):
         self._min_sil_dur = SearchIPUs.DEFAULT_MIN_SIL_DUR
         self._min_ipu_dur = SearchIPUs.DEFAULT_MIN_IPU_DUR
         self._vol_threshold = SearchIPUs.DEFAULT_VOL_THRESHOLD
+        self._auto_threshold = SearchIPUs.DEFAULT_VOL_THRESHOLD
         self._shift_start = SearchIPUs.DEFAULT_SHIFT_START
         self._shift_end = SearchIPUs.DEFAULT_SHIFT_END
 
@@ -105,8 +106,12 @@ class SearchIPUs(sppasSilences):
         return self._win_length
 
     def get_vol_threshold(self):
-        """Return the volume threshold used to find silences vs tracks."""
+        """Return the initial volume threshold used to search for silences."""
         return self._vol_threshold
+
+    def get_effective_threshold(self):
+        """Return the threshold volume estimated automatically to search for silences."""
+        return self._auto_threshold
 
     def get_min_sil_dur(self):
         """Return the minimum duration of a silence."""
@@ -212,6 +217,13 @@ class SearchIPUs(sppasSilences):
         return d + self._shift_start + self._shift_end
 
     # -----------------------------------------------------------------------
+
+    def get_rms_stats(self):
+        """Return min, max, mean, median, stdev of the RMS."""
+        vs = self.get_volstats()
+        return [vs.min(), vs.max(), vs.mean(), vs.median(), vs.coefvariation()]
+
+    # -----------------------------------------------------------------------
     # Silence/Speech segmentation
     # -----------------------------------------------------------------------
 
@@ -235,11 +247,11 @@ class SearchIPUs(sppasSilences):
 
         """
         # Search for the silences, comparing each rms to the threshold
-        threshold = self.search_silences(self._vol_threshold)
+        self._auto_threshold = self.search_silences(self._vol_threshold)
 
         # Keep only silences during more than a given duration
         # remove silences first because we are interested in finding tracks
-        self.filter_silences(threshold, self._min_sil_dur)
+        self.filter_silences(self._auto_threshold, self._min_sil_dur)
 
         # Get the (from_pos, to_pos) of the tracks during more than
         # a given duration and shift these values (from-start; to+end)
