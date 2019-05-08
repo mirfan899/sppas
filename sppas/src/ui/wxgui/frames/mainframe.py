@@ -128,6 +128,7 @@ class FrameSPPAS(wx.Frame):
 
         # Create the log window of the application and show it.
         self.log_window = sppasLogWindow(self, 5)
+        wx.Log.EnableLogging(True)
 
         # Create GUI
         self._init_infos()
@@ -147,9 +148,6 @@ class FrameSPPAS(wx.Frame):
         self.SetFocus()
 
         self.Show(True)
-
-        # fix wx log messages
-        wx.Log.EnableLogging(False)
 
     # ------------------------------------------------------------------------
     # Private methods to create the GUI and initialize members

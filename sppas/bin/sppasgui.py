@@ -136,10 +136,16 @@ for f in args.files:
         p = getcwd()
     filenames.append(path.abspath(path.join(p, b)))
 
+# Logging
+# ----------------------------------------------------------------------------
+
+applogging = sppasLogSetup(5)
+applogging.stream_handler()
+
 # Application:
 # ----------------------------------------------------------------------------
 
-sppas = wx.App(redirect=True, useBestVisual=True, clearSigInt=True)
+sppas = wx.App(redirect=False, useBestVisual=True, clearSigInt=True)
 
 # Fix language and translation
 lang = wx.LANGUAGE_DEFAULT
@@ -161,17 +167,6 @@ if check_aligner() is False:
                     'None of julius or HVite is installed on your system.\n'
                     'The Alignment automatic annotation WONT WORK normally.',
                     style=wx.ICON_ERROR)
-
-# Logging
-# ----------------------------------------------------------------------------
-
-# Disable redirection of messages to logging because sppas is launched with
-# pythonw!
-logging.getLogger().addHandler(logging.NullHandler())
-
-#applogging = sppasLogSetup(5)
-#applogging.stream_handler()
-
 
 # Main frame
 # ----------------------------------------------------------------------------

@@ -39,13 +39,7 @@ import wx.lib.newevent
 import logging
 
 from sppas.src.utils.datatype import sppasTime
-
 from sppas.src.ui.logs import sppasLogFile
-from ..sp_consts import MIN_FRAME_W
-from ..sp_consts import MIN_FRAME_H
-
-from ..cutils.imageutils import spBitmap
-from ..sp_icons import APP_ICON
 
 # ---------------------------------------------------------------------------
 
@@ -196,7 +190,6 @@ class sppasLogWindow(wx.Dialog):
         super(sppasLogWindow, self).__init__(
             parent=parent,
             title='SPPAS Logging messages',
-            #style=wx.CAPTION | wx.RESIZE_BORDER)
             style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
         # Members
@@ -223,18 +216,9 @@ class sppasLogWindow(wx.Dialog):
 
         """
         # Fix frame properties
-        (w, h) = wx.GetDisplaySize()
-        w *= 0.6
-        h = min(0.9*h, w*9/16)
-        self.SetMinSize((MIN_FRAME_W, MIN_FRAME_H))
-        self.SetSize(wx.Size(max(int(w), MIN_FRAME_W), max(int(h), MIN_FRAME_H)))
-
+        self.SetMinSize(wx.Size(480, 420))
+        self.SetSize(wx.Size(480, 420))
         self.SetName('sppaslog')
-
-        # icon
-        _icon = wx.EmptyIcon()
-        _icon.CopyFromBitmap(spBitmap(APP_ICON))
-        self.SetIcon(_icon)
 
     # ------------------------------------------------------------------------
 
@@ -270,7 +254,7 @@ class sppasLogWindow(wx.Dialog):
 
         # fix wx log messages
         wx.Log.EnableLogging(True)
-        wx.Log.SetLogLevel(wx.LOG_Debug)  # log_level_to_wx(log_level))
+        wx.Log.SetLogLevel(log_level_to_wx(log_level))
         wx.Log.SetActiveTarget(sppasLogTextCtrl(self.txt))
 
         # redirect python logging messages to wx.Log
@@ -514,3 +498,31 @@ class sppasLogMessagePanel(wx.Panel):
         self.txt.SetStyle(0, len(self.txt.GetValue()),
                           self.txt.GetDefaultStyle())
 
+# ---------------------------------------------------------------------------
+
+
+class FrameTest(wx.Frame):
+
+    def __init__(self):
+        wx.Frame.__init__(self, None, -1, title="Test Frame")
+
+        # Create the log window of the application and show it.
+        self.log_window = sppasLogWindow(self, 0)
+
+        self.Centre()
+        self.Enable()
+        self.SetFocus()
+        self.Show(True)
+
+# ---------------------------------------------------------------------------
+
+
+if __name__ == '__main__':
+    app = wx.App(redirect=False, useBestVisual=True, clearSigInt=True)
+
+    # Fix language and translation
+    lang = wx.LANGUAGE_DEFAULT
+    locale = wx.Locale(lang)
+
+    frame = FrameTest()
+    app.MainLoop()
