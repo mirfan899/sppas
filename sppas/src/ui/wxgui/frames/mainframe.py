@@ -82,6 +82,7 @@ from ..views.settings import SettingsDialog
 from ..dialogs.msgdialogs import ShowInformation
 
 from sppas.src.ui.wxgui import SETTINGS_FILE
+from .logsframe import sppasLogWindow
 
 # -----------------------------------------------------------------------
 # S P P A S  Graphical User Interface... is here!
@@ -124,6 +125,9 @@ class FrameSPPAS(wx.Frame):
         self._right_panel = None
         self._leftsizer = None
         self._rightsizer = None
+
+        # Create the log window of the application and show it.
+        self.log_window = sppasLogWindow(self, 5)
 
         # Create GUI
         self._init_infos()
@@ -335,6 +339,8 @@ class FrameSPPAS(wx.Frame):
 
     def OnExit(self, evt):
         """Close the frame."""
+        # Stop redirecting logging to this application
+        self.log_window.redirect_logging(False)
 
         logging.info('SPPAS main frame exit.')
         self.Destroy()

@@ -112,7 +112,7 @@ try:
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
-    # from sppas.src.ui import sppasLogSetup, sppasLogFile
+    from sppas.src.ui import sppasLogSetup #, sppasLogFile
     # from sppas.src.ui.cfg import sppasAppConfig
 except Exception as e:
     print(str(e))
@@ -139,7 +139,11 @@ for f in args.files:
 # Application:
 # ----------------------------------------------------------------------------
 
-sppas = wx.App(redirect=True)
+sppas = wx.App(redirect=True, useBestVisual=True, clearSigInt=True)
+
+# Fix language and translation
+lang = wx.LANGUAGE_DEFAULT
+locale = wx.Locale(lang)
 
 # Fix preferences
 prefsIO = Preferences_IO(SETTINGS_FILE)
@@ -165,6 +169,9 @@ if check_aligner() is False:
 # pythonw!
 logging.getLogger().addHandler(logging.NullHandler())
 
+#applogging = sppasLogSetup(5)
+#applogging.stream_handler()
+
 
 # Main frame
 # ----------------------------------------------------------------------------
@@ -173,6 +180,5 @@ frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
     frame.flp.RefreshTree(filenames)
 
-frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()
