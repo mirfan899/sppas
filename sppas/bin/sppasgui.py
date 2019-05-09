@@ -145,7 +145,7 @@ applogging.stream_handler()
 # Application:
 # ----------------------------------------------------------------------------
 
-sppas = wx.App(redirect=True, useBestVisual=True, clearSigInt=True)
+sppas = wx.App(redirect=False, useBestVisual=True, clearSigInt=True)
 
 # Fix language and translation
 lang = wx.LANGUAGE_DEFAULT
