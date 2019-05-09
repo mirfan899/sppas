@@ -37,7 +37,7 @@ from collections import OrderedDict
 
 from sppas import sppasUnicode, sppasTypeError
 
-from .filebase import FileBase
+from .filebase import FileBase, States
 from enum import Enum
 
 # ---------------------------------------------------------------------------
@@ -181,18 +181,6 @@ class Reference(FileBase):
     """
 
     # ---------------------------------------------------------------------------
-    class States(Enum):
-        UNUSED = 0
-        CHECKED = 1
-
-    # ---------------------------------------------------------------------------
-
-    class Types(Enum):
-        NONE = 0
-        SPEAKER = 1
-        INTERACTION = 2
-
-    # ---------------------------------------------------------------------------
 
     def __init__(self, identifier):
         """Constructor of the Category class.
@@ -202,8 +190,11 @@ class Reference(FileBase):
         """
         super(Reference, self).__init__(identifier)
         self.__attributs = OrderedDict()
-        self.__type = self.Types.NONE
-        self.__state = self.States.UNUSED
+
+        self.types = ('NONE', 'SPEAKER', 'INTERACTION')
+        self.__type = self.types[0]
+
+        self._state = States().UNUSED
 
     # ---------------------------------------------------------------------------
 
@@ -217,7 +208,7 @@ class Reference(FileBase):
 
         # Used once hence declared inside add method
         def is_restricted_ascii(key_to_test):
-            # if the string contains any other character than lower case a to z, upper case a to z and underscore it becomes a *
+            # change any other character than a to z and underscore in the key
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
@@ -274,10 +265,10 @@ class Reference(FileBase):
 
     def set_type(self, ref_type):
         """Set the type of the Reference to a new value within the authorized ones"""
-        if isinstance(ref_type, self.Types):
+        if ref_type in self.types:
             self.__type = ref_type
         else:
-            raise sppasTypeError(ref_type, self.Types)
+            raise sppasTypeError(ref_type, self.types)
 
     type = property(get_type, set_type)
 
