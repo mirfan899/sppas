@@ -442,7 +442,7 @@ class sppasMessageTextCtrl(wx.TextCtrl):
 
         # Fix Look&Feel for warnings
         self.warning = wx.TextAttr()
-        self.warning.SetTextColour(wx.YELLOW)
+        self.warning.SetTextColour(wx.GREEN)
         self.warning.SetBackgroundColour(wx.WHITE)
         self.warning.SetFont(mono_font)
 

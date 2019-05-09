@@ -59,11 +59,11 @@ class PostInstall:
                     "The directory {:s} to store logs is created."
                     "".format(paths.logs))
 
-            if os.path.exists(paths.wkps) is False:
-                os.mkdir(paths.wkps)
-                logging.info(
-                    "The directory {:s} to store workspaces is created."
-                    "".format(paths.workspaces))
+            # if os.path.exists(paths.wkps) is False:
+            #     os.mkdir(paths.wkps)
+            #     logging.info(
+            #         "The directory {:s} to store workspaces is created."
+            #         "".format(paths.wkps))
 
             if os.path.exists(paths.trash) is False:
                 os.mkdir(paths.trash)
