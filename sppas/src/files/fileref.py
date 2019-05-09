@@ -246,7 +246,7 @@ class Reference(FileBase):
 
     def get_state(self):
         """Return its current state."""
-        return self.__state
+        return self._state
 
     # ---------------------------------------------------------------------------
 
@@ -258,11 +258,11 @@ class Reference(FileBase):
 
         """
         if isinstance(state, int):
-            FileBase.state = state
+            self._state = state
         else:
             raise sppasTypeError(state, 'States')
 
-    stateref = property(get_state, set_state)
+    stateref = property(FileBase.get_state, set_state)
 
     # ---------------------------------------------------------------------------
 

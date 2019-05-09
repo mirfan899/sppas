@@ -330,9 +330,9 @@ class FileData(FileBase):
                 else:
                     raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
         else:
-            if issubclass(file_obj, FileBase):
+            if isinstance(file_obj, FileBase):
                 if isinstance(state, int):
-                    file_obj.state = state
+                    file_obj.set_state(state)
                 else:
                     raise sppasTypeError(state, 'States')
             else:
@@ -406,13 +406,13 @@ class FileData(FileBase):
     def associate(self):
         ref_checked = list()
         for ref in self.__refs:
-            if ref.state == States().CHECKED:
+            if ref.get_state() == States().CHECKED:
                 ref_checked.append(ref)
 
         for fp in self.__data:
             for fr in fp:
-                if fr.state == States().AT_LEAST_ONE_CHECKED\
-                        or fr.state == States().ALL_CHECKED:
+                if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
+                        or fr.get_state() == States().ALL_CHECKED:
                     if fr.get_references() is not None:
                         ref_extended = fr.get_references()
                         ref_extended.extend(ref_checked)
@@ -425,13 +425,11 @@ class FileData(FileBase):
     def dissociate(self):
         ref_checked = list()
         for ref in self.__refs:
-            print(ref.get_state())
             if ref.stateref == States().CHECKED:
                 ref_checked.append(ref)
 
         for fp in self.__data:
             for fr in fp:
-                print(fr.statefr)
                 if fr.statefr == States().AT_LEAST_ONE_CHECKED \
                         or fr.statefr == States().ALL_CHECKED:
                     for ref in ref_checked:

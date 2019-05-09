@@ -12,7 +12,7 @@ from ..fileref import AttValue, Reference
 from ..filedata import FileData
 from ..filebase import FileBase, States
 from ..filestructure import FileName, FileRoot, FilePath
-from ..fileexc import FileOSError, FileTypeError, PathTypeError
+from ..fileexc import FileOSError, FileTypeError, PathTypeError, FileLockedError
 
 
 class TestFileBase(unittest.TestCase):
@@ -276,12 +276,12 @@ class TestFileData(unittest.TestCase):
                 current_file_list[i] == saved_file_list[i]
             )
 
-        with self.assertRaises(ValueError) as error:
+        with self.assertRaises(FileLockedError) as error:
             self.files.set_state(States().ALL_LOCKED)
             self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
 
         self.assertTrue(
-            isinstance(error.exception, ValueError)
+            isinstance(error.exception, FileLockedError)
         )
 
     def testState(self):
@@ -301,10 +301,10 @@ class TestFileData(unittest.TestCase):
     def testAssocations(self):
         self.files.add_ref(self.age)
 
-        for ref in self.files.get_refs():
-            ref.state = States().CHECKED
-
         self.files.set_state(States().ALL_CHECKED)
+
+        for ref in self.files.get_refs():
+            self.files.set_state(States().CHECKED, ref)
 
         self.files.associate()
 
@@ -318,7 +318,6 @@ class TestFileData(unittest.TestCase):
 
         for fp in self.files:
             for fr in fp:
-                print(fr.references)
                 self.assertTrue(
                     len(fr.references) == 0
                 )

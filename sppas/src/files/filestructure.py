@@ -154,7 +154,7 @@ class FileName(FileBase):
 
         """
         if value in self.states:
-            FileBase.state = value
+            self._state = value
         else:
             raise sppasTypeError(value, 'States')
 
@@ -292,17 +292,17 @@ class FileRoot(FileBase):
 
         """
         if isinstance(value, int):
-            FileBase.state = value
+            self._state = value
         else:
             raise sppasTypeError(value, 'States')
 
         for fn in self.__files:
             if value == States().UNUSED:
-                fn.state = States().UNUSED
+                fn.set_state(States().UNUSED)
             elif value == States().ALL_CHECKED:
-                fn.state = States().CHECKED
+                fn.set_state(States().CHECKED)
             elif value == States().ALL_LOCKED:
-                fn.state = States().LOCKED
+                fn.set_state(States().LOCKED)
 
     statefr = property(FileBase.get_state, set_state)
 
