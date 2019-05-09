@@ -65,12 +65,13 @@ class TestPluginsManager(unittest.TestCase):
         # Use it!
         output = sample.replace('.wav', '-converted.wav')
         p = self.manager.get_plugin(soxid)
-
         message = self.manager.run_plugin(soxid, [sample])
-        self.assertGreater(len(message), 0)
-        self.assertTrue(os.path.exists(output))
-        os.remove(output)
 
         # Delete it...
         self.manager.delete(soxid)
         self.assertEqual(plg, len(self.manager.get_plugin_ids()))
+
+        # Test result of the run
+        self.assertGreater(len(message), 0)
+        self.assertTrue(os.path.exists(output))
+        os.remove(output)

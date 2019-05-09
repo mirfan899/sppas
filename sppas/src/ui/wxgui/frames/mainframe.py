@@ -105,7 +105,7 @@ class FrameSPPAS(wx.Frame):
     :summary:      SPPAS main frame based on wx library.
 
     """
-    def __init__(self, preferencesIO=None):
+    def __init__(self, preferencesIO=None, log_level=0):
         """Constructor of the SPPAS main frame.
 
         :param preferencesIO: (Preferences_IO)
@@ -127,7 +127,7 @@ class FrameSPPAS(wx.Frame):
         self._rightsizer = None
 
         # Create the log window of the application and show it.
-        self.log_window = sppasLogWindow(self, 5)
+        self.log_window = sppasLogWindow(self, log_level)
         wx.Log.EnableLogging(True)
 
         # Create GUI
