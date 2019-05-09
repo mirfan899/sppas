@@ -49,10 +49,10 @@ class TestsFileDataFilter (unittest.TestCase):
             len(self.data_filter.extension(not_exact='.PY')) == 3
         )
 
-    # def test_fileNameProperties(self):
-    #     self.assertTrue(
-    #         len(self.data_filter.fprop(not_lock='true')) == 4
-    #     )
+    def test_fileNameState(self):
+        self.assertTrue(
+            len(self.data_filter.fstate(state=States().UNUSED)) == 4
+        )
 
     def test_ref_id(self):
         self.assertTrue(

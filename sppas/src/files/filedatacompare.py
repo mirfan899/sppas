@@ -949,10 +949,8 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasFileNamePropertiesCompare(sppasBaseCompare):
+class sppasFileNameStateCompare(sppasBaseCompare):
     """Comparison methods for FileName properties.
-
-    TODO : CONVERT TO STATE
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -962,18 +960,27 @@ class sppasFileNamePropertiesCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-    >>> tc = sppasFileNamePropertiesCompare()
-    >>> tc.lock(FileName("oriana1"), u("oriana1"))
-    >>> tc.methods['lock'](FileName("oriana1"), u("oriana1"))
-    >>> tc.get('lock')(FileName("oriana1"), u("oriana1"))
+    >>> tc = sppasFileNameStateCompare()
+    >>> tc.state(FileName("oriana1"), States().UNUSED)
+    >>> tc.methods['state'](FileName("oriana1"), States().UNUSED)
+    >>> tc.get('state')(FileName("oriana1"), States().UNUSED)
     """
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
-        super(sppasFileNamePropertiesCompare, self).__init__()
+        super(sppasFileNameStateCompare, self).__init__()
 
-        # Compare the id to a text value
-        #self.methods['lock'] = sppasFileNamePropertiesCompare.lock
+        # Compare the state to a given value
+        self.methods['state'] = sppasFileNameStateCompare.state
+
+    @staticmethod
+    def state(fn, state):
+        if isinstance(fn, FileName) is False:
+            raise sppasTypeError(fn, FileName)
+        if isinstance(state, int) is False:
+            raise sppasTypeError(state, 'States')
+
+        return fn.get_state() == state
 
 # ---------------------------------------------------------------------------
 
@@ -1025,7 +1032,7 @@ class sppasReferenceCompare(sppasBaseCompare):
 
         """
         if isinstance(cat, Reference) is False:
-            raise sppasTypeError(cat, "Category")
+            raise sppasTypeError(cat, "Reference")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 

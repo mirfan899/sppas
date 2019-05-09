@@ -9,21 +9,21 @@ from sppas.src.files.filedatacompare import *
 class TestFileDataCompare(unittest.TestCase):
 
     def setUp(self):
-        #for FileNameCompare
+        # for FileNameCompare
         self.cmpFileName = sppasFileNameCompare()
         self.fileName = 'test_filedatacompare'
 
-        #for FileNameExtensionCompare
+        # for FileNameExtensionCompare
         self.cmpFileNameExtension = sppasFileNameExtensionCompare()
         self.extenstion = path.splitext(__file__)[1].upper()
 
-        #for FileNamePropertiesCompare
-        self.cmpFileNameProperties = sppasFileNamePropertiesCompare()
+        # for FileNameStateCompare
+        self.cmpFileNameState = sppasFileNameStateCompare()
 
-        #for FilePathCompare
+        # for FilePathCompare
         self.cmpPath = sppasPathCompare()
 
-        #for FileRootComapre
+        # for FileRootComapre
         self.cmpRoot = sppasRootCompare
 
     def test_exact_fn(self):
@@ -196,6 +196,14 @@ class TestFileDataCompare(unittest.TestCase):
         fp = FileRoot(d)
         # fp isn't checked
         self.assertTrue(fp.match([(self.cmpRoot.check, False, False)]))
+
+    def test_state_fn(self):
+        d = __file__
+        fn = FileName(d)
+
+        self.assertTrue(
+          fn.match([(self.cmpFileNameState.state, States().UNUSED, False)])
+        )
 
 
 class TestFileDataReferencesCompare(unittest.TestCase):

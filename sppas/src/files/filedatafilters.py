@@ -39,7 +39,7 @@ from sppas.src.structs.basefset import sppasBaseSet
 
 from .filedatacompare import sppasPathCompare, sppasRootCompare
 from .filedatacompare import sppasFileNameCompare, sppasFileNameExtensionCompare
-from .filedatacompare import sppasFileNamePropertiesCompare, sppasReferenceCompare, sppasAttValueCompare
+from .filedatacompare import sppasFileNameStateCompare, sppasReferenceCompare, sppasAttValueCompare
 
 # ---------------------------------------------------------------------------
 
@@ -236,23 +236,21 @@ class sppasFileDataFilters(sppasBaseFilters):
 
     # -----------------------------------------------------------------------
 
-    def fprop(self, **kwargs):
+    def fstate(self, **kwargs):
         """Apply functions on all file properties of the object.
-
-        TODO : CONVERT TO STATE
 
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with 'not_', like in the next example.
 
         :Example:
 
-            >>> f.file(lock='true')
+            >>> f.file(state=State().UNUSED)
 
-        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
         :returns: (sppasDataSet)
 
         """
-        comparator = sppasFileNamePropertiesCompare()
+        comparator = sppasFileNameStateCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
@@ -288,7 +286,7 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
             >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
-        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
         :returns: (sppasDataSet)
 
         """
@@ -329,7 +327,7 @@ class sppasFileDataFilters(sppasBaseFilters):
         >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
         >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
-        :param kwargs: logic_bool/any sppasFileNamePropertiesCompare() method.
+        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
         :returns: (sppasDataSet)
         """
         def exctract_function_info(functions):
