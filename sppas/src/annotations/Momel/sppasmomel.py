@@ -42,6 +42,8 @@ from sppas import sppasPoint
 from sppas import sppasLabel
 from sppas import sppasTag
 
+from sppas import sppasOption
+
 import sppas.src.anndata.aio
 from sppas.src.config import annots
 
@@ -62,18 +64,24 @@ class sppasMomel(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasMomel instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasMomel, self).__init__(logfile, "Momel")
-        self.momel = Momel()
+        super(sppasMomel, self).__init__("momel.json", log)
+        self.__momel = Momel()
+
+        # Add an option
+        self._options['elim_glitch'] = True
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -98,35 +106,82 @@ class sppasMomel(sppasBaseAnnotation):
         """
         for opt in options:
 
-            key = opt.get_key()
+            if isinstance(opt, sppasOption):
+                key = opt.get_key()
+                value = opt.get_value()
+            else:
+                key = opt
+                value = options[key]
 
             if "win1" == key:
-                self.momel.set_option_win1(opt.get_value())
+                self.set_option_win1(value)
 
             elif "lo" == key:
-                self.momel.set_option_lo(opt.get_value())
+                self.set_option_lo(value)
 
             elif "hi" == key:
-                self.momel.set_option_hi(opt.get_value())
+                self.set_option_hi(value)
 
-            elif "maxerr" == opt.get_key():
-                self.momel.set_option_maxerr(opt.get_value())
+            elif "maxerr" == key:
+                self.set_option_maxerr(value)
 
-            elif "win2" == opt.get_key():
-                self.momel.set_option_win2(opt.get_value())
+            elif "win2" == key:
+                self.set_option_win2(value)
 
-            elif "mind" == opt.get_key():
-                self.momel.set_option_mind(opt.get_value())
+            elif "mind" == key:
+                self.set_option_mind(value)
 
-            elif "minr" == opt.get_key():
-                self.momel.set_option_minr(opt.get_value())
+            elif "minr" == key:
+                self.set_option_minr(value)
 
-            elif "elim_glitch" == opt.get_key():
-                self.momel.set_option_elim_glitch(opt.get_value())
+            elif "elim_glitch" == key:
+                self.set_option_elim_glitch(value)
 
             else:
                 raise AnnotationOptionError(key)
 
+    # -----------------------------------------------------------------------
+
+    def set_option_win1(self, value):
+        self._options['win1'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_lo(self, value):
+        self._options['lo'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_hi(self, value):
+        self._options['hi'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_maxerr(self, value):
+        self._options['maxerr'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_win2(self, value):
+        self._options['win2'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_mind(self, value):
+        self._options['mind'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_minr(self, value):
+        self._options['minr'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_option_elim_glitch(self, value):
+        self._options['elim_glitch'] = value
+
+    # -----------------------------------------------------------------------
+    # Annotate
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -167,12 +222,21 @@ class sppasMomel(sppasBaseAnnotation):
         :returns: (list of Anchor)
 
         """
+        self.__momel.set_option_win1(self._options['win1'])
+        self.__momel.set_option_lo(self._options['lo'])
+        self.__momel.set_option_hi(self._options['hi'])
+        self.__momel.set_option_maxerr(self._options['maxerr'])
+        self.__momel.set_option_win2(self._options['win2'])
+        self.__momel.set_option_mind(self._options['mind'])
+        self.__momel.set_option_minr(self._options['minr'])
+        self.__momel.set_option_elim_glitch(self._options['elim_glitch'])
+
         # Estimates the real start time of the IPU
         ipu_start_time = current_time - (len(ipu_pitch)) + 1
 
         # Search for anchors
         try:
-            anchors = self.momel.annotate(ipu_pitch)
+            anchors = self.__momel.annotate(ipu_pitch)
         except Exception as e:
             self.logfile.print_message(
                     'No anchors found between time ' +

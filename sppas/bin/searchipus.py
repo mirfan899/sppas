@@ -37,7 +37,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      IPUs automatic detection.
 
 """
@@ -49,14 +49,13 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas import sg
-from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
+from sppas import sg, annots
+from sppas import sppasSearchIPUs
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.config import annots
-from sppas.src.annotations.param import sppasParam
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.utils.fileutils import setup_logging
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 
@@ -64,7 +63,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["SearchIPUs.ini"])
+    parameters = sppasParam(["searchipus.json"])
     ann_step_idx = parameters.activate_annotation("searchipus")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -161,9 +160,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -178,14 +179,14 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasSearchIPUs(logfile=None)
+        ann = sppasSearchIPUs(log=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)
         else:
             trs = ann.run([args.i])
             for ann in trs[0]:
-                print("{:f} {:f} {:s}".format(
+                print("{} {} {:s}".format(
                     ann.get_location().get_best().get_begin().get_midpoint(),
                     ann.get_location().get_best().get_end().get_midpoint(),
                     ann.get_best_tag().get_typed_content()))

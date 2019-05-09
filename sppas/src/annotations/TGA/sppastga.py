@@ -68,25 +68,21 @@ class sppasTGA(sppasBaseAnnotation):
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasTGA instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasTGA, self).__init__(logfile, "TGA")
+        super(sppasTGA, self).__init__("tga.json", log)
 
         # List of the symbols used to create the time groups
         self._tg_separators = list(symbols.phone.keys())
 
-        # List of options to configure this automatic annotation
-        self._options = dict()
-        self._options['with_radius'] = 0
-        self._options['original'] = False
-        self._options['annotationpro'] = True
-        self._options['tg_prefix_label'] = "tg_"
-
-        # for backward compatibility, we can't simply use symbols.phone...
+        # for backward compatibility, we can't simply use the symbols.phone
         self._tg_separators.append('#')
         self._tg_separators.append('@@')
         self._tg_separators.append('+')
@@ -170,7 +166,7 @@ class sppasTGA(sppasBaseAnnotation):
         :param value: (boolean)
 
         """
-        self._options['original'] = value
+        self._options['original'] = bool(value)
 
     # -----------------------------------------------------------------------
 
@@ -182,7 +178,7 @@ class sppasTGA(sppasBaseAnnotation):
         :param value: (boolean)
 
         """
-        self._options['annotationpro'] = value
+        self._options['annotationpro'] = bool(value)
 
     # -----------------------------------------------------------------------
     # Workers

@@ -133,6 +133,8 @@ class sppasWEKA(sppasBaseIO):
         self._accept_gaps = True    # is True only for the reference tier
         self._accept_overlaps = True
 
+        self.software = "weka"
+
     # -----------------------------------------------------------------------
     # Getters and setters
     # -----------------------------------------------------------------------

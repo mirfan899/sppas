@@ -115,6 +115,8 @@ class sppasBasePraat(sppasBaseIO):
             name = self.__class__.__name__
         super(sppasBasePraat, self).__init__(name)
 
+        self.software = "Praat"
+
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
         self._accept_metadata = False
@@ -187,8 +189,11 @@ class sppasBasePraat(sppasBaseIO):
         if text.endswith('"'):
             text = text[:-1]
 
-        if re.match('^[A-Za-z ]+=[ ]?', text):
-            text = text[text.find('=') + 1:]
+        keywords = ["file type", "class", "text", "name", "xmin", "xmax", "size",
+                    "number", "mark", "value", "point"]
+        for k in keywords:
+            if k in text.lower() and re.match('^[A-Za-z ]+=[ ]?', text):
+                text = text[text.find('=') + 1:]
 
         text = text.strip()
         if text.startswith('"'):
@@ -212,8 +217,8 @@ class sppasBasePraat(sppasBaseIO):
         header = 'File type = "ooTextFile"\n'
         header += 'Object class = "{:s}"\n'.format(file_class)
         header += '\n'
-        header += 'xmin = {:.18}\n'.format(xmin)
-        header += 'xmax = {:.18}\n'.format(xmax)
+        header += 'xmin = {}\n'.format(xmin)
+        header += 'xmax = {}\n'.format(xmax)
         return header
 
     # -----------------------------------------------------------------------
@@ -300,7 +305,7 @@ class sppasTextGrid(sppasBasePraat):
         file_type = sppasBasePraat._parse_string(line)
         line = fp.readline()
         object_class = sppasBasePraat._parse_string(line)
-        return file_type == "ooTextFile" and object_class == "TextGrid"
+        return file_type.startswith("ooTextFile") and object_class == "TextGrid"
 
     @staticmethod
     def detect(filename):
@@ -355,6 +360,10 @@ class sppasTextGrid(sppasBasePraat):
         :param filename: is the input file name, ending by ".TextGrid"
 
         """
+        if not self.detect(filename):
+            raise IOError('{:s} is not of the expected {:s} format.'
+                          ''.format(filename, self.default_extension))
+
         # get the content of the file
 
         try:
@@ -484,13 +493,22 @@ class sppasTextGrid(sppasBasePraat):
         """
         # read one line
         line = lines[start_line].strip()
+
+        # The text can starts with a carriage return... so line is:
+        # text = "
+        first = line.find('"')
+        last = line.rfind('"')
+
+        # parse this line
         text = sppasBasePraat._parse_string(line)
         start_line += 1
 
         # if the text continue on the following lines
-        while line.endswith('"') is False:
-
+        while first == last:   # line.endswith('"') is False:
             line = lines[start_line].strip()
+            first = line.find('"')
+            last = line.rfind('"')
+
             text += "\n" + sppasBasePraat._parse_string(line)
             start_line += 1
             if line.endswith('"'):

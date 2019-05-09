@@ -32,57 +32,90 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import logging
 import os
+import json
 
 import sppas.src.anndata.aio
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.config import paths
+from sppas.src.config import info
+from sppas.src.files.fileutils import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
 from .log import sppasLog
 
 # ---------------------------------------------------------------------------
 
-MSG_OPTIONS = annotations_translation.gettext(":INFO 1050: ")
-MSG_DIAGNOSIS = annotations_translation.gettext(":INFO 1052: ")
-MSG_ANN_FILE = (annotations_translation.gettext(":INFO 1056: "))
-
-# ---------------------------------------------------------------------------
-
 
 class sppasBaseAnnotation(object):
-    """Base class for any automatic annotations integrated into SPPAS.
+    """Base class for any automatic annotation integrated into SPPAS.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None, name="Annotation"):
+    def __init__(self, config, log=None):
         """Base class for any SPPAS automatic annotation.
 
-        :param logfile: (sppasLog)
+        New in SPPAS 2.1 :
+        Load default options/member values from a configuration file.
+        This file must be in paths.etc
+
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param config: (str) Name of the JSON configuration file, without path.
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        # The public name of the automatic annotation
-        self.name = name
-
         # Log messages for the user
-        if logfile is None:
+        if log is None:
             self.logfile = sppasLog()
         else:
-            self.logfile = logfile
+            self.logfile = log
 
-        # List of options to configure the automatic annotation
+        # Declare other members
         self._options = dict()
+        self.name = self.__class__.__name__
+
+        # Then, fill in the values from a configuration file
+        self.__load(config)
 
     # -----------------------------------------------------------------------
     # Shared methods to fix options and to annotate
+    # -----------------------------------------------------------------------
+
+    def __load(self, filename):
+        """Fix members from a configuration file.
+
+        :param filename: (str) Name of the configuration file (json)
+        The filename must NOT contain the path. This file must be in
+        paths.etc
+
+        """
+        config = os.path.join(paths.etc, filename)
+        if os.path.exists(config) is False:
+            raise IOError('Installation error: the file {:s} to configure '
+                          'the automatic annotations does not exist.'
+                          ''.format(config))
+
+        # Read the whole file content
+        with open(config) as cfg:
+            dict_cfg = json.load(cfg)
+
+        # Extract options
+        for opt in dict_cfg['options']:
+            self._options[opt['id']] = opt['value']
+
+        # Extract other members
+        self.name = dict_cfg['name']
+
     # -----------------------------------------------------------------------
 
     def get_option(self, key):
@@ -100,7 +133,7 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def fix_options(self, options):
-        """Fix all options.
+        """Fix all options of the annotation from a list of sppasOption().
 
         :param options: (list of sppasOption)
 
@@ -128,6 +161,16 @@ class sppasBaseAnnotation(object):
     def get_input_pattern():
         """Pattern that the annotation expects for its input filename."""
         return ''
+
+    @staticmethod
+    def get_dependent_reference_type():
+        """Return a type of a reference in a sppasCatalog.
+
+        If this annotation is expecting another file, the type allow to
+        find it by using the references of the catalogs.
+
+        """
+        return None
 
     # -----------------------------------------------------------------------
 
@@ -187,23 +230,25 @@ class sppasBaseAnnotation(object):
         output file, and call the run method.
         Can be overridden.
 
-        :param input_file: (list of str) the required input
-        :param opt_input_file: (list of str) the optional input
+        :param input_file: (list of str) the required inputs
+        :param opt_input_file: (list of str) the optional inputs
         :param output_format: (str) Extension of the output file
         :returns: output file name or None
 
         """
-        # fix the output file name
+        # Save a copy of the options ('run' could modify the current ones)
+        opt = self._options.copy()
+
+        # Fix the output file name
         out_name = self.get_out_name(input_file[0], output_format)
 
-        # if out_name exists, it is overridden
+        # If out_name exists, it is overridden
         if os.path.exists(out_name):
             self.logfile.print_message(
-                "A file with name {:s} is already existing. "
-                "It will be overridden."
-                "".format(out_name), indent=2, status=annots.warning)
+                (info(1300, "annotations")).format(out_name) + " " +
+                info(1304, "annotations"), indent=2, status=annots.warning)
 
-        # execute annotation
+        # Execute annotation
         try:
             self.run(input_file, opt_input_file, out_name)
         except Exception as e:
@@ -212,6 +257,8 @@ class sppasBaseAnnotation(object):
                 "{:s}\n".format(str(e)),
                 indent=2, status=annots.error)
 
+        # Restore the options before returning the result
+        self._options = opt
         return out_name
 
     # -----------------------------------------------------------------------
@@ -263,7 +310,7 @@ class sppasBaseAnnotation(object):
 
             if out_name is None:
                 self.logfile.print_message(
-                    "No file was created.", indent=1, status=annots.info)
+                    info(1306, "annotations"), indent=1, status=annots.info)
             else:
                 files_processed_success += 1
                 self.logfile.print_message(out_name, indent=1, status=annots.ok)
@@ -273,11 +320,8 @@ class sppasBaseAnnotation(object):
 
         # Indicate completed!
         if progress:
-            progress.update(
-                1,
-                "Completed ({:d} files successfully over {:d} files).\n"
-                "".format(files_processed_success, total)
-            )
+            progress.update(1, (info(9000, "ui").format(files_processed_success,
+                                                        total)))
             progress.set_header("")
 
         return files_processed_success
@@ -320,6 +364,7 @@ class sppasBaseAnnotation(object):
                 # input_files is a list of required files
                 required_inputs = input_files
             else:
+
                 # input_files is a list with (required inputs, optional inputs)
                 required_inputs = input_files[0]
                 # optional inputs can be either a single file or a list
@@ -331,14 +376,12 @@ class sppasBaseAnnotation(object):
 
         for fn in required_inputs:
             if os.path.exists(fn) is False:
+                msg = info(1308, "annotations") + " " + (info(1310, "annotations")).format(fn)
                 self.print_filename(input_files[0])
-                self.logfile.print_message(
-                    "File not found. "
-                    "This annotation expects a file with name {:s}. "
-                    "".format(fn), indent=1, status=annots.error)
-                self.logfile.print_message(
-                    "Annotation cancelled.", indent=1, status=annots.ignore)
-                raise IOError
+                self.logfile.print_message(msg, indent=1, status=annots.error)
+                self.logfile.print_message(info(1312, "annotations"),
+                                           indent=1, status=annots.ignore)
+                raise IOError(msg)
 
         return required_inputs, optional_inputs
 
@@ -356,15 +399,16 @@ class sppasBaseAnnotation(object):
         if self.logfile:
             fn = os.path.basename(filename)
             self.logfile.print_message(
-                MSG_ANN_FILE.format(fn), indent=0, status=None)
+                (info(1056, "annotations")).format(fn), indent=0, status=None)
         else:
-            logging.info(MSG_ANN_FILE.format(filename))
+            logging.info((info(1056, "annotations")).format(filename))
 
     # -----------------------------------------------------------------------
 
     def print_options(self):
         """Print the list of options in the user log."""
-        self.logfile.print_message(MSG_OPTIONS + ": ", indent=0, status=None)
+        self.logfile.print_message(info(1050, "annotations") + ": ",
+                                   indent=0, status=None)
 
         for k, v in self._options.items():
             msg = " ... {!s:s}: {!s:s}".format(k, v)
@@ -384,7 +428,7 @@ class sppasBaseAnnotation(object):
             if filename is not None and os.path.exists(filename):
                 fn = os.path.basename(filename)
                 (s, m) = sppasDiagnosis.check_file(filename)
-                msg = MSG_ANN_FILE.format(fn) + ": {!s:s}".format(m)
+                msg = (info(1056, "annotations")).format(fn) + ": {!s:s}".format(m)
                 self.logfile.print_message(msg, indent=0, status=None)
 
     # ------------------------------------------------------------------------

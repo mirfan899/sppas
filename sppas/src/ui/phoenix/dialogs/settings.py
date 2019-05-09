@@ -39,8 +39,9 @@ from sppas.src.config import ui_translation
 
 from ..windows import sppasDialog
 from ..windows import sppasPanel
-from ..windows import sppasNotebook
 from ..windows import sppasBitmapButton
+from ..windows.book import sppasNotebook
+
 from ..tools import sppasSwissKnife
 
 # ---------------------------------------------------------------------------
@@ -367,8 +368,14 @@ class sppasColoursFontPanel(sppasPanel):
 
     """
 
-    def __init__(self, *args, title, **kw):
-        super(sppasColoursFontPanel, self).__init__(*args, **kw)
+    def __init__(self, parent,
+                 id=wx.ID_ANY,
+                 pos=wx.DefaultPosition,
+                 size=wx.DefaultSize,
+                 style=wx.TAB_TRAVERSAL,
+                 name=wx.PanelNameStr,
+                 title=""):
+        super(sppasColoursFontPanel, self).__init__(parent, id, pos, size, style, name)
 
         flag = wx.ALL | wx.ALIGN_CENTER_VERTICAL
         gbs = wx.GridBagSizer(hgap=10, vgap=10)

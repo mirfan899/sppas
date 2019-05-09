@@ -45,8 +45,8 @@ from sppas.src.config import sg
 from sppas.src.config import symbols
 from sppas.src.config import separators
 
-from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.files.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasDirUtils
 
 from sppas.src.annotations.searchtier import sppasFindTier
 from sppas.src.annotations.Phon.sppasphon import sppasPhon
@@ -1419,12 +1419,8 @@ class sppasHTKModelTrainer(object):
 
     # -----------------------------------------------------------------------
 
-    def align_trs(self, infersp=False):
+    def align_trs(self):
         """Alignment of the transcribed speech using the current model.
-
-        :param infersp: (bool) If infersp is set to True, sppasAlign() will add
-        a short pause at the end of each token, and the automatic aligner will
-        infer if it is appropriate or not.
 
         """
         # Nothing to do!
@@ -1434,7 +1430,7 @@ class sppasHTKModelTrainer(object):
 
         # Create Tokenizer, Phonetizer, Aligner
         try:
-            tokenizer = sppasTextNorm(logfile=None)
+            tokenizer = sppasTextNorm(log=None)
             tokenizer.load_resources(vocab_filename=self.corpus.vocabfile,
                                      lang=self.corpus.lang)
             tokenizer.set_std(False)
@@ -1763,7 +1759,7 @@ class sppasHTKModelTrainer(object):
         # ------------------------------------------------------------
 
         logging.info(" ... Aligning transcribed files.")
-        self.align_trs(infersp=False)
+        self.align_trs()
 
         logging.info(" ... Intermediate training.")
         ret = self.train_step(self.corpus.get_scp(aligned=True,
@@ -1774,7 +1770,7 @@ class sppasHTKModelTrainer(object):
             return False
 
         logging.info(" ... Re-Aligning transcribed files.")
-        self.align_trs(infersp=True)
+        self.align_trs()  # here we should infer 'sp'
 
         logging.info(" ... Final training.")
         ret = self.train_step(self.corpus.get_scp(aligned=True,

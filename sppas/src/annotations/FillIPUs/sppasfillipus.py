@@ -44,9 +44,12 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasTag
 from sppas.src.config import annots
 import sppas.src.anndata.aio
+from sppas import info
+from sppas import u
 
 from ..SearchIPUs.sppassearchipus import sppasSearchIPUs
 from ..annotationsexc import AnnotationOptionError
+from ..annotationsexc import AudioChannelError
 from ..baseannot import sppasBaseAnnotation
 
 from .fillipus import FillIPUs
@@ -58,6 +61,12 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 # ---------------------------------------------------------------------------
 
 
+def _info(msg_id):
+    return u(info(msg_id, "annotations"))
+
+# ---------------------------------------------------------------------------
+
+
 class sppasFillIPUs(sppasBaseAnnotation):
     """SPPAS integration of the IPUs detection.
 
@@ -65,23 +74,20 @@ class sppasFillIPUs(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasFillIPUs instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasFillIPUs, self).__init__(logfile, "Fill in IPUs")
-
-        # List of options to configure this automatic annotation
-        f = FillIPUs(None, [])
-        self._options = dict()
-        self._options['min_ipu'] = f.get_min_ipu_dur()
-        self._options['min_sil'] = f.get_min_sil_dur()
+        super(sppasFillIPUs, self).__init__("fillipus.json", log)
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -143,6 +149,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
         self._options['min_ipu'] = value
 
     # -----------------------------------------------------------------------
+    # Annotate
+    # -----------------------------------------------------------------------
 
     def _set_meta(self, filler, tier):
         """Set meta values to the tier."""
@@ -153,19 +161,16 @@ class sppasFillIPUs(sppasBaseAnnotation):
         tier.set_meta('minimum_ipus_duration',
                       str(filler.get_min_ipu_dur()))
 
-        self.logfile.print_message("Information: ", indent=1)
-        m1 = "Threshold volume value:     {:d}" \
-             "".format(filler.get_vol_threshold())
-        m2 = "Threshold silence duration: {:.3f}" \
-             "".format(filler.get_min_sil_dur())
-        m3 = "Threshold speech duration:  {:.3f}" \
-             "".format(filler.get_min_ipu_dur())
+        self.logfile.print_message(_info(1058), indent=1)
+        m1 = _info(1290).format(filler.get_vol_threshold())
+        m2 = _info(1292).format(filler.get_min_sil_dur())
+        m3 = _info(1294).format(filler.get_min_ipu_dur())
         for m in (m1, m2, m3):
             self.logfile.print_message(m, indent=2)
 
     # -----------------------------------------------------------------------
 
-    def fill_in(self, input_audio_filename, input_filename):
+    def convert(self, input_audio_filename, input_filename):
         """Return a tier with transcription aligned to the audio.
 
         :param input_audio_filename: (str) Input audio file
@@ -176,8 +181,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
         audio_speech = sppas.src.audiodata.aio.open(input_audio_filename)
         n = audio_speech.get_nchannels()
         if n != 1:
-            raise IOError("An audio file with only one channel is expected. "
-                          "Got {:d} channels.".format(n))
+            raise AudioChannelError(n)
+
         idx = audio_speech.extract_channel()
         channel = audio_speech.get_channel(idx)
 
@@ -215,6 +220,7 @@ class sppasFillIPUs(sppasBaseAnnotation):
             if a.get_best_tag().is_silence() is False:
                 a.set_labels([sppasLabel(sppasTag(ipus[i]))])
                 i += 1
+
         return tier
 
     # -----------------------------------------------------------------------
@@ -235,10 +241,9 @@ class sppasFillIPUs(sppasBaseAnnotation):
         input_audio_filename = input_file[0]
         input_trans_filename = input_file[1]
 
-        tier = self.fill_in(input_audio_filename, input_trans_filename)
+        tier = self.convert(input_audio_filename, input_trans_filename)
         if tier is None:
-            msg = "Unable to align the audio with the given transcription."
-            self.logfile.print_message(msg, indent=2, status=-1)
+            self.logfile.print_message(_info(1296), indent=2, status=-1)
             return None
 
         # Create the transcription to put the result
@@ -286,10 +291,10 @@ class sppasFillIPUs(sppasBaseAnnotation):
 
         # it's existing... but not in the expected format: we convert!
         if exists_out_name is not None:
-            if exists_out_name == out_name:
+            if exists_out_name.lower() == out_name.lower():
                 self.logfile.print_message(
-                    "A file with name {:s} is already existing."
-                    "".format(exists_out_name), indent=2, status=annots.info)
+                    _info(1300).format(exists_out_name),
+                    indent=2, status=annots.info)
                 return None
 
             else:
@@ -299,9 +304,8 @@ class sppasFillIPUs(sppasBaseAnnotation):
                     parser.set_filename(out_name)
                     parser.write(t)
                     self.logfile.print_message(
-                        "A file with name {:s} was already existing. "
-                        'This file was exported to {:s}'
-                        ''.format(exists_out_name, out_name),
+                        _info(1300).format(exists_out_name) +
+                        _info(1302).format(out_name),
                         indent=2, status=annots.info)
                     return out_name
                 except:

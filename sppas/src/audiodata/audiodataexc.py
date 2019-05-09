@@ -35,31 +35,20 @@
     Exceptions for audiodata package.
 
 """
-from sppas.src.config import audiodata_translation
-
-_ = audiodata_translation.gettext
-
-AUDIO_ERROR = ":ERROR 2000: "
-AUDIO_TYPE_ERROR = ":ERROR 2005: "
-IO_ERROR = ":ERROR 2010: "
-DATA_ERROR = ":ERROR 2015: "
-INDEX_ERROR = ":ERROR 2020: "
-INTERVAL_ERROR = ":ERROR 2025: "
-CHANNEL_ERROR = ":ERROR 2050: "
-MIX_SAMPLEWIDTH = ":ERROR 2060: "
-MIX_FRAMERATE = ":ERROR 2061: "
-MIX_NFRAMES = ":ERROR 2062: "
-SAMPLEWIDTH_ERROR = ":ERROR 2070: "
-FRAMERATE_ERROR = ":ERROR 2080: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
 
 class AudioError(Exception):
-    """:ERROR 2000: No audio file is defined."""
+    """:ERROR 2000:.
+
+    No audio file is defined.
+
+    """
 
     def __init__(self):
-        self.parameter = AUDIO_ERROR + (_(AUDIO_ERROR))
+        self.parameter = error(2000) + (error(2000, "audiodata"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -68,11 +57,15 @@ class AudioError(Exception):
 
 
 class AudioTypeError(TypeError):
-    """:ERROR 2005: Audio type error: not supported file format {extension}."""
+    """:ERROR 2005:.
+
+    Audio type error: not supported file format {extension}.
+
+    """
 
     def __init__(self, extension):
-        self.parameter = AUDIO_TYPE_ERROR + \
-                         (_(AUDIO_TYPE_ERROR)).format(extension=extension)
+        self.parameter = error(2005) + \
+                         (error(2005, "audiodata")).format(extension=extension)
 
     def __str__(self):
         return repr(self.parameter)
@@ -82,11 +75,15 @@ class AudioTypeError(TypeError):
 
 
 class AudioIOError(IOError):
-    """:ERROR 2010: Opening, reading or writing error."""
+    """:ERROR 2010:.
+
+    Opening, reading or writing error.
+
+    """
 
     def __init__(self, message="", filename=""):
-        self.parameter = IO_ERROR + \
-                         (_(IO_ERROR)).format(filename=filename, message=message)
+        self.parameter = error(2010) + \
+                         (error(2010, "audiodata")).format(filename=filename, message=message)
 
     def __str__(self):
         return repr(self.parameter)
@@ -95,11 +92,15 @@ class AudioIOError(IOError):
 
 
 class AudioDataError(Exception):
-    """:ERROR 2015: No data or corrupted data in the audio file {filename}."""
+    """:ERROR 2015:.
+
+    No data or corrupted data in the audio file {filename}.
+
+    """
 
     def __init__(self, filename=""):
-        self.parameter = DATA_ERROR + \
-                         (_(DATA_ERROR)).format(filename=filename)
+        self.parameter = error(2015) + \
+                         (error(2015, "audiodata")).format(filename=filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -108,11 +109,16 @@ class AudioDataError(Exception):
 
 
 class ChannelIndexError(ValueError):
-    """:ERROR 2020: {number} is not a right index of channel."""
+    """:ERROR 2020:.
+
+    {number} is not a right index of channel.
+
+    """
 
     def __init__(self, index):
         index = int(index)
-        self.parameter = INDEX_ERROR + (_(INDEX_ERROR)).format(number=index)
+        self.parameter = error(2020) + \
+                         (error(2020, "audiodata")).format(number=index)
 
     def __str__(self):
         return repr(self.parameter)
@@ -121,13 +127,18 @@ class ChannelIndexError(ValueError):
 
 
 class IntervalError(ValueError):
-    """:ERROR 2025: From {value1} to {value2} is not a proper interval."""
+    """:ERROR 2025:.
+
+    From {value1} to {value2} is not a proper interval.
+
+    """
 
     def __init__(self, value1, value2):
         value1 = int(value1)
         value2 = int(value2)
-        self.parameter = INTERVAL_ERROR + \
-                         (_(INTERVAL_ERROR)).format(value1=value1, value2=value2)
+        self.parameter = error(2025) + \
+                         (error(2025, "audiodata")).format(value1=value1,
+                                                           value2=value2)
 
     def __str__(self):
         return repr(self.parameter)
@@ -136,10 +147,15 @@ class IntervalError(ValueError):
 
 
 class ChannelError(Exception):
-    """:ERROR 2050: No channel defined."""
+    """:ERROR 2050:.
+
+    No channel defined.
+
+    """
 
     def __init__(self):
-        self.parameter = CHANNEL_ERROR + (_(CHANNEL_ERROR))
+        self.parameter = error(2050) + \
+                         (error(2050, "audiodata"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -148,21 +164,24 @@ class ChannelError(Exception):
 
 
 class MixChannelError(ValueError):
-    """:ERROR 2060: Channels have not the same sample width.
-        :ERROR 2061: Channels have not the same frame rate.
-        :ERROR 2062: Channels have not the same number of frames.
+    """:ERROR 2060: :ERROR 2061: :ERROR 2062: :ERROR 2050: .
+
+    Channels have not the same sample width.
+    Channels have not the same frame rate.
+    Channels have not the same number of frames.
 
     """
+
     def __init__(self, value=0):
         value = int(value)
         if value == 1:
-            self.parameter = MIX_SAMPLEWIDTH + (_(MIX_SAMPLEWIDTH))
+            self.parameter = error(2060) + (error(2060, "audiodata"))
         elif value == 2:
-            self.parameter = MIX_FRAMERATE + (_(MIX_FRAMERATE))
+            self.parameter = error(2061) + (error(2061, "audiodata"))
         elif value == 3:
-            self.parameter = MIX_NFRAMES + (_(MIX_NFRAMES))
+            self.parameter = error(2062) + (error(2062, "audiodata"))
         else:
-            self.parameter = CHANNEL_ERROR + (_(CHANNEL_ERROR))
+            self.parameter = error(2050) + (error(2050, "audiodata"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -171,12 +190,16 @@ class MixChannelError(ValueError):
 
 
 class SampleWidthError(ValueError):
-    """:ERROR 2070: Invalid sample width {value}."""
+    """:ERROR 2070:.
+
+     Invalid sample width {value}.
+
+     """
 
     def __init__(self, value):
         value = int(value)
-        self.parameter = SAMPLEWIDTH_ERROR +\
-                         (_(SAMPLEWIDTH_ERROR)).format(value=value)
+        self.parameter = error(2070) + \
+                         (error(2070, "audiodata")).format(value=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -184,12 +207,16 @@ class SampleWidthError(ValueError):
 
 
 class FrameRateError(ValueError):
-    """:ERROR 2080: Invalid framerate {value}."""
+    """:ERROR 2080:
+
+    Invalid framerate {value}.
+
+    """
 
     def __init__(self, value):
         value = int(value)
-        self.parameter = FRAMERATE_ERROR +\
-                         (_(FRAMERATE_ERROR)).format(value=value)
+        self.parameter = error(2080) + \
+                         (error(2080, "audiodata")).format(value=value)
 
     def __str__(self):
         return repr(self.parameter)

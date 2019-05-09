@@ -1,5 +1,9 @@
 .idea
 .idea/*
+.logs
+.logs/*
+.trash
+.trash/*
 .settings
 .project
 .pydevproject

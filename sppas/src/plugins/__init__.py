@@ -55,11 +55,9 @@ plugins: access and manage external programs to plug into SPPAS.
 from .manager import sppasPluginsManager
 from .param import sppasPluginParam
 from .process import sppasPluginProcess
-from .cfgparser import sppasPluginConfigParser
 
 __all__ = (
     "sppasPluginsManager",
-    "sppasPluginConfigParser",
     "sppasPluginParam",
     "sppasPluginProcess"
 )

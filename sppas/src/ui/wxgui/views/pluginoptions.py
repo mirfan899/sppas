@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -82,7 +82,7 @@ class spPluginConfig(spBaseDialog):
         return self.CreateTitle(PLUGINS_ICON, self.plugin.get_name())
 
     def _create_content(self):
-        all_options = self.plugin.get_options().values()
+        all_options = self.plugin.get_options()  #.values()
         selected_options = []
         for option in all_options:
             if option.get_key() != "input" and option.get_value() != "input":

@@ -35,6 +35,7 @@
 
 import os
 import wx
+import logging
 
 from sppas.src.config import paths
 
@@ -76,6 +77,7 @@ class sppasSwissKnife:
 
         # instead, use the default icon
         if os.path.exists(icon_name) is False:
+            logging.info('Image {:s} not found.'.format(icon_name))
             icon_name = os.path.join(
                 paths.etc, "icons",
                 "Refine",
@@ -91,26 +93,46 @@ class sppasSwissKnife:
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def get_bmp_image(name, height=None):
-        """Return the bitmap corresponding to the name of an image.
-
-        :param name: (str) Name of an image.
-        :param height: (int) Height of the bitmap, Width is proportional.
-        :return: (wx.Bitmap)
-
-        """
+    def get_image(name):
         # fix the image file name
         img_name = os.path.join(paths.etc, "images", name + ".png")
 
         # instead, use the logo of SPPAS!
         if os.path.exists(img_name) is False:
-            img_name = os.path.join(paths.etc, "images", "sppas.png")
+            # fix the image file name with the current icon's theme
+            img_name = os.path.join(
+                paths.etc, "icons",
+                wx.GetApp().settings.icons_theme,
+                name + ".png")
+            # ... not found in the icons....
+            if os.path.exists(img_name) is False:
+                logging.info('Image {:s} not found.'.format(img_name))
+                img_name = os.path.join(paths.etc, "images", "sppas.png")
 
+        return wx.Image(img_name, wx.BITMAP_TYPE_ANY)
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def rescale_image(img, height):
+        """Rescale proportionally an image."""
+        proportion = float(height) / float(img.GetHeight())
+        w = int(float(img.GetWidth()) * proportion)
+        img.Rescale(w, height, wx.IMAGE_QUALITY_HIGH)
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def get_bmp_image(name, height=None):
+        """Return the bitmap corresponding to the name of an image.
+
+        :param name: (str) Name of an image or an icon.
+        :param height: (int) Height of the bitmap, Width is proportional.
+        :return: (wx.Bitmap)
+
+        """
+        img = sppasSwissKnife.get_image(name)
         if height is not None:
-            img = wx.Image(img_name, wx.BITMAP_TYPE_ANY)
-            proportion = height / img.GetHeight()
-            w = int(img.GetWidth() * proportion)
-            img.Rescale(w, height, wx.IMAGE_QUALITY_HIGH)
-            return wx.Bitmap(img)
+            sppasSwissKnife.rescale_image(img, height)
 
-        return wx.Bitmap(img_name, wx.BITMAP_TYPE_PNG)
+        return wx.Bitmap(img, wx.BITMAP_TYPE_PNG)

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -46,7 +46,8 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas.src.models.acm.htktrain import sppasHTKModelTrainer, sppasTrainingCorpus, sppasDataTrainer
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
+from sppas.src.ui.cfg import sppasAppConfig
 
 
 # ----------------------------------------------------------------------------
@@ -185,16 +186,26 @@ args = parser.parse_args()
 # Main program
 # ----------------------------------------------------------------------------
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+# Redirect all messages to logging
+# --------------------------------
+
+with sppasAppConfig() as cg:
+    if not args.quiet:
+        log_level = cg.log_level
+    else:
+        log_level = cg.quiet_log_level
+    lgs = sppasLogSetup(log_level)
+    lgs.stream_handler()
+
+# --------------------------------
 
 if os.path.exists(args.o):
     model = os.path.join(args.o, "hmmdefs")
     if os.path.exists(model):
         print("A model with name {:s} is already existing.".format(args.o))
         sys.exit(1)
+
+# --------------------------------
 
 logging.info("Train the model...")
 acm = train(pron_dict=args.r,
@@ -205,6 +216,8 @@ acm = train(pron_dict=args.r,
             working_dir=args.t,
             output_dir=args.o,
             tree_script=args.T)
+
+# --------------------------------
 
 if acm is not None:
     logging.info("Train terminated successfully.")

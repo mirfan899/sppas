@@ -43,7 +43,7 @@ from ...anndataexc import AnnUnkTypeError
 
 
 class sppasTag(object):
-    """Represents one of the possible tags of a label.
+    """Represent one of the possible tags of a label.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -126,7 +126,11 @@ class sppasTag(object):
     # ------------------------------------------------------------------------
 
     def get_typed_content(self):
-        """Return the content value, in its appropriate type."""
+        """Return the content value, in its appropriate type.
+
+        Excepted for strings which are systematically returned as unicode.
+
+        """
         if self.__tag_type is not None:
 
             if self.__tag_type == "int":
@@ -282,13 +286,22 @@ class sppasTag(object):
     # Overloads
     # ------------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self):
         return "Tag: {!s:s},{!s:s}".format(b(self.get_content()),
                                            self.get_type())
 
+    # -----------------------------------------------------------------------
+
     def __str__(self):
         return "{!s:s} ({!s:s})".format(b(self.get_content()),
                                         self.get_type())
+
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """Compare 2 tags."""
@@ -296,8 +309,12 @@ class sppasTag(object):
             return self.get_typed_content() == other.get_typed_content()
         return False
 
+    # -----------------------------------------------------------------------
+
     def __hash__(self):
         return hash((self.__tag_content, self.__tag_type))
+
+    # -----------------------------------------------------------------------
 
     def __ne__(self, other):
         if isinstance(other, sppasTag):

@@ -39,7 +39,7 @@ import os
 
 from sppas.src.config import paths
 from sppas.src.config import symbols
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 
 from sppas import sppasDictRepl
 from sppas import sppasVocabulary
@@ -60,12 +60,6 @@ from .normalize import TextNormalizer
 
 # ---------------------------------------------------------------------------
 
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_TRACK = _(":INFO 1220: ")
-
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
 # ---------------------------------------------------------------------------
@@ -81,21 +75,17 @@ class sppasTextNorm(sppasBaseAnnotation):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a sppasTextNorm instance without any linguistic resources.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasTextNorm, self).__init__(logfile, name="Text Normalization")
-
-        # Create a text normalizer, fully language-independent
-        self.normalizer = TextNormalizer()
-
-        # List of options to configure this automatic annotation
-        self._options['faked'] = True
-        self._options['std'] = False
-        self._options['custom'] = False
+        super(sppasTextNorm, self).__init__("textnorm.json", log)
+        self.__normalizer = TextNormalizer()
 
     # -----------------------------------------------------------------------
 
@@ -110,9 +100,10 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         """
         voc = sppasVocabulary(vocab_filename)
-        self.normalizer = TextNormalizer(voc, lang)
-        self.logfile.print_message("The vocabulary contains {:d} tokens"
-                                   "".format(len(voc)), indent=0)
+        self.__normalizer = TextNormalizer(voc, lang)
+        self.logfile.print_message(
+            (info(1164, "annotations")).format(len(voc)),
+            indent=0)
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
@@ -120,10 +111,9 @@ class sppasTextNorm(sppasBaseAnnotation):
             dict_replace = sppasDictRepl(replace_filename, nodump=True)
         else:
             dict_replace = sppasDictRepl()
-        self.normalizer.set_repl(dict_replace)
+        self.__normalizer.set_repl(dict_replace)
         self.logfile.print_message(
-            "The replacement dictionary contains {:d} items"
-            "".format(len(dict_replace)), indent=0)
+            (info(1166, "annotations")).format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
@@ -131,7 +121,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             vocab_punct = sppasVocabulary(punct_filename, nodump=True)
         else:
             vocab_punct = sppasVocabulary()
-        self.normalizer.set_punct(vocab_punct)
+        self.__normalizer.set_punct(vocab_punct)
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -204,6 +194,8 @@ class sppasTextNorm(sppasBaseAnnotation):
             - "Tokens-Custom"
 
         """
+        if tier is None:
+            raise IOError('No tier found.')
         if tier.is_empty() is True:
             raise EmptyInputError(name=tier.get_name())
 
@@ -266,12 +258,12 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         trs_output.set_meta('text_normalization_result_of', input_file[0])
         trs_output.set_meta('text_normalization_vocab',
-                            self.normalizer.get_vocab_filename())
+                            self.__normalizer.get_vocab_filename())
         trs_output.set_meta('language_iso', "iso639-3")
-        trs_output.set_meta('language_code_0', self.normalizer.lang)
+        trs_output.set_meta('language_code_0', self.__normalizer.lang)
         trs_output.set_meta('language_name_0', "Undetermined")
         trs_output.set_meta('language_url_0',
-                            "https://iso639-3.sil.org/code/"+self.normalizer.lang)
+                            "https://iso639-3.sil.org/code/"+self.__normalizer.lang)
 
         # Save in a file
         if output_file is not None:
@@ -300,7 +292,8 @@ class sppasTextNorm(sppasBaseAnnotation):
         """
         tokens_tier = sppasTier("Tokens")
         for i, ann in enumerate(tier):
-            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(
+                (info(1220, "annotations")).format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
@@ -314,10 +307,10 @@ class sppasTextNorm(sppasBaseAnnotation):
                 # Do not tokenize an empty label, noises, laughter...
                 if text.is_speech() is True:
                     try:
-                        tokens = self.normalizer.normalize(text.get_content(), actions)
+                        tokens = self.__normalizer.normalize(text.get_content(), actions)
                     except Exception as e:
-                        message = "Error while normalizing interval {:d}: " \
-                                  "{:s}".format(i, str(e))
+                        message = (info(1258, "annotations")).format(i) + \
+                                  "{:s}".format(str(e))
                         self.logfile.print_message(message, indent=2)
 
                 elif text.is_silence():
@@ -383,9 +376,9 @@ class sppasTextNorm(sppasBaseAnnotation):
                         text_faked.set_content(textf)
 
                     except:
-                        self.logfile.print_message("Standard/Faked tokens matching error, "
-                                           "at interval {:d}\n".format(i),
-                                           indent=2, status=1)
+                        self.logfile.print_message(
+                            "Standard/Faked tokens matching error, "
+                            "at interval {:d}\n".format(i), indent=2, status=1)
                         self.logfile.print_message(text_std.get_content(), indent=3)
                         self.logfile.print_message(text_faked.get_content(), indent=3)
                         self.logfile.print_message("Fall back on faked.", indent=3, status=3)
@@ -429,7 +422,7 @@ class sppasTextNorm(sppasBaseAnnotation):
 
             num_underscores = stds[i].count('_')
             if num_underscores > 0:
-                if not self.normalizer.vocab.is_unk(stds[i]):
+                if not self.__normalizer.vocab.is_unk(stds[i]):
                     n = num_underscores + 1
                     fakeds[i] = "_".join(fakeds[i:i+n])
                     del fakeds[i+1:i+n]

@@ -113,6 +113,7 @@ class sppasAudacity(sppasBaseIO):
         super(sppasAudacity, self).__init__(name)
 
         self.default_extension = "aup"
+        self.software = "Audacity"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = True

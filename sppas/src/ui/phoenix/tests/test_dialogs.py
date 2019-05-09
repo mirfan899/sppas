@@ -7,10 +7,11 @@ PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(path.dirname(PROGRAM))))))
 sys.path.append(SPPAS)
 
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
 from sppas.src.ui.phoenix.dialogs.settings import sppasSettingsDialog
 
-from sppas.src.ui.phoenix import WxAppConfig, WxAppSettings
+from sppas.src.ui.phoenix import WxAppSettings
+from sppas.src.ui.cfg import sppasAppConfig
 
 # ---------------------------------------------------------------------------
 
@@ -34,13 +35,14 @@ class testApp(wx.App):
                         filename=None,
                         useBestVisual=True,
                         clearSigInt=True)
-        self.cfg = WxAppConfig()
+        self.cfg = sppasAppConfig()
         self.settings = WxAppSettings()
 
 # ---------------------------------------------------------------------------
 
-setup_logging(0, None)
 
+lgs = sppasLogSetup(0)
+lgs.stream_handler()
 app = testApp()
 
 # demo = sppasDialog(None, title="sppasDialog")

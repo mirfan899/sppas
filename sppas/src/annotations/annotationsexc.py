@@ -34,25 +34,7 @@
 Exceptions for annotations package.
 
 """
-from sppas.src.config import annotations_translation
-
-# -----------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# -----------------------------------------------------------------------
-
-SECT_CFG_FILE_ERROR = ":ERROR 4014: "
-OPTION_KEY_ERROR = ":ERROR 1010: "
-EMPTY_INPUT_ERROR = ":ERROR 1020: "
-EMPTY_OUTPUT_ERROR = ":ERROR 1025: "
-NO_INPUT_ERROR = ":ERROR 1030: "
-BAD_INPUT_ERROR = ":ERROR 1040: "
-SIZE_INPUT_ERROR = ":ERROR 1050: "
-TOO_SMALL_INPUT_ERROR = ":ERROR 1060: "
-
-NO_DIR_ERROR = ":ERROR 1210: "
-EMPTY_DIR_ERROR = ":ERROR 1220: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
@@ -65,8 +47,8 @@ class AnnotationSectionConfigFileError(ValueError):
     """
 
     def __init__(self, section_name):
-        self.parameter = SECT_CFG_FILE_ERROR + \
-                         (_(SECT_CFG_FILE_ERROR)).format(
+        self.parameter = error(4014) + \
+                         (error(4014, "annotations")).format(
                              section_name=section_name)
 
     def __str__(self):
@@ -83,8 +65,8 @@ class AnnotationOptionError(KeyError):
     """
 
     def __init__(self, key):
-        self.parameter = OPTION_KEY_ERROR + \
-                         (_(OPTION_KEY_ERROR)).format(key=key)
+        self.parameter = error(1010) + \
+                         (error(1010, "annotations")).format(key=key)
 
     def __str__(self):
         return repr(self.parameter)
@@ -100,8 +82,8 @@ class EmptyInputError(IOError):
     """
 
     def __init__(self, name):
-        self.parameter = EMPTY_INPUT_ERROR + \
-                         (_(EMPTY_INPUT_ERROR)).format(name=name)
+        self.parameter = error(1020) + \
+                         (error(1020, "annotations")).format(name=name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -117,8 +99,8 @@ class EmptyOutputError(IOError):
     """
 
     def __init__(self, name):
-        self.parameter = EMPTY_OUTPUT_ERROR + \
-                         (_(EMPTY_OUTPUT_ERROR)).format(name=name)
+        self.parameter = error(1025) + \
+                         (error(1025, "annotations")).format(name=name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -134,8 +116,8 @@ class NoInputError(IOError):
     """
 
     def __init__(self):
-        self.parameter = NO_INPUT_ERROR + \
-                         _(NO_INPUT_ERROR)
+        self.parameter = error(1030) + \
+                         (error(1030, "annotations"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -151,8 +133,25 @@ class BadInputError(TypeError):
     """
 
     def __init__(self):
-        self.parameter = BAD_INPUT_ERROR + \
-                         _(BAD_INPUT_ERROR)
+        self.parameter = error(1040) + \
+                         (error(1040, "annotations"))
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class AudioChannelError(IOError):
+    """:ERROR 1070:.
+
+    An audio file with only one channel is expected. Got {nb} channels.
+
+    """
+
+    def __init__(self, nb):
+        self.parameter = error(1070) + \
+                         (error(1070, "annotations"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -169,8 +168,8 @@ class SizeInputsError(IOError):
     """
 
     def __init__(self, number1, number2):
-        self.parameter = SIZE_INPUT_ERROR + \
-                         (_(SIZE_INPUT_ERROR)).format(number1, number2)
+        self.parameter = error(1050) + \
+                         (error(1050, "annotations")).format(number1, number2)
 
     def __str__(self):
         return repr(self.parameter)
@@ -186,25 +185,8 @@ class SmallSizeInputError(IOError):
     """
 
     def __init__(self, number):
-        self.parameter = TOO_SMALL_INPUT_ERROR + \
-                         (_(TOO_SMALL_INPUT_ERROR)).format(number)
-
-    def __str__(self):
-        return repr(self.parameter)
-
-# -----------------------------------------------------------------------
-
-
-class NoDirectoryError(IOError):
-    """:ERROR 1210:.
-
-    The directory {dirname} does not exist.
-
-    """
-
-    def __init__(self, dirname):
-        self.parameter = NO_DIR_ERROR + \
-                         (_(NO_DIR_ERROR)).format(dirname=dirname)
+        self.parameter = error(1060) + \
+                         (error(1060, "annotations")).format(number)
 
     def __str__(self):
         return repr(self.parameter)
@@ -220,8 +202,8 @@ class EmptyDirectoryError(IOError):
     """
 
     def __init__(self, dirname):
-        self.parameter = EMPTY_DIR_ERROR + \
-                         (_(EMPTY_DIR_ERROR)).format(dirname=dirname)
+        self.parameter = error(1220) + \
+                         (error(1220, "annotations")).format(dirname=dirname)
 
     def __str__(self):
         return repr(self.parameter)

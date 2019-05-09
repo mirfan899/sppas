@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -44,8 +44,8 @@ import logging
 
 import wx
 
-from spControl import spControl
-from channelctrl import ChannelCtrl, WavePreferences
+from .spControl import spControl
+from .channelctrl import ChannelCtrl, WavePreferences
 
 # ---------------------------------------------------------------------------
 

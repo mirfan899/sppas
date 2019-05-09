@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import wx
 import wx.lib.scrolledpanel as sc
 
@@ -46,7 +47,7 @@ class sppasPanel(wx.Panel):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Possible constructors:
 
@@ -55,12 +56,15 @@ class sppasPanel(wx.Panel):
               style=TAB_TRAVERSAL, name=PanelNameStr)
 
     """
+
     def __init_(self, *args, **kw):
         super(sppasPanel, self).__init__(*args, **kw)
         s = wx.GetApp().settings
         self.SetBackgroundColour(s.bg_color)
         self.SetForegroundColour(s.fg_color)
         self.SetFont(s.text_font)
+        self.SetAutoLayout(True)
+        self.SetMinSize(wx.Size(320, 200))
 
     # -----------------------------------------------------------------------
 

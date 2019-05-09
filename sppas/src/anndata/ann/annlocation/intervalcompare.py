@@ -101,9 +101,11 @@
     are not exhaustive too.
 
 """
+
+from sppas.src.structs.basecompare import sppasBaseCompare
+
 from ...anndataexc import AnnDataTypeError
 from ...anndataexc import AnnDataValueError
-from ...basecompare import sppasBaseCompare
 
 from .point import sppasPoint
 from .interval import sppasInterval
@@ -120,7 +122,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Includes "Allen's Interval Algebra" and INDU, with several options.
 
@@ -132,12 +134,9 @@ class sppasIntervalCompare(sppasBaseCompare):
         - sppasPoint(): considered like a degenerated interval.
 
     """
+
     def __init__(self):
-        """Create a sppasIntervalCompare instance.
-
-        Defines the list of implemented methods.
-
-        """
+        """Create a sppasIntervalCompare instance."""
         super(sppasIntervalCompare, self).__init__()
 
         # Allen
@@ -180,6 +179,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def before(i1, i2, max_delay=None, **kwargs):
         """Return True if i1 precedes i2.
+
         This is part of the Allen algebra.
 
         :param i1:  |-------|
@@ -203,6 +203,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def before_equal(i1, i2, *args):
         """Return True if i1 precedes i2 and the durations are equals.
+
         This is part of the INDU algebra.
 
         :param i1:  |-------|
@@ -219,6 +220,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def before_greater(i1, i2, *args):
         """Return True if i1 precedes i2 and the duration of i1 is greater.
+
         This is part of the INDU algebra.
 
         :param i1:  |-----------|
@@ -235,6 +237,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def before_lower(i1, i2, *args):
         """Return True if i1 precedes i2 and the duration of i1 is lower.
+
         This is part of the INDU algebra.
 
         :param i1:  |-----|
@@ -251,6 +254,7 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def after(i1, i2, max_delay=None, **kwargs):
         """Return True if i1 follows i2.
+
         This is part of the Allen algebra.
 
         :param i1:                  |--------|
@@ -598,7 +602,6 @@ class sppasIntervalCompare(sppasBaseCompare):
     @staticmethod
     def _unpack(localization):
         """Return the 2 extremities of a localization."""
-
         if isinstance(localization, (sppasInterval, sppasDisjoint)):
             return localization.get_begin(), localization.get_end()
 

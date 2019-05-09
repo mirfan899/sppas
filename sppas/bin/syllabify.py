@@ -53,11 +53,11 @@ sys.path.append(SPPAS)
 
 from sppas import sg, annots
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.Syll.sppassyll import sppasSyll
-from sppas.src.annotations.param import sppasParam
-from sppas.src.utils.fileutils import setup_logging
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sppasSyll
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 
@@ -65,8 +65,8 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["Syll.ini"])
-    ann_step_idx = parameters.activate_annotation("syll")
+    parameters = sppasParam(["syllabify.json"])
+    ann_step_idx = parameters.activate_annotation("syllabify")
     ann_options = parameters.get_options(ann_step_idx)
 
     # -----------------------------------------------------------------------
@@ -173,9 +173,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -194,7 +196,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -r is required with option -i")
             sys.exit(1)
 
-        ann = sppasSyll(logfile=None)
+        ann = sppasSyll(log=None)
         ann.load_resources(args.r)
         ann.fix_options(parameters.get_options(ann_step_idx))
 
@@ -205,7 +207,7 @@ if __name__ == "__main__":
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
+                    print("{} {} {:s}".format(
                         a.get_location().get_best().get_begin().get_midpoint(),
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))

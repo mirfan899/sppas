@@ -86,6 +86,7 @@ class BasicAligner(BaseAligner):
         """
         if isinstance(input_wav, float) is True:
             duration = input_wav
+
         else:
             try:
                 wav_speech = sppas.src.audiodata.aio.open(input_wav)

@@ -44,7 +44,7 @@ class sppasFindTier:
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -95,7 +95,7 @@ class sppasFindTier:
         """Return the tier with tokenization.
 
         In case of EOT, several tiers with tokens are available.
-        Priority is given to faked.
+        Priority is given to faked (i.e. without pattern).
 
         :param trs: (sppasTranscription)
         :param pattern: (str) Priority pattern
@@ -104,6 +104,7 @@ class sppasFindTier:
         """
         # Search with the pattern
         if len(pattern) > 0:
+            pattern = pattern.lower()
             for tier in trs:
                 tier_name = tier.get_name().lower()
                 if pattern in tier_name and "token" in tier_name:

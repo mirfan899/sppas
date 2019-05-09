@@ -33,7 +33,7 @@
     ~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.utils.fileutils import sppasGUID
+from sppas.src.files.fileutils import sppasGUID
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .anndataexc import AnnDataTypeError
@@ -77,8 +77,9 @@ class sppasTier(sppasMetaData):
         - a parent (optional).
 
     """
+
     def __init__(self, name=None, ctrl_vocab=None, media=None, parent=None):
-        """Creates a new sppasTier instance.
+        """Create a new sppasTier instance.
 
         :param name: (str) Name of the tier. It is used as identifier.
         :param ctrl_vocab: (sppasCtrlVocab)
@@ -267,13 +268,13 @@ class sppasTier(sppasMetaData):
 
     def is_empty(self):
         """Return True if the tier does not contain annotations."""
-
         return len(self.__ann) == 0
 
     # -----------------------------------------------------------------------
 
     def append(self, annotation):
         """Append the given annotation at the end of the tier.
+
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
@@ -297,6 +298,7 @@ class sppasTier(sppasMetaData):
 
     def add(self, annotation):
         """Add an annotation to the tier in sorted order.
+
         Assign this tier as parent to the annotation.
 
         :param annotation: (sppasAnnotation)
@@ -369,8 +371,9 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def pop(self, index=-1):
-        """Remove the annotation at the given position in the tier,
-        and return it. If no index is specified, pop() removes
+        """Remove the annotation at the given position in the tier.
+
+        If no index is specified, pop() removes
         and returns the last annotation in the tier.
 
         :param index: (int) Index of the annotation to remove.
@@ -432,7 +435,6 @@ class sppasTier(sppasMetaData):
 
     def is_disjoint(self):
         """Return True if the tier is made of disjoint localizations."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -442,7 +444,6 @@ class sppasTier(sppasMetaData):
 
     def is_interval(self):
         """Return True if the tier is made of interval localizations."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -452,7 +453,6 @@ class sppasTier(sppasMetaData):
 
     def is_point(self):
         """Return True if the tier is made of point localizations."""
-
         if len(self.__ann) == 0:
             return False
 
@@ -468,6 +468,18 @@ class sppasTier(sppasMetaData):
                 b = self.__ann[i].get_lowest_localization().get_midpoint()
                 e = self.__ann[i].get_highest_localization().get_midpoint()
                 units.append((b, e))
+
+        return units
+
+    # -----------------------------------------------------------------------
+
+    def get_midpoint_points(self):
+        """Return midpoint values of all the points."""
+        units = list()
+        if self.is_point() is True:
+            for i in range(len(self)):
+                m = self.__ann[i].get_lowest_localization().get_midpoint()
+                units.append(m)
 
         return units
 
@@ -855,49 +867,6 @@ class sppasTier(sppasMetaData):
         return ""
 
     # -----------------------------------------------------------------------
-
-    def search(self, tags, pos=0, forward=True, any_tag=True, function='exact', reverse=False):
-        """Return the index in the tier of the first annotation whose a tag matches.
-
-        :param tags: (list) the list of sppasTag to search
-        :param pos: (int) the index of the annotation to start to search
-        :param forward: (bool) Search backward or forward from pos
-        :param: any_tag: (bool) "any" vs "all" tags of the list
-        :param function: (str) is:
-                -    exact (str): exact match
-                -    iexact (str): Case-insensitive exact match
-                -    startswith (str):
-                -    istartswith (str): Case-insensitive startswith
-                -    endswith (str):
-                -    iendswith: (str) Case-insensitive endswith
-                -    contains (str):
-                -    icontains: (str) Case-insensitive contains
-                -    equal (str): is equal
-                -    greater (str): is greater then
-                -    lower (str): is lower than
-        :param reverse: (bool) to apply "not function"
-
-        """
-        if pos < 0 or pos >= len(self.__ann):
-            raise AnnDataIndexError(pos)
-
-        while len(self.__ann) > pos >= 0:
-            contains = [self.__ann[pos].contains_tag(tag, function, reverse) for tag in tags]
-            if any_tag is True:
-                found = any(contains)
-            else:
-                found = all(contains)
-            if found is True:
-                return pos
-
-            if forward:
-                pos += 1
-            else:
-                pos -= 1
-
-        return -1
-
-    # -----------------------------------------------------------------------
     # Annotation validation
     # -----------------------------------------------------------------------
 
@@ -985,9 +954,10 @@ class sppasTier(sppasMetaData):
     # -----------------------------------------------------------------------
 
     def create_ctrl_vocab(self, name=None):
-        """Create (or re-create) the controlled vocabulary from the list of
-        already existing annotation labels.
+        """Create the controlled vocabulary from annotation labels.
 
+        Create (or re-create) the controlled vocabulary from the list of
+        already existing annotation labels.
         The current controlled vocabulary is deleted.
 
         :param name: (str) Name of the controlled vocabulary. \

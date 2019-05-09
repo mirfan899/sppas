@@ -37,29 +37,9 @@ import os
 
 from sppas.src.config import sg
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 import sppas.src.anndata
 import sppas.src.audiodata.aio
-
-# ----------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ----------------------------------------------------------------------------
-
-MSG_VALID = _(":INFO 1000: ")
-MSG_ADMIT = _(":INFO 1002: ")
-MSG_INVALID = _(":INFO 1004: ")
-MSG_FAILED = _(":INFO 1006: ")
-MSG_AUDIO_CHANNELS_ERROR = (_(":INFO 1010: "))
-MSG_AUDIO_SAMPWIDTH_ERROR = (_(":INFO 1012: "))
-MSG_AUDIO_FRAMERATE_ERROR = (_(":INFO 1014: "))
-MSG_AUDIO_SAMPWIDTH_WARN = (_(":INFO 1016: "))
-MSG_AUDIO_FRAMERATE_WARN = (_(":INFO 1018: "))
-MSG_UNKNOWN_FILE = (_(":INFO 1020: "))
-MSG_FILE_NON_ASCII = (_(":INFO 1022: "))
-MSG_FILE_WHITESPACE = (_(":INFO 1024: "))
-MSG_FILE_ENCODING = (_(":INFO 1026: "))
 
 # ----------------------------------------------------------------------------
 
@@ -105,7 +85,8 @@ class sppasDiagnosis:
         if ext.lower() in sppas.src.anndata.aio.extensions:
             return sppasDiagnosis.check_trs_file(filename)
 
-        message = MSG_FAILED + MSG_UNKNOWN_FILE.format(extension=ext)
+        message = info(1006, "annotations") + \
+                  (info(1020, "annotations")).format(extension=ext)
         return annots.error, message
 
     # ------------------------------------------------------------------------
@@ -137,50 +118,50 @@ class sppasDiagnosis:
             nc = audio.get_nchannels()
             audio.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + \
-                      MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
+            message = info(1004, "annotations") + \
+                      (info(1026, "annotations")).format(encoding=sg.__encoding__)
             return annots.error, message
         except Exception as e:
-            message = MSG_INVALID + str(e)
+            message = info(1004, "annotations") + str(e)
             return annots.error, message
 
         if nc > sppasDiagnosis.EXPECTED_CHANNELS:
             status = annots.error
-            message += MSG_AUDIO_CHANNELS_ERROR.format(number=nc)
+            message += (info(1010, "annotations")).format(number=nc)
 
         if sp < sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
             status = annots.error
-            message += MSG_AUDIO_SAMPWIDTH_ERROR.format(sampwidth=sp)
+            message += (info(1012, "annotations")).format(sampwidth=sp)
 
         if fm < sppasDiagnosis.EXPECTED_FRAME_RATE:
             status = annots.error
-            message += MSG_AUDIO_FRAMERATE_ERROR.format(framerate=fm)
+            message += (info(1014, "annotations")).format(framerate=fm)
 
         if status != annots.error:
             if sp > sppasDiagnosis.EXPECTED_SAMPLE_WIDTH*8:
                 status = annots.warning
-                message += MSG_AUDIO_SAMPWIDTH_WARN.format(sampwidth=sp)
+                message += (info(1016, "annotations")).format(sampwidth=sp)
 
             if fm > sppasDiagnosis.EXPECTED_FRAME_RATE:
                 status = annots.warning
-                message += MSG_AUDIO_FRAMERATE_WARN.format(framerate=fm)
+                message += (info(1018, "annotations")).format(framerate=fm)
 
         # test US-ASCII chars
         if all(ord(x) < 128 for x in filename) is False:
             status = annots.warning
-            message += MSG_FILE_NON_ASCII
+            message += info(1022, "annotations")
 
         if " " in filename:
             status = annots.warning
-            message += MSG_FILE_WHITESPACE
+            message += info(1024, "annotations")
 
         # test whitespace
         if status == annots.error:
-            message = MSG_INVALID + message
+            message = info(1004, "annotations") + message
         elif status == annots.warning:
-            message = MSG_ADMIT + message
+            message = info(1002, "annotations") + message
         else:
-            message = MSG_VALID
+            message = info(1000, "annotations")
 
         return status, message
 
@@ -201,28 +182,28 @@ class sppasDiagnosis:
 
         """
         status = annots.ok
-        message = MSG_VALID
+        message = info(1000, "annotations")
 
         # test encoding
         try:
             f = codecs.open(filename, "r", sg.__encoding__)
             f.close()
         except UnicodeDecodeError:
-            message = MSG_INVALID + \
-                      MSG_FILE_ENCODING.format(encoding=sg.__encoding__)
+            message = info(1004, "annotations") + \
+                      (info(1026, "annotations")).format(encoding=sg.__encoding__)
             return annots.error, message
         except Exception as e:
-            message = MSG_INVALID + str(e)
+            message = info(1004, "annotations") + str(e)
             return annots.error, message
 
         # test US_ASCII in filename
         if all(ord(x) < 128 for x in filename) is False:
-            message = MSG_ADMIT + MSG_FILE_NON_ASCII
+            message = info(1002, "annotations") + info(1022, "annotations")
             return annots.warning, message
 
         # test whitespace in filename
         if " " in filename:
-            message = MSG_ADMIT + MSG_FILE_WHITESPACE
+            message = info(1002, "annotations") + info(1024, "annotations")
             return annots.warning, message
 
         return status, message

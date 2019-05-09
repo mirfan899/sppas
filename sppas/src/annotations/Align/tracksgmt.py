@@ -36,18 +36,10 @@ import os
 import codecs
 
 from sppas.src.config import sg
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .aligners import sppasAligners
-
-# ---------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_EMPTY_INTERVAL = (_(":INFO 1222: "))
 
 # ---------------------------------------------------------------------------
 
@@ -99,9 +91,6 @@ class TrackSegmenter(object):
         Any other file will be ignored.
 
         """
-        # Options, must be fixed before to instantiate the aligner
-        self._infersp = False
-
         # The acoustic model directory
         self._model_dir = None
 
@@ -109,11 +98,10 @@ class TrackSegmenter(object):
         # The basic aligner is used:
         #   - when the track segment contains only one phoneme;
         #   - when the track segment does not contain phonemes.
-        self._aligner_id = None
         self._aligner = None
         self.set_aligner(aligner_name)
+
         self._basic_aligner = TrackSegmenter.aligners.instantiate(None)
-        self._instantiate_aligner()
 
         if model is not None:
             self.set_model(model)
@@ -127,7 +115,9 @@ class TrackSegmenter(object):
 
         """
         self._model_dir = model
-        self._instantiate_aligner()
+
+        # re-instantiate the same aligner with the appropriate model
+        self._instantiate_aligner(self._aligner.name())
 
     # -----------------------------------------------------------------------
 
@@ -137,31 +127,13 @@ class TrackSegmenter(object):
         :param aligner_name: (str) Case-insensitive name of an aligner system.
 
         """
-        aligner_name = TrackSegmenter.aligners.check(aligner_name)
-        self._aligner_id = aligner_name
-        self._instantiate_aligner()
+        self._instantiate_aligner(aligner_name)
 
     # -----------------------------------------------------------------------
 
-    def set_infersp(self, infersp):
-        """Fix the automatic inference of short pauses.
-
-        Not really relevant... it's not efficient. short-pauses should be
-        indicated manually in the ortho transcription.
-
-        :param infersp: (bool) If infersp is set to True, a short pause is
-        added at the end of each token, and the automatic aligner will infer
-        if it is relevant or not.
-
-        """
-        self._infersp = infersp
-        self._aligner.set_infersp(infersp)
-
-    # -----------------------------------------------------------------------
-
-    def get_aligner(self):
-        """Return the aligner name identifier."""
-        return self._aligner_id
+    def get_aligner_name(self):
+        """Return the name of the instantiated aligner."""
+        return self._aligner.name()
 
     # -----------------------------------------------------------------------
 
@@ -211,17 +183,22 @@ class TrackSegmenter(object):
 
         # Do not align nothing!
         if len(phones) == 0:
-            self._basic_aligner.run_alignment(audio_filename, align_name)
-            return MSG_EMPTY_INTERVAL
+            self._basic_aligner.run_alignment(0., align_name)
+            return info(1222, "annotations")
 
-        # Do not align only one phoneme!
-        if len(phones.split()) <= 1 and "-" not in phones:
-            self._basic_aligner.run_alignment(audio_filename, align_name)
-            return ""
+        # If no audio available...
+        if os.path.exists(audio_filename) is False:
+            ret = self._basic_aligner.run_alignment(1., align_name)
 
-        # Execute Alignment
-        ret = self._aligner.check_data()
-        ret += self._aligner.run_alignment(audio_filename, align_name)
+        else:
+            # Do not align only one phoneme!
+            if len(phones.split()) <= 1 and "-" not in phones:
+                self._basic_aligner.run_alignment(audio_filename, align_name)
+                return ""
+
+            # Execute Alignment
+            ret = self._aligner.check_data()
+            ret += self._aligner.run_alignment(audio_filename, align_name)
 
         return ret
 
@@ -229,13 +206,10 @@ class TrackSegmenter(object):
     # Private
     # -----------------------------------------------------------------------
 
-    def _instantiate_aligner(self):
+    def _instantiate_aligner(self, name):
         """Instantiate self._aligner to the appropriate Aligner system."""
         self._aligner = TrackSegmenter.aligners.instantiate(
-            self._model_dir,
-            self._aligner_id
-        )
-        self._aligner.set_infersp(self._infersp)
+            self._model_dir, name)
 
     # -----------------------------------------------------------------------
 

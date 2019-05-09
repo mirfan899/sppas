@@ -33,17 +33,20 @@
 
 """
 import logging
+import json
 import os
 
 from sppas import paths
 from sppas import annots
-from sppas.src.structs.lang import UNDETERMINED
-from sppas.src.anndata.aio import extensions as annots_ext
-from sppas.src.audiodata.aio import extensions as audio_ext
-from sppas.src.utils.fileutils import sppasDirUtils
-from sppas.src.utils.fileutils import sppasFileUtils
 
-from .cfgparser import sppasAnnotationConfigParser
+from sppas.src.config import msg
+from sppas.src.structs.baseoption import sppasOption
+from sppas.src.structs.lang import sppasLangResource
+from sppas.src.structs.lang import UNDETERMINED
+from sppas.src.anndata.aio import extensions_out as annots_ext
+from sppas.src.audiodata.aio import extensions as audio_ext
+from sppas.src.files.fileutils import sppasDirUtils
+from sppas.src.files.fileutils import sppasFileUtils
 
 # ----------------------------------------------------------------------------
 
@@ -94,15 +97,38 @@ class annotationParam(object):
         :param filename: (str) Annotation configuration file (.ini)
 
         """
-        p = sppasAnnotationConfigParser()
-        p.parse(filename)
+        if filename.endswith('.json'):
 
-        self.__options = p.get_options()
-        self.__resources = p.get_resources()
-        conf = p.get_config()
-        self.__key = conf['id']
-        self.__name = conf.get('name', "")
-        self.__descr = conf.get('descr', "")
+            config = os.path.join(paths.etc, filename)
+            if os.path.exists(config) is False:
+                raise IOError('Installation error: the file to configure the '
+                              'automatic annotations does not exist.')
+
+            # Read the whole file content
+            with open(config) as cfg:
+                conf = json.load(cfg)
+
+            self.__key = conf['id']
+            self.__name = msg(conf.get('name', ''), "annotations)")  # translate the name
+            self.__descr = conf.get('descr', "")
+
+            for new_option in conf['options']:
+                opt = sppasOption(new_option['id'])
+                opt.set_type(new_option['type'])
+                opt.set_value(str(new_option['value']))  # dangerous cast
+                opt.set_text(msg(new_option.get('text', ''), "annotations"))   # translated
+                self.__options.append(opt)
+
+            for new_resource in conf['resources']:
+                lr = sppasLangResource()
+                lr.set(new_resource['type'],
+                       new_resource['path'],
+                       new_resource.get('name', ''),
+                       new_resource['ext'])
+                self.__resources.append(lr)
+
+        else:
+            raise IOError('Unknown extension for filename {:s}'.format(filename))
 
     # -----------------------------------------------------------------------
     # Setters
@@ -268,7 +294,7 @@ class sppasParam(object):
         """Load the annotation configuration files.
 
         Load from a list of given file names (without path) or from the
-        default sppas.conf file.
+        default sppas ui configuration file.
 
         :param annotation_files: (list) List of annotations to load. None=ALL.
 
@@ -283,28 +309,25 @@ class sppasParam(object):
     # ------------------------------------------------------------------------
 
     def parse_config_file(self):
-        """Parse the sppas.conf file.
+        """Parse the sppasui.json file.
 
         Parse the file to get the list of annotations and parse the
         corresponding "ini" file.
 
         """
-        config = os.path.join(paths.etc, "sppas.conf")
+        config = os.path.join(paths.etc, "sppasui.json")
         if os.path.exists(config) is False:
             raise IOError('Installation error: the file to configure the '
                           'automatic annotations does not exist.')
 
         # Read the whole file content
-        with open(config, "r") as fp:
-            lines = fp.readlines()
-            fp.close()
+        with open(config) as cfg:
+            dict_cfg = json.load(cfg)
 
         # Load annotation configurations
-        for line in lines:
-            line = line.strip()
-            if line.lower().startswith("annotation:") is True:
-                data = line.split(":")
-                self.__load(os.path.join(paths.etc, data[1].strip()))
+        for ann in dict_cfg["annotate"]:
+            if ann["gui"] is True:
+                self.__load(os.path.join(paths.etc, ann["config"]))
 
     # -----------------------------------------------------------------------
 
@@ -523,6 +546,7 @@ class sppasParam(object):
         :returns: the extension really set.
 
         """
+
         # Force to contain the dot
         if not output_format.startswith("."):
             output_format = "." + output_format
@@ -541,4 +565,3 @@ class sppasParam(object):
             output_format = annots.extension
 
         self._output_ext = output_format
-        return output_format

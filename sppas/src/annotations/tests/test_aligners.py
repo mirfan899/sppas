@@ -178,7 +178,7 @@ class TestAligners(unittest.TestCase):
         for a in aligners.names():
             self.assertEqual(a, aligners.check(a))
 
-        with self.assertRaises(ValueError):
+        with self.assertRaises(KeyError):
             aligners.check("invalid")
 
     # -----------------------------------------------------------------------
@@ -190,6 +190,9 @@ class TestAligners(unittest.TestCase):
             aligner = aligners.instantiate(None, a)
             self.assertTrue(isinstance(aligner,
                                        aligners.classes(a)))
+
+        with self.assertRaises(KeyError):
+            aligners.instantiate(None, "invalid")
 
 # ---------------------------------------------------------------------------
 
@@ -204,13 +207,13 @@ class TestBaseAligner(unittest.TestCase):
         self.assertEqual("", self._aligner.outext())
         self.assertEqual(list(), self._aligner.extensions())
         self.assertEqual("", self._aligner.name())
-
-    def test_infersp(self):
-        self.assertFalse(self._aligner.get_infersp())
-        self._aligner.set_infersp(True)
-        self.assertTrue(self._aligner.get_infersp())
-        self._aligner.set_infersp("ejzkjg")
-        self.assertFalse(self._aligner.get_infersp())
+    #
+    # def test_infersp(self):
+    #     self.assertFalse(self._aligner.get_infersp())
+    #     self._aligner.set_infersp(True)
+    #     self.assertTrue(self._aligner.get_infersp())
+    #     self._aligner.set_infersp("ejzkjg")
+    #     self.assertFalse(self._aligner.get_infersp())
 
     def test_norun(self):
         with self.assertRaises(NotImplementedError):

@@ -82,6 +82,8 @@ def open(filename):
         aud.open(u(filename))
     except IOError as e:
         raise AudioIOError(message=str(e), filename=None)
+    except EOFError:
+        raise AudioIOError(message="Malformed file", filename=None)
 
     return aud
 

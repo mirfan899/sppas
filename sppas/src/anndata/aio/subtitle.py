@@ -46,7 +46,8 @@ Precision in time is 1ms.
 import codecs
 import datetime
 
-from sppas.src.config import sg
+from sppas import sg
+from sppas.src.utils import b
 from .basetrs import sppasBaseIO
 from ..anndataexc import AnnDataTypeError
 from ..anndataexc import AioMultiTiersError
@@ -67,7 +68,7 @@ class sppasBaseSubtitles(sppasBaseIO):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -194,7 +195,7 @@ class sppasSubRip(sppasBaseSubtitles):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     The SubRip text file format (SRT) is used by the SubRip program to save
     subtitles ripped from video files or DVDs.
@@ -225,6 +226,7 @@ class sppasSubRip(sppasBaseSubtitles):
         super(sppasSubRip, self).__init__(name)
 
         self.default_extension = "srt"
+        self.software = "SubRip"
 
     # -----------------------------------------------------------------------
 
@@ -239,6 +241,10 @@ class sppasSubRip(sppasBaseSubtitles):
             fp.close()
 
         tier = self.create_tier('Trans-SubRip')
+
+        # Ignore BOM
+        if b(lines[0]).startswith(codecs.BOM_UTF8):
+            lines[0] = lines[0][1:]
 
         # Ignore an optional header (or blank lines)
         i = 0
@@ -392,6 +398,7 @@ class sppasSubViewer(sppasBaseSubtitles):
         super(sppasSubViewer, self).__init__(name)
 
         self.default_extension = "sub"
+        self.software = "SubViewer"
 
     # -----------------------------------------------------------------------
 
@@ -406,6 +413,10 @@ class sppasSubViewer(sppasBaseSubtitles):
             fp.close()
 
         tier = self.create_tier('Trans-SubViewer')
+
+        # Ignore BOM
+        if b(lines[0]).startswith(codecs.BOM_UTF8):
+            lines[0] = lines[0][1:]
 
         # Header
         i = 0

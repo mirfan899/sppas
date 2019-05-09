@@ -50,7 +50,7 @@ class TestLang(unittest.TestCase):
         self.lr = sppasLangResource()
 
     def test_set(self):
-        self.assertEqual(self.lr.get_lang(), "und")
+        self.assertEqual(self.lr.get_lang(), "")
 
         with self.assertRaises(LangPathError):
             self.lr.set("file", "wrongpath")

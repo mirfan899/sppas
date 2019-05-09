@@ -157,16 +157,22 @@ class sppasMessageText(sppasTextCtrl):
     Font, foreground and background are taken from the application settings.
 
     """
+
     text_style = wx.TAB_TRAVERSAL | \
                  wx.TE_MULTILINE | \
                  wx.TE_READONLY | \
                  wx.TE_BESTWRAP | \
                  wx.TE_AUTO_URL | \
                  wx.TE_CENTRE | \
-                 wx.NO_BORDER
+                 wx.NO_BORDER | \
+                 wx.TE_RICH
 
     def __init__(self, parent, message):
         super(sppasMessageText, self).__init__(
             parent=parent,
-            value=message,
+            value="",
             style=sppasMessageText.text_style)
+        # the message is not send to the base class when init but after
+        # in order to apply the appropriate colors
+        self.SetValue(message)
+

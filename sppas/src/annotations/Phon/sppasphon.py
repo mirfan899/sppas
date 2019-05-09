@@ -33,11 +33,10 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-
 from sppas.src.config import symbols
 from sppas.src.config import separators
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 
 from sppas import sppasRW
 from sppas import sppasTranscription
@@ -58,15 +57,6 @@ from .phonetize import sppasDictPhonetizer
 
 # ---------------------------------------------------------------------------
 
-_ = annotations_translation.gettext
-
-# ---------------------------------------------------------------------------
-
-MSG_MISSING = (_(":INFO 1110: "))
-MSG_PHONETIZED = (_(":INFO 1112: "))
-MSG_NOT_PHONETIZED = (_(":INFO 1114: "))
-MSG_TRACK = (_(":INFO 1220: "))
-
 SIL = list(symbols.phone.keys())[list(symbols.phone.values()).index("silence")]
 SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silence")]
 
@@ -80,29 +70,23 @@ class sppasPhon(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a sppasPhon instance without any linguistic resources.
 
-        :param logfile (sppasLog) is a log file utility class member.
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasPhon, self).__init__(logfile, "Phonetization")
-
-        # Mapping table (empty)
+        super(sppasPhon, self).__init__("phonetize.json", log)
+        self.__phonetizer = None
         self.maptable = sppasMapping()
-
-        # Pronunciation dictionary (empty)
-        self.phonetizer = None
         self.load_resources()
-
-        # List of options to configure this automatic annotation
-        self._options = dict()
-        self._options['phonunk'] = False       # Phonetize missing tokens
-        self._options['usestdtokens'] = False  # Phonetize standard spelling
 
     # -----------------------------------------------------------------------
     # Methods to fix options
@@ -113,7 +97,7 @@ class sppasPhon(sppasBaseAnnotation):
 
         Available options are:
 
-            - unk
+            - phonunk
             - usesstdtokens
 
         :param options: (sppasOption)
@@ -123,7 +107,7 @@ class sppasPhon(sppasBaseAnnotation):
 
             key = opt.get_key()
 
-            if key == "unk":
+            if key == "phonunk":
                 self.set_unk(opt.get_value())
 
             elif key == "usestdtokens":
@@ -175,22 +159,23 @@ class sppasPhon(sppasBaseAnnotation):
         if map_filename is not None:
             self.maptable = sppasMapping(map_filename)
             self.logfile.print_message(
-                "The mapping table contains {:d} phonemes"
-                "".format(len(self.maptable)), indent=0)
+                (info(1160, "annotations")).format(len(self.maptable)),
+                indent=0)
         else:
             self.maptable = sppasMapping()
 
         pdict = sppasDictPron(dict_filename, nodump=False)
         if dict_filename is not None:
-            self.phonetizer = sppasDictPhonetizer(pdict, self.maptable)
-            self.logfile.print_message("The dictionary contains {:d} tokens"
-                                       "".format(len(pdict)), indent=0)
+            self.__phonetizer = sppasDictPhonetizer(pdict, self.maptable)
+            self.logfile.print_message(
+                (info(1162, "annotations")).format(len(pdict)),
+                indent=0)
         else:
-            self.phonetizer = sppasDictPhonetizer(pdict)
+            self.__phonetizer = sppasDictPhonetizer(pdict)
 
     # -----------------------------------------------------------------------
 
-    def phonetize(self, entry):
+    def _phonetize(self, entry):
         """Phonetize a text.
 
         Because we absolutely need to match with the number of tokens, this
@@ -202,22 +187,24 @@ class sppasPhon(sppasBaseAnnotation):
 
         """
         unk = symbols.unk
-        tab = self.phonetizer.get_phon_tokens(entry.split(),
-                                              phonunk=self._options['phonunk'])
+        tab = self.__phonetizer.get_phon_tokens(
+            entry.split(),
+            phonunk=self._options['phonunk'])
         tab_phones = list()
         for tex, p, s in tab:
             message = None
             if s == annots.error:
-                message = MSG_MISSING.format(tex) + MSG_NOT_PHONETIZED
+                message = (info(1110, "annotations")).format(tex) + \
+                          info(1114, "annotations")
                 self.logfile.print_message(message, indent=2, status=s)
                 return [unk]
             else:
                 if s == annots.warning:
-                    message = MSG_MISSING.format(tex)
+                    message = (info(1110, "annotations")).format(tex)
                     if len(p) > 0:
-                        message = message + MSG_PHONETIZED.format(p)
+                        message = message + (info(1112, "annotations")).format(p)
                     else:
-                        message = message + MSG_NOT_PHONETIZED
+                        message = message + info(1114, "annotations")
                         p = unk
                 tab_phones.append(p)
 
@@ -235,18 +222,31 @@ class sppasPhon(sppasBaseAnnotation):
         :returns: (Tier) phonetized tier with name "Phones"
 
         """
+        if tier is None:
+            raise IOError('No given tier.')
         if tier.is_empty() is True:
             raise EmptyInputError(name=tier.get_name())
 
         phones_tier = sppasTier("Phones")
         for i, ann in enumerate(tier):
-            self.logfile.print_message(MSG_TRACK.format(number=i+1), indent=1)
+            self.logfile.print_message(
+                (info(1220, "annotations")).format(number=i+1), indent=1)
 
             location = ann.get_location().copy()
             labels = list()
 
-            # Normalize all labels of the orthographic transcription
+            # Some labels can contain a whitespace and it's a token separator.
+            # (when transcription was read, the \n was used as separator but
+            # some file formats don't support it and are using whitespace)
+            normalized = list()
             for label in ann.get_labels():
+                if " " in label:
+                    normalized.extend(label.split())
+                else:
+                    normalized.append(label)
+
+            # Phonetize all labels of the normalized transcription
+            for label in normalized:
 
                 phonetizations = list()
                 for text, score in label:
@@ -256,7 +256,7 @@ class sppasPhon(sppasBaseAnnotation):
                         phonetizations.append(SIL)
 
                     elif text.is_empty() is False:
-                        phones = self.phonetize(text.get_content())
+                        phones = self._phonetize(text.get_content())
                         for p in phones:
                             phonetizations.extend(p.split(separators.variants))
 
@@ -302,7 +302,7 @@ class sppasPhon(sppasBaseAnnotation):
         trs_output.set_meta('text_phonetization_result_of',
                             input_file[0])
         trs_output.set_meta('text_phonetization_dict',
-                            self.phonetizer.get_dict_filename())
+                            self.__phonetizer.get_dict_filename())
 
         # Save in a file
         if output_file is not None:

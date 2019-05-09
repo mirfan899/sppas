@@ -56,19 +56,21 @@ class sppasIntsint(sppasBaseAnnotation):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
-    def __init__(self, logfile=None):
+    def __init__(self, log=None):
         """Create a new sppasIntsint instance.
 
-        :param logfile: (sppasLog)
+        Log is used for a better communication of the annotation process and its
+        results. If None, logs are redirected to the default logging system.
+
+        :param log: (sppasLog) Human-readable logs.
 
         """
-        super(sppasIntsint, self).__init__(logfile, "INTSINT")
-
-        self.intsint = Intsint()
+        super(sppasIntsint, self).__init__("intsint.json", log)
+        self.__intsint = Intsint()
 
     # -----------------------------------------------------------------------
     # Methods to annotate
@@ -154,7 +156,7 @@ class sppasIntsint(sppasBaseAnnotation):
 
         # Annotate the tier
         targets = sppasIntsint.tier_to_anchors(tier_input)
-        tones = self.intsint.annotate(targets)
+        tones = self.__intsint.annotate(targets)
         tier_intsint = sppasIntsint.tones_to_tier(tones, tier_input)
 
         # Create the transcription result
@@ -175,6 +177,8 @@ class sppasIntsint(sppasBaseAnnotation):
     def get_pattern():
         """Pattern this annotation uses in an output filename."""
         return '-intsint'
+
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def get_input_pattern():

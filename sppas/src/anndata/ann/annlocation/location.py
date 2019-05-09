@@ -339,6 +339,11 @@ class sppasLocation(object):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __repr__(self, *args, **kwargs):
         st = ""
         for t, s in self.__localizations:

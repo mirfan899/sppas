@@ -37,13 +37,12 @@ import unittest
 import os.path
 import copy
 import shutil
-import logging
 
 from sppas.src.config import symbols
 from sppas.src.config import paths
 from sppas.src.utils.compare import sppasCompare
-from sppas.src.utils.fileutils import sppasFileUtils
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.files.fileutils import sppasFileUtils
+from sppas.src.ui import sppasLogSetup
 
 from ..acm.acmodelhtkio import sppasHtkIO
 from ..acm.htktrain import sppasHTKModelTrainer
@@ -67,7 +66,8 @@ SIL_ORTHO = list(symbols.ortho.keys())[list(symbols.ortho.values()).index("silen
 class TestTrainer(unittest.TestCase):
 
     def setUp(self):
-        setup_logging(0)
+        self._lgs = sppasLogSetup(0)
+        self._lgs.stream_handler()
         if os.path.exists(TEMP) is True:
             shutil.rmtree(TEMP)
         os.mkdir(TEMP)

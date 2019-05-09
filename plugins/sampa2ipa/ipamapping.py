@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #       Laboratoire Parole et Langage
@@ -47,7 +47,7 @@ from sppas.src.anndata import sppasTranscription, sppasRW
 # Verify and extract args:
 # ----------------------------------------------------------------------------
 
-parser = ArgumentParser(usage="{:s} -i file -m table"
+parser = ArgumentParser(usage="{:s} -i file"
                               "".format(os.path.basename(PROGRAM)),
                         description="... a program to map tags of labels.")
 

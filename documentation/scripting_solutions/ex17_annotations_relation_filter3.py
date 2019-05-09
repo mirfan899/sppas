@@ -31,7 +31,7 @@ import sys
 import os.path
 sys.path.append(os.path.join("..", ".."))
 
-from sppas.src.anndata import sppasFilters
+from sppas.src.analysis import sppasTierFilters
 from sppas.src.utils.makeunicode import u
 from .ex15_annotations_label_filter import get_tier
 
@@ -48,7 +48,7 @@ filename = 'F_F_B003-P9-merge.TextGrid'
 # Read an annotated file.
 tier = get_tier(filename, "TokensAlign")
 tier.set_radius(0.005)
-f = sppasFilters(tier)
+f = sppasTierFilters(tier)
 
 # get tokens, except silences
 annset_not_sil = f.tag(not_exact=u("#"))
@@ -59,7 +59,7 @@ annset_sil = f.tag(exact=u("#"))
 tier_silences = annset_sil.to_tier('Silences')
 
 # Apply separately the relations and combine results
-fr = sppasFilters(tier_tokens)
+fr = sppasTierFilters(tier_tokens)
 ann_set = fr.rel(tier_silences, 'meets') & fr.rel(tier_silences, 'metby')
 
 for ann in ann_set:

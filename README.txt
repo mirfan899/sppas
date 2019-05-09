@@ -37,6 +37,14 @@
 
     -------------------------------------------------------------------------
 
+    Need help?
+
+    - Tutorials are available on the web site
+    - Explore the "documentation" folder of this package
+      or the documentation on the web
+	
+    -------------------------------------------------------------------------
+
     By using SPPAS, you agree to cite a reference in your publications.
 
         Brigitte BIGI (2015).
@@ -54,13 +62,5 @@
         e - ISSN 2237-2083.
 
     Other references are available in the documentation.
-
-    -------------------------------------------------------------------------
-
-    Need help?
-
-    - Tutorials are available on the web site
-    - Explore the "documentation" folder of this package
-      or the documentation on the web
 
     -------------------------------------------------------------------------

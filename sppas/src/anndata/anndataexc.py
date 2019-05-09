@@ -42,68 +42,20 @@
 
 """
 from sppas.src.config import sg
-from sppas.src.config import anndata_translation
-
-# -----------------------------------------------------------------------
-
-_ = anndata_translation.gettext
-
-# -----------------------------------------------------------------------
-
-ANN_DATA_ERROR = ":ERROR 1000: "
-ANN_DATA_EQ_ERROR = ":ERROR 1010: "
-
-ANN_UNK_TYPE_ERROR = ":ERROR 1050: "
-ANN_DATA_TYPE_ERROR = ":ERROR 1100: "
-ANN_DATA_EQ_TYPE_ERROR = ":ERROR 1105: "
-
-ANN_DATA_INDEX_ERROR = ":ERROR 1200: "
-ANN_DATA_KEY_ERROR = ":ERROR 1250: "
-
-ANN_DATA_VALUE_ERROR = ":ERROR 1300: "
-ANN_DATA_NEG_VALUE_ERROR = ":ERROR 1310: "
-
-INTERVAL_BOUNDS_ERROR = ":ERROR 1120: "
-CTRL_VOCAB_CONTAINS_ERROR = ":ERROR 1130: "
-CTRL_VOCAB_SET_TIER_ERROR = ":ERROR 1132: "
-TIER_APPEND_ERROR = ":ERROR 1140: "
-TIER_ADD_ERROR = ":ERROR 1142: "
-TIER_HIERARCHY_ERROR = ":ERROR 1144: "
-
-TRS_ADD_ERROR = ":ERROR 1150: "
-TRS_REMOVE_ERROR = ":ERROR 1152: "
-TRS_INVALID_TIER_ERROR = ":ERROR 1160: "
-
-HIERARCHY_ALIGNMENT_ERROR = ":ERROR 1170: "
-HIERARCHY_ASSOCIATION_ERROR = ":ERROR 1172: "
-HIERARCHY_PARENT_TIER_ERROR = ":ERROR 1174: "
-HIERARCHY_CHILD_TIER_ERROR = ":ERROR 1176: "
-HIERARCHY_ANCESTOR_TIER_ERROR = ":ERROR 1178: "
-
-TAG_VALUE_ERROR = ":ERROR 1190: "
-
-AIO_ERROR = ":ERROR 1400: "
-AIO_ENCODING_ERROR = ":ERROR 1500: "
-AIO_FILE_EXTENSION_ERROR = ":ERROR 1505: "
-AIO_MULTI_TIERS_ERROR = ":ERROR 1510: "
-AIO_NO_TIERS_ERROR = ":ERROR 1515: "
-AIO_LINE_FORMAT_ERROR = ":ERROR 1520: "
-AIO_FORMAT_ERROR = ":ERROR 1521: "
-AIO_EMPTY_TIER_ERROR = ":ERROR 1525: "
-AIO_LOCATION_TYPE_ERROR = ":ERROR 1530: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
 
 class AnnDataError(Exception):
-    """:ERROR 1000: ANN_DATA_ERROR.
+    """:ERROR 1000:.
 
     No annotated data file is defined.
 
     """
 
     def __init__(self):
-        self.parameter = ANN_DATA_ERROR + (_(ANN_DATA_ERROR))
+        self.parameter = error(1000) + (error(1000, "anndata"))
 
     def __str__(self):
         return repr(self.parameter)
@@ -112,15 +64,15 @@ class AnnDataError(Exception):
 
 
 class AnnDataEqError(Exception):
-    """:ERROR 1010: ANN_DATA_EQ_ERROR.
+    """:ERROR 1010:.
 
     Values are expected to be equals but are {:s!s} and {:s!s}.
 
     """
 
     def __init__(self, v1, v2):
-        self.parameter = ANN_DATA_EQ_ERROR + \
-                         (_(ANN_DATA_EQ_ERROR)).format(v1, v2)
+        self.parameter = error(1010) + \
+                         (error(1010, "anndata")).format(v1, v2)
 
     def __str__(self):
         return repr(self.parameter)
@@ -129,15 +81,15 @@ class AnnDataEqError(Exception):
 
 
 class AnnDataTypeError(TypeError):
-    """:ERROR 1100: ANN_DATA_TYPE_ERROR.
+    """:ERROR 1100:.
 
     {!s:s} is not of the expected type '{:s}'.
 
     """
 
     def __init__(self, rtype, expected):
-        self.parameter = ANN_DATA_TYPE_ERROR + \
-                      (_(ANN_DATA_TYPE_ERROR)).format(rtype, expected)
+        self.parameter = error(1100) + \
+                         (error(1100, "anndata")).format(rtype, expected)
 
     def __str__(self):
         return repr(self.parameter)
@@ -146,15 +98,15 @@ class AnnDataTypeError(TypeError):
 
 
 class AnnUnkTypeError(TypeError):
-    """:ERROR 1050: ANN_UNK_TYPE_ERROR.
+    """:ERROR 1050:.
 
     {!s:s} is not a valid type.
 
     """
 
     def __init__(self, rtype):
-        self.parameter = ANN_UNK_TYPE_ERROR + \
-                         (_(ANN_UNK_TYPE_ERROR)).format(rtype)
+        self.parameter = error(1050) + \
+                         (error(1050, "anndata")).format(rtype)
 
     def __str__(self):
         return repr(self.parameter)
@@ -163,15 +115,15 @@ class AnnUnkTypeError(TypeError):
 
 
 class AnnDataIndexError(IndexError):
-    """:ERROR 1200: ANN_DATA_INDEX_ERROR.
+    """:ERROR 1200:.
 
     Invalid index value {:d}.
 
     """
 
     def __init__(self, index):
-        self.parameter = ANN_DATA_INDEX_ERROR + \
-                         (_(ANN_DATA_INDEX_ERROR)).format(index)
+        self.parameter = error(1200) + \
+                         (error(1200, "anndata")).format(index)
 
     def __str__(self):
         return repr(self.parameter)
@@ -180,15 +132,15 @@ class AnnDataIndexError(IndexError):
 
 
 class AnnDataEqTypeError(TypeError):
-    """:ERROR 1105: ANN_DATA_EQ_TYPE_ERROR.
+    """:ERROR 1105:.
 
     {!s:s} is not of the same type as {!s:s}.
 
     """
 
     def __init__(self, obj, obj_ref):
-        self.parameter = ANN_DATA_EQ_TYPE_ERROR + \
-                      (_(ANN_DATA_EQ_TYPE_ERROR)).format(obj, obj_ref)
+        self.parameter = error(1105) + \
+                         (error(1105, "anndata")).format(obj, obj_ref)
 
     def __str__(self):
         return repr(self.parameter)
@@ -197,15 +149,15 @@ class AnnDataEqTypeError(TypeError):
 
 
 class AnnDataValueError(ValueError):
-    """:ERROR 1300: ANN_DATA_VALUE_ERROR.
+    """:ERROR 1300:.
 
     Invalid value '{!s:s}' for '{!s:s}'.
 
     """
 
     def __init__(self, data_name, value):
-        self.parameter = ANN_DATA_VALUE_ERROR + \
-                    (_(ANN_DATA_VALUE_ERROR)).format(value, data_name)
+        self.parameter = error(1300) + \
+                         (error(1300, "anndata")).format(value, data_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -214,15 +166,15 @@ class AnnDataValueError(ValueError):
 
 
 class AnnDataNegValueError(ValueError):
-    """:ERROR 1310: ANN_DATA_NEG_VALUE_ERROR.
+    """:ERROR 1310:.
 
     Expected a positive value. Got '{:f}'.
 
     """
 
     def __init__(self, value):
-        self.parameter = ANN_DATA_NEG_VALUE_ERROR + \
-                         (_(ANN_DATA_NEG_VALUE_ERROR)).format(value)
+        self.parameter = error(1310) + \
+                         (error(1310, "anndata")).format(value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -231,15 +183,15 @@ class AnnDataNegValueError(ValueError):
 
 
 class AnnDataKeyError(KeyError):
-    """:ERROR 1250: ANN_DATA_KEY_ERROR.
+    """:ERROR 1250:.
 
     Invalid key '{!s:s}' for data '{!s:s}'.
 
     """
 
     def __init__(self, data_name, value):
-        self.parameter = ANN_DATA_KEY_ERROR + \
-                      (_(ANN_DATA_KEY_ERROR)).format(value, data_name)
+        self.parameter = error(1250) + \
+                         (error(1250, "anndata")).format(value, data_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -249,7 +201,7 @@ class AnnDataKeyError(KeyError):
 
 
 class IntervalBoundsError(ValueError):
-    """:ERROR 1120: INTERVAL_BOUNDS_ERROR.
+    """:ERROR 1120:.
 
     The begin must be strictly lesser than the end in an interval.
     Got: [{:s};{:s}].
@@ -257,8 +209,8 @@ class IntervalBoundsError(ValueError):
     """
 
     def __init__(self, begin, end):
-        self.parameter = INTERVAL_BOUNDS_ERROR + \
-                         (_(INTERVAL_BOUNDS_ERROR)).format(begin, end)
+        self.parameter = error(1120) + \
+                         (error(1120, "anndata")).format(begin, end)
 
     def __str__(self):
         return repr(self.parameter)
@@ -267,15 +219,15 @@ class IntervalBoundsError(ValueError):
 
 
 class CtrlVocabContainsError(ValueError):
-    """:ERROR 1130: CTRL_VOCAB_CONTAINS_ERROR.
+    """:ERROR 1130:.
 
     {:s} is not part of the controlled vocabulary.
 
     """
 
     def __init__(self, tag):
-        self.parameter = CTRL_VOCAB_CONTAINS_ERROR + \
-                         (_(CTRL_VOCAB_CONTAINS_ERROR)).format(tag)
+        self.parameter = error(1130) + \
+                         (error(1130, "anndata")).format(tag)
 
     def __str__(self):
         return repr(self.parameter)
@@ -284,15 +236,15 @@ class CtrlVocabContainsError(ValueError):
 
 
 class CtrlVocabSetTierError(ValueError):
-    """:ERROR 1132: CTRL_VOCAB_SET_TIER_ERROR.
+    """:ERROR 1132:.
 
     The controlled vocabulary {:s} can't be associated to the tier {:s}.
 
     """
 
     def __init__(self, vocab_name, tier_name):
-        self.parameter = CTRL_VOCAB_SET_TIER_ERROR + \
-          (_(CTRL_VOCAB_SET_TIER_ERROR)).format(vocab_name, tier_name)
+        self.parameter = error(1132) + \
+                         (error(1132, "anndata")).format(vocab_name, tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -301,7 +253,7 @@ class CtrlVocabSetTierError(ValueError):
 
 
 class TierAppendError(ValueError):
-    """:ERROR 1140: TIER_APPEND_ERROR.
+    """:ERROR 1140:.
 
     Can't append annotation. Current end {!s:s} is highest than the given
     one {!s:s}.
@@ -309,8 +261,8 @@ class TierAppendError(ValueError):
     """
 
     def __init__(self, cur_end, ann_end):
-        self.parameter = TIER_APPEND_ERROR + \
-                      (_(TIER_APPEND_ERROR)).format(cur_end, ann_end)
+        self.parameter = error(1140) + \
+                         (error(1140, "anndata")).format(cur_end, ann_end)
 
     def __str__(self):
         return repr(self.parameter)
@@ -319,7 +271,7 @@ class TierAppendError(ValueError):
 
 
 class TierAddError(ValueError):
-    """:ERROR 1142: TIER_ADD_ERROR.
+    """:ERROR 1142:.
 
     Can't add annotation. An annotation with the same location is already
     in the tier at index {:d}.
@@ -327,8 +279,8 @@ class TierAddError(ValueError):
     """
 
     def __init__(self, index):
-        self.parameter = TIER_ADD_ERROR + \
-                         (_(TIER_ADD_ERROR)).format(index)
+        self.parameter = error(1142) + \
+                         (error(1142, "anndata")).format(index)
 
     def __str__(self):
         return repr(self.parameter)
@@ -337,15 +289,15 @@ class TierAddError(ValueError):
 
 
 class TierHierarchyError(ValueError):
-    """:ERROR 1144: TIER_HIERARCHY_ERROR.
+    """:ERROR 1144:.
 
     Attempt a modification in tier '{:s}' that invalidates its hierarchy.
 
     """
 
     def __init__(self, name):
-        self.parameter = TIER_HIERARCHY_ERROR + \
-                         (_(TIER_HIERARCHY_ERROR)).format(name)
+        self.parameter = error(1144) + \
+                         (error(1144, "anndata")).format(name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -354,16 +306,17 @@ class TierHierarchyError(ValueError):
 
 
 class TrsAddError(ValueError):
-    """:ERROR 1150: TRS_ADD_ERROR.
+    """:ERROR 1150:.
 
     Can't add: '{:s}' is already in '{:s}'.
 
     """
 
     def __init__(self, tier_name, transcription_name):
-        self.parameter = TRS_ADD_ERROR + \
-                    (_(TRS_ADD_ERROR)).format(tier_name,
-                                              transcription_name)
+        self.parameter = error(1150) + \
+                         (error(1150, "anndata")).format(
+                             tier_name,
+                             transcription_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -372,16 +325,16 @@ class TrsAddError(ValueError):
 
 
 class TrsRemoveError(ValueError):
-    """:ERROR 1152: TRS_REMOVE_ERROR.
+    """:ERROR 1152:.
 
     Can't remove: '{:s}' is not in '{:s}'.
 
     """
 
     def __init__(self, tier_name, transcription_name):
-        self.parameter = TRS_REMOVE_ERROR + \
-                      (_(TRS_REMOVE_ERROR)).format(tier_name,
-                                                   transcription_name)
+        self.parameter = error(1152) + \
+                         (error(1152, "anndata")).format(tier_name,
+                                                         transcription_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -390,16 +343,16 @@ class TrsRemoveError(ValueError):
 
 
 class TrsInvalidTierError(ValueError):
-    """:ERROR 1160: TRS_INVALID_TIER_ERROR.
+    """:ERROR 1160:.
 
     {:s} is not a tier of {:s}. It can't be included in its hierarchy.
 
     """
 
     def __init__(self, tier_name, transcription_name):
-        self.parameter = TRS_INVALID_TIER_ERROR + \
-                (_(TRS_INVALID_TIER_ERROR)).format(tier_name,
-                                                   transcription_name)
+        self.parameter = error(1160) + \
+                         (error(1160, "anndata")).format(tier_name,
+                                                         transcription_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -408,7 +361,7 @@ class TrsInvalidTierError(ValueError):
 
 
 class HierarchyAlignmentError(ValueError):
-    """:ERROR 1170: HIERARCHY_ALIGNMENT_ERROR.
+    """:ERROR 1170:.
 
     Can't create a time alignment between tiers: '{:s}' is not a superset
     of '{:s}'."
@@ -416,9 +369,9 @@ class HierarchyAlignmentError(ValueError):
     """
 
     def __init__(self, parent_tier_name, child_tier_name):
-        self.parameter = HIERARCHY_ALIGNMENT_ERROR + \
-               (_(HIERARCHY_ALIGNMENT_ERROR)).format(parent_tier_name,
-                                                     child_tier_name)
+        self.parameter = error(1170) + \
+                         (error(1170, "anndata")).format(parent_tier_name,
+                                                         child_tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -427,7 +380,7 @@ class HierarchyAlignmentError(ValueError):
 
 
 class HierarchyAssociationError(ValueError):
-    """:ERROR 1172: HIERARCHY_ASSOCIATION_ERROR.
+    """:ERROR 1172:.
 
     Can't create a time association between tiers: '{:s}' and '{:s}' are not
     supersets of each other.
@@ -435,9 +388,9 @@ class HierarchyAssociationError(ValueError):
     """
 
     def __init__(self, parent_tier_name, child_tier_name):
-        self.parameter = HIERARCHY_ASSOCIATION_ERROR + \
-             (_(HIERARCHY_ASSOCIATION_ERROR)).format(parent_tier_name,
-                                                     child_tier_name)
+        self.parameter = error(1172) + \
+                         (error(1172, "anndata")).format(parent_tier_name,
+                                                         child_tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -446,7 +399,7 @@ class HierarchyAssociationError(ValueError):
 
 
 class HierarchyParentTierError(ValueError):
-    """:ERROR 1174: HIERARCHY_PARENT_TIER_ERROR.
+    """:ERROR 1174:.
 
     The tier can't be added into the hierarchy: '{:s}' has already a link of
     type {:s} with its parent tier '{:s}'.
@@ -454,10 +407,10 @@ class HierarchyParentTierError(ValueError):
     """
 
     def __init__(self, child_tier_name, parent_tier_name, link_type):
-        self.parameter = HIERARCHY_PARENT_TIER_ERROR + \
-              (_(HIERARCHY_PARENT_TIER_ERROR)).format(child_tier_name,
-                                                      parent_tier_name,
-                                                      link_type)
+        self.parameter = error(1174) + \
+                         (error(1174, "anndata")).format(child_tier_name,
+                                                         parent_tier_name,
+                                                         link_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -466,7 +419,7 @@ class HierarchyParentTierError(ValueError):
 
 
 class HierarchyChildTierError(ValueError):
-    """:ERROR 1176: HIERARCHY_CHILD_TIER_ERROR.
+    """:ERROR 1176:.
 
     The tier '{:s}' can't be added into the hierarchy: a tier can't be its
     own child.
@@ -474,8 +427,8 @@ class HierarchyChildTierError(ValueError):
     """
 
     def __init__(self, tier_name):
-        self.parameter = HIERARCHY_CHILD_TIER_ERROR + \
-                     (_(HIERARCHY_CHILD_TIER_ERROR)).format(tier_name)
+        self.parameter = error(1176) + \
+                         (error(1176, "anndata")).format(tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -485,7 +438,7 @@ class HierarchyChildTierError(ValueError):
 
 
 class HierarchyAncestorTierError(ValueError):
-    """:ERROR 1178: HIERARCHY_ANCESTOR_TIER_ERROR.
+    """:ERROR 1178:.
 
     The tier can't be added into the hierarchy: '{:s}' is an ancestor
     of '{:s}'.
@@ -493,9 +446,9 @@ class HierarchyAncestorTierError(ValueError):
     """
 
     def __init__(self, child_tier_name, parent_tier_name):
-        self.parameter = HIERARCHY_ANCESTOR_TIER_ERROR + \
-           (_(HIERARCHY_ANCESTOR_TIER_ERROR)).format(child_tier_name,
-                                                     parent_tier_name)
+        self.parameter = error(1178) + \
+                         (error(1178, "anndata")).format(child_tier_name,
+                                                         parent_tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -506,15 +459,15 @@ class HierarchyAncestorTierError(ValueError):
 
 
 class AioError(IOError):
-    """:ERROR 1400: AIO_ERROR.
+    """:ERROR 1400:.
 
     No such file: '{!s:s}'.
 
     """
 
     def __init__(self, filename):
-        self.parameter = AIO_ERROR + \
-                         (_(AIO_ERROR)).format(filename)
+        self.parameter = error(1400) + \
+                         (error(1400, "anndata")).format(filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -523,17 +476,17 @@ class AioError(IOError):
 
 
 class AioEncodingError(UnicodeDecodeError):
-    """:ERROR 1500: AIO_ENCODING_ERROR.
+    """:ERROR 1500:.
 
     The file {filename} contains non {encoding} characters: {error}.
 
     """
 
-    def __init__(self, filename, error, encoding=sg.__encoding__):
-        self.parameter = AIO_ENCODING_ERROR + \
-                     (_(AIO_ENCODING_ERROR)).format(filename=filename,
-                                                    error=error,
-                                                    encoding=encoding)
+    def __init__(self, filename, error_msg, encoding=sg.__encoding__):
+        self.parameter = error(1500) + \
+                         (error(1500, "anndata")).format(filename=filename,
+                                                         error=error_msg,
+                                                         encoding=encoding)
 
     def __str__(self):
         return repr(self.parameter)
@@ -542,15 +495,15 @@ class AioEncodingError(UnicodeDecodeError):
 
 
 class AioFileExtensionError(IOError):
-    """:ERROR 1505: AIO_FILE_EXTENSION_ERROR.
+    """:ERROR 1505:.
 
     Fail formats: unrecognized extension for file {:s}.
 
     """
 
     def __init__(self, filename):
-        self.parameter = AIO_FILE_EXTENSION_ERROR + \
-                        (_(AIO_FILE_EXTENSION_ERROR)).format(filename)
+        self.parameter = error(1505) + \
+                         (error(1505, "anndata")).format(filename)
 
     def __str__(self):
         return repr(self.parameter)
@@ -559,15 +512,15 @@ class AioFileExtensionError(IOError):
 
 
 class AioMultiTiersError(IOError):
-    """:ERROR 1510: AIO_MULTI_TIERS_ERROR.
+    """:ERROR 1510:.
 
     The file format {!s:s} does not support multi-tiers.
 
     """
 
     def __init__(self, file_format):
-        self.parameter = AIO_MULTI_TIERS_ERROR + \
-                        (_(AIO_MULTI_TIERS_ERROR)).format(file_format)
+        self.parameter = error(1510) + \
+                         (error(1510, "anndata")).format(file_format)
 
     def __str__(self):
         return repr(self.parameter)
@@ -576,15 +529,15 @@ class AioMultiTiersError(IOError):
 
 
 class AioNoTiersError(IOError):
-    """:ERROR 1515: AIO_NO_TIERS_ERROR.
+    """:ERROR 1515:.
 
     The file format {!s:s} does not support to save no tiers.
 
     """
 
     def __init__(self, file_format):
-        self.parameter = AIO_NO_TIERS_ERROR + \
-                         (_(AIO_NO_TIERS_ERROR)).format(file_format)
+        self.parameter = error(1515) + \
+                         (error(1515, "anndata")).format(file_format)
 
     def __str__(self):
         return repr(self.parameter)
@@ -593,15 +546,15 @@ class AioNoTiersError(IOError):
 
 
 class AioLineFormatError(IOError):
-    """:ERROR 1520: AIO_LINE_FORMAT_ERROR.
+    """:ERROR 1520:.
 
     Unexpected format string at line {:d}: '{!s:s}'.
 
     """
 
     def __init__(self, number, line):
-        self.parameter = AIO_LINE_FORMAT_ERROR + \
-                       (_(AIO_LINE_FORMAT_ERROR)).format(number, line)
+        self.parameter = error(1520) + \
+                         (error(1520, "anndata")).format(number, line)
 
     def __str__(self):
         return repr(self.parameter)
@@ -610,15 +563,15 @@ class AioLineFormatError(IOError):
 
 
 class AioFormatError(IOError):
-    """:ERROR 1521: AIO_FORMAT_ERROR.
+    """:ERROR 1521:.
 
     Unexpected format about '{!s:s}'.
 
     """
 
     def __init__(self, line):
-        self.parameter = AIO_FORMAT_ERROR + \
-                         (_(AIO_FORMAT_ERROR)).format(line)
+        self.parameter = error(1521) + \
+                         (error(1521, "anndata")).format(line)
 
     def __str__(self):
         return repr(self.parameter)
@@ -628,16 +581,16 @@ class AioFormatError(IOError):
 
 
 class AioEmptyTierError(IOError):
-    """:ERROR 1525: AIO_EMPTY_TIER_ERROR.
+    """:ERROR 1525:.
 
     The file format {!s:s} does not support to save empty tiers: {:s}.
 
     """
 
     def __init__(self, file_format, tier_name):
-        self.parameter = AIO_EMPTY_TIER_ERROR + \
-                         (_(AIO_EMPTY_TIER_ERROR)).format(file_format,
-                                                          tier_name)
+        self.parameter = error(1525) + \
+                         (error(1525, "anndata")).format(file_format,
+                                                         tier_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -646,15 +599,15 @@ class AioEmptyTierError(IOError):
 
 
 class AioLocationTypeError(TypeError):
-    """:ERROR 1530: AIO_LOCATION_TYPE_ERROR.
+    """:ERROR 1530:.
 
     The file format {!s:s} does not support tiers with {:s}.
 
     """
 
     def __init__(self, file_format, location_type):
-        self.parameter = AIO_LOCATION_TYPE_ERROR + \
-                     (_(AIO_LOCATION_TYPE_ERROR)).format(file_format,
+        self.parameter = error(1530) + \
+                         (error(1530, "anndata")).format(file_format,
                                                          location_type)
 
     def __str__(self):
@@ -664,15 +617,15 @@ class AioLocationTypeError(TypeError):
 
 
 class TagValueError(ValueError):
-    """:ERROR 1190: TAG_VALUE_ERROR.
+    """:ERROR 1190:.
 
     {!s:s} is not a valid tag.
 
     """
 
     def __init__(self, tag_str):
-        self.parameter = TAG_VALUE_ERROR + \
-                         (_(TAG_VALUE_ERROR)).format(tag_str)
+        self.parameter = error(1190) + \
+                         (error(1190, "anndata")).format(tag_str)
 
     def __str__(self):
         return repr(self.parameter)

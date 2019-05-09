@@ -42,8 +42,9 @@ from sppas.src.config import sg
 from sppas.src.config import ui_translation
 from sppas.src.utils.datatype import sppasTime
 
-from ..log_file import sppasLogFile
+from ..logs import sppasLogFile
 from .tools import sppasSwissKnife
+from .windows import sppasStaticLine
 from .windows import sppasPanel
 from .windows import sppasBitmapTextButton
 from .dialogs import Feedback
@@ -205,7 +206,8 @@ class sppasLogWindow(wx.TopLevelWindow):
         super(sppasLogWindow, self).__init__(
             parent=parent,
             title='{:s} Log'.format(sg.__name__),
-            style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
+            style=wx.CAPTION | wx.RESIZE_BORDER)
+            #style=wx.DEFAULT_FRAME_STYLE & ~wx.CLOSE_BOX)
 
         # To fade-in and fade-out the opacity
         self.opacity_in = 0
@@ -271,8 +273,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         title = sppasLogTitlePanel(self)
         title.SetName('header')
         top_sizer.Add(title, 0, wx.EXPAND, 0)
-        line_top = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line_top, 0, wx.EXPAND, 0)
+        top_sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
 
         # add a panel for the messages
         msg_panel = sppasLogMessagePanel(
@@ -283,8 +284,7 @@ class sppasLogWindow(wx.TopLevelWindow):
         self.txt = msg_panel.txt
 
         # separate top and the rest with a line
-        line = wx.StaticLine(self, style=wx.LI_HORIZONTAL)
-        top_sizer.Add(line, 0, wx.EXPAND, 0)
+        top_sizer.Add(self.HorizLine(self), 0, wx.ALL | wx.EXPAND, 0)
 
         # add some action buttons
         actions = sppasLogActionPanel(self)
@@ -294,6 +294,18 @@ class sppasLogWindow(wx.TopLevelWindow):
         # Layout the content
         self.SetSizer(top_sizer)
         self.Layout()
+
+    # ------------------------------------------------------------------------
+
+    def HorizLine(self, parent, depth=3):
+        """Return an horizontal static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, depth))
+        line.SetSize(wx.Size(-1, depth))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
 
     # -----------------------------------------------------------------------
 
@@ -749,13 +761,11 @@ class sppasLogActionPanel(sppasPanel):
         send_btn = sppasBitmapTextButton(self, MSG_ACTION_SEND, name="mail-at")
 
         # organize buttons in a sizer
-        line1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        line2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
         action_sizer = wx.BoxSizer(wx.HORIZONTAL)
         action_sizer.Add(clear_btn, 2, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(line1, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(save_btn, 2, wx.ALL | wx.EXPAND, 1)
-        action_sizer.Add(line2, 0, wx.ALL | wx.EXPAND, 0)
+        action_sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         action_sizer.Add(send_btn, 2, wx.ALL | wx.EXPAND, 1)
 
         self.SetBackgroundColour(wx.GetApp().settings.action_bg_color)
@@ -763,3 +773,14 @@ class sppasLogActionPanel(sppasPanel):
         self.SetFont(wx.GetApp().settings.action_text_font)
 
         self.SetSizer(action_sizer)
+
+    # ------------------------------------------------------------------------
+
+    def VertLine(self):
+        """Return a vertical static line."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(1, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line

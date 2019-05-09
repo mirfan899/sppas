@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: utf8 -*-
 
 import unittest
@@ -14,7 +14,7 @@ from sppas.src.models.slm.statlangmodel import sppasSLM
 from sppas.src.models.slm.arpaio import sppasArpaIO
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.utils.compare import sppasCompare
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 
 from ..modelsexc import NgramOrderValueError
 from ..modelsexc import NgramCountValueError

@@ -67,7 +67,6 @@ from .ann.annlocation import sppasPoint
 from .ann.annlocation import sppasDisjoint
 from .ann.annotation import sppasAnnotation
 from .ann.annset import sppasAnnSet
-from .filters import sppasFilters
 
 __all__ = (
     'sppasMetaData',
@@ -85,7 +84,6 @@ __all__ = (
     'sppasDisjoint',
     'sppasInterval',
     'sppasPoint',
-    'sppasFilters',
     'sppasAnnSet',
     'aioutils'
 )

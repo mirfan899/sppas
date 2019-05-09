@@ -97,9 +97,9 @@ class HviteAligner(BaseAligner):
                 # dictionary:
                 for variant in pron.split("|"):
                     dictpron.add_pron(token, variant.replace("-", " "))
-                    if self._infersp is True:
-                        variant = variant + '-sil'
-                        dictpron.add_pron(token, variant.replace("-", " "))
+                    # if self._infersp is True:
+                    #     variant = variant + '-sil'
+                    #     dictpron.add_pron(token, variant.replace("-", " "))
 
                 # lab file (one token per line)
                 flab.write(token+"\n")

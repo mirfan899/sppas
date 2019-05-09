@@ -48,12 +48,10 @@ from sppas.src.anndata import sppasLabel
 from sppas.src.anndata import sppasAnnotation
 from sppas.src.anndata import sppasTier
 from sppas.src.anndata.aio import sppasXRA
-from sppas.src.utils.fileutils import sppasFileUtils
+from sppas.src.files.fileutils import sppasFileUtils
 from sppas.src.resources import sppasMapping
 
-from ..annotationsexc import BadInputError
 from ..annotationsexc import SizeInputsError
-from ..annotationsexc import NoDirectoryError
 
 from ..Align.tracksio import ListOfTracks
 from ..Align.tracksio import TrackNamesGenerator
@@ -479,6 +477,7 @@ class TestAlign(unittest.TestCase):
 
         a = sppasAlign()
         a.load_resources(model)
+
         tier_phn, tier_tok, tier_pron = a.convert(phn_tier, tok_tier, audio, TEMP)
 
         self.assertEqual(123, len(tier_phn))

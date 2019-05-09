@@ -34,16 +34,18 @@
 
 """
 import wx
+
 import logging
 try:
     from agw import floatspin as FS
+    import agw.ultimatelistctrl as ulc
 except ImportError:
     import wx.lib.agw.floatspin as FS
+    import wx.lib.agw.ultimatelistctrl as ulc
 
 from sppas.src.ui.wxgui.dialogs.basedialog import spBaseDialog
 from sppas.src.ui.wxgui.sp_icons import FILTER_RELATION
 from sppas.src.ui.wxgui.cutils.textutils import TextValidator
-import sppas.src.ui.wxgui.panels.ultimatelistctrl as ulc
 
 # ----------------------------------------------------------------------------
 # Constants

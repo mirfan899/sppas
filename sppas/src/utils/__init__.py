@@ -39,19 +39,14 @@ utils: utility functions used into SPPAS.
 :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
-from .fileutils import sppasFileUtils
-from .fileutils import sppasDirUtils
-from .fileutils import setup_logging
+
 from .compare import sppasCompare
 from .makeunicode import u, b
 from .makeunicode import sppasUnicode
 
 __all__ = (
-    'sppasFileUtils',
-    'sppasDirUtils',
     'sppasCompare',
     'sppasUnicode',
     'u',
     'b',
-    'setup_logging'
 )

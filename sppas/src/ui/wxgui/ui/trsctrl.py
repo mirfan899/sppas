@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -40,8 +40,8 @@ import wx
 
 from sppas.src.ui.wxgui.cutils.colorutils import PickRandomColour
 
-from tierctrl import TierCtrl
-from spControl import spControl
+from .tierctrl import TierCtrl
+from .spControl import spControl
 
 # ---------------------------------------------------------------------------
 

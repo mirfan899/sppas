@@ -32,24 +32,27 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import logging
 import wx
 import webbrowser
 
 from sppas.src.config import sg
 from sppas.src.config import ui_translation
 
-from .windows import sppasBitmapTextButton
+from .windows import sppasStaticLine
+from .windows import BitmapTextButton
 from .windows import sppasTextButton
-from .windows import sppasSimplebook
-from .windows import sppasBitmapButton
+from .windows import sppasBitmapButton, sppasBitmapTextButton
 from .windows import sppasPanel
 from .windows import sppasDialog
+from .windows.book import sppasSimplebook
 
-from .pages import sppasHomePanel
-from .pages import sppasFilesPanel
-from .pages import sppasAnnotatePanel
-from .pages import sppasAnalyzePanel
-from .pages import sppasPluginsPanel
+from .page_home import sppasHomePanel
+from .page_files import sppasFilesPanel
+from .page_annotate import sppasAnnotatePanel
+from .page_analyze import sppasAnalyzePanel
+from .page_plugins import sppasPluginsPanel
 
 from .dialogs import YesNoQuestion
 from .dialogs import About
@@ -81,7 +84,7 @@ class sppasMainWindow(sppasDialog):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This class:
 
@@ -89,19 +92,28 @@ class sppasMainWindow(sppasDialog):
         - does not inherit of wx.Frame because we don't need neither a
         status bar, nor a toolbar, nor a menu.
 
+    Styles:
+
+        - wx.CAPTION: Puts a caption on the dialog box
+        - wx.RESIZE_BORDER: Display a resizable frame around the window
+        - wx.CLOSE_BOX: Displays a close box on the frame
+        - wx.MAXIMIZE_BOX: Displays a maximize box on the dialog
+        - wx.MINIMIZE_BOX: Displays a minimize box on the dialog
+        - wx.DIALOG_NO_PARENT: Create an orphan dialog
+
     """
 
     def __init__(self):
         super(sppasMainWindow, self).__init__(
             parent=None,
             title=wx.GetApp().GetAppDisplayName(),
-            style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
+            style=wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.CAPTION | wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.MAXIMIZE_BOX | wx.MINIMIZE_BOX | wx.DIALOG_NO_PARENT)
 
         # Members
         self._init_infos()
 
         # Create the log window of the application and show it.
-        self.log_window = sppasLogWindow(self, wx.GetApp().GetAppLogLevel())
+        self.log_window = sppasLogWindow(self, wx.GetApp().get_log_level())
 
         # Fix this frame content
         self._create_content()
@@ -159,7 +171,7 @@ class sppasMainWindow(sppasDialog):
     def _create_book(self):
         """Create the simple book to manage the several pages of the frame.
 
-        Names of the pages are:
+        Names of the page_files are:
         page_welcome, page_files, page_annotate, page_analyze, page_plugins
 
         """
@@ -185,6 +197,7 @@ class sppasMainWindow(sppasDialog):
         # 5th: plugins
         book.AddPage(sppasPluginsPanel(book), text="")
 
+        book.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
         return book
 
     # -----------------------------------------------------------------------
@@ -249,14 +262,26 @@ class sppasMainWindow(sppasDialog):
 
         """
         key_code = event.GetKeyCode()
+        logging.debug('Main window received a key event. key_code={:d}'.format(key_code))
 
-        if key_code == wx.WXK_F4 and event.AltDown():
+        if key_code == wx.WXK_F4 and event.AltDown() and wx.Platform == "__WXMSW__":
+            # ALT+F4 on Windows to exit with confirmation
             self.on_exit(event)
+
+        elif key_code == 87 and event.CmdDown() and wx.Platform != "__WXMSW__":
+            # CMD+w on MacOS to exit with confirmation
+            self.on_exit(event)
+
+        elif key_code == 81 and event.CmdDown() and wx.Platform != "__WXMSW__":
+            # CMD+q on MacOS to force exit
+            self.exit()
+
         else:
+            # Keeps on going the event to the current page of the book.
             event.Skip()
 
     # -----------------------------------------------------------------------
-    # Callbaks to events
+    # Callbacks to events
     # -----------------------------------------------------------------------
 
     def on_exit(self, event):
@@ -289,7 +314,8 @@ class sppasMainWindow(sppasDialog):
         # Stop redirecting logging to this application
         self.log_window.redirect_logging(False)
         # Terminate all frames
-        self.DestroyChildren()
+        if wx.Platform == "__WXMSW__":
+            self.DestroyChildren()
         self.DestroyFadeOut(deltaN=-6)
 
     # -----------------------------------------------------------------------
@@ -327,6 +353,7 @@ class sppasMainWindow(sppasDialog):
 
         # then change to the page
         book.ChangeSelection(p)
+        w.Refresh()
 
 # ---------------------------------------------------------------------------
 
@@ -346,6 +373,7 @@ class sppasMenuPanel(sppasPanel):
     def __init__(self, parent):
         super(sppasMenuPanel, self).__init__(
             parent=parent,
+            style=wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.NO_BORDER,
             name="header")
 
         self.SetMinSize(wx.Size(-1, wx.GetApp().settings.title_height))
@@ -416,6 +444,7 @@ class sppasActionsPanel(sppasPanel):
 
         super(sppasActionsPanel, self).__init__(
             parent=parent,
+            style = wx.WANTS_CHARS | wx.TAB_TRAVERSAL | wx.NO_BORDER,
             name="actions")
 
         settings = wx.GetApp().settings
@@ -424,25 +453,41 @@ class sppasActionsPanel(sppasPanel):
         self.SetMinSize(wx.Size(-1, settings.action_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
-        exit_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_EXIT, name="exit")
-        about_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_ABOUT, name="about")
-        settings_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_SETTINGS, name="settings")
-        log_btn = sppasBitmapTextButton(
-            self, MSG_ACTION_VIEWLOGS, name="view_log")
-
-        vertical_line_1 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        vertical_line_2 = wx.StaticLine(self, style=wx.LI_VERTICAL)
-        vertical_line_3 = wx.StaticLine(self, style=wx.LI_VERTICAL)
+        exit_btn = sppasBitmapTextButton(self, MSG_ACTION_EXIT, "exit")
+        about_btn = self.create_button(MSG_ACTION_ABOUT, "about")
+        settings_btn = self.create_button(MSG_ACTION_SETTINGS, "settings")
+        log_btn = self.create_button(MSG_ACTION_VIEWLOGS, "view_log")
 
         sizer.Add(log_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_1, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(settings_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_2, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(about_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(vertical_line_3, 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(), 0, wx.ALL | wx.EXPAND, 0)
         sizer.Add(exit_btn, 4, wx.ALL | wx.EXPAND, 0)
 
         self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def create_button(self, text, icon):
+        btn = BitmapTextButton(self, label=text, name=icon)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize((32, 32))
+
+        return btn
+
+    # ------------------------------------------------------------------------
+
+    def VertLine(self):
+        """Return a vertical static line."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(1, -1))
+        line.SetSize(wx.Size(1, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line

@@ -36,7 +36,7 @@ GOTO EndHeader
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
     :summary:      SPPAS for Windows.
 
 """
@@ -44,10 +44,21 @@ GOTO EndHeader
 
 @echo off
 
-if exist c:\Python27\python.exe (
-    start "" c:\Python27\python.exe .\sppas\bin\sppasgui.py
+SET PYTHONIOENCODING=UTF-8
+
+if exist C:\Python27\pythonw.exe (
+
+    start "" C:\Python27\pythonw.exe .\sppas\bin\sppasgui.py
+
 ) else (
-    start "" python.exe .\sppas\bin\sppasgui.py
+    
+    if exist pythonw.exe (
+        start "" pythonw.exe .\sppas\bin\sppasgui.py
+
+    ) else (
+
+        start "" python.exe .\sppas\bin\sppasgui.py
+    )
 )
 
 exit

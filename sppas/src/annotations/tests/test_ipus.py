@@ -174,8 +174,8 @@ class TestSilences(unittest.TestCase):
         self.assertEqual(th, threshold)
         # we have to found 2 silences: at the beginning and at the end
         self.assertEqual(2, len(silences))
-        self.assertEqual((0, 2200), silences[0])
-        self.assertEqual((5920, 8000), silences[1])
+        self.assertEqual((0, 2080), silences[0])
+        self.assertEqual((5760, 8000), silences[1])
 
     # -----------------------------------------------------------------------
 
@@ -187,7 +187,7 @@ class TestSilences(unittest.TestCase):
                                          shift_dur_start=0.,
                                          shift_dur_end=0.)
         self.assertEqual(1, len(tracks))
-        self.assertEqual((2200, 5920), tracks[0])
+        self.assertEqual((2080, 5760), tracks[0])
 
 # ---------------------------------------------------------------------------
 

@@ -32,7 +32,7 @@ sys.path.append(os.path.join("..", ".."))
 
 from sppas.src.anndata import sppasRW
 from sppas.src.anndata import sppasTranscription
-from sppas.src.anndata import sppasFilters
+from sppas.src.analysis import sppasTierFilters
 from sppas.src.utils.makeunicode import u
 
 # ----------------------------------------------------------------------------
@@ -91,7 +91,7 @@ if __name__ == '__main__':
     tier = get_tier(filename, "PhonAlign", verbose)
 
     # Create a filter object
-    f = sppasFilters(tier)
+    f = sppasTierFilters(tier)
 
     # Apply a filter: Extract phonemes 'a'
     # ------------------------------------

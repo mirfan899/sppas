@@ -38,6 +38,8 @@ Create and run the application:
 >>> app.run()
 
 """
+
+import traceback
 import time
 import wx
 import logging
@@ -51,10 +53,12 @@ except ImportError:
 
 from sppas.src.config import sg
 
-from sppas.src.config.ui import sppasAppConfig
+from sppas.src.ui.cfg import sppasAppConfig
 from .main_settings import WxAppSettings
 from .main_window import sppasMainWindow
 from .tools import sppasSwissKnife
+
+from ..logs import sppasLogSetup
 
 # ---------------------------------------------------------------------------
 
@@ -66,7 +70,7 @@ class sppasApp(wx.App):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -94,6 +98,7 @@ class sppasApp(wx.App):
 
         # Fix logging. Notice that Settings will be fixed at 'run'.
         self.settings = None
+        self._logging = None
         self.process_command_line_args()
         self.setup_python_logging()
 
@@ -101,8 +106,8 @@ class sppasApp(wx.App):
     # Public methods
     # -----------------------------------------------------------------------
 
-    def GetAppLogLevel(self):
-        """Return the log level."""
+    def get_log_level(self):
+        """Return the current level of the logging."""
         return self.__cfg.log_level
 
     # -----------------------------------------------------------------------
@@ -110,7 +115,7 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def process_command_line_args(self):
-        """Process the command line...
+        """Process the command line.
 
         This is an opportunity for users to fix some args.
 
@@ -118,7 +123,7 @@ class sppasApp(wx.App):
         # create a parser for the command-line arguments
         parser = ArgumentParser(
             usage="{:s} [options]".format(path.basename(__file__)),
-            description="... " + sg.__longname__)
+            description="... " + sg.__name__ + " " + sg.__title__)
 
         # add arguments here
         parser.add_argument("-l", "--log_level",
@@ -146,24 +151,18 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def setup_python_logging(self):
-        """Setup python logging to stderr."""
-        # Fix the format of the messages
-        format_msg = "%(asctime)s [%(levelname)s] %(message)s"
-
-        handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter(format_msg))
-        handler.setLevel(self.__cfg.log_level)
-        logging.getLogger().addHandler(handler)
-        logging.getLogger().setLevel(self.__cfg.log_level)
-
-        # Show a welcome message on the console!
-        logging.info("{:s} logging set up level={:d}"
-                     "".format(self.GetAppDisplayName(), self.__cfg.log_level))
+        """Setup python logging to the standard stream handler."""
+        self._logging = sppasLogSetup(self.__cfg.log_level)
+        self._logging.stream_handler()
 
     # -----------------------------------------------------------------------
 
     def show_splash_screen(self):
-        """Create and show the splash image."""
+        """Create and show the splash image.
+
+        It is supposed that wx.adv is available (test it first!).
+
+        """
         delay = self.__cfg.splash_delay
         if delay <= 0:
             return
@@ -184,7 +183,11 @@ class sppasApp(wx.App):
     # -----------------------------------------------------------------------
 
     def background_initialization(self):
-        """Initialize the application. """
+        """Initialize the application.
+
+        Load the settings... and various other stuff to do.
+
+        """
         self.settings = WxAppSettings()
 
         # here, we only sleep some time to simulate we're doing something.
@@ -198,28 +201,52 @@ class sppasApp(wx.App):
         A splash screen is displayed while a background initialization is
         doing things, then the main frame is created.
 
+        :return: (int) Exit status
+
         """
-        splash = None
-        if adv_import:
-            splash = self.show_splash_screen()
-        self.background_initialization()
+        try:
 
-        # here we could fix things like:
-        #  - is first launch? No? so create config! and/or display a welcome msg!
-        #  - fix config dir,
-        #  - etc
+            splash = None
+            if adv_import:
+                splash = self.show_splash_screen()
+            self.background_initialization()
 
-        # Create the main frame of the application and show it.
-        window = sppasMainWindow()
-        self.SetTopWindow(window)
-        if splash:
-            splash.Close()
-        self.MainLoop()
+            # here we could fix things like:
+            #  - is first launch? No? so create config! and/or display a welcome msg!
+            #  - fix config dir,
+            #  - etc
+
+            # Create the main frame of the application and show it.
+            window = sppasMainWindow()
+            self.SetTopWindow(window)
+            if splash:
+                splash.Close()
+            self.MainLoop()
+
+        except Exception as e:
+            # All exception messages of SPPAS are normalized.
+            # We assign the error number at the exit status
+            msg = str(e)
+            error = -1
+            if msg.startswith(":ERROR "):
+                logging.error(msg)
+                try:
+                    msg = msg[msg.index(" "):]
+                    if ':' in msg:
+                        msg = msg[:msg.index(":")]
+                        error = int(msg)
+                except:
+                    pass
+            else:
+                logging.error(traceback.format_exc())
+            return error
+
+        return 0
 
     # -----------------------------------------------------------------------
 
     def OnExit(self):
-        """Optional. Override the already existing method to kill the app.
+        """Override the already existing method to kill the app.
 
         This method is invoked when the user:
 
@@ -231,6 +258,9 @@ class sppasApp(wx.App):
 
         """
         logging.info('Exit the wx.App() of {:s}.'.format(sg.__name__))
+
+        if self.HasPendingEvents() is True:
+            logging.warning('The application has pending events.')
 
         # Save settings
         self.settings.save()

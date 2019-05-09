@@ -4,8 +4,8 @@ program:    soxplugin
 author:     Brigitte Bigi
 contact:    brigite.bigi@gmail.com
 date:       2017-07-26
-version:    1.1
-copyright:  Copyright (C) 2017  Brigitte Bigi
+version:    1.2
+copyright:  Copyright (C) 2017-2019  Brigitte Bigi
 license:    GNU Public License version 3 or any later version
 brief:      SPPAS plugin for sox.
 

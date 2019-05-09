@@ -33,18 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.config import structs_translation
 
-# -----------------------------------------------------------------------
-
-_ = structs_translation.gettext
-
-# -----------------------------------------------------------------------
-
-META_KEY_ERROR = ":ERROR 6010: "
-LANG_TYPE_ERROR = ":ERROR 6020: "
-LANG_PATH_ERROR = ":ERROR 6024: "
-LANG_NAME_ERROR = ":ERROR 6028: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
@@ -57,8 +47,8 @@ class MetaKeyError(KeyError):
     """
 
     def __init__(self, key):
-        self.parameter = META_KEY_ERROR + \
-                         (_(META_KEY_ERROR)).format(meta=key)
+        self.parameter = error(6010) + \
+                         (error(6010, "structs")).format(meta=key)
 
     def __str__(self):
         return repr(self.parameter)
@@ -75,8 +65,8 @@ class LangTypeError(TypeError):
     """
 
     def __init__(self, lang_type):
-        self.parameter = LANG_TYPE_ERROR + \
-                         (_(LANG_TYPE_ERROR)).format(string=lang_type)
+        self.parameter = error(6020) + \
+                         (error(6020, "structs")).format(string=lang_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -86,13 +76,14 @@ class LangTypeError(TypeError):
 
 class LangPathError(TypeError):
     """:ERROR 6024:.
+
     The resource folder {dirname} does not exists.
 
     """
 
     def __init__(self, folder):
-        self.parameter = LANG_PATH_ERROR + \
-                         (_(LANG_PATH_ERROR)).format(dirname=folder)
+        self.parameter = error(6024) + \
+                         (error(6024, "structs")).format(dirname=folder)
 
     def __str__(self):
         return repr(self.parameter)
@@ -102,14 +93,15 @@ class LangPathError(TypeError):
 
 class LangNameError(ValueError):
     """:ERROR 6028:.
+
     The language must be "und" or one of the language list.
     Unknown language {lang}.
 
     """
 
     def __init__(self, lang):
-        self.parameter = LANG_NAME_ERROR + \
-                         (_(LANG_NAME_ERROR)).format(lang=lang)
+        self.parameter = error(6028) + \
+                         (error(6028, "structs")).format(lang=lang)
 
     def __str__(self):
         return repr(self.parameter)

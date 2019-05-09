@@ -53,10 +53,10 @@ sys.path.append(SPPAS)
 from sppas import sg, annots
 from sppas import sppasIntsint
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.param import sppasParam
-from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.utils.fileutils import setup_logging
-from sppas.src.config.ui import sppasAppConfig
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
     
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
     
-    parameters = sppasParam(["Intsint.ini"])
+    parameters = sppasParam(["intsint.json"])
     ann_step_idx = parameters.activate_annotation("intsint")
     ann_options = parameters.get_options(ann_step_idx)
     
@@ -160,9 +160,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -177,14 +179,14 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        intsint = sppasIntsint(logfile=None)
+        intsint = sppasIntsint(log=None)
         intsint.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             intsint.run([args.i], output_file=args.o)
         else:
             trs = intsint.run([args.i])
             for ann in trs[0]:
-                print("{:f} {:s}".format(
+                print("{} {:s}".format(
                     ann.get_location().get_best().get_midpoint(),
                     ann.get_best_tag().get_typed_content()))
 

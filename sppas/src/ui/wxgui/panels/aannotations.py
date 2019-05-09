@@ -38,8 +38,11 @@ import wx
 import wx.lib.newevent
 import wx.lib.scrolledpanel
 
+from sppas import msg
+from sppas import u
+
 from sppas.src.annotations.param import sppasParam
-from sppas.src.ui.log_file import sppasLogFile
+from sppas.src.ui.logs import sppasLogFile
 
 from sppas.src.ui.wxgui.cutils.imageutils import spBitmap
 from sppas.src.ui.wxgui.cutils.ctrlutils import CreateGenButton
@@ -56,9 +59,16 @@ from sppas.src.ui.wxgui.sp_icons import ANNOTATE_ICON
 import sppas.src.ui.wxgui.ui.CustomCheckBox as CCB
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
+# -----------------------------------------------------------------------
+
+
+def _(message):
+    return u(msg(message, "ui"))
+
 # ----------------------------------------------------------------------------
 # Constants
 # ----------------------------------------------------------------------------
+
 
 LANG_NONE = "---"
 
@@ -130,7 +140,7 @@ class sppasStepPanel(wx.Panel):
         self.text.Wrap(300)
 
         # link to configure the annotation
-        self.link = wx.StaticText(self, -1, "Configure...")
+        self.link = wx.StaticText(self, -1, _("Configure") + "...")
         self.__apply_preferences(self.link)
         self.link.SetForegroundColour(wx.Colour(80, 100, 220))
         self.link.Bind(wx.EVT_LEFT_UP, self.on_click)
@@ -267,8 +277,8 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
                           self._prefsIO.GetValue('M_BUTTON_ICONSIZE'),
                           self._prefsIO.GetValue('M_ICON_THEME'))
         self._brun = CreateGenButton(self, RUN_ID, runBmp,
-                                     text="  Perform annotations  ",
-                                     tooltip="Automatically annotate selected files.",
+                                     text="  "+_("Perform annotations") + "  ",
+                                     tooltip=_("Automatically annotate selected files"),
                                      colour=wx.Colour(220, 100, 80),
                                      font=self._prefsIO.GetValue('M_FONT'))
 
@@ -364,17 +374,15 @@ class AnnotationsPanel(wx.lib.scrolledpanel.ScrolledPanel):
         Fix new preferences.
         """
         self._prefsIO = prefs
-        self.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
-        self.SetForegroundColour( self._prefsIO.GetValue('M_FG_COLOUR') )
-        self.SetFont( self._prefsIO.GetValue('M_FONT') )
+        self.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
+        self.SetForegroundColour(self._prefsIO.GetValue('M_FG_COLOUR'))
+        self.SetFont(self._prefsIO.GetValue('M_FONT'))
 
-        self._brun.SetFont( self._prefsIO.GetValue('M_FONT') )
-        self.link_btn.SetBackgroundColour( self._prefsIO.GetValue('M_BG_COLOUR') )
+        self._brun.SetFont(self._prefsIO.GetValue('M_FONT'))
+        self.link_btn.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
 
         self.steplist_panel.SetBackgroundColour(self._prefsIO.GetValue('M_BG_COLOUR'))
         for sp in self.step_panels:
-            sp.SetPrefs( prefs )
+            sp.SetPrefs(prefs)
 
-        self.parameters.set_output_format( self._prefsIO.GetValue('M_OUTPUT_EXT') )
-
-# ----------------------------------------------------------------------------
+        self.parameters.set_output_format(self._prefsIO.GetValue('M_OUTPUT_EXT'))

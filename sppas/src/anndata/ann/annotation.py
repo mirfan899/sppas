@@ -40,6 +40,7 @@ from ..metadata import sppasMetaData
 from .annlabel import sppasTag
 from .annlabel import sppasLabel
 from .annlocation import sppasLocation
+from .annlabel import sppasTagCompare
 
 # ----------------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ class sppasAnnotation(sppasMetaData):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     A sppasAnnotation() is defined as a container for:
 
@@ -392,7 +393,10 @@ class sppasAnnotation(sppasMetaData):
         if label.is_tagged() is False:
             return False
 
-        r = label.contains(tag, function)
+        t = sppasTagCompare()
+        tag_functions = list()
+        tag_functions.append((t.get(function), tag.get_typed_content(), reverse))
+        r = label.match(tag_functions)
         if reverse is False:
             return r
 
@@ -586,6 +590,11 @@ class sppasAnnotation(sppasMetaData):
 
     # -----------------------------------------------------------------------
     # Overloads
+    # -----------------------------------------------------------------------
+
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
     # -----------------------------------------------------------------------
 
     def __repr__(self):

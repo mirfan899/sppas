@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -649,7 +649,7 @@ class AudioRoamerPanel(wx.Panel):
         static_tx = wx.StaticText(self, -1, "")
         gbs.Add(static_tx, (4, 0), (1, 2), flag=wx.LEFT, border=2)
 
-        static_tx = wx.StaticText(self, -1, "Automatic detection of silences:")
+        static_tx = wx.StaticText(self, -1, "Automatic detection of IPUs (by default):")
         gbs.Add(static_tx, (5, 0), (1, 2), flag=wx.LEFT, border=2)
         self._wxobj["titleipus"] = (static_tx, None)
 

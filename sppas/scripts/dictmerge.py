@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -46,7 +46,8 @@ sys.path.append(SPPAS)
 
 from sppas.src.config import separators
 from sppas.src.resources.dictpron import sppasDictPron
-from sppas.src.utils.fileutils import setup_logging
+from sppas.src.ui import sppasLogSetup
+from sppas.src.ui.cfg import sppasAppConfig
 
 # ----------------------------------------------------------------------------
 # Verify and extract args:
@@ -85,10 +86,16 @@ args = parser.parse_args()
 
 # ----------------------------------------------------------------------------
 
-if not args.quiet:
-    setup_logging(0, None)
-else:
-    setup_logging(30, None)
+# Redirect all messages to logging
+# --------------------------------
+
+with sppasAppConfig() as cg:
+    if not args.quiet:
+        log_level = cg.log_level
+    else:
+        log_level = cg.quiet_log_level
+    lgs = sppasLogSetup(log_level)
+    lgs.stream_handler()
 
 # ----------------------------------------------------------------------------
 

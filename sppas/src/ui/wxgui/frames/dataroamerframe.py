@@ -37,15 +37,15 @@
 """
 import wx
 
-from baseframe import ComponentFrame
 
 from sppas.src.ui.wxgui.sp_icons import DATAROAMER_APP_ICON
 from sppas.src.ui.wxgui.sp_icons import NEW_FILE
 from sppas.src.ui.wxgui.sp_icons import SAVE_FILE
 from sppas.src.ui.wxgui.sp_icons import SAVE_AS_FILE
 from sppas.src.ui.wxgui.sp_icons import SAVE_ALL_FILE
-
 from sppas.src.ui.wxgui.clients.dataroamerclient import DataRoamerClient
+
+from .baseframe import ComponentFrame
 
 # ----------------------------------------------------------------------------
 # Constants

@@ -217,6 +217,11 @@ class sppasCtrlVocab(sppasMetaData):
     # Overloads
     # -----------------------------------------------------------------------
 
+    def __format__(self, fmt):
+        return str(self).__format__(fmt)
+
+    # -----------------------------------------------------------------------
+
     def __iter__(self):
         for a in self.__entries:
             yield a

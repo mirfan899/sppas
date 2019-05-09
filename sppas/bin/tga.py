@@ -53,11 +53,11 @@ sys.path.append(SPPAS)
 
 from sppas import sg, annots
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.TGA import sppasTGA
-from sppas.src.annotations.param import sppasParam
-from sppas.src.utils.fileutils import setup_logging
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sppasTGA
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 if __name__ == "__main__":
 
@@ -65,7 +65,7 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["TGA.ini"])
+    parameters = sppasParam(["tga.json"])
     ann_step_idx = parameters.activate_annotation("tga")
     ann_options = parameters.get_options(ann_step_idx)
 
@@ -163,9 +163,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -181,7 +183,7 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        ann = sppasTGA(logfile=None)
+        ann = sppasTGA(log=None)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             ann.run([args.i], output_file=args.o)
@@ -190,7 +192,7 @@ if __name__ == "__main__":
             for tier in trs:
                 print(tier.get_name())
                 for a in tier:
-                    print("{:f} {:f} {:s}".format(
+                    print("{} {} {:s}".format(
                         a.get_location().get_best().get_begin().get_midpoint(),
                         a.get_location().get_best().get_end().get_midpoint(),
                         a.serialize_labels(" ")))

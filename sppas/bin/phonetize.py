@@ -37,7 +37,7 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 :summary:      Phonetization automatic annotation.
 
 """
@@ -51,14 +51,14 @@ sys.path.append(SPPAS)
 
 from sppas import sg, annots
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.Phon.sppasphon import sppasPhon
+from sppas import sppasPhon
 from sppas.src.annotations.Phon.phonetize import sppasDictPhonetizer
-from sppas.src.resources.dictpron import sppasDictPron
-from sppas.src.resources.mapping import sppasMapping
-from sppas.src.annotations.param import sppasParam
-from sppas.src.utils.fileutils import setup_logging
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sppasDictPron
+from sppas import sppasMapping
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 
 if __name__ == "__main__":
@@ -67,8 +67,8 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # -----------------------------------------------------------------------
 
-    parameters = sppasParam(["Phon.ini"])
-    ann_step_idx = parameters.activate_annotation("phon")
+    parameters = sppasParam(["phonetize.json"])
+    ann_step_idx = parameters.activate_annotation("phonetize")
     ann_options = parameters.get_options(ann_step_idx)
 
     # -----------------------------------------------------------------------
@@ -183,9 +183,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -204,7 +206,7 @@ if __name__ == "__main__":
             print("argparse.py: error: option -r is required with option -i")
             sys.exit(1)
 
-        ann = sppasPhon(logfile=None)
+        ann = sppasPhon(log=None)
         ann.load_resources(args.r, args.m)
         ann.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
@@ -215,11 +217,11 @@ if __name__ == "__main__":
                 print(tier.get_name())
                 for a in tier:
                     if a.location_is_point():
-                        print("{:d}, {:s}".format(
+                        print("{}, {:s}".format(
                             a.get_location().get_best().get_midpoint(),
                             a.serialize_labels(" ")))
                     else:
-                        print("{:f}, {:f}, {:s}".format(
+                        print("{}, {}, {:s}".format(
                             a.get_location().get_best().get_begin().get_midpoint(),
                             a.get_location().get_best().get_end().get_midpoint(),
                             a.serialize_labels(" ")))

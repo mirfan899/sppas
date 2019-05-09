@@ -28,38 +28,98 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.sppasexc.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.sppasexc.py
+    ~~~~~~~~~~~~~~~
 
 Global exceptions for sppas.
 
 """
 
-from sppas.src.config import globals_translation
+from sppas.src.config import error
+
 
 # -----------------------------------------------------------------------
 
-_ = globals_translation.gettext
+
+class sppasTypeError(TypeError):
+    """:ERROR 100:.
+
+    {!s:s} is not of the expected type '{:s}'.
+
+    """
+
+    def __init__(self, rtype, expected):
+        self.parameter = error(100) + \
+                         (error(100, "globals")).format(rtype, expected)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 # -----------------------------------------------------------------------
 
-NEG_VALUE_ERROR = ":ERROR 010: "
-INTERVAL_RANGE_ERROR = ":ERROR 012: "
-RANGE_INDEX_ERROR = ":ERROR 014: "
+
+class sppasIndexError(IndexError):
+    """:ERROR 200:.
+
+    Invalid index value {:d}.
+
+    """
+
+    def __init__(self, index):
+        self.parameter = error(200) + \
+                         (error(200, "globals")).format(index)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class sppasKeyError(KeyError):
+    """:ERROR 250:.
+
+    Invalid key '{!s:s}' for data '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = error(250) + \
+                         (error(250, "globals")).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+
+# -----------------------------------------------------------------------
+
+
+class sppasValueError(ValueError):
+    """:ERROR 300:.
+
+    Invalid value '{!s:s}' for '{!s:s}'.
+
+    """
+
+    def __init__(self, data_name, value):
+        self.parameter = error(300) + \
+                         (error(300, "globals")).format(value, data_name)
+
+    def __str__(self):
+        return repr(self.parameter)
 
 # -----------------------------------------------------------------------
 
 
 class NegativeValueError(ValueError):
-    """:ERROR 010: NEG_VALUE_ERROR.
+    """:ERROR 010:.
 
     Expected a positive value. Got {value}.
 
     """
 
     def __init__(self, value):
-        self.parameter = NEG_VALUE_ERROR + \
-                         (_(NEG_VALUE_ERROR)).format(value=value)
+        self.parameter = error('010') + \
+                         (error('010', "globals")).format(value=value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -68,15 +128,15 @@ class NegativeValueError(ValueError):
 
 
 class RangeBoundsException(ValueError):
-    """:ERROR 012: INTERVAL_RANGE_ERROR.
+    """:ERROR 012:.
 
     Min value {} is bigger than max value {}.'
 
     """
 
     def __init__(self, min_value, max_value):
-        self.parameter = INTERVAL_RANGE_ERROR + \
-                         (_(INTERVAL_RANGE_ERROR)).format(
+        self.parameter = error('012') + \
+                         (error('012', "globals")).format(
                              min_value=min_value,
                              max_value=max_value)
 
@@ -88,15 +148,15 @@ class RangeBoundsException(ValueError):
 
 
 class IndexRangeException(IndexError):
-    """:ERROR 014: RANGE_INDEX_ERROR.
+    """:ERROR 014:.
 
     List index {} out of range [{},{}].
 
     """
 
     def __init__(self, value, min_value, max_value):
-        self.parameter = INTERVAL_RANGE_ERROR + \
-                         (_(INTERVAL_RANGE_ERROR)).format(
+        self.parameter = error('014') + \
+                         (error('014', "globals")).format(
                              value=value,
                              min_value=min_value,
                              max_value=max_value)
@@ -104,3 +164,36 @@ class IndexRangeException(IndexError):
     def __str__(self):
         return repr(self.parameter)
 
+# -----------------------------------------------------------------------
+
+
+class IOExtensionException(IOError):
+    """:ERROR 110:.
+
+    Unknown extension for filename {:s}'
+
+    """
+
+    def __init__(self, filename):
+        self.parameter = error('110') + \
+                         (error('110', "globals")).format(filename)
+
+    def __str__(self):
+        return repr(self.parameter)
+
+# -----------------------------------------------------------------------
+
+
+class NoDirectoryError(IOError):
+    """:ERROR 112:.
+
+    The directory {dirname} does not exist.
+
+    """
+
+    def __init__(self, dirname):
+        self.parameter = error(112) + \
+                         (error(112, "globals")).format(dirname=dirname)
+
+    def __str__(self):
+        return repr(self.parameter)

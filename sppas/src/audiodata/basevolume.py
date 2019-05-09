@@ -185,12 +185,23 @@ class sppasBaseVolume(object):
 
     def zscores(self):
         """Return the z-scores of RMS values.
+
         The z-score determines the relative location of a data value.
         
         :returns: (list of float)
 
         """
         return variability.lzs(self._volumes)
+
+    # -----------------------------------------------------------------------
+
+    def stderr(self):
+        """Calculate the standard error of the RMS values.
+
+        :returns: (float)
+
+        """
+        return variability.lsterr(self._volumes)
 
     # -----------------------------------------------------------------------
 

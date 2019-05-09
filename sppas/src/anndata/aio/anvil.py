@@ -125,6 +125,7 @@ class sppasAnvil(sppasBaseIO):
         self._accept_overlaps = False   # to be verified
 
         self.default_extension = "anvil"
+        self.software = "Anvil"
 
     # -----------------------------------------------------------------------
 

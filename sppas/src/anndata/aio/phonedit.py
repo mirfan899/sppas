@@ -64,7 +64,7 @@ from ..ann.annlabel import sppasLabel
 from ..ann.annlabel import sppasTag
 
 from .basetrs import sppasBaseIO
-from .aioutils import format_labels
+from .aioutils import format_labels, is_ortho_tier
 from .aioutils import load
 
 # ---------------------------------------------------------------------------
@@ -90,6 +90,8 @@ class sppasBasePhonedit(sppasBaseIO):
         if name is None:
             name = self.__class__.__name__
         super(sppasBasePhonedit, self).__init__(name)
+
+        self.software = "Phonedit"
 
         self._accept_multi_tiers = True
         self._accept_no_tiers = False
@@ -326,7 +328,10 @@ class sppasMRK(sppasBasePhonedit):
 
             # ... tag text
             content = " ".join(tab_line[:-2])
-            labels = format_labels(sppasMRK._format_text(content))
+            content = sppasMRK._format_text(content)
+            if is_ortho_tier(tier.get_name()) is False:
+                content = content.replace(" ", "\n")
+            labels = format_labels(content, separator="\n")
 
             # Create/Add the annotation into the tier
             ann = tier.create_annotation(sppasLocation(localization),

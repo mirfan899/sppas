@@ -33,6 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import logging
 import wx
 
 from sppas.src.config import ui_translation
@@ -61,11 +63,12 @@ class sppasBaseMessageDialog(sppasDialog):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
-    def __init__(self, parent, message, style=wx.ICON_INFORMATION):
+    def __init__(self, parent, message, title=None, style=wx.ICON_INFORMATION):
         """Create a dialog with a message.
 
         :param parent: (wx.Window)
         :param message: (str) the file to display in this frame.
+        :param title: (str) a title to display in the header. Default is the icon one.
         :param style: ONE of wx.ICON_INFORMATION, wx.ICON_ERROR, wx.ICON_EXCLAMATION, wx.YES_NO
 
         """
@@ -74,13 +77,13 @@ class sppasBaseMessageDialog(sppasDialog):
             title="Message",
             style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
 
-        self._create_content(style, message)
+        self._create_content(style, message, title)
         self._create_buttons()
 
         # Fix frame properties
-        self.SetMinSize((320, 200))
-        w = int(wx.GetApp().settings.frame_size[0] * 0.3)
-        h = int(wx.GetApp().settings.frame_size[1] * 0.3)
+        #self.SetMinSize(wx.Size(320, 200))
+        w = int(wx.GetApp().settings.frame_size[0] * 0.4)
+        h = int(wx.GetApp().settings.frame_size[1] * 0.4)
         self.SetSize(wx.Size(w, h))
 
         self.LayoutComponents()
@@ -89,17 +92,30 @@ class sppasBaseMessageDialog(sppasDialog):
 
     # -----------------------------------------------------------------------
 
-    def _create_content(self, style, message):
+    def _create_content(self, style, message, title):
         """Create the content of the message dialog."""
         # Create the header
         if style == wx.ICON_ERROR:
-            self.CreateHeader(MSG_HEADER_ERROR, icon_name="error")
+            icon = "error"
+            if title is None:
+                title = MSG_HEADER_ERROR
+
         elif style == wx.ICON_WARNING:
-            self.CreateHeader(MSG_HEADER_WARNING, icon_name="warning")
+            icon = "warning"
+            if title is None:
+                title = MSG_HEADER_WARNING
+
         elif style == wx.YES_NO:
-            self.CreateHeader(MSG_HEADER_QUESTION, icon_name="question")
+            icon = "question"
+            if title is None:
+                title = MSG_HEADER_QUESTION
+
         else:
-            self.CreateHeader(MSG_HEADER_INFO, icon_name="information")
+            icon = "information"
+            if title is None:
+                title = MSG_HEADER_INFO
+
+        self.CreateHeader(title, icon_name=icon)
 
         # Create the message content
         p = sppasPanel(self)
@@ -108,6 +124,7 @@ class sppasBaseMessageDialog(sppasDialog):
         s.Add(txt, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 10)
         p.SetSizer(s)
         p.SetName("content")
+        p.SetMinSize(wx.Size(-1, 128))
 
     # -----------------------------------------------------------------------
 
@@ -132,7 +149,7 @@ class sppasYesNoDialog(sppasBaseMessageDialog):
     wx.ID_YES or wx.ID_NO is returned if a button is clicked.
     wx.ID_CANCEL is returned if the dialog is destroyed.
 
-    >>> dialog = sppasYesNoDialog("Confirm exit...")
+    >>> dialog = sppasYesNoDialog("Really exit?")
     >>> response = dialog.ShowModal()
     >>> dialog.Destroy()
     >>> if response == wx.ID_YES:
@@ -172,6 +189,59 @@ class sppasYesNoDialog(sppasBaseMessageDialog):
 # ---------------------------------------------------------------------------
 
 
+class sppasConfirm(sppasBaseMessageDialog):
+    """Create a message in a wx.Dialog to confirm an action after an error.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    wx.ID_YES is returned if ok is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed or cancel is clicked.
+
+    >>> dialog = sppasConfirm("Confirm..."))
+    >>> response = dialog.ShowModal()
+    >>> dialog.Destroy()
+    >>> if response == wx.ID_YES:
+    >>>     # do something here
+
+    """
+
+    def __init__(self, message, title=None):
+        super(sppasConfirm, self).__init__(
+            parent=None,
+            message=message,
+            title=title,
+            style=wx.ICON_ERROR)
+
+    # -----------------------------------------------------------------------
+
+    def _create_buttons(self):
+        self.CreateActions([wx.ID_CANCEL, wx.ID_YES])
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+        self.SetAffirmativeId(wx.ID_YES)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_id = event_obj.GetId()
+        if event_id == wx.ID_CANCEL:
+            self.SetReturnCode(wx.ID_CANCEL)
+            self.Close()
+        else:
+            event.Skip()
+
+# ---------------------------------------------------------------------------
+
+
 class sppasInformationDialog(sppasBaseMessageDialog):
     """Create a message in a wx.Dialog with an information.
 
@@ -203,6 +273,40 @@ class sppasInformationDialog(sppasBaseMessageDialog):
         self.SetAffirmativeId(wx.ID_OK)
 
 # ---------------------------------------------------------------------------
+
+
+class sppasErrorDialog(sppasBaseMessageDialog):
+    """Create a message in a wx.Dialog with a error message.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    wx.ID_OK is returned if the button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    >>> dialog = sppasErrorDialog("an error occurred")
+    >>> dialog.ShowModal()
+    >>> dialog.Destroy()
+
+    """
+
+    def __init__(self, message, title=None):
+        super(sppasErrorDialog, self).__init__(
+            parent=None,
+            message=message,
+            title=title,
+            style=wx.ICON_ERROR)
+
+    # -----------------------------------------------------------------------
+
+    def _create_buttons(self):
+        self.CreateActions([wx.ID_OK])
+        self.SetAffirmativeId(wx.ID_OK)
+
+# ---------------------------------------------------------------------------
 # Ready-to-use functions to display messages
 # ---------------------------------------------------------------------------
 
@@ -223,7 +327,56 @@ def YesNoQuestion(message):
     wx.ID_CANCEL is returned if the dialog is destroyed.
 
     """
+    logging.info(message)
     dialog = sppasYesNoDialog(message)
+    response = dialog.ShowModal()
+    dialog.Destroy()
+    logging.info("User clicked yes" if response == wx.ID_YES else "User clicked no")
+    return response
+
+
+def Confirm(message, title=None):
+    """Display a confirmation after an error.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    :param message: (str) The error and confirmation question
+    :returns: the response
+
+    wx.ID_YES if ok button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed or cancel clicked.
+
+    """
+    logging.error(message)
+    dialog = sppasConfirm(message, title)
+    response = dialog.ShowModal()
+    dialog.Destroy()
+    logging.info("Confirmed by user" if response == wx.ID_YES else "User cancelled")
+    return response
+
+
+def Error(message, title):
+    """Display a error.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    :param message: (str) The question to ask
+    :returns: the response
+
+    wx.ID_OK is returned if a button is clicked.
+    wx.ID_CANCEL is returned if the dialog is destroyed.
+
+    """
+    logging.error(message)
+    dialog = sppasErrorDialog(message, title)
     response = dialog.ShowModal()
     dialog.Destroy()
     return response
@@ -245,6 +398,7 @@ def Information(message):
     wx.ID_CANCEL is returned if the dialog is destroyed.
 
     """
+    logging.info(message)
     dialog = sppasInformationDialog(message)
     response = dialog.ShowModal()
     dialog.Destroy()

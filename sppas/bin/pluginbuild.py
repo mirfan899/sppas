@@ -36,16 +36,17 @@
 :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
 :contact:      contact@sppas.org
 :license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+:copyright:    Copyright (C) 2011-2019 Brigitte Bigi
 :summary:      Main script to build a plugin for SPPAS.
 
 In SPPAS, a plugin is a ZIP archive of a directory content.
-This directory must contain a configuration file with extension ".ini".
+This directory must contain a configuration file with extension ".json".
 This directory should contain an icon, a README.txt file and a license
 in PDF format.
 
 """
 
+import json
 import logging
 import sys
 import os
@@ -57,9 +58,9 @@ SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
 from sppas import sg
-from sppas.src.plugins import sppasPluginConfigParser
-from sppas.src.utils import sppasDirUtils
-from sppas.src.utils.fileutils import setup_logging
+from sppas import sppasDirUtils
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
 
 
 if __name__ == "__main__":
@@ -95,7 +96,17 @@ if __name__ == "__main__":
                       "'{:s}' does not.".format(args.i))
 
     sd = sppasDirUtils(args.i)
-    setup_logging(10, None)
+
+    # Redirect all messages to logging
+    # --------------------------------
+
+    with sppasAppConfig() as cg:
+        if not args.quiet:
+            log_level = cg.log_level
+        else:
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Check if there's a README.txt file at the root directory
     # --------------------------------------------------------
@@ -126,18 +137,18 @@ if __name__ == "__main__":
     # Check if there's a .ini file at the root directory
     # --------------------------------------------------
 
-    ini_list = sd.get_files(".ini", recurs=False)
-    if len(ini_list) != 1:
+    json_list = sd.get_files(".json", recurs=False)
+    if len(json_list) != 1:
         logging.critical("A configuration file - and only one, is needed in "
                          "the directory of the plugin.")
         sys.exit(1)
 
     # ----------------------------------------------------------------------------
-    # Check if the .ini file can be parsed properly and get identifier
+    # Check if the .json file can be parsed properly and get identifier
     # ----------------------------------------------------------------------------
-
-    parser = sppasPluginConfigParser(ini_list[0])
-    config = parser.get_config()
+    # Read the whole file content
+    with open(json_list[0]) as cfg:
+        config = json.load(cfg)
 
     identifier = config['id']
     logging.info("Plugin identifier: {:s}".format(identifier))

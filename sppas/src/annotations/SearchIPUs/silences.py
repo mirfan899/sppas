@@ -33,7 +33,8 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
-import math
+
+import logging
 from sppas.src.audiodata.channel import sppasChannel
 from sppas.src.audiodata.channelvolume import sppasChannelVolume
 
@@ -234,17 +235,59 @@ class sppasSilences(object):
         :returns: (int) volume value
 
         """
+        volumes = sorted(self.__volume_stats.volumes())
         vmin = max(self.__volume_stats.min(), 0)  # provide negative values
+        logging.info("RMS min={:d}".format(vmin))
         vmean = self.__volume_stats.mean()
-        vcvar = 1.5 * self.__volume_stats.coefvariation()
+        logging.info("RMS mean={:.2f}".format(vmean))
+        vmedian = self.__volume_stats.median()
+        logging.info("RMS median={:2f}".format(vmedian))
+        vvar = self.__volume_stats.coefvariation()
+        logging.info("RMS coef. var={:2f}".format(vvar))
 
-        # alternative, in case the audio is not as good as expected!
+        # Remove very high volume values (outliers)
+        # only for distributions with a too high variability
+        if vmedian > vmean:
+            logging.debug('The RMS distribution need to be normalized.')
+
+            rms_threshold = volumes[int(0.85 * len(volumes))]
+            nb = 0
+            for i, v in enumerate(self.__volume_stats):
+                if v > rms_threshold:
+                    self.__volume_stats.set_volume_value(i, rms_threshold)
+                    nb += 1
+
+            vmean = self.__volume_stats.mean()
+            vmedian = self.__volume_stats.median()
+            vvar = self.__volume_stats.coefvariation()
+
+        # Normal situation... (more than 75% of the files!!!)
+        vcvar = 1.5 * vvar
+        threshold = int(vmin) + int((vmean - vcvar))
+
+        # Alternative, in case the audio is not as good as expected!
         # (too low volume, or outliers which make the coeff var very high)
-        alt = (vmean-vmin) / 5.
-        if alt > vcvar or vcvar > vmean:
-            vcvar = alt
+        if vmedian > vmean:
+            # often means a lot of low volume values and some very high
+            median_index = 0.55 * len(volumes)
+            threshold = volumes[int(median_index)]
+            logging.debug(' ... threshold: estimator exception 1 - median > mean')
+        elif vcvar > vmean:
+            if vmedian < (vmean * 0.2):
+                # for distributions with a too low variability
+                threshold = int(vmin) + int((vmean - vmedian))
+                logging.debug(' ... threshold: estimator exception 2 - median < 0.2*mean')
+            else:
+                # often means some crazy values (very rare)
+                threshold = int(vmin) + int(0.2 * float(vmean))
+                logging.debug(' ... threshold: estimator exception 3 - vcvar > mean')
+        else:
+            logging.debug(' ... threshold: normal estimator')
 
-        return int(vmin) + int((vmean - vcvar))
+        logging.info('Threshold value for the search of silences: {:d}'
+                     ''.format(threshold))
+
+        return threshold
 
     # -----------------------------------------------------------------------
 
@@ -253,7 +296,7 @@ class sppasSilences(object):
 
         This is then a search for silences. All windows with a volume
         higher than the threshold are considered as tracks and not included
-        in the result. Block of silences lesser that min_sil_dur are
+        in the result. Block of silences lesser than min_sil_dur are
         also considered tracks.
 
         :param threshold: (int) Expected minimum volume (rms value)
@@ -270,10 +313,9 @@ class sppasSilences(object):
         # This scans the volumes whether it is lower than threshold,
         # and if true, it is written to silence.
         self.__silences = list()
-        inside = False
+        inside = False  # inside a silence or not
         idx_begin = 0
-        nframes = self.__volume_stats.get_winlen() * \
-                    self._channel.get_framerate()
+        nframes = self.__volume_stats.get_winlen() * self._channel.get_framerate()
 
         i = 0
         for v in self.__volume_stats:
@@ -289,27 +331,11 @@ class sppasSilences(object):
                 # It's a big enough volume to consider the window an IPU
                 if inside is True:
                     # It's the first window of an IPU
-                    # so it's the end of a block of non-zero volumes
-                    # Is this silence long enough?
-                        idx_end = i - 1
-                        from_pos = int(idx_begin * nframes)
-                        to_pos = int(idx_end * nframes)
-
-                        # Find the boundaries with a better precision
-                        from_pos = self.adjust_bound(from_pos, threshold,
-                                                     direction=-1)
-                        new_to_pos = self.adjust_bound(to_pos, threshold,
-                                                       direction=1)
-                        if new_to_pos > to_pos:
-                            d = float(new_to_pos - to_pos) / \
-                                float(self._channel.get_framerate())
-                            increment = math.ceil(
-                                d / self.__volume_stats.get_winlen())
-                            i += int(increment)
-                        to_pos = new_to_pos
-
-                        self.__silences.append((from_pos, to_pos))
-                        inside = False
+                    # so the previous window was the end of a silence
+                    from_pos = int(idx_begin * nframes)
+                    to_pos = int((i - 1) * nframes)
+                    self.__silences.append((from_pos, to_pos))
+                    inside = False
 
                 # else: it's the continuation of an IPU
 
@@ -323,13 +349,18 @@ class sppasSilences(object):
             end_pos = self._channel.get_nframes()
             self.__silences.append((start_pos, end_pos))
 
+        # Filter the current very small windows
+        self.__filter_silences(2. * self._win_len)
+
         return threshold
 
     # -----------------------------------------------------------------------
 
-    def filter_silences(self, min_sil_dur=0.200):
+    def filter_silences(self, threshold, min_sil_dur=0.200):
         """Filter the current silences.
 
+        :param threshold: (int) Expected minimum volume (rms value)
+        If threshold is set to 0, search_minvol() will assign a value.
         :param min_sil_dur: (float) Minimum silence duration in seconds
         :returns: Number of silences with the expected minimum duration
 
@@ -337,6 +368,70 @@ class sppasSilences(object):
         if len(self.__silences) == 0:
             return 0
 
+        if threshold == 0:
+            threshold = self.fix_threshold_vol()
+
+        # Adjust boundaries of the silences
+        adjusted = list()
+        for (from_pos, to_pos) in self.__silences:
+            adjusted.append((
+                self.__adjust_bound(from_pos, threshold, direction=-1),
+                to_pos))
+        self.__silences = adjusted
+
+        # Re-filter
+        self.__filter_silences(min_sil_dur)
+
+        return len(self.__silences)
+
+    # -----------------------------------------------------------------------
+
+    def filter_silences_from_tracks(self, min_track_dur=0.60):
+        """Filter the given silences to remove very small tracks.
+
+        :param min_track_dur: (float) Minimum duration of a track
+        :returns: filtered silences
+
+        """
+        if len(self.__silences) < 3:
+            return
+        tracks = self.extract_tracks(min_track_dur, 0., 0.)
+
+        # Remove too short tracks
+        keep_tracks = list()
+        for (from_track, to_track) in tracks:
+            delta = float((to_track - from_track)) / float(self._channel.get_framerate())
+            if delta > min_track_dur:
+                keep_tracks.append((from_track, to_track))
+
+        # Re-create silences from the selected tracks
+        filtered_sil = list()
+        # first silence
+        if self.__silences[0][0] < keep_tracks[0][0]:
+            filtered_sil.append((self.__silences[0][0], self.__silences[0][1]))
+        # silences between tracks
+        prev_track_end = -1
+        for (from_track, to_track) in keep_tracks:
+            if prev_track_end > -1:
+                filtered_sil.append((int(prev_track_end), int(from_track)))
+            prev_track_end = to_track
+        # last silence
+        to_pos = self._channel.get_nframes()
+        to_track = tracks[-1][1]
+        if (to_pos - to_track) > 0:
+            filtered_sil.append((int(to_track), int(to_pos)))
+
+        self.__silences = filtered_sil
+
+    # -----------------------------------------------------------------------
+
+    def __filter_silences(self, min_sil_dur=0.200):
+        """Filter the given silences.
+
+        :param min_sil_dur: (float) Minimum silence duration in seconds
+        :returns: filtered silences
+
+        """
         filtered_sil = list()
         for (start_pos, end_pos) in self.__silences:
             sil_dur = float(end_pos-start_pos) / \
@@ -346,16 +441,13 @@ class sppasSilences(object):
 
         self.__silences = filtered_sil
 
-        return len(self.__silences)
-
     # -----------------------------------------------------------------------
 
-    def adjust_bound(self, pos, threshold, direction=1):
+    def __adjust_bound(self, pos, threshold, direction=0):
         """Adjust the position of a silence around a given position.
 
-        Here "around" the position means in a range of 1.5 windows before
-        or after the position, analyzing this range by steps of
-        window/vagueness (so 12 windows, i.e. 6 before + 6 after the position).
+        Here "around" the position means in a range of 18 windows,
+        i.e. 6 before + 12 after the position.
 
         :param pos: (int) Initial position of the silence
         :param threshold: (int) RMS threshold value for a silence
@@ -366,36 +458,37 @@ class sppasSilences(object):
         """
         if self._vagueness == self._win_len:
             return pos
+        if direction not in (-1, 1):
+            return pos
 
-        delta = int(1.5 *
-                    self.__volume_stats.get_winlen() *
-                    self._channel.get_framerate())
-        from_pos = max(pos - delta, 0)
-        self._channel.seek(from_pos)
+        # Extract the frames of the windows around the pos
+        delta = int(1.5 * self.__volume_stats.get_winlen() * self._channel.get_framerate())
+        start_pos = int(max(pos - delta, 0))
+        self._channel.seek(start_pos)
+        frames = self._channel.get_frames(int(delta * 3))
 
-        frames = self._channel.get_frames(delta * 3)
+        # Create a channel and estimate volume values with a window
+        # of vagueness (i.e. 4 times more precise than the original)
         c = sppasChannel(self._channel.get_framerate(),
                          self._channel.get_sampwidth(),
                          frames)
         vol_stats = sppasChannelVolume(c, self._vagueness)
 
-        if direction == 1:
-            for i, v in enumerate(vol_stats):
-                if v > threshold:
-                    return \
-                        from_pos + \
-                        (i * (int(self._vagueness *
-                                  self._channel.get_framerate())))
+        # we'll see if we can reduce the silence
 
-        elif direction == -1:
-            i = len(vol_stats)
+        if direction == 1:  # silence | ipu
+            for idx, v in enumerate(vol_stats):
+                shift = idx * (int(self._vagueness * self._channel.get_framerate()))
+                if v > threshold:
+                    return start_pos + int(shift)
+
+        elif direction == -1:  # ipu | silence
+            idx = len(vol_stats)  # = 12 (3 windows of 4 vagueness)
             for v in reversed(vol_stats):
                 if v > threshold:
-                    return \
-                        from_pos + \
-                        (i * (int(self._vagueness *
-                                  self._channel.get_framerate())))
-                i -= 1
+                    shift = idx * (int(self._vagueness * self._channel.get_framerate()))
+                    return start_pos + int(shift)
+                idx -= 1
 
         return pos
 

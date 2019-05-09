@@ -35,14 +35,16 @@
 
 import os
 import shutil
+import traceback
 import logging
 import zipfile
 from threading import Thread
 
 from sppas.src.config import paths
-from sppas.src.config import plugins_translation
+from sppas.src.config import info
 from sppas.src.utils.makeunicode import u
-from sppas.src.utils.fileutils import sppasDirUtils
+from sppas.src.files.fileutils import sppasDirUtils
+
 from .pluginsexc import PluginArchiveFileError
 from .pluginsexc import PluginArchiveIOError
 from .pluginsexc import PluginDuplicateError
@@ -56,13 +58,6 @@ from .process import sppasPluginProcess
 # ----------------------------------------------------------------------------
 
 
-def info(msg_id):
-    """Return the info message from gettext."""
-    return u(plugins_translation.gettext(":INFO " + msg_id + ": "))
-
-# ----------------------------------------------------------------------------
-
-
 class sppasPluginsManager(Thread):
     """Class to manage the list of plugins into SPPAS.
 
@@ -70,7 +65,7 @@ class sppasPluginsManager(Thread):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -137,6 +132,7 @@ class sppasPluginsManager(Thread):
             except Exception as e:
                 logging.info("Plugin {:s} loading error: {:s}"
                              "".format(plugin_folder, str(e)))
+                logging.error(traceback.format_exc())
 
     # ------------------------------------------------------------------------
 
@@ -203,10 +199,11 @@ class sppasPluginsManager(Thread):
         if os.path.exists(plugin_path) is False:
             raise PluginFolderError(plugin_path)
 
-        # Find a file with the extension .ini
+        # Find a file with the extension .json
         f = self.__get_config_file(plugin_path)
         if f is None:
             raise PluginConfigFileError
+        logging.info('Plugin {:s} loading.'.format(f))
 
         # Create the plugin instance
         p = sppasPluginParam(plugin_path, f)
@@ -244,7 +241,7 @@ class sppasPluginsManager(Thread):
             if self._progress is not None:
                 self._progress.set_text(os.path.basename(pfile) +
                                         " ("+str(i+1) + "/" + str(total)+")")
-            output_lines += info("4010").format(filename=pfile)
+            output_lines += (info(4010, "plugins")).format(filename=pfile)
             output_lines += "\n"
 
             # Apply the plugin
@@ -256,12 +253,12 @@ class sppasPluginsManager(Thread):
                 result = str(e)
 
             if len(result) == 0:
-                output_lines += info("4015")
+                output_lines += info(4015, "plugins")
             else:
                 try:
                     output_lines += u(result)
                 except Exception as e:
-                    output_lines += info("4100")
+                    output_lines += info(4100, "plugins")
                     logging.info(str(e))
                     logging.info(result)
 
@@ -272,7 +269,7 @@ class sppasPluginsManager(Thread):
 
         # Indicate completed!
         if self._progress is not None:
-            self._progress.update(1, info("4020") + "\n")
+            self._progress.update(1, info(4020, "plugins") + "\n")
             self._progress.set_header("")
 
         return output_lines
@@ -312,9 +309,10 @@ class sppasPluginsManager(Thread):
     def __get_config_file(plugin_dir):
         """Return the config file of a given plugin."""
         sd = sppasDirUtils(plugin_dir)
-        files = sd.get_files(extension=".ini", recurs=False)
-        # Find a file with the extension .ini, and only one
-        if len(files) == 1:
-            return files[0]
+
+        # Find a file with the extension .json, and only one
+        jsonfiles = sd.get_files(extension=".json", recurs=False)
+        if len(jsonfiles) == 1:
+            return jsonfiles[0]
 
         return None

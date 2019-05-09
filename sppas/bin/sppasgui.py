@@ -36,21 +36,42 @@
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     This is the main program to execute the Graphical User Interface of SPPAS.
 
 """
-import sys
+
+import logging
 import traceback
 from argparse import ArgumentParser
-
+import sys
+import time
 from os import path, getcwd
+
 PROGRAM = path.abspath(__file__)
 SPPAS = path.dirname(path.dirname(path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
-from sppas.bin import exit_error, check_python, check_aligner
-#check_python()
+
+# ----------------------------------------------------------------------------
+
+EXIT_DELAY = 6
+EXIT_STATUS = 1
+
+# ----------------------------------------------------------------------------
+
+
+def exit_error(msg="Unknown."):
+    """Exit the program with status 1 and an error message.
+
+    :param msg: (str) Message to print on stdout.
+
+    """
+    print("[ ERROR ] {:s}".format(msg))
+    time.sleep(EXIT_DELAY)
+    sys.exit(EXIT_STATUS)
+
+# ----------------------------------------------------------------------------
 
 try:
     import wx
@@ -64,31 +85,43 @@ except ImportError:
 
 v = wx.version().split()[0][0]
 if v == '4':
-    from sppas.src.ui.phoenix import sppasApp
+    try:
+        from sppas.src.ui.phoenix.main_app import sppasApp
+    except:
+        exit_error("An unexpected error occurred.\n"
+                   "Verify the the installation of SPPAS and try again.\n"
+                   "The full error message is: %s" % traceback.format_exc())
 
-    # Create and run the application
+    # Create and run the wx application
     app = sppasApp()
-    app.run()
-    sys.exit()
+    status = app.run()
+    if status != 0:
+        print("SPPAS exits with error status: {:d}"
+              "".format(status))
+    sys.exit(status)
 
 # ---------------------------------------------------------------------------
 # If wxPython3 is installed...
 # ---------------------------------------------------------------------------
 
+
 try:
-    from sppas.src.ui import SETTINGS_FILE
+    from sppas.src.ui.wxgui import SETTINGS_FILE
     from sppas.src.ui.wxgui.frames.mainframe import FrameSPPAS
+    from sppas.bin import check_aligner
     from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
     from sppas.src.ui.wxgui.structs.prefs import Preferences_IO
     from sppas.src.ui.wxgui.structs.theme import sppasTheme
-    from sppas.src.utils.fileutils import setup_logging
-except ImportError:
+    from sppas.src.ui import sppasLogSetup #, sppasLogFile
+    # from sppas.src.ui.cfg import sppasAppConfig
+except Exception as e:
+    print(str(e))
     exit_error("An unexpected error occurred.\n"
-               "Verify the SPPAS installation and try again. "
+               "Verify the installation of SPPAS and try again. "
                "The error message is: %s" % traceback.format_exc())
 
 # Arguments
-# ---------------------------------------------------------------------------
+# -------------------------------------------------------------------------
 
 parser = ArgumentParser(usage="{:s} files".format(path.basename(PROGRAM)),
                         description="SPPAS Graphical User Interface.")
@@ -106,20 +139,17 @@ for f in args.files:
 # Logging
 # ----------------------------------------------------------------------------
 
-log_level = 15
-log_file = None
-try:
-    setup_logging(log_level, log_file)
-except Exception:
-    # stdin is not available if pythonw is used instead of python, on Windows!
-    log_file = path.join(path.dirname(
-        path.dirname(path.dirname(PROGRAM))), "sppas.log")
-    setup_logging(log_level, log_file)
+applogging = sppasLogSetup(5)
+applogging.stream_handler()
 
-# GUI is here:
+# Application:
 # ----------------------------------------------------------------------------
 
-sppas = wx.App(redirect=True)
+sppas = wx.App(redirect=False, useBestVisual=True, clearSigInt=True)
+
+# Fix language and translation
+lang = wx.LANGUAGE_DEFAULT
+locale = wx.Locale(lang)
 
 # Fix preferences
 prefsIO = Preferences_IO(SETTINGS_FILE)
@@ -139,10 +169,11 @@ if check_aligner() is False:
                     style=wx.ICON_ERROR)
 
 # Main frame
+# ----------------------------------------------------------------------------
+
 frame = FrameSPPAS(prefsIO)
 if len(filenames) > 0:
     frame.flp.RefreshTree(filenames)
 
-frame.Show()
 sppas.SetTopWindow(frame)
 sppas.MainLoop()

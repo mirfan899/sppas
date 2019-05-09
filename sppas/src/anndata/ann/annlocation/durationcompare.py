@@ -33,10 +33,11 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from sppas.src.utils.datatype import sppasType
+from sppas.src.structs.basecompare import sppasBaseCompare
 
 from ...anndataexc import AnnDataTypeError
-from ...basecompare import sppasBaseCompare
 
 from .duration import sppasDuration
 
@@ -50,12 +51,12 @@ class sppasDurationCompare(sppasBaseCompare):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
+
     def __init__(self):
         """Create a sppasDurationCompare instance."""
-
         super(sppasDurationCompare, self).__init__()
 
         self.methods['eq'] = sppasDurationCompare.eq

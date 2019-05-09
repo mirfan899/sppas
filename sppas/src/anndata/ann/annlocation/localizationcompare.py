@@ -33,10 +33,11 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from sppas.src.utils.datatype import sppasType
+from sppas.src.structs.basecompare import sppasBaseCompare
 
 from ...anndataexc import AnnDataTypeError
-from ...basecompare import sppasBaseCompare
 
 from .point import sppasPoint
 from .interval import sppasInterval
@@ -53,14 +54,12 @@ class sppasLocalizationCompare(sppasBaseCompare):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
-    def __init__(self):
-        """Create a sppasLocalizationCompare instance.
-        Defines the list of implemented methods.
 
-        """
+    def __init__(self):
+        """Create a sppasLocalizationCompare instance."""
         super(sppasLocalizationCompare, self).__init__()
 
         self.methods['rangefrom'] = sppasLocalizationCompare.rangefrom
@@ -105,7 +104,6 @@ class sppasLocalizationCompare(sppasBaseCompare):
     @staticmethod
     def __get_begin(localization):
         """Return the begin point of a localization."""
-
         if isinstance(localization, sppasPoint):
             return localization
         elif isinstance(localization, (sppasInterval, sppasDisjoint)):
@@ -118,7 +116,6 @@ class sppasLocalizationCompare(sppasBaseCompare):
     @staticmethod
     def __get_end(localization):
         """Return the end point of a localization."""
-
         if isinstance(localization, sppasPoint):
             return localization
         elif isinstance(localization, (sppasInterval, sppasDisjoint)):

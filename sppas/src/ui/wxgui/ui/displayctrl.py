@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 # -*- coding: UTF-8 -*-
 # ---------------------------------------------------------------------------
 #            ___   __    __    __    ___
@@ -47,7 +47,7 @@ __copyright__ = """Copyright (C) 2011-2015  Brigitte Bigi"""
 import wx
 import wx.lib
 import logging
-import os.path
+import os
 
 import sppas.src.audiodata.aio
 from sppas.src.anndata import sppasRW
@@ -57,10 +57,10 @@ from sppas.src.ui.wxgui.structs.dataperiod import DataPeriod
 from sppas.src.ui.wxgui.cutils.imageutils import TakeScreenShot
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 
-from timerulerctrl import TimeRulerCtrl
-from trsctrl import TranscriptionCtrl
-from wavectrl import WaveCtrl
-from spControl import spEVT_CTRL_SELECTED
+from .timerulerctrl import TimeRulerCtrl
+from .trsctrl import TranscriptionCtrl
+from .wavectrl import WaveCtrl
+from .spControl import spEVT_CTRL_SELECTED
 
 from sppas.src.ui.wxgui.ui.CustomEvents import ObjectSelectedEvent
 

@@ -53,10 +53,10 @@ sys.path.append(SPPAS)
 from sppas import sg, annots
 from sppas import sppasMomel
 from sppas.src.anndata.aio import extensions_out
-from sppas.src.annotations.param import sppasParam
-from sppas.src.config.ui import sppasAppConfig
-from sppas.src.annotations.manager import sppasAnnotationsManager
-from sppas.src.utils.fileutils import setup_logging
+from sppas import sppasParam
+from sppas import sppasAppConfig
+from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
 
 if __name__ == "__main__":
     
@@ -64,13 +64,13 @@ if __name__ == "__main__":
     # Fix initial annotation parameters
     # ------------------------------------------------------------------------
     
-    parameters = sppasParam(["Momel.ini"])
+    parameters = sppasParam(["momel.json"])
     ann_step_idx = parameters.activate_annotation("momel")
     ann_options = parameters.get_options(ann_step_idx)
     
     # -----------------------------------------------------------------------
     # Verify and extract args:
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     
     parser = ArgumentParser(
         usage="%(prog)s [files] [options]",
@@ -159,9 +159,11 @@ if __name__ == "__main__":
 
     with sppasAppConfig() as cg:
         if not args.quiet:
-            setup_logging(cg.log_level, None)
+            log_level = cg.log_level
         else:
-            setup_logging(cg.quiet_log_level, None)
+            log_level = cg.quiet_log_level
+        lgs = sppasLogSetup(log_level)
+        lgs.stream_handler()
 
     # Get options from arguments
     # --------------------------
@@ -176,14 +178,14 @@ if __name__ == "__main__":
         # Perform the annotation on a single file
         # ---------------------------------------
 
-        melodie = sppasMomel(logfile=None)
+        melodie = sppasMomel(log=None)
         melodie.fix_options(parameters.get_options(ann_step_idx))
         if args.o:
             melodie.run([args.i], output_file=args.o)
         else:
             trs = melodie.run([args.i])
             for a in trs[0]:
-                print("{:f} {:f}".format(
+                print("{} {:f}".format(
                     a.get_location().get_best().get_midpoint(),
                     a.get_best_tag().get_typed_content()))
 

@@ -38,33 +38,9 @@ import logging
 
 from sppas.src.config import sg
 from sppas.src.config import annots
-from sppas.src.config import annotations_translation
+from sppas.src.config import info
 from sppas.src.utils.datatype import sppasTime
 from sppas.src.utils.makeunicode import u
-
-# ----------------------------------------------------------------------------
-
-_ = annotations_translation.gettext
-
-# ----------------------------------------------------------------------------
-
-MSG_ENABLED = _(":INFO 1030: ")
-MSG_DISABLED = _(":INFO 1031: ")
-MSG_VERSION = (_(":INFO 1032: "))
-MSG_URL = (_(":INFO 1033: "))
-MSG_CONTACT = (_(":INFO 1034: "))
-MSG_AUTO_ANNS = (_(":INFO 1035: "))
-MSG_DATE = (_(":INFO 1036: "))
-MSG_LANGUAGES = (_(":INFO 1037: "))
-MSG_SEL_FILES = (_(":INFO 1038: "))
-MSG_SEL_ANNS = (_(":INFO 1039: "))
-MSG_FILE_EXT = (_(":INFO 1040: "))
-MSG_STATUS_OK = (_(":INFO 1041: "))
-MSG_STATUS_INFO = (_(":INFO 1042: "))
-MSG_STATUS_WARNING = (_(":INFO 1043: "))
-MSG_STATUS_IGNORE = (_(":INFO 1044: "))
-MSG_STATUS_ERROR = (_(":INFO 1045: "))
-MSG_REPORT = _(":INFO 1054: ")
 
 # ---------------------------------------------------------------------------
 
@@ -76,7 +52,7 @@ class sppasLog(object):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Class to manage the SPPAS automatic annotations log file, which is also
     called the "Procedure Outcome Report".
@@ -276,9 +252,9 @@ class sppasLog(object):
 
         if value is None:
             if self.parameters.get_step_status(step_number):
-                value = MSG_ENABLED
+                value = info(1030, "annotations")
             else:
-                value = MSG_DISABLED
+                value = info(1031, "annotations")
 
         self.print_item(self.parameters.get_step_name(step_number),
                         str(value))
@@ -307,10 +283,11 @@ class sppasLog(object):
 
     def print_header(self):
         """Print the parameters information in the output file stream."""
-        sppas_name = sg.__name__ + ' ' + MSG_VERSION + ' ' + sg.__version__
+        sppas_name = sg.__name__ + ' ' + info(1032, "annotations") \
+                     + ' ' + sg.__version__
         sppas_copy = sg.__copyright__
-        sppas_url = MSG_URL + ': ' + sg.__url__
-        sppas_contact = MSG_CONTACT + ': ' + \
+        sppas_url = info(1033, "annotations") + ': ' + sg.__url__
+        sppas_contact = info(1034, "annotations") + ': ' + \
                         sg.__author__ + " (" + sg.__contact__ + ")"
 
         if self.logfp is not None:
@@ -339,14 +316,14 @@ class sppasLog(object):
         if self.parameters is None:
             return
 
-        self.print_message(' '*24 + MSG_REPORT)
+        self.print_message(' '*24 + info(1054, "annotations"))
         self.print_newline()
-        self.print_message(' '*24 + MSG_AUTO_ANNS)
+        self.print_message(' '*24 + info(1035, "annotations"))
         self.print_separator()
         self.print_newline()
 
-        self.print_message(MSG_DATE + ': ' + sppasTime().now)
-        self.print_message(MSG_LANGUAGES + ': ')
+        self.print_message(info(1036, "annotations") + ': ' + sppasTime().now)
+        self.print_message(info(1037, "annotations") + ': ')
         for i in range(self.parameters.get_step_numbers()):
             if self.parameters.get_lang(i) is not None:
                 self.print_item(self.parameters.get_step_name(i),
@@ -355,17 +332,17 @@ class sppasLog(object):
                 self.print_item(self.parameters.get_step_name(i), "---")
         self.print_newline()
 
-        self.print_message(MSG_SEL_FILES + ': ')
+        self.print_message(info(1038, "annotations") + ': ')
         for sinput in self.parameters.get_sppasinput():
             self.print_item(sinput)
         self.print_newline()
 
-        self.print_message(MSG_SEL_ANNS + ': ')
+        self.print_message(info(1039, "annotations") + ': ')
         for i in range(self.parameters.get_step_numbers()):
             self.print_stat_item(i)
         self.print_newline()
 
-        self.print_message(MSG_FILE_EXT +
+        self.print_message(info(1040, "annotations") +
                            ': ' +
                            self.parameters.get_output_format())
         self.print_newline()
@@ -385,19 +362,19 @@ class sppasLog(object):
         status_id = int(status_id)
 
         if status_id == annots.ok:
-            return MSG_STATUS_OK
+            return info(1041, "annotations")
 
         if status_id == annots.warning:
-            return MSG_STATUS_WARNING
+            return info(1043, "annotations")
 
         if status_id == annots.ignore:
-            return MSG_STATUS_IGNORE
+            return info(1044, "annotations")
 
         if status_id == annots.info:
-            return MSG_STATUS_INFO
+            return info(1042, "annotations")
 
         if status_id == annots.error:
-            return MSG_STATUS_ERROR
+            return info(1045, "annotations")
 
         return ""
 

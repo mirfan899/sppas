@@ -34,36 +34,24 @@
     Exceptions for models package.
 
 """
-from sppas.src.config import models_translation
-
-_ = models_translation.gettext
-
-# -----------------------------------------------------------------------
-
-DATATYPE_ERROR = ":ERROR 7010: "
-
-MIO_ENCODING_ERROR = ":ERROR 7500: "
-MIO_FILE_FORMAT_ERROR = ":ERROR 7505: "
-MIO_FOLDER_ERROR = ":ERROR 7510: "
-MIO_FILE_ERROR = ":ERROR 7515: "
-NGRAM_ORDER_VALUE_ERROR = ":ERROR 7110: "
-NGRAM_COUNT_VALUE_ERROR = ":ERROR 7120: "
-NGRAM_METHOD_NAME_ERROR = ":ERROR 7130: "
-ARPA_FILE_ERROR = ":ERROR 7210: "
+from sppas.src.config import error
 
 # -----------------------------------------------------------------------
 
 
 class ModelsDataTypeError(TypeError):
-    """:ERROR 7010: DATATYPE_ERROR
+    """:ERROR 7010:.
+
     Expected a {data_name} of type {expected_type}. Got {data_type} instead.
 
     """
+
     def __init__(self, data_name, expected_type, data_type):
-        self.parameter = DATATYPE_ERROR + \
-                         (_(DATATYPE_ERROR)).format(data_name=data_name,
-                                                    expected_type=expected_type,
-                                                    data_type=data_type)
+        self.parameter = error(7010) + \
+                         (error(7010, "models")).format(
+                             data_name=data_name,
+                             expected_type=expected_type,
+                             data_type=data_type)
 
     def __str__(self):
         return repr(self.parameter)
@@ -72,13 +60,15 @@ class ModelsDataTypeError(TypeError):
 
 
 class MioEncodingError(UnicodeDecodeError):
-    """:ERROR 7500: MIO_ENCODING_ERROR
+    """:ERROR 7500:.
+
     The file {!s:s} contains non UTF-8 characters: {:s}.
 
     """
-    def __init__(self, filename, error):
-        self.parameter = MIO_ENCODING_ERROR + \
-                         (_(MIO_ENCODING_ERROR)).format(filename, error)
+
+    def __init__(self, filename, error_name):
+        self.parameter = error(7500) + \
+                         (error(7500, "models")).format(filename, error_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -87,13 +77,15 @@ class MioEncodingError(UnicodeDecodeError):
 
 
 class MioFileFormatError(IOError):
-    """:ERROR 7505: MIO_FILE_EXTENSION_ERROR
+    """:ERROR 7505:.
+
     Fail formats: unrecognized file format {!s:s}.
 
     """
+
     def __init__(self, name):
-        self.parameter = MIO_FILE_FORMAT_ERROR + \
-                         (_(MIO_FILE_FORMAT_ERROR)).format(name)
+        self.parameter = error(7505) + \
+                         (error(7505, "models")).format(name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -102,13 +94,15 @@ class MioFileFormatError(IOError):
 
 
 class MioFileError(IOError):
-    """:ERROR 7515: MIO_FILE_ERROR
+    """:ERROR 7515:.
+
     No model found or empty model in {!s:s}.
 
     """
+
     def __init__(self, name):
-        self.parameter = MIO_FILE_ERROR + \
-                         (_(MIO_FILE_ERROR)).format(name)
+        self.parameter = error(7515) + \
+                         (error(7515, "models")).format(name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -117,13 +111,15 @@ class MioFileError(IOError):
 
 
 class MioFolderError(IOError):
-    """:ERROR 7510: MIO_FOLDER_ERROR
+    """:ERROR 7510:.
+
     Fail formats: the folder {!s:s} does not contain a known model.
 
     """
+
     def __init__(self, folder):
-        self.parameter = MIO_FOLDER_ERROR + \
-                         (_(MIO_FOLDER_ERROR)).format(folder)
+        self.parameter = error(7510) + \
+                         (error(7510, "models")).format(folder)
 
     def __str__(self):
         return repr(self.parameter)
@@ -132,15 +128,18 @@ class MioFolderError(IOError):
 
 
 class NgramOrderValueError(ValueError):
-    """:ERROR 7110: NGRAM_ORDER_VALUE_ERROR
-    Expected an ngram order value between {min_value} and {max_value}. Got {got_value} instead.
+    """:ERROR 7110:.
+
+    Expected an ngram order value between {min_value} and {max_value}.
+    Got {got_value} instead.
 
     """
+
     def __init__(self, min_value, max_value, got_value):
-        self.parameter = NGRAM_ORDER_VALUE_ERROR + \
-                         (_(NGRAM_ORDER_VALUE_ERROR)).format(min_value=min_value,
-                                                             max_value=max_value,
-                                                             got_value=got_value)
+        self.parameter = error(7110) + \
+                         (error(7110, "models")).format(min_value=min_value,
+                                                        max_value=max_value,
+                                                        got_value=got_value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -149,14 +148,16 @@ class NgramOrderValueError(ValueError):
 
 
 class NgramCountValueError(ValueError):
-    """:ERROR 7120: NGRAM_COUNT_VALUE_ERROR
+    """:ERROR 7120:.
+
     Expected a minimum count value of {min_value}. Got {got_value} instead.
 
     """
+
     def __init__(self, min_value, got_value):
-        self.parameter = NGRAM_COUNT_VALUE_ERROR + \
-                         (_(NGRAM_COUNT_VALUE_ERROR)).format(min_value=min_value,
-                                                             got_value=got_value)
+        self.parameter = error(7120) + \
+                         (error(7120, "models")).format(min_value=min_value,
+                                                        got_value=got_value)
 
     def __str__(self):
         return repr(self.parameter)
@@ -165,12 +166,15 @@ class NgramCountValueError(ValueError):
 
 
 class NgramMethodNameError(NameError):
-    """:ERROR 7130: NGRAM_METHOD_NAME_ERROR
+    """:ERROR 7130:.
+
     Expected a known name of the method. Got {got_name} instead.
+
     """
+
     def __init__(self, got_name):
-        self.parameter = NGRAM_METHOD_NAME_ERROR + \
-                         (_(NGRAM_METHOD_NAME_ERROR)).format(got_name=got_name)
+        self.parameter = error(7130) + \
+                         (error(7130, "models")).format(got_name=got_name)
 
     def __str__(self):
         return repr(self.parameter)
@@ -179,12 +183,15 @@ class NgramMethodNameError(NameError):
 
 
 class ArpaFileError(IOError):
-    """:ERROR 7210: ARPA_FILE_ERROR
+    """:ERROR 7210:.
+
     Expected a standard arpa file. Error with line: {line}.
+
     """
+
     def __init__(self, line):
-        self.parameter = ARPA_FILE_ERROR + \
-                         (_(ARPA_FILE_ERROR)).format(line=line)
+        self.parameter = error(7210) + \
+                         (error(7210, "models")).format(line=line)
 
     def __str__(self):
         return repr(self.parameter)

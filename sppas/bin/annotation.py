@@ -49,9 +49,9 @@ PROGRAM = os.path.abspath(__file__)
 SPPAS = os.path.dirname(os.path.dirname(os.path.dirname(PROGRAM)))
 sys.path.append(SPPAS)
 
-from sppas.src.config import sg
-from sppas.src.annotations.param import sppasParam
-from sppas.src.annotations.manager import sppasAnnotationsManager
+from sppas import sg
+from sppas import sppasParam
+from sppas import sppasAnnotationsManager
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.ui.term.textprogress import ProcessProgressTerminal
 from sppas.src.ui.term.terminalcontroller import TerminalController
@@ -136,17 +136,17 @@ if args.ipus:
 if args.tok:
     parameters.activate_annotation("textnorm")
 if args.phon:
-    parameters.activate_annotation("phon")
+    parameters.activate_annotation("phonetize")
 if args.chunks:
     parameters.activate_annotation("chunks")
 if args.align:
-    parameters.activate_annotation("align")
+    parameters.activate_annotation("alignment")
 if args.syll:
-    parameters.activate_annotation("syll")
+    parameters.activate_annotation("syllabify")
 if args.tga:
     parameters.activate_annotation("tga")
 if args.repet:
-    parameters.activate_annotation("repet")
+    parameters.activate_annotation("selfrepet")
 if args.all:
     for step in range(parameters.get_step_numbers()):
         parameters.activate_step(step)

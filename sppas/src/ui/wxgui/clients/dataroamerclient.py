@@ -54,7 +54,6 @@ from sppas.src.ui.wxgui.ui.CustomEvents import FileWanderEvent, spEVT_FILE_WANDE
 from sppas.src.ui.wxgui.ui.CustomEvents import spEVT_PANEL_SELECTED
 from sppas.src.ui.wxgui.ui.CustomEvents import spEVT_SETTINGS
 
-from baseclient import BaseClient
 from sppas.src.ui.wxgui.panels.trslist import TrsList
 from sppas.src.ui.wxgui.panels.mainbuttons import MainToolbarPanel
 from sppas.src.ui.wxgui.structs.files import xFiles
@@ -62,6 +61,7 @@ import sppas.src.ui.wxgui.dialogs.filedialogs as filedialogs
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowInformation
 from sppas.src.ui.wxgui.dialogs.msgdialogs import ShowYesNoQuestion
 
+from .baseclient import BaseClient
 
 # ----------------------------------------------------------------------------
 # Constants

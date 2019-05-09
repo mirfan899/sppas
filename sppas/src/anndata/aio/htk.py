@@ -83,6 +83,8 @@ class sppasBaseHTK(sppasBaseIO):
         if name is None:
             name = self.__class__.__name__
         super(sppasBaseHTK, self).__init__(name)
+        
+        self.software = "HTK"
 
         self._accept_multi_tiers = False
         self._accept_no_tiers = True
