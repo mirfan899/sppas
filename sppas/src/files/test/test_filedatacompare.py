@@ -137,7 +137,7 @@ class TestFileDataCompare(unittest.TestCase):
             [(self.cmpPath.exact, d, False),
              (self.cmpPath.check, False, False)]))
 
-        #fp is checked
+        # fp is checked
         self.assertFalse(fp.match([(self.cmpPath.check, True, False)]))
 
         # fp.id ends with 'files' (the name of the package)!
@@ -146,55 +146,55 @@ class TestFileDataCompare(unittest.TestCase):
     def test_exact_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp exactly equals d
+        # fp exactly equals d
         self.assertTrue(fp.match([(self.cmpRoot.exact, d, False)]))
 
     def test_iexact_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp matches with upper case d
+        # fp matches with upper case d
         self.assertFalse(fp.match([(self.cmpRoot.iexact, d.upper(), True)]))
 
     def test_startswith_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp begins with d's first character
+        # fp begins with d's first character
         self.assertTrue(fp.match([(self.cmpRoot.startswith, d[0], False)]))
 
     def test_istartswith_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp starts with d's first character in any case
+        # fp starts with d's first character in any case
         self.assertTrue(fp.match([(self.cmpRoot.istartswith, d[0].upper(), False)]))
 
     def test_endswith_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp finishes with d's last character
+        # fp finishes with d's last character
         self.assertFalse(fp.match([(self.cmpRoot.endswith, d[-1], True)]))
 
     def test_iendswith_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp finishes with d's last character in any case
+        # fp finishes with d's last character in any case
         self.assertFalse(fp.match([(self.cmpRoot.iendswith, d[-1].upper(), True)]))
 
     def test_contains_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp contains any d's character
+        # fp contains any d's character
         self.assertTrue(fp.match([(self.cmpRoot.contains, d[randint(0, len(d) - 1)], False)]))
 
     def test_regexp_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp looks like the regex
+        # fp looks like the regex
         self.assertFalse(fp.match([(self.cmpRoot.regexp, "[^a-z]", True)]))
 
     def test_check_fr(self):
         d = path.splitext(__file__)[0]
         fp = FileRoot(d)
-        #fp isn't checked
+        # fp isn't checked
         self.assertTrue(fp.match([(self.cmpRoot.check, False, False)]))
 
 
