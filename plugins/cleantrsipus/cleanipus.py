@@ -163,23 +163,30 @@ for ann in tier:
 # Merge continuous silences
 i = len(tier)-1
 while i >= 0:
+    # current annotation: label and end of its localization
     label = tier[i].serialize_labels()
+    end_loc = tier[i].get_location().get_best().get_end().copy()
 
+    # take a look at the previous annotations
     i -= 1
     c = i
-    while label == SIL_ORTHO:
+    while label == SIL_ORTHO and c >= 0:
         label = tier[c].serialize_labels()
         c -= 1
     c += 1
+    # c is now pointing to the ipu just before an eventual sequence of silences
 
-    end_loc = tier[i].get_location().get_best().get_end().copy()
-    # continuous silences
+    # if several continuous silences were observed
     if c < i:
+        # pop the sequence of silences, except the first one
         while c < i:
-            tier.pop(i)
+            tier.pop(i+1)   # i+1 because we already decreased i
             i -= 1
-        tier[c].get_location().get_best().set_end(end_loc)
+        # set the end of the last silence (we removed) to the remaining one
+        tier[i+1].get_location().get_best().set_end(end_loc)
 
+        # annotation of next iteration is the previous of the ipu one
+        i = c-1
 
 # -----------------------------------------------------------------------
 # Write
