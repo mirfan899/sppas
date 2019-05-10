@@ -45,10 +45,10 @@
     It's important because if not it means the user will have to listen
     the whole content of the audio file to add such missing ipus which is time
     consuming. If none of the ipus are missed by the system, the user will
-    have only to listen the ipus the system found and to state boundaries
+    have only to listen the ipus the system found and to check boundaries
     of such ipus by moving or ignoring them and by adding some new ones.
 
-    We state it with the middle position of the reference. An ipu in the hyp
+    We check it with the middle position of the reference. An ipu in the hyp
     must exist at this position in time.
 
     Examples:
@@ -68,7 +68,7 @@
     Discussion:
     Clearly, this is not the best measure to evaluate the task but it
     gives an important information: how many ipus of the ref are missing in
-    the hyp, so does the user will have to listen the whole audio to state
+    the hyp, so does the user will have to listen the whole audio to check
     the result or not!
     hyp6 is much more critical than hyp5: 2 different evals.
 
@@ -548,7 +548,7 @@ if __name__ == "__main__":
         logging.info('    ==> Match success is {:d} ({:.2f}%)'
                      ''.format(nb_ref_perfect_match,
                                (float(nb_ref_perfect_match) / float(nb_ipus_ref)) * 100.))
-        logging.info('    ==> Actions to state IPUs:')
+        logging.info('    ==> Actions to check IPUs:')
         logging.info('        - [add] {:d} ({:.2f}%)'
                      ''.format(nb_ref_not_match,
                                float(nb_ref_not_match) / float(nb_ipus_ref) * 100.))
@@ -681,7 +681,7 @@ if __name__ == "__main__":
     r = ' ==> Correct matching is {:.2f}%.'.format(
         (float(nb_ref_perfect_match_total) / float(nb_ipus_ref_total)) * 100.)
 
-    r0 = '    ==> Actions to state IPUs are:'
+    r0 = '    ==> Actions to check IPUs are:'
     r1 = '   - [add] {:d}. ({:.2f}% of the ipus of ref)' \
          ''.format(nb_ref_not_match_total,
                    (float(nb_ref_not_match_total) / float(nb_ipus_ref_total)) * 100.)
