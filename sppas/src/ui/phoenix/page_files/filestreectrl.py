@@ -61,8 +61,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     def __init__(self, parent, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
-        :param `parent`: (wx.Window)
-        :param `data`: (FileData)
+        :param parent: (wx.Window)
+        :param name: (str)
 
         """
         super(FilesTreeViewCtrl, self).__init__(parent, name)
@@ -84,6 +84,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)
         # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
+        self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
 
     # ------------------------------------------------------------------------
     # Public methods
@@ -100,7 +101,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         
         The given filenames must include theirs absolute path.
 
-        :param entries: (str) List of names of files or a directory.
+        :param entries: (list of str) Filenames or folder with absolute path.
 
         """
         items = self._model.add_files(entries)
@@ -122,73 +123,85 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     # ------------------------------------------------------------------------
 
     def GetCheckedFiles(self):
+        """Return the list of checked files.
+
+        :returns: List of FileName
+
+        """
         return self._model.get_checked_files()
 
     # ------------------------------------------------------------------------
 
     def LockFiles(self, entries):
+        """Lock a list of files.
+
+        :param entries: (list of str/FileName) Filenames with absolute path or FileName instance.
+
+        """
         self._model.lock(entries)
 
     # ------------------------------------------------------------------------
 
-    def ExpandAll(self):
-        self._model.Expand(True)
-        for item in self._model.GetExpandedItems(True):
-            self.Expand(item)
+    # def ExpandAll(self):
+    #    self._model.Expand(True)
+    #     for item in self._model.GetExpandedItems(True):
+    #         self.Expand(item)
 
     # ------------------------------------------------------------------------
 
-    def CollapseAll(self):
-        self._model.Expand(False)
-        for item in self._model.GetExpandedItems(False):
-            self.Expand(item)
+    # def CollapseAll(self):
+    #     self._model.Expand(False)
+    #     for item in self._model.GetExpandedItems(False):
+    #         self.Expand(item)
 
     # ------------------------------------------------------------------------
 
-    def __update_expand(self):
-        for item in self._model.GetExpandedItems(True):
-            self.Expand(item)
-        for item in self._model.GetExpandedItems(False):
-            self.Collapse(item)
-
-    # ------------------------------------------------------------------------
-
-    def update_data(self):
-        # Update the data and clear the tree
-        self._model.update_data()
-        # But clearing the tree means to forget which are the expanded items!
-        # so, re-expand/re-collapse properly.
-        #self.__update_expand()
+    # def __update_expand(self):
+    #     for item in self._model.GetExpandedItems(True):
+    #         self.Expand(item)
+    #     for item in self._model.GetExpandedItems(False):
+    #         self.Collapse(item)
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-    def __onExpanded(self, evt):
-        """Happens when the user cliched a '+' button of the tree.
-
-        We have to update the corresponding object 'expand' value to True.
-        
-        """
-        self._model.Expand(True, evt.GetItem())
-        evt.Skip()
-
-    # ------------------------------------------------------------------------
-
-    def __onCollapsed(self, evt):
-        """Happens when the user cliched a '-' button of the tree.
-
-        We have to update the corresponding object 'expand' value to False.
-        
-        """
-        self._model.Expand(False, evt.GetItem())
-        evt.Skip()
+    # def __onExpanded(self, evt):
+    #    """Happens when the user cliched a '+' button of the tree.
+    #
+    #    We have to update the corresponding object 'expand' value to True.
+    #
+    #    """
+    #    self._model.Expand(True, evt.GetItem())
+    #    evt.Skip()
 
     # ------------------------------------------------------------------------
 
-    def _on_item_activated(self, evt):
-        """Happens when the user activated a cell.
+    # def __onCollapsed(self, evt):
+    #    """Happens when the user cliched a '-' button of the tree.
+    #
+    #    We have to update the corresponding object 'expand' value to False.
+    #
+    #    """
+    #    self._model.Expand(False, evt.GetItem())
+    #    evt.Skip()
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_activated(self, event):
+        """Happens when the user activated a cell (double-click).
+
+        This event is triggered by double clicking an item or pressing some
+        special key (usually “Enter”) when it is focused.
 
         """
-        self._model.change_value(evt.GetDataViewColumn(), evt.GetItem())
+        self._model.change_value(event.GetColumn(), event.GetItem())
 
+    # ------------------------------------------------------------------------
+
+    def _on_item_selection_changed(self, event):
+        """Happens when the user simple-click a cell.
+
+        """
+        item = event.GetItem()
+        self._model.change_value(event.GetColumn(), item)

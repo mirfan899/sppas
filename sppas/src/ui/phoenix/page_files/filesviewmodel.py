@@ -26,7 +26,7 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.filesviewmodel.py
+    src.ui.phoenix.page_files.filesviewmodel.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This model acts as a bridge between a DataViewCtrl and a FileData.
@@ -85,6 +85,12 @@ class FileAnnotIcon(object):
     # -----------------------------------------------------------------------
 
     def get_icon_name(self, ext):
+        """Return the name of the icon matching the given extension.
+
+        :param ext: (str) An extension of an annotated or an audio file.
+        :returns: (str) Name of an icon
+
+        """
         if ext.startswith(".") is False:
             ext = "." + ext
         return self.__exticon.get(ext.upper(), "")
@@ -211,7 +217,6 @@ class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
         dc.DrawBitmap(bmp, x + (w-s)//2, y + (h-s)//2)
 
         return True
-
 
 # ----------------------------------------------------------------------------
 # Model
@@ -573,10 +578,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         if cur_state in (States().UNUSED, States().AT_LEAST_ONE_CHECKED, States().AT_LEAST_ONE_LOCKED):
             try:
                 modified = self.__data.set_object_state(States().CHECKED, node)
-                logging.debug('MODIFIED 1: {:s}'.format(str(modified)))
                 if modified is False and cur_state == States().AT_LEAST_ONE_LOCKED:
                     modified = self.__data.set_object_state(States().UNUSED, node)
-                logging.debug('MODIFIED 2: {:s}'.format(str(modified)))
                 if modified:
                     self.Cleared()
             except Exception as e:
@@ -674,6 +677,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         if len(deleted) > 0:
             self.__data.update()
+
             self.Cleared()
             logging.info('{:d} files moved into the trash.'.format(len(deleted)))
 
@@ -694,7 +698,10 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     def lock(self, entries):
         for entry in entries:
-            node = self.__data.get_object(entry)
+            if isinstance(entry, FileName) is False:
+                node = self.__data.get_object(entry)
+            else:
+                node = entry
             self.__data.set_object_state(States().LOCKED, node)
         self.Cleared()
 

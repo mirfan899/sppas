@@ -26,10 +26,10 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.basectrls.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.page_files.basectrls.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Base classes to manage a workspace and utilities.
+    Base classes to manage a workspace and some utilities.
 
 """
 
@@ -72,6 +72,17 @@ class ColumnProperties(object):
         All members are private so that the get/set methods are always called
         and they have properties in order to be able to access them in a
         simplest way. These members can't be modified by inheritance.
+
+        The properties of a column are:
+
+            - an identifier: an integer to represent the column number,
+            - a name of the column,
+            - the type of the data to be displayed in the column,
+            - the initial width of the column,
+            - the mode of the cell (inert, activatable, editable),
+            - a renderer,
+            - an alignment,
+            - the functions to get values in the data of the model.
 
         :param name: (str) Name of the column
         :param stype: (str) String representing the type of the data
@@ -240,13 +251,13 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
     def __init__(self, parent, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
-        :param `parent`: (wx.Window)
-        :param `data`: (FileData)
+        :param parent: (wx.Window)
+        :param name: (str)
 
         """
         super(BaseTreeViewCtrl, self).__init__(
             parent,
-            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE,  # wx.dataview.DV_VERT_RULES |
+            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE | wx.dataview.DV_NO_HEADER,  # wx.dataview.DV_VERT_RULES |
             name=name
         )
 
@@ -271,7 +282,6 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         wx.Window.SetBackgroundColour(self, color)
         if self._model is not None:
             self._model.SetBackgroundColour(color)
-            #self.refresh_view()
 
     # ------------------------------------------------------------------------
 
@@ -279,7 +289,6 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         wx.Window.SetForegroundColour(self, color)
         if self._model is not None:
             self._model.SetForegroundColour(color)
-            #self.refresh_view()
 
     # ------------------------------------------------------------------------
 

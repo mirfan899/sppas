@@ -258,7 +258,7 @@ class TestPanel(FilesManager):
     def add_test_data(self):
         here = os.path.abspath(os.path.dirname(__file__))
         self.FindWindow('fileview').AddFiles([os.path.abspath(__file__)])
-        #self.FindWindow('fileview').LockFiles([os.path.abspath(__file__)])
+        self.FindWindow('fileview').LockFiles([os.path.abspath(__file__)])
 
         for f in os.listdir(here):
             fullname = os.path.join(here, f)

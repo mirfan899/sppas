@@ -246,7 +246,7 @@ class FileData(FileBase):
                     if exists(fn.id):
                         fn.update_properties()
                     else:
-                        fp.remove(fn)
+                        fr.remove(fn)
                 if len(fr) == 0:
                     fp.remove(fr)
 
