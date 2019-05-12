@@ -42,8 +42,16 @@ files: management of files in SPPAS
 
 from .fileutils import sppasFileUtils
 from .fileutils import sppasDirUtils
+from .filebase import States
+from .filedata import FileData
+from .filestructure import FileName, FileRoot, FilePath
 
 __all__ = (
+    'States',
+    'FileData',
+    'FileName',
+    'FileRoot',
+    'FilePath',
     'sppasFileUtils',
     'sppasDirUtils'
 )

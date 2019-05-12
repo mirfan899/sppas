@@ -258,7 +258,6 @@ class WorkspacesManager(sppasPanel):
 
         """
         name = event.GetButtonObj().GetName()
-        event.Skip()
 
         if name == "workspace_import":
             self.import_wkp()
@@ -272,7 +271,10 @@ class WorkspacesManager(sppasPanel):
         elif name == "workspace_rename":
             self.rename_wkp()
 
+        event.Skip()
+
     # ------------------------------------------------------------------------
+    # Actions to perform on the workspaces
     # ------------------------------------------------------------------------
 
     def import_wkp(self):
@@ -333,7 +335,9 @@ class WorkspacesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def pin_save(self):
-        """Pin and/or save the currently displayed data into a workspace."""
+        """Pin and/or save the currently displayed data into a workspace.
+
+        """
         # Ask for a name if current is the Blank one
         wkps = self.FindWindow("wkpslist")
         if wkps.get_wkp_current_index() == 0:
@@ -366,7 +370,9 @@ class WorkspacesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def rename_wkp(self):
-        """Rename the currently displayed workspace."""
+        """Rename the currently displayed workspace.
+
+        """
         current_name = self.FindWindow("wkpslist").get_wkp_name()
         dlg = wx.TextEntryDialog(
             self,

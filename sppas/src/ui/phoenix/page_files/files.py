@@ -29,7 +29,15 @@
         ---------------------------------------------------------------------
 
     ui.phoenix.page_files.files.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    One of the main pages of the wx4-based GUI of SPPAS.
+
+    It manages the workspaces:
+
+        - the list of files,
+        - the list of references, and
+        - the actions to perform on both of them.
 
 """
 
@@ -41,7 +49,7 @@ from ..windows import sppasStaticLine
 
 from .wksmanager import WorkspacesManager
 from .filesmanager import FilesManager
-from .catsmanager import CataloguesManager
+from .catsmanager import ReferencesManager
 from .associate import AssociatePanel
 
 from .filesevent import EVT_DATA_CHANGED
@@ -61,9 +69,9 @@ class sppasFilesPanel(sppasPanel):
     This panel is managing 4 areas:
 
         1. the workspaces;
-        2. the tree view of files;
-        3. an association toolbar to link files and catalogues;
-        4. the catalogues.
+        2. the tree-view of files;
+        3. an association toolbar to link files and references;
+        4. the references.
 
     """
 
@@ -90,33 +98,13 @@ class sppasFilesPanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data currently displayed in the tree-view.
+        """Return the data currently displayed.
 
-        :return: (FileData)
+        :return: (FileData) data of the files-viewer model.
 
         """
         fm = self.FindWindow("filesview")
         return fm.get_data()
-
-    # ------------------------------------------------------------------------
-
-    def set_data_from_fileview(self, to_wkp=True, to_cat=True):
-        """Set the currently displayed data to the other panels.
-
-        :param to_wkp: (bool) send to the workspaces
-        :param to_cat: (bool) send to the catalogues
-
-        """
-        fm = self.FindWindow("filesview")
-        data = fm.get_data()
-
-        if to_wkp:
-            wp = self.FindWindow("workspaces")
-            data = wp.set_data(data)
-
-        if to_cat:
-            cm = self.FindWindow("catalogues")
-            cm.set_data(data)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -124,12 +112,13 @@ class sppasFilesPanel(sppasPanel):
 
     def _create_content(self):
         """Create the main content."""
+        # Create all the panels
         wp = WorkspacesManager(self, name='workspaces')
         fm = FilesManager(self, name="filesview")
         ap = AssociatePanel(self, name="associate")
-        cm = CataloguesManager(self, name="catalogues")
+        cm = ReferencesManager(self, name="references")
 
-        # Organize the title and message
+        # Organize all the panels vertically, separated by 2px grey lines.
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(wp, 0, wx.EXPAND, 0)
         sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
@@ -139,7 +128,6 @@ class sppasFilesPanel(sppasPanel):
         sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
         sizer.Add(cm, 1, wx.EXPAND, 0)
 
-        # self.SetMinSize((680, 380))   # width = 128 + 320 + 32 + 200
         self.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
@@ -151,7 +139,7 @@ class sppasFilesPanel(sppasPanel):
         line.SetSize(wx.Size(2, -1))
         line.SetPenStyle(wx.PENSTYLE_SOLID)
         line.SetDepth(2)
-        line.SetForegroundColour(wx.Colour(128, 128, 128))
+        line.SetForegroundColour(wx.Colour(128, 128, 128, 128))
         return line
 
     # -----------------------------------------------------------------------
@@ -188,6 +176,7 @@ class sppasFilesPanel(sppasPanel):
         #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
         #    logging.debug('Refresh all the files [F5 keys pressed]')
         #    self.FindWindow("filesview").RefreshData()
+        #    self.FindWindow("references").RefreshData()
 
         # CMD+S: Pin&Save the workspace
         if key_code == 83 and cmd_down is True:
@@ -225,9 +214,6 @@ class sppasFilesPanel(sppasPanel):
         if emitted != ap:
             ap.set_data(data)
 
-        cm = self.FindWindow("catalogues")
+        cm = self.FindWindow("references")
         if emitted != cm:
             cm.set_data(data)
-
-
-

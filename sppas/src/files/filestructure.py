@@ -40,10 +40,15 @@ from os.path import isfile, isdir, exists
 from os.path import basename, dirname
 
 from sppas import sppasTypeError
+from sppas import sppasValueError
 from .fileref import Reference
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 from .filebase import FileBase, States
+
+# ---------------------------------------------------------------------------
+
+FILENAME_STATES = (States().UNUSED, States().CHECKED, States().LOCKED)
 
 # ---------------------------------------------------------------------------
 
@@ -95,11 +100,9 @@ class FileName(FileBase):
         self.__extension = ext.upper()
 
         # Modified date/time and file size
-        self.__date = " -- "
+        self.__date = None
         self.__filesize = 0
         self.update_properties()
-
-        self.states = (States().UNUSED, States().CHECKED, States().LOCKED)
 
     # -----------------------------------------------------------------------
 
@@ -131,7 +134,11 @@ class FileName(FileBase):
 
     def get_date(self):
         """Return a string representing the date of the last modification."""
-        return self.__date
+        if self.__date is None:
+            return " -- "
+        return "{:d}-{:d}-{:d} {:d}:{:d}:{:d}".format(
+            self.__date.year, self.__date.month, self.__date.day,
+            self.__date.hour, self.__date.minute, self.__date.second)
 
     # -----------------------------------------------------------------------
 
@@ -148,15 +155,24 @@ class FileName(FileBase):
     # -----------------------------------------------------------------------
 
     def set_state(self, value):
-        """Set a value to represent one of the states.
+        """Set a state value to this filename.
+
+        Notice that a locked file can only be unlocked by assigning the
+        UNUSED state.
 
         :param value: (bool)
+        :returns: (bool) True if the state changed
 
         """
-        if value in self.states:
-            self._state = value
-        else:
-            raise sppasTypeError(value, 'States')
+        if value not in FILENAME_STATES:
+            raise sppasTypeError(value, str(FILENAME_STATES))
+        if self._state == States().LOCKED and value != States().UNUSED:
+            return False
+        if self._state == value:
+            return False
+
+        self._state = value
+        return True
 
     # -----------------------------------------------------------------------
 
@@ -171,7 +187,10 @@ class FileName(FileBase):
             raise FileTypeError(self.get_id())
 
         # get time and size
-        self.__date = datetime.fromtimestamp(getmtime(self.get_id()))
+        try:
+            self.__date = datetime.fromtimestamp(getmtime(self.get_id()))
+        except ValueError:
+            self.__date = None
         self.__filesize = getsize(self.get_id())
 
     # -----------------------------------------------------------------------
@@ -197,14 +216,20 @@ class FileName(FileBase):
                      self.id))
 
     def __eq__(self, other):
-        if other is not None:
-            return self.id == other.id
+        """Allows to compare self with other by using "==".
 
+        """
+        if other is not None:
+            if isinstance(other, FileName):
+                return self.id == other.id
+            else:
+                return self.id == other
         return False
 
     def __ne__(self, other):
-        if other is not None:
-            return self.id != other.id
+        return not self == other
+        #if other is not None:
+        #    return self.id != other.id
 
 # ---------------------------------------------------------------------------
 
@@ -250,21 +275,19 @@ class FileRoot(FileBase):
         # References
         self.__references = None
 
-        self.states = (States().UNUSED,
-                       States().CHECKED,
-                       States().LOCKED,
-                       States().ALL_CHECKED,
-                       States().ALL_LOCKED
-                       )
-
-        # A free to use dictionary to expand the class
-        self.subjoined = dict()
+        # A free to use member to expand the class
+        self.subjoined = None  # dict()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def pattern(filename):
-        """Return the pattern of the given filename."""
+        """Return the pattern of the given filename.
+
+        :param filename: (str) Name of a file (absolute or relative)
+        :returns: (str) Root pattern
+
+        """
         fn = basename(filename)
         fn = splitext(fn)[0]
         for pattern in FileRoot.FilePatterns:
@@ -276,7 +299,12 @@ class FileRoot(FileBase):
 
     @staticmethod
     def root(filename):
-        """Return the root of the given filename."""
+        """Return the root of the given filename.
+
+        :param filename: (str) Name of a file (absolute or relative)
+        :returns: (str) Root
+
+        """
         fn = splitext(filename)[0]
         for pattern in FileRoot.FilePatterns:
             if fn.endswith(pattern) is True:
@@ -285,39 +313,103 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def set_state(self, value):
-        """Set a value to represent a toggle meaning the fileroot is checked.
+    def set_object_state(self, value, filename):
+        """Set a state value to a filename of this fileroot.
 
-        :param value: (int) A state of FileRoot.
+        :param value: (int) A state of FileName.
+        :param filename: (FileName) The instance to change state
+        :raises: sppasTypeError
 
         """
-        if isinstance(value, int):
-            self._state = value
-        else:
-            raise sppasTypeError(value, 'States')
-
         for fn in self.__files:
-            if value == States().UNUSED:
-                fn.set_state(States().UNUSED)
-            elif value == States().ALL_CHECKED:
-                fn.set_state(States().CHECKED)
-            elif value == States().ALL_LOCKED:
-                fn.set_state(States().LOCKED)
+            if fn == filename:
+                modified = fn.set_state(value)
+                if modified is True:
+                    self.update_state()
+                    return True
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def set_state(self, value):
+        """Set a value to represent the state of the root.
+
+        It is not allowed to manually assign one of the "AT_LEAST" states
+        (they are automatically fixed by setting the state of a FileName
+        with set_object_state method).
+
+        The state of locked files is not changed.
+
+        :param value: (State) A state of FileName.
+
+        """
+        if value not in FILENAME_STATES:
+            raise sppasTypeError(value, str(FILENAME_STATES))
+
+        modified = False
+        for fn in self.__files:
+            if fn.get_state() != States().LOCKED:
+                if fn.set_state(value) is True:
+                    modified = True
+
+        if modified:
+            self.update_state()
+
+        return modified
 
     statefr = property(FileBase.get_state, set_state)
 
     # -----------------------------------------------------------------------
 
+    def update_state(self):
+        """Update the state depending on the checked and locked filenames."""
+        if len(self.__files) == 0:
+            self._state = States().UNUSED
+            return
+
+        checked = 0
+        locked = 0
+        for fn in self.__files:
+            if fn.get_state() == States().CHECKED:
+                checked += 1
+            elif fn.get_state() == States().LOCKED:
+                locked += 1
+
+        if locked == len(self.__files):
+            self._state = States().LOCKED
+        elif locked > 0:
+            self._state = States().AT_LEAST_ONE_LOCKED
+        elif checked == len(self.__files):
+            self._state = States().CHECKED
+        elif checked > 0:
+            self._state = States().AT_LEAST_ONE_CHECKED
+        else:
+            self._state = States().UNUSED
+
+    # -----------------------------------------------------------------------
+
     def get_references(self):
-        """If the reference catalog is not set yet, instead of returning None the method returns an empty list."""
+        """Return the list of references of the catalog.
+
+        :returns: (list)
+
+        """
+        # If the catalog is not set yet, instead of returning None the method
+        # returns an empty list.
         if self.__references is None:
             return list()
         return self.__references
 
+    # -----------------------------------------------------------------------
+
     def set_references(self, list_of_references):
-        """In order to set the references one must provide a list of category or an empty list.
+        """Fix the list of references.
+
+        The current list is overridden.
 
         :param list_of_references: (list)
+        :raises: sppasTypeError
 
         """
         self.__references = list()
@@ -388,6 +480,8 @@ class FileRoot(FileBase):
 
         # Nothings wrong. filename is appended
         self.__files.append(fn)
+        self.update_state()
+
         return fn
 
     # -----------------------------------------------------------------------
@@ -417,35 +511,9 @@ class FileRoot(FileBase):
 
         if idx != -1:
             self.__files.pop(idx)
+            self.update_state()
 
         return idx
-
-    # -----------------------------------------------------------------------
-
-    def update_state(self):
-        """Modify state depending on the checked filenames."""
-        if len(self.__files) == 0:
-            self.set_state(States().UNUSED)
-            return
-
-        checked = 0
-        locked = 0
-        for fn in self.__files:
-            if fn.get_state() == States().CHECKED:
-                checked += 1
-            elif fn.get_state() == States().LOCKED:
-                locked += 1
-
-        if locked == len(self.__files):
-            self.set_state(States().ALL_LOCKED)
-        elif locked > 1:
-            self.set_state(States().AT_LEAST_ONE_LOCKED)
-        elif checked == len(self.__files):
-            self.set_state(States().ALL_CHECKED)
-        elif checked > 1:
-            self.set_state(States().AT_LEAST_ONE_CHECKED)
-        else:
-            self.set_state(States().UNUSED)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -500,11 +568,10 @@ class FilePath(FileBase):
     def __init__(self, filepath):
         """Constructor of a FilePath.
 
-        :param `filepath`: (str) Absolute or relative name of a folder
+        :param filepath: (str) Absolute or relative name of a folder
         :raise: OSError if filepath does not match a directory (not file/link)
 
         """
-
         super(FilePath, self).__init__(abspath(filepath))
         if exists(filepath) is False:
             raise FileOSError(filepath)
@@ -514,48 +581,87 @@ class FilePath(FileBase):
         # A list of FileRoot instances
         self.__roots = list()
 
-        # States of the path
-        # ------------------
+        # a free to use entry to expand the class
+        self.subjoined = None  # dict()
 
-        self.states = (States().UNUSED,
-                       States().CHECKED,
-                       States().LOCKED,
-                       States().ALL_CHECKED,
-                       States().ALL_LOCKED,
-                       States().AT_LEAST_ONE_CHECKED,
-                       States().AT_LEAST_ONE_LOCKED
-                       )
+    # -----------------------------------------------------------------------
 
-        # a free to use dictionary to expand the class
-        self.subjoined = dict()
+    def set_object_state(self, value, entry):
+        """Set a state value to a filename of this filepath.
+
+        It is not allowed to manually assign one of the "AT_LEAST" states.
+        They are automatically fixed here depending on the roots states.
+
+        :param value: (int) A state of FileName.
+        :param entry: (FileName, FileRoot) The instance to change state
+        :raises: sppasTypeError, sppasOSError, sppasValueError
+
+        """
+        modified = False
+        # In case (not normal) filename is a string, create a FileName
+        if isinstance(entry, (FileName, FileRoot)) is False:
+            file_id = self.identifier(entry)
+            entry = FileName(file_id)
+
+        if isinstance(entry, FileName):
+            # Search for the FileRoot matching the given FileName
+            root_id = FileRoot.root(entry.id)
+            fr = self.get_root(root_id)
+            if fr is None:
+                raise sppasValueError(root_id, self.id)
+            # Ask the FileRoot to set the state of the FileName
+            modified = fr.set_object_state(value, entry)
+
+        elif isinstance(entry, FileRoot):
+            modified = entry.set_state(value)
+
+        if modified is True:
+            self.update_state()
+
+        return modified
 
     # -----------------------------------------------------------------------
 
     def set_state(self, value):
-        if isinstance(value, int):
-            self._state = value
-        else:
-            raise sppasTypeError(value, 'States')
+        """Set a value to represent the state of the path.
 
+        It is not allowed to manually assign one of the "AT_LEAST" states
+        (they are automatically fixed by setting the state of a FileName
+        with set_object_state method).
+
+        The state of locked files is not changed.
+
+        :param value: (State) A state of FileName.
+
+        """
+        if value not in FILENAME_STATES:
+            raise sppasTypeError(value, str(FILENAME_STATES))
+
+        modified = False
         for fr in self.__roots:
-            if value in self.states:
-                fr.set_state(value)
+            if fr.set_state(value) is True:
+                modified = True
+
+        if modified:
+            self.update_state()
+
+        return modified
 
     statefp = property(FileBase.get_state, set_state)
 
     # -----------------------------------------------------------------------
 
     def get_object(self, filename):
-        """Return the instance matching the given filename.
+        """Return the instance matching the given entry.
 
-        :param filename: Name of a file (absolute of relative)
+        :param filename: Name of a file or a root (absolute of relative)
 
         Notice that it returns `self` if filename is a directory matching
         self.id.
 
         """
-        fp = abspath(filename)
-        if isdir(fp) and fp == self.id:
+        abs_name = abspath(filename)
+        if isdir(abs_name) and abs_name == self.id:
             return self
 
         elif isfile(filename):
@@ -564,6 +670,11 @@ class FilePath(FileBase):
                 fn = fr.get_object(idt)
                 if fn is not None:
                     return fn
+
+        else:
+            for fr in self.__roots:
+                if fr.id == abs_name:
+                    return fr
 
         return None
 
@@ -633,31 +744,37 @@ class FilePath(FileBase):
             self.__roots.append(fr)
 
         # Append this file to the root
-        return fr.append(filename)
+        obj = fr.append(filename)
+        self.update_state()
+
+        return obj
 
     # -----------------------------------------------------------------------
 
-    def remove(self, fileroot):
-        """Remove a fileroot of the list of roots.
+    def remove(self, entry):
+        """Remove an entry of the list of roots or filenames.
 
-        Given fileroot can be either the identifier of a root or an instance
-        of FileRoot.
+        Given entry can be either the identifier of a root or an instance
+        of FileRoot or a FileName or an identifier of file name.
 
-        :param fileroot: (str or FileRoot)
+        TODO: REMOVE IF FILENAME
+
+        :param entry: (str or FileRoot)
         :return: (int) Index of the removed FileRoot or -1 if nothing removed.
 
         """
-        if isinstance(fileroot, FileRoot):
-            root = fileroot
+        if isinstance(entry, FileRoot):
+            root = entry
         else:
-            root = self.get_root(fileroot)
+            root = self.get_root(entry)
 
         try:
             idx = self.__roots.index(root)
             self.__roots.pop(idx)
         except ValueError:
-            idx = -1
+            return -1
 
+        self.update_state()
         return idx
 
     # -----------------------------------------------------------------------
@@ -671,23 +788,21 @@ class FilePath(FileBase):
         checked = 0
         locked = 0
         for fr in self.__roots:
-            if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
-                    or fr.get_state() == States().ALL_CHECKED:
+            if fr.get_state() in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
                 checked += 1
-            elif fr.get_state() == States().AT_LEAST_ONE_LOCKED\
-                    or fr.get_state() == States().ALL_LOCKED:
+            elif fr.get_state() in (States().AT_LEAST_ONE_LOCKED, States().LOCKED):
                 locked += 1
 
         if locked == len(self.__roots):
-            self.set_state(States().ALL_LOCKED)
-        elif locked > 1:
-            self.set_state(States().AT_LEAST_ONE_LOCKED)
+            self._state = States().LOCKED
+        elif locked > 0:
+            self._state = States().AT_LEAST_ONE_LOCKED
         elif checked == len(self.__roots):
-            self.set_state(States().ALL_CHECKED)
-        elif checked > 1:
-            self.set_state(States().AT_LEAST_ONE_CHECKED)
+            self._state = States().CHECKED
+        elif checked > 0:
+            self._state = States().AT_LEAST_ONE_CHECKED
         else:
-            self.set_state(States().UNUSED)
+            self._state = States().UNUSED
 
     # -----------------------------------------------------------------------
     # Overloads

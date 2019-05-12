@@ -29,7 +29,7 @@
     src.ui.phoenix.filespck.filesviewmodel.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    This model acts as a bridge between a DataViewCtrl and a FileData instance. 
+    This model acts as a bridge between a DataViewCtrl and a FileData.
 
 """
 
@@ -40,10 +40,12 @@ import wx
 import wx.dataview
 
 from sppas import sppasTypeError
+from sppas.src.ui.trash import sppasTrash
 from sppas.src.anndata import sppasRW
-from sppas.src.files.filedata import FileName, FileRoot, FilePath, FileData
+from sppas.src.files import States, FileName, FileRoot, FilePath, FileData
 
 from sppas.src.ui.phoenix import sppasSwissKnife
+from sppas.src.ui.phoenix.windows.image import ColorizeImage
 from .basectrls import ColumnProperties
 
 # -----------------------------------------------------------------------
@@ -128,10 +130,88 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
         s = min(w, h)
         s = int(0.6 * s)
 
-        bmp = sppasSwissKnife.get_bmp_icon(self.value, s)
+        # get the image from its name
+        img = sppasSwissKnife.get_image(self.value)
+        # re-scale the image to the expected size
+        sppasSwissKnife.rescale_image(img, s)
+        # re-colorize
+        ColorizeImage(img, wx.BLACK, wx.Colour(128, 128, 128, 128))
+        # convert to bitmap
+        bitmap = wx.Bitmap(img)
+        # render it at the center
+        dc.DrawBitmap(bitmap, x + (w-s)//2, y + (h-s)//2)
+
+        return True
+
+# ---------------------------------------------------------------------------
+
+
+class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
+    """Draw an icon matching a state of a file.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    ICON_NAMES = {
+        States().UNUSED: "choice_checkbox",
+        States().CHECKED: "choice_checked",
+        States().LOCKED: "locked",
+        States().AT_LEAST_ONE_CHECKED: "choice_pos",
+        States().AT_LEAST_ONE_LOCKED: "choice_neg"
+    }
+
+    def __init__(self,
+                 varianttype="wxBitmap",
+                 mode=wx.dataview.DATAVIEW_CELL_ACTIVATABLE,
+                 align=wx.dataview.DVR_DEFAULT_ALIGNMENT):
+        super(StateIconRenderer, self).__init__(varianttype, mode, align)
+        self.value = "default"
+
+    def SetValue(self, value):
+        self.value = value
+        return True
+
+    def GetValue(self):
+        return self.value
+
+    def GetSize(self):
+        """Return the size needed to display the value."""
+        size = self.GetTextExtent('TT')
+        return size[1]*2, size[1]*2
+
+    def ActivateCell(self, cell, model, item, col, event=wx.MouseEvent):
+        """Overridden. Should react to cell activation.
+
+        This method is never called on MacOS (was never implemented by wx).
+        So, this is not an issue to work with it.
+
+        """
+        if event.LeftUp():
+            logging.debug('LeftUp event on State column.')
+
+    def Render(self, rect, dc, state):
+        """Draw the bitmap, adjusting its size. """
+        if self.value == "":
+            return False
+
+        x, y, w, h = rect
+        s = min(w, h)
+        s = int(0.6 * s)
+
+        icon_value = "default"
+        if self.value in StateIconRenderer.ICON_NAMES:
+            icon_value = StateIconRenderer.ICON_NAMES[self.value]
+
+        bmp = sppasSwissKnife.get_bmp_icon(icon_value, s)
         dc.DrawBitmap(bmp, x + (w-s)//2, y + (h-s)//2)
 
         return True
+
 
 # ----------------------------------------------------------------------------
 # Model
@@ -151,7 +231,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         0. icon:     wxBitmap
         1. file:     string
-        2. state:    bool
+        2. state:    int (one of the States() class)
         3. type:     string
         4. data:     string
         5. size:     string
@@ -180,7 +260,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         self.__mapper = dict()
         self.__mapper[0] = FilesTreeViewModel.__create_col('icon')
         self.__mapper[1] = FilesTreeViewModel.__create_col('file')
-        self.__mapper[2] = FilesTreeViewModel.__create_col('check')
+        self.__mapper[2] = FilesTreeViewModel.__create_col('state')
         self.__mapper[3] = FilesTreeViewModel.__create_col('type')
         self.__mapper[4] = FilesTreeViewModel.__create_col('date')
         self.__mapper[5] = FilesTreeViewModel.__create_col('size')
@@ -444,24 +524,13 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
 
         if self.__mapper[col].id == "state":
-            node.state = value
-            # Search for the parent. It has to verify if it's state value
-            # is still correct.
-            if isinstance(node, FileName):
-                root_parent = self.GetParent(item)
-                fr = self.ItemToObject(root_parent)
-                # instead of simply updating the root, we set the state
-                # value to all files of this root
-                # fr.update_check() is replaced by
-                fr.check = value
-                path_parent = self.GetParent(root_parent)
-                fp = self.ItemToObject(path_parent)
-                fp.update_check()
+            if isinstance(value, (States, int)):
+                v = value
+            else:
+                logging.error("Can't set state {:d} to object {:s}".format(value, node))
+                return False
 
-            if isinstance(node, FileRoot):
-                path_parent = self.GetParent(item)
-                fp = self.ItemToObject(path_parent)
-                fp.update_check()
+            self.__data.set_object_state(v, node)
 
         return True
 
@@ -497,37 +566,149 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # Manage the data
     # -----------------------------------------------------------------------
 
-    def AddFile(self, filename):
-        """Add a file in the data."""
-        self.__data.add_file(filename)
+    def change_value(self, column, item):
+        """Change state value."""
+        node = self.ItemToObject(item)
+        cur_state = node.get_state()
+        if cur_state in (States().UNUSED, States().AT_LEAST_ONE_CHECKED, States().AT_LEAST_ONE_LOCKED):
+            try:
+                modified = self.__data.set_object_state(States().CHECKED, node)
+                logging.debug('MODIFIED 1: {:s}'.format(str(modified)))
+                if modified is False and cur_state == States().AT_LEAST_ONE_LOCKED:
+                    modified = self.__data.set_object_state(States().UNUSED, node)
+                logging.debug('MODIFIED 2: {:s}'.format(str(modified)))
+                if modified:
+                    self.Cleared()
+            except Exception as e:
+                logging.debug('Value not modified for node {:s}'.format(node))
+                logging.error(str(e))
+
+        elif cur_state == States().CHECKED:
+            try:
+                self.__data.set_object_state(States().UNUSED, node)
+                self.Cleared()
+            except Exception as e:
+                logging.debug('Value not modified for node {:s}'.format(node))
+                logging.error(str(e))
+
+        else:
+            logging.warning("{:s} is locked. It's state can't be changed until"
+                            "it is un-locked.".format(node))
 
     # -----------------------------------------------------------------------
 
-    def UpdateFiles(self):
+    def update_data(self):
         """Update the data and refresh the tree."""
         self.__data.update()
         self.Cleared()
 
     # -----------------------------------------------------------------------
 
-    def RemoveCheckedFiles(self):
-        self.__data.remove(FileName.CHECKED)
+    def add_files(self, entries):
+        """Add a set of files or folders in the data.
+
+        :param entries: (list of str) Filenames or folder with absolute path.
+
+        """
+        added_files = list()
+        for entry in entries:
+            fns = self.__add(entry)
+            if len(fns) > 0:
+                added_files.extend(fns)
+
+        added_items = list()
+        if len(added_files) > 0:
+            self.Cleared()
+            for f in added_files:
+                added_items.append(self.ObjectToItem(f))
+
+        return added_items
 
     # -----------------------------------------------------------------------
 
-    def GetCheckedFiles(self):
-        return self.__data.get_state(FileName.CHECKED)
+    def __add(self, entry):
+        """Add a file or a folder in the data."""
+        fns = list()
+        if os.path.isdir(entry):
+            for f in os.listdir(entry):
+                fullname = os.path.join(entry, f)
+                try:
+                    fn = self.__data.add_file(fullname)
+                    if fn is not None:
+                        fns.append(fn)
+                        logging.debug('{:s} added.'.format(entry))
+                except OSError:
+                    logging.error('{:s} not added.'.format(fullname))
+
+        elif os.path.isfile(entry):
+            try:
+                fn = self.__data.add_file(entry)
+                if fn is not None:
+                    fns.append(fn)
+                    logging.debug('{:s} added.'.format(entry))
+            except OSError:
+                logging.error('{:s} not added.'.format(entry))
+
+        else:
+            logging.error('{:s} not added.'.format(entry))
+
+        return fns
 
     # -----------------------------------------------------------------------
 
-    def Check(self, value=True, entry=None):
+    def delete_checked_files(self):
+        checked = self.__data.get_filename_from_state(States().CHECKED)
+        if len(checked) == 0:
+            return
+
+        deleted = list()
+        for fn in checked:
+            try:
+                # move the file into the trash of SPPAS
+                sppasTrash().put_file_into(fn.id)
+                deleted.append(fn)
+
+            except Exception as e:
+                logging.error("File {!s:s} can't be deleted due to the "
+                              "following error: {:s}.".format(fn.id, str(e)))
+
+        if len(deleted) > 0:
+            self.__data.update()
+            self.Cleared()
+            logging.info('{:d} files moved into the trash.'.format(len(deleted)))
+
+    # -----------------------------------------------------------------------
+
+    def remove_checked_files(self):
+        nb_removed = self.__data.remove_files(States().CHECKED)
+        if nb_removed > 0:
+            self.__data.update()
+            self.Cleared()
+
+    # -----------------------------------------------------------------------
+
+    def get_checked_files(self):
+        return self.__data.get_filename_from_state(States().CHECKED)
+
+    # -----------------------------------------------------------------------
+
+    def lock(self, entries):
+        for entry in entries:
+            node = self.__data.get_object(entry)
+            self.__data.set_object_state(States().LOCKED, node)
+        self.Cleared()
+
+    # -----------------------------------------------------------------------
+
+    def set_state(self, value=States().CHECKED, entry=None):
         """Check or uncheck all or any file.
 
-        :param value: (bool) Toggle value
+        :param value: (int) One of the States()
         :param entry: (str) Absolute or relative name of a file or a file root
 
         """
-        self.__data.check(value, entry)
+        self.__data.set_object_state(value, entry)
+        self.Cleared()
 
     # -----------------------------------------------------------------------
 
@@ -539,7 +720,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         """
         if item is None:
-            self.__data.expand_all(bool(value))
+            #self.__data.expand_all(bool(value))
+            pass
         else:
             obj = self.ItemToObject(item)
             if isinstance(obj, (FileRoot, FilePath)):
@@ -589,13 +771,14 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             return col_file
 
         if name == "state":
-            col = ColumnProperties("Check", name, "bool")
-            col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
-            col.align = wx.ALIGN_CENTRE
+            col = ColumnProperties("State", name, "wxBitmap")
+            # col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
             col.width = 36
-            col.add_fct_name(FileName, "set_state")
-            col.add_fct_name(FileRoot, "set_state")
-            col.add_fct_name(FilePath, "set_state")
+            col.align = wx.ALIGN_CENTRE
+            col.renderer = StateIconRenderer()
+            col.add_fct_name(FileName, "get_state")
+            col.add_fct_name(FileRoot, "get_state")
+            col.add_fct_name(FilePath, "get_state")
             return col
 
         if name == "type":

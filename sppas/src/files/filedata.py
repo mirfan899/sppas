@@ -123,6 +123,7 @@
 
 """
 
+import logging
 import json
 
 from os.path import exists
@@ -160,7 +161,6 @@ class FileData(FileBase):
         super().__init__(sppasGUID().get())
         self.__data = list()
         self.__refs = list()
-        self.states = States()
 
     # -----------------------------------------------------------------------
 
@@ -182,6 +182,22 @@ class FileData(FileBase):
             self.__data.append(new_fp)
 
         return new_fp.append(filename)
+
+    # -----------------------------------------------------------------------
+
+    def remove_file(self, filename):
+        """Remove a file in the list from its file name.
+
+        :param filename: (str) Absolute or relative name of a file
+        :return: (FileName)
+        :raises: OSError
+
+        """
+        given_fp = FilePath(dirname(filename))
+        for fp in self.__data:
+            if fp.id == given_fp.id:
+                for fr in fp:
+                    fr.remove(filename)
 
     # -----------------------------------------------------------------------
 
@@ -219,7 +235,11 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def update(self):
-        """Update the data: missing files, properties changed."""
+        """Update the data: missing files, properties changed.
+
+        Empty FileRoot and FilePath are removed.
+
+        """
         for fp in self.__data:
             for fr in reversed(fp):
                 for fn in reversed(fr):
@@ -248,13 +268,20 @@ class FileData(FileBase):
         Do not update: empty roots or paths are not removed.
 
         :param state: (States)
+        :returns: (int) Number of removed files
 
         """
+        nb = 0
         for fp in self.__data:
             for fr in reversed(fp):
                 for fn in reversed(fr):
-                    if fn.state == state:
+                    if fn.get_state() == state:
                         fr.remove(fn)
+                        nb += 1
+                fr.update_state()
+            fp.update_state()
+
+        return nb
 
     # -----------------------------------------------------------------------
 
@@ -269,7 +296,7 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
-                    if fn.state == value:
+                    if fn.get_state() == value:
                         checked.append(fn.id)
         return checked
 
@@ -277,7 +304,8 @@ class FileData(FileBase):
 
     def get_object(self, entry):
         """Return the file object matching the given entry.
-        
+
+        :param entry: (str) Name of a file or of a folder
         :return: (FilePath, FileRoot, FileName)
 
         """
@@ -295,8 +323,9 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def get_state(self, file_obj):
-        """Return the state of any File within the FileData.
+    @staticmethod
+    def get_object_state(file_obj):
+        """Return the state of any FileBase within the FileData.
 
         :param file_obj: (FileBase) The object which one enquire the state
         :return: States
@@ -311,36 +340,59 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def set_state(self, state, file_obj=None):
-        """Set the state of any File within FileData.
+    def set_object_state(self, state, file_obj=None):
+        """Set the state of any FileBase within FileData.
 
         The default case is to set the state to all FilePath.
 
+        It is not allowed to manually assign one of the "AT_LEAST" states.
+        They are automatically fixed here depending on the paths states.
+
         :param state: (States) state to set the file to
         :param file_obj: (FileBase) the specific file to set the state to
+        :raises: sppasTypeError, sppasValueError
 
         """
+        modified = False
         if file_obj is None:
             for fp in self.__data:
-                if not fp.statefp == States().AT_LEAST_ONE_LOCKED:
-                    if isinstance(state, int):
-                        fp.set_state(state)
-                    else:
-                        raise sppasTypeError(state, 'States')
-                else:
-                    raise sppasValueError(fp.state, 'not AT_LEAST_ONE_LOCKED or ALL_LOCKED')
+                modified = fp.set_state(state)
+
         else:
-            if isinstance(file_obj, FileBase):
-                if isinstance(state, int):
-                    file_obj.set_state(state)
-                else:
-                    raise sppasTypeError(state, 'States')
+            if isinstance(file_obj, FilePath):
+                modified = file_obj.set_state(state)
+
+            elif isinstance(file_obj, (FileRoot, FileName)):
+                # search for the FilePath matching with the file_obj
+                for fp in self.__data:
+                    # test if file_obj is a root or name in this fp
+                    cur_obj = fp.get_object(file_obj.id)
+                    if cur_obj is not None:
+                        # this object is one of this fp
+                        modified = fp.set_object_state(state, file_obj)
+                        break
+
             else:
                 raise sppasTypeError(file_obj, 'inherited from FileBase')
 
+        return modified
+
     # -----------------------------------------------------------------------
 
-    def toJSON(self):
+    def set_state(self, value):
+        """Set the state of this FileData instance.
+
+        Actually we don't do anything with this state value!
+        It overrides the FileBase method to not raise a NotImplementedError.
+
+        :param value: (States)
+
+        """
+        self._state = int(value)
+
+    # -----------------------------------------------------------------------
+    
+    def __json_serializer(self):
         my_fp = dict()
         for fp in self.__data:
             my_fr = dict()
@@ -365,16 +417,7 @@ class FileData(FileBase):
 
         """
         with open(file_name, 'w') as save:
-            json.dump(self.toJSON(), save)
-
-    # -----------------------------------------------------------------------
-
-    def has_locked_files(self):
-        for fp in self.__data:
-            if fp.statefp == States().AT_LEAST_ONE_LOCKED\
-                    or fp.statefp == States().ALL_LOCKED:
-                return True
-        return False
+            json.dump(self.__json_serializer(), save)
 
     # -----------------------------------------------------------------------
 
@@ -412,7 +455,7 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in fp:
                 if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
-                        or fr.get_state() == States().ALL_CHECKED:
+                        or fr.get_state() == States().CHECKED:
                     if fr.get_references() is not None:
                         ref_extended = fr.get_references()
                         ref_extended.extend(ref_checked)
@@ -430,8 +473,7 @@ class FileData(FileBase):
 
         for fp in self.__data:
             for fr in fp:
-                if fr.statefr == States().AT_LEAST_ONE_CHECKED \
-                        or fr.statefr == States().ALL_CHECKED:
+                if fr.statefr in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
                     for ref in ref_checked:
                         if ref in fr.references:
                             fr.references.remove(ref)
@@ -449,6 +491,7 @@ class FileData(FileBase):
         for fp in self.__data:
             if fp.statefp == state:
                 yield fp
+
     # -----------------------------------------------------------------------
 
     def get_fileroot_from_state(self, state):
@@ -461,12 +504,16 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def get_filename_from_state(self, state):
-        """Return every FileName in the given state."""
+        """Return every FileName in the given state.
+
+        """
+        files = list()
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
                     if fn.statefn == state:
-                        yield fn
+                        files.append(fn)
+        return files
 
     # -----------------------------------------------------------------------
 
@@ -480,20 +527,54 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def unlock(self, list_of_files):
-        """Unlocks the given list of file.
+    def has_locked_files(self):
+        for fp in self.__data:
+            if fp.statefp in (States().AT_LEAST_ONE_LOCKED, States().LOCKED):
+                return True
+        return False
 
-        :param list_of_files (list) the list of file to unlock
+    # -----------------------------------------------------------------------
+
+    def get_parent(self, filebase):
+        """Return the parent of an object.
+
+        :param filebase: (FileName or FileRoot).
+        :returns: (FileRoot or FilePath)
+        :raises: sppasTypeError
 
         """
-        if isinstance(list_of_files, list):
-            for file in list_of_files:
-                file.set_state(States().UNUSED)
+        print(filebase.id)
+        if isinstance(filebase, FileName):
+            fr = FileRoot(filebase.id)
+            return self.get_object(fr.id)
 
+        if isinstance(filebase, FileRoot):
+            fp = FilePath(filebase.id)
+            return self.get_object(fp.id)
+
+        raise sppasTypeError(filebase, "FileName, FileRoot")
+
+    # -----------------------------------------------------------------------
+
+    def unlock(self, entries=None):
+        """Unlock the given list of files.
+
+        :param entries: (list, None) List of FileName to unlock
+
+        """
+        if entries is None:
             for fp in self.__data:
-                for fr in reversed(fp):
+                for fr in fp:
+                    for fn in fr:
+                        if fn.get_states() == States().LOCKED:
+                            fn.set_state(States().UNUSED)
                     fr.update_state()
                 fp.update_state()
+
+        elif isinstance(entries, list):
+            for fn in entries:
+                if fn.get_states() == States().LOCKED:
+                    self.set_object_state(States().UNUSED, fn)
 
     # -----------------------------------------------------------------------
     # Overloads

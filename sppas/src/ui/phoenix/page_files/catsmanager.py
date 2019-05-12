@@ -26,10 +26,10 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.catsmanager.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.catsmanager.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Main panel to manage the catalogues.
+    Main panel to manage the references.
 
 """
 
@@ -38,13 +38,13 @@ import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
 from .btntxttoolbar import BitmapTextToolbar
-from .catstreectrl import CataloguesTreeViewCtrl
+from .catstreectrl import ReferencesTreeViewCtrl
 
 # ----------------------------------------------------------------------------
 
 
-class CataloguesManager(sppasPanel):
-    """Manage the catalogues and actions on perform on them.
+class ReferencesManager(sppasPanel):
+    """Manage a catalogue of references and actions on perform on them.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,7 +55,7 @@ class CataloguesManager(sppasPanel):
     """
 
     def __init__(self, parent, name=wx.PanelNameStr):
-        super(CataloguesManager, self).__init__(
+        super(ReferencesManager, self).__init__(
             parent,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
@@ -75,14 +75,14 @@ class CataloguesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        self.FindWindow('catsview').set_data(data)
+        self.FindWindow('refsview').set_data(data)
 
     # ------------------------------------------------------------------------
 
     def _create_content(self):
         """"""
         tb = self.__create_toolbar()
-        cv = CataloguesTreeViewCtrl(self, name="catsview")
+        cv = ReferencesTreeViewCtrl(self, name="refsview")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
@@ -97,10 +97,10 @@ class CataloguesManager(sppasPanel):
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self)
         tb.set_focus_color(wx.Colour(64, 64, 196, 128))
-        tb.AddText("Catalogues: ")
-        tb.AddButton("cats-add", "Create")
-        tb.AddButton("cats-edit", "Edit")
-        tb.AddButton("cats-delete", "Delete")
+        tb.AddText("References: ")
+        tb.AddButton("refs-add", "Create")
+        tb.AddButton("refs-edit", "Edit")
+        tb.AddButton("refs-delete", "Delete")
         tb.Bind(wx.EVT_BUTTON, self.on_button_click)
         return tb
 
@@ -113,8 +113,8 @@ class CataloguesManager(sppasPanel):
         key_code = event.GetKeyCode()
         shift_down = event.ShiftDown()
         if key_code == wx.WXK_F5 and shift_down is True:
-            logging.debug('Refresh the data catalogs [SHIFT+F5 keys pressed]')
-            self.FindWindow("catsview").RefreshData()
+            logging.debug('Refresh the references [SHIFT+F5 keys pressed]')
+            self.FindWindow("refsview").RefreshData()
 
         event.Skip()
 
@@ -123,18 +123,18 @@ class CataloguesManager(sppasPanel):
     def on_button_click(self, event):
 
         name = event.GetButtonObj().GetName()
-        if name == "cats-add":
+        if name == "refs-add":
             # create a reference
             dlg = wx.MessageDialog(self, 'add a reference to the catalogue')
             dlg.ShowModal()
             dlg.Destroy()
             # self._add_catalogue()
 
-        elif name == "cats-delete":
+        elif name == "refs-delete":
             # delete a reference
             pass  # self._delete()
 
-        elif name == "cats-edit":
+        elif name == "refs-edit":
             # add/remove attributes of the selected references
             pass  # self._delete()
 
@@ -145,14 +145,14 @@ class CataloguesManager(sppasPanel):
 # ----------------------------------------------------------------------------
 
 
-class TestPanel(CataloguesManager):
+class TestPanel(ReferencesManager):
 
     def __init__(self, parent):
-        super(TestPanel, self).__init__(parent, data=None)
+        super(TestPanel, self).__init__(parent)
         self.add_test_data()
 
     # ------------------------------------------------------------------------
 
     def add_test_data(self):
         pass
-        # self.FindWindow('catsview').Add(cat)
+        # self.FindWindow('refsview').Add(cat)

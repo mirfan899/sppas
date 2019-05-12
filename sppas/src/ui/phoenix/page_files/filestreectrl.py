@@ -31,7 +31,6 @@
 
 """
 
-import os
 import logging
 import wx
 import wx.dataview
@@ -82,69 +81,53 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
         # Bind events.
         # Used to remember the expend/collapse status of items after a refresh.
-        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)        
-        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
+        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)
+        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
 
     # ------------------------------------------------------------------------
     # Public methods
     # ------------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data displayed into the tree."""
+        """Return the data of the model."""
         return self._model.get_data()
 
     # ------------------------------------------------------------------------
 
-    def GetChecked(self):
-        """Return checked filenames."""
-        return self._model.GetCheckedFiles(True)
-
-    # ------------------------------------------------------------------------
-
-    def GetUnChecked(self):
-        """Return un-checked filenames."""
-        return self._model.GetCheckedFiles(False)
-
-    # ------------------------------------------------------------------------
-
-    def Add(self, filename):
-        """Add a file in the tree.
+    def AddFiles(self, entries):
+        """Add a list of files in the model.
         
-        The given filename must include its absolute path.
+        The given filenames must include theirs absolute path.
 
-        :param filename: (str) Name of a file or a directory.
+        :param entries: (str) List of names of files or a directory.
 
         """
-        do_refresh = False
-        if os.path.isdir(filename):
-            for f in os.listdir(filename):
-                fullname = os.path.join(filename, f)
-                try:
-                    self._model.AddFile(fullname)
-                    do_refresh = True  
-                except OSError:
-                    logging.info('{:s} not added.'.format(fullname))
-
-        elif os.path.isfile(filename):
-            try:
-                self._model.AddFile(filename)
-                do_refresh = True  
-            except OSError:
-                logging.error('{:s} not added.'.format(filename))
-
-        else:
-            logging.error('{:s} not added.'.format(filename))
-        
-        if do_refresh:
-            self.RefreshData()
-        logging.debug('{:s} added.'.format(filename))
+        items = self._model.add_files(entries)
+        for i in items:
+            self.EnsureVisible(i)
 
     # ------------------------------------------------------------------------
 
-    def Remove(self):
+    def RemoveCheckedFiles(self):
         """Remove all checked files."""
-        self._model.RemoveCheckedFiles()
-        self.RefreshData()
+        self._model.remove_checked_files()
+
+    # ------------------------------------------------------------------------
+
+    def DeleteCheckedFiles(self):
+        """Delete all checked files."""
+        self._model.delete_checked_files()
+
+    # ------------------------------------------------------------------------
+
+    def GetCheckedFiles(self):
+        return self._model.get_checked_files()
+
+    # ------------------------------------------------------------------------
+
+    def LockFiles(self, entries):
+        self._model.lock(entries)
 
     # ------------------------------------------------------------------------
 
@@ -170,12 +153,12 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
-    def RefreshData(self):
+    def update_data(self):
         # Update the data and clear the tree
-        self._model.UpdateFiles()
+        self._model.update_data()
         # But clearing the tree means to forget which are the expanded items!
         # so, re-expand/re-collapse properly.
-        self.__update_expand()
+        #self.__update_expand()
 
     # ------------------------------------------------------------------------
     # Callbacks to events
@@ -200,3 +183,12 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         """
         self._model.Expand(False, evt.GetItem())
         evt.Skip()
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_activated(self, evt):
+        """Happens when the user activated a cell.
+
+        """
+        self._model.change_value(evt.GetDataViewColumn(), evt.GetItem())
+

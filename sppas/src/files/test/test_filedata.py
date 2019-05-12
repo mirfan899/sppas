@@ -97,7 +97,7 @@ class TestFilePath(unittest.TestCase):
         d = dirname(__file__)
         fp = FilePath(d)
         self.assertEqual(d, fp.id)
-        self.assertFalse(fp.statefp is States().ALL_CHECKED)
+        self.assertFalse(fp.statefp is States().CHECKED)
         self.assertEqual(fp.id, fp.get_id())
 
         # Property is only defined for 'get' (set is not implemented).
@@ -277,7 +277,7 @@ class TestFileData(unittest.TestCase):
             )
 
         with self.assertRaises(FileLockedError) as error:
-            self.files.set_state(States().ALL_LOCKED)
+            self.files.set_object_state(States().LOCKED)
             self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
 
         self.assertTrue(
@@ -285,10 +285,10 @@ class TestFileData(unittest.TestCase):
         )
 
     def testState(self):
-        self.files.set_state(States().ALL_LOCKED)
+        self.files.set_object_state(States().LOCKED)
 
         self.assertTrue(
-            self.files.get_state(self.files[0]) == States().ALL_LOCKED
+            self.files.get_object_state(self.files[0]) == States().LOCKED
         )
 
     def testRef(self):
@@ -301,10 +301,10 @@ class TestFileData(unittest.TestCase):
     def testAssocations(self):
         self.files.add_ref(self.age)
 
-        self.files.set_state(States().ALL_CHECKED)
+        self.files.set_object_state(States().CHECKED)
 
         for ref in self.files.get_refs():
-            self.files.set_state(States().CHECKED, ref)
+            self.files.set_object_state(States().CHECKED, ref)
 
         self.files.associate()
 

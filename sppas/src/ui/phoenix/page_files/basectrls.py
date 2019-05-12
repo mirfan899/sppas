@@ -271,7 +271,7 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         wx.Window.SetBackgroundColour(self, color)
         if self._model is not None:
             self._model.SetBackgroundColour(color)
-            self.RefreshData()
+            #self.refresh_view()
 
     # ------------------------------------------------------------------------
 
@@ -279,12 +279,12 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         wx.Window.SetForegroundColour(self, color)
         if self._model is not None:
             self._model.SetForegroundColour(color)
-            self.RefreshData()
+            #self.refresh_view()
 
     # ------------------------------------------------------------------------
 
-    def RefreshData(self):
-        """To be overridden."""
+    def update_data(self):
+        """To be overridden. Update the currently displayed data."""
         return
 
     # ------------------------------------------------------------------------
@@ -301,7 +301,7 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         :return: (wx.dataview.DataViewColumn)
 
         """
-        logging.debug('Create column: {:d}: {:s}'
+        logging.debug('Create column: {:d} {:s}'
                       ''.format(index, model.GetColumnName(index)))
 
         stype = model.GetColumnType(index)

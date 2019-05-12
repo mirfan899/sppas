@@ -297,7 +297,7 @@ class sppasPathCompare(sppasBaseCompare):
         if isinstance(fp, FilePath) is False:
             raise sppasTypeError(fp, "FilePath")
 
-        return (fp.statefp is States().ALL_CHECKED) == value
+        return (fp.statefp is States().CHECKED) == value
 
 # ---------------------------------------------------------------------------
 
@@ -528,7 +528,7 @@ class sppasRootCompare(sppasBaseCompare):
         if isinstance(fr, FileRoot) is False:
             raise sppasTypeError(fr, "FileRoot")
 
-        return (fr.statefr is States().ALL_CHECKED) == value
+        return (fr.statefr is States().CHECKED) == value
 
 # ---------------------------------------------------------------------------
 
@@ -998,7 +998,7 @@ class sppasReferenceCompare(sppasBaseCompare):
 
     >>> tc = sppasReferenceCompare()
     >>> tc.exact(Reference("mic"), u("mic"))
-    >>> tc.methods['exact'](Reference("mic"), u(mic"))
+    >>> tc.methods['exact'](Reference("mic"), u("mic"))
     >>> tc.get('exact')(Reference("mic"), u("mic"))
     """
 

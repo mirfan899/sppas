@@ -28,10 +28,10 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.page_files.filespck.associate.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ui.phoenix.page_files.associate.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Actions to associate files and references of the catalogues.
+    Actions to associate files and references of the catalogue.
 
 """
 
@@ -39,7 +39,7 @@ import wx
 import logging
 
 from sppas import sppasTypeError
-from sppas.src.files.filedata import FileData  #, States
+from sppas.src.files import FileData, States
 from ..windows import sppasPanel
 from ..windows.button import BitmapTextButton
 
@@ -49,7 +49,7 @@ from .filesevent import DataChangedEvent
 
 
 class AssociatePanel(sppasPanel):
-    """Panel with tools to associate files and references of the catalogues.
+    """Panel with tools to associate files and references of the catalogue.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -163,7 +163,7 @@ class AssociatePanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def check_all(self):
-        """Check all or any of the filenames and catalogues."""
+        """Check all or any of the filenames and references."""
         # reverse the current state
         self._checkall = not self._checkall
 
@@ -174,7 +174,7 @@ class AssociatePanel(sppasPanel):
         #     state = States.UNUSED
         # self.__data.set_sate(value=self._checkall)
 
-        # update the view of checked catalogues & checked files
+        # update the view of checked references & checked files
         evt = DataChangedEvent(data=self.__data)
         evt.SetEventObject(self)
         wx.PostEvent(self.GetParent(), evt)
@@ -188,11 +188,11 @@ class AssociatePanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def add_links(self):
-        """Associate checked filenames with checked catalogues."""
+        """Associate checked filenames with checked references."""
         pass
 
     # ------------------------------------------------------------------------
 
     def delete_links(self):
-        """Dissociate checked filenames with checked catalogues."""
+        """Dissociate checked filenames with checked references."""
         pass

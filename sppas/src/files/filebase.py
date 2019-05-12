@@ -73,6 +73,16 @@ class FileBase(object):
 
     # -----------------------------------------------------------------------
 
+    def set_state(self, value):
+        """Set a state.
+
+        :param value: (States) The state value to assign
+
+        """
+        raise NotImplementedError
+
+    # -----------------------------------------------------------------------
+
     def match(self, functions, logic_bool="and"):
         """Return True if the file matches all or any of the functions.
 
@@ -160,10 +170,8 @@ class States(object):
             UNUSED=0,
             CHECKED=1,
             LOCKED=2,
-            ALL_CHECKED=3,
-            ALL_LOCKED=4,
-            AT_LEAST_ONE_CHECKED=5,
-            AT_LEAST_ONE_LOCKED=6,
+            AT_LEAST_ONE_CHECKED=3,
+            AT_LEAST_ONE_LOCKED=4
         )
 
     # -----------------------------------------------------------------------

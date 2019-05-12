@@ -45,8 +45,8 @@ from .catsviewmodel import CataloguesTreeViewModel
 # ----------------------------------------------------------------------------
 
 
-class CataloguesTreeViewCtrl(BaseTreeViewCtrl):
-    """A control to display catalogues in a tree-spreadsheet style.
+class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
+    """A control to display references in a tree-spreadsheet style.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -66,7 +66,7 @@ class CataloguesTreeViewCtrl(BaseTreeViewCtrl):
         :param `parent`: (wx.Window)
 
         """
-        super(CataloguesTreeViewCtrl, self).__init__(parent, name)
+        super(ReferencesTreeViewCtrl, self).__init__(parent, name)
 
         # Create an instance of our model and associate to the view.
         self._model = CataloguesTreeViewModel()
@@ -82,11 +82,20 @@ class CataloguesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
-    def Add(self, filename):
-        """Add a file in the tree.
+    def AddRefs(self, entries):
+        """Add a list of references into the model.
 
-        The given filename must include its absolute path.
-
-        :param filename: (str) Name of a file or a directory.
+        :param entries: (str) List of references.
 
         """
+        pass
+
+    # ------------------------------------------------------------------------
+
+    def update_data(self):
+        return
+        # Update the data and clear the tree
+        self._model.update_data()
+        # But clearing the tree means to forget which are the expanded items!
+        # so, re-expand/re-collapse properly.
+        #self.__update_expand()

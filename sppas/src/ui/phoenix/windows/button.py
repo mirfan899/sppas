@@ -611,19 +611,19 @@ class BaseButton(wx.Window):
         if self.IsEnabled() is True:
 
             if event.Entering():
-                logging.debug('{:s} Entering'.format(self.GetName()))
+                # logging.debug('{:s} Entering'.format(self.GetName()))
                 self.OnMouseEnter(event)
 
             elif event.Leaving():
-                logging.debug('{:s} Leaving'.format(self.GetName()))
+                # logging.debug('{:s} Leaving'.format(self.GetName()))
                 self.OnMouseLeave(event)
 
             elif event.LeftDown():
-                logging.debug('{:s} LeftDown'.format(self.GetName()))
+                # logging.debug('{:s} LeftDown'.format(self.GetName()))
                 self.OnMouseLeftDown(event)
 
             elif event.LeftUp():
-                logging.debug('{:s} LeftUp'.format(self.GetName()))
+                # logging.debug('{:s} LeftUp'.format(self.GetName()))
                 self.OnMouseLeftUp(event)
 
             elif event.Moving():
@@ -632,24 +632,24 @@ class BaseButton(wx.Window):
                 self.OnMotion(event)
 
             elif event.Dragging():
-                logging.debug('{:s} Dragging'.format(self.GetName()))
+                # logging.debug('{:s} Dragging'.format(self.GetName()))
                 # motion while a button was pressed
                 self.OnDragging(event)
 
             elif event.ButtonDClick():
-                logging.debug('{:s} ButtonDClick'.format(self.GetName()))
+                # logging.debug('{:s} ButtonDClick'.format(self.GetName()))
                 self.OnMouseDoubleClick(event)
 
             elif event.RightDown():
-                logging.debug('{:s} RightDown'.format(self.GetName()))
+                # logging.debug('{:s} RightDown'.format(self.GetName()))
                 self.OnMouseRightDown(event)
 
             elif event.RightUp():
-                logging.debug('{:s} RightUp'.format(self.GetName()))
+                # logging.debug('{:s} RightUp'.format(self.GetName()))
                 self.OnMouseRightUp(event)
 
             else:
-                logging.debug('{:s} Other'.format(self.GetName()))
+                logging.debug('{:s} Other mouse event'.format(self.GetName()))
 
         event.Skip()
 
