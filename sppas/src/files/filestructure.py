@@ -50,6 +50,16 @@ from .filebase import FileBase, States
 
 FILENAME_STATES = (States().UNUSED, States().CHECKED, States().LOCKED)
 
+# If we create dynamically this list from the existing annotations, we'll
+# have circular imports.
+# Solutions to be implemented are either:
+#     - add this info in each annotation json file (preferred), or
+#     - add this information in the sppasui.json file
+ANNOT_PATTERNS = (
+    "-token", "-phon", "-palign", "-syll", "-tga",
+    "-momel", "-intsint", "-ralign"
+)
+
 # ---------------------------------------------------------------------------
 
 
@@ -79,7 +89,7 @@ class FileName(FileBase):
 
         Some states of the file are also stored.
 
-        :param `identifier`: (str) Full name of a file (from FileBase)
+        :param identifier: (str) Full name of a file (from FileBase)
         :raise: OSError if identifier does not match a file (not dir/link)
 
         """
@@ -248,21 +258,10 @@ class FileRoot(FileBase):
 
     """
 
-    # if we create dynamically this list from the existing annotations, we'll
-    # have circular imports.
-    # solutions to implement are either:
-    #     - add this info in each annotation json file (preferred), or
-    #     - add this information in the sppasui.json file
-    FilePatterns = (
-        "-token", "-phon", "-palign", "-syll", "-tga",
-        "-momel", "-intsint", "-ralign")
-
-    # -----------------------------------------------------------------------
-
     def __init__(self, name):
         """Constructor of a FileRoot.
 
-        :param `name`: (str) Filename or rootname
+        :param name: (str) Filename or rootname
         :raise: OSError if filepath does not match a directory (not file/link)
 
         """
@@ -276,7 +275,7 @@ class FileRoot(FileBase):
         self.__references = None
 
         # A free to use member to expand the class
-        self.subjoined = None  # dict()
+        self.subjoined = None
 
     # -----------------------------------------------------------------------
 
@@ -290,7 +289,7 @@ class FileRoot(FileBase):
         """
         fn = basename(filename)
         fn = splitext(fn)[0]
-        for pattern in FileRoot.FilePatterns:
+        for pattern in ANNOT_PATTERNS:
             if fn.endswith(pattern) is True:
                 return pattern
         return ""
@@ -306,7 +305,7 @@ class FileRoot(FileBase):
 
         """
         fn = splitext(filename)[0]
-        for pattern in FileRoot.FilePatterns:
+        for pattern in ANNOT_PATTERNS:
             if fn.endswith(pattern) is True:
                 fn = fn[:len(fn) - len(pattern)]
         return fn
@@ -582,7 +581,7 @@ class FilePath(FileBase):
         self.__roots = list()
 
         # a free to use entry to expand the class
-        self.subjoined = None  # dict()
+        self.subjoined = None
 
     # -----------------------------------------------------------------------
 
@@ -656,7 +655,7 @@ class FilePath(FileBase):
 
         :param filename: Name of a file or a root (absolute of relative)
 
-        Notice that it returns `self` if filename is a directory matching
+        Notice that it returns 'self' if filename is a directory matching
         self.id.
 
         """

@@ -134,7 +134,7 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
 
         x, y, w, h = rect
         s = min(w, h)
-        s = int(0.6 * s)
+        s = int(0.8 * s)
 
         # get the image from its name
         img = sppasSwissKnife.get_image(self.value)
@@ -173,7 +173,7 @@ class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
 
     def __init__(self,
                  varianttype="wxBitmap",
-                 mode=wx.dataview.DATAVIEW_CELL_ACTIVATABLE,
+                 mode=wx.dataview.DATAVIEW_CELL_INERT,
                  align=wx.dataview.DVR_DEFAULT_ALIGNMENT):
         super(StateIconRenderer, self).__init__(varianttype, mode, align)
         self.value = "default"
@@ -190,16 +190,6 @@ class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
         size = self.GetTextExtent('TT')
         return size[1]*2, size[1]*2
 
-    def ActivateCell(self, cell, model, item, col, event=wx.MouseEvent):
-        """Overridden. Should react to cell activation.
-
-        This method is never called on MacOS (was never implemented by wx).
-        So, this is not an issue to work with it.
-
-        """
-        if event.LeftUp():
-            logging.debug('LeftUp event on State column.')
-
     def Render(self, rect, dc, state):
         """Draw the bitmap, adjusting its size. """
         if self.value == "":
@@ -207,7 +197,7 @@ class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
 
         x, y, w, h = rect
         s = min(w, h)
-        s = int(0.6 * s)
+        s = int(0.9 * s)
 
         icon_value = "default"
         if self.value in StateIconRenderer.ICON_NAMES:
@@ -288,7 +278,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             raise sppasTypeError("FileData", type(data))
         logging.debug('New data to set in the filesview.')
         self.__data = data
-        self.Cleared()
+        self.update()
 
     # -----------------------------------------------------------------------
     # Manage column properties
@@ -581,7 +571,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                 if modified is False and cur_state == States().AT_LEAST_ONE_LOCKED:
                     modified = self.__data.set_object_state(States().UNUSED, node)
                 if modified:
-                    self.Cleared()
+                    self.ItemChanged(self.ObjectToItem(node))
             except Exception as e:
                 logging.debug('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
@@ -589,21 +579,25 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         elif cur_state == States().CHECKED:
             try:
                 self.__data.set_object_state(States().UNUSED, node)
-                self.Cleared()
+                self.ItemChanged(self.ObjectToItem(node))
             except Exception as e:
                 logging.debug('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
 
         else:
-            logging.warning("{:s} is locked. It's state can't be changed until"
-                            "it is un-locked.".format(node))
+            logging.warning("{:s} is locked. It's state can't be changed "
+                            "until it is un-locked.".format(node))
 
     # -----------------------------------------------------------------------
 
-    def update_data(self):
+    def update(self):
         """Update the data and refresh the tree."""
         self.__data.update()
         self.Cleared()
+        for item in self.get_expanded_items(True):
+            item.Expand()
+        for item in self.get_expanded_items(False):
+            item.Collapse()
 
     # -----------------------------------------------------------------------
 
@@ -621,7 +615,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         added_items = list()
         if len(added_files) > 0:
-            self.Cleared()
+            self.update()
             for f in added_files:
                 added_items.append(self.ObjectToItem(f))
 
@@ -676,9 +670,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                               "following error: {:s}.".format(fn.id, str(e)))
 
         if len(deleted) > 0:
-            self.__data.update()
-
-            self.Cleared()
+            self.update()
             logging.info('{:d} files moved into the trash.'.format(len(deleted)))
 
     # -----------------------------------------------------------------------
@@ -686,8 +678,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def remove_checked_files(self):
         nb_removed = self.__data.remove_files(States().CHECKED)
         if nb_removed > 0:
-            self.__data.update()
-            self.Cleared()
+            self.update()
 
     # -----------------------------------------------------------------------
 
@@ -703,7 +694,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             else:
                 node = entry
             self.__data.set_object_state(States().LOCKED, node)
-        self.Cleared()
+            self.ItemChanged(self.ObjectToItem(node))
 
     # -----------------------------------------------------------------------
 
@@ -715,11 +706,11 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         """
         self.__data.set_object_state(value, entry)
-        self.Cleared()
+        self.update()
 
     # -----------------------------------------------------------------------
 
-    def Expand(self, value=True, item=None):
+    def expand(self, value=True, item=None):
         """Expand or collapse an item or all items.
 
         :param value: (bool) Expanded (True) or Collapsed (False)
@@ -727,23 +718,55 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         """
         if item is None:
-            #self.__data.expand_all(bool(value))
-            pass
+            for fp in self.__data:
+                if fp.subjoined is not None:
+                    if 'expand' in fp.subjoined:
+                        if fp.subjoined['expand'] is value:
+                            item = self.ObjectToItem(fp)
+                            if value is True:
+                                item.Expand()
+                            else:
+                                item.Collapse()
+
+                for fr in fp:
+                    if fr.subjoined is not None:
+                        if 'expand' in fr.subjoined:
+                            if fr.subjoined['expand'] is value:
+                                item = self.ObjectToItem(fp)
+                            if value is True:
+                                item.Expand()
+                            else:
+                                item.Collapse()
         else:
             obj = self.ItemToObject(item)
             if isinstance(obj, (FileRoot, FilePath)):
-                obj.expand = bool(value)
+                if obj.subjoined is None:
+                    obj.subjoined = dict()
+                obj.subjoined['expand'] = bool(value)
 
     # -----------------------------------------------------------------------
 
-    def GetExpandedItems(self, value=True):
+    def get_expanded_items(self, value=True):
+        """Return the list of expanded or collapsed items.
+
+        :param value: (bool)
+
+        """
         items = list()
-        #for obj in self.__data.get_expanded_objects(value):
-        #    items.append(self.ObjectToItem(obj))
+        for fp in self.__data:
+            if fp.subjoined is not None:
+                if 'expand' in fp.subjoined:
+                    if fp.subjoined['expand'] is value:
+                        items.append(self.ObjectToItem(fp))
+
+            for fr in fp:
+                if fr.subjoined is not None:
+                    if 'expand' in fr.subjoined:
+                        if fr.subjoined['expand'] is value:
+                            items.append(self.ObjectToItem(fr))
 
         return items
 
-    # -----------------------------------------------------------------------
     # -----------------------------------------------------------------------
 
     def FileToItem(self, entry):

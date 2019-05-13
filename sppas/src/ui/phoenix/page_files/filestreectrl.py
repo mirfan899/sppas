@@ -104,9 +104,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         :param entries: (list of str) Filenames or folder with absolute path.
 
         """
-        items = self._model.add_files(entries)
-        for i in items:
-            self.EnsureVisible(i)
+        self._model.add_files(entries)
 
     # ------------------------------------------------------------------------
 
@@ -135,7 +133,10 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     def LockFiles(self, entries):
         """Lock a list of files.
 
-        :param entries: (list of str/FileName) Filenames with absolute path or FileName instance.
+        Entries are a list of filenames with absolute path or FileName
+        instances or both.
+
+        :param entries: (list of str/FileName)
 
         """
         self._model.lock(entries)
