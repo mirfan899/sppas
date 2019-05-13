@@ -410,39 +410,37 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def save(self, file_name):
+    def save(self, filename):
         """Save the current FileData in a serialized file.
 
-        :param file_name: (str) the name of the save file.
+        :param filename: (str) the name of the save file.
 
         """
-        with open(file_name, 'w') as save:
-            json.dump(self.__json_serializer(), save)
+        with open(filename, 'w') as fd:
+            json.dump(self.__json_serializer(), fd)
 
     # -----------------------------------------------------------------------
 
-    def load(self, file_name, force=False):
+    def load(self, filename, force=False):
         """Load a saved FileData object from a save file.
 
-        :param file_name: (str) the name of the save file.
-        :param force:  (bool) permit to the user to load a new FileData object even if there is locked files within.
+        :param filename: (str) the name of the save file.
+        :param force: (bool) permit to the user to load a new FileData\
+        object even if there are locked files within.
 
         """
-        at_least_one_fp_is_locked = self.has_locked_files()
+        if force is False and self.has_locked_files() is False:
+            raise FileLockedError(filename)
 
-        if force is True or at_least_one_fp_is_locked is False:
-            self.__data.clear()
-            with open(file_name, 'r') as save_file:
-                save = json.loads(save_file.read())
-                for value in save.values():
-                    for in_value in value.values():
-                        for path in in_value[0]:
-                            self.add_file(path)
-                        for ref in in_value[1]:
-                            self.add_ref(ref)
-
-        else:
-            raise FileLockedError(file_name)
+        self.__data.clear()
+        with open(filename, "r") as fd:
+            save = json.loads(fd.read())
+            for value in save.values():
+                for in_value in value.values():
+                    for path in in_value[0]:
+                        self.add_file(path)
+                    for ref in in_value[1]:
+                        self.add_ref(ref)
 
     # -----------------------------------------------------------------------
 

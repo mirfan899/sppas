@@ -26,8 +26,8 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.wksmanager.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.page_files.wksmanager.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Main panel to manage the workspaces.
 
@@ -200,20 +200,21 @@ class WorkspacesManager(sppasPanel):
         wkpslist = event.GetEventObject()
         wkp_name = wkpslist.get_wkp_name(event.to_wkp)
         # Save the currently displayed data (they correspond to the previous wkp)
-        if event.from_wkp == 0:
-                #self.__data.has_locked_files() or \
-                #(event.from_wkp == 0 and self.__data.is_empty() is False):
+        if self.__data.has_locked_files() or \
+                (event.from_wkp == 0 and self.__data.is_empty() is False):
 
             # User must confirm to really switch
             title = "Confirm switch of workspace?"
-            message = "The current workspace contains not saved work that will be lost. Are you sure you want to change workspace?"
+            message = "The current workspace contains not saved work that " \
+                      "will be lost. Are you sure you want to change workspace?"
             response = Confirm(message, title)
             if response == wx.ID_CANCEL:
                 # the workspace panel has to switch back to the current
                 wkpslist.switch_to(event.from_wkp)
                 return
 
-        # The user really intended to switch workspace. Update the current data.
+        # The user really intended to switch workspace.
+        # Update the current data.
         if event.from_wkp > 0:
             # the 'Blank' workspace can't be saved... the others can
             try:
@@ -222,7 +223,9 @@ class WorkspacesManager(sppasPanel):
 
                 # User must confirm to really switch
                 title = "Confirm switch of workspace?"
-                message = "The current workspace can not be saved due to the following error: {:s}\nAre you sure you want to change workspace?".format(str(e))
+                message = "The current workspace can not be saved due to " \
+                          "the following error: {:s}\nAre you sure you want " \
+                          "to change workspace?".format(str(e))
                 response = Confirm(message, title)
                 if response == wx.ID_CANCEL:
                     # the workspace panel has to switch back to the current
@@ -245,7 +248,9 @@ class WorkspacesManager(sppasPanel):
 
             # Propose to the user to remove the failing wkp
             title = "Confirm delete of workspace?"
-            message = "Data of the workspace {:s} can't be loaded due to the following error: {:s}.\nDo you want to delete it?".format(wkp_name, str(e)),
+            message = "Data of the workspace {:s} can't be loaded due to " \
+                      "the following error: {:s}.\nDo you want to delete it?" \
+                      "".format(wkp_name, str(e)),
             response = Confirm(message, title)
             if response == wx.ID_YES:
                 wkpslist.remove(event.to_wkp)
@@ -393,7 +398,8 @@ class WorkspacesManager(sppasPanel):
         try:
             self.FindWindow("wkpslist").rename(new_name)
         except Exception as e:
-            message = "Workspace can't be renamed to '{:s}' due to the following error: {!s:s}".format(new_name, str(e))
+            message = "Workspace can't be renamed to '{:s}' due to the " \
+                      "following error: {!s:s}".format(new_name, str(e))
             Error(message, "Rename error")
 
 # ----------------------------------------------------------------------------
@@ -578,7 +584,7 @@ class WorkspacesPanel(sppasPanel):
         """
         if index is None:
             index = self.__current
-        self.__wkps.save(data, index)
+        self.__wkps.save_data(data, index)
 
     # -----------------------------------------------------------------------
 
