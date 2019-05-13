@@ -571,7 +571,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                 if modified is False and cur_state == States().AT_LEAST_ONE_LOCKED:
                     modified = self.__data.set_object_state(States().UNUSED, node)
                 if modified:
-                    self.ItemChanged(self.ObjectToItem(node))
+                    self.__item_changed(item)
+
             except Exception as e:
                 logging.debug('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
@@ -579,7 +580,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         elif cur_state == States().CHECKED:
             try:
                 self.__data.set_object_state(States().UNUSED, node)
-                self.ItemChanged(self.ObjectToItem(node))
+                self.__item_changed(self.ObjectToItem(node))
             except Exception as e:
                 logging.debug('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
@@ -587,6 +588,25 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         else:
             logging.warning("{:s} is locked. It's state can't be changed "
                             "until it is un-locked.".format(node))
+
+    # -----------------------------------------------------------------------
+
+    def __item_changed(self, item):
+        node = self.ItemToObject(item)
+        self.ItemChanged(item)
+        if isinstance(node, FileName):
+            parent_item = self.GetParent(item)
+            self.ItemChanged(parent_item)
+            self.ItemChanged(self.GetParent(parent_item))
+        if isinstance(node, FileRoot):
+            self.ItemChanged(self.GetParent(item))
+            for fn in node:
+                self.ItemChanged(self.ObjectToItem(fn))
+        if isinstance(node, FilePath):
+            for fr in node:
+                self.ItemChanged(self.ObjectToItem(fr))
+                for fn in fr:
+                    self.ItemChanged(self.ObjectToItem(fn))
 
     # -----------------------------------------------------------------------
 

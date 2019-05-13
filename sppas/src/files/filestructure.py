@@ -784,21 +784,27 @@ class FilePath(FileBase):
             self._state = States().UNUSED
             return
 
+        at_least_checked = 0
+        at_least_locked = 0
         checked = 0
         locked = 0
         for fr in self.__roots:
-            if fr.get_state() in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
+            if fr.get_state() == States().CHECKED:
                 checked += 1
-            elif fr.get_state() in (States().AT_LEAST_ONE_LOCKED, States().LOCKED):
+            elif fr.get_state() == States().AT_LEAST_ONE_CHECKED:
+                at_least_checked += 1
+            elif fr.get_state() == States().LOCKED:
                 locked += 1
+            elif fr.get_state() == States().AT_LEAST_ONE_LOCKED:
+                at_least_locked += 1
 
         if locked == len(self.__roots):
             self._state = States().LOCKED
-        elif locked > 0:
+        elif (locked+at_least_locked) > 0:
             self._state = States().AT_LEAST_ONE_LOCKED
         elif checked == len(self.__roots):
             self._state = States().CHECKED
-        elif checked > 0:
+        elif (at_least_checked+checked) > 0:
             self._state = States().AT_LEAST_ONE_CHECKED
         else:
             self._state = States().UNUSED
