@@ -278,6 +278,7 @@ class sppasMainWindow(sppasDialog):
 
         else:
             # Keeps on going the event to the current page of the book.
+            logging.debug('Key event skipped by the main window.')
             event.Skip()
 
     # -----------------------------------------------------------------------

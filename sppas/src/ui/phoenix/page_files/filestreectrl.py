@@ -81,8 +81,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
         # Bind events.
         # Used to remember the expend/collapse status of items after a refresh.
-        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self.__onExpanded)
-        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self.__onCollapsed)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self._on_item_expanded)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self._on_item_collapsed)
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
         self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
 
@@ -104,19 +104,25 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         :param entries: (list of str) Filenames or folder with absolute path.
 
         """
-        self._model.add_files(entries)
+        items = self._model.add_files(entries)
+        if len(items) > 0:
+            self.__refresh()
 
     # ------------------------------------------------------------------------
 
     def RemoveCheckedFiles(self):
         """Remove all checked files."""
-        self._model.remove_checked_files()
+        nb = self._model.remove_checked_files()
+        if nb > 0:
+            self.__refresh()
 
     # ------------------------------------------------------------------------
 
     def DeleteCheckedFiles(self):
         """Delete all checked files."""
-        self._model.delete_checked_files()
+        nb = self._model.delete_checked_files()
+        if nb > 0:
+            self.__refresh()
 
     # ------------------------------------------------------------------------
 
@@ -143,49 +149,32 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
-    # def ExpandAll(self):
-    #    self._model.Expand(True)
-    #     for item in self._model.GetExpandedItems(True):
-    #         self.Expand(item)
-
-    # ------------------------------------------------------------------------
-
-    # def CollapseAll(self):
-    #     self._model.Expand(False)
-    #     for item in self._model.GetExpandedItems(False):
-    #         self.Expand(item)
-
-    # ------------------------------------------------------------------------
-
-    # def __update_expand(self):
-    #     for item in self._model.GetExpandedItems(True):
-    #         self.Expand(item)
-    #     for item in self._model.GetExpandedItems(False):
-    #         self.Collapse(item)
+    def update_data(self):
+        """Overridden. Update the currently displayed data."""
+        self._model.update()
+        self.__refresh()
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-    # def __onExpanded(self, evt):
-    #    """Happens when the user cliched a '+' button of the tree.
-    #
-    #    We have to update the corresponding object 'expand' value to True.
-    #
-    #    """
-    #    self._model.Expand(True, evt.GetItem())
-    #    evt.Skip()
+    def _on_item_expanded(self, evt):
+        """Happens when the user cliched a '+' button of the tree.
+
+        We have to update the corresponding object 'expand' value to True.
+
+        """
+        self._model.expand(True, evt.GetItem())
 
     # ------------------------------------------------------------------------
 
-    # def __onCollapsed(self, evt):
-    #    """Happens when the user cliched a '-' button of the tree.
-    #
-    #    We have to update the corresponding object 'expand' value to False.
-    #
-    #    """
-    #    self._model.Expand(False, evt.GetItem())
-    #    evt.Skip()
+    def _on_item_collapsed(self, evt):
+        """Happens when the user cliched a '-' button of the tree.
+
+        We have to update the corresponding object 'expand' value to False.
+
+        """
+        self._model.expand(False, evt.GetItem())
 
     # ------------------------------------------------------------------------
 
@@ -193,7 +182,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         """Happens when the user activated a cell (double-click).
 
         This event is triggered by double clicking an item or pressing some
-        special key (usually “Enter”) when it is focused.
+        special key (usually "Enter") when it is focused.
 
         """
         self._model.change_value(event.GetColumn(), event.GetItem())
@@ -206,3 +195,11 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         """
         item = event.GetItem()
         self._model.change_value(event.GetColumn(), item)
+
+    # ------------------------------------------------------------------------
+
+    def __refresh(self):
+        for item in self._model.get_expanded_items(True):
+            self.Expand(item)
+        for item in self._model.get_expanded_items(False):
+            self.Collapse(item)

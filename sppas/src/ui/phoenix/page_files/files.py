@@ -171,19 +171,19 @@ class sppasFilesPanel(sppasPanel):
         key_code = event.GetKeyCode()
         cmd_down = event.CmdDown()
         shift_down = event.ShiftDown()
-        logging.debug('Files page received a key event. key_code={:d}'.format(key_code))
+        logging.debug('Files book page received a key event. key_code={:d}'.format(key_code))
 
-        #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
-        #    logging.debug('Refresh all the files [F5 keys pressed]')
-        #    self.FindWindow("filesview").RefreshData()
-        #    self.FindWindow("references").RefreshData()
+        if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
+            logging.debug(' ... [F5] key pressed')
 
         # CMD+S: Pin&Save the workspace
-        if key_code == 83 and cmd_down is True:
+        elif key_code == 83 and cmd_down is True:
             logging.debug('Key event: Pin&Save the workspace')
             self.FindWindow("workspaces").pin_save()
 
-        event.Skip()
+        else:
+            logging.debug('Key event skipped by the files book page.')
+            event.Skip()
 
     # -----------------------------------------------------------------------
 

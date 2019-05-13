@@ -135,6 +135,8 @@ class AssociatePanel(sppasPanel):
     def on_key_press(self, event):
         """Respond to a keypress event."""
         key_code = event.GetKeyCode()
+        logging.debug('Associate panel received a key event. key_code={:d}'.format(key_code))
+        logging.debug('Key event skipped by the associate panel.')
         event.Skip()
 
     # ------------------------------------------------------------------------

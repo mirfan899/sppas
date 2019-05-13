@@ -594,10 +594,6 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         """Update the data and refresh the tree."""
         self.__data.update()
         self.Cleared()
-        for item in self.get_expanded_items(True):
-            item.Expand()
-        for item in self.get_expanded_items(False):
-            item.Collapse()
 
     # -----------------------------------------------------------------------
 
@@ -653,32 +649,36 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
+    def remove_checked_files(self):
+        nb_removed = self.__data.remove_files(States().CHECKED)
+        if nb_removed > 0:
+            self.update()
+        return nb_removed
+
+    # -----------------------------------------------------------------------
+
     def delete_checked_files(self):
         checked = self.__data.get_filename_from_state(States().CHECKED)
         if len(checked) == 0:
             return
 
-        deleted = list()
+        nb_deleted = 0
         for fn in checked:
             try:
                 # move the file into the trash of SPPAS
                 sppasTrash().put_file_into(fn.id)
-                deleted.append(fn)
+                nb_deleted += 1
 
             except Exception as e:
                 logging.error("File {!s:s} can't be deleted due to the "
                               "following error: {:s}.".format(fn.id, str(e)))
 
-        if len(deleted) > 0:
+        if nb_deleted > 0:
             self.update()
-            logging.info('{:d} files moved into the trash.'.format(len(deleted)))
+            logging.info('{:d} files moved into the trash.'
+                         ''.format(len(nb_deleted)))
 
-    # -----------------------------------------------------------------------
-
-    def remove_checked_files(self):
-        nb_removed = self.__data.remove_files(States().CHECKED)
-        if nb_removed > 0:
-            self.update()
+        return nb_deleted
 
     # -----------------------------------------------------------------------
 
@@ -711,32 +711,23 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def expand(self, value=True, item=None):
-        """Expand or collapse an item or all items.
+        """Set the expand value to the object matching the item or to all.
 
         :param value: (bool) Expanded (True) or Collapsed (False)
-        :param item: (wx.dataview.DataViewItem)
+        :param item: (wx.dataview.DataViewItem or None)
 
         """
         if item is None:
             for fp in self.__data:
-                if fp.subjoined is not None:
-                    if 'expand' in fp.subjoined:
-                        if fp.subjoined['expand'] is value:
-                            item = self.ObjectToItem(fp)
-                            if value is True:
-                                item.Expand()
-                            else:
-                                item.Collapse()
+                if fp.subjoined is None:
+                    fp.subjoined = dict()
+                fp.subjoined['expand'] = bool(value)
 
                 for fr in fp:
-                    if fr.subjoined is not None:
-                        if 'expand' in fr.subjoined:
-                            if fr.subjoined['expand'] is value:
-                                item = self.ObjectToItem(fp)
-                            if value is True:
-                                item.Expand()
-                            else:
-                                item.Collapse()
+                    if fr.subjoined is None:
+                        fr.subjoined = dict()
+                    fr.subjoined['expand'] = bool(value)
+
         else:
             obj = self.ItemToObject(item)
             if isinstance(obj, (FileRoot, FilePath)):

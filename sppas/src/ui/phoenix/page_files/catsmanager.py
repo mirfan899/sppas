@@ -60,7 +60,7 @@ class ReferencesManager(sppasPanel):
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
+            style=wx.BORDER_NONE | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
         self._create_content()

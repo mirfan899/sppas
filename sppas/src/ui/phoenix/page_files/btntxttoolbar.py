@@ -59,7 +59,7 @@ class BitmapTextToolbar(sppasPanel):
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
             size=wx.DefaultSize,
-            style=wx.NO_BORDER | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
+            style=wx.NO_BORDER | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=wx.PanelNameStr)
 
         # Focus Color&Style

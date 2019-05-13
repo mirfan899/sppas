@@ -182,6 +182,7 @@ class WorkspacesManager(sppasPanel):
         key_code = event.GetKeyCode()
         logging.debug('Workspaces manager received the key event {:d}'
                       ''.format(key_code))
+        logging.debug('Key event skipped by the workspace manager.')
         event.Skip()
 
     # ------------------------------------------------------------------------

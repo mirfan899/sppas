@@ -153,7 +153,7 @@ class FilesManager(sppasPanel):
 
         if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
             logging.debug('Refresh all the files [F5 keys pressed]')
-            self.FindWindow("filesview").refresh_data()
+            self.FindWindow("fileview").update_data()
 
         event.Skip()
 
