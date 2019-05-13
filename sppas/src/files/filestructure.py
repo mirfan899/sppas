@@ -57,7 +57,7 @@ FILENAME_STATES = (States().UNUSED, States().CHECKED, States().LOCKED)
 #     - add this information in the sppasui.json file
 ANNOT_PATTERNS = (
     "-token", "-phon", "-palign", "-syll", "-tga",
-    "-momel", "-intsint", "-ralign"
+    "-momel", "-intsint", "-ralign", "-merge"
 )
 
 # ---------------------------------------------------------------------------

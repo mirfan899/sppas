@@ -41,6 +41,7 @@ from sppas.src.ui.phoenix.windows.panel import sppasPanel
 from ..dialogs import YesNoQuestion, Information
 from .filestreectrl import FilesTreeViewCtrl
 from .btntxttoolbar import BitmapTextToolbar
+from .filesevent import DataChangedEvent
 
 # ----------------------------------------------------------------------------
 
@@ -136,6 +137,15 @@ class FilesManager(sppasPanel):
         self.Bind(wx.EVT_BUTTON, self._process_action)
 
     # ------------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_DATA_CHANGED to the parent."""
+        if self.GetParent() is not None:
+            evt = DataChangedEvent(data=self.FindWindow("fileview").get_data())
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
@@ -154,6 +164,7 @@ class FilesManager(sppasPanel):
         if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
             logging.debug('Refresh all the files [F5 keys pressed]')
             self.FindWindow("fileview").update_data()
+            self.notify()
 
         event.Skip()
 
@@ -205,7 +216,9 @@ class FilesManager(sppasPanel):
                 filenames = fc.GetPaths()
 
         if len(filenames) > 0:
-            self.FindWindow('fileview').AddFiles(filenames)
+            added = self.FindWindow('fileview').AddFiles(filenames)
+            if added:
+                self.notify()
 
     # ------------------------------------------------------------------------
 
@@ -216,7 +229,9 @@ class FilesManager(sppasPanel):
             logging.info('No files in data. Nothing to remove.')
             return
 
-        self.FindWindow("fileview").RemoveCheckedFiles()
+        removed = self.FindWindow("fileview").RemoveCheckedFiles()
+        if removed:
+            self.notify()
 
     # ------------------------------------------------------------------------
 
@@ -240,7 +255,9 @@ class FilesManager(sppasPanel):
         if response == wx.ID_NO:
             return
 
-        self.FindWindow("fileview").DeleteCheckedFiles()
+        deleted = self.FindWindow("fileview").DeleteCheckedFiles()
+        if deleted:
+            self.notify()
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

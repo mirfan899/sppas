@@ -107,6 +107,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         items = self._model.add_files(entries)
         if len(items) > 0:
             self.__refresh()
+            return True
+        return False
 
     # ------------------------------------------------------------------------
 
@@ -115,6 +117,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         nb = self._model.remove_checked_files()
         if nb > 0:
             self.__refresh()
+            return True
+        return False
 
     # ------------------------------------------------------------------------
 
@@ -123,6 +127,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         nb = self._model.delete_checked_files()
         if nb > 0:
             self.__refresh()
+            return True
+        return False
 
     # ------------------------------------------------------------------------
 

@@ -368,6 +368,14 @@ class WorkspacesManager(sppasPanel):
             wkp_name = wkps.get_wkp_name()
 
         try:
+            print('TO BE SAVED DATA, IN WKPSMANAGER.PY:')
+            print(self.__data.id)
+            for fp in self.__data:
+                print(fp)
+                for fr in fp:
+                    print(fr)
+                    for fn in fr:
+                        print(fn)
             wkps.save(self.__data)
         except Exception as e:
             message = "Workspace '{:s}' can't be saved due to the following error: {!s:s}".format(wkp_name, str(e))
