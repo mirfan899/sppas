@@ -39,12 +39,19 @@ import wx
 import logging
 
 from sppas import sppasTypeError
+from sppas import sg
+from sppas.src.config import ui_translation
 from sppas.src.files import FileData
 from sppas.src.files import States
 from ..windows import sppasPanel
+from ..windows import sppasDialog
 from ..windows.button import BitmapTextButton
 
 from .filesevent import DataChangedEvent
+
+# ---------------------------------------------------------------------------
+
+MSG_HEADER_FILTER = ui_translation.gettext("Checking files")
 
 # ---------------------------------------------------------------------------
 
@@ -209,7 +216,16 @@ class AssociatePanel(sppasPanel):
 
     def check_filter(self):
         """Check filenames matching the user-defined filters."""
-        pass
+        dlg = sppasFilesFilterDialog(self)
+        if dlg.ShowModal() == wx.ID_OK:
+
+            data_filters = dlg.get_selected()
+            if len(data_filters) > 0:
+                # process = SingleFilterProcess(dlg, self.__data)
+                # process.run()
+                pass
+
+        dlg.Destroy()
 
     # ------------------------------------------------------------------------
 
@@ -226,3 +242,129 @@ class AssociatePanel(sppasPanel):
         dissocied = self.__data.dissociate()
         if dissocied > 0:
             self.notify()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasFilesFilterDialog(sppasDialog):
+    """Dialog to get filters to check files and references.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent):
+        """Create a feedback dialog.
+
+        :param parent: (wx.Window)
+
+        """
+        super(sppasFilesFilterDialog, self).__init__(
+            parent=parent,
+            title='{:s} Files selection'.format(sg.__name__),
+            style=wx.DEFAULT_FRAME_STYLE)
+
+        self._create_header()
+        self._create_content()
+        self._create_buttons()
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+        self.SetMinSize(wx.Size(480, 320))
+        self.LayoutComponents()
+        self.CenterOnParent()
+        self.FadeIn(deltaN=-8)
+
+    # -----------------------------------------------------------------------
+    # Public methods
+    # -----------------------------------------------------------------------
+
+    def get_selected(self):
+        return None
+
+    # -----------------------------------------------------------------------
+    # Methods to construct the GUI
+    # -----------------------------------------------------------------------
+
+    def _create_header(self):
+        self.CreateEmptyHeader()
+        panel = self.FindWindow("header")
+        sizer = panel.GetSizer()
+        path_btn = self.__create_action_button(panel, "+ Path", "filter")
+        root_btn = self.__create_action_button(panel, "+ Root", "filter")
+        name_btn = self.__create_action_button(panel, "+ Name", "filter")
+        refs_btn = self.__create_action_button(panel, "+ Refs", "filter")
+        remove_btn = self.__create_action_button(panel, "- Remove", "remove")
+
+        sizer.Add(path_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(root_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(name_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(refs_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(parent=panel), 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(remove_btn, 1, wx.ALL | wx.EXPAND, 0)
+
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the content of the message dialog."""
+        panel = sppasPanel(self, name="content")
+
+        panel.SetAutoLayout(True)
+        # panel.SetSizer(grid)
+        self.SetContent(panel)
+
+    # -----------------------------------------------------------------------
+
+    def _create_buttons(self):
+        """Create the buttons and bind events."""
+        panel = sppasPanel(self, name="actions")
+        panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # Create the buttons
+        cancel_btn = self.__create_action_button(panel, "Cancel", "cancel")
+        apply_or_btn = self.__create_action_button(panel, "Apply - OR", "apply")
+        apply_and_btn = self.__create_action_button(panel, "Apply - AND", "ok")
+
+        sizer.Add(cancel_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(parent=panel), 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(apply_or_btn, 1, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(self.VertLine(parent=panel), 0, wx.ALL | wx.EXPAND, 0)
+        sizer.Add(apply_and_btn, 1, wx.ALL | wx.EXPAND, 0)
+
+        panel.SetSizer(sizer)
+        self.SetActions(panel)
+
+    # -----------------------------------------------------------------------
+
+    def __create_action_button(self, parent, text, icon):
+        btn = BitmapTextButton(parent, label=text, name=icon)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize((32, 32))
+
+        return btn
+
+    # ------------------------------------------------------------------------
+    # Callback to events
+    # ------------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "cancel":
+            self.SetReturnCode(wx.ID_CANCEL)
+            self.Close()
+        else:
+            event.Skip()

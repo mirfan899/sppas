@@ -80,6 +80,7 @@ class sppasFeedbackDialog(sppasDialog):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, parent):
         """Create a feedback dialog.
 

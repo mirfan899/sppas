@@ -144,23 +144,23 @@ class sppasDialog(wx.Dialog):
     # -----------------------------------------------------------------------
 
     def CreateButtonSizer(self, flags):
-        """Override to disable."""
+        """Overriden to disable."""
         pass
 
     def CreateSeparatedButtonSizer(self, flags):
-        """Override to disable."""
+        """Overriden to disable."""
         pass
 
     def CreateSeparatedSizer(self, sizer):
-        """Override to disable."""
+        """Overriden to disable."""
         pass
 
     def CreateStdDialogButtonSizer(self, flags):
-        """Override to disable."""
+        """Overriden to disable."""
         pass
 
     def CreateTextSizer(self, message):
-        """Override to disable."""
+        """Overriden to disable."""
         pass
 
     # -----------------------------------------------------------------------
@@ -175,6 +175,21 @@ class sppasDialog(wx.Dialog):
 
     # -----------------------------------------------------------------------
     # Methods to add/set the header, content, actions
+    # -----------------------------------------------------------------------
+
+    def CreateEmptyHeader(self):
+        """Create an empty panel for an header.
+
+        """
+        # Create the header panel and sizer
+        panel = sppasPanel(self, name="header")
+        panel.SetMinSize((-1, wx.GetApp().settings.title_height))
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        # This header panel properties
+        panel.SetSizer(sizer)
+        self.SetHeader(panel)
+
     # -----------------------------------------------------------------------
 
     def CreateHeader(self, title, icon_name=None):
