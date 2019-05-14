@@ -449,17 +449,23 @@ class FileData(FileBase):
         for ref in self.__refs:
             if ref.get_state() == States().CHECKED:
                 ref_checked.append(ref)
+        if len(ref_checked) == 0:
+            return 0
 
+        associed = 0
         for fp in self.__data:
             for fr in fp:
                 if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
                         or fr.get_state() == States().CHECKED:
+                    associed += 1
                     if fr.get_references() is not None:
                         ref_extended = fr.get_references()
                         ref_extended.extend(ref_checked)
                         fr.set_references(list(set(ref_extended)))
                     else:
                         fr.set_references(ref_checked)
+
+        return associed
 
     # -----------------------------------------------------------------------
 
@@ -468,13 +474,18 @@ class FileData(FileBase):
         for ref in self.__refs:
             if ref.stateref == States().CHECKED:
                 ref_checked.append(ref)
+        if len(ref_checked) == 0:
+            return 0
 
+        dissocied = 0
         for fp in self.__data:
             for fr in fp:
                 if fr.statefr in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
                     for ref in ref_checked:
                         if ref in fr.references:
                             fr.references.remove(ref)
+                            dissocied += 1
+        return dissocied
 
     # -----------------------------------------------------------------------
 

@@ -215,10 +215,14 @@ class AssociatePanel(sppasPanel):
 
     def add_links(self):
         """Associate checked filenames with checked references."""
-        pass
+        associed = self.__data.associate()
+        if associed > 0:
+            self.notify()
 
     # ------------------------------------------------------------------------
 
     def delete_links(self):
         """Dissociate checked filenames with checked references."""
-        pass
+        dissocied = self.__data.dissociate()
+        if dissocied > 0:
+            self.notify()
