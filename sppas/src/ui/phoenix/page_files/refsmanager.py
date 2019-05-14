@@ -38,7 +38,7 @@ import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
 from .btntxttoolbar import BitmapTextToolbar
-from .catstreectrl import ReferencesTreeViewCtrl
+from .refstreectrl import ReferencesTreeViewCtrl
 
 # ----------------------------------------------------------------------------
 

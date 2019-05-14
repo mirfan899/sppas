@@ -696,7 +696,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         if nb_deleted > 0:
             self.update()
             logging.info('{:d} files moved into the trash.'
-                         ''.format(len(nb_deleted)))
+                         ''.format(nb_deleted))
 
         return nb_deleted
 

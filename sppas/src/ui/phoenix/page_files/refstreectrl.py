@@ -37,7 +37,7 @@ import wx
 import wx.dataview
 
 from .basectrls import BaseTreeViewCtrl
-from .catsviewmodel import CataloguesTreeViewModel
+from .refsviewmodel import CataloguesTreeViewModel
 
 
 # ----------------------------------------------------------------------------

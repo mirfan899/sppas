@@ -49,7 +49,7 @@ from ..windows import sppasStaticLine
 
 from .wksmanager import WorkspacesManager
 from .filesmanager import FilesManager
-from .catsmanager import ReferencesManager
+from .refsmanager import ReferencesManager
 from .associate import AssociatePanel
 
 from .filesevent import EVT_DATA_CHANGED

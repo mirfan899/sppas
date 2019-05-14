@@ -39,7 +39,8 @@ import wx
 import logging
 
 from sppas import sppasTypeError
-from sppas.src.files import FileData, States
+from sppas.src.files import FileData
+from sppas.src.files import States
 from ..windows import sppasPanel
 from ..windows.button import BitmapTextButton
 
@@ -69,12 +70,12 @@ class AssociatePanel(sppasPanel):
             name=name)
 
         self._create_content()
+        self._setup_events()
 
         # State of the button to check all or none of the filenames
         self._checkall = False
         self.__data = FileData()
 
-        self.Bind(wx.EVT_KEY_DOWN, self.on_key_press)
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -87,7 +88,7 @@ class AssociatePanel(sppasPanel):
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the associate.')
+        logging.debug('New data to set in the associate panel.')
         self.__data = data
 
     # ------------------------------------------------------------------------
@@ -125,14 +126,39 @@ class AssociatePanel(sppasPanel):
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
         btn.SetMinSize(wx.Size(24, 24))
-        btn.Bind(wx.EVT_BUTTON, self.on_associate)
         return btn
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # The user pressed a key of its keyboard
+        self.Bind(wx.EVT_KEY_DOWN, self._process_key_event)
+
+        # The user clicked (LeftDown - LeftUp) an action button
+        self.Bind(wx.EVT_BUTTON, self._process_action)
+
+    # ------------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_DATA_CHANGED to the parent."""
+        if self.GetParent() is not None:
+            evt = DataChangedEvent(data=self.__data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
 
     # ------------------------------------------------------------------------
     # Callbacks to events
     # ------------------------------------------------------------------------
 
-    def on_key_press(self, event):
+    def _process_key_event(self, event):
         """Respond to a keypress event."""
         key_code = event.GetKeyCode()
         logging.debug('Associate panel received a key event. key_code={:d}'.format(key_code))
@@ -141,7 +167,7 @@ class AssociatePanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def on_associate(self, event):
+    def _process_action(self, event):
         """Respond to an association event."""
         name = event.GetButtonObj().GetName()
         logging.debug("Event received of associate button: {:s}".format(name))
@@ -170,16 +196,14 @@ class AssociatePanel(sppasPanel):
         self._checkall = not self._checkall
 
         # ask the data to change their state
-        # if self._checkall is True:
-        #     state = States.CHECKED
-        # else:
-        #     state = States.UNUSED
-        # self.__data.set_sate(value=self._checkall)
+        if self._checkall is True:
+            state = States().CHECKED
+        else:
+            state = States().UNUSED
+        self.__data.set_object_state(state)
 
         # update the view of checked references & checked files
-        evt = DataChangedEvent(data=self.__data)
-        evt.SetEventObject(self)
-        wx.PostEvent(self.GetParent(), evt)
+        self.notify()
 
     # ------------------------------------------------------------------------
 
