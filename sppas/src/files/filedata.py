@@ -134,7 +134,7 @@ from .fileexc import FileLockedError
 from .fileutils import sppasGUID
 
 from .filebase import FileBase, States
-from .fileref import Reference
+from .fileref import FileReference
 from .filestructure import FileName, FileRoot, FilePath
 
 # ---------------------------------------------------------------------------
@@ -204,32 +204,51 @@ class FileData(FileBase):
     def add_ref(self, ref):
         """Add a reference in the list from its file name.
 
-        :param ref: (Reference) Reference to add
+        :param ref: (FileReference) Reference to add
 
         """
+        if isinstance(ref, FileReference) is False:
+            raise sppasTypeError(ref, 'FileReference')
 
         for refe in self.__refs:
             if refe.id == ref.id:
-                return
+                return False
 
-        if isinstance(ref, Reference):
-            if ref not in self.__refs:
-                self.__refs.append(ref)
-        else:
-            raise sppasTypeError(ref, 'Reference')
+        self.__refs.append(ref)
+        return True
 
     # -----------------------------------------------------------------------
 
-    def remove_checked_ref(self):
-        """Remove all checked ref from the list."""
+    def remove_refs(self, state=States().CHECKED):
+        """Remove all references of the given state.
+
+        :param state: (States)
+        :returns: (int) Number of removed refs
+
+        """
+        # Fix the list of references to be removed
+        removes = list()
         for ref in self.__refs:
-            if ref.stateref == States().CHECKED:
-                del self.__refs[self.__refs.index(ref)]
+            if ref.stateref == state:
+                removes.append(ref)
+
+        # Remove these references of the roots
+        for fp in self.__data:
+            for fr in fp:
+                for fc in removes:
+                    fr.remove_ref(fc)
+
+        # Remove these references of the list of existing references
+        nb = len(removes)
+        for ref in reversed(removes):
+            self.__refs.remove(ref)
+
+        return nb
 
     # -----------------------------------------------------------------------
 
     def get_refs(self):
-        """Return the current ref list."""
+        """Return the list of references."""
         return self.__refs
 
     # -----------------------------------------------------------------------

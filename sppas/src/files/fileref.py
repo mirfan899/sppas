@@ -185,7 +185,7 @@ class AttValue(object):
 # ---------------------------------------------------------------------------
 
 
-class Reference(FileBase):
+class FileReference(FileBase):
     """Represents a reference of a catalog about files.
 
     :author:       Barthélémy Drabczuk
@@ -205,13 +205,16 @@ class Reference(FileBase):
         :param identifier: (str) identifier for the object, the name of the category
 
         """
-        super(Reference, self).__init__(identifier)
+        super(FileReference, self).__init__(identifier)
         self.__attributs = OrderedDict()
 
         self.types = ('NONE', 'SPEAKER', 'INTERACTION')
         self.__type = self.types[0]
 
         self._state = States().UNUSED
+
+        # A free to use member to expand the class
+        self.subjoined = None
 
     # ---------------------------------------------------------------------------
 

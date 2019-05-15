@@ -65,7 +65,7 @@ from ..utils.makeunicode import text_type
 from ..structs.basecompare import sppasBaseCompare
 
 from .filestructure import FilePath, FileRoot, FileName
-from .fileref import Reference, AttValue
+from .fileref import FileReference, AttValue
 
 
 # ---------------------------------------------------------------------------
@@ -997,9 +997,9 @@ class sppasReferenceCompare(sppasBaseCompare):
     :Example: Three different ways to compare a file data content to a given string
 
     >>> tc = sppasReferenceCompare()
-    >>> tc.exact(Reference("mic"), u("mic"))
-    >>> tc.methods['exact'](Reference("mic"), u("mic"))
-    >>> tc.get('exact')(Reference("mic"), u("mic"))
+    >>> tc.exact(FileReference("mic"), u("mic"))
+    >>> tc.methods['exact'](FileReference("mic"), u("mic"))
+    >>> tc.get('exact')(FileReference("mic"), u("mic"))
     """
 
     def __init__(self):
@@ -1031,7 +1031,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Reference")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1051,7 +1051,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1070,7 +1070,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1089,7 +1089,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1108,7 +1108,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1127,7 +1127,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1146,7 +1146,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1165,7 +1165,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Category")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
@@ -1184,7 +1184,7 @@ class sppasReferenceCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(cat, Reference) is False:
+        if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "FileName")
         text = cat.id
 

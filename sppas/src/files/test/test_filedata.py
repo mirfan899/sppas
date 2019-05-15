@@ -8,7 +8,7 @@ from os.path import dirname
 
 import sppas
 from sppas import sppasTypeError
-from ..fileref import AttValue, Reference
+from ..fileref import AttValue, FileReference
 from ..filedata import FileData
 from ..filebase import FileBase, States
 from ..filestructure import FileName, FileRoot, FilePath
@@ -205,7 +205,7 @@ class TestAttValue(unittest.TestCase):
 class TestReferences(unittest.TestCase):
 
     def setUp(self):
-        self.micros = Reference('microphone')
+        self.micros = FileReference('microphone')
         self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
         self.micros.add('mic2', 'AKG D5')
 
@@ -247,7 +247,7 @@ class TestFileData(unittest.TestCase):
         self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
         self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
 
-        self.age = Reference('age')
+        self.age = FileReference('age')
         self.age.add('age1', AttValue('14', 'int', 'age of the first interviwee'))
         self.age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
         self.age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))

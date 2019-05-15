@@ -39,7 +39,9 @@ import logging
 import wx
 import wx.dataview
 
-from sppas.src.files.filedata import FileData
+from sppas.src.files import States
+from sppas.src.files import FileData
+from sppas.src.files import FileReference, AttValue
 from sppas import sppasTypeError
 from .basectrls import ColumnProperties
 
@@ -48,7 +50,7 @@ from .basectrls import ColumnProperties
 # ----------------------------------------------------------------------------
 
 
-class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
+class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     """A class that is a DataViewModel combined with an object mapper.
 
     :author:       Brigitte Bigi
@@ -89,9 +91,10 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
 
         # Map between displayed columns and workspace
         self.__mapper = dict()
-        self.__mapper[0] = CataloguesTreeViewModel.__create_col('ref')
-        self.__mapper[1] = CataloguesTreeViewModel.__create_col('value')
-        self.__mapper[2] = CataloguesTreeViewModel.__create_col('descr')
+        self.__mapper[0] = ReferencesTreeViewModel.__create_col('state')
+        self.__mapper[1] = ReferencesTreeViewModel.__create_col('ref')
+        self.__mapper[2] = ReferencesTreeViewModel.__create_col('value')
+        self.__mapper[3] = ReferencesTreeViewModel.__create_col('descr')
 
         # GUI information which can be managed by the mapper
         self._bgcolor = None
@@ -99,20 +102,18 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
-    def set_data(self, data):
-        if isinstance(data, FileData) is False:
-            raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the catsview.')
-        self.__data = data
-        self.Cleared()
+    def get_data(self):
+        """Return the data displayed into the tree."""
+        return self.__data
 
     # -----------------------------------------------------------------------
 
-    @staticmethod
-    def __create_col(name):
-        col = ColumnProperties(name, name)
-        col.width = 100
-        return col
+    def set_data(self, data):
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the refsview.')
+        self.__data = data
+        self.update()
 
     # -----------------------------------------------------------------------
 
@@ -133,6 +134,12 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
         return len(self.__mapper)
 
     # -----------------------------------------------------------------------
+
+    # -----------------------------------------------------------------------
+
+    def GetExpanderColumn(self):
+        """Returns column which have to contain the expanders."""
+        return 0
 
     # -----------------------------------------------------------------------
 
@@ -205,3 +212,127 @@ class CataloguesTreeViewModel(wx.dataview.PyDataViewModel):
 
     def SetForegroundColour(self, color):
         self._fgcolor = color
+
+    # -----------------------------------------------------------------------
+    # Manage the data
+    # -----------------------------------------------------------------------
+
+    def update(self):
+        """Update the data and refresh the tree."""
+        self.__data.update()
+        self.Cleared()
+
+    # -----------------------------------------------------------------------
+
+    def add_refs(self, entries):
+        """Add a set of refs in the data.
+
+        :param entries: (list of FileReference)
+
+        """
+        added_refs = list()
+        for entry in entries:
+            a = self.__add(entry)
+            if a is True:
+                added_refs.append(entry)
+
+        added_items = list()
+        if len(added_refs) > 0:
+            self.update()
+            for f in added_refs:
+                added_items.append(self.ObjectToItem(f))
+
+        return added_items
+
+    # -----------------------------------------------------------------------
+
+    def __add(self, entry):
+        if isinstance(entry, FileReference):
+            return self.__data.add_ref(entry)
+        else:
+            logging.error('{!s:s} not added.'.format(str(entry)))
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def remove_checked_refs(self):
+        nb_removed = self.__data.remove_refs(States().CHECKED)
+        if nb_removed > 0:
+            self.update()
+        return nb_removed
+
+    # -----------------------------------------------------------------------
+
+    def expand(self, value=True, item=None):
+        """Set the expand value to the object matching the item or to all.
+
+        :param value: (bool) Expanded (True) or Collapsed (False)
+        :param item: (wx.dataview.DataViewItem or None)
+
+        """
+        if item is None:
+            for fc in self.__data.get_refs():
+                if fc.subjoined is None:
+                    fc.subjoined = dict()
+                fc.subjoined['expand'] = bool(value)
+
+        else:
+            obj = self.ItemToObject(item)
+            if isinstance(obj, FileReference):
+                if obj.subjoined is None:
+                    obj.subjoined = dict()
+                obj.subjoined['expand'] = bool(value)
+
+    # -----------------------------------------------------------------------
+
+    def get_expanded_items(self, value=True):
+        """Return the list of expanded or collapsed items.
+
+        :param value: (bool)
+
+        """
+        items = list()
+        for fc in self.__data.get_refs():
+            if fc.subjoined is not None:
+                if 'expand' in fc.subjoined:
+                    if fc.subjoined['expand'] is value:
+                        items.append(self.ObjectToItem(fc))
+
+        return items
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def __create_col(name):
+        if name == "state":
+            col = ColumnProperties("State", name, "bool")
+            col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
+            col.add_fct_name(FileReference, "get_state")
+            col.width = 120
+            return col
+
+        if name == "refs":
+            col = ColumnProperties("References/keys", name)
+            col.add_fct_name(FileReference, "get_id")
+            col.width = 120
+            return col
+
+        if name == "attvalue":
+            col = ColumnProperties("Value", name)
+            col.add_fct_name(AttValue, "get_value")
+            col.width = 80
+            col.align = wx.ALIGN_CENTRE
+            return col
+
+        if name == "attdescr":
+            col = ColumnProperties("Description", name)
+            col.add_fct_name(AttValue, "get_descr")
+            col.width = 120
+            col.align = wx.ALIGN_CENTRE
+            return col
+
+        col = ColumnProperties("", name)
+        col.width = 80
+        return col
+

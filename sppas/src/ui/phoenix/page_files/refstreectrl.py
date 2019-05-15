@@ -37,7 +37,7 @@ import wx
 import wx.dataview
 
 from .basectrls import BaseTreeViewCtrl
-from .refsviewmodel import CataloguesTreeViewModel
+from .refsviewmodel import ReferencesTreeViewModel
 
 
 # ----------------------------------------------------------------------------
@@ -69,16 +69,31 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         super(ReferencesTreeViewCtrl, self).__init__(parent, name)
 
         # Create an instance of our model and associate to the view.
-        self._model = CataloguesTreeViewModel()
+        self._model = ReferencesTreeViewModel()
         self.AssociateModel(self._model)
         self._model.DecRef()
 
         # Create the columns that the model wants in the view.
         for i in range(self._model.GetColumnCount()):
             col = BaseTreeViewCtrl._create_column(self._model, i)
-            #if i == self._model.GetExpanderColumn():
-            #    self.SetExpanderColumn(col)
+            if i == self._model.GetExpanderColumn():
+                self.SetExpanderColumn(col)
             wx.dataview.DataViewCtrl.AppendColumn(self, col)
+
+        # Bind events.
+        # Used to remember the expend/collapse status of items after a refresh.
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self._on_item_expanded)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self._on_item_collapsed)
+        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
+        # self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
+
+    # ------------------------------------------------------------------------
+    # Public methods
+    # ------------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data of the model."""
+        return self._model.get_data()
 
     # ------------------------------------------------------------------------
 
@@ -88,14 +103,55 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         :param entries: (str) List of references.
 
         """
-        pass
+        items = self._model.add_refs(entries)
+        if len(items) > 0:
+            self.__refresh()
+            return True
+        return False
+
+    # ------------------------------------------------------------------------
+
+    def RemoveCheckedRefs(self):
+        """Remove all checked files."""
+        nb = self._model.remove_checked_refs()
+        if nb > 0:
+            self.__refresh()
+            return True
+        return False
 
     # ------------------------------------------------------------------------
 
     def update_data(self):
-        return
-        # Update the data and clear the tree
-        self._model.update_data()
-        # But clearing the tree means to forget which are the expanded items!
-        # so, re-expand/re-collapse properly.
-        #self.__update_expand()
+        """Overridden. Update the currently displayed data."""
+        self._model.update()
+        self.__refresh()
+
+    # ------------------------------------------------------------------------
+    # Callbacks to events
+    # ------------------------------------------------------------------------
+
+    def _on_item_expanded(self, evt):
+        """Happens when the user cliched a '+' button of the tree.
+
+        We have to update the corresponding object 'expand' value to True.
+
+        """
+        self._model.expand(True, evt.GetItem())
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_collapsed(self, evt):
+        """Happens when the user cliched a '-' button of the tree.
+
+        We have to update the corresponding object 'expand' value to False.
+
+        """
+        self._model.expand(False, evt.GetItem())
+
+    # ------------------------------------------------------------------------
+
+    def __refresh(self):
+        for item in self._model.get_expanded_items(True):
+            self.Expand(item)
+        for item in self._model.get_expanded_items(False):
+            self.Collapse(item)

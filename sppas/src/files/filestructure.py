@@ -41,7 +41,7 @@ from os.path import basename, dirname
 
 from sppas import sppasTypeError
 from sppas import sppasValueError
-from .fileref import Reference
+from .fileref import FileReference
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
 from .filebase import FileBase, States
@@ -402,6 +402,15 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
+    def remove_ref(self, ref):
+        for r in self.__references:
+            if r.id == ref.id:
+                self.__references.remove(r)
+                return True
+        return False
+
+    # -----------------------------------------------------------------------
+
     def set_references(self, list_of_references):
         """Fix the list of references.
 
@@ -415,7 +424,7 @@ class FileRoot(FileBase):
         if isinstance(list_of_references, list):
             if len(list_of_references) > 0:
                 for reference in list_of_references:
-                    if not isinstance(reference, Reference):
+                    if not isinstance(reference, FileReference):
                         raise sppasTypeError(reference, 'Reference')
 
             self.__references = list_of_references
