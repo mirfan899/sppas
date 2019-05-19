@@ -394,8 +394,6 @@ class FileRoot(FileBase):
         :returns: (list)
 
         """
-        # If the catalog is not set yet, instead of returning None the method
-        # returns an empty list.
         if self.__references is None:
             return list()
         return self.__references

@@ -27,15 +27,16 @@
         ---------------------------------------------------------------------
 
     src.files.fileref.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~
 
 """
 
+import logging
 import re
 
 from collections import OrderedDict
 
-from sppas import sppasTypeError
+from sppas import sppasTypeError, sppasIndexError
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .filebase import FileBase, States
@@ -199,17 +200,18 @@ class FileReference(FileBase):
 
     """
 
-    def __init__(self, identifier):
-        """Constructor of the Category class.
+    REF_TYPES = ('NONE', 'SPEAKER', 'INTERACTION')
 
-        :param identifier: (str) identifier for the object, the name of the category
+    def __init__(self, identifier):
+        """Constructor of the FileReference class.
+
+        :param identifier: (str) identifier for the object, the name of the reference
 
         """
         super(FileReference, self).__init__(identifier)
         self.__attributs = OrderedDict()
 
-        self.types = ('NONE', 'SPEAKER', 'INTERACTION')
-        self.__type = self.types[0]
+        self.__type = FileReference.REF_TYPES[0]
 
         self._state = States().UNUSED
 
@@ -225,7 +227,6 @@ class FileReference(FileBase):
         :param value: (str, AttValue) will always be converted in AttValue object
 
         """
-
         # Used once hence declared inside add method
         def is_restricted_ascii(key_to_test):
             # change any other character than a to z and underscore in the key
@@ -279,12 +280,17 @@ class FileReference(FileBase):
 
     def set_type(self, ref_type):
         """Set the type of the Reference to a new value within the authorized ones"""
-        if ref_type in self.types:
+        if ref_type in FileReference.REF_TYPES:
             self.__type = ref_type
         else:
-            raise sppasTypeError(ref_type, self.types)
-
-    type = property(get_type, set_type)
+            try:
+                ref_index = int(ref_type)
+                if ref_index in range(0, len(FileReference.REF_TYPES)):
+                    self.__type = FileReference.REF_TYPES[ref_index]
+                else:
+                    raise sppasIndexError(ref_index)
+            except:
+                raise sppasTypeError(ref_type, FileReference.REF_TYPES)
 
     # -----------------------------------------------------------------------
     # overloads
@@ -294,10 +300,10 @@ class FileReference(FileBase):
         return len(self.__attributs.keys())
 
     def __str__(self):
-        return '{!s:s}'.format(self.__attributs)
+        return '{:s}: {!s:s}'.format(self.id, self.__attributs)
 
     def __repr__(self):
-        return 'Reference: {!s:s}'.format(self.__attributs)
+        return '{:s}: {!s:s}'.format(self.id, self.__attributs)
 
     def __format__(self, fmt):
         return str(self).__format__(fmt)

@@ -26,7 +26,7 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.lib.catstreectrl.py
+    src.ui.lib.refstreectrl.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -63,7 +63,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     def __init__(self, parent, name=wx.PanelNameStr):
         """Constructor of the FileTreeCtrl.
 
-        :param `parent`: (wx.Window)
+        :param parent: (wx.Window)
 
         """
         super(ReferencesTreeViewCtrl, self).__init__(parent, name)
@@ -97,12 +97,22 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
+    def CreateRef(self, ref_name, ref_type):
+        logging.debug('Create a reference: {:s}, {:d}'.format(ref_name, ref_type))
+        item = self._model.create_ref(ref_name, ref_type)
+        if item is None:
+            raise Exception("Unknown")
+        return item
+
+    # ------------------------------------------------------------------------
+
     def AddRefs(self, entries):
         """Add a list of references into the model.
 
         :param entries: (str) List of references.
 
         """
+        logging.debug('Add {:d} references in the data.'.format(len(entries)))
         items = self._model.add_refs(entries)
         if len(items) > 0:
             self.__refresh()

@@ -257,7 +257,7 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         """
         super(BaseTreeViewCtrl, self).__init__(
             parent,
-            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE | wx.dataview.DV_NO_HEADER,  # wx.dataview.DV_VERT_RULES |
+            style=wx.BORDER_NONE | wx.dataview.DV_MULTIPLE,  # | wx.dataview.DV_NO_HEADER,  # wx.dataview.DV_VERT_RULES
             name=name
         )
 

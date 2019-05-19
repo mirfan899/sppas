@@ -151,7 +151,7 @@ class sppasFeedbackDialog(sppasDialog):
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        """Create the buttons and bind events."""
+        """Create the buttons."""
         panel = sppasPanel(self, name="actions")
         panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
 

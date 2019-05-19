@@ -92,9 +92,9 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         # Map between displayed columns and workspace
         self.__mapper = dict()
         self.__mapper[0] = ReferencesTreeViewModel.__create_col('state')
-        self.__mapper[1] = ReferencesTreeViewModel.__create_col('ref')
-        self.__mapper[2] = ReferencesTreeViewModel.__create_col('value')
-        self.__mapper[3] = ReferencesTreeViewModel.__create_col('descr')
+        self.__mapper[1] = ReferencesTreeViewModel.__create_col('refs')
+        self.__mapper[2] = ReferencesTreeViewModel.__create_col('attvalue')
+        self.__mapper[3] = ReferencesTreeViewModel.__create_col('attdescr')
 
         # GUI information which can be managed by the mapper
         self._bgcolor = None
@@ -114,16 +114,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         logging.debug('New data to set in the refsview.')
         self.__data = data
         self.update()
-
-    # -----------------------------------------------------------------------
-
-    def IsContainer(self, item):
-        """Return True if the item has children, False otherwise.
-
-        :param item: (wx.dataview.DataViewItem)
-
-        """
-        return False
 
     # -----------------------------------------------------------------------
     # Manage column properties
@@ -214,6 +204,148 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         self._fgcolor = color
 
     # -----------------------------------------------------------------------
+
+    def IsContainer(self, item):
+        """Return True if the item has children, False otherwise.
+
+        :param item: (wx.dataview.DataViewItem)
+
+        """
+        # The hidden root is a container
+        if not item:
+            return True
+
+        # In this model the path and root objects are containers
+        node = self.ItemToObject(item)
+        if isinstance(node, FileReference):
+            return True
+
+        # but everything else are not
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def GetParent(self, item):
+        """Return the item which is this item's parent.
+
+        :param item: (wx.dataview.DataViewItem)
+
+        """
+        # The hidden root does not have a parent
+        if not item:
+            return wx.dataview.NullDataViewItem
+
+        node = self.ItemToObject(item)
+
+        # An AttValue has a FileReference parent
+        if isinstance(node, AttValue):
+            for ref in self.__data.get_refs():
+                if node in ref:
+                    return self.ObjectToItem(node)
+
+        # A FilePath does not have a parent
+        return wx.dataview.NullDataViewItem
+
+    # -----------------------------------------------------------------------
+    # Manage the values to display
+    # -----------------------------------------------------------------------
+
+    def GetValue(self, item, col):
+        """Return the value to be displayed for this item and column.
+
+        :param item: (wx.dataview.DataViewItem)
+        :param col: (int)
+
+        Pull the values from the data objects we associated with the items
+        in GetChildren.
+
+        """
+        logging.debug(' ... GetValue')
+        # Fetch the data object for this item.
+        node = self.ItemToObject(item)
+        logging.debug(' ... ... for node {:s}'.format(node))
+
+        if isinstance(node, (FileReference, AttValue)) is False:
+            raise RuntimeError("Unknown node type {:s}".format(type(node)))
+
+        if self.__mapper[col].id == "state":
+            if isinstance(node, FileReference) is True:
+                if node.get_state() == States().UNUSED:
+                    return False
+                return True
+            return ""
+
+        value = self.__mapper[col].get_value(node)
+        logging.debug(' ... ... value is: {:s}'.format(str(value)))
+        return value
+
+    # -----------------------------------------------------------------------
+
+    def HasContainerColumns(self, item):
+        """Override.
+
+        :param item: (wx.dataview.DataViewItem)
+
+        We override this method to indicate if a container item merely acts
+        as a headline (or for categorisation) or if it also acts a normal
+        item with entries for further columns.
+
+        """
+        node = self.ItemToObject(item)
+        if isinstance(node, FileReference):
+            return True
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def HasValue(self, item, col):
+        """Override.
+
+        Return True if there is a value in the given column of this item.
+
+        """
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def SetValue(self, value, item, col):
+        """Override.
+
+        :param value:
+        :param item: (wx.dataview.DataViewItem)
+        :param col: (int)
+
+        """
+        logging.debug("SetValue: %s\n" % value)
+
+        node = self.ItemToObject(item)
+        if isinstance(node, (FileReference, AttValue)) is False:
+            raise RuntimeError("Unknown node type {:s}".format(type(node)))
+
+        return True
+
+    # -----------------------------------------------------------------------
+
+    def GetAttr(self, item, col, attr):
+        node = self.ItemToObject(item)
+        logging.debug("GetAttr: %s\n" % node)
+
+        # default colors for foreground and background
+        if self._fgcolor is not None:
+            attr.SetColour(self._fgcolor)
+        if self._bgcolor is not None:
+            attr.SetBackgroundColour(self._bgcolor)
+
+        if isinstance(node, FileReference):
+            attr.SetBold(True)
+            return True
+
+        if isinstance(node, AttValue):
+            return True
+
+        return False
+
+    # -----------------------------------------------------------------------
     # Manage the data
     # -----------------------------------------------------------------------
 
@@ -221,6 +353,24 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         """Update the data and refresh the tree."""
         self.__data.update()
         self.Cleared()
+
+    # -----------------------------------------------------------------------
+
+    def create_ref(self, ref_name, ref_type):
+        """Create a new Reference and add it into the data.
+
+        :param ref_name: (str)
+        :param ref_type: (str or int)
+
+        """
+        r = FileReference(ref_name)
+        r.set_type(ref_type)
+        self.__data.add_ref(r)
+        logging.debug(' ... reference {:s} created and appended into the data.'.format(r))
+        item = self.ObjectToItem(r)
+        self.ItemAdded(None, item)
+        self.Cleared()
+        return item
 
     # -----------------------------------------------------------------------
 
@@ -234,14 +384,17 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         for entry in entries:
             a = self.__add(entry)
             if a is True:
+                logging.debug(' ... reference {:s} appended into the data.'.format(entry))
                 added_refs.append(entry)
 
         added_items = list()
         if len(added_refs) > 0:
-            self.update()
-            for f in added_refs:
-                added_items.append(self.ObjectToItem(f))
+            logging.debug(' TreeView Cleared: ')
+            for r in added_refs:
+                added_items.append(self.ObjectToItem(r))
+                logging.debug(r)
 
+            self.Cleared()
         return added_items
 
     # -----------------------------------------------------------------------
@@ -308,8 +461,8 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         if name == "state":
             col = ColumnProperties("State", name, "bool")
             col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
-            col.add_fct_name(FileReference, "get_state")
-            col.width = 120
+            #col.add_fct_name(FileReference, "get_state")
+            col.width = 40
             return col
 
         if name == "refs":
@@ -328,7 +481,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         if name == "attdescr":
             col = ColumnProperties("Description", name)
             col.add_fct_name(AttValue, "get_descr")
-            col.width = 120
+            col.width = 200
             col.align = wx.ALIGN_CENTRE
             return col
 

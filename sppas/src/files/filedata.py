@@ -212,6 +212,8 @@ class FileData(FileBase):
 
         for refe in self.__refs:
             if refe.id == ref.id:
+                logging.error("A reference with the identifier '{:s}' is"
+                              "already in the data.".format(refe.id))
                 return False
 
         self.__refs.append(ref)
@@ -464,18 +466,14 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def associate(self):
-        ref_checked = list()
-        for ref in self.__refs:
-            if ref.get_state() == States().CHECKED:
-                ref_checked.append(ref)
+        ref_checked = self.get_reference_from_state(States().CHECKED)
         if len(ref_checked) == 0:
             return 0
 
         associed = 0
         for fp in self.__data:
             for fr in fp:
-                if fr.get_state() == States().AT_LEAST_ONE_CHECKED\
-                        or fr.get_state() == States().CHECKED:
+                if fr.get_state() in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
                     associed += 1
                     if fr.get_references() is not None:
                         ref_extended = fr.get_references()
@@ -489,20 +487,17 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def dissociate(self):
-        ref_checked = list()
-        for ref in self.__refs:
-            if ref.stateref == States().CHECKED:
-                ref_checked.append(ref)
+        ref_checked = self.get_reference_from_state(States().CHECKED)
         if len(ref_checked) == 0:
             return 0
 
         dissocied = 0
         for fp in self.__data:
             for fr in fp:
-                if fr.statefr in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
+                if fr.get_state() in (States().AT_LEAST_ONE_CHECKED, States().CHECKED):
                     for ref in ref_checked:
-                        if ref in fr.references:
-                            fr.references.remove(ref)
+                        removed = fr.remove_ref(ref)
+                        if removed is True:
                             dissocied += 1
         return dissocied
 
@@ -515,19 +510,25 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def get_filepath_from_state(self, state):
-        """Return every FilePath in the given state."""
+        """Return every FilePath of the given state.
+
+        """
+        paths = list()
         for fp in self.__data:
-            if fp.statefp == state:
-                yield fp
+            if fp.get_state() == state:
+                paths.append(fp)
+        return paths
 
     # -----------------------------------------------------------------------
 
     def get_fileroot_from_state(self, state):
         """Return every FileRoot in the given state."""
+        roots = list()
         for fp in self.__data:
             for fr in fp:
-                if fr.statefr == state:
-                    yield fr
+                if fr.get_state() == state:
+                    roots.append(fr)
+        return roots
 
     # -----------------------------------------------------------------------
 
@@ -539,25 +540,27 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in fp:
                 for fn in fr:
-                    if fn.statefn == state:
+                    if fn.get_state() == state:
                         files.append(fn)
         return files
 
     # -----------------------------------------------------------------------
 
     def get_reference_from_state(self, state):
-        """Return every Reference in the given state."""
-        for fp in self.__data:
-            for fr in fp:
-                for ref in fr:
-                    if ref.stateref == state:
-                        yield ref
+        """Return every Reference in the given state.
+
+        """
+        refs = list()
+        for r in self.__refs:
+            if r.get_state() == state:
+                refs.append(r)
+        return refs
 
     # -----------------------------------------------------------------------
 
     def has_locked_files(self):
         for fp in self.__data:
-            if fp.statefp in (States().AT_LEAST_ONE_LOCKED, States().LOCKED):
+            if fp.get_state() in (States().AT_LEAST_ONE_LOCKED, States().LOCKED):
                 return True
         return False
 
@@ -594,14 +597,14 @@ class FileData(FileBase):
             for fp in self.__data:
                 for fr in fp:
                     for fn in fr:
-                        if fn.get_states() == States().LOCKED:
+                        if fn.get_state() == States().LOCKED:
                             fn.set_state(States().UNUSED)
                     fr.update_state()
                 fp.update_state()
 
         elif isinstance(entries, list):
             for fn in entries:
-                if fn.get_states() == States().LOCKED:
+                if fn.get_state() == States().LOCKED:
                     self.set_object_state(States().UNUSED, fn)
 
     # -----------------------------------------------------------------------
