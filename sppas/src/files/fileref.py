@@ -125,7 +125,7 @@ class AttValue(object):
     def get_typed_value(self):
         """Return the current typed value.
 
-        :returns: (any type) the current typed value.
+        :return: (any type) the current typed value.
 
         """
         if self.__valuetype is not None or self.__valuetype != 'str':
@@ -143,7 +143,7 @@ class AttValue(object):
     def get_description(self):
         """Return current description.
 
-        :returns: (str)
+        :return: (str)
 
         """
         if self.__description is not None:
@@ -164,6 +164,23 @@ class AttValue(object):
         self.__description = su.to_strip()
 
     description = property(get_description, set_description)
+
+    # -----------------------------------------------------------------------
+
+    def serialize(self):
+        """Return a dict representing this instance for json format."""
+        d = dict()
+        d['value'] = self.__value
+        d['type'] = self.__valuetype
+        d['descr'] = self.__description
+        return d
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        """Return the AttValue from the given dict."""
+        return AttValue(d['value'], d['type'], d['descr'])
 
     # ---------------------------------------------------------
     # overloads
@@ -187,7 +204,7 @@ class AttValue(object):
 
 
 class FileReference(FileBase):
-    """Represents a reference of a catalog about files.
+    """Represent a reference of a catalog about files.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -209,16 +226,14 @@ class FileReference(FileBase):
 
         """
         super(FileReference, self).__init__(identifier)
+
         self.__attributs = OrderedDict()
-
         self.__type = FileReference.REF_TYPES[0]
-
-        self._state = States().UNUSED
 
         # A free to use member to expand the class
         self.subjoined = None
 
-    # ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def add(self, key, value):
         """Add a new pair of key/value in the current dictionary.
@@ -241,7 +256,7 @@ class FileReference(FileBase):
         else:
             raise ValueError('Non ASCII characters')
 
-    # ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def pop(self, key):
         """Delete a pair of key/value.
@@ -254,7 +269,7 @@ class FileReference(FileBase):
         else:
             raise ValueError('index not in Category')
 
-    # ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def set_state(self, state):
         """Set the current state to a new one.
@@ -270,13 +285,13 @@ class FileReference(FileBase):
 
     stateref = property(FileBase.get_state, set_state)
 
-    # ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def get_type(self):
         """Returns its current type"""
         return self.__type
 
-    # ---------------------------------------------------------------------------
+    # ------------------------------------------------------------------------
 
     def set_type(self, ref_type):
         """Set the type of the Reference to a new value within the authorized ones"""
@@ -293,8 +308,34 @@ class FileReference(FileBase):
                 raise sppasTypeError(ref_type, FileReference.REF_TYPES)
 
     # -----------------------------------------------------------------------
-    # overloads
+
+    def serialize(self):
+        """Return a dict representing this instance for json format."""
+        d = FileBase.serialize(self)
+        d['attributes'] = list()
+        for att in self.__attributs:
+            a = dict()
+            a['key'] = att
+            a['value'] = self.__attributs[att].serialize()
+            d['attributes'].append(a)
+        d['subjoin'] = self.subjoined
+        return d
+
     # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        """Return the FileReference instance represented by the given dict.
+
+        """
+        ref = FileReference(d['id'])
+        for att in d['attributes']:
+            ref.add(att['key'], AttValue.parse(att['value']))
+        return ref
+
+    # ------------------------------------------------------------------------
+    # Overloads
+    # ------------------------------------------------------------------------
 
     def __len__(self):
         return len(self.__attributs.keys())

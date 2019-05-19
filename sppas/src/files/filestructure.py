@@ -32,6 +32,7 @@
 """
 
 import mimetypes
+import json
 from datetime import datetime
 
 from os.path import splitext, abspath, join
@@ -81,28 +82,27 @@ class FileName(FileBase):
 
         From the identifier, the following properties are extracted:
 
-            0. id (str) Identifier - the absolute identifier (from FileBase)
-            1. identifier (str) The base name of the file, without path nor ext
-            2. ext (str) The extension of the file, or the mime type
+            1. name (str) The base name of the file, without path nor ext
+            2. extension (str) The extension of the file, or the mime type
             3. date (str) Time of the last modification
-            4. filesize (str) Size of the file
+            4. size (str) Size of the file
 
-        Some states of the file are also stored.
-
-        :param identifier: (str) Full name of a file (from FileBase)
-        :raise: OSError if identifier does not match a file (not dir/link)
+        :param identifier: (str) Full name of a file
+        :raise: FileOSError if identifier does not match an existing file,
+        FileTypeError if the filename does not match a file (like links
+        or folder).
 
         """
         super(FileName, self).__init__(identifier)
-        if exists(identifier) is False:
-            raise FileOSError(identifier)
-        if isfile(self.get_id()) is False:
-            raise FileTypeError(identifier)
+        if exists(self.id) is False:
+            raise FileOSError(self.id)
+        if isfile(self.id) is False:
+            raise FileTypeError(self.id)
 
         # Properties of the file (protected)
         # ----------------------------------
 
-        # The displayed identifier (no path, no extension)
+        # The name (no path, no extension)
         fn, ext = splitext(self.get_id())
         self.__name = basename(fn)
 
@@ -118,7 +118,7 @@ class FileName(FileBase):
 
     def folder(self):
         """Return the name of the directory of this file."""
-        return dirname(self.get_id())
+        return dirname(self.id)
 
     # -----------------------------------------------------------------------
 
@@ -131,6 +131,8 @@ class FileName(FileBase):
     def get_extension(self):
         """Return the extension of the file."""
         return self.__extension
+
+    # -----------------------------------------------------------------------
 
     def get_mime(self):
         """Return the mime type of the file."""
@@ -165,17 +167,19 @@ class FileName(FileBase):
     # -----------------------------------------------------------------------
 
     def set_state(self, value):
-        """Set a state value to this filename.
+        """Override. Set a state value to this filename.
 
         Notice that a locked file can only be unlocked by assigning the
         UNUSED state.
 
-        :param value: (bool)
-        :returns: (bool) True if the state changed
+        :param value: (States)
+        :return: (bool) True if the state changed
+        :raise: sppasTypeError
 
         """
         if value not in FILENAME_STATES:
             raise sppasTypeError(value, str(FILENAME_STATES))
+
         if self._state == States().LOCKED and value != States().UNUSED:
             return False
         if self._state == value:
@@ -187,7 +191,7 @@ class FileName(FileBase):
     # -----------------------------------------------------------------------
 
     def update_properties(self):
-        """Update properties of the file (modified, filesize).
+        """Update properties of the file (modified date and filesize).
 
         :raise: FileTypeError if the file is not existing
 
@@ -204,14 +208,31 @@ class FileName(FileBase):
         self.__filesize = getsize(self.get_id())
 
     # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        """Return the FileName instance represented by the given dict.
+
+        :raise: FileTypeError, FileOSError
+
+        """
+        fn = FileName(d['id'])
+        s = int(d['state'])
+        if s > 0:
+            fn.set_state(States().CHECKED)
+        else:
+            # it does not make sense to set state to LOCKED
+            fn.set_state(States().UNUSED)
+        return fn
+
+    # -----------------------------------------------------------------------
     # Properties
     # -----------------------------------------------------------------------
 
-    statefn = property(FileBase.get_state, set_state)
+    name = property(get_name, None)
+    extension = property(get_extension, None)
     size = property(get_size, None)
     date = property(get_date, None)
-    extension = property(get_extension, None)
-    name = property(get_name, None)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -222,11 +243,15 @@ class FileName(FileBase):
                      self.__date,
                      self.__extension,
                      self.__filesize,
-                     self._state,
+                     self.get_state(),
                      self.id))
+
+    # -----------------------------------------------------------------------
 
     def __eq__(self, other):
         """Allows to compare self with other by using "==".
+
+        :param other: (FileName, str)
 
         """
         if other is not None:
@@ -236,10 +261,12 @@ class FileName(FileBase):
                 return self.id == other
         return False
 
+    # -----------------------------------------------------------------------
+
     def __ne__(self, other):
-        return not self == other
-        #if other is not None:
-        #    return self.id != other.id
+        if other is not None:
+            return not self == other
+        return False
 
 # ---------------------------------------------------------------------------
 
@@ -401,7 +428,7 @@ class FileRoot(FileBase):
     # -----------------------------------------------------------------------
 
     def remove_ref(self, ref):
-        for r in self.__references:
+        for r in self.get_references():
             if r.id == ref.id:
                 self.__references.remove(r)
                 return True
@@ -522,6 +549,33 @@ class FileRoot(FileBase):
         return idx
 
     # -----------------------------------------------------------------------
+
+    def serialize(self):
+        """Override.
+
+        Return a dict representing this instance for json format.
+        There's no need to save the 'id' nor the 'state' because they
+        result of the filenames.
+
+        """
+        d = dict()
+
+        # filenames are serialized
+        d['files'] = list()
+        for fn in self.__files:
+            d['files'].append(fn.serialize())
+
+        # references identifiers are stored into a list
+        d['refids'] = list()
+        for r in self.get_references():
+            d['refids'].append(r.id)
+
+        # subjoined data are simply added as-it (it's risky)
+        d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
+
+        return d
+
+    # -----------------------------------------------------------------------
     # Overloads
     # -----------------------------------------------------------------------
 
@@ -551,7 +605,6 @@ class FileRoot(FileBase):
 
         # nothing is matching this value
         return False
-
 
 # ---------------------------------------------------------------------------
 
@@ -652,8 +705,6 @@ class FilePath(FileBase):
             self.update_state()
 
         return modified
-
-    statefp = property(FileBase.get_state, set_state)
 
     # -----------------------------------------------------------------------
 
@@ -763,7 +814,7 @@ class FilePath(FileBase):
         Given entry can be either the identifier of a root or an instance
         of FileRoot or a FileName or an identifier of file name.
 
-        TODO: REMOVE IF FILENAME
+        TODO: REMOVE IF ENTRY is FILENAME
 
         :param entry: (str or FileRoot)
         :return: (int) Index of the removed FileRoot or -1 if nothing removed.
@@ -815,6 +866,18 @@ class FilePath(FileBase):
             self._state = States().AT_LEAST_ONE_CHECKED
         else:
             self._state = States().UNUSED
+
+    # -----------------------------------------------------------------------
+
+    def serialize(self):
+        """Return a dict representing this instance for json format."""
+        d = dict()
+        d['roots'] = list()
+        for r in self.__roots:
+            d['roots'].append(r.serialize())
+        d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
+
+        return d
 
     # -----------------------------------------------------------------------
     # Overloads

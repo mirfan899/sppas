@@ -35,7 +35,7 @@
 
 
 class FileBase(object):
-    """Represents any type of data linked to a filename.
+    """Represent any type of data linked to a filename.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -48,12 +48,9 @@ class FileBase(object):
     def __init__(self, identifier):
         """Constructor of a FileBase.
 
-        :param `identifier`: (str) Full name of a file/directory
-        :raise: OSError if identifier does not match a file nor a directory
+        Data structure to store an identifier (str) and a state (States).
 
-        The following members are stored:
-
-            - id (str) Identifier - the absolute identifier [private]
+        :param identifier: (str) Any un-modifiable string.
 
         """
         self.__id = identifier
@@ -62,19 +59,19 @@ class FileBase(object):
     # -----------------------------------------------------------------------
 
     def get_id(self):
-        """Return the identifier of the file, i.e. the full name."""
+        """Return the identifier (str)."""
         return self.__id
 
     # -----------------------------------------------------------------------
 
     def get_state(self):
-        """Return the state."""
+        """Return the state (States)."""
         return self._state
 
     # -----------------------------------------------------------------------
 
     def set_state(self, value):
-        """Set a state.
+        """Set a state (to be overridden).
 
         :param value: (States) The state value to assign
 
@@ -110,10 +107,20 @@ class FileBase(object):
         return is_matching
 
     # -----------------------------------------------------------------------
+
+    def serialize(self):
+        """Return a dict representing this instance for json format."""
+        d = dict()
+        d['id'] = self.id
+        d['state'] = int(self.get_state())
+        return d
+
+    # -----------------------------------------------------------------------
     # Properties
     # -----------------------------------------------------------------------
 
     id = property(get_id, None)
+    state = property(get_state, set_state)
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -139,7 +146,7 @@ class FileBase(object):
     def __repr__(self):
         """Function called by print.
 
-        :return: (str) printed representation of the object.
+        :return: (str) Printed representation of the object.
 
         """
         return 'File: {!s:s}'.format(self.__id)
@@ -159,8 +166,10 @@ class States(object):
     :Example:
 
         >>>with States() as s:
-        >>>    s.newKey = 'myNewValue'
-        >>>    print(s.newKey)
+        >>>    print(s.UNUSED)
+
+    This class is a solution to mimic an 'Enum' but is compatible with both
+    Python 2.7 and Python 3+.
 
     """
 

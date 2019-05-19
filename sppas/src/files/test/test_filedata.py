@@ -1,168 +1,17 @@
-# ---------------------------------------------------------------------------
-# Unittests
-# ---------------------------------------------------------------------------
-
 
 import unittest
-from os.path import dirname
+import os
+import json
 
 import sppas
 from sppas import sppasTypeError
 from ..fileref import AttValue, FileReference
 from ..filedata import FileData
-from ..filebase import FileBase, States
-from ..filestructure import FileName, FileRoot, FilePath
-from ..fileexc import FileOSError, FileTypeError, PathTypeError, FileLockedError
-
-
-class TestFileBase(unittest.TestCase):
-
-    def test_init(self):
-        f = FileBase(__file__)
-        self.assertEqual(__file__, f.get_id())
-
-    def test_overloads(self):
-        f = FileBase(__file__)
-        self.assertEqual(__file__, str(f))
-        self.assertEqual(__file__, "{!s:s}".format(f))
+from ..filebase import States
+from ..fileexc import FileLockedError
 
 # ---------------------------------------------------------------------------
 
-
-class TestFileName(unittest.TestCase):
-
-    def test_init(self):
-        # Attempt to instantiate with an unexisting file
-        with self.assertRaises(FileOSError):
-            FileName("toto")
-
-        # Attempt to instantiate with a directory
-        with self.assertRaises(FileTypeError):
-            FileName(dirname(__file__))
-
-        # Normal situation
-        fn = FileName(__file__)
-        self.assertEqual(__file__, fn.get_id())
-        self.assertFalse(fn.statefn == States().CHECKED)
-
-    def test_extension(self):
-        fn = FileName(__file__)
-        self.assertEqual(".PY", fn.get_extension())
-        self.assertEqual("text/plain", fn.get_mime())
-
-
-# ---------------------------------------------------------------------------
-
-
-class TestFileRoot(unittest.TestCase):
-
-    def test_init(self):
-        fr = FileRoot(__file__)
-        root = __file__.replace('.py', '')
-        self.assertEqual(root, fr.id)
-        fr = FileRoot("toto")
-        self.assertEqual("toto", fr.id)
-
-    def test_pattern(self):
-        self.assertEqual('', FileRoot.pattern('filename.wav'))
-        self.assertEqual('', FileRoot.pattern('filename-unk.xra'))
-        self.assertEqual('-phon', FileRoot.pattern('filename-phon.xra'))
-
-    def test_root(self):
-        self.assertEqual('filename', FileRoot.root('filename.wav'))
-        self.assertEqual('filename', FileRoot.root('filename-phon.xra'))
-        self.assertEqual('filename-unk', FileRoot.root('filename-unk.xra'))
-        self.assertEqual('filename-unk-unk', FileRoot.root('filename-unk-unk.xra'))
-        self.assertEqual('filename.unk-unk', FileRoot.root('filename.unk-unk.xra'))
-        self.assertEqual(
-            'e:\\bigi\\__pycache__\\filedata.cpython-37',
-            FileRoot.root('e:\\bigi\\__pycache__\\filedata.cpython-37.pyc'))
-
-
-# ---------------------------------------------------------------------------
-
-
-class TestFilePath(unittest.TestCase):
-
-    def test_init(self):
-        # Attempt to instantiate with an unexisting file
-        with self.assertRaises(FileOSError):
-            FilePath("toto")
-
-        # Attempt to instantiate with a file
-        with self.assertRaises(PathTypeError):
-            FilePath(__file__)
-
-        # Normal situation
-        d = dirname(__file__)
-        fp = FilePath(d)
-        self.assertEqual(d, fp.id)
-        self.assertFalse(fp.statefp is States().CHECKED)
-        self.assertEqual(fp.id, fp.get_id())
-
-        # Property is only defined for 'get' (set is not implemented).
-        with self.assertRaises(AttributeError):
-            fp.id = "toto"
-
-    def test_append_remove(self):
-        d = dirname(__file__)
-        fp = FilePath(d)
-
-        # Attempt to append an unexisting file
-        with self.assertRaises(FileOSError):
-            fp.append("toto")
-
-        # Normal situation
-        fn = fp.append(__file__)
-        self.assertIsNotNone(fn)
-        self.assertIsInstance(fn, FileName)
-        self.assertEqual(__file__, fn.id)
-
-        fr = fp.get_root(FileRoot.root(fn.id))
-        self.assertIsNotNone(fr)
-        self.assertIsInstance(fr, FileRoot)
-        self.assertEqual(FileRoot.root(__file__), fr.id)
-
-        self.assertEqual(1, len(fp))
-        self.assertEqual(1, len(fr))
-
-        # Attempt to add again the same file
-        fn2 = fp.append(__file__)
-        self.assertEqual(1, len(fp))
-        self.assertEqual(fn, fn2)
-        fn3 = fp.append(FileName(__file__))
-        self.assertEqual(1, len(fp))
-        self.assertEqual(fn, fn3)
-
-        # Remove the file from its name
-        fp.remove(fp.get_root(FileRoot.root(__file__)))
-        self.assertEqual(0, len(fp))
-
-        # Append an instance of FileName
-        fn = FileName(__file__)
-        rfn = fp.append(fn)
-        self.assertIsNotNone(rfn)
-        self.assertEqual(fn, rfn)
-        self.assertEqual(1, len(fp))
-
-        # Attempt to add again the same file
-        fp.append(FileName(__file__))
-        self.assertEqual(1, len(fp))
-
-        # Remove the file from its instance
-        i = fp.remove(fp.get_root(fn.id))
-        self.assertEqual(0, len(fp))
-        self.assertEqual(i, 0)
-
-        # Remove an un-existing file
-        self.assertEqual(-1, fp.remove("toto"))
-
-        # Remove a file not in the list!
-        i = fp.remove(FileName(__file__))
-        self.assertEqual(-1, i)
-
-
-# ---------------------------------------------------------------------------
 
 class TestAttValue(unittest.TestCase):
 
@@ -240,86 +89,98 @@ class TestReferences(unittest.TestCase):
 class TestFileData(unittest.TestCase):
 
     def setUp(self):
-        self.files = FileData()
-        self.files.add_file(__file__)
-        self.files.add_file(sppas.paths.samples + '\\samples-fra\\AC track_0379.PitchTier')
-        self.files.add_file(sppas.paths.samples + '\\samples-fra\\AC track_0379.TextGrid')
-        self.files.add_file(sppas.paths.samples + '\\samples-jpn\\JPA_M16_JPA_T02.TextGrid')
-        self.files.add_file(sppas.paths.samples + '\\samples-cat\\TB-FE1-H1_phrase1.TextGrid')
+        self.data = FileData()
+        self.data.add_file(__file__)
+        self.data.add_file(os.path.join(sppas.paths.samples, 'samples-fra', 'AC track_0379.PitchTier'))
+        self.data.add_file(os.path.join(sppas.paths.samples, 'samples-fra', 'AC track_0379.TextGrid'))
+        self.data.add_file(os.path.join(sppas.paths.samples, 'samples-jpn', 'JPA_M16_JPA_T02.TextGrid'))
+        self.data.add_file(os.path.join(sppas.paths.samples, 'samples-cat', 'TB-FE1-H1_phrase1.TextGrid'))
 
-        self.age = FileReference('age')
-        self.age.add('age1', AttValue('14', 'int', 'age of the first interviwee'))
-        self.age.add('age2', AttValue('11', 'int', 'age of the second interviewee'))
-        self.age.add('age3', AttValue('12', 'int', 'age of the third interviewee'))
+        self.r1 = FileReference('SpeakerAB')
+        self.r1.set_type('SPEAKER')
+        self.r1.add('initials', AttValue('AB'))
+        self.r1.add('sex', AttValue('F'))
+        self.r2 = FileReference('SpeakerCM')
+        self.r2.set_type('SPEAKER')
+        self.r2.add('initials', AttValue('CM'))
+        self.r1.add('sex', AttValue('F'))
+        self.r3 = FileReference('Dialog1')
+        self.r3.set_type('INTERACTION')
+        self.r3.add('when', AttValue('2003', 'int', 'Year of recording'))
+        self.r3.add('where', AttValue('Aix-en-Provence', att_description='Place of recording'))
 
     def test_init(self):
         data = FileData()
         self.assertEqual(36, len(data.id))
         self.assertEqual(0, len(data))
 
-    def testSave(self):
+    def test_save(self):
+        self.data.add_ref(self.r1)
+        self.data.add_ref(self.r2)
+        self.data.add_ref(self.r3)
         current_file_list = list()
         saved_file_list = list()
-        self.files.save(sppas.paths.sppas + '\\src\\files\\test\\save.json')
-        for fp in self.files:
+        self.data.save(os.path.join(sppas.paths.sppas, 'src', 'files', 'test', 'save.json'))
+        for fp in self.data:
             for fr in fp:
                 for fn in fr:
                     current_file_list.append(fn)
-        self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
-        for fp in self.files:
+
+        data = FileData.load(os.path.join(sppas.paths.sppas, 'src', 'files', 'test', 'save.json'))
+        for fp in data:
             for fr in fp:
                 for fn in fr:
                     saved_file_list.append(fn)
+        self.assertEqual(len(current_file_list), len(saved_file_list))
+        for f1, f2 in zip(current_file_list, saved_file_list):
+            self.assertEqual(f1, f2)
 
-        for i in range(len(current_file_list)):
-            self.assertTrue(
-                current_file_list[i] == saved_file_list[i]
-            )
+    def test_state(self):
+        self.data.set_object_state(States().LOCKED)
+        self.assertEqual(States().LOCKED, self.data.get_object_state(self.data[0]))
 
-        with self.assertRaises(FileLockedError) as error:
-            self.files.set_object_state(States().LOCKED)
-            self.files.load(sppas.paths.sppas + '\\src\\files\\test\\save.json')
+    def test_ref(self):
+        self.data.add_ref(self.r1)
+        self.assertEqual(1, len(self.data.get_refs()))
+        self.data.add_ref(self.r2)
+        self.assertEqual(2, len(self.data.get_refs()))
+        self.r1.set_state(States().CHECKED)
+        self.r2.set_state(States().CHECKED)
+        self.data.remove_refs(States().CHECKED)
+        self.assertEqual(0, len(self.data.get_refs()))
 
-        self.assertTrue(
-            isinstance(error.exception, FileLockedError)
-        )
+    def test_assocations(self):
+        self.data.add_ref(self.age)
+        self.data.set_object_state(States().CHECKED)
 
-    def testState(self):
-        self.files.set_object_state(States().LOCKED)
+        for ref in self.data.get_refs():
+            self.data.set_object_state(States().CHECKED, ref)
 
-        self.assertTrue(
-            self.files.get_object_state(self.files[0]) == States().LOCKED
-        )
+        self.data.associate()
 
-    def testRef(self):
-        self.files.add_ref(self.age)
-
-        self.assertTrue(
-            len(self.files.get_refs()) == 1
-        )
-
-    def testAssocations(self):
-        self.files.add_ref(self.age)
-
-        self.files.set_object_state(States().CHECKED)
-
-        for ref in self.files.get_refs():
-            self.files.set_object_state(States().CHECKED, ref)
-
-        self.files.associate()
-
-        for fp in self.files:
+        for fp in self.data:
             for fr in fp:
-                self.assertTrue(
-                    self.age in fr.references
-                )
+                self.assertTrue(self.age in fr.get_references())
 
-        self.files.dissociate()
+        self.data.dissociate()
 
-        for fp in self.files:
+        for fp in self.data:
             for fr in fp:
-                self.assertTrue(
-                    len(fr.references) == 0
-                )
+                self.assertEqual(0, len(fr.get_references()))
 
-# ---------------------------------------------------------------------------
+    def test_serialize(self):
+        d = self.data.serialize()
+        jsondata = json.dumps(d, indent=4, separators=(',', ': '))
+        jsondict = json.loads(jsondata)
+        self.assertEqual(d, jsondict)
+
+    def test_parse(self):
+        self.data.add_ref(self.r1)
+        self.data.add_ref(self.r2)
+        self.data.add_ref(self.r3)
+        d = self.data.serialize()
+        data = self.data.parse(d)
+        self.assertEqual(len(data), len(self.data))
+        self.assertEqual(len(data.get_refs()), len(self.data.get_refs()))
+        dd = data.serialize()
+        self.assertEqual(d, dd)

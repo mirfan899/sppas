@@ -129,8 +129,7 @@ import json
 from os.path import exists
 from os.path import dirname
 
-from sppas import sppasTypeError, sppasValueError
-from .fileexc import FileLockedError
+from sppas import sppasTypeError
 from .fileutils import sppasGUID
 
 from .filebase import FileBase, States
@@ -156,9 +155,9 @@ class FileData(FileBase):
 
     """
 
-    def __init__(self):
+    def __init__(self, identifier=sppasGUID().get()):
         """Constructor of a FileData."""
-        super().__init__(sppasGUID().get())
+        super().__init__(identifier)
         self.__data = list()
         self.__refs = list()
 
@@ -323,23 +322,30 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def get_object(self, entry):
-        """Return the file object matching the given entry.
+    def get_object(self, identifier):
+        """Return the file object matching the given identifier.
 
-        :param entry: (str) Name of a file or of a folder
-        :return: (FilePath, FileRoot, FileName)
+        :param identifier: (str)
+        :return: (FileData, FilePath, FileRoot, FileName, FileReference)
 
         """
-        try:
-            path = dirname(entry)
-            new_fp = FilePath(path)
-        except TypeError:
-            return None
+        if self.id == identifier:
+            return self
+
+        for ref in self.get_refs():
+            if ref.id == identifier:
+                return ref
 
         for fp in self.__data:
-            if fp.id == new_fp.id:
-                return fp.get_object(entry)
-        
+            if fp.id == identifier:
+                return fp
+            for fr in fp:
+                if fr.id ==  identifier:
+                    return fr
+                for fn in fr:
+                    if fn.id == identifier:
+                        return fn
+
         return None
 
     # -----------------------------------------------------------------------
@@ -394,7 +400,7 @@ class FileData(FileBase):
                         break
 
             else:
-                raise sppasTypeError(file_obj, 'inherited from FileBase')
+                raise sppasTypeError(file_obj, 'FileBase')
 
         return modified
 
@@ -412,22 +418,71 @@ class FileData(FileBase):
         self._state = int(value)
 
     # -----------------------------------------------------------------------
-    
-    def __json_serializer(self):
-        my_fp = dict()
-        for fp in self.__data:
-            my_fr = dict()
-            for fr in fp:
-                my_fn = list()
-                my_ref = list()
-                for fn in fr:
-                    my_fn.append(fn.id)
-                for ref in fr.references:
-                    my_ref.append(ref)
 
-                my_fr[fr.id] = (my_fn, my_ref)
-            my_fp[fp.id] = my_fr
-        return my_fp
+    def serialize(self):
+        d = dict()
+        d['id'] = self.id
+        d['paths'] = list()
+        d['catalogue'] = list()
+        for fp in self.__data:
+            d['paths'].append(fp.serialize())
+        for ref in self.__refs:
+            d['catalogue'].append(ref.serialize())
+        return d
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        data = FileData(d['id'])
+
+        # Add all refs in the data
+        for dictref in d['catalogue']:
+            r = FileReference.parse(dictref)
+            data.add_ref(r)
+
+        # Add all files in the data,
+        # but do not create roots/paths from "d"
+        for path in d['paths']:
+            fp = None
+            for root in path['roots']:
+                fr = None
+                # append files
+                for file in root['files']:
+                    try:
+                        fn = data.add_file(file['id'])
+                        s = int(file['state'])
+                        if s > 0:
+                            fn.set_state(States().CHECKED)
+                        else:
+                            # it does not make sense to set state to LOCKED
+                            fn.set_state(States().UNUSED)
+                        if fr is None:
+                            fr = data.get_parent(fn)
+                    except Exception as e:
+                        logging.error(
+                            "The file {:s} can't be included in the workspace"
+                            "due to the following error: {:s}"
+                            "".format(file['id'], str(e)))
+
+                if fr is not None:
+                    # append refs
+                    for ref_id in root['refids']:
+                        ref = data.get_object(ref_id)
+                        if ref is not None:
+                            fr.add_ref(ref)
+
+                    # append subjoined
+                    fr.subjoined = json.loads(root['subjoin'])
+
+                    if fp is not None:
+                        fp = data.get_parent(fr)
+
+            if fp is not None:
+                # append subjoined
+                fp.subjoined = json.loads(path['subjoin'])
+
+        return data
 
     # -----------------------------------------------------------------------
 
@@ -438,30 +493,21 @@ class FileData(FileBase):
 
         """
         with open(filename, 'w') as fd:
-            json.dump(self.__json_serializer(), fd)
+            json.dump(self.serialize(), fd, indent=4, separators=(',', ': '))
 
     # -----------------------------------------------------------------------
 
-    def load(self, filename, force=False):
+    @staticmethod
+    def load(filename):
         """Load a saved FileData object from a save file.
 
         :param filename: (str) the name of the save file.
-        :param force: (bool) permit to the user to load a new FileData\
-        object even if there are locked files within.
+        :return: FileData
 
         """
-        if force is False and self.has_locked_files() is False:
-            raise FileLockedError(filename)
-
-        self.__data.clear()
         with open(filename, "r") as fd:
-            save = json.loads(fd.read())
-            for value in save.values():
-                for in_value in value.values():
-                    for path in in_value[0]:
-                        self.add_file(path)
-                    for ref in in_value[1]:
-                        self.add_ref(ref)
+            d = json.load(fd)
+            return FileData.parse(d)
 
     # -----------------------------------------------------------------------
 
@@ -574,7 +620,6 @@ class FileData(FileBase):
         :raises: sppasTypeError
 
         """
-        print(filebase.id)
         if isinstance(filebase, FileName):
             fr = FileRoot(filebase.id)
             return self.get_object(fr.id)
