@@ -33,6 +33,7 @@
 
 import mimetypes
 import json
+import logging
 from datetime import datetime
 
 from os.path import splitext, abspath, join
@@ -558,7 +559,7 @@ class FileRoot(FileBase):
         result of the filenames.
 
         """
-        d = dict()
+        d = FileBase.serialize(self)
 
         # filenames are serialized
         d['files'] = list()
@@ -574,6 +575,29 @@ class FileRoot(FileBase):
         d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
 
         return d
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        fr = FileRoot(d['id'])
+
+        # append files
+        for file in d['files']:
+            try:
+                fn = FileName.parse(file)
+                logging.debug(' ... add name {:s}'.format(fn.id))
+                fr.append(fn)
+            except Exception as e:
+                logging.error(
+                    "The file {:s} can't be included in the workspace"
+                    "due to the following error: {:s}"
+                    "".format(file['id'], str(e)))
+
+        # append subjoined
+        fr.subjoined = json.loads(d['subjoin'])
+
+        return fr
 
     # -----------------------------------------------------------------------
     # Overloads
@@ -777,33 +801,46 @@ class FilePath(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def append(self, filename):
+    def append(self, entry):
         """Append a filename in the list of files.
 
         Given filename can be either an absolute or relative name of a file
-        or an instance of FileName.
+        or an instance of FileName. It can also be an instance of FileRoot.
 
-        :param filename: (str, FileName) Absolute or relative name of a file
-        :return: (FileName) the appended FileName of None
+        :param entry: (str, FileName, FileRoot) Absolute or relative name of a file
+        :return: (FileName, FileRoo) the appended object or None
 
         """
-        if isinstance(filename, FileName):
-            file_id = filename.id
+        if isinstance(entry, FileRoot):
+            # test if this root is already inside this path
+            fr = self.get_root(entry.id)
+            if fr is not None:
+                raise Exception('The root {:s} is already in the path'.format(entry.id))
+            # test if root is matching this path
+            abs_name = dirname(entry.id)
+            if abs_name != self.id:
+                raise Exception('The root {:s} is not matching the path {:s}'.format(entry.id, self.id))
+            self.__roots.append(entry)
+            obj = entry
         else:
-            file_id = self.identifier(filename)
-            filename = FileName(file_id)
-        root_id = FileRoot.root(file_id)
+            # Given entry is a filename or FileName instance
+            if isinstance(entry, FileName):
+                file_id = entry.id
+            else:
+                file_id = self.identifier(entry)
+                filename = FileName(file_id)
+            root_id = FileRoot.root(file_id)
 
-        # Get or create the corresponding FileRoot
-        fr = self.get_root(root_id)
-        if fr is None:
-            fr = FileRoot(root_id)
-            self.__roots.append(fr)
+            # Get or create the corresponding FileRoot
+            fr = self.get_root(root_id)
+            if fr is None:
+                fr = FileRoot(root_id)
+                self.__roots.append(fr)
 
-        # Append this file to the root
-        obj = fr.append(filename)
+            # Append this file to the root
+            obj = fr.append(filename)
+
         self.update_state()
-
         return obj
 
     # -----------------------------------------------------------------------
@@ -871,13 +908,34 @@ class FilePath(FileBase):
 
     def serialize(self):
         """Return a dict representing this instance for json format."""
-        d = dict()
+        d = FileBase.serialize(self)
         d['roots'] = list()
         for r in self.__roots:
             d['roots'].append(r.serialize())
         d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
 
         return d
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        """Return the FilePath represented by the given dict.
+
+        Remark: the references of the root are not assigned.
+
+        """
+        fp = FilePath(d['id'])
+        for root in d['roots']:
+            # append the root
+            fr = FileRoot.parse(root)
+            logging.debug(' ... add root {:s}'.format(fr.id))
+            fp.append(fr)
+
+            # append subjoined
+            fp.subjoined = json.loads(d['subjoin'])
+
+        return fp
 
     # -----------------------------------------------------------------------
     # Overloads

@@ -292,9 +292,7 @@ class sppasWorkspaces(object):
         except OSError:
             return FileData()
 
-        data = FileData()
-        data.load(filename, force=True)
-        return data
+        return FileData().load(filename)
 
     # -----------------------------------------------------------------------
 

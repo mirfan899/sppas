@@ -150,7 +150,7 @@ class TestFileData(unittest.TestCase):
         self.assertEqual(0, len(self.data.get_refs()))
 
     def test_assocations(self):
-        self.data.add_ref(self.age)
+        self.data.add_ref(self.r1)
         self.data.set_object_state(States().CHECKED)
 
         for ref in self.data.get_refs():
@@ -160,7 +160,7 @@ class TestFileData(unittest.TestCase):
 
         for fp in self.data:
             for fr in fp:
-                self.assertTrue(self.age in fr.get_references())
+                self.assertTrue(self.r1 in fr.get_references())
 
         self.data.dissociate()
 

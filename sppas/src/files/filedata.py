@@ -148,10 +148,11 @@ class FileData(FileBase):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    FileData is the manager of a list of file names.
-    It organizes them hierarchically as a collection of FilePath instances, 
+    FileData is the container for a  list of files and a catalog.
+    It organizes files hierarchically as a collection of FilePath instances,
     each of which is a collection of FileRoot instances, each of which is a 
-    collection of FileName. 
+    collection of FileName. The catalog is a list of FileReference instances
+    each of which is a list of key/att-value.
 
     """
 
@@ -160,6 +161,27 @@ class FileData(FileBase):
         super().__init__(identifier)
         self.__data = list()
         self.__refs = list()
+
+    # -----------------------------------------------------------------------
+    # Methods to add data
+    # -----------------------------------------------------------------------
+
+    def add(self, object):
+        """Add a file object into the data.
+
+        :param object: (FileBase)
+        :raise: sppasTypeError,
+
+        """
+        if isinstance(object, (FileName, FileRoot, FilePath, FileReference)) is False:
+            raise sppasTypeError(object.id, "FileBase-subclass")
+
+        test_obj = self.get_object(object.id)
+        if test_obj is not None:
+            raise Exception('Object {:s} is already in the data.'.format(object.id))
+
+        if isinstance(object, FilePath):
+            self.__data.append(object)
 
     # -----------------------------------------------------------------------
 
@@ -442,46 +464,22 @@ class FileData(FileBase):
             data.add_ref(r)
 
         # Add all files in the data,
-        # but do not create roots/paths from "d"
         for path in d['paths']:
-            fp = None
-            for root in path['roots']:
-                fr = None
-                # append files
-                for file in root['files']:
-                    try:
-                        fn = data.add_file(file['id'])
-                        s = int(file['state'])
-                        if s > 0:
-                            fn.set_state(States().CHECKED)
-                        else:
-                            # it does not make sense to set state to LOCKED
-                            fn.set_state(States().UNUSED)
-                        if fr is None:
-                            fr = data.get_parent(fn)
-                    except Exception as e:
-                        logging.error(
-                            "The file {:s} can't be included in the workspace"
-                            "due to the following error: {:s}"
-                            "".format(file['id'], str(e)))
+            fp = FilePath.parse(path)
+            logging.debug(' ... add path {:s}'.format(fp.id))
+            data.add(fp)
 
+            # append refs in root
+            for root in path['roots']:
+                fr = data.get_object(root['id'])
                 if fr is not None:
-                    # append refs
                     for ref_id in root['refids']:
                         ref = data.get_object(ref_id)
                         if ref is not None:
                             fr.add_ref(ref)
 
-                    # append subjoined
-                    fr.subjoined = json.loads(root['subjoin'])
-
-                    if fp is not None:
-                        fp = data.get_parent(fr)
-
-            if fp is not None:
-                # append subjoined
-                fp.subjoined = json.loads(path['subjoin'])
-
+        # fix the state to roots and paths (from the ones of filenames)
+        data.update()
         return data
 
     # -----------------------------------------------------------------------
