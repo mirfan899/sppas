@@ -76,7 +76,7 @@ class FilesManager(sppasPanel):
 
     def get_data(self):
         """Return the data like they are currently stored into the model."""
-        fv = self.FindWindow('fileview')
+        fv = self.FindWindow("filestree")
         return fv.get_data()
 
     # ------------------------------------------------------------------------
@@ -87,7 +87,7 @@ class FilesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        fv = self.FindWindow('fileview')
+        fv = self.FindWindow("filestree")
         fv.set_data(data)
 
     # ------------------------------------------------------------------------
@@ -97,7 +97,7 @@ class FilesManager(sppasPanel):
     def _create_content(self):
         """Create the main content."""
         tb = self.__create_toolbar()
-        fv = FilesTreeViewCtrl(self, name="fileview")
+        fv = FilesTreeViewCtrl(self, name="filestree")
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
@@ -141,7 +141,7 @@ class FilesManager(sppasPanel):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
-            evt = DataChangedEvent(data=self.FindWindow("fileview").get_data())
+            evt = DataChangedEvent(data=self.FindWindow("filestree").get_data())
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -163,7 +163,7 @@ class FilesManager(sppasPanel):
 
         #if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
         #    loggingFindWindow.debug('Refresh all the files [F5 keys pressed]')
-        #    self.("fileview").update_data()
+        #    self.("filestree").update_data()
         #    self.notify()
 
         event.Skip()
@@ -216,7 +216,7 @@ class FilesManager(sppasPanel):
                 filenames = fc.GetPaths()
 
         if len(filenames) > 0:
-            added = self.FindWindow('fileview').AddFiles(filenames)
+            added = self.FindWindow("filestree").AddFiles(filenames)
             if added:
                 self.notify()
 
@@ -229,7 +229,7 @@ class FilesManager(sppasPanel):
             logging.info('No files in data. Nothing to remove.')
             return
 
-        removed = self.FindWindow("fileview").RemoveCheckedFiles()
+        removed = self.FindWindow("filestree").RemoveCheckedFiles()
         if removed:
             self.notify()
 
@@ -242,7 +242,7 @@ class FilesManager(sppasPanel):
             logging.info('No files in data. Nothing to delete.')
             return
 
-        checked_files = self.FindWindow("fileview").GetCheckedFiles()
+        checked_files = self.FindWindow("filestree").GetCheckedFiles()
         if len(checked_files) == 0:
             Information('None of the files are selected to be deleted.')
             return
@@ -255,7 +255,7 @@ class FilesManager(sppasPanel):
         if response == wx.ID_NO:
             return
 
-        deleted = self.FindWindow("fileview").DeleteCheckedFiles()
+        deleted = self.FindWindow("filestree").DeleteCheckedFiles()
         if deleted:
             self.notify()
 
@@ -274,11 +274,11 @@ class TestPanel(FilesManager):
 
     def add_test_data(self):
         here = os.path.abspath(os.path.dirname(__file__))
-        self.FindWindow('fileview').AddFiles([os.path.abspath(__file__)])
-        self.FindWindow('fileview').LockFiles([os.path.abspath(__file__)])
+        self.FindWindow("filestree").AddFiles([os.path.abspath(__file__)])
+        self.FindWindow("filestree").LockFiles([os.path.abspath(__file__)])
 
         for f in os.listdir(here):
             fullname = os.path.join(here, f)
             logging.info('add {:s}'.format(fullname))
             if os.path.isfile(fullname):
-                self.FindWindow('fileview').AddFiles([fullname])
+                self.FindWindow("filestree").AddFiles([fullname])

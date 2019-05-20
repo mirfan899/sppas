@@ -559,7 +559,8 @@ class FileRoot(FileBase):
         result of the filenames.
 
         """
-        d = FileBase.serialize(self)
+        d = dict()
+        d['id'] = self.id
 
         # filenames are serialized
         d['files'] = list()
@@ -572,7 +573,7 @@ class FileRoot(FileBase):
             d['refids'].append(r.id)
 
         # subjoined data are simply added as-it (it's risky)
-        d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
+        d['subjoin'] = json.dumps(self.subjoined, separators=(',', ': '))
 
         return d
 
@@ -594,7 +595,7 @@ class FileRoot(FileBase):
                     "due to the following error: {:s}"
                     "".format(file['id'], str(e)))
 
-        # append subjoined
+        # append subjoined "as it"
         fr.subjoined = json.loads(d['subjoin'])
 
         return fr
@@ -908,7 +909,8 @@ class FilePath(FileBase):
 
     def serialize(self):
         """Return a dict representing this instance for json format."""
-        d = FileBase.serialize(self)
+        d = dict()
+        d['id'] = self.id
         d['roots'] = list()
         for r in self.__roots:
             d['roots'].append(r.serialize())

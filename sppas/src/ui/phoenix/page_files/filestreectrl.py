@@ -31,7 +31,6 @@
 
 """
 
-import logging
 import wx
 import wx.dataview
 
@@ -93,6 +92,12 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     def get_data(self):
         """Return the data of the model."""
         return self._model.get_data()
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        self._model.set_data(data)
+        self.__refresh()
 
     # ------------------------------------------------------------------------
 
