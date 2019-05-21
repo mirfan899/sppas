@@ -196,6 +196,7 @@ class ReferencesManager(sppasPanel):
             try:
                 self.FindWindow('refsview').CreateRef(rname, rtype)
             except Exception as e:
+                logging.error(str(e))
                 message = "The reference {:s} has not been created due to " \
                           "the following error: {:s}".format(rname, str(e))
                 sppasErrorDialog(message)
@@ -312,9 +313,11 @@ class sppasCreateReference(sppasDialog):
         event_obj = event.GetEventObject()
         event_id = event_obj.GetId()
         if event_id == wx.ID_CANCEL:
+            logging.debug('EVENT BUTTON CANCEL')
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
         else:
+            logging.debug('EVENT BUTTON OK')
             event.Skip()
 
 # ----------------------------------------------------------------------------

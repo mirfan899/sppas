@@ -347,7 +347,7 @@ class sppasFileDataFilters(sppasBaseFilters):
             for fr in path:
                 matched = list()
                 for ref in fr.get_references():
-                    
+
                     for att in ref:
                         pass
                         #if key != att.get_key():

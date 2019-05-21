@@ -103,11 +103,13 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     def change_value(self, column, item):
         """Change state value."""
         node = self.ItemToObject(item)
+        if isinstance(node, FileReference) is False:
+            return
         cur_state = node.get_state()
         if cur_state == States().UNUSED:
-            self.__data.set_object_state(States().CHECKED, node)
+            node.set_state(States().CHECKED)
         else:
-            self.__data.set_object_state(States().UNUSED, node)
+            node.set_state(States().UNUSED)
 
         self.ItemChanged(item)
 
@@ -373,9 +375,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def GetAttr(self, item, col, attr):
-        logging.debug("GetAttr")
         node = self.ItemToObject(item)
-        logging.debug(" ... %s" % node)
 
         # default colors for foreground and background
         if self._fgcolor is not None:
@@ -415,7 +415,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         self.__data.add_ref(r)
         logging.debug(' ... reference {:s} created and appended into the data.'.format(r))
         item = self.ObjectToItem(r)
-        self.ItemAdded(None, item)
         self.Cleared()
         return item
 
@@ -521,13 +520,14 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         if name == "attvalue":
             col = ColumnProperties("Value", name)
             col.add_fct_name(sppasAttribute, "get_value")
-            col.width = 80
+            col.width = 100
             col.align = wx.ALIGN_CENTRE
             return col
 
         if name == "attdescr":
-            col = ColumnProperties("Description", name)
+            col = ColumnProperties("TYPE/Description", name)
             col.add_fct_name(sppasAttribute, "get_description")
+            col.add_fct_name(FileReference, "get_type")
             col.width = 200
             col.align = wx.ALIGN_CENTRE
             return col
