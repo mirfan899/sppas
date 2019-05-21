@@ -4,49 +4,48 @@ import os
 import json
 
 import sppas
-from sppas import sppasTypeError
-from ..fileref import AttValue, FileReference
+from sppas import sppasTypeError, u
+from ..fileref import sppasAttribute, FileReference
 from ..filedata import FileData
 from ..filebase import States
-from ..fileexc import FileLockedError
 
 # ---------------------------------------------------------------------------
 
 
-class TestAttValue(unittest.TestCase):
+class TestsppasAttribute(unittest.TestCase):
 
     def setUp(self):
-        self.valint = AttValue('12', 'int', 'speaker\'s age')
-        self.valfloat = AttValue('0.002', 'float', 'word appearance frequency')
-        self.valbool = AttValue('false', 'bool', 'speaker is minor')
-        self.valstr = AttValue('Hi everyone !', None, 'первый токен')
+        self.valint = sppasAttribute('age', '12', 'int', 'speaker\'s age')
+        self.valfloat = sppasAttribute('freq', '0.002', 'float', 'word appearance frequency')
+        self.valbool = sppasAttribute('adult', 'false', 'bool', 'speaker is minor')
+        self.valstr = sppasAttribute('utf', 'Hi everyone !', None, 'первый токен')
 
     def testInt(self):
         self.assertTrue(isinstance(self.valint.get_typed_value(), int))
-        self.assertTrue(self.valint.get_value() == '12')
+        self.assertEqual('12', self.valint.get_value())
 
     def testFloat(self):
         self.assertTrue(isinstance(self.valfloat.get_typed_value(), float))
-        self.assertFalse(self.valfloat.get_value() == 0.002)
+        self.assertNotEqual(0.002, self.valfloat.get_value())
 
     def testBool(self):
         self.assertFalse(self.valbool.get_typed_value())
 
     def testStr(self):
-        self.assertTrue(self.valstr.get_typed_value() == 'Hi everyone !')
-        self.assertTrue(self.valstr.get_value() == 'Hi everyone !')
+        self.assertEqual('Hi everyone !', self.valstr.get_typed_value())
+        self.assertEqual('Hi everyone !', self.valstr.get_value())
 
     def testRepr(self):
-        self.assertTrue(str(self.valint) == '12, speaker\'s age')
+        self.assertEqual(u('age, 12, speaker\'s age'), str(self.valint))
 
     def testSetTypeValue(self):
         with self.assertRaises(sppasTypeError) as error:
-            self.valbool.set_value_type('AttValue')
+            self.valbool.set_value_type('sppasAttribute')
 
         self.assertTrue(isinstance(error.exception, sppasTypeError))
 
     def testGetValuetype(self):
-        self.assertTrue(self.valstr.get_value_type() == 'str')
+        self.assertEqual('str', self.valstr.get_value_type())
 
 # ---------------------------------------------------------------------------
 
@@ -55,35 +54,31 @@ class TestReferences(unittest.TestCase):
 
     def setUp(self):
         self.micros = FileReference('microphone')
-        self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
+        self.att = sppasAttribute('mic1', 'Bird UM1', None, '最初のインタビューで使えていましたマイク')
+        self.micros.append(self.att)
         self.micros.add('mic2', 'AKG D5')
 
     def testGetItem(self):
-        self.assertTrue(
-            self.micros['mic1'].description == '最初のインタビューで使えていましたマイク'
-        )
+        self.assertEqual(u('最初のインタビューで使えていましたマイク'),
+                         self.micros.att('mic1').get_description())
 
-    def testAttValue(self):
-        self.assertFalse(
-            isinstance(self.micros['mic2'].get_typed_value(), int)
-        )
+    def testsppasAttribute(self):
+        self.assertFalse(isinstance(self.micros.att('mic2').get_typed_value(), int))
 
     def testAddKey(self):
         with self.assertRaises(ValueError) as AsciiError:
             self.micros.add('i*asaà', 'Blue Yeti')
 
-        self.assertTrue(
-            isinstance(AsciiError.exception, ValueError)
-        )
+        self.assertTrue(isinstance(AsciiError.exception, ValueError))
 
     def testPopKey(self):
         self.micros.pop('mic1')
+        self.assertEqual(1, len(self.micros))
+        self.micros.append(self.att)
+        self.micros.pop(self.att)
+        self.assertEqual(1, len(self.micros))
 
-        self.assertFalse(
-            len(self.micros) == 2
-        )
-
-# ---------------------------------------------------------------------------
+# ----------------------------------------------------------------------------
 
 
 class TestFileData(unittest.TestCase):
@@ -98,16 +93,16 @@ class TestFileData(unittest.TestCase):
 
         self.r1 = FileReference('SpeakerAB')
         self.r1.set_type('SPEAKER')
-        self.r1.add('initials', AttValue('AB'))
-        self.r1.add('sex', AttValue('F'))
+        self.r1.add('initials', sppasAttribute('AB'))
+        self.r1.add('sex', sppasAttribute('F'))
         self.r2 = FileReference('SpeakerCM')
         self.r2.set_type('SPEAKER')
-        self.r2.add('initials', AttValue('CM'))
-        self.r1.add('sex', AttValue('F'))
+        self.r2.add('initials', sppasAttribute('CM'))
+        self.r1.add('sex', sppasAttribute('F'))
         self.r3 = FileReference('Dialog1')
         self.r3.set_type('INTERACTION')
-        self.r3.add('when', AttValue('2003', 'int', 'Year of recording'))
-        self.r3.add('where', AttValue('Aix-en-Provence', att_description='Place of recording'))
+        self.r3.add('when', sppasAttribute('2003', 'int', 'Year of recording'))
+        self.r3.add('where', sppasAttribute('Aix-en-Provence', att_descr='Place of recording'))
 
     def test_init(self):
         data = FileData()

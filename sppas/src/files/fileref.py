@@ -44,8 +44,8 @@ from .filebase import FileBase, States
 # ---------------------------------------------------------------------------
 
 
-class AttValue(object):
-    """Represents an attribute in the reference catalog.
+class sppasAttribute(object):
+    """Represents any attribute with a key, a value, and a description.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -53,28 +53,71 @@ class AttValue(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    AttValue embeds a value its type and a description.
+    This class embeds a key, a value, its type and a description.
 
     """
 
-    VALUE_TYPES = ('int', 'float', 'bool', 'str')
+    VALUE_TYPES = ('str', 'int', 'float', 'bool')
 
-    def __init__(self, att_value, att_type=None, att_description=None):
-        """Constructor of AttValue.
+    def __init__(self, att_key, att_value=None, att_type=None, att_descr=None):
+        """Constructor of sppasAttribute.
 
+        :param att_key: (str)
         :param att_value: (str)
         :param att_type: (str)
-        :param att_description: (str)
+        :param att_descr: (str)
 
         """
-        su = sppasUnicode(att_value)
-        self.__value = su.to_strip()
-        self.__valuetype = att_type
-        if att_description is None:
-            self.__description = att_description
-        else:
-            su = sppasUnicode(att_description)
-            self.__description = su.to_strip()
+        self.__key = ""
+        self.__set_key(att_key)
+
+        self.__value = None
+        self.set_value(att_value)
+        
+        self.__valuetype = 'str'
+        self.set_value_type(att_type)
+
+        self.__descr = None
+        self.set_description(att_descr)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def validate(key):
+        """Return True the given key matches the requirements.
+
+        A key should contain between 3 and 12 ASCII-characters only, i.e.
+        letters a-z, letters A-Z and numbers 0-9.
+
+        :param key: (str) Key to be validated
+        :return: (bool)
+
+        """
+        def is_restricted_ascii(key_to_test):
+            # change any other character than a to z and underscore in the key
+            ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
+            return key_to_test == ra
+
+        if 2 < len(key) < 13:
+            return is_restricted_ascii(key)
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def __set_key(self, key):
+        su = sppasUnicode(key)
+        key = su.unicode()
+
+        if sppasAttribute.validate(key) is False:
+            raise ValueError("Key {:s} is not valid. It should be between 3 and 12 ASCII-characters.".format(key))
+
+        self.__key = key
+
+    # -----------------------------------------------------------------------
+
+    def get_key(self):
+        """Return the key of the attribute."""
+        return self.__key
 
     # -----------------------------------------------------------------------
 
@@ -84,6 +127,8 @@ class AttValue(object):
         :returns: (str)
 
         """
+        if self.__value is None:
+            return ""
         return self.__value
 
     # -----------------------------------------------------------------------
@@ -94,8 +139,11 @@ class AttValue(object):
         :param value: (str)
 
         """
-        su = sppasUnicode(value)
-        self.__value = su.to_strip()
+        if value is None:
+            self.__value = None
+        else:
+            su = sppasUnicode(value)
+            self.__value = su.to_strip()
 
     # -----------------------------------------------------------------------
 
@@ -115,10 +163,12 @@ class AttValue(object):
         :param type_name: (str) the new type name
 
         """
-        if type_name in AttValue.VALUE_TYPES:
+        if type_name in sppasAttribute.VALUE_TYPES:
             self.__valuetype = type_name
+        elif type_name is None:
+            self.__valuetype = 'str'
         else:
-            raise sppasTypeError(type_name, " ".join(AttValue.VALUE_TYPES))
+            raise sppasTypeError(type_name, " ".join(sppasAttribute.VALUE_TYPES))
 
     # -----------------------------------------------------------------------
 
@@ -129,12 +179,16 @@ class AttValue(object):
 
         """
         if self.__valuetype is not None or self.__valuetype != 'str':
-            if self.__valuetype == 'int':
-                return int(self.__value)
-            elif self.__valuetype == 'float':
-                return float(self.__value)
-            elif self.__valuetype == 'bool':
-                return self.__value.lower() == 'true'
+            try:
+                if self.__valuetype == 'int':
+                    return int(self.__value)
+                elif self.__valuetype == 'float':
+                    return float(self.__value)
+                elif self.__valuetype == 'bool':
+                    return self.__value.lower() == 'true'
+            except ValueError:
+                raise
+                # TODO: raise sppas Exception with appropriate msg
 
         return self.__value
 
@@ -146,59 +200,94 @@ class AttValue(object):
         :return: (str)
 
         """
-        if self.__description is not None:
-            su = sppasUnicode(self.__description)
-            return su.to_strip()
-        else:
-            return self.__description
+        if self.__descr is None:
+            return ""
+        return self.__descr
 
     # -----------------------------------------------------------------------
 
     def set_description(self, description):
-        """set a new value for the description.
+        """Set a new description of the attribute.
 
         :param description: (str)
 
         """
-        su = sppasUnicode(description)
-        self.__description = su.to_strip()
-
-    description = property(get_description, set_description)
+        if description is None:
+            self.__descr = None
+        else:
+            su = sppasUnicode(description)
+            self.__descr = su.to_strip()
 
     # -----------------------------------------------------------------------
 
     def serialize(self):
         """Return a dict representing this instance for json format."""
         d = dict()
+        d['key'] = self.__key
         d['value'] = self.__value
         d['type'] = self.__valuetype
-        d['descr'] = self.__description
+        d['descr'] = self.__descr
         return d
 
     # -----------------------------------------------------------------------
 
     @staticmethod
     def parse(d):
-        """Return the AttValue from the given dict."""
-        return AttValue(d['value'], d['type'], d['descr'])
+        """Return the sppasAttribute from the given dict.
+
+        :param d: (dict) 'key' required. optional: 'value', 'type', 'descr'
+
+        """
+        k = d['key']
+        v = None
+        if 'value' in d:
+            v = d['value']
+        t = None
+        if 'type' in d:
+            t = d['type']
+        descr = None
+        if 'descr' in descr:
+            t = descr['descr']
+
+        return sppasAttribute(k, v, t, descr)
+
+    # -----------------------------------------------------------------------
+
+    def match(self, key, function, value):
+        """Return True if the attribute value matches all of the functions.
+
+        Functions are defined in a comparator. They return a boolean.
+        The type of the value depends on the function.
+        The logical not is used to reverse the result of the function.
+
+        The given value is a tuple with both the key of the attribute and the
+        expected value which has to match the given value.
+
+        :returns: (bool)
+
+        """
+        if key != self.__key:
+            return False
+        return function(self, value)
 
     # ---------------------------------------------------------
     # overloads
     # ----------------------------------------------------------
 
     def __str__(self):
-        return '{!s:s}, {!s:s}'.format(self.__value,
-                                       self.description) if self.description is not None else '{!s:s}'.format(
-            self.__value)
+        return '{:s}, {:s}, {:s}'.format(
+            self.__key,
+            self.get_value(),
+            self.get_description())
 
     def __repr__(self):
-        return 'AttValue: {!s:s}, {:s}'.format(self.__value,
-                                               self.description) if self.description is not None else 'AttValue: {!s:s}'.format(
-            self.__value)
+        return '{:s}, {:s}, {:s}'.format(
+            self.__key,
+            self.get_value(),
+            self.get_description())
 
     def __format__(self, fmt):
         return str(self).__format__(fmt)
-
 
 # ---------------------------------------------------------------------------
 
@@ -213,7 +302,7 @@ class FileReference(FileBase):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     Reference is a dictionary with a name. Its keys are only alphanumerics characters
-    spaced with underscores and its values are all AttValue objects.
+    spaced with underscores and its values are all sppasAttribute objects.
 
     """
 
@@ -227,7 +316,7 @@ class FileReference(FileBase):
         """
         super(FileReference, self).__init__(identifier)
 
-        self.__attributs = OrderedDict()
+        self.__attributs = list()
         self.__type = FileReference.REF_TYPES[0]
 
         # A free to use member to expand the class
@@ -235,39 +324,54 @@ class FileReference(FileBase):
 
     # ------------------------------------------------------------------------
 
-    def add(self, key, value):
-        """Add a new pair of key/value in the current dictionary.
+    def att(self, key):
+        """Return the attribute matching the given key or None."""
+        su = sppasUnicode(key)
+        key = su.unicode()
+        for a in self.__attributs:
+            if a.get_key() == key:
+                return a
 
-        :param key: (str) should be only with alphanumeric characters and underscores
-        :param value: (str, AttValue) will always be converted in AttValue object
+        return None
+
+    # ------------------------------------------------------------------------
+
+    def add(self, key, value):
+        """Append an attribute into the reference."""
+        self.append(sppasAttribute(key, value))
+
+    # ------------------------------------------------------------------------
+
+    def append(self, att):
+        """Add an attribute.
+
+        :param att: (sppasAttribute)
 
         """
-        # Used once hence declared inside add method
-        def is_restricted_ascii(key_to_test):
-            # change any other character than a to z and underscore in the key
-            ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
-            return key_to_test == ra
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
 
-        if is_restricted_ascii(key):
-            if isinstance(value, AttValue):
-                self.__attributs[key] = value
-            else:
-                self.__attributs[key] = AttValue(sppasUnicode(value).to_strip())
-        else:
-            raise ValueError('Non ASCII characters')
+        if att in self:
+            raise KeyError('An attribute with key {:s} is already existing in'
+                           'the reference {:s}.'.format(att.get_key(), self.id))
+
+        self.__attributs.append(att)
 
     # ------------------------------------------------------------------------
 
     def pop(self, key):
-        """Delete a pair of key/value.
+        """Delete an attribute of this reference.
 
-        :param key: (str) is the key in the dictionary to delete
+        :param key: (str, sppasAttribute) the key of the attribute to delete
 
         """
-        if key in self.__attributs.keys():
-            self.__attributs.pop(key)
+        if key in self:
+            if isinstance(key, sppasAttribute) is False:
+                key = self.att(key)
+            self.__attributs.remove(key)
         else:
-            raise ValueError('index not in Category')
+            raise ValueError('{:s} is not a valid key for {:s}'
+                             ''.format(key, self.id))
 
     # ------------------------------------------------------------------------
 
@@ -283,18 +387,16 @@ class FileReference(FileBase):
         else:
             raise sppasTypeError(state, 'States')
 
-    stateref = property(FileBase.get_state, set_state)
-
     # ------------------------------------------------------------------------
 
     def get_type(self):
-        """Returns its current type"""
+        """Returns the type of the Reference."""
         return self.__type
 
     # ------------------------------------------------------------------------
 
     def set_type(self, ref_type):
-        """Set the type of the Reference to a new value within the authorized ones"""
+        """Set the type of the Reference within the authorized ones."""
         if ref_type in FileReference.REF_TYPES:
             self.__type = ref_type
         else:
@@ -314,9 +416,7 @@ class FileReference(FileBase):
         d = FileBase.serialize(self)
         d['attributes'] = list()
         for att in self.__attributs:
-            a = dict()
-            a['key'] = att
-            a['value'] = self.__attributs[att].serialize()
+            a = self.__attributs[att].serialize()
             d['attributes'].append(a)
         d['subjoin'] = self.subjoined
         return d
@@ -330,7 +430,7 @@ class FileReference(FileBase):
         """
         ref = FileReference(d['id'])
         for att in d['attributes']:
-            ref.add(att['key'], AttValue.parse(att['value']))
+            ref.add(sppasAttribute.parse(att))
         return ref
 
     # ------------------------------------------------------------------------
@@ -338,7 +438,7 @@ class FileReference(FileBase):
     # ------------------------------------------------------------------------
 
     def __len__(self):
-        return len(self.__attributs.keys())
+        return len(self.__attributs)
 
     def __str__(self):
         return '{:s}: {!s:s}'.format(self.id, self.__attributs)
@@ -349,12 +449,19 @@ class FileReference(FileBase):
     def __format__(self, fmt):
         return str(self).__format__(fmt)
 
-    def __getitem__(self, key):
-        return self.__attributs[key]
-
     def __iter__(self):
-        for key, value in self.__attributs.items():
-            yield key, value
+        for att in self.__attributs:
+            yield att
 
     def __contains__(self, key):
-        return key in self.__attributs.keys()
+        if isinstance(key, sppasAttribute) is False:
+            su = sppasUnicode(key)
+            key = su.unicode()
+        for a in self.__attributs:
+            if isinstance(key, sppasAttribute):
+                if a is key:
+                    return True
+            else:
+                if a.get_key() == key:
+                    return True
+        return False

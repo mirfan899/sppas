@@ -39,7 +39,8 @@ from sppas.src.structs.basefset import sppasBaseSet
 
 from .filedatacompare import sppasPathCompare, sppasRootCompare
 from .filedatacompare import sppasFileNameCompare, sppasFileNameExtensionCompare
-from .filedatacompare import sppasFileNameStateCompare, sppasReferenceCompare, sppasAttValueCompare
+from .filedatacompare import sppasFileNameStateCompare
+from .filedatacompare import sppasReferenceCompare, sppasAttributeCompare
 
 # ---------------------------------------------------------------------------
 
@@ -224,13 +225,12 @@ class sppasFileDataFilters(sppasBaseFilters):
 
         # search for the data to be returned:
         for path in self.obj:
-
-                # append all files of the path
-                for fr in path:
-                    for fn in fr:
-                        is_matching = fn.match(path_functions, logic_bool)
-                        if is_matching is True:
-                            data.append(fn, path_fct_values)
+            # append all files of the path
+            for fr in path:
+                for fn in fr:
+                    is_matching = fn.match(path_functions, logic_bool)
+                    if is_matching is True:
+                        data.append(fn, path_fct_values)
 
         return data
 
@@ -295,8 +295,8 @@ class sppasFileDataFilters(sppasBaseFilters):
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
         logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
-        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
+        ref_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        ref_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         # the set of results
         data = sppasBaseSet()
@@ -306,12 +306,12 @@ class sppasFileDataFilters(sppasBaseFilters):
             # append all files of the path
             for fr in path:
                 for ref in fr.references:
-                    is_matching = ref.match(path_functions, logic_bool)
+                    is_matching = ref.match(ref_functions, logic_bool)
                     if is_matching is True:
-                        data.append(ref, path_fct_values)
+                        for fn in fr:
+                            data.append(fn, ref_fct_values)
 
         return data
-
 
     # -----------------------------------------------------------------------
 
@@ -330,30 +330,13 @@ class sppasFileDataFilters(sppasBaseFilters):
         :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
         :returns: (sppasDataSet)
         """
-        def exctract_function_info(functions):
-            functions_att = list()
-            functions_name = list()
-            functions_value = list()
-            for function in functions:
-                function_value = function[function.rindex('='):]
-                function = function[:function.rindex('=')]
-                function_name = function[function.rindex('_') + 1:]
-                function_att = function[:function.rindex('_')]
-                functions_att.append(function_att)
-                functions_name.append(function_name)
-                functions_value.append(function_value)
-            return functions_att, functions_name, functions_value
-
-        # -----------------------------------------------------------------------
-
-        comparator = sppasAttValueCompare()
+        comparator = sppasAttributeCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
         logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        ref_function_value = sppasBaseFilters.fix_function_values(comparator, **kwargs)
-        ref_function = sppasBaseFilters.fix_functions(comparator, **kwargs)
-        function_atts, function_names, function_values = exctract_function_info(ref_function_value)
+        att_fct_value = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        att_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         # the set of results
         data = sppasBaseSet()
@@ -362,13 +345,13 @@ class sppasFileDataFilters(sppasBaseFilters):
         for path in self.obj:
             # append all files of the path
             for fr in path:
-                for ref in fr.categories:
-                    for key in function_atts:
-                        is_matching = ref[key].match(function_names, logic_bool)
-                        print(is_matching)
-                        if is_matching is True:
-                            data.append(ref, function_values)
+                matched = list()
+                for ref in fr.get_references():
+                    
+                    for att in ref:
+                        pass
+                        #if key != att.get_key():
+                        #    matched.append(False)
+                        #return function(self, value)
 
         return data
-
-# ---------------------------------------------------------------------------

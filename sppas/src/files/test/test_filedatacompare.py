@@ -201,16 +201,14 @@ class TestFileDataCompare(unittest.TestCase):
         d = __file__
         fn = FileName(d)
 
-        self.assertTrue(
-          fn.match([(self.cmpFileNameState.state, States().UNUSED, False)])
-        )
+        self.assertTrue(fn.match([(self.cmpFileNameState.state, States().UNUSED, False)]))
 
 
 class TestFileDataReferencesCompare(unittest.TestCase):
 
     def setUp(self):
         self.micros = FileReference('microphone')
-        self.micros.add('mic1', AttValue('Bird UM1', None, '最初のインタビューで使えていましたマイク'))
+        self.micros.append(sppasAttribute('mic1', 'Bird UM1', None, '最初のインタビューで使えていましたマイク'))
         self.micros.add('mic2', 'AKG D5')
         self.id_cmp = sppasReferenceCompare()
 

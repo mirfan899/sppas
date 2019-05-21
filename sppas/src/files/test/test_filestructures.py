@@ -148,9 +148,8 @@ class TestFileRoot(unittest.TestCase):
         fr = FileRoot(__file__)
         d = fr.serialize()
         self.assertEqual(d['id'], fr.id)
-        self.assertEqual(0, d['state'])
         self.assertEqual(list(), d['files'])
-        self.assertEqual(list(), d['refs'])
+        self.assertEqual(list(), d['refids'])
         self.assertIsNone(d['subjoin'])
 
         fr.append(__file__)

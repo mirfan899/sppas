@@ -65,8 +65,7 @@ from ..utils.makeunicode import text_type
 from ..structs.basecompare import sppasBaseCompare
 
 from .filestructure import FilePath, FileRoot, FileName
-from .fileref import FileReference, AttValue
-
+from .fileref import FileReference, sppasAttribute
 
 # ---------------------------------------------------------------------------
 
@@ -297,7 +296,7 @@ class sppasPathCompare(sppasBaseCompare):
         if isinstance(fp, FilePath) is False:
             raise sppasTypeError(fp, "FilePath")
 
-        return (fp.statefp is States().CHECKED) == value
+        return (fp.state is States().CHECKED) == value
 
 # ---------------------------------------------------------------------------
 
@@ -781,7 +780,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def exact(fn, value):
         """Test if name strictly matches value.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -801,7 +800,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def iexact(fn, value):
         """Test if extension matches value without case sensitive.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -820,7 +819,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def startswith(fn, value):
         """Test if extension starts with the characters of the value.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -839,7 +838,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def istartswith(fn, value):
         """Case-insensitive startswith.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -858,7 +857,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def endswith(fn, value):
         """Test if extension ends with the characters of the value.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -877,7 +876,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def iendswith(fn, value):
         """Case-insensitive endswith.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -896,7 +895,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def contains(fn, value):
         """Test if the name contains the value.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -915,7 +914,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def icontains(fn, value):
         """Case-insensitive contains.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -934,7 +933,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
     def regexp(fn, pattern):
         """Test if text matches pattern.
 
-        :param fn: (FileName) Extension to compare.
+        :param fn: (FileName) 
         :param pattern: (unicode) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1025,7 +1024,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def exact(cat, value):
         """Test if the id strictly matches value.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1045,7 +1044,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def iexact(cat, value):
         """Test if the id matches value without case sensitive.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1064,7 +1063,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def startswith(cat, value):
         """Test if the id starts with the characters of the value.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1083,7 +1082,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def istartswith(cat, value):
         """Case-insensitive startswith.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1102,7 +1101,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def endswith(cat, value):
         """Test if the id ends with the characters of the value.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1121,7 +1120,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def iendswith(cat, value):
         """Case-insensitive endswith.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1140,7 +1139,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def contains(cat, value):
         """Test if the id contains the value.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1159,7 +1158,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def icontains(cat, value):
         """Case-insensitive contains.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1178,7 +1177,7 @@ class sppasReferenceCompare(sppasBaseCompare):
     def regexp(cat, pattern):
         """Test if id matches pattern.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param pattern: (unicode) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1193,8 +1192,8 @@ class sppasReferenceCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasAttValueCompare(sppasBaseCompare):
-    """Comparison methods for AttValue.
+class sppasAttributeCompare(sppasBaseCompare):
+    """Comparison methods for sppasAttribute.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -1205,313 +1204,328 @@ class sppasAttValueCompare(sppasBaseCompare):
     """
 
     def __init__(self):
-        """Create a sppasAttValueCompare instance."""
-        super(sppasAttValueCompare, self).__init__()
+        """Create a sppassppasAttributeCompare instance."""
+        super(sppasAttributeCompare, self).__init__()
 
         # Compare the value to a text value
-        self.methods['exact'] = sppasAttValueCompare.exact
-        self.methods['iexact'] = sppasAttValueCompare.iexact
-        self.methods['startswith'] = sppasAttValueCompare.startswith
-        self.methods['istartswith'] = sppasAttValueCompare.istartswith
-        self.methods['endswith'] = sppasAttValueCompare.endswith
-        self.methods['iendswith'] = sppasAttValueCompare.iendswith
-        self.methods['contains'] = sppasAttValueCompare.contains
-        self.methods['icontains'] = sppasAttValueCompare.icontains
-        self.methods['regexp'] = sppasAttValueCompare.regexp
+        self.methods['exact'] = sppasAttributeCompare.exact
+        self.methods['iexact'] = sppasAttributeCompare.iexact
+        self.methods['startswith'] = sppasAttributeCompare.startswith
+        self.methods['istartswith'] = sppasAttributeCompare.istartswith
+        self.methods['endswith'] = sppasAttributeCompare.endswith
+        self.methods['iendswith'] = sppasAttributeCompare.iendswith
+        self.methods['contains'] = sppasAttributeCompare.contains
+        self.methods['icontains'] = sppasAttributeCompare.icontains
+        self.methods['regexp'] = sppasAttributeCompare.regexp
 
         # Compare the value to a numeric value
-        self.methods['iequal'] = sppasAttValueCompare.iequals
-        self.methods['fequal'] = sppasAttValueCompare.fequals
-        self.methods['gt'] = sppasAttValueCompare.gt
-        self.methods['ge'] = sppasAttValueCompare.ge
-        self.methods['lt'] = sppasAttValueCompare.lt
-        self.methods['le'] = sppasAttValueCompare.le
+        self.methods['equal'] = sppasAttributeCompare.equals
+        self.methods['iequal'] = sppasAttributeCompare.iequals
+        self.methods['fequal'] = sppasAttributeCompare.fequals
+        self.methods['gt'] = sppasAttributeCompare.gt
+        self.methods['ge'] = sppasAttributeCompare.ge
+        self.methods['lt'] = sppasAttributeCompare.lt
+        self.methods['le'] = sppasAttributeCompare.le
 
     # -----------------------------------------------------------------------
-    # Reference AttValue
+    # Reference sppasAttribute
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def exact(att_value, value):
-        """Test if the id strictly matches value.
+    def exact(att, value):
+        """Test if the attribute value strictly matches value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
+        :param value: (str) Unicode string to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
+        if not isinstance(value, text_type):
+            raise sppasTypeError(value, text_type)
+
+        return att.get_value() == value
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def iexact(att, value):
+        """Test if the att matches value without case sensitive.
+
+        :param att: (sppasAttribute) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "Category")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        # perhaps we should test with all systems separators ( '/' or '\' )
-        return att_value.get_value() == value
+        return att.get_value().lower() == value.lower()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def iexact(att_value, value):
-        """Test if the att_value matches value without case sensitive.
+    def startswith(att, value):
+        """Test if the att starts with the characters of the value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute)
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return att_value.get_value().lower() == value.lower()
+        return att.get_value().startswith(value)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def startswith(att_value, value):
-        """Test if the att_value starts with the characters of the value.
-
-        :param att_value: (AttValue) Extension to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return att_value.get_value().startswith(value)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def istartswith(att_value, value):
+    def istartswith(att, value):
         """Case-insensitive startswith.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return att_value.get_value().lower().startswith(value.lower())
+        return att.get_value().lower().startswith(value.lower())
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def endswith(att_value, value):
-        """Test if the att_value ends with the characters of the value.
+    def endswith(att, value):
+        """Test if the att ends with the characters of the value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return att_value.get_value().endswith(value)
+        return att.get_value().endswith(value)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def iendswith(att_value, value):
+    def iendswith(att, value):
         """Case-insensitive endswith.
 
-        :param cat: (Category) Extension to compare.
+        :param cat: (Category) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return att_value.get_value().lower().endswith(value.lower())
+        return att.get_value().lower().endswith(value.lower())
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def contains(att_value, value):
-        """Test if the att_value contains the value.
+    def contains(att, value):
+        """Test if the att contains the value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return value in att_value.get_value()
+        return value in att.get_value()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def icontains(att_value, value):
+    def icontains(att, value):
         """Case-insensitive contains.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return value.lower() in att_value.get_value().lower()
+        return value.lower() in att.get_value().lower()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def regexp(att_value, pattern):
-        """Test if att_value matches pattern.
+    def regexp(att, pattern):
+        """Test if att matches pattern.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param pattern: (unicode) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
-        text = att_value.get_value()
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
+        text = att.get_value()
 
         return True if re.match(pattern, text) else False
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def iequals(att_value, value):
-        """Test if att_value equals the given value.
+    def equals(att, value):
+        """Test if att equals the given numerical value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute)
+        :param value: (number) The value to compare
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        return sppasAttributeCompare.iequals(att, value) or \
+               sppasAttributeCompare.fequals(att, value)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def iequals(att, value):
+        """Test if att equals the given value.
+
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, int):
             raise sppasTypeError(value, "int")
 
-        return att_value.get_typed_value() == value
+        return att.get_typed_value() == value
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def fequals(att_value, value, precision):
-        """Test if att_value equals the given value.
+    def fequals(att, value, precision):
+        """Test if att equals the given value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
+        :param precision: (number) Vagueness around the value
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, float):
             raise sppasTypeError(value, "float")
 
-        return value - precision < att_value.get_typed_value() < value + precision
+        return value - precision < att.get_typed_value() < value + precision
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def gt(att_value, value):
-        """Test if att_value is strictly greater than the given value.
+    def gt(att, value):
+        """Test if att is strictly greater than the given value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, int) or not isinstance(value, float):
             raise sppasTypeError(value, "number")
 
-        return att_value.get_typed_value() > value
+        return att.get_typed_value() > value
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def ge(att_value, value):
-        """Test if att_value is greater than or equal to the given value.
+    def ge(att, value):
+        """Test if att is greater than or equal to the given value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, int) or not isinstance(value, float):
             raise sppasTypeError(value, "number")
 
-        return att_value.get_typed_value() >= value
+        return att.get_typed_value() >= value
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def lt(att_value, value):
-        """Test if att_value is less than the given value.
+    def lt(att, value):
+        """Test if att is less than the given value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, int) or not isinstance(value, float):
             raise sppasTypeError(value, "number")
 
-        return att_value.get_typed_value() < value
+        return att.get_typed_value() < value
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def le(att_value, value):
-        """Test if att_value is less than or equal to the given value.
+    def le(att, value):
+        """Test if att is less than or equal to the given value.
 
-        :param att_value: (AttValue) Extension to compare.
+        :param att: (sppasAttribute) 
         :param value: (number) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(att_value, AttValue) is False:
-            raise sppasTypeError(att_value, "AttValue")
+        if isinstance(att, sppasAttribute) is False:
+            raise sppasTypeError(att, "sppasAttribute")
         if not isinstance(value, int) or not isinstance(value, float):
             raise sppasTypeError(value, "number")
 
-        return att_value.get_typed_value() <= value
+        return att.get_typed_value() <= value
 
-# ---------------------------------------------------------------------------

@@ -97,6 +97,12 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
+    def set_data(self, data):
+        self._model.set_data(data)
+        self.__refresh()
+
+    # ------------------------------------------------------------------------
+
     def CreateRef(self, ref_name, ref_type):
         logging.debug('Create a reference: {:s}, {:d}'.format(ref_name, ref_type))
         item = self._model.create_ref(ref_name, ref_type)

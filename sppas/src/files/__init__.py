@@ -45,7 +45,7 @@ from .fileutils import sppasDirUtils
 from .filebase import States
 from .filedata import FileData
 from .filestructure import FileName, FileRoot, FilePath
-from .fileref import FileReference, AttValue
+from .fileref import FileReference, sppasAttribute
 
 __all__ = (
     'States',
@@ -53,7 +53,7 @@ __all__ = (
     'FileName',
     'FileRoot',
     'FilePath',
-    'AttValue',
+    'sppasAttribute',
     'FileReference',
     'sppasFileUtils',
     'sppasDirUtils'

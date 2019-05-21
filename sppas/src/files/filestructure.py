@@ -425,6 +425,17 @@ class FileRoot(FileBase):
         if self.__references is None:
             return list()
         return self.__references
+    # -----------------------------------------------------------------------
+
+    def add_ref(self, ref):
+        if isinstance(ref, FileReference) is False:
+            raise sppasTypeError(ref, 'FileReference')
+
+        for r in self.get_references():
+            if r.id == ref.id:
+                return False
+        self.__references.append(ref)
+        return True
 
     # -----------------------------------------------------------------------
 
@@ -450,8 +461,8 @@ class FileRoot(FileBase):
         if isinstance(list_of_references, list):
             if len(list_of_references) > 0:
                 for reference in list_of_references:
-                    if not isinstance(reference, FileReference):
-                        raise sppasTypeError(reference, 'Reference')
+                    if isinstance(reference, FileReference) is False:
+                        raise sppasTypeError(reference, 'FileReference')
 
             self.__references = list_of_references
         else:
@@ -829,7 +840,7 @@ class FilePath(FileBase):
                 file_id = entry.id
             else:
                 file_id = self.identifier(entry)
-                filename = FileName(file_id)
+                entry = FileName(file_id)
             root_id = FileRoot.root(file_id)
 
             # Get or create the corresponding FileRoot
@@ -839,7 +850,7 @@ class FilePath(FileBase):
                 self.__roots.append(fr)
 
             # Append this file to the root
-            obj = fr.append(filename)
+            obj = fr.append(entry)
 
         self.update_state()
         return obj
