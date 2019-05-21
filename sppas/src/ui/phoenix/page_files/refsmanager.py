@@ -37,7 +37,7 @@ import logging
 import wx
 
 from sppas import sg
-from sppas.src.files import FileReference
+from sppas.src.files import FileReference, sppasAttribute
 
 from sppas.src.ui.phoenix.dialogs.messages import sppasErrorDialog
 from sppas.src.ui.phoenix.windows.dialog import sppasDialog
@@ -402,11 +402,12 @@ class TestPanel(ReferencesManager):
     def add_test_data(self):
         fr1 = FileReference("AB")
         fr1.set_type(1)
-        fr1.add("position", "left")
+        fr1.append(sppasAttribute("position", "left", descr="Position related to the other participant"))
         fr2 = FileReference("CM")
         fr2.set_type("SPEAKER")
-        fr2.add("position", "right")
+        fr2.append(sppasAttribute("position", "right", descr="Position related to the other participant"))
         fr3 = FileReference("Dialog1")
         fr3.set_type(2)
         fr3.add("year", "2003")
+        fr3.append(sppasAttribute("place", "Aix-en-Provence", descr="Place of recording"))
         self.FindWindow('refsview').AddRefs([fr1, fr2, fr3])

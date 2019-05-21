@@ -26,12 +26,11 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.lib.refstreectrl.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.page_files.refstreectrl.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
-import os
 import logging
 import wx
 import wx.dataview
@@ -61,7 +60,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     """
 
     def __init__(self, parent, name=wx.PanelNameStr):
-        """Constructor of the FileTreeCtrl.
+        """Constructor of the ReferencesTreeViewCtrl.
 
         :param parent: (wx.Window)
 
@@ -84,8 +83,8 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         # Used to remember the expend/collapse status of items after a refresh.
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EXPANDED, self._on_item_expanded)
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self._on_item_collapsed)
-        # self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
-        # self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
+        self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
 
     # ------------------------------------------------------------------------
     # Public methods
@@ -147,7 +146,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     # ------------------------------------------------------------------------
 
     def _on_item_expanded(self, evt):
-        """Happens when the user cliched a '+' button of the tree.
+        """Happens when the user checked the 1st column of the tree.
 
         We have to update the corresponding object 'expand' value to True.
 
@@ -157,12 +156,32 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     # ------------------------------------------------------------------------
 
     def _on_item_collapsed(self, evt):
-        """Happens when the user cliched a '-' button of the tree.
+        """Happens when the user checked the 1st column of the tree.
 
         We have to update the corresponding object 'expand' value to False.
 
         """
         self._model.expand(False, evt.GetItem())
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_activated(self, event):
+        """Happens when the user activated a cell (double-click).
+
+        This event is triggered by double clicking an item or pressing some
+        special key (usually "Enter") when it is focused.
+
+        """
+        self._model.change_value(event.GetColumn(), event.GetItem())
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_selection_changed(self, event):
+        """Happens when the user simple-click a cell.
+
+        """
+        item = event.GetItem()
+        self._model.change_value(event.GetColumn(), item)
 
     # ------------------------------------------------------------------------
 

@@ -456,27 +456,31 @@ class FileData(FileBase):
 
     @staticmethod
     def parse(d):
+        if 'id' not in d:
+            raise KeyError('id not in dict to parse filedata')
+
         data = FileData(d['id'])
 
         # Add all refs in the data
-        for dictref in d['catalogue']:
-            r = FileReference.parse(dictref)
-            data.add_ref(r)
+        if 'catalogue' in d:
+            for dictref in d['catalogue']:
+                r = FileReference.parse(dictref)
+                data.add_ref(r)
 
-        # Add all files in the data,
-        for path in d['paths']:
-            fp = FilePath.parse(path)
-            logging.debug(' ... add path {:s}'.format(fp.id))
-            data.add(fp)
+        # Add all files in the data
+        if 'paths' in d:
+            for path in d['paths']:
+                fp = FilePath.parse(path)
+                data.add(fp)
 
-            # append refs in root
-            for root in path['roots']:
-                fr = data.get_object(root['id'])
-                if fr is not None:
-                    for ref_id in root['refids']:
-                        ref = data.get_object(ref_id)
-                        if ref is not None:
-                            fr.add_ref(ref)
+                # append referencess in root from the 'refsids" of the dict
+                for root in path['roots']:
+                    fr = data.get_object(root['id'])
+                    if fr is not None:
+                        for ref_id in root['refids']:
+                            ref = data.get_object(ref_id)
+                            if ref is not None:
+                                fr.add_ref(ref)
 
         # fix the state to roots and paths (from the ones of filenames)
         data.update()

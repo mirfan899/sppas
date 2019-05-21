@@ -26,15 +26,13 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.catsviewmodel.py
+    src.ui.phoenix.page_files.refsviewmodel.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     This model acts as a bridge between a DataViewCtrl and a FileData instance.
 
 """
 
-import unittest
-import os
 import logging
 import wx
 import wx.dataview
@@ -43,7 +41,7 @@ from sppas.src.files import States
 from sppas.src.files import FileData
 from sppas.src.files import FileReference, sppasAttribute
 from sppas import sppasTypeError
-from .basectrls import ColumnProperties
+from .basectrls import ColumnProperties, StateIconRenderer
 
 # ----------------------------------------------------------------------------
 # Model
@@ -99,6 +97,19 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         # GUI information which can be managed by the mapper
         self._bgcolor = None
         self._fgcolor = None
+
+    # -----------------------------------------------------------------------
+
+    def change_value(self, column, item):
+        """Change state value."""
+        node = self.ItemToObject(item)
+        cur_state = node.get_state()
+        if cur_state == States().UNUSED:
+            self.__data.set_object_state(States().CHECKED, node)
+        else:
+            self.__data.set_object_state(States().UNUSED, node)
+
+        self.ItemChanged(item)
 
     # -----------------------------------------------------------------------
 
@@ -275,6 +286,24 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     # Manage the values to display
     # -----------------------------------------------------------------------
 
+    def HasValue(self, item, col):
+        """Override.
+
+        Return True if there is a value in the given column of this item.
+
+        """
+        logging.debug(' ... HasValue')
+
+        # Fetch the data object for this item.
+        node = self.ItemToObject(item)
+
+        if self.__mapper[col].id == "state":
+            if isinstance(node, sppasAttribute) is True:
+                return False
+        return True
+
+    # -----------------------------------------------------------------------
+
     def GetValue(self, item, col):
         """Return the value to be displayed for this item and column.
 
@@ -289,20 +318,11 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
         # Fetch the data object for this item.
         node = self.ItemToObject(item)
-        logging.debug(' ... ... for node {:s}'.format(node))
 
         if isinstance(node, (FileReference, sppasAttribute)) is False:
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
 
-        if self.__mapper[col].id == "state":
-            if isinstance(node, FileReference) is True:
-                if node.get_state() == States().UNUSED:
-                    return False
-                return True
-            return ""
-
         value = self.__mapper[col].get_value(node)
-        logging.debug(' ... ... value is: {:s}'.format(str(value)))
         return value
 
     # -----------------------------------------------------------------------
@@ -325,17 +345,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
-    def HasValue(self, item, col):
-        """Override.
-
-        Return True if there is a value in the given column of this item.
-
-        """
-        logging.debug(' ... HasValue')
-        return True
-
-    # -----------------------------------------------------------------------
-
     def SetValue(self, value, item, col):
         """Override.
 
@@ -349,6 +358,15 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         node = self.ItemToObject(item)
         if isinstance(node, (FileReference, sppasAttribute)) is False:
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
+
+        if self.__mapper[col].id == "state":
+            if isinstance(value, (States, int)):
+                v = value
+            else:
+                logging.error("Can't set state {:d} to object {:s}".format(value, node))
+                return False
+
+            self.__data.set_object_state(v, node)
 
         return True
 
@@ -421,9 +439,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             for r in added_refs:
                 added_items.append(self.ObjectToItem(r))
                 logging.debug(r)
-            logging.debug(' ------------------- TreeView calls to Cleared')
             self.Cleared()
-            logging.debug(' ------------------- TreeView Cleared called. ')
         return added_items
 
     # -----------------------------------------------------------------------
@@ -488,15 +504,17 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     @staticmethod
     def __create_col(name):
         if name == "state":
-            col = ColumnProperties("State", name, "bool")
-            col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
+            col = ColumnProperties("State", name, "wxBitmap")
             col.add_fct_name(FileReference, "get_state")
-            col.width = 40
+            col.width = 36
+            col.align = wx.ALIGN_CENTRE
+            col.renderer = StateIconRenderer()
             return col
 
         if name == "refs":
             col = ColumnProperties("References/keys", name)
             col.add_fct_name(sppasAttribute, "get_key")
+            col.add_fct_name(FileReference, "get_id")
             col.width = 120
             return col
 

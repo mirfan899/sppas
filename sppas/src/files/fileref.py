@@ -47,7 +47,7 @@ from .filebase import FileBase, States
 class sppasAttribute(object):
     """Represents any attribute with a key, a value, and a description.
 
-    :author:       Barthélémy Drabczuk
+    :author:       Barthélémy Drabczuk, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
@@ -59,26 +59,26 @@ class sppasAttribute(object):
 
     VALUE_TYPES = ('str', 'int', 'float', 'bool')
 
-    def __init__(self, att_key, att_value=None, att_type=None, att_descr=None):
+    def __init__(self, key, value=None, att_type=None, descr=None):
         """Constructor of sppasAttribute.
 
-        :param att_key: (str)
-        :param att_value: (str)
-        :param att_type: (str)
-        :param att_descr: (str)
+        :param key: (str) The identifier key of the attribute
+        :param value: (str) String representing the value of the attribute
+        :param att_type: (str) One of the VALUE_TYPES
+        :param descr: (str) A string to describe what the attribute is
 
         """
         self.__key = ""
-        self.__set_key(att_key)
+        self.__set_key(key)
 
         self.__value = None
-        self.set_value(att_value)
+        self.set_value(value)
         
         self.__valuetype = 'str'
         self.set_value_type(att_type)
 
         self.__descr = None
-        self.set_description(att_descr)
+        self.set_description(descr)
 
     # -----------------------------------------------------------------------
 
@@ -295,7 +295,7 @@ class sppasAttribute(object):
 class FileReference(FileBase):
     """Represent a reference of a catalog about files.
 
-    :author:       Barthélémy Drabczuk
+    :author:       Barthélémy Drabczuk, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      contact@sppas.org
     :license:      GPL, v3
@@ -325,7 +325,9 @@ class FileReference(FileBase):
     # ------------------------------------------------------------------------
 
     def att(self, key):
-        """Return the attribute matching the given key or None."""
+        """Return the attribute matching the given key or None.
+
+        """
         su = sppasUnicode(key)
         key = su.unicode()
         for a in self.__attributs:
@@ -336,9 +338,11 @@ class FileReference(FileBase):
 
     # ------------------------------------------------------------------------
 
-    def add(self, key, value):
-        """Append an attribute into the reference."""
-        self.append(sppasAttribute(key, value))
+    def add(self, key, value=None, att_type=None, descr=None):
+        """Append an attribute into the reference.
+
+        """
+        self.append(sppasAttribute(key, value, att_type, descr))
 
     # ------------------------------------------------------------------------
 

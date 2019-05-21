@@ -250,7 +250,7 @@ class WorkspacesManager(sppasPanel):
             title = "Confirm delete of workspace?"
             message = "Data of the workspace {:s} can't be loaded due to " \
                       "the following error: {:s}.\nDo you want to delete it?" \
-                      "".format(wkp_name, str(e)),
+                      "".format(wkp_name, str(e))
             response = Confirm(message, title)
             if response == wx.ID_YES:
                 wkpslist.remove(event.to_wkp)

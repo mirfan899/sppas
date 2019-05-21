@@ -37,7 +37,10 @@ import wx
 import wx.dataview
 import logging
 
+from sppas.src.files import States
 from sppas.src.files.fileexc import FileAttributeError
+from sppas.src.ui.phoenix import sppasSwissKnife
+from sppas.src.ui.phoenix.windows.image import ColorizeImage
 
 # ----------------------------------------------------------------------------
 
@@ -49,6 +52,72 @@ default_renderers = {
     "wxBitmap": wx.dataview.DataViewBitmapRenderer,
     "wxDataViewIconText": wx.dataview.DataViewIconTextRenderer
 }
+
+# ---------------------------------------------------------------------------
+
+
+class StateIconRenderer(wx.dataview.DataViewCustomRenderer):
+    """Draw an icon matching a state of a file.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    ICON_NAMES = {
+        States().UNUSED: "choice_checkbox",
+        States().CHECKED: "choice_checked",
+        States().LOCKED: "locked",
+        States().AT_LEAST_ONE_CHECKED: "choice_pos",
+        States().AT_LEAST_ONE_LOCKED: "choice_neg"
+    }
+
+    def __init__(self,
+                 varianttype="wxBitmap",
+                 mode=wx.dataview.DATAVIEW_CELL_INERT,
+                 align=wx.dataview.DVR_DEFAULT_ALIGNMENT):
+        super(StateIconRenderer, self).__init__(varianttype, mode, align)
+        self.value = ""
+
+    def SetValue(self, value):
+        self.value = value
+        return True
+
+    def GetValue(self):
+        return self.value
+
+    def GetSize(self):
+        """Return the size needed to display the value."""
+        size = self.GetTextExtent('TT')
+        return size[1]*2, size[1]*2
+
+    def Render(self, rect, dc, state):
+        """Draw the bitmap, adjusting its size. """
+        if self.value == "":
+            return False
+
+        x, y, w, h = rect
+        s = min(w, h)
+        s = int(0.9 * s)
+
+        if self.value in StateIconRenderer.ICON_NAMES:
+            icon_value = StateIconRenderer.ICON_NAMES[self.value]
+
+            # get the image from its name
+            img = sppasSwissKnife.get_image(icon_value)
+            # re-scale the image to the expected size
+            sppasSwissKnife.rescale_image(img, s)
+            # re-colorize
+            ColorizeImage(img, wx.BLACK, wx.Colour(128, 128, 128, 128))
+            # convert to bitmap
+            bitmap = wx.Bitmap(img)
+            # render it at the center
+            dc.DrawBitmap(bitmap, x + (w-s)//2, y + (h-s)//2)
+
+        return True
 
 # ---------------------------------------------------------------------------
 
