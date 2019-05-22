@@ -277,11 +277,11 @@ class ColumnProperties(object):
     def add_fct_name(self, key, fct_name):
         self.__fct[key] = fct_name
 
+    # -----------------------------------------------------------------------
+
     def get_value(self, data):
-        logging.debug('Call to get_value()')
         for key in self.__fct:
             if key == type(data):
-                logging.debug('OK. ')
                 return getattr(data, self.__fct[key])()
         # return the default value of this column type
         return self.default[self.__stype]

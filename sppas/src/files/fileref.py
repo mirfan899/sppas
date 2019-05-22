@@ -31,21 +31,18 @@
 
 """
 
-import logging
 import re
-
-from collections import OrderedDict
 
 from sppas import sppasTypeError, sppasIndexError
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .filebase import FileBase, States
+from .filebase import FileBase
 
 # ---------------------------------------------------------------------------
 
 
 class sppasAttribute(object):
-    """Represents any attribute with a key, a value, and a description.
+    """Represent any attribute with an id, a value, and a description.
 
     :author:       Barthélémy Drabczuk, Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -53,23 +50,23 @@ class sppasAttribute(object):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    This class embeds a key, a value, its type and a description.
+    This class embeds an id, a value, its type and a description.
 
     """
 
     VALUE_TYPES = ('str', 'int', 'float', 'bool')
 
-    def __init__(self, key, value=None, att_type=None, descr=None):
+    def __init__(self, identifier, value=None, att_type=None, descr=None):
         """Constructor of sppasAttribute.
 
-        :param key: (str) The identifier key of the attribute
+        :param identifier: (str) The identifier of the attribute
         :param value: (str) String representing the value of the attribute
         :param att_type: (str) One of the VALUE_TYPES
         :param descr: (str) A string to describe what the attribute is
 
         """
-        self.__key = ""
-        self.__set_key(key)
+        self.__id = ""
+        self.__set_id(identifier)
 
         self.__value = None
         self.set_value(value)
@@ -83,13 +80,13 @@ class sppasAttribute(object):
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def validate(key):
-        """Return True the given key matches the requirements.
+    def validate(identifier):
+        """Return True the given identifier matches the requirements.
 
-        A key should contain between 3 and 12 ASCII-characters only, i.e.
+        An id should contain between 3 and 12 ASCII-characters only, i.e.
         letters a-z, letters A-Z and numbers 0-9.
 
-        :param key: (str) Key to be validated
+        :param identifier: (str) Key to be validated
         :return: (bool)
 
         """
@@ -98,26 +95,32 @@ class sppasAttribute(object):
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
-        if 2 < len(key) < 13:
-            return is_restricted_ascii(key)
+        if 2 < len(identifier) < 13:
+            return is_restricted_ascii(identifier)
         return False
 
     # -----------------------------------------------------------------------
 
-    def __set_key(self, key):
-        su = sppasUnicode(key)
-        key = su.unicode()
+    def __set_id(self, identifier):
+        su = sppasUnicode(identifier)
+        identifier = su.unicode()
 
-        if sppasAttribute.validate(key) is False:
-            raise ValueError("Key {:s} is not valid. It should be between 3 and 12 ASCII-characters.".format(key))
+        if sppasAttribute.validate(identifier) is False:
+            raise ValueError(
+                "Identifier {:s} is not valid. It should be between 3 "
+                "and 12 ASCII-characters.".format(identifier))
 
-        self.__key = key
+        self.__id = identifier
 
     # -----------------------------------------------------------------------
 
-    def get_key(self):
-        """Return the key of the attribute."""
-        return self.__key
+    def get_id(self):
+        """Return the identifier of the attribute."""
+        return self.__id
+
+    # -----------------------------------------------------------------------
+
+    id = property(get_id, None)
 
     # -----------------------------------------------------------------------
 
@@ -223,7 +226,7 @@ class sppasAttribute(object):
     def serialize(self):
         """Return a dict representing this instance for json format."""
         d = dict()
-        d['key'] = self.__key
+        d['id'] = self.__id
         d['value'] = self.__value
         d['type'] = self.__valuetype
         d['descr'] = self.__descr
@@ -235,10 +238,10 @@ class sppasAttribute(object):
     def parse(d):
         """Return the sppasAttribute from the given dict.
 
-        :param d: (dict) 'key' required. optional: 'value', 'type', 'descr'
+        :param d: (dict) 'id' required. optional: 'value', 'type', 'descr'
 
         """
-        k = d['key']
+        k = d['id']
         v = None
         if 'value' in d:
             v = d['value']
@@ -251,38 +254,19 @@ class sppasAttribute(object):
 
         return sppasAttribute(k, v, t, descr)
 
-    # -----------------------------------------------------------------------
-
-    def match(self, key, function, value):
-        """Return True if the attribute value matches all of the functions.
-
-        Functions are defined in a comparator. They return a boolean.
-        The type of the value depends on the function.
-        The logical not is used to reverse the result of the function.
-
-        The given value is a tuple with both the key of the attribute and the
-        expected value which has to match the given value.
-
-        :returns: (bool)
-
-        """
-        if key != self.__key:
-            return False
-        return function(self, value)
-
     # ---------------------------------------------------------
     # overloads
     # ----------------------------------------------------------
 
     def __str__(self):
         return '{:s}, {:s}, {:s}'.format(
-            self.__key,
+            self.__id,
             self.get_value(),
             self.get_description())
 
     def __repr__(self):
         return '{:s}, {:s}, {:s}'.format(
-            self.__key,
+            self.__id,
             self.get_value(),
             self.get_description())
 
@@ -324,25 +308,25 @@ class FileReference(FileBase):
 
     # ------------------------------------------------------------------------
 
-    def att(self, key):
-        """Return the attribute matching the given key or None.
+    def att(self, identifier):
+        """Return the attribute matching the given identifier or None.
 
         """
-        su = sppasUnicode(key)
-        key = su.unicode()
+        su = sppasUnicode(identifier)
+        identifier = su.unicode()
         for a in self.__attributs:
-            if a.get_key() == key:
+            if a.get_id() == identifier:
                 return a
 
         return None
 
     # ------------------------------------------------------------------------
 
-    def add(self, key, value=None, att_type=None, descr=None):
+    def add(self, identifier, value=None, att_type=None, descr=None):
         """Append an attribute into the reference.
 
         """
-        self.append(sppasAttribute(key, value, att_type, descr))
+        self.append(sppasAttribute(identifier, value, att_type, descr))
 
     # ------------------------------------------------------------------------
 
@@ -356,26 +340,26 @@ class FileReference(FileBase):
             raise sppasTypeError(att, "sppasAttribute")
 
         if att in self:
-            raise KeyError('An attribute with key {:s} is already existing in'
-                           'the reference {:s}.'.format(att.get_key(), self.id))
+            raise KeyError('An attribute with id {:s} is already existing in'
+                           'the reference {:s}.'.format(att.get_id(), self.id))
 
         self.__attributs.append(att)
 
     # ------------------------------------------------------------------------
 
-    def pop(self, key):
+    def pop(self, identifier):
         """Delete an attribute of this reference.
 
-        :param key: (str, sppasAttribute) the key of the attribute to delete
+        :param identifier: (str, sppasAttribute) the id of the attribute to delete
 
         """
-        if key in self:
-            if isinstance(key, sppasAttribute) is False:
-                key = self.att(key)
-            self.__attributs.remove(key)
+        if identifier in self:
+            if isinstance(identifier, sppasAttribute) is False:
+                identifier = self.att(identifier)
+            self.__attributs.remove(identifier)
         else:
-            raise ValueError('{:s} is not a valid key for {:s}'
-                             ''.format(key, self.id))
+            raise ValueError('{:s} is not a valid identifier for {:s}'
+                             ''.format(identifier, self.id))
 
     # ------------------------------------------------------------------------
 
@@ -457,15 +441,15 @@ class FileReference(FileBase):
         for att in self.__attributs:
             yield att
 
-    def __contains__(self, key):
-        if isinstance(key, sppasAttribute) is False:
-            su = sppasUnicode(key)
-            key = su.unicode()
+    def __contains__(self, identifier):
+        if isinstance(identifier, sppasAttribute) is False:
+            su = sppasUnicode(identifier)
+            identifier = su.unicode()
         for a in self.__attributs:
-            if isinstance(key, sppasAttribute):
-                if a is key:
+            if isinstance(identifier, sppasAttribute):
+                if a is identifier:
                     return True
             else:
-                if a.get_key() == key:
+                if a.get_id() == identifier:
                     return True
         return False

@@ -85,6 +85,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_COLLAPSED, self._on_item_collapsed)
         self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_ACTIVATED, self._on_item_activated)
         self.Bind(wx.dataview.EVT_DATAVIEW_SELECTION_CHANGED, self._on_item_selection_changed)
+        self.Bind(wx.dataview.EVT_DATAVIEW_ITEM_EDITING_DONE, self._on_item_edited)
 
     # ------------------------------------------------------------------------
     # Public methods
@@ -172,7 +173,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         special key (usually "Enter") when it is focused.
 
         """
-        self._model.change_value(event.GetColumn(), event.GetItem())
+        self._model.change_value(event.GetItem())
 
     # ------------------------------------------------------------------------
 
@@ -180,8 +181,17 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         """Happens when the user simple-click a cell.
 
         """
-        item = event.GetItem()
-        self._model.change_value(event.GetColumn(), item)
+        self._model.change_value(event.GetItem())
+
+    # ------------------------------------------------------------------------
+
+    def _on_item_edited(self, event):
+        """Happens when the user modified the content of an editable cell.
+
+        """
+        self._model.change_value(event.GetItem(),
+                                 event.GetColumn(),
+                                 event.GetValue())
 
     # ------------------------------------------------------------------------
 

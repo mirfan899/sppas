@@ -100,18 +100,37 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
-    def change_value(self, column, item):
-        """Change state value."""
-        node = self.ItemToObject(item)
-        if isinstance(node, FileReference) is False:
-            return
-        cur_state = node.get_state()
-        if cur_state == States().UNUSED:
-            node.set_state(States().CHECKED)
-        else:
-            node.set_state(States().UNUSED)
+    def change_value(self, item, col=-1, value=None):
+        """Change data content value.
 
-        self.ItemChanged(item)
+        A column value of '-1' on a FileReference means to change the state.
+
+        :param item: (wx.dataview.DataViewItem)
+        :param col: (int) Index of the column changed.
+        :param value: A value to set
+
+        """
+        changed = False
+        node = self.ItemToObject(item)
+        if isinstance(node, FileReference) and col == -1:
+            cur_state = node.get_state()
+            if cur_state == States().UNUSED:
+                node.set_state(States().CHECKED)
+            else:
+                node.set_state(States().UNUSED)
+            changed = True
+
+        elif isinstance(node, sppasAttribute) and col != -1 and value is not None:
+            if self.__mapper[col].get_id() == "attvalue":
+                node.set_value(value)
+                changed = True
+            if self.__mapper[col].get_id() == "attdescr":
+                node.set_description(value)
+                changed = True
+
+        if changed:
+            logging.debug("Data {:s} content changed.".format(node.id))
+            self.ItemChanged(item)
 
     # -----------------------------------------------------------------------
 
@@ -247,7 +266,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         :param item: (wx.dataview.DataViewItem)
 
         """
-        logging.debug(' ... IsContainer')
         # The hidden root is a container
         if not item:
             return True
@@ -268,19 +286,15 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         :param item: (wx.dataview.DataViewItem)
 
         """
-        logging.debug(' ... GetParent')
-        # The hidden root does not have a parent
-        if not item:
-            return wx.dataview.NullDataViewItem
-
         node = self.ItemToObject(item)
 
         # Attribute has a FileReference parent
         if isinstance(node, sppasAttribute):
             for ref in self.__data.get_refs():
                 if node in ref:
-                    return self.ObjectToItem(node)
+                    return self.ObjectToItem(ref)
 
+        # The hidden root does not have a parent
         # A FileReference does not have a parent
         return wx.dataview.NullDataViewItem
 
@@ -294,12 +308,10 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         Return True if there is a value in the given column of this item.
 
         """
-        logging.debug(' ... HasValue')
-
         # Fetch the data object for this item.
         node = self.ItemToObject(item)
 
-        if self.__mapper[col].id == "state":
+        if self.__mapper[col].get_id() == "state":
             if isinstance(node, sppasAttribute) is True:
                 return False
         return True
@@ -316,8 +328,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         in GetChildren.
 
         """
-        logging.debug(' ... GetValue')
-
         # Fetch the data object for this item.
         node = self.ItemToObject(item)
 
@@ -339,7 +349,6 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         item with entries for further columns.
 
         """
-        logging.debug(' ... HasContainerColumns')
         node = self.ItemToObject(item)
         if isinstance(node, FileReference):
             return True
@@ -361,7 +370,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         if isinstance(node, (FileReference, sppasAttribute)) is False:
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
 
-        if self.__mapper[col].id == "state":
+        if self.__mapper[col].get_id() == "state":
             if isinstance(value, (States, int)):
                 v = value
             else:
@@ -511,8 +520,8 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "refs":
-            col = ColumnProperties("References/keys", name)
-            col.add_fct_name(sppasAttribute, "get_key")
+            col = ColumnProperties("Reference", name)
+            col.add_fct_name(sppasAttribute, "get_id")
             col.add_fct_name(FileReference, "get_id")
             col.width = 120
             return col
@@ -521,15 +530,25 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             col = ColumnProperties("Value", name)
             col.add_fct_name(sppasAttribute, "get_value")
             col.width = 100
-            col.align = wx.ALIGN_CENTRE
+            col.align = wx.ALIGN_LEFT
+            col.mode = wx.dataview.DATAVIEW_CELL_EDITABLE
+            return col
+
+        if name == "attvaluetype":
+            col = ColumnProperties("Type", name)
+            col.add_fct_name(sppasAttribute, "get_description")
+            col.add_fct_name(FileReference, "get_type")
+            col.add_fct_name(sppasAttribute, "get_value_type")
+            col.width = 200
+            col.align = wx.ALIGN_LEFT
             return col
 
         if name == "attdescr":
-            col = ColumnProperties("TYPE/Description", name)
+            col = ColumnProperties("Description", name)
             col.add_fct_name(sppasAttribute, "get_description")
-            col.add_fct_name(FileReference, "get_type")
             col.width = 200
-            col.align = wx.ALIGN_CENTRE
+            col.align = wx.ALIGN_LEFT
+            col.mode = wx.dataview.DATAVIEW_CELL_EDITABLE
             return col
 
         col = ColumnProperties("", name)

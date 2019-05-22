@@ -204,10 +204,8 @@ class ReferencesManager(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def _delete(self, event):
+    def _delete(self):
         """Delete the selected references.
-
-        :param event:
 
         """
         dlg = wx.MessageDialog(self, 'Delete checked references')
@@ -216,7 +214,7 @@ class ReferencesManager(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def _edit(self, event):
+    def _edit(self):
         # add/remove/modify attributes of the selected references
         dlg = wx.MessageDialog(self, 'Edit checked references')
         dlg.ShowModal()
@@ -280,6 +278,7 @@ class sppasCreateReference(sppasDialog):
 
         rtype = wx.StaticText(panel, label="Type:")
         self.choice = wx.Choice(panel, choices=FileReference.REF_TYPES)
+        self.choice.SetSelection(0)
 
         grid = wx.FlexGridSizer(2, 2, 5, 5)
         grid.AddGrowableCol(0)
