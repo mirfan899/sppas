@@ -370,15 +370,22 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         if isinstance(node, (FileReference, sppasAttribute)) is False:
             raise RuntimeError("Unknown node type {:s}".format(type(node)))
 
-        if self.__mapper[col].get_id() == "state":
-            if isinstance(value, (States, int)):
-                v = value
-            else:
-                logging.error("Can't set state {:d} to object {:s}".format(value, node))
-                return False
+        if isinstance(node, FileReference):
+            if self.__mapper[col].get_id() == "state":
+                if isinstance(value, (States, int)):
+                    v = value
+                else:
+                    logging.error("Can't set state {:d} to object {:s}".format(value, node))
+                    return False
 
-            self.__data.set_object_state(v, node)
+                self.__data.set_object_state(v, node)
 
+        if isinstance(node, sppasAttribute):
+            if self.__mapper[col].get_id() == "attvalue":
+                node.set_value(value)
+            if self.__mapper[col].get_id() == "attdescr":
+                node.set_description(value)
+          
         return True
 
     # -----------------------------------------------------------------------

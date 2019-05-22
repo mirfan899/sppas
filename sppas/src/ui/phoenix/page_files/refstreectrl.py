@@ -188,10 +188,15 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     def _on_item_edited(self, event):
         """Happens when the user modified the content of an editable cell.
 
+        Notice that on MacOS, the event.GetValue() method returns None, so
+        that the value can not be changed in that way. Use SetValue() of
+        the model instead.
+
         """
-        self._model.change_value(event.GetItem(),
-                                 event.GetColumn(),
-                                 event.GetValue())
+        if wx.Platform != "__WXMAC__":
+            self._model.change_value(event.GetItem(),
+                                     event.GetColumn(),
+                                     event.GetValue())
 
     # ------------------------------------------------------------------------
 
