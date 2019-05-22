@@ -198,7 +198,7 @@ class sppasConfirm(sppasBaseMessageDialog):
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-    wx.ID_YES is returned if ok is clicked.
+    wx.ID_YES is returned if 'yes' is clicked.
     wx.ID_CANCEL is returned if the dialog is destroyed or cancel is clicked.
 
     >>> dialog = sppasConfirm("Confirm..."))
@@ -345,6 +345,7 @@ def Confirm(message, title=None):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     :param message: (str) The error and confirmation question
+    :param title: (str) Title of the dialog window
     :returns: the response
 
     wx.ID_YES if ok button is clicked.
@@ -355,7 +356,7 @@ def Confirm(message, title=None):
     dialog = sppasConfirm(message, title)
     response = dialog.ShowModal()
     dialog.Destroy()
-    logging.info("Confirmed by user" if response == wx.ID_YES else "User cancelled")
+    logging.info("Confirmed by user." if response == wx.ID_YES else "User cancelled.")
     return response
 
 

@@ -608,14 +608,16 @@ class WorkspacesPanel(sppasPanel):
         if index == 0:
             raise IndexError("The 'Blank' workspace can't be removed")
 
-        # Delete of the list
-        self.__wkps.delete(index)
+        logging.debug('Remove workspace index {:d}'.format(index))
 
         # Remove of the sizer
+        self.GetSizer().GetItem(index).DeleteWindows()
         self.GetSizer().Remove(index)
-
         self.Layout()
         self.Refresh()
+
+        # Delete of the list
+        self.__wkps.delete(index)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
