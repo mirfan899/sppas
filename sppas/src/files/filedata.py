@@ -129,7 +129,7 @@ import json
 from os.path import exists
 from os.path import dirname
 
-from sppas import sppasTypeError
+from sppas import sppasTypeError, sg
 from .fileutils import sppasGUID
 
 from .filebase import FileBase, States
@@ -440,78 +440,6 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def serialize(self):
-        d = dict()
-        d['id'] = self.id
-        d['paths'] = list()
-        d['catalogue'] = list()
-        for fp in self.__data:
-            d['paths'].append(fp.serialize())
-        for ref in self.__refs:
-            d['catalogue'].append(ref.serialize())
-        return d
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def parse(d):
-        if 'id' not in d:
-            raise KeyError('id not in dict to parse filedata')
-
-        data = FileData(d['id'])
-
-        # Add all refs in the data
-        if 'catalogue' in d:
-            for dictref in d['catalogue']:
-                r = FileReference.parse(dictref)
-                data.add_ref(r)
-
-        # Add all files in the data
-        if 'paths' in d:
-            for path in d['paths']:
-                fp = FilePath.parse(path)
-                data.add(fp)
-
-                # append referencess in root from the 'refsids" of the dict
-                for root in path['roots']:
-                    fr = data.get_object(root['id'])
-                    if fr is not None:
-                        for ref_id in root['refids']:
-                            ref = data.get_object(ref_id)
-                            if ref is not None:
-                                fr.add_ref(ref)
-
-        # fix the state to roots and paths (from the ones of filenames)
-        data.update()
-        return data
-
-    # -----------------------------------------------------------------------
-
-    def save(self, filename):
-        """Save the current FileData in a serialized file.
-
-        :param filename: (str) the name of the save file.
-
-        """
-        with open(filename, 'w') as fd:
-            json.dump(self.serialize(), fd, indent=4, separators=(',', ': '))
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def load(filename):
-        """Load a saved FileData object from a save file.
-
-        :param filename: (str) the name of the save file.
-        :return: FileData
-
-        """
-        with open(filename, "r") as fd:
-            d = json.load(fd)
-            return FileData.parse(d)
-
-    # -----------------------------------------------------------------------
-
     def associate(self):
         ref_checked = self.get_reference_from_state(States().CHECKED)
         if len(ref_checked) == 0:
@@ -658,6 +586,86 @@ class FileData(FileBase):
             for fn in entries:
                 if fn.get_state() == States().LOCKED:
                     self.set_object_state(States().UNUSED, fn)
+
+    # -----------------------------------------------------------------------
+    # Read/Write the data into/from a file
+    # -----------------------------------------------------------------------
+
+    def serialize(self):
+        d = dict()
+        d['wjson'] = "1.0"
+        d['software'] = sg.__name__
+        d['version'] = sg.__version__
+        d['id'] = self.id
+        d['paths'] = list()
+        d['catalogue'] = list()
+        for fp in self.__data:
+            d['paths'].append(fp.serialize())
+        for ref in self.__refs:
+            d['catalogue'].append(ref.serialize())
+        return d
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def parse(d):
+        wjson_version = d.get("wjson", "1.0")
+        soft_name = d.get("software", None)
+        soft_version = d.get("version", None)
+
+        if 'id' not in d:
+            raise KeyError("Workspace 'id' is missing of the dictionary to parse.")
+        data = FileData(d['id'])
+
+        # Add all refs in the data
+        if 'catalogue' in d:
+            for dictref in d['catalogue']:
+                r = FileReference.parse(dictref)
+                data.add_ref(r)
+
+        # Add all files in the data
+        if 'paths' in d:
+            for path in d['paths']:
+                fp = FilePath.parse(path)
+                data.add(fp)
+
+                # append references in root from the 'refsids" of the dict
+                for root in path['roots']:
+                    fr = data.get_object(root['id'])
+                    if fr is not None:
+                        for ref_id in root['refids']:
+                            ref = data.get_object(ref_id)
+                            if ref is not None:
+                                fr.add_ref(ref)
+
+        # fix the state to roots and paths (from the ones of filenames)
+        data.update()
+        return data
+
+    # -----------------------------------------------------------------------
+
+    def save(self, filename):
+        """Save the current FileData in a serialized file.
+
+        :param filename: (str) the name of the save file.
+
+        """
+        with open(filename, 'w') as fd:
+            json.dump(self.serialize(), fd, indent=4, separators=(',', ': '))
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def load(filename):
+        """Load a saved FileData object from a save file.
+
+        :param filename: (str) the name of the save file.
+        :return: FileData
+
+        """
+        with open(filename, "r") as fd:
+            d = json.load(fd)
+            return FileData.parse(d)
 
     # -----------------------------------------------------------------------
     # Overloads

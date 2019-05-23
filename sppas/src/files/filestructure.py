@@ -217,8 +217,11 @@ class FileName(FileBase):
         :raise: FileTypeError, FileOSError
 
         """
+        if 'id' not in d:
+            raise KeyError("File 'id' is missing of the dictionary to parse.")
         fn = FileName(d['id'])
-        s = int(d['state'])
+
+        s = d.get('state', States().UNUSED)
         if s > 0:
             fn.set_state(States().CHECKED)
         else:
@@ -584,7 +587,7 @@ class FileRoot(FileBase):
             d['refids'].append(r.id)
 
         # subjoined data are simply added as-it (it's risky)
-        d['subjoin'] = json.dumps(self.subjoined, separators=(',', ': '))
+        d['subjoin'] = self.subjoined
 
         return d
 
@@ -592,22 +595,24 @@ class FileRoot(FileBase):
 
     @staticmethod
     def parse(d):
+        if 'id' not in d:
+            raise KeyError("Root 'id' is missing of the dictionary to parse.")
         fr = FileRoot(d['id'])
 
         # append files
-        for file in d['files']:
-            try:
-                fn = FileName.parse(file)
-                logging.debug(' ... add name {:s}'.format(fn.id))
-                fr.append(fn)
-            except Exception as e:
-                logging.error(
-                    "The file {:s} can't be included in the workspace"
-                    "due to the following error: {:s}"
-                    "".format(file['id'], str(e)))
+        if 'files' in d:
+            for file in d['files']:
+                try:
+                    fn = FileName.parse(file)
+                    fr.append(fn)
+                except Exception as e:
+                    logging.error(
+                        "The file {:s} can't be included in the workspace"
+                        "due to the following error: {:s}"
+                        "".format(file['id'], str(e)))
 
         # append subjoined "as it"
-        fr.subjoined = json.loads(d['subjoin'])
+        fr.subjoined = d.get('subjoin', None)
 
         return fr
 
@@ -925,7 +930,7 @@ class FilePath(FileBase):
         d['roots'] = list()
         for r in self.__roots:
             d['roots'].append(r.serialize())
-        d['subjoin'] = json.dumps(self.subjoined, indent=4, separators=(',', ': '))
+        d['subjoin'] = self.subjoined
 
         return d
 
@@ -938,15 +943,18 @@ class FilePath(FileBase):
         Remark: the references of the root are not assigned.
 
         """
+        if 'id' not in d:
+            raise KeyError("Path 'id' is missing of the dictionary to parse.")
         fp = FilePath(d['id'])
-        for root in d['roots']:
-            # append the root
-            fr = FileRoot.parse(root)
-            logging.debug(' ... add root {:s}'.format(fr.id))
-            fp.append(fr)
 
-            # append subjoined
-            fp.subjoined = json.loads(d['subjoin'])
+        if 'roots' in d:
+            for root in d['roots']:
+                # append the root
+                fr = FileRoot.parse(root)
+                fp.append(fr)
+
+        # append subjoined
+        fp.subjoined = d.get('subjoin', None)
 
         return fp
 

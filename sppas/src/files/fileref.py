@@ -32,11 +32,12 @@
 """
 
 import re
+import logging
 
 from sppas import sppasTypeError, sppasIndexError
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from .filebase import FileBase
+from .filebase import FileBase, States
 
 # ---------------------------------------------------------------------------
 
@@ -242,15 +243,9 @@ class sppasAttribute(object):
 
         """
         k = d['id']
-        v = None
-        if 'value' in d:
-            v = d['value']
-        t = None
-        if 'type' in d:
-            t = d['type']
-        descr = None
-        if 'descr' in descr:
-            t = descr['descr']
+        v = d.get('value', None)
+        t = d.get('type', sppasAttribute.VALUE_TYPES[0])
+        descr = d.get('descr', None)
 
         return sppasAttribute(k, v, t, descr)
 
@@ -276,7 +271,7 @@ class sppasAttribute(object):
 # ---------------------------------------------------------------------------
 
 
-class  FileReference(FileBase):
+class FileReference(FileBase):
     """Represent a reference of a catalog about files.
 
     :author:       Barthélémy Drabczuk, Brigitte Bigi
@@ -416,9 +411,26 @@ class  FileReference(FileBase):
         """Return the FileReference instance represented by the given dict.
 
         """
+        if 'id' not in d:
+            raise KeyError("Reference 'id' is missing of the dictionary to parse.")
+
         ref = FileReference(d['id'])
-        for att in d['attributes']:
-            ref.add(sppasAttribute.parse(att))
+
+        # Parse the list of attributes
+        if 'attributes' in d:
+            for att_dict in d['attributes']:
+                ref.append(sppasAttribute.parse(att_dict))
+
+        # Parse the state value
+        s = d.get('state', States().UNUSED)
+        if s > 0:
+            ref.set_state(States().CHECKED)
+        else:
+            ref.set_state(States().UNUSED)
+
+        # Parse the subjoined member, "as it"!
+        ref.subjoined = d['subjoin']
+
         return ref
 
     # ------------------------------------------------------------------------
