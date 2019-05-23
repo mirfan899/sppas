@@ -46,7 +46,7 @@ from sppas.src.ui.phoenix.windows import sppasStaticText
 from sppas.src.ui.phoenix.windows import sppasTextCtrl
 from sppas.src.ui.phoenix.windows import NotEmptyTextValidator
 
-from sppas.src.ui.phoenix.dialogs.messages import sppasErrorDialog
+from sppas.src.ui.phoenix.dialogs.messages import sppasErrorDialog, Error, Information
 
 from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
@@ -205,24 +205,35 @@ class ReferencesManager(sppasPanel):
                 logging.error(str(e))
                 message = "The reference {:s} has not been created due to " \
                           "the following error: {:s}".format(rname, str(e))
-                sppasErrorDialog(message)
+                Error(message)
         dlg.Destroy()
 
     # ------------------------------------------------------------------------
 
     def _edit(self):
         # add/remove/modify attributes of the selected references
-        logging.debug('Edit attribute:')
-        dlg = sppasEditAttributes(self)
-        response = dlg.ShowModal()
-        if response == wx.ID_OK:
-            logging.debug(' - action: {:d}'.format(dlg.get_action()))
-            logging.debug(' - identifier: {:s}'.format(dlg.get_id()))
-            logging.debug(' - value: {:s}'.format(dlg.get_value_type()[0]))
-            logging.debug(' - type: {:s}'.format(dlg.get_value_type()[1]))
-            logging.debug(' - descr: {:s}'.format(dlg.get_description()))
+        logging.debug('Edit attribute.')
+        view = self.FindWindow('refsview')
+        if view.HasCheckedRefs() is False:
+            Error('No reference checked.')
+        else:
+            dlg = sppasEditAttributes(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                if dlg.get_action() == 0:
+                    view.RemoveAttribute(dlg.get_id())
+                else:
+                    try:
+                        view.AddAttribute(
+                            dlg.get_id(),
+                            dlg.get_value_type()[0],
+                            dlg.get_value_type()[1],
+                            dlg.get_description()
+                        )
+                    except Exception as e:
+                        Error(str(e))
 
-        dlg.Destroy()
+            dlg.Destroy()
 
     # ------------------------------------------------------------------------
 
@@ -230,9 +241,17 @@ class ReferencesManager(sppasPanel):
         """Delete the selected references.
 
         """
-        dlg = wx.MessageDialog(self, 'Delete checked references')
-        dlg.ShowModal()
-        dlg.Destroy()
+        view = self.FindWindow('refsview')
+        if view.HasCheckedRefs() is False:
+            Error('No reference checked.')
+        else:
+            try:
+                nb = view.RemoveCheckedRefs()
+                Information('{:d} references removed.'.format(nb))
+            except Exception as e:
+                Error(
+                    'An error occurred while removing the references: {:s}'
+                    ''.format(str(e)))
 
 # ----------------------------------------------------------------------------
 # Panel to create a reference
@@ -533,7 +552,6 @@ class IdentifierTextValidator(wx.Validator):
         return True
 
     def Validate(self, win=None):
-        logging.debug('VALIDATE TEXT')
         text_ctrl = self.GetWindow()
         text = text_ctrl.GetValue().strip()
         if sppasAttribute.validate(text) is False:
@@ -572,6 +590,8 @@ class TestPanel(ReferencesManager):
         fr2.append(sppasAttribute("position", "right", descr="Position related to the other participant"))
         fr3 = FileReference("Dialog1")
         fr3.set_type(2)
-        fr3.add("year", "2003")
-        fr3.append(sppasAttribute("place", "Aix-en-Provence", descr="Place of recording"))
-        self.FindWindow('refsview').AddRefs([fr1, fr2, fr3])
+        fr3.append(sppasAttribute("year", "2003", "int", "Year of recording"))
+        fr3.add("place", "Aix-en-Provence")
+        nb = self.FindWindow('refsview').AddRefs([fr1, fr2, fr3, fr3])
+        if nb > 0:
+            logging.debug('Test added {:d} references (3 expected)'.format(nb))

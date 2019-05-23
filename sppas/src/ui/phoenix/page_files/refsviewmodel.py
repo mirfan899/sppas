@@ -92,7 +92,8 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         self.__mapper[0] = ReferencesTreeViewModel.__create_col('state')
         self.__mapper[1] = ReferencesTreeViewModel.__create_col('refs')
         self.__mapper[2] = ReferencesTreeViewModel.__create_col('attvalue')
-        self.__mapper[3] = ReferencesTreeViewModel.__create_col('attdescr')
+        self.__mapper[3] = ReferencesTreeViewModel.__create_col('attvaluetype')
+        self.__mapper[4] = ReferencesTreeViewModel.__create_col('attdescr')
 
         # GUI information which can be managed by the mapper
         self._bgcolor = None
@@ -110,8 +111,14 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         :param value: A value to set
 
         """
+        try:
+            node = self.ItemToObject(item)
+        except TypeError:
+            # occurs sometimes on mac while clicking elsewhere than a row
+            # of the tree
+            return
+
         changed = False
-        node = self.ItemToObject(item)
         if isinstance(node, FileReference) and col == -1:
             cur_state = node.get_state()
             if cur_state == States().UNUSED:
@@ -385,7 +392,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
                 node.set_value(value)
             if self.__mapper[col].get_id() == "attdescr":
                 node.set_description(value)
-          
+
         return True
 
     # -----------------------------------------------------------------------
@@ -444,18 +451,16 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
         """
         added_refs = list()
         for entry in entries:
-            a = self.__add(entry)
-            if a is True:
+            try:
+                self.__add(entry)
                 logging.debug(' ... reference {:s} appended into the data.'.format(entry))
                 added_refs.append(entry)
+            except ValueError as e:
+                logging.error(' ... reference {:s} not added: {:s}.'.format(entry, str(e)))
 
-        added_items = list()
         if len(added_refs) > 0:
-            for r in added_refs:
-                added_items.append(self.ObjectToItem(r))
-                logging.debug(r)
             self.Cleared()
-        return added_items
+        return len(added_refs)
 
     # -----------------------------------------------------------------------
 
@@ -469,11 +474,54 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
+    def has_checked_refs(self):
+        """Return True if at least one reference is checked."""
+        return len(self.__data.get_reference_from_state(States().CHECKED)) > 0
+
+    # -----------------------------------------------------------------------
+
     def remove_checked_refs(self):
         nb_removed = self.__data.remove_refs(States().CHECKED)
         if nb_removed > 0:
             self.update()
         return nb_removed
+
+    # -----------------------------------------------------------------------
+
+    def remove_attribute(self, identifier):
+        """Remove an attribute from the checked references.
+
+        """
+        nb = 0
+        for ref in self.__data.get_refs():
+            if ref.state == States().CHECKED and identifier in ref:
+                item = self.ObjectToItem(ref.att(identifier))
+                ref.pop(identifier)
+                self.ItemDeleted(self.ObjectToItem(ref), item)
+                nb += 1
+        return nb
+
+    # -----------------------------------------------------------------------
+
+    def add_attribute(self, identifier, value, att_type, description):
+        """Create an attribute and add it into the checked references."""
+        nb = 0
+        if len(value.strip()) == 0:
+            value = None
+        if len(description.strip()) == 0:
+            description = None
+        for ref in self.__data.get_refs():
+            if ref.state == States().CHECKED:
+                att = sppasAttribute(identifier, value, att_type, description)
+                ref.append(att)
+                item = self.ObjectToItem(att)
+                self.ItemAdded(self.ObjectToItem(ref), item)
+                nb += 1
+                if ref.subjoined is None:
+                    ref.subjoined = dict()
+                ref.subjoined['expand'] = True
+
+        return nb
 
     # -----------------------------------------------------------------------
 
@@ -519,7 +567,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     @staticmethod
     def __create_col(name):
         if name == "state":
-            col = ColumnProperties("State", name, "wxBitmap")
+            col = ColumnProperties(" ", name, "wxBitmap")
             col.add_fct_name(FileReference, "get_state")
             col.width = 36
             col.align = wx.ALIGN_CENTRE
@@ -527,7 +575,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "refs":
-            col = ColumnProperties("Reference", name)
+            col = ColumnProperties("Reference id.", name)
             col.add_fct_name(sppasAttribute, "get_id")
             col.add_fct_name(FileReference, "get_id")
             col.width = 120
@@ -546,7 +594,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             col.add_fct_name(sppasAttribute, "get_description")
             col.add_fct_name(FileReference, "get_type")
             col.add_fct_name(sppasAttribute, "get_value_type")
-            col.width = 200
+            col.width = 80
             col.align = wx.ALIGN_LEFT
             return col
 

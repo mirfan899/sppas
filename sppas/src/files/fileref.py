@@ -107,7 +107,7 @@ class sppasAttribute(object):
 
         if sppasAttribute.validate(identifier) is False:
             raise ValueError(
-                "Identifier {:s} is not valid. It should be between 3 "
+                "Identifier '{:s}' is not valid. It should be between 3 "
                 "and 12 ASCII-characters.".format(identifier))
 
         self.__id = identifier
@@ -276,7 +276,7 @@ class sppasAttribute(object):
 # ---------------------------------------------------------------------------
 
 
-class FileReference(FileBase):
+class  FileReference(FileBase):
     """Represent a reference of a catalog about files.
 
     :author:       Barthélémy Drabczuk, Brigitte Bigi
@@ -404,7 +404,7 @@ class FileReference(FileBase):
         d = FileBase.serialize(self)
         d['attributes'] = list()
         for att in self.__attributs:
-            a = self.__attributs[att].serialize()
+            a = att.serialize()
             d['attributes'].append(a)
         d['subjoin'] = self.subjoined
         return d

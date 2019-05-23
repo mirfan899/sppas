@@ -233,12 +233,11 @@ class FileData(FileBase):
 
         for refe in self.__refs:
             if refe.id == ref.id:
-                logging.error("A reference with the identifier '{:s}' is"
-                              "already in the data.".format(refe.id))
-                return False
+                raise ValueError(
+                    "A reference with the identifier '{:s}' is "
+                    "already in the data.".format(refe.id))
 
         self.__refs.append(ref)
-        return True
 
     # -----------------------------------------------------------------------
 
@@ -252,7 +251,7 @@ class FileData(FileBase):
         # Fix the list of references to be removed
         removes = list()
         for ref in self.__refs:
-            if ref.stateref == state:
+            if ref.state == state:
                 removes.append(ref)
 
         # Remove these references of the roots
@@ -584,6 +583,9 @@ class FileData(FileBase):
         """Return every FileName in the given state.
 
         """
+        if len(self.__data) == 0:
+            return list()
+
         files = list()
         for fp in self.__data:
             for fr in fp:
@@ -598,6 +600,9 @@ class FileData(FileBase):
         """Return every Reference in the given state.
 
         """
+        if len(self.__refs) == 0:
+            return list()
+
         refs = list()
         for r in self.__refs:
             if r.get_state() == state:

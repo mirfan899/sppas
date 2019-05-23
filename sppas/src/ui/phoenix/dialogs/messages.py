@@ -360,7 +360,7 @@ def Confirm(message, title=None):
     return response
 
 
-def Error(message, title):
+def Error(message, title=None):
     """Display a error.
 
     :author:       Brigitte Bigi
@@ -377,7 +377,7 @@ def Error(message, title):
 
     """
     logging.error(message)
-    dialog = sppasErrorDialog(message, title)
+    dialog = sppasErrorDialog(message, title=None)
     response = dialog.ShowModal()
     dialog.Destroy()
     return response

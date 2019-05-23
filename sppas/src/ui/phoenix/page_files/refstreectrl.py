@@ -103,11 +103,24 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
+    def HasCheckedRefs(self):
+        """Return True if at least one reference is checked."""
+        return self._model.has_checked_refs()
+
+    # ------------------------------------------------------------------------
+
     def CreateRef(self, ref_name, ref_type):
-        logging.debug('Create a reference: {:s}, {:d}'.format(ref_name, ref_type))
+        """Create a new reference and add it into the tree.
+
+        :param ref_name: (str)
+        :param ref_type: (str) On of the accepted type of references
+
+        """
         item = self._model.create_ref(ref_name, ref_type)
         if item is None:
-            raise Exception("Unknown")
+            raise Exception("An unexpected error occurred.")
+        logging.info('Reference created successfully: {:s}, {:d}'
+                     ''.format(ref_name, ref_type))
         return item
 
     # ------------------------------------------------------------------------
@@ -118,22 +131,51 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         :param entries: (str) List of references.
 
         """
-        logging.debug('Add {:d} references in the data.'.format(len(entries)))
-        items = self._model.add_refs(entries)
-        if len(items) > 0:
+        nb = self._model.add_refs(entries)
+        if nb > 0:
+            logging.debug('Added {:d} references in the data.'.format(len(entries)))
             self.__refresh()
-            return True
-        return False
+        return nb
 
     # ------------------------------------------------------------------------
 
     def RemoveCheckedRefs(self):
-        """Remove all checked files."""
+        """Remove all checked references."""
         nb = self._model.remove_checked_refs()
         if nb > 0:
+            logging.info('Removed {:d} references.'.format(nb))
             self.__refresh()
-            return True
-        return False
+        return nb
+
+    # ------------------------------------------------------------------------
+
+    def RemoveAttribute(self, identifier):
+        """Remove an attribute from the checked references.
+
+        :return: Number of references in which the attribute were removed.
+
+        """
+        nb = self._model.remove_attribute(identifier)
+        logging.info('Identifier {:s} removed of {:d} references.'
+                     ''.format(identifier, nb))
+        if nb > 0:
+            self.__refresh()
+        return nb
+
+    # ------------------------------------------------------------------------
+
+    def AddAttribute(self, identifier, value, att_type, description):
+        """Add an attribute into the checked references.
+
+        :return: Number of references in which the attribute were added.
+
+        """
+        nb = self._model.add_attribute(identifier, value, att_type, description)
+        logging.info('Identifier {:s} added into {:d} references.'
+                     ''.format(identifier, nb))
+        if nb > 0:
+            self.__refresh()
+        return nb
 
     # ------------------------------------------------------------------------
 
