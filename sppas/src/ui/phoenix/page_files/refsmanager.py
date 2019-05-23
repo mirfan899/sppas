@@ -44,6 +44,8 @@ from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticLine
 from sppas.src.ui.phoenix.windows import sppasStaticText
 from sppas.src.ui.phoenix.windows import sppasTextCtrl
+from sppas.src.ui.phoenix.windows import NotEmptyTextValidator
+
 from sppas.src.ui.phoenix.dialogs.messages import sppasErrorDialog
 
 from .btntxttoolbar import BitmapTextToolbar
@@ -210,8 +212,16 @@ class ReferencesManager(sppasPanel):
 
     def _edit(self):
         # add/remove/modify attributes of the selected references
+        logging.debug('Edit attribute:')
         dlg = sppasEditAttributes(self)
-        dlg.ShowModal()
+        response = dlg.ShowModal()
+        if response == wx.ID_OK:
+            logging.debug(' - action: {:d}'.format(dlg.get_action()))
+            logging.debug(' - identifier: {:s}'.format(dlg.get_id()))
+            logging.debug(' - value: {:s}'.format(dlg.get_value_type()[0]))
+            logging.debug(' - type: {:s}'.format(dlg.get_value_type()[1]))
+            logging.debug(' - descr: {:s}'.format(dlg.get_description()))
+
         dlg.Destroy()
 
     # ------------------------------------------------------------------------
@@ -359,23 +369,29 @@ class sppasEditAttributes(sppasDialog):
     # -----------------------------------------------------------------------
 
     def get_action(self):
-        """Return True to add and False to delete."""
-        return True
+        """Return 0/False to delete and 1/True to add."""
+        return self.FindWindow('radio_add').GetValue()
 
     # -----------------------------------------------------------------------
 
     def get_id(self):
-        return self.FindWindow('identifier').GetLabel()
+        """Return the identifier."""
+        return self.FindWindow('text_id').GetValue()
 
     # -----------------------------------------------------------------------
 
-    def get_value(self):
-        return self.FindWindow('value').GetLabel()
+    def get_value_type(self):
+        """Return a tuple with the value and its type."""
+        return (
+            self.FindWindow('text_value').GetValue(),
+            self.FindWindow('choice_type').GetStringSelection()
+        )
 
     # -----------------------------------------------------------------------
 
     def get_description(self):
-        return self.FindWindow('description').GetLabel()
+        """Return the description of the value."""
+        return self.FindWindow('text_descr').GetValue()
 
     # -----------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -384,7 +400,7 @@ class sppasEditAttributes(sppasDialog):
     def _create_content(self):
         """Create the content of the message dialog."""
         panel = sppasPanel(self, name="content")
-        sizer = wx.GridBagSizer(9, 2)
+        sizer = wx.GridBagSizer(9, 3)
 
         st1 = sppasStaticText(panel, label="Required:")
         sizer.Add(st1, pos=(0, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL,  border=2)
@@ -392,18 +408,27 @@ class sppasEditAttributes(sppasDialog):
         add_btn = wx.RadioButton(
             panel,
             label="Add a new value in the checked references",
-            name="action_add")
+            name="radio_add")
+        add_btn.SetValue(True)
         sizer.Add(add_btn, pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
 
         del_btn = wx.RadioButton(
             panel,
             label="Delete an existing value in the checked references",
-            name="action_add")
+            name="radio_del")
+        add_btn.SetValue(False)
         sizer.Add(del_btn, pos=(2, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
 
         id_st1 = sppasStaticText(panel, label="Identifier: ")
         sizer.Add(id_st1, pos=(3, 0), flag=wx.LEFT, border=12)
-        ident = sppasTextCtrl(parent=panel, value="", name="identifier")
+        ident = sppasTextCtrl(
+            parent=panel,
+            value="",
+            validator=NotEmptyTextValidator(),
+            name="text_id"
+        )
+        self.Bind(wx.EVT_TEXT, self._process_event)
+        self.Bind(wx.EVT_SET_FOCUS, self._process_event)
         sizer.Add(ident, pos=(3, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
         id_st2 = sppasStaticText(panel, label="between 3 and 12 ASCII-only characters")
@@ -413,26 +438,30 @@ class sppasEditAttributes(sppasDialog):
         line.SetMinSize(wx.Size(-1, 4))
         line.SetSize(wx.Size(-1, 4))
         line.SetPenStyle(wx.PENSTYLE_SOLID)
-        sizer.Add(line, pos=(5, 0), span=(1, 2), flag=wx.EXPAND, border=2)
+        sizer.Add(line, pos=(5, 0), span=(1, 3), flag=wx.EXPAND, border=2)
 
         st2 = sppasStaticText(panel, label="Optional: ")
         sizer.Add(st2, pos=(6, 0), span=(1, 2), flag=wx.ALL,  border=2)
 
         value_st = sppasStaticText(panel, label="Value: ")
         sizer.Add(value_st, pos=(7, 0), flag=wx.LEFT, border=12)
-        value = sppasTextCtrl(parent=panel, value="", name="value")
+        value = sppasTextCtrl(parent=panel, value="", name="text_value")
         sizer.Add(value, pos=(7, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+        choice = wx.Choice(panel, choices=sppasAttribute.VALUE_TYPES, name='choice_type')
+        choice.SetSelection(0)
+        sizer.Add(choice, pos=(7, 2), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
         descr_st = sppasStaticText(panel, label="Description: ")
         sizer.Add(descr_st, pos=(8, 0), flag=wx.LEFT, border=12)
-        descr = sppasTextCtrl(parent=panel, value="", name="description")
-        sizer.Add(descr, pos=(8, 1), span=(2, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+        descr = sppasTextCtrl(parent=panel, value="", name="text_descr")
+        sizer.Add(descr, pos=(8, 1), span=(2, 2), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
         sizer.AddGrowableCol(1)
         sizer.AddGrowableRow(8, proportion=0)
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
         self.SetContent(panel)
+        self.Bind(wx.EVT_RADIOBUTTON, self._process_event)
 
     # -----------------------------------------------------------------------
 
@@ -451,11 +480,75 @@ class sppasEditAttributes(sppasDialog):
         """
         event_obj = event.GetEventObject()
         event_id = event_obj.GetId()
+        event_name = event_obj.GetName()
         if event_id == wx.ID_CANCEL:
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
+
+        elif event_id == wx.ID_OK:
+            text = self.FindWindow("text_id")
+            valid = text.GetValidator().Validate()
+            if valid is True:
+                # Close the dialog and return wx.ID_OK
+                event.Skip()
+
+        elif event_name == "radio_add":
+            #self.FindWindow("radio_add").SetValue(True)
+            self.FindWindow("radio_del").SetValue(False)
+
+        elif event_name == "radio_del":
+            self.FindWindow("radio_add").SetValue(False)
+            #self.FindWindow("radio_del").SetValue(True)
+
+        elif event_name == "text_id":
+            text = self.FindWindow("text_id")
+            text.GetValidator().Validate()
+
         else:
             event.Skip()
+
+# ----------------------------------------------------------------------------
+
+
+class IdentifierTextValidator(wx.Validator):
+    """Check if the TextCtrl is valid for an identifier.
+
+    If the TextCtrl is not valid, the background becomes pinky.
+
+    """
+
+    def __init__(self):
+        super(IdentifierTextValidator, self).__init__()
+
+    def Clone(self):
+        # Required method for validator
+        return IdentifierTextValidator()
+
+    def TransferToWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    def TransferFromWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    def Validate(self, win=None):
+        logging.debug('VALIDATE TEXT')
+        text_ctrl = self.GetWindow()
+        text = text_ctrl.GetValue().strip()
+        if sppasAttribute.validate(text) is False:
+            text_ctrl.SetBackgroundColour("pink")
+            text_ctrl.SetFocus()
+            text_ctrl.Refresh()
+            return False
+
+        try:
+            text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_colour)
+        except:
+            text_ctrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
+        text_ctrl.Refresh()
+        return True
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

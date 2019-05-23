@@ -33,6 +33,9 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
+import re
+import logging
 import wx
 
 # ---------------------------------------------------------------------------
@@ -175,4 +178,101 @@ class sppasMessageText(sppasTextCtrl):
         # the message is not send to the base class when init but after
         # in order to apply the appropriate colors
         self.SetValue(message)
+
+
+# ---------------------------------------------------------------------------
+# Validators for a sppasTextCtrl or wx.TextCtrl.
+# ---------------------------------------------------------------------------
+
+
+class NotEmptyTextValidator(wx.Validator):
+    """Check if the TextCtrl contains characters.
+
+    If the TextCtrl does not contains characters, the background becomes
+    pinky, Either, it is set to the system background colour.
+
+    """
+
+    def __init__(self):
+        super(NotEmptyTextValidator, self).__init__()
+
+    def Clone(self):
+        # Required method for validator
+        return NotEmptyTextValidator()
+
+    def TransferToWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    def TransferFromWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    def Validate(self, win=None):
+        logging.debug('VALIDATE TEXT')
+        text_ctrl = self.GetWindow()
+        text = text_ctrl.GetValue().strip()
+        if len(text) == 0:
+            text_ctrl.SetBackgroundColour("pink")
+            text_ctrl.SetFocus()
+            text_ctrl.Refresh()
+            return False
+
+        try:
+            text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_colour)
+        except:
+            text_ctrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
+        text_ctrl.Refresh()
+        return True
+
+# ---------------------------------------------------------------------------
+
+
+class ASCIITextValidator(wx.Validator):
+    """Check if the TextCtrl contains only ASCII characters.
+
+    If the TextCtrl does not contains characters, the background becomes
+    pinky, Either, it is set to the system background colour.
+
+    """
+
+    def __init__(self):
+        super(ASCIITextValidator, self).__init__()
+
+    def Clone(self):
+        # Required method for validator
+        return ASCIITextValidator()
+
+    def TransferToWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    def TransferFromWindow(self):
+        # Prevent wxDialog from complaining.
+        return True
+
+    @staticmethod
+    def is_restricted_ascii(text):
+        # change any other character than a to z and underscore in the key
+        ra = re.sub(r'[^a-zA-Z0-9_]', '*', text)
+        return text == ra
+
+    def Validate(self, win=None):
+        logging.debug('VALIDATE TEXT')
+        text_ctrl = self.GetWindow()
+        text = text_ctrl.GetValue().strip()
+        if ASCIITextValidator.is_restricted_ascii(text) is False:
+            text_ctrl.SetBackgroundColour("pink")
+            text_ctrl.SetFocus()
+            text_ctrl.Refresh()
+            return False
+
+        try:
+            text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_colour)
+        except:
+            text_ctrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
+
+        text_ctrl.Refresh()
+        return True
 
