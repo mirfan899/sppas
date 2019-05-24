@@ -81,8 +81,8 @@
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
+from .fileref import sppasAttribute
 from .filedatacompare import sppasFileBaseCompare
-from .filedatacompare import sppasFileStateCompare
 from .filedatacompare import sppasFileNameCompare
 from .filedatacompare import sppasFileExtCompare
 from .filedatacompare import sppasFileRefCompare
@@ -313,7 +313,7 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
         :param kwargs: logic_bool/any sppasFileStateCompare() method.
-        :returns: (sppasDataSet)
+        :returns: (sppasDataSet) Set of FileName() instances
 
         """
         comparator = sppasFileRefCompare()
@@ -342,26 +342,27 @@ class sppasFileDataFilters(sppasBaseFilters):
     # -----------------------------------------------------------------------
 
     def att(self, **kwargs):
-        """Apply functions on all file properties of the object.
+        """Apply functions on attributes of references of files of the object.
 
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with 'not_', like in the next example.
 
+        The given value is a tuple with (identifier, value) of the attribute.
+
         :Example:
 
-        >>> f.ref(startswith="toto", not_endswith="tutu", logic_bool="and")
-        >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
-        >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
+        >>> f.att(equals=("age", "14"))
 
-        :param kwargs: logic_bool/any sppasFileStateCompare() method.
-        :returns: (sppasDataSet)
+        :param kwargs: logic_bool/any sppasAttCompare() method.
+        :returns: (sppasDataSet) Set of FileName() instances
+
         """
         comparator = sppasAttributeCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
         logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        att_fct_value = sppasBaseFilters.fix_function_values(comparator, **kwargs)
+        att_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
         att_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
 
         # the set of results
@@ -369,15 +370,34 @@ class sppasFileDataFilters(sppasBaseFilters):
 
         # search for the data to be returned:
         for path in self.obj:
-            # append all files of the path
             for fr in path:
-                matched = list()
+                matches = list()
                 for ref in fr.get_references():
 
-                    for att in ref:
-                        pass
-                        #if key != att.get_key():
-                        #    matched.append(False)
-                        #return function(self, value)
+                    for func, value, logical_not in att_functions:
+                        mm = False
+                        for att in ref:
+                            try:
+                                searched = sppasAttribute(value[0], value[1], att.get_value_type())
+                                if att.get_id() == searched.get_id():
+                                    if logical_not is True:
+                                        mm = not func(att, searched.get_typed_value())
+                                    else:
+                                        mm = func(att, searched.get_typed_value())
+                                if mm is True:
+                                    break
+                            except ValueError:
+                                continue
+
+                        matches.append(mm)
+
+                    if logic_bool == "and":
+                        is_matching = all(matches)
+                    else:
+                        is_matching = any(matches)
+
+                    if is_matching is True:
+                        for fn in fr:
+                            data.append(fn, att_fct_values)
 
         return data
