@@ -32,13 +32,18 @@
     Description:
     ============
 
-    Use instances of these classes to hold data related to a filename. 
+    Use instances of these classes to hold data related to filenames and
+    references.
     
     Files are structured in a fixed tree-like structure:
         - a FileData contains a list of FilePath,
         - a FilePath contains a list of FileRoot,
         - a FileRoot contains a list of FileName,
         - a FileName is limited to regular file names (no links, etc).
+
+    References are structured as:
+        - a FileData contains a list of FileReference,
+        - a FileReference contains a list of sppasAttribute.
 
     Example:
     ========
@@ -73,53 +78,6 @@
 
         - python 2.7.15
         - python 3.7.0
-
-    How to use these classes to filter data:
-    ========================================
-
-    A comparator must be implemented to define comparison functions. Then
-    the method 'match' of the FileBase class can be invoked.
-    The FileDataFilter() class is based on the use of this solution. It allows
-    to combine results and is a simplified way to write a request.
-    The use of the FileBase().match() is described in the next examples.
-
-    :Example: Search if a FilePath() is exactly matching "my_path":
-
-        >>> cmp = sppasPathCompare()
-        >>> fp.match([(cmp.exact, "my_path", False)])
-
-    :Example: Search if a FilePath() is starting with "my_path" and is checked:
-
-        >>> fp.match(
-        >>>     [(cmp.startswith, "my_path", False),
-        >>>      (cmp.state, True, False)],
-        >>>     logic_bool="and")
-
-
-    :Example: Search if a FileRoot() is exactly matching "my_path/toto":
-
-        >>> cmp = sppasRootCompare()
-        >>> fr.match([(cmp.exact, "my_path", False)])
-
-    :Example: Search if a FileRoot() is starting with "my_path/toto"
-    and is checked:
-
-        >>> fr.match(
-        >>>     [(cmp.startswith, "my_path/toto", False),
-        >>>      (cmp.state, True, False)],
-        >>>     logic_bool="and")
-
-    :Example: Search if a FileName() is starting with "toto" and is not
-    a TextGrid and is checked:
-
-        >>> cmpn = sppasNameCompare()
-        >>> cmpe = sppasExtensionCompare()
-        >>> cmpp = sppasFileCompare()
-        >>> fn.match(
-        >>>    [(cmpn.startswith, "toto", False),
-        >>>     (cmpe.iexact, "textgrid", True),
-        >>>     (cmpp.state, True, False)],
-        >>>    logic_bool="and")
 
 """
 

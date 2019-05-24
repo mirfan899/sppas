@@ -42,12 +42,14 @@ files: management of files in SPPAS
 
 from .fileutils import sppasFileUtils
 from .fileutils import sppasDirUtils
+from .filebase import FileBase
 from .filebase import States
 from .filedata import FileData
 from .filestructure import FileName, FileRoot, FilePath
 from .fileref import FileReference, sppasAttribute
 
 __all__ = (
+    'FileBase',
     'States',
     'FileData',
     'FileName',

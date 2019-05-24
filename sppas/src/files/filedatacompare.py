@@ -35,13 +35,10 @@
     Classes:
     ========
 
-        - sppasPathCompare() to search for a value in a path name
+        - sppasPathCompare() to search for a value in a path id
           (FilePath.id, FilePath.state, FilePath.expand)
 
-    To do:
-    =====
-
-        - sppasRootCompare() to search for a value in a root name
+        - sppasRootCompare() to search for a value in a root id
           (FileRoot.id, FileRoot.state, FileRoot.expand)
 
         - sppasNameCompare() to search for a value in a file name
@@ -50,10 +47,9 @@
         - sppasExtensionCompare() to search for a value in the extension of a
           file name (FileName.ext)
 
-        - sppasFileCompare() to search for a value in the members of a
-          file name (FileName.state, FileName.lock, FileName....)
+        - sppasFileReferenceCompare()
 
-        - the unitests for all classes and methods.
+        - sppasAttributeCompare()
 
 """
 
@@ -64,13 +60,14 @@ from .filebase import States
 from ..utils.makeunicode import text_type
 from ..structs.basecompare import sppasBaseCompare
 
+from .filebase import FileBase
 from .filestructure import FilePath, FileRoot, FileName
 from .fileref import FileReference, sppasAttribute
 
 # ---------------------------------------------------------------------------
 
 
-class sppasPathCompare(sppasBaseCompare):
+class sppasFileBaseCompare(sppasBaseCompare):
     """Comparison methods for FilePath.
 
     :author:       Brigitte Bigi
@@ -81,7 +78,7 @@ class sppasPathCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-    >>> tc = sppasPathCompare()
+    >>> tc = sppasFileBaseCompare()
     >>> tc.exact(FilePath("c:\\Users"), u("c:\\Users"))
     >>> tc.methods['exact'](FilePath("c:\\Users"), u("c:\\Users"))
     >>> tc.get('exact')(FilePath("c:\\Users"), u("c:\\Users"))
@@ -90,221 +87,248 @@ class sppasPathCompare(sppasBaseCompare):
 
     def __init__(self):
         """Create a sppasPathCompare instance."""
-        super(sppasPathCompare, self).__init__()
+        super(sppasFileBaseCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['exact'] = sppasPathCompare.exact
-        self.methods['iexact'] = sppasPathCompare.iexact
-        self.methods['startswith'] = sppasPathCompare.startswith
-        self.methods['istartswith'] = sppasPathCompare.istartswith
-        self.methods['endswith'] = sppasPathCompare.endswith
-        self.methods['iendswith'] = sppasPathCompare.iendswith
-        self.methods['contains'] = sppasPathCompare.contains
-        self.methods['icontains'] = sppasPathCompare.icontains
-        self.methods['regexp'] = sppasPathCompare.regexp
+        self.methods['exact'] = sppasFileBaseCompare.exact
+        self.methods['iexact'] = sppasFileBaseCompare.iexact
+        self.methods['startswith'] = sppasFileBaseCompare.startswith
+        self.methods['istartswith'] = sppasFileBaseCompare.istartswith
+        self.methods['endswith'] = sppasFileBaseCompare.endswith
+        self.methods['iendswith'] = sppasFileBaseCompare.iendswith
+        self.methods['contains'] = sppasFileBaseCompare.contains
+        self.methods['icontains'] = sppasFileBaseCompare.icontains
+        self.methods['regexp'] = sppasFileBaseCompare.regexp
 
         # Compare state/expand to a boolean value
-        self.methods['check'] = sppasPathCompare.check
+        self.methods['state'] = sppasFileBaseCompare.state
+        self.methods['check'] = sppasFileBaseCompare.check
+        self.methods['lock'] = sppasFileBaseCompare.lock
 
     # -----------------------------------------------------------------------
-    # Path identifier
+    # Identifier
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def exact(fp, value):
-        """Test if path strictly matches value.
+    def exact(fb, value):
+        """Test if fb strictly matches value.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
         # perhaps we should test with all systems separators ( '/' or '\' )
-        return fp.id == value
+        return fb.id == value
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def iexact(fp, value):
-        """Test if path matches value without case sensitive.
+    def iexact(fb, value):
+        """Test if fb matches value without case sensitive.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return fp.id.lower() == value.lower()
+        return fb.id.lower() == value.lower()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def startswith(fp, value):
-        """Test if path starts with the characters of the value.
+    def startswith(fb, value):
+        """Test if fb starts with the characters of the value.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return fp.id.startswith(value)
+        return fb.id.startswith(value)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def istartswith(fp, value):
+    def istartswith(fb, value):
         """Case-insensitive startswith.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return fp.id.lower().startswith(value.lower())
+        return fb.id.lower().startswith(value.lower())
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def endswith(fp, value):
-        """Test if path ends with the characters of the value.
+    def endswith(fb, value):
+        """Test if fb ends with the characters of the value.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return fp.id.endswith(value)
+        return fb.id.endswith(value)
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def iendswith(fp, value):
+    def iendswith(fb, value):
         """Case-insensitive endswith.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return fp.id.lower().endswith(value.lower())
+        return fb.id.lower().endswith(value.lower())
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def contains(fp, value):
-        """Test if the path contains the value.
+    def contains(fb, value):
+        """Test if fb contains the value.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return value in fp.id
+        return value in fb.id
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def icontains(fp, value):
+    def icontains(fb, value):
         """Case-insensitive contains.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)
 
-        return value.lower() in fp.id.lower()
+        return value.lower() in fb.id.lower()
 
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def regexp(fp, pattern):
+    def regexp(fb, pattern):
         """Test if text matches pattern.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param pattern: (unicode) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
-        text = fp.id
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
+        text = fb.id
 
         return True if re.match(pattern, text) else False
 
     # -----------------------------------------------------------------------
-    # Check/Expand members
+    # State
     # -----------------------------------------------------------------------
 
     @staticmethod
-    def check(fp, value):
+    def state(fb, state):
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
+        if isinstance(state, int) is False:
+            raise sppasTypeError(state, 'States')
+
+        return fb.get_state() == state
+
+    @staticmethod
+    def check(fb, value):
         """Compare state member to the given value.
 
-        :param fp: (FilePath) Path to compare.
+        :param fb: (FileBase) Instance to compare.
         :param value: (bool) Boolean to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
-        if isinstance(fp, FilePath) is False:
-            raise sppasTypeError(fp, "FilePath")
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
 
-        return (fp.state is States().CHECKED) == value
+        #return (fb.state is States().CHECKED) == value
+        return (fb.state in (States().CHECKED, States().AT_LEAST_ONE_CHECKED)) == value
+
+    @staticmethod
+    def lock(fb, value):
+        """Compare state member to the given value.
+
+        :param fb: (FileBase) Instance to compare.
+        :param value: (bool) Boolean to be compared with.
+        :returns: (bool)
+        :raises: sppasTypeError
+
+        """
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
+
+        return (fb.state in (States().LOCKED, States().AT_LEAST_ONE_LOCKED)) == value
 
 # ---------------------------------------------------------------------------
 
 
-class sppasRootCompare(sppasBaseCompare):
-    """Comparison methods for FileRoot.
+class sppasFileStateCompare(sppasBaseCompare):
+    """Comparison methods for state of a FileBase.
 
-    :author:       Brigitte Bigi
+    :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
@@ -312,222 +336,27 @@ class sppasRootCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-    >>> tc = sppasRootCompare()
-    >>> tc.exact(FileRoot("oriana1"), u("oriana1"))
-    >>> tc.methods['exact'](FileRoot("oriana1"), u("oriana1"))
-    >>> tc.get('exact')(FileRoot("oriana1"), u("oriana1"))
-
+    >>> tc = sppasFileStateCompare()
+    >>> tc.state(FileName("oriana1"), States().UNUSED)
+    >>> tc.methods['state'](FileName("oriana1"), States().UNUSED)
+    >>> tc.get('state')(FileName("oriana1"), States().UNUSED)
     """
 
     def __init__(self):
-        """Create a sppasRootCompare instance."""
-        super(sppasRootCompare, self).__init__()
+        """Create a sppasFileNameExtensionComparator instance."""
+        super(sppasFileStateCompare, self).__init__()
 
-        # Compare the id to a text value
-        self.methods['exact'] = sppasRootCompare.exact
-        self.methods['iexact'] = sppasRootCompare.iexact
-        self.methods['startswith'] = sppasRootCompare.startswith
-        self.methods['istartswith'] = sppasRootCompare.istartswith
-        self.methods['endswith'] = sppasRootCompare.endswith
-        self.methods['iendswith'] = sppasRootCompare.iendswith
-        self.methods['contains'] = sppasRootCompare.contains
-        self.methods['icontains'] = sppasRootCompare.icontains
-        self.methods['regexp'] = sppasRootCompare.regexp
-
-        # Compare state/expand to a boolean value
-        self.methods['check'] = sppasRootCompare.check
-
-    # -----------------------------------------------------------------------
-    # Root identifier
-    # -----------------------------------------------------------------------
+        # Compare the state to a given value
+        self.methods['state'] = sppasFileStateCompare.state
 
     @staticmethod
-    def exact(fr, value):
-        """Test if root strictly matches value.
+    def state(fb, state):
+        if isinstance(fb, FileBase) is False:
+            raise sppasTypeError(fb, "FileBase")
+        if isinstance(state, int) is False:
+            raise sppasTypeError(state, 'States')
 
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        # perhaps we should test with all systems separators ( '/' or '\' )
-        return fr.id == value
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def iexact(fr, value):
-        """Test if root matches value without case sensitive.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return fr.id.lower() == value.lower()
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def startswith(fr, value):
-        """Test if root starts with the characters of the value.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return fr.id.startswith(value)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def istartswith(fr, value):
-        """Case-insensitive startswith.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return fr.id.lower().startswith(value.lower())
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def endswith(fr, value):
-        """Test if root ends with the characters of the value.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return fr.id.endswith(value)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def iendswith(fr, value):
-        """Case-insensitive endswith.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return fr.id.lower().endswith(value.lower())
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def contains(fr, value):
-        """Test if the root contains the value.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return value in fr.id
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def icontains(fr, value):
-        """Case-insensitive contains.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (unicode) Unicode string to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        if not isinstance(value, text_type):
-            raise sppasTypeError(value, text_type)
-
-        return value.lower() in fr.id.lower()
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def regexp(fr, pattern):
-        """Test if text matches pattern.
-
-        :param fr: (FileRoot) Root to compare.
-        :param pattern: (unicode) Pattern to search.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-        text = fr.id
-
-        return True if re.match(pattern, text) else False
-
-    # -----------------------------------------------------------------------
-    # Check/Expand members
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def check(fr, value):
-        """Compare state member to the given value.
-
-        :param fr: (FileRoot) Root to compare.
-        :param value: (bool) Boolean to be compared with.
-        :returns: (bool)
-        :raises: sppasTypeError
-
-        """
-        if isinstance(fr, FileRoot) is False:
-            raise sppasTypeError(fr, "FileRoot")
-
-        return (fr.statefr is States().CHECKED) == value
+        return fb.get_state() == state
 
 # ---------------------------------------------------------------------------
 
@@ -740,7 +569,7 @@ class sppasFileNameCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasFileNameExtensionCompare(sppasBaseCompare):
+class sppasFileExtCompare(sppasBaseCompare):
     """Comparison methods for FileName extension.
 
     :author:       Barthélémy Drabczuk
@@ -751,7 +580,7 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-    >>> tc = sppasFileNameExtensionCompare()
+    >>> tc = sppasFileExtCompare()
     >>> tc.exact(FileName("oriana1"), u("oriana1"))
     >>> tc.methods['exact'](FileName("oriana1"), u("oriana1"))
     >>> tc.get('exact')(FileName("oriana1"), u("oriana1"))
@@ -759,18 +588,18 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 
     def __init__(self):
         """Create a sppasFileNameExtensionComparator instance."""
-        super(sppasFileNameExtensionCompare, self).__init__()
+        super(sppasFileExtCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['exact'] = sppasFileNameExtensionCompare.exact
-        self.methods['iexact'] = sppasFileNameExtensionCompare.iexact
-        self.methods['startswith'] = sppasFileNameExtensionCompare.startswith
-        self.methods['istartswith'] = sppasFileNameExtensionCompare.istartswith
-        self.methods['endswith'] = sppasFileNameExtensionCompare.endswith
-        self.methods['iendswith'] = sppasFileNameExtensionCompare.iendswith
-        self.methods['contains'] = sppasFileNameExtensionCompare.contains
-        self.methods['icontains'] = sppasFileNameExtensionCompare.icontains
-        self.methods['regexp'] = sppasFileNameExtensionCompare.regexp
+        self.methods['exact'] = sppasFileExtCompare.exact
+        self.methods['iexact'] = sppasFileExtCompare.iexact
+        self.methods['startswith'] = sppasFileExtCompare.startswith
+        self.methods['istartswith'] = sppasFileExtCompare.istartswith
+        self.methods['endswith'] = sppasFileExtCompare.endswith
+        self.methods['iendswith'] = sppasFileExtCompare.iendswith
+        self.methods['contains'] = sppasFileExtCompare.contains
+        self.methods['icontains'] = sppasFileExtCompare.icontains
+        self.methods['regexp'] = sppasFileExtCompare.regexp
 
     # -----------------------------------------------------------------------
     # FileName Extension
@@ -948,8 +777,8 @@ class sppasFileNameExtensionCompare(sppasBaseCompare):
 # ---------------------------------------------------------------------------
 
 
-class sppasFileNameStateCompare(sppasBaseCompare):
-    """Comparison methods for FileName properties.
+class sppasFileRefCompare(sppasBaseCompare):
+    """Comparison methods for FileReference id.
 
     :author:       Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -959,62 +788,27 @@ class sppasFileNameStateCompare(sppasBaseCompare):
 
     :Example: Three different ways to compare a file data content to a given string
 
-    >>> tc = sppasFileNameStateCompare()
-    >>> tc.state(FileName("oriana1"), States().UNUSED)
-    >>> tc.methods['state'](FileName("oriana1"), States().UNUSED)
-    >>> tc.get('state')(FileName("oriana1"), States().UNUSED)
-    """
-
-    def __init__(self):
-        """Create a sppasFileNameExtensionComparator instance."""
-        super(sppasFileNameStateCompare, self).__init__()
-
-        # Compare the state to a given value
-        self.methods['state'] = sppasFileNameStateCompare.state
-
-    @staticmethod
-    def state(fn, state):
-        if isinstance(fn, FileName) is False:
-            raise sppasTypeError(fn, FileName)
-        if isinstance(state, int) is False:
-            raise sppasTypeError(state, 'States')
-
-        return fn.get_state() == state
-
-# ---------------------------------------------------------------------------
-
-
-class sppasReferenceCompare(sppasBaseCompare):
-    """Comparison methods for Category id.
-
-    :author:       Barthélémy Drabczuk
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    :Example: Three different ways to compare a file data content to a given string
-
-    >>> tc = sppasReferenceCompare()
+    >>> tc = sppasFileRefCompare()
     >>> tc.exact(FileReference("mic"), u("mic"))
     >>> tc.methods['exact'](FileReference("mic"), u("mic"))
     >>> tc.get('exact')(FileReference("mic"), u("mic"))
+
     """
 
     def __init__(self):
-        """Create a sppasReferenceCompare instance."""
-        super(sppasReferenceCompare, self).__init__()
+        """Create a sppasFileRefCompare instance."""
+        super(sppasFileRefCompare, self).__init__()
 
         # Compare the id to a text value
-        self.methods['exact'] = sppasReferenceCompare.exact
-        self.methods['iexact'] = sppasReferenceCompare.iexact
-        self.methods['startswith'] = sppasReferenceCompare.startswith
-        self.methods['istartswith'] = sppasReferenceCompare.istartswith
-        self.methods['endswith'] = sppasReferenceCompare.endswith
-        self.methods['iendswith'] = sppasReferenceCompare.iendswith
-        self.methods['contains'] = sppasReferenceCompare.contains
-        self.methods['icontains'] = sppasReferenceCompare.icontains
-        self.methods['regexp'] = sppasReferenceCompare.regexp
+        self.methods['exact'] = sppasFileRefCompare.exact
+        self.methods['iexact'] = sppasFileRefCompare.iexact
+        self.methods['startswith'] = sppasFileRefCompare.startswith
+        self.methods['istartswith'] = sppasFileRefCompare.istartswith
+        self.methods['endswith'] = sppasFileRefCompare.endswith
+        self.methods['iendswith'] = sppasFileRefCompare.iendswith
+        self.methods['contains'] = sppasFileRefCompare.contains
+        self.methods['icontains'] = sppasFileRefCompare.icontains
+        self.methods['regexp'] = sppasFileRefCompare.regexp
 
     # -----------------------------------------------------------------------
     # Reference Id

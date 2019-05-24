@@ -3,7 +3,11 @@ from os import *
 from os.path import dirname
 from random import randint
 
-from sppas.src.files.filedatacompare import *
+from sppas.src.files import FileName, FileRoot, FilePath, FileReference
+from sppas.src.files.filedatacompare import sppasFileBaseCompare
+from sppas.src.files.filedatacompare import sppasFileNameCompare
+from sppas.src.files.filedatacompare import sppasFileExtCompare
+from sppas.src.files.filedatacompare import sppasFileRefCompare
 
 
 class TestFileDataCompare(unittest.TestCase):
@@ -14,17 +18,14 @@ class TestFileDataCompare(unittest.TestCase):
         self.fileName = 'test_filedatacompare'
 
         # for FileNameExtensionCompare
-        self.cmpFileNameExtension = sppasFileNameExtensionCompare()
+        self.cmpFileNameExtension = sppasFileExtCompare()
         self.extenstion = path.splitext(__file__)[1].upper()
 
-        # for FileNameStateCompare
-        self.cmpFileNameState = sppasFileNameStateCompare()
-
         # for FilePathCompare
-        self.cmpPath = sppasPathCompare()
+        self.cmpPath = sppasFileBaseCompare()
 
         # for FileRootComapre
-        self.cmpRoot = sppasRootCompare
+        self.cmpRoot = sppasFileBaseCompare
 
     def test_exact_fn(self):
         d = __file__
@@ -197,12 +198,6 @@ class TestFileDataCompare(unittest.TestCase):
         # fp isn't checked
         self.assertTrue(fp.match([(self.cmpRoot.check, False, False)]))
 
-    def test_state_fn(self):
-        d = __file__
-        fn = FileName(d)
-
-        self.assertTrue(fn.match([(self.cmpFileNameState.state, States().UNUSED, False)]))
-
 
 class TestFileDataReferencesCompare(unittest.TestCase):
 
@@ -210,7 +205,7 @@ class TestFileDataReferencesCompare(unittest.TestCase):
         self.micros = FileReference('microphone')
         self.micros.append(sppasAttribute('mic1', 'Bird UM1', None, '最初のインタビューで使えていましたマイク'))
         self.micros.add('mic2', 'AKG D5')
-        self.id_cmp = sppasReferenceCompare()
+        self.id_cmp = sppasFileRefCompare()
 
     def test_exact_id(self):
         self.assertTrue(self.micros.match([(self.id_cmp.exact, 'microphone', False)]))

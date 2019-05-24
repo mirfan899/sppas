@@ -42,7 +42,7 @@ class TestsFileDataFilter (unittest.TestCase):
         self.assertEqual(3, len(self.data_filter.extension(not_exact='.PY')))
 
     def test_fileNameState(self):
-        self.assertEqual(4, len(self.data_filter.fstate(state=States().UNUSED)))
+        self.assertEqual(4, len(self.data_filter.file(state=States().UNUSED)))
 
     def test_ref_id(self):
         self.assertEqual(0, len(self.data_filter.ref(startswith='a')))

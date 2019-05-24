@@ -32,15 +32,61 @@
     src.files.filedatafilters.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    A comparator must be implemented to define comparison functions. Then
+    the method 'match' of the FileBase class can be invoked.
+    The FileDataFilter() class is based on the use of this solution. It allows
+    to combine results and is a simplified way to write a request.
+    The use of the FileBase().match() is described in the next examples.
+
+    :Example: Search if a FilePath() is exactly matching "my_path":
+
+        >>> cmp = sppasFileBaseCompare()
+        >>> fp.match([(cmp.exact, "my_path", False)])
+
+    :Example: Search if a FilePath() is starting with "my_path" and is checked:
+
+        >>> fp.match(
+        >>>     [(cmp.startswith, "my_path", False),
+        >>>      (cmp.state, True, False)],
+        >>>     logic_bool="and")
+
+
+    :Example: Search if a FileRoot() is exactly matching "my_path/toto":
+
+        >>> cmp = sppasFileBaseCompare()
+        >>> fr.match([(cmp.exact, "my_path", False)])
+
+    :Example: Search if a FileRoot() is starting with "my_path/toto"
+    and is checked:
+
+        >>> fr.match(
+        >>>     [(cmp.startswith, "my_path/toto", False),
+        >>>      (cmp.state, True, False)],
+        >>>     logic_bool="and")
+
+    :Example: Search if a FileName() is starting with "toto" and is not
+    a TextGrid and is checked:
+
+        >>> cmpn = sppasNameCompare()
+        >>> cmpe = sppasExtensionCompare()
+        >>> cmpp = sppasFileBaseCompare()
+        >>> fn.match(
+        >>>    [(cmpn.startswith, "toto", False),
+        >>>     (cmpe.iexact, "textgrid", True),
+        >>>     (cmpp.state, True, False)],
+        >>>    logic_bool="and")
+
 """
 
 from sppas.src.structs.basefilters import sppasBaseFilters
 from sppas.src.structs.basefset import sppasBaseSet
 
-from .filedatacompare import sppasPathCompare, sppasRootCompare
-from .filedatacompare import sppasFileNameCompare, sppasFileNameExtensionCompare
-from .filedatacompare import sppasFileNameStateCompare
-from .filedatacompare import sppasReferenceCompare, sppasAttributeCompare
+from .filedatacompare import sppasFileBaseCompare
+from .filedatacompare import sppasFileStateCompare
+from .filedatacompare import sppasFileNameCompare
+from .filedatacompare import sppasFileExtCompare
+from .filedatacompare import sppasFileRefCompare
+from .filedatacompare import sppasAttributeCompare
 
 # ---------------------------------------------------------------------------
 
@@ -48,8 +94,7 @@ from .filedatacompare import sppasReferenceCompare, sppasAttributeCompare
 class sppasFileDataFilters(sppasBaseFilters):
     """This class implements the 'SPPAS file data filter system'.
 
-    :author:       Brigitte Bigi
-    :author:       Barthélémy Drabczuk
+    :author:       Brigitte Bigi, Barthélémy Drabczuk
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
@@ -74,6 +119,8 @@ class sppasFileDataFilters(sppasBaseFilters):
         super(sppasFileDataFilters, self).__init__(obj)
 
     # -----------------------------------------------------------------------
+    # Paths/Roots/Files
+    # -----------------------------------------------------------------------
 
     def path(self, **kwargs):
         """Apply functions on all paths of the object.
@@ -88,10 +135,10 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.path(startswith="c:\\users\myname") | f.path(startswith="ta")
 
         :param kwargs: logic_bool/any sppasPathCompare() method.
-        :returns: (sppasDataSet)
+        :returns: (sppasDataSet) Set of FileName() instances
 
         """
-        comparator = sppasPathCompare()
+        comparator = sppasFileBaseCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
@@ -129,10 +176,10 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.root(startswith="myfile") | f.root(startswith="ta")
 
         :param kwargs: logic_bool/any sppasRootCompare() method.
-        :returns: (sppasDataSet)
+        :returns: (sppasDataSet) Set of FileName() instances
 
         """
-        comparator = sppasRootCompare()
+        comparator = sppasFileBaseCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
@@ -156,24 +203,17 @@ class sppasFileDataFilters(sppasBaseFilters):
 
     # -----------------------------------------------------------------------
 
-    def name(self, **kwargs):
-        """Apply functions on all names of the files of the object.
+    def __search_fn(self, comparator, **kwargs):
+        """Apply functions on files.
 
         Each argument is made of a function name and its expected value.
         Each function can be prefixed with 'not_', like in the next example.
 
-        :Example:
-
-            >>> f.name(iexact="myfile-phon", not_startswith='a', logic_bool="and")
-            >>> f.name(iexact="myfile-phon") & f.name(not_startswith='a')
-            >>> f.name(iexact="myfile-phon") | f.name(startswith="ta")
-
+        :param comparator: (sppasBaseCompare)
         :param kwargs: logic_bool/any sppasFileNameCompare() method.
-        :returns: (sppasDataSet)
+        :returns: (sppasDataSet) Set of FileName() instances
 
         """
-        comparator = sppasFileNameCompare()
-
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
         logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
@@ -193,6 +233,47 @@ class sppasFileDataFilters(sppasBaseFilters):
                         data.append(fn, path_fct_values)
 
         return data
+
+    # -----------------------------------------------------------------------
+
+    def file(self, **kwargs):
+        """Apply functions on all files of the object.
+
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
+
+        :Examples:
+
+            >>> f.file(state=State().UNUSED)
+            >>> f.file(contains="dlg")
+
+        :param kwargs: logic_bool/any sppasFileStateCompare() method.
+        :returns: (sppasDataSet)
+
+        """
+        comparator = sppasFileBaseCompare()
+        return self.__search_fn(comparator, **kwargs)
+
+    # -----------------------------------------------------------------------
+
+    def name(self, **kwargs):
+        """Apply functions on all names of the files of the object.
+
+        Each argument is made of a function name and its expected value.
+        Each function can be prefixed with 'not_', like in the next example.
+
+        :Example:
+
+            >>> f.name(iexact="myfile-phon", not_startswith='a', logic_bool="and")
+            >>> f.name(iexact="myfile-phon") & f.name(not_startswith='a')
+            >>> f.name(iexact="myfile-phon") | f.name(startswith="ta")
+
+        :param kwargs: logic_bool/any sppasFileNameCompare() method.
+        :returns: (sppasDataSet) Set of FileName() instances
+
+        """
+        comparator = sppasFileNameCompare()
+        return self.__search_fn(comparator, **kwargs)
 
     # -----------------------------------------------------------------------
 
@@ -208,70 +289,15 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.extension(startswith=".TEXT") & f.extension(not_endswith='a')
             >>> f.extension(startswith=".TEXT") | f.extension(startswith="ta")
 
-        :param kwargs: logic_bool/any sppasFileNameExtensionCompare() method.
+        :param kwargs: logic_bool/any sppasFileExtCompare() method.
         :returns: (sppasDataSet)
 
         """
-        comparator = sppasFileNameExtensionCompare()
-
-        # extract the information from the arguments
-        sppasBaseFilters.test_args(comparator, **kwargs)
-        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
-        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
-
-        # the set of results
-        data = sppasBaseSet()
-
-        # search for the data to be returned:
-        for path in self.obj:
-            # append all files of the path
-            for fr in path:
-                for fn in fr:
-                    is_matching = fn.match(path_functions, logic_bool)
-                    if is_matching is True:
-                        data.append(fn, path_fct_values)
-
-        return data
+        comparator = sppasFileExtCompare()
+        return self.__search_fn(comparator, **kwargs)
 
     # -----------------------------------------------------------------------
-
-    def fstate(self, **kwargs):
-        """Apply functions on all file properties of the object.
-
-        Each argument is made of a function name and its expected value.
-        Each function can be prefixed with 'not_', like in the next example.
-
-        :Example:
-
-            >>> f.file(state=State().UNUSED)
-
-        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
-        :returns: (sppasDataSet)
-
-        """
-        comparator = sppasFileNameStateCompare()
-
-        # extract the information from the arguments
-        sppasBaseFilters.test_args(comparator, **kwargs)
-        logic_bool = sppasBaseFilters.fix_logic_bool(**kwargs)
-        path_fct_values = sppasBaseFilters.fix_function_values(comparator, **kwargs)
-        path_functions = sppasBaseFilters.fix_functions(comparator, **kwargs)
-
-        # the set of results
-        data = sppasBaseSet()
-
-        # search for the data to be returned:
-        for path in self.obj:
-            # append all files of the path
-            for fr in path:
-                for fn in fr:
-                    is_matching = fn.match(path_functions, logic_bool)
-                    if is_matching is True:
-                        data.append(fn, path_fct_values)
-
-        return data
-
+    # References/Attributes
     # -----------------------------------------------------------------------
 
     def ref(self, **kwargs):
@@ -286,11 +312,11 @@ class sppasFileDataFilters(sppasBaseFilters):
             >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
             >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
-        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
+        :param kwargs: logic_bool/any sppasFileStateCompare() method.
         :returns: (sppasDataSet)
 
         """
-        comparator = sppasReferenceCompare()
+        comparator = sppasFileRefCompare()
 
         # extract the information from the arguments
         sppasBaseFilters.test_args(comparator, **kwargs)
@@ -327,7 +353,7 @@ class sppasFileDataFilters(sppasBaseFilters):
         >>> f.ref(startswith="toto") & f.ref(not_endswith="tutu")
         >>> f.ref(startswith="toto") | f.ref(startswith="tutu")
 
-        :param kwargs: logic_bool/any sppasFileNameStateCompare() method.
+        :param kwargs: logic_bool/any sppasFileStateCompare() method.
         :returns: (sppasDataSet)
         """
         comparator = sppasAttributeCompare()
