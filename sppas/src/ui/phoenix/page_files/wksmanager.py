@@ -83,7 +83,10 @@ class WorkspacesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
+        # The data this page is working on
         self.__data = FileData()
+
+        # Construct the panel
         self._create_content()
         self._setup_events()
         self.Layout()

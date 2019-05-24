@@ -96,7 +96,7 @@ class sppasAttribute(object):
             ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
             return key_to_test == ra
 
-        if 2 < len(identifier) < 13:
+        if 1 < len(identifier) < 13:
             return is_restricted_ascii(identifier)
         return False
 
@@ -108,7 +108,7 @@ class sppasAttribute(object):
 
         if sppasAttribute.validate(identifier) is False:
             raise ValueError(
-                "Identifier '{:s}' is not valid. It should be between 3 "
+                "Identifier '{:s}' is not valid. It should be between 2 "
                 "and 12 ASCII-characters.".format(identifier))
 
         self.__id = identifier

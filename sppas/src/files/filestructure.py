@@ -27,22 +27,18 @@
         ---------------------------------------------------------------------
 
     src.files.filestructure.py
-    ~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 import mimetypes
-import json
 import logging
+import os
 from datetime import datetime
-
-from os.path import splitext, abspath, join
-from os.path import getsize, getmtime
-from os.path import isfile, isdir, exists
-from os.path import basename, dirname
 
 from sppas import sppasTypeError
 from sppas import sppasValueError
+
 from .fileref import FileReference
 from .fileexc import FileOSError, FileTypeError, PathTypeError
 from .fileexc import FileRootValueError
@@ -95,17 +91,17 @@ class FileName(FileBase):
 
         """
         super(FileName, self).__init__(identifier)
-        if exists(self.id) is False:
+        if os.path.exists(self.id) is False:
             raise FileOSError(self.id)
-        if isfile(self.id) is False:
+        if os.path.isfile(self.id) is False:
             raise FileTypeError(self.id)
 
         # Properties of the file (protected)
         # ----------------------------------
 
         # The name (no path, no extension)
-        fn, ext = splitext(self.get_id())
-        self.__name = basename(fn)
+        fn, ext = os.path.splitext(self.get_id())
+        self.__name = os.path.basename(fn)
 
         # The extension is forced to be in upper case
         self.__extension = ext.upper()
@@ -119,7 +115,7 @@ class FileName(FileBase):
 
     def folder(self):
         """Return the name of the directory of this file."""
-        return dirname(self.id)
+        return os.path.dirname(self.id)
 
     # -----------------------------------------------------------------------
 
@@ -198,15 +194,16 @@ class FileName(FileBase):
 
         """
         # test if the file is still existing
-        if isfile(self.get_id()) is False:
+        if os.path.isfile(self.get_id()) is False:
             raise FileTypeError(self.get_id())
 
         # get time and size
         try:
-            self.__date = datetime.fromtimestamp(getmtime(self.get_id()))
+            self.__date = datetime.fromtimestamp(
+                os.path.getmtime(self.get_id()))
         except ValueError:
             self.__date = None
-        self.__filesize = getsize(self.get_id())
+        self.__filesize = os.path.getsize(self.get_id())
 
     # -----------------------------------------------------------------------
 
@@ -318,8 +315,8 @@ class FileRoot(FileBase):
         :returns: (str) Root pattern
 
         """
-        fn = basename(filename)
-        fn = splitext(fn)[0]
+        fn = os.path.basename(filename)
+        fn = os.path.splitext(fn)[0]
         for pattern in ANNOT_PATTERNS:
             if fn.endswith(pattern) is True:
                 return pattern
@@ -335,7 +332,7 @@ class FileRoot(FileBase):
         :returns: (str) Root
 
         """
-        fn = splitext(filename)[0]
+        fn = os.path.splitext(filename)[0]
         for pattern in ANNOT_PATTERNS:
             if fn.endswith(pattern) is True:
                 fn = fn[:len(fn) - len(pattern)]
@@ -428,6 +425,7 @@ class FileRoot(FileBase):
         if self.__references is None:
             return list()
         return self.__references
+
     # -----------------------------------------------------------------------
 
     def add_ref(self, ref):
@@ -437,6 +435,9 @@ class FileRoot(FileBase):
         for r in self.get_references():
             if r.id == ref.id:
                 return False
+        if self.__references is None:
+            self.__references = list()
+
         self.__references.append(ref)
         return True
 
@@ -672,10 +673,10 @@ class FilePath(FileBase):
         :raise: OSError if filepath does not match a directory (not file/link)
 
         """
-        super(FilePath, self).__init__(abspath(filepath))
-        if exists(filepath) is False:
+        super(FilePath, self).__init__(os.path.abspath(filepath))
+        if os.path.exists(filepath) is False:
             raise FileOSError(filepath)
-        if isdir(self.get_id()) is False:
+        if os.path.isdir(self.get_id()) is False:
             raise PathTypeError(filepath)
 
         # A list of FileRoot instances
@@ -758,11 +759,11 @@ class FilePath(FileBase):
         self.id.
 
         """
-        abs_name = abspath(filename)
-        if isdir(abs_name) and abs_name == self.id:
+        abs_name = os.path.abspath(filename)
+        if os.path.isdir(abs_name) and abs_name == self.id:
             return self
 
-        elif isfile(filename):
+        elif os.path.isfile(filename):
             idt = self.identifier(filename)
             for fr in self.__roots:
                 fn = fr.get_object(idt)
@@ -786,12 +787,12 @@ class FilePath(FileBase):
         :raise: FileOSError if filename does not match a regular file
 
         """
-        f = abspath(filename)
+        f = os.path.abspath(filename)
 
-        if isfile(f) is False:
-            f = join(self.id, filename)
+        if os.path.isfile(f) is False:
+            f = os.path.join(self.id, filename)
 
-        if isfile(f) is False:
+        if os.path.isfile(f) is False:
             raise FileOSError(filename)
 
         return f
@@ -834,7 +835,7 @@ class FilePath(FileBase):
             if fr is not None:
                 raise Exception('The root {:s} is already in the path'.format(entry.id))
             # test if root is matching this path
-            abs_name = dirname(entry.id)
+            abs_name = os.path.dirname(entry.id)
             if abs_name != self.id:
                 raise Exception('The root {:s} is not matching the path {:s}'.format(entry.id, self.id))
             self.__roots.append(entry)

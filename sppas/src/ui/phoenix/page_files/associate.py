@@ -76,13 +76,15 @@ class AssociatePanel(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
-        self._create_content()
-        self._setup_events()
-
         # State of the button to check all or none of the filenames
         self._checkall = False
+
+        # The data this page is working on
         self.__data = FileData()
 
+        # Construct the panel
+        self._create_content()
+        self._setup_events()
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -123,13 +125,13 @@ class AssociatePanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def __create_button(self, icon):
-        btn = BitmapTextButton(self, name=icon)
+    def __create_button(self, icon, label=None):
+        btn = BitmapTextButton(self, name=icon, label=label)
         btn.FocusStyle = wx.PENSTYLE_SOLID
         btn.FocusWidth = 3
         btn.FocusColour = wx.Colour(128, 128, 196, 128)  # violet
-        # btn.LabelPosition = wx.RIGHT
-        # btn.Spacing = 12
+        btn.LabelPosition = wx.BOTTOM
+        btn.Spacing = 4
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
         btn.SetMinSize(wx.Size(24, 24))

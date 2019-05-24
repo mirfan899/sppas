@@ -209,7 +209,6 @@ class NotEmptyTextValidator(wx.Validator):
         return True
 
     def Validate(self, win=None):
-        logging.debug('VALIDATE TEXT')
         text_ctrl = self.GetWindow()
         text = text_ctrl.GetValue().strip()
         if len(text) == 0:
@@ -259,7 +258,6 @@ class ASCIITextValidator(wx.Validator):
         return text == ra
 
     def Validate(self, win=None):
-        logging.debug('VALIDATE TEXT')
         text_ctrl = self.GetWindow()
         text = text_ctrl.GetValue().strip()
         if ASCIITextValidator.is_restricted_ascii(text) is False:

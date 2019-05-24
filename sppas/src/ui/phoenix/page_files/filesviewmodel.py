@@ -189,9 +189,9 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         self.__mapper[1] = FilesTreeViewModel.__create_col('file')
         self.__mapper[2] = FilesTreeViewModel.__create_col('state')
         self.__mapper[3] = FilesTreeViewModel.__create_col('type')
-        self.__mapper[4] = FilesTreeViewModel.__create_col('date')
-        self.__mapper[5] = FilesTreeViewModel.__create_col('size')
-        self.__mapper[6] = FilesTreeViewModel.__create_col('')
+        self.__mapper[4] = FilesTreeViewModel.__create_col('refs')
+        self.__mapper[5] = FilesTreeViewModel.__create_col('date')
+        self.__mapper[6] = FilesTreeViewModel.__create_col('size')
 
         # GUI information which can be managed by the mapper
         self._bgcolor = None
@@ -351,7 +351,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         """
         # The hidden root does not have a parent
-        if not item:
+        if item is None:
             return wx.dataview.NullDataViewItem
 
         node = self.ItemToObject(item)
@@ -401,6 +401,12 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                 ext = node.get_extension()
                 icon_name = self.exticon.get_icon_name(ext)
                 return icon_name
+            return ""
+
+        if self.__mapper[col].id == "refs":
+            if isinstance(node, FileRoot) is True:
+                refs_ids = [ref.id for ref in node.get_references()]
+                return " ".join(refs_ids)
             return ""
 
         return self.__mapper[col].get_value(node)
@@ -729,14 +735,14 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     @staticmethod
     def __create_col(name):
         if name == "icon":
-            col = ColumnProperties("Soft", name, "wxBitmap")
+            col = ColumnProperties(" ", name, "wxBitmap")
             col.width = 36
             col.align = wx.ALIGN_CENTRE
             col.renderer = FileIconRenderer()
             return col
 
         if name == "file":
-            col_file = ColumnProperties("File", name)
+            col_file = ColumnProperties("Path - Root - File", name)
             col_file.add_fct_name(FilePath, "get_id")
             col_file.add_fct_name(FileRoot, "get_id")
             col_file.add_fct_name(FileName, "get_name")
@@ -745,7 +751,6 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         if name == "state":
             col = ColumnProperties("State", name, "wxBitmap")
-            # col.mode = wx.dataview.DATAVIEW_CELL_ACTIVATABLE
             col.width = 36
             col.align = wx.ALIGN_CENTRE
             col.renderer = StateIconRenderer()
@@ -758,6 +763,13 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             col = ColumnProperties("Type", name)
             col.add_fct_name(FileName, "get_extension")
             col.width = 120
+            return col
+
+        if name == "refs":
+            col = ColumnProperties("References", name)
+            # col.add_fct_name(FileRoot, "get_references")
+            col.width = 80
+            col.align = wx.ALIGN_LEFT
             return col
 
         if name == "date":

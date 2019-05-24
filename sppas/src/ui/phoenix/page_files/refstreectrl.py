@@ -114,6 +114,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
         :param ref_name: (str)
         :param ref_type: (str) On of the accepted type of references
+        :raise: Exception
 
         """
         item = self._model.create_ref(ref_name, ref_type)
@@ -121,7 +122,6 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
             raise Exception("An unexpected error occurred.")
         logging.info('Reference created successfully: {:s}, {:d}'
                      ''.format(ref_name, ref_type))
-        return item
 
     # ------------------------------------------------------------------------
 

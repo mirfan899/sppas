@@ -44,9 +44,8 @@ from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticLine
 from sppas.src.ui.phoenix.windows import sppasStaticText
 from sppas.src.ui.phoenix.windows import sppasTextCtrl
-from sppas.src.ui.phoenix.windows import NotEmptyTextValidator
 
-from sppas.src.ui.phoenix.dialogs.messages import sppasErrorDialog, Error, Information
+from sppas.src.ui.phoenix.dialogs.messages import Error, Information
 
 from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
@@ -141,7 +140,7 @@ class ReferencesManager(sppasPanel):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
-            evt = DataChangedEvent(data=self.FindWindow("fileview").get_data())
+            evt = DataChangedEvent(data=self.FindWindow("refsview").get_data())
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -201,12 +200,33 @@ class ReferencesManager(sppasPanel):
             rtype = dlg.get_rtype()
             try:
                 self.FindWindow('refsview').CreateRef(rname, rtype)
+                self.notify()
             except Exception as e:
                 logging.error(str(e))
                 message = "The reference {:s} has not been created due to " \
                           "the following error: {:s}".format(rname, str(e))
                 Error(message)
         dlg.Destroy()
+
+    # ------------------------------------------------------------------------
+
+    def _delete(self):
+        """Delete the selected references.
+
+        """
+        view = self.FindWindow('refsview')
+        if view.HasCheckedRefs() is False:
+            Error('No reference checked.')
+        else:
+            try:
+                nb = view.RemoveCheckedRefs()
+                if nb > 0:
+                    Information('{:d} references removed.'.format(nb))
+                    self.notify()
+            except Exception as e:
+                Error(
+                    'An error occurred while removing the references: {:s}'
+                    ''.format(str(e)))
 
     # ------------------------------------------------------------------------
 
@@ -234,24 +254,6 @@ class ReferencesManager(sppasPanel):
                         Error(str(e))
 
             dlg.Destroy()
-
-    # ------------------------------------------------------------------------
-
-    def _delete(self):
-        """Delete the selected references.
-
-        """
-        view = self.FindWindow('refsview')
-        if view.HasCheckedRefs() is False:
-            Error('No reference checked.')
-        else:
-            try:
-                nb = view.RemoveCheckedRefs()
-                Information('{:d} references removed.'.format(nb))
-            except Exception as e:
-                Error(
-                    'An error occurred while removing the references: {:s}'
-                    ''.format(str(e)))
 
 # ----------------------------------------------------------------------------
 # Panel to create a reference
@@ -283,7 +285,7 @@ class sppasCreateReference(sppasDialog):
         self._create_content()
         self._create_buttons()
 
-        self.SetMinSize(wx.Size(480, 320))
+        # self.SetMinSize(wx.Size(480, 320))
         self.LayoutComponents()
         self.CenterOnParent()
         self.FadeIn(deltaN=-8)
@@ -324,7 +326,9 @@ class sppasCreateReference(sppasDialog):
         grid.Add(self.choice, 1, flag=wx.EXPAND)
 
         panel.SetSizer(grid)
+        panel.SetMinSize(wx.Size(320, 200))
         panel.SetAutoLayout(True)
+        grid.FitInside(panel)
         self.SetContent(panel)
 
     # -----------------------------------------------------------------------
@@ -443,14 +447,14 @@ class sppasEditAttributes(sppasDialog):
         ident = sppasTextCtrl(
             parent=panel,
             value="",
-            validator=NotEmptyTextValidator(),
+            validator=IdentifierTextValidator(),
             name="text_id"
         )
         self.Bind(wx.EVT_TEXT, self._process_event)
         self.Bind(wx.EVT_SET_FOCUS, self._process_event)
         sizer.Add(ident, pos=(3, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
-        id_st2 = sppasStaticText(panel, label="between 3 and 12 ASCII-only characters")
+        id_st2 = sppasStaticText(panel, label="between 2 and 12 ASCII-only characters")
         sizer.Add(id_st2, pos=(4, 1), flag=wx.EXPAND | wx.LEFT, border=2)
 
         line = sppasStaticLine(panel, orient=wx.LI_HORIZONTAL)
@@ -561,7 +565,7 @@ class IdentifierTextValidator(wx.Validator):
             return False
 
         try:
-            text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_colour)
+            text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_color)
         except:
             text_ctrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 

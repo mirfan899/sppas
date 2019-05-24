@@ -592,17 +592,29 @@ class FileData(FileBase):
     # -----------------------------------------------------------------------
 
     def serialize(self):
+        """Convert this FileData() into a serializable data structure.
+
+        :return: (dict) a dictionary that can be serialized (without classes).
+
+        """
         d = dict()
+
+        # Factual information about this file and this FileData()
         d['wjson'] = "1.0"
         d['software'] = sg.__name__
         d['version'] = sg.__version__
         d['id'] = self.id
+
+        # The list of paths/roots/files stored in this FileData()
         d['paths'] = list()
-        d['catalogue'] = list()
         for fp in self.__data:
             d['paths'].append(fp.serialize())
+
+        # The list of references/attributes stored in this FileData()
+        d['catalogue'] = list()
         for ref in self.__refs:
             d['catalogue'].append(ref.serialize())
+
         return d
 
     # -----------------------------------------------------------------------
@@ -617,28 +629,28 @@ class FileData(FileBase):
             raise KeyError("Workspace 'id' is missing of the dictionary to parse.")
         data = FileData(d['id'])
 
-        # Add all refs in the data
+        # The list of references/attributes stored in the given dict
         if 'catalogue' in d:
             for dictref in d['catalogue']:
                 r = FileReference.parse(dictref)
                 data.add_ref(r)
 
-        # Add all files in the data
+        # The list of paths/roots/files stored in the given dict
         if 'paths' in d:
-            for path in d['paths']:
-                fp = FilePath.parse(path)
+            for dict_path in d['paths']:
+                fp = FilePath.parse(dict_path)
                 data.add(fp)
 
-                # append references in root from the 'refsids" of the dict
-                for root in path['roots']:
-                    fr = data.get_object(root['id'])
-                    if fr is not None:
-                        for ref_id in root['refids']:
+                # append references in roots from the 'refsids" of the dict
+                for dict_root in dict_path['roots']:
+                    fr = data.get_object(dict_root['id'])
+                    if fr is not None and 'refids' in dict_root:
+                        for ref_id in dict_root['refids']:
                             ref = data.get_object(ref_id)
                             if ref is not None:
                                 fr.add_ref(ref)
 
-        # fix the state to roots and paths (from the ones of filenames)
+        # Fix the state to roots and paths (from the ones of files)
         data.update()
         return data
 
