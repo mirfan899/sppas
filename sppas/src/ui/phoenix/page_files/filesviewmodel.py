@@ -742,7 +742,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "file":
-            col_file = ColumnProperties("Path - Root - File", name)
+            col_file = ColumnProperties("Path Root Name", name)
             col_file.add_fct_name(FilePath, "get_id")
             col_file.add_fct_name(FileRoot, "get_id")
             col_file.add_fct_name(FileName, "get_name")
@@ -766,7 +766,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "refs":
-            col = ColumnProperties("References", name)
+            col = ColumnProperties("Ref.", name)
             # col.add_fct_name(FileRoot, "get_references")
             col.width = 80
             col.align = wx.ALIGN_LEFT

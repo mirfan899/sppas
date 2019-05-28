@@ -575,7 +575,7 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             return col
 
         if name == "refs":
-            col = ColumnProperties("Reference id.", name)
+            col = ColumnProperties("Ref. Id.", name)
             col.add_fct_name(sppasAttribute, "get_id")
             col.add_fct_name(FileReference, "get_id")
             col.width = 120

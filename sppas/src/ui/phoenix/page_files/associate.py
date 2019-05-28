@@ -48,6 +48,7 @@ from ..windows import sppasDialog
 from ..windows.button import BitmapTextButton
 
 from .filesevent import DataChangedEvent
+from .btntxttoolbar import BitmapTextToolbar
 
 # ---------------------------------------------------------------------------
 
@@ -122,6 +123,8 @@ class AssociatePanel(sppasPanel):
 
         self.SetMinSize(wx.Size(32, -1))
         self.SetSizer(sizer)
+
+    # ------------------------------------------------------------------------
 
     # ------------------------------------------------------------------------
 
@@ -270,7 +273,8 @@ class sppasFilesFilterDialog(sppasDialog):
             title='{:s} Files selection'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
-        self._create_header()
+        self.CreateHeader(title="Check files with the following filters:",
+                          icon_name="check_filter")
         self._create_content()
         self._create_buttons()
         self.Bind(wx.EVT_BUTTON, self._process_event)
@@ -291,32 +295,35 @@ class sppasFilesFilterDialog(sppasDialog):
     # Methods to construct the GUI
     # -----------------------------------------------------------------------
 
-    def _create_header(self):
-        self.CreateEmptyHeader()
-        panel = self.FindWindow("header")
-        sizer = panel.GetSizer()
-        path_btn = self.__create_action_button(panel, "+ Path", "filter")
-        root_btn = self.__create_action_button(panel, "+ Root", "filter")
-        name_btn = self.__create_action_button(panel, "+ Name", "filter")
-        refs_btn = self.__create_action_button(panel, "+ Refs", "filter")
-        remove_btn = self.__create_action_button(panel, "- Remove", "remove")
-
-        sizer.Add(path_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(root_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(name_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(refs_btn, 1, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(self.VertLine(parent=panel), 0, wx.ALL | wx.EXPAND, 0)
-        sizer.Add(remove_btn, 1, wx.ALL | wx.EXPAND, 0)
-
-    # -----------------------------------------------------------------------
-
     def _create_content(self):
         """Create the content of the message dialog."""
         panel = sppasPanel(self, name="content")
+        tb = self.__create_toolbar(panel)
 
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
+        sizer.Add(wx.Panel(panel), proportion=1, flag=wx.EXPAND, border=0)
+        panel.SetSizer(sizer)
+
+        self.SetMinSize((320, 200))
         panel.SetAutoLayout(True)
-        # panel.SetSizer(grid)
         self.SetContent(panel)
+
+    # -----------------------------------------------------------------------
+
+    def __create_toolbar(self, parent):
+        """Create the toolbar."""
+        tb = BitmapTextToolbar(parent)
+        tb.set_focus_color(wx.Colour(196, 196, 96, 128))
+        tb.AddText("Create filters: ")
+        tb.AddButton("filter_path", "+ Path")
+        tb.AddButton("filter_file", "+ Name")
+        tb.AddButton("filter_ext", "+ Type")
+        tb.AddButton("filter", "+ Ref.")
+        tb.AddButton("filter", "+ Id. Value")
+        tb.AddSpacer()
+        tb.AddButton("filter_remove", "- Remove")
+        return tb
 
     # -----------------------------------------------------------------------
 
