@@ -113,7 +113,11 @@ class BitmapTextToolbar(sppasPanel):
     # -----------------------------------------------------------------------
 
     def create_button(self, text, icon):
-        btn = BitmapTextButton(self, label=text, name=icon)
+        if icon is not None:
+            btn = BitmapTextButton(self, label=text, name=icon)
+        else:
+            btn = BitmapTextButton(self, label=text)
+
         btn.FocusStyle = self._fs
         btn.FocusWidth = self._fw
         btn.FocusColour = self._fc

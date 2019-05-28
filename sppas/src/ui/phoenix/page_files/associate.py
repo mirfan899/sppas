@@ -35,6 +35,7 @@
 
 """
 
+import re
 import wx
 import logging
 
@@ -43,6 +44,7 @@ from sppas import sg
 from sppas.src.config import ui_translation
 from sppas.src.files import FileData
 from sppas.src.files import States
+from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
 from ..windows.button import BitmapTextButton
@@ -263,7 +265,7 @@ class sppasFilesFilterDialog(sppasDialog):
     """
 
     def __init__(self, parent):
-        """Create a feedback dialog.
+        """Create a files filter dialog.
 
         :param parent: (wx.Window)
 
@@ -299,10 +301,14 @@ class sppasFilesFilterDialog(sppasDialog):
         """Create the content of the message dialog."""
         panel = sppasPanel(self, name="content")
         tb = self.__create_toolbar(panel)
+        self.listctrl = wx.dataview.DataViewListCtrl(panel, wx.ID_ANY)
+        self.listctrl.AppendTextColumn("filter", width=80)
+        self.listctrl.AppendTextColumn("function", width=90)
+        self.listctrl.AppendTextColumn("value", width=120)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
-        sizer.Add(wx.Panel(panel), proportion=1, flag=wx.EXPAND, border=0)
+        sizer.Add(self.listctrl, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
         panel.SetSizer(sizer)
 
         self.SetMinSize((320, 200))
@@ -315,14 +321,13 @@ class sppasFilesFilterDialog(sppasDialog):
         """Create the toolbar."""
         tb = BitmapTextToolbar(parent)
         tb.set_focus_color(wx.Colour(196, 196, 96, 128))
-        tb.AddText("Create filters: ")
-        tb.AddButton("filter_path", "+ Path")
-        tb.AddButton("filter_file", "+ Name")
-        tb.AddButton("filter_ext", "+ Type")
-        tb.AddButton("filter", "+ Ref.")
-        tb.AddButton("filter", "+ Id. Value")
+        tb.AddButton("filter_path", "Path")
+        tb.AddButton("filter_file", "Name")
+        tb.AddButton("filter_ext", "Type")
+        tb.AddButton("filter_ref", "Ref.")
+        tb.AddButton("filter_att", "Value")
         tb.AddSpacer()
-        tb.AddButton("filter_remove", "- Remove")
+        tb.AddButton("remove", "Remove")
         return tb
 
     # -----------------------------------------------------------------------
@@ -372,8 +377,180 @@ class sppasFilesFilterDialog(sppasDialog):
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
 
-        if event_name == "cancel":
+        if event_name == "filter_path":
+            dlg = sppasStringFilterDialog(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                # Name of the method in sppasFileDataFilters
+                data = ["path"]
+                # Name of the function and its value
+                data.extend(dlg.get_data())
+                self.listctrl.AppendItem(data)
+            dlg.Destroy()
+
+        elif event_name == "filter_file":
+            dlg = sppasStringFilterDialog(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                data = ["name"]
+                data.extend(dlg.get_data())
+                self.listctrl.AppendItem(data)
+            dlg.Destroy()
+
+        elif event_name == "filter_ext":
+            dlg = sppasStringFilterDialog(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                data = ["extension"]
+                data.extend(dlg.get_data())
+                self.listctrl.AppendItem(data)
+            dlg.Destroy()
+
+        elif event_name == "filter_ref":
+            dlg = sppasStringFilterDialog(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                data = ["ref"]
+                data.extend(dlg.get_data())
+                self.listctrl.AppendItem(data)
+            dlg.Destroy()
+
+        elif event_name == "cancel":
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
+
         else:
             event.Skip()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasStringFilterDialog(sppasDialog):
+    """Dialog to get a filter on a string.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    choices = (
+               ("exact", "exact"),
+               ("not exact", "exact"),
+               ("contains", "contains"),
+               ("not contains", "contains"),
+               ("starts with", "startswith"),
+               ("not starts with", "startswith"),
+               ("ends with", "endswith"),
+               ("not ends with", "endswith"),
+               ("match (regexp)", "regexp"),
+               ("not match", "regexp")
+              )
+
+    DEFAULT_PATTERN = "x1, x2..."
+
+    def __init__(self, parent):
+        """Create a path filter dialog.
+
+        :param parent: (wx.Window)
+
+        """
+        super(sppasStringFilterDialog, self).__init__(
+            parent=parent,
+            title='{:s} filter'.format(sg.__name__),
+            style=wx.DEFAULT_FRAME_STYLE)
+
+        self._create_content()
+        self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
+
+        self.SetMinSize(wx.Size(480, 320))
+        self.LayoutComponents()
+        self.CenterOnParent()
+
+    # -----------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data defined by the user.
+
+        Returns: (tuple) with:
+
+               - function (str): one of the methods in Compare
+               - values (list): patterns to find separated by commas
+
+        """
+        idx = self.radiobox.GetSelection()
+        given_fct = self.choices[idx][1]
+
+        # Fill the resulting dict
+        prepend_fct = ""
+
+        if given_fct != "regexp":
+            # prepend "not_" if reverse
+            if (idx % 2) != 0:
+                prepend_fct += "not_"
+            # prepend "i" if case-insensitive
+            if self.checkbox.GetValue() is False:
+                prepend_fct += "i"
+
+            # fix the value to find (one or several with the same function)
+            values = re.split(',', self.text.GetValue())
+            values = [" ".join(p.split()) for p in values]
+        else:
+            values = [self.text.GetValue()]
+
+        return [prepend_fct+given_fct, values]
+
+
+    # -----------------------------------------------------------------------
+    # Methods to construct the GUI
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the content of the message dialog."""
+        panel = sppasPanel(self, name="content")
+
+        label = sppasStaticText(panel, label="Search for pattern(s): ")
+        self.text = sppasTextCtrl(panel, value=self.DEFAULT_PATTERN)
+                                #validator=TextValidator())
+        self.text.Bind(wx.EVT_TEXT, self.OnTextChanged)
+        self.text.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
+
+        choices = [row[0] for row in self.choices]
+        self.radiobox = wx.RadioBox(panel,
+                                    label="Functions: ",
+                                    choices=choices,
+                                    majorDimension=2)
+        self.checkbox = wx.CheckBox(panel, label="Case sensitive")
+        self.checkbox.SetValue(False)
+
+        # Layout
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(label, 0, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.text, 0, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.radiobox, 1, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.checkbox, 0, flag=wx.EXPAND | wx.ALL, border=4)
+
+        panel.SetSizer(sizer)
+        panel.SetMinSize((240, 160))
+        panel.SetAutoLayout(True)
+        self.SetContent(panel)
+
+    # ------------------------------------------------------------------------
+
+    def OnTextClick(self, event):
+        self.text.SetForegroundColour(wx.BLACK)
+        if self.text.GetValue() == self.DEFAULT_PATTERN:
+            self.OnTextErase(event)
+        event.Skip()
+        #self.text.SetFocus()
+
+    def OnTextChanged(self, event):
+        self.text.SetFocus()
+        self.text.Refresh()
+
+    def OnTextErase(self, event):
+        self.text.SetValue('')
+        self.text.SetFocus()
+        self.text.Refresh()
