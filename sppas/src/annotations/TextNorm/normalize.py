@@ -37,13 +37,14 @@
 """
 import re
 
+from .num2text import sppasNumConstructor
+from .num2text.dictionary import Dictionary
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
 
 from .orthotranscription import sppasOrthoTranscription
 from .tokenize import sppasTokenSegmenter
-from .num2letter import sppasNum
 from .language import sppasLangISO
 from .splitter import sppasSimpleSplitter
 
@@ -101,6 +102,7 @@ class TextNormalizer(object):
         self.vocab = vocab
         if vocab is None:
             self.vocab = sppasVocabulary()
+        self.num_dict = Dictionary(lang)
 
         # members
         self.lang = lang
@@ -236,7 +238,7 @@ class TextNormalizer(object):
         :returns: (list)
 
         """
-        num2letter = sppasNum(self.lang)
+        num2letter = sppasNumConstructor.construct(self.lang, self.num_dict)
 
         _result = list()
         for token in utt:

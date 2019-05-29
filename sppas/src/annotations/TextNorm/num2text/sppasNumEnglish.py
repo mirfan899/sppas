@@ -32,6 +32,8 @@
 
 from sppasNumEuropeanType import sppasNumEuropeanType
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumEnglish(sppasNumEuropeanType):
     """Return an instance of sppasNumEnglish
@@ -40,4 +42,10 @@ class sppasNumEnglish(sppasNumEuropeanType):
 
     """
     def __init__(self, dictionary):
+        """
+
+        :param dictionary:
+        """
         super(sppasNumEnglish, self).__init__('eng', dictionary)
+
+# ---------------------------------------------------------------------------

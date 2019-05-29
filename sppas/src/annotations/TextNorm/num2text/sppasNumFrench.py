@@ -34,8 +34,18 @@ from sppasNumEuropeanType import sppasNumEuropeanType
 
 from .sppasNumBase import sppasNumBase
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumFrench(sppasNumEuropeanType):
+    """
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    """
     def __init__(self, dictionary):
         """Return an instance of sppasNumFrench
 
@@ -43,6 +53,8 @@ class sppasNumFrench(sppasNumEuropeanType):
 
         """
         super(sppasNumFrench, self).__init__('fra', dictionary)
+
+    # ---------------------------------------------------------------------------
 
     def _tenth(self, number):
         """Return the "wordified" version of a tenth number
@@ -72,3 +84,5 @@ class sppasNumFrench(sppasNumEuropeanType):
                     return item[1] + '-et-' + self._units(int(str(number)[1:]))
         else:
             return sppasNumEuropeanType._tenth(self, number)
+
+# ---------------------------------------------------------------------------

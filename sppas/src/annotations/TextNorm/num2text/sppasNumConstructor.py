@@ -43,11 +43,15 @@ from sppasNumUnd import sppasNumUnd
 
 from sppas import sppasValueError
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumConstructor(object):
 
     def __init__(self):
         pass
+
+    # ---------------------------------------------------------------------------
 
     @staticmethod
     def construct(lang=None, dictionary=None):
@@ -86,3 +90,5 @@ class sppasNumConstructor(object):
                 return LANGUAGES_DICT[lang](lang, dictionary)
         else:
             raise sppasValueError(lang, LANGUAGES_DICT.keys())
+
+# ---------------------------------------------------------------------------

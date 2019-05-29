@@ -34,10 +34,22 @@ from sppasNumBase import sppasNumBase
 
 from sppas import sppasValueError
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumEuropeanType(sppasNumBase):
+    """
+
+    :author:       Barthélémy Drabczuk
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    """
 
     EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por")
+
+    # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
         """Return an instance of sppasNumEuropeanType
@@ -49,6 +61,8 @@ class sppasNumEuropeanType(sppasNumBase):
             super(sppasNumEuropeanType, self).__init__(lang, dictionary)
         else:
             raise sppasValueError(lang, sppasNumEuropeanType.EUROPEAN_TYPED_LANGUAGES)
+
+    # ---------------------------------------------------------------------------
 
     def _millions(self, number):
         """Return the "wordified" version of a million number
@@ -82,6 +96,8 @@ class sppasNumEuropeanType(sppasNumBase):
                         else:
                             return mult + '_' + item[1] + sppasNumBase.SEPARATOR \
                                    + self._thousands(number % 1000000)
+
+    # ---------------------------------------------------------------------------
 
     def _billions(self, number):
         """Return the "wordified" version of a billion number
@@ -118,3 +134,5 @@ class sppasNumEuropeanType(sppasNumBase):
                             return mult + sppasNumBase.SEPARATOR \
                                    + item[1] + sppasNumBase.SEPARATOR \
                                    + self._millions(number % 1000000000)
+
+# ---------------------------------------------------------------------------

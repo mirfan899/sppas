@@ -34,6 +34,8 @@
 # TODO: change the super class
 from sppasNumEuropeanType import sppasNumEuropeanType
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumVietnamese(sppasNumEuropeanType):
     """Return an instance of sppasNumVietnamese
@@ -43,3 +45,5 @@ class sppasNumVietnamese(sppasNumEuropeanType):
     """
     def __init__(self):
         super(sppasNumVietnamese, self).__init__('vie')
+
+# ---------------------------------------------------------------------------

@@ -32,6 +32,8 @@
 
 from sppasNumBase import sppasNumBase
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumUnd(sppasNumBase):
     def __init__(self):
@@ -49,3 +51,5 @@ class sppasNumUnd(sppasNumBase):
 
         """
         return str(number)
+
+# ---------------------------------------------------------------------------

@@ -34,10 +34,14 @@ from sppasNumBase import sppasNumBase
 
 from sppas import sppasValueError
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumAsianType(sppasNumBase):
 
     ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
+
+    # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
         """Return an instance of sppasNumAsianType
@@ -49,6 +53,8 @@ class sppasNumAsianType(sppasNumBase):
             super(sppasNumAsianType, self).__init__(lang, dictionary)
         else:
             raise sppasValueError(lang, sppasNumAsianType.ASIAN_TYPED_LANGUAGES)
+
+    # ---------------------------------------------------------------------------
 
     def _tenth_of_thousands(self, number):
         """Return the "wordified" version of a tenth of a thousand number
@@ -79,6 +85,8 @@ class sppasNumAsianType(sppasNumBase):
                             return mult + item[1]
                         else:
                             return mult + item[1] + self._thousands(number % 10000)
+
+    # ---------------------------------------------------------------------------
 
     def _billions(self, number):
         """Return the "wordified" version of a billion number

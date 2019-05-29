@@ -33,6 +33,8 @@
 # TODO: change the super class
 from sppasNumEuropeanType import sppasNumEuropeanType
 
+# ---------------------------------------------------------------------------
+
 
 class sppasNumKhmer(sppasNumEuropeanType):
     """Return an instance of sppasNumKhmer
@@ -42,3 +44,5 @@ class sppasNumKhmer(sppasNumEuropeanType):
     """
     def __init__(self, dictionary):
         super(sppasNumKhmer, self).__init__('khm', dictionary)
+
+# ---------------------------------------------------------------------------

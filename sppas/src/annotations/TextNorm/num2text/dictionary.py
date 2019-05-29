@@ -32,6 +32,8 @@
 
 from sppas import sppasValueError, u
 
+# ---------------------------------------------------------------------------
+
 
 class Dictionary(object):
     """Return an instance of a Dictionary
@@ -55,6 +57,10 @@ class Dictionary(object):
             for i in range(len(self._lang_dict)):
                 number, word = self._lang_dict[i].split()
                 self._lang_dict[i] = (int(number), u(word))
+
+    # ---------------------------------------------------------------------------
+    # Override
+    # ---------------------------------------------------------------------------
 
     def __iter__(self):
         for item in self._lang_dict:

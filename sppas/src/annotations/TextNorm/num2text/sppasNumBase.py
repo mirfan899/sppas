@@ -31,9 +31,10 @@
 """
 
 from math import floor
-from dictionary import Dictionary
 
 from sppas import sppasValueError
+
+# ---------------------------------------------------------------------------
 
 
 class sppasNumBase(object):
@@ -42,6 +43,8 @@ class sppasNumBase(object):
     EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por")
 
     SEPARATOR = '_'
+
+    # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
         """Return an instance of sppasNumBase
@@ -75,6 +78,8 @@ class sppasNumBase(object):
 
             self._lang_dict = dictionary
 
+    # ---------------------------------------------------------------------------
+
     def get_lang(self):
         """Return the current language
 
@@ -82,6 +87,8 @@ class sppasNumBase(object):
 
         """
         return self.__lang
+
+    # ---------------------------------------------------------------------------
 
     def set_lang(self, lang):
         """Set the the language to a new one and update the dictionnary
@@ -96,6 +103,8 @@ class sppasNumBase(object):
         else:
             raise sppasValueError(lang, self.languages)
 
+    # ---------------------------------------------------------------------------
+
     def _get_lang_dict(self):
         """Return the current language dictionary
 
@@ -103,6 +112,8 @@ class sppasNumBase(object):
 
         """
         return self._lang_dict
+
+    # ---------------------------------------------------------------------------
 
     def _units(self, number):
         """Return the "wordified" version of a unit number
@@ -120,6 +131,8 @@ class sppasNumBase(object):
             for item in self._lang_dict:
                 if number == item[0]:
                     return item[1]
+
+    # ---------------------------------------------------------------------------
 
     def _tenth(self, number):
         """Return the "wordified" version of a tenth number
@@ -146,6 +159,8 @@ class sppasNumBase(object):
                             return item[1] + self._units(number % 10)
                         return item[1] + sppasNumBase.SEPARATOR\
                                + self._units(number % 10)
+
+    # ---------------------------------------------------------------------------
 
     def _hundreds(self, number):
         """Return the "wordified" version of a hundred number
@@ -190,6 +205,8 @@ class sppasNumBase(object):
                                        + item[1] + sppasNumBase.SEPARATOR \
                                        + self._tenth(number % 100)
 
+    # ---------------------------------------------------------------------------
+
     def _thousands(self, number):
         """Return the "wordified" version of a thousand number
 
@@ -233,6 +250,8 @@ class sppasNumBase(object):
                                        + sppasNumBase.SEPARATOR \
                                        + self._hundreds(number % 1000)
 
+    # ---------------------------------------------------------------------------
+
     def convert(self, number):
         """Return the whole "wordified" given number
 
@@ -257,3 +276,5 @@ class sppasNumBase(object):
 
         res += self._billions(int(number))
         return res if res is not None else number
+
+# ---------------------------------------------------------------------------
