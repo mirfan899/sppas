@@ -319,7 +319,7 @@ class FileData(FileBase):
             if fp.id == identifier:
                 return fp
             for fr in fp:
-                if fr.id ==  identifier:
+                if fr.id == identifier:
                     return fr
                 for fn in fr:
                     if fn.id == identifier:
@@ -349,10 +349,10 @@ class FileData(FileBase):
     def set_object_state(self, state, file_obj=None):
         """Set the state of any FileBase within FileData.
 
-        The default case is to set the state to all FilePath.
+        The default case is to set the state to all FilePath and FileRefence.
 
         It is not allowed to manually assign one of the "AT_LEAST" states.
-        They are automatically fixed here depending on the paths states.
+        They are automatically fixed depending on the paths states.
 
         :param state: (States) state to set the file to
         :param file_obj: (FileBase) the specific file to set the state to
@@ -363,9 +363,11 @@ class FileData(FileBase):
         if file_obj is None:
             for fp in self.__data:
                 modified = fp.set_state(state)
+            for ref in self.__refs:
+                modified = ref.set_state(state)
 
         else:
-            if isinstance(file_obj, FilePath):
+            if isinstance(file_obj, (FilePath, FileReference)):
                 modified = file_obj.set_state(state)
 
             elif isinstance(file_obj, (FileRoot, FileName)):

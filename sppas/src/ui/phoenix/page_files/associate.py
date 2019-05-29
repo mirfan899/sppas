@@ -44,6 +44,9 @@ from sppas import sg
 from sppas.src.config import ui_translation
 from sppas.src.files import FileData
 from sppas.src.files import States
+from sppas.src.files import sppasFileDataFilters
+
+from ..dialogs import Information
 from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
@@ -204,6 +207,94 @@ class AssociatePanel(sppasPanel):
     # GUI methods to perform actions on the data
     # ------------------------------------------------------------------------
 
+    def check_filter(self):
+        """Check filenames matching the user-defined filters."""
+        dlg = sppasFilesFilterDialog(self)
+        response = dlg.ShowModal()
+        if response != wx.ID_CANCEL:
+            data_filters = dlg.get_filters()
+            if len(data_filters) > 0:
+                wx.BeginBusyCursor()
+                data_set = self.__process_filter(data_filters, dlg.match_all)
+                if len(data_set) == 0:
+                    Information('None of the files is matching the given filters.')
+                else:
+                    # Uncheck all files (except the locked ones!) and references
+                    self.__data.set_object_state(States().UNUSED)
+
+                    # Check files of the filtered data_set
+                    for fn in data_set:
+                        self.__data.set_object_state(States().CHECKED, fn)
+                    Information('{:d} files were matching the given filters '
+                                'and checked.'
+                                ''.format(len(data_set)))
+
+                    # Check references matching the checked files
+                    roots = set(self.__data.get_fileroot_from_state(States().CHECKED).extend(
+                                self.__data.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)))
+                    # ... what about 'at_least_one_locked' which can contain checked files...
+                    for fr in roots:
+                        for ref in fr.get_references():
+                            ref.set_state(States().CHECKED)
+
+                wx.EndBusyCursor()
+
+        dlg.Destroy()
+
+    # ------------------------------------------------------------------------
+
+    def __process_filter(self, data_filters, match_all=True):
+        """Perform the filter process.
+    
+        :param data_filters: list of tuples with (filter name, function name, values)
+        
+        """
+        logging.info("Check files matching the following filter=sppasFileDataFilters():")
+        f = sppasFileDataFilters(self.__data)
+        data_sets = list()
+
+        for d in data_filters:
+            if len(d) != 3:
+                logging.error("Bad data format: {:s}".format(str(d)))
+                continue
+
+            # all the possible values are separated by commas
+            values = d[2]  #".split(",")
+
+            # a little bit of doc:
+            #   - getattr() returns the value of the named attributed of object:
+            #     it returns f.tag if called like getattr(f, "tag")
+            #   - func(**{'x': '3'}) is equivalent to func(x='3')
+            data_set = getattr(f, d[0])(**{d[1]: values[0]})
+            logging.info(" >>> filter.{:s}({:s}={!s:s})".format(d[0], d[1], values[0]))
+
+            # Apply "or" between each data_set matching a value
+            for i in range(1, len(values)):
+                data_set = data_set | getattr(f, d[0])(**{d[1]: values[i]})
+                logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(d[0], d[1], values[i]))
+
+            data_sets.append(data_set)
+        
+        # no filename is matching
+        if len(data_sets) == 0:
+            return list()
+        
+        # Merge results (apply '&' or '|' on the resulting data sets)
+        data_set = data_sets[0]
+        if match_all is True:
+            for i in range(1, len(data_sets)):
+                data_set = data_set & data_sets[i]
+                if len(data_set) == 0:
+                    # no need to go further...
+                    return list()
+        else:
+            for i in range(1, len(data_sets)):
+                data_set = data_set | data_sets[i]
+
+        return data_set
+
+    # ------------------------------------------------------------------------
+
     def check_all(self):
         """Check all or any of the filenames and references."""
         # reverse the current state
@@ -218,21 +309,6 @@ class AssociatePanel(sppasPanel):
 
         # update the view of checked references & checked files
         self.notify()
-
-    # ------------------------------------------------------------------------
-
-    def check_filter(self):
-        """Check filenames matching the user-defined filters."""
-        dlg = sppasFilesFilterDialog(self)
-        if dlg.ShowModal() == wx.ID_OK:
-
-            data_filters = dlg.get_selected()
-            if len(data_filters) > 0:
-                # process = SingleFilterProcess(dlg, self.__data)
-                # process.run()
-                pass
-
-        dlg.Destroy()
 
     # ------------------------------------------------------------------------
 
@@ -275,6 +351,7 @@ class sppasFilesFilterDialog(sppasDialog):
             title='{:s} Files selection'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
+        self.match_all = True
         self.CreateHeader(title="Check files with the following filters:",
                           icon_name="check_filter")
         self._create_content()
@@ -290,8 +367,15 @@ class sppasFilesFilterDialog(sppasDialog):
     # Public methods
     # -----------------------------------------------------------------------
 
-    def get_selected(self):
-        return None
+    def get_filters(self):
+        """Return a list of (filter, function, values)."""
+        filters = list()
+        for i in range(self.listctrl.GetItemCount()):
+            filter_name = self.listctrl.GetValue(i, 0)
+            fct_name = self.listctrl.GetValue(i, 1)
+            values = self.listctrl.GetValue(i, 2)
+            filters.append((filter_name, fct_name, values))
+        return filters
 
     # -----------------------------------------------------------------------
     # Methods to construct the GUI
@@ -342,6 +426,7 @@ class sppasFilesFilterDialog(sppasDialog):
         cancel_btn = self.__create_action_button(panel, "Cancel", "cancel")
         apply_or_btn = self.__create_action_button(panel, "Apply - OR", "apply")
         apply_and_btn = self.__create_action_button(panel, "Apply - AND", "ok")
+        apply_and_btn.SetFocus()
 
         sizer.Add(cancel_btn, 1, wx.ALL | wx.EXPAND, 0)
         sizer.Add(self.VertLine(parent=panel), 0, wx.ALL | wx.EXPAND, 0)
@@ -418,6 +503,14 @@ class sppasFilesFilterDialog(sppasDialog):
         elif event_name == "cancel":
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
+
+        elif event_name == "apply":
+            self.match_all = False
+            self.EndModal(wx.ID_APPLY)
+
+        elif event_name == "ok":
+            self.match_all = True
+            self.EndModal(wx.ID_OK)
 
         else:
             event.Skip()
@@ -502,7 +595,6 @@ class sppasStringFilterDialog(sppasDialog):
 
         return [prepend_fct+given_fct, values]
 
-
     # -----------------------------------------------------------------------
     # Methods to construct the GUI
     # -----------------------------------------------------------------------
@@ -522,6 +614,7 @@ class sppasStringFilterDialog(sppasDialog):
                                     label="Functions: ",
                                     choices=choices,
                                     majorDimension=2)
+        self.radiobox.SetSelection(2)
         self.checkbox = wx.CheckBox(panel, label="Case sensitive")
         self.checkbox.SetValue(False)
 
