@@ -42,15 +42,26 @@ from sppas import sppasLocation, sppasInterval
 class sppasWindow(object):
 
     def __init__(self, trs):
+        """Return an instance of a sppaswindow
+
+        :param trs: (sppasTier) Tier to analyze
+        """
         if not isinstance(trs, sppasTier):
             raise sppasTypeError(trs, sppasTier)
         else:
             self.__tier = trs
 
-    # ---------------------------------------------------------------------------
+    # -------------------------------------------------------------------------
 
     def time_split(self, start_time, end_time, step, delta=0.5):
+        """Return list of annotation within a time window with the given values
 
+        :param start_time: (float) the time of the beginning of the window
+        :param end_time: (float) the time of the end of the window
+        :param step: (float) time period between two windows
+        :param delta: (float) percentage of confidence for an overlapping label
+        :return: (list) list of sppasAnnotation
+        """
         args = (start_time, end_time, step, delta)
 
         ann_set = sppasAnnSet()
@@ -83,7 +94,11 @@ class sppasWindow(object):
     # ---------------------------------------------------------------------------
 
     def anchor_split(self, separators):
+        """Return list of annotation within a window decided by the given separator
 
+        :param separators: (list) list of separators
+        :return: (list) list of sppasAnnotation
+        """
         if not isinstance(separators, list):
             raise sppasTypeError(separators, list)
 
