@@ -35,6 +35,7 @@ from math import floor
 from sppas import sppasValueError
 
 # ---------------------------------------------------------------------------
+from .dictionary import Dictionary
 
 
 class sppasNumBase(object):
