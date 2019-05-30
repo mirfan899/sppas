@@ -376,6 +376,7 @@ class sppasFileNameCompare(sppasBaseCompare):
     >>> tc.exact(FileName("oriana1"), u("oriana1"))
     >>> tc.methods['exact'](FileName("oriana1"), u("oriana1"))
     >>> tc.get('exact')(FileName("oriana1"), u("oriana1"))
+
     """
 
     def __init__(self):
@@ -541,7 +542,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         :raises: sppasTypeError
 
         """
-        if isinstance(fn, FileRoot) is False:
+        if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
         if not isinstance(value, text_type):
             raise sppasTypeError(value, text_type)

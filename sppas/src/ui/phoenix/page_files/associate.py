@@ -219,26 +219,27 @@ class AssociatePanel(sppasPanel):
                 if len(data_set) == 0:
                     Information('None of the files is matching the given filters.')
                 else:
-                    # Uncheck all files (except the locked ones!) and references
+                    # Uncheck all files (except the locked ones!) and all references
                     self.__data.set_object_state(States().UNUSED)
 
+                    roots = list()
                     # Check files of the filtered data_set
                     for fn in data_set:
                         self.__data.set_object_state(States().CHECKED, fn)
+                        root = self.__data.get_parent(fn)
+                        if root not in roots:
+                            roots.append(root)
                     Information('{:d} files were matching the given filters '
                                 'and checked.'
                                 ''.format(len(data_set)))
 
                     # Check references matching the checked files
-                    roots = set(self.__data.get_fileroot_from_state(States().CHECKED).extend(
-                                self.__data.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)))
-                    # ... what about 'at_least_one_locked' which can contain checked files...
                     for fr in roots:
                         for ref in fr.get_references():
                             ref.set_state(States().CHECKED)
 
+                    self.notify()
                 wx.EndBusyCursor()
-
         dlg.Destroy()
 
     # ------------------------------------------------------------------------
@@ -259,7 +260,7 @@ class AssociatePanel(sppasPanel):
                 continue
 
             # all the possible values are separated by commas
-            values = d[2]  #".split(",")
+            values = d[2].split(",")
 
             # a little bit of doc:
             #   - getattr() returns the value of the named attributed of object:
@@ -270,8 +271,9 @@ class AssociatePanel(sppasPanel):
 
             # Apply "or" between each data_set matching a value
             for i in range(1, len(values)):
-                data_set = data_set | getattr(f, d[0])(**{d[1]: values[i]})
-                logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(d[0], d[1], values[i]))
+                v = values[i].strip()
+                data_set = data_set | getattr(f, d[0])(**{d[1]: v})
+                logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(d[0], d[1], v))
 
             data_sets.append(data_set)
         
@@ -466,38 +468,34 @@ class sppasFilesFilterDialog(sppasDialog):
             dlg = sppasStringFilterDialog(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
-                # Name of the method in sppasFileDataFilters
-                data = ["path"]
+                # Name of the method in sppasFileDataFilters,
                 # Name of the function and its value
-                data.extend(dlg.get_data())
-                self.listctrl.AppendItem(data)
+                f = dlg.get_data()
+                self.listctrl.AppendItem(["path", f[0], f[1]])
             dlg.Destroy()
 
         elif event_name == "filter_file":
             dlg = sppasStringFilterDialog(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
-                data = ["name"]
-                data.extend(dlg.get_data())
-                self.listctrl.AppendItem(data)
+                f = dlg.get_data()
+                self.listctrl.AppendItem(["name", f[0], f[1]])
             dlg.Destroy()
 
         elif event_name == "filter_ext":
             dlg = sppasStringFilterDialog(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
-                data = ["extension"]
-                data.extend(dlg.get_data())
-                self.listctrl.AppendItem(data)
+                f = dlg.get_data()
+                self.listctrl.AppendItem(["extension", f[0], f[1]])
             dlg.Destroy()
 
         elif event_name == "filter_ref":
             dlg = sppasStringFilterDialog(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
-                data = ["ref"]
-                data.extend(dlg.get_data())
-                self.listctrl.AppendItem(data)
+                f = dlg.get_data()
+                self.listctrl.AppendItem(["ref", f[0], f[1]])
             dlg.Destroy()
 
         elif event_name == "cancel":
@@ -588,12 +586,12 @@ class sppasStringFilterDialog(sppasDialog):
                 prepend_fct += "i"
 
             # fix the value to find (one or several with the same function)
-            values = re.split(',', self.text.GetValue())
-            values = [" ".join(p.split()) for p in values]
-        else:
-            values = [self.text.GetValue()]
+            # values = re.split(',', self.text.GetValue())
+            # values = [" ".join(p.split()) for p in values]
+        # else:
+            # values = [self.text.GetValue()]
 
-        return [prepend_fct+given_fct, values]
+        return prepend_fct+given_fct, self.text.GetValue()
 
     # -----------------------------------------------------------------------
     # Methods to construct the GUI
@@ -637,10 +635,10 @@ class sppasStringFilterDialog(sppasDialog):
         if self.text.GetValue() == self.DEFAULT_PATTERN:
             self.OnTextErase(event)
         event.Skip()
-        #self.text.SetFocus()
+        # self.text.SetFocus()
 
     def OnTextChanged(self, event):
-        self.text.SetFocus()
+        # self.text.SetFocus()
         self.text.Refresh()
 
     def OnTextErase(self, event):

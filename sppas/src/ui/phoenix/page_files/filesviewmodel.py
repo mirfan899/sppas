@@ -501,6 +501,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     def change_value(self, column, item):
         """Change state value."""
+        if item is None:
+            return
         node = self.ItemToObject(item)
         cur_state = node.get_state()
         if cur_state in (States().UNUSED, States().AT_LEAST_ONE_CHECKED, States().AT_LEAST_ONE_LOCKED):
