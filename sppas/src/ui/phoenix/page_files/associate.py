@@ -35,7 +35,6 @@
 
 """
 
-import re
 import wx
 import logging
 
@@ -50,9 +49,10 @@ from ..dialogs import Information
 from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
-from ..windows.button import BitmapTextButton
+from ..windows.button import BitmapTextButton, CheckButton
 
 from .filesevent import DataChangedEvent
+from .filesutils import IdentifierTextValidator
 from .btntxttoolbar import BitmapTextToolbar
 
 # ---------------------------------------------------------------------------
@@ -259,21 +259,32 @@ class AssociatePanel(sppasPanel):
                 logging.error("Bad data format: {:s}".format(str(d)))
                 continue
 
+            # the method to be uses by Compare
+            method = d[0]
+            # the function to be applied
+            fct = d[1]
             # all the possible values are separated by commas
             values = d[2].split(",")
+            if fct == "att":
+                v = values[0]
+                values = v.split(":")
+                data_set = getattr(f, method)(**{fct: values[0]})
+                logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, values))
 
             # a little bit of doc:
             #   - getattr() returns the value of the named attributed of object:
             #     it returns f.tag if called like getattr(f, "tag")
             #   - func(**{'x': '3'}) is equivalent to func(x='3')
-            data_set = getattr(f, d[0])(**{d[1]: values[0]})
-            logging.info(" >>> filter.{:s}({:s}={!s:s})".format(d[0], d[1], values[0]))
+            if fct != "att":
 
-            # Apply "or" between each data_set matching a value
-            for i in range(1, len(values)):
-                v = values[i].strip()
-                data_set = data_set | getattr(f, d[0])(**{d[1]: v})
-                logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(d[0], d[1], v))
+                data_set = getattr(f, method)(**{fct: values[0]})
+                logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, values[0]))
+
+                # Apply "or" between each data_set matching a value
+                for i in range(1, len(values)):
+                    v = values[i].strip()
+                    data_set = data_set | getattr(f, method)(**{fct: v})
+                    logging.info(" >>>    | filter.{:s}({:s}={!s:s})".format(method, fct, v))
 
             data_sets.append(data_set)
         
@@ -498,6 +509,14 @@ class sppasFilesFilterDialog(sppasDialog):
                 self.listctrl.AppendItem(["ref", f[0], f[1]])
             dlg.Destroy()
 
+        elif event_name == "filter_att":
+            dlg = sppasAttributeFilterDialog(self)
+            response = dlg.ShowModal()
+            if response == wx.ID_OK:
+                f = dlg.get_data()
+                self.listctrl.AppendItem(["att", f[0], f[1]])
+            dlg.Destroy()
+
         elif event_name == "cancel":
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
@@ -543,7 +562,7 @@ class sppasStringFilterDialog(sppasDialog):
     DEFAULT_PATTERN = "x1, x2..."
 
     def __init__(self, parent):
-        """Create a path filter dialog.
+        """Create a string filter dialog.
 
         :param parent: (wx.Window)
 
@@ -556,7 +575,7 @@ class sppasStringFilterDialog(sppasDialog):
         self._create_content()
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
 
-        self.SetMinSize(wx.Size(480, 320))
+        self.SetMinSize(wx.Size(320, 220))
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -585,12 +604,6 @@ class sppasStringFilterDialog(sppasDialog):
             if self.checkbox.GetValue() is False:
                 prepend_fct += "i"
 
-            # fix the value to find (one or several with the same function)
-            # values = re.split(',', self.text.GetValue())
-            # values = [" ".join(p.split()) for p in values]
-        # else:
-            # values = [self.text.GetValue()]
-
         return prepend_fct+given_fct, self.text.GetValue()
 
     # -----------------------------------------------------------------------
@@ -603,7 +616,6 @@ class sppasStringFilterDialog(sppasDialog):
 
         label = sppasStaticText(panel, label="Search for pattern(s): ")
         self.text = sppasTextCtrl(panel, value=self.DEFAULT_PATTERN)
-                                #validator=TextValidator())
         self.text.Bind(wx.EVT_TEXT, self.OnTextChanged)
         self.text.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
 
@@ -613,7 +625,7 @@ class sppasStringFilterDialog(sppasDialog):
                                     choices=choices,
                                     majorDimension=2)
         self.radiobox.SetSelection(2)
-        self.checkbox = wx.CheckBox(panel, label="Case sensitive")
+        self.checkbox = CheckButton(panel, label="Case sensitive")
         self.checkbox.SetValue(False)
 
         # Layout
@@ -635,13 +647,136 @@ class sppasStringFilterDialog(sppasDialog):
         if self.text.GetValue() == self.DEFAULT_PATTERN:
             self.OnTextErase(event)
         event.Skip()
-        # self.text.SetFocus()
 
     def OnTextChanged(self, event):
-        # self.text.SetFocus()
         self.text.Refresh()
 
     def OnTextErase(self, event):
         self.text.SetValue('')
         self.text.SetFocus()
         self.text.Refresh()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasAttributeFilterDialog(sppasDialog):
+    """Dialog to get a filter on an attribute.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    choices = (
+               ("exact", "exact"),
+               ("not exact", "exact"),
+               ("contains", "contains"),
+               ("not contains", "contains"),
+               ("starts with", "startswith"),
+               ("not starts with", "startswith"),
+               ("ends with", "endswith"),
+               ("not ends with", "endswith"),
+               ("match (regexp)", "regexp"),
+               ("not match", "regexp"),
+               ("equal", "equal"),
+               ("greater than", "gt"),
+               ("greater or equal", "ge"),
+               ("lower than", "lt"),
+               ("lower or equal", "le")
+              )
+
+    def __init__(self, parent):
+        """Create an attribute filter dialog.
+
+        :param parent: (wx.Window)
+
+        """
+        super(sppasAttributeFilterDialog, self).__init__(
+            parent=parent,
+            title='{:s} filter'.format(sg.__name__),
+            style=wx.DEFAULT_FRAME_STYLE)
+
+        self._create_content()
+        self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
+
+        self.SetMinSize(wx.Size(320, 220))
+        self.LayoutComponents()
+        self.CenterOnParent()
+
+    # ------------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data defined by the user.
+
+        Returns: (tuple) with:
+
+               - function (str): one of the methods in Compare
+               - values (list): attribute to find as identifier, value
+
+        """
+        idx = self.radiobox.GetSelection()
+        given_fct = self.choices[idx][1]
+
+        # Fill the resulting dict
+        prepend_fct = ""
+
+        if given_fct in sppasAttributeFilterDialog.choices[:8]:
+            # prepend "not_" if reverse
+            if (idx % 2) != 0:
+                prepend_fct += "not_"
+            # prepend "i" if case-insensitive
+            if self.checkbox.GetValue() is False:
+                prepend_fct += "i"
+
+        return prepend_fct + given_fct, \
+               self.text_ident.GetValue() + ":" + self.text_value.GetValue()
+
+    # -----------------------------------------------------------------------
+    # Methods to construct the GUI
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the content of the message dialog."""
+        panel = sppasPanel(self, name="content")
+
+        label = sppasStaticText(panel, label="Identifier: ")
+        self.text_ident = sppasTextCtrl(panel, value="",
+                                  validator=IdentifierTextValidator())
+        # self.text_ident.Bind(wx.EVT_TEXT, self.OnTextChanged)
+        # self.text_ident.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
+
+        choices = [row[0] for row in sppasAttributeFilterDialog.choices]
+        self.radiobox = wx.RadioBox(panel,
+                                    label="Functions: ",
+                                    choices=choices,
+                                    majorDimension=2)
+        self.radiobox.SetSelection(2)
+        self.radiobox.Bind(wx.EVT_RADIOBOX, self._on_radiobox_checked)
+        self.checkbox = CheckButton(panel, label="Case sensitive")
+        self.checkbox.SetValue(False)
+
+        self.text_value = sppasTextCtrl(panel, value="")
+
+        # Layout
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(label, 0, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.text_ident, 0, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.radiobox, 1, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.text_value, 0, flag=wx.EXPAND | wx.ALL, border=4)
+        sizer.Add(self.checkbox, 0, flag=wx.EXPAND | wx.ALL, border=4)
+
+        panel.SetSizer(sizer)
+        panel.SetMinSize((240, 160))
+        panel.SetAutoLayout(True)
+        self.SetContent(panel)
+
+    def _on_radiobox_checked(self, event):
+        value = self.radiobox.GetStringSelection()
+        if value in sppasAttributeFilterDialog.choices[10:]:
+            self.checkbox.SetValue(False)
+            self.checkbox.Enable(False)
+        else:
+            self.checkbox.Enable(True)

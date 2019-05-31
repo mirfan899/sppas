@@ -68,7 +68,7 @@ import random
 from wx.lib.buttons import GenBitmapTextButton, GenButton, GenBitmapButton
 
 from ..tools import sppasSwissKnife
-from ..windows.panel import sppasPanel
+from ..windows.panel import sppasPanel, sppasScrolledPanel
 from .image import ColorizeImage
 
 # ---------------------------------------------------------------------------
@@ -1058,8 +1058,7 @@ class BaseToggleButton(BaseButton):
         :param name: (str) the button name.
 
         """
-        super(BaseToggleButton, self).__init__(
-            parent, id, pos, size, name)
+        super(BaseToggleButton, self).__init__(parent, id, pos, size, name)
 
         self._pressed = False
 
@@ -1296,7 +1295,7 @@ class BitmapTextButton(BaseButton):
             self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
 
         else:
-            tw, th = self.getTextExtend(dc, gc, self._label)
+            tw, th = self.get_text_extend(dc, gc, self._label)
 
             if self._labelpos == wx.BOTTOM or self._labelpos == wx.TOP:
                 # we need to know the available room to distribute it in margins
@@ -1308,11 +1307,11 @@ class BitmapTextButton(BaseButton):
                     y += (margin // 2)
 
                 if self._labelpos == wx.BOTTOM:
-                    self.__drawLabel(dc, gc, (w - tw) // 2, h - th)
+                    self.__draw_label(dc, gc, (w - tw) // 2, h - th)
                     self.__draw_bitmap(dc, gc, (w - bmp_size) // 2, y, bmp_size)
 
                 if self._labelpos == wx.TOP:
-                    self.__drawLabel(dc, gc, (w - tw) // 2, y)
+                    self.__draw_label(dc, gc, (w - tw) // 2, y)
                     self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
 
             if self._labelpos == wx.LEFT or self._labelpos == wx.RIGHT:
@@ -1326,16 +1325,16 @@ class BitmapTextButton(BaseButton):
                     x += (margin // 2)
 
                     if self._labelpos == wx.LEFT:
-                        self.__drawLabel(dc, gc, x, (h - th) // 2)
+                        self.__draw_label(dc, gc, x, (h - th) // 2)
                         self.__draw_bitmap(dc, gc, x + tw + self._spacing, y_pos, bmp_size)
 
                     if self._labelpos == wx.RIGHT:
-                        self.__drawLabel(dc, gc, w - tw - (margin // 2), (h - th) // 2)
+                        self.__draw_label(dc, gc, w - tw - (margin // 2), (h - th) // 2)
                         self.__draw_bitmap(dc, gc, x, y_pos, bmp_size)
 
                 else:
                     # not enough room for a bitmap. Center the text.
-                    self.__drawLabel(dc, gc, (w - tw) // 2, (h - th) // 2)
+                    self.__draw_label(dc, gc, (w - tw) // 2, (h - th) // 2)
 
         if self._borderwidth > 0:
             self.DrawBorder(dc, gc)
@@ -1375,14 +1374,14 @@ class BitmapTextButton(BaseButton):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def getTextExtend(dc, gc, text):
+    def get_text_extend(dc, gc, text):
         if wx.Platform == '__WXGTK__':
             return dc.GetTextExtent(text)
         return gc.GetTextExtent(text)
 
     # ------------------------------------------------------------------------
 
-    def __drawLabel(self, dc, gc, x, y):
+    def __draw_label(self, dc, gc, x, y):
         font = self.GetParent().GetFont()
         gc.SetFont(font)
         dc.SetFont(font)
@@ -1394,6 +1393,138 @@ class BitmapTextButton(BaseButton):
             gc.DrawText(self._label, x, y)
 
 # ----------------------------------------------------------------------------
+
+
+class TextButton(BaseButton):
+
+    def __init__(self, parent,
+                 id=wx.ID_ANY,
+                 label="",
+                 pos=wx.DefaultPosition,
+                 size=wx.DefaultSize,
+                 name=wx.ButtonNameStr):
+        """Default class constructor.
+
+        :param parent: the parent (required);
+        :param id: window identifier.
+        :param label: label text of the check button;
+        :param pos: the position;
+        :param size: the size;
+        :param name: the name of the bitmap.
+
+        The label is required.
+
+        """
+        super(TextButton, self).__init__(parent, id, pos, size, name)
+
+        self._label = label
+        self._labelpos = wx.CENTER
+
+    # ------------------------------------------------------------------------
+
+    def DoGetBestSize(self):
+        """Overridden base class virtual.
+
+        Determines the best size of the button based on the label.
+
+        """
+        label = self.GetLabel()
+        if not label:
+            return wx.Size(32, 32)
+
+        dc = wx.ClientDC(self)
+        dc.SetFont(self.GetFont())
+        retWidth, retHeight = dc.GetTextExtent(label)
+
+        width = int(max(retWidth, retHeight) * 1.5)
+        return wx.Size(width, width)
+
+    # ------------------------------------------------------------------------
+
+    def GetLabelPosition(self):
+        return self._labelpos
+
+    def SetLabelPosition(self, pos=wx.BOTTOM):
+        """Set the position of the label: top, bottom, left, right."""
+        if pos not in [wx.TOP, wx.BOTTOM, wx.LEFT, wx.RIGHT]:
+            return
+        self._labelpos = pos
+
+    # ------------------------------------------------------------------------
+
+    LabelPosition = property(GetLabelPosition, SetLabelPosition)
+
+    # ------------------------------------------------------------------------
+
+    def Draw(self):
+        """Draw some parts of the button.
+
+            1. Prepare the Drawing Context
+            2. Draw the background
+            3. Draw the border (if border > 0)
+            4. Draw focus indicator (if state is 'HIGHLIGHT')
+
+        :returns: dc, gc
+
+        """
+        dc, gc = self.PrepareDraw()
+
+        self.DrawBackground(dc, gc)
+
+        if self._state[1] == BaseButton.HIGHLIGHT:
+            self.DrawFocusIndicator(dc, gc)
+
+        x, y, w, h = self.GetClientRect()
+        bd = max(self.BorderWidth, 2)
+        x += bd
+        y += bd
+        w -= (2 * bd)
+        h -= ((2 * bd) + self.FocusWidth + 2)
+
+        # No label is defined.
+        tw, th = self.get_text_extend(dc, gc, self._label)
+
+        if self._labelpos == wx.BOTTOM:
+            self.__draw_label(dc, gc, (w - tw) // 2, h - th)
+
+        elif self._labelpos == wx.TOP:
+            self.__draw_label(dc, gc, (w - tw) // 2, y)
+
+        elif self._labelpos == wx.LEFT:
+            self.__draw_label(dc, gc, 2, (h - th) // 2)
+
+        elif self._labelpos == wx.RIGHT:
+            self.__draw_label(dc, gc, w - tw - 2 , (h - th) // 2)
+
+        else:
+            # Center the text.
+            self.__draw_label(dc, gc, (w - tw) // 2, (h - th) // 2)
+
+        if self._borderwidth > 0:
+            self.DrawBorder(dc, gc)
+
+    # ------------------------------------------------------------------------
+
+    @staticmethod
+    def get_text_extend(dc, gc, text):
+        if wx.Platform == '__WXGTK__':
+            return dc.GetTextExtent(text)
+        return gc.GetTextExtent(text)
+
+    # ------------------------------------------------------------------------
+
+    def __draw_label(self, dc, gc, x, y):
+        font = self.GetParent().GetFont()
+        gc.SetFont(font)
+        dc.SetFont(font)
+        if wx.Platform == '__WXGTK__':
+            dc.SetTextForeground(self.GetParent().GetForegroundColour())
+            dc.DrawText(self._label, x, y)
+        else:
+            gc.SetTextForeground(self.GetParent().GetForegroundColour())
+            gc.DrawText(self._label, x, y)
+
+# ---------------------------------------------------------------------------
 
 
 class CheckButton(BaseToggleButton):
@@ -1417,13 +1548,13 @@ class CheckButton(BaseToggleButton):
         super(CheckButton, self).__init__(
             parent, id, pos, size, name)
 
-        self._borderwidth = 1
+        self._borderwidth = 0
         self._label = label
         self._radio = False
 
         # Set the spacing between the check bitmap and the label to 4 by default.
         # This can be changed using SetSpacing later.
-        self._spacing = 4
+        self._spacing = 6
 
     # ------------------------------------------------------------------------
 
@@ -1473,11 +1604,18 @@ class CheckButton(BaseToggleButton):
     # ------------------------------------------------------------------------
 
     def SetValue(self, value):
-        self._pressed = bool(value)
+        """Set the state of the button.
+
+        :param value: (bool)
+
+        """
+        self.Check(value)
+        #self._pressed = bool(value)
 
     # ------------------------------------------------------------------------
 
     def GetValue(self):
+        """Return the state of the button."""
         return self._pressed
 
     # ------------------------------------------------------------------------
@@ -1504,8 +1642,12 @@ class CheckButton(BaseToggleButton):
         """
         w, h = self.GetClientSize()
 
-        prop_size = int(min(h * 0.7, 32))
-        img_size = max(16, prop_size)
+        if self._label is None or len(self._label) == 0:
+            prop_size = int(min(h * 0.7, 32))
+            img_size = max(16, prop_size)
+        else:
+            tw, th = CheckButton.__get_text_extend(dc, gc, "XX")
+            img_size = int(float(th) * 1.2)
 
         box_x = self._borderwidth + 2
         box_y = (h - img_size) // 2
@@ -1522,24 +1664,22 @@ class CheckButton(BaseToggleButton):
             else:
                 img = sppasSwissKnife.get_image('choice_checkbox')
 
-        sppasSwissKnife.rescale_image(img, img_size - 4)
+        sppasSwissKnife.rescale_image(img, img_size)
         ColorizeImage(img, wx.BLACK, self.GetForegroundColour())
 
         # Draw image as bitmap
         bmp = wx.Bitmap(img)
-        bmp_x = box_x + 2
-        bmp_y = box_y + 2
         if wx.Platform == '__WXGTK__':
-            dc.DrawBitmap(bmp, bmp_x, bmp_y)
+            dc.DrawBitmap(bmp, box_x, box_y)
         else:
-            gc.DrawBitmap(bmp, bmp_x, bmp_y)
+            gc.DrawBitmap(bmp, box_x, box_y)
 
         return img_size
 
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def __getTextExtend(dc, gc, text):
+    def __get_text_extend(dc, gc, text):
         if wx.Platform == '__WXGTK__':
             return dc.GetTextExtent(text)
         return gc.GetTextExtent(text)
@@ -1548,7 +1688,7 @@ class CheckButton(BaseToggleButton):
 
     def __DrawLabel(self, dc, gc, x):
         w, h = self.GetClientSize()
-        tw, th = self.__getTextExtend(dc, gc, self._label)
+        tw, th = CheckButton.__get_text_extend(dc, gc, self._label)
         y = ((h - th) // 2)
         if wx.Platform == '__WXGTK__':
             dc.SetTextForeground(self.GetPenForegroundColour())
@@ -1621,6 +1761,38 @@ class CheckButton(BaseToggleButton):
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
+# ---------------------------------------------------------------------------
+
+
+class RadioButton(CheckButton):
+
+    def __init__(self, parent,
+                 id=wx.ID_ANY,
+                 label="",
+                 pos=wx.DefaultPosition,
+                 size=wx.DefaultSize,
+                 name=wx.ButtonNameStr):
+        """Default class constructor.
+
+        :param parent: the parent (required);
+        :param id: window identifier.
+        :param label: label text of the check button;
+        :param pos: the position;
+        :param size: the size;
+        :param name: the name.
+
+        """
+        super(RadioButton, self).__init__(parent, id, label, pos, size, name)
+        self._radio = True
+
+    # ------------------------------------------------------------------------
+
+    def Notify(self):
+        """Sends a wx.EVT_RADIOBUTTON event to the listener (if any)."""
+        evt = ButtonEvent(wx.EVT_RADIOBUTTON.typeId, self.GetId())
+        evt.SetButtonObj(self)
+        evt.SetEventObject(self)
+        self.GetEventHandler().ProcessEvent(evt)
 
 # ----------------------------------------------------------------------------
 # Panels to test
@@ -1822,6 +1994,35 @@ class TestPanelCheckButton(wx.Panel):
 # ----------------------------------------------------------------------------
 
 
+class TestPanelRadioButton(wx.Panel):
+
+    def __init__(self, parent):
+        super(TestPanelRadioButton, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS | wx.FULL_REPAINT_ON_RESIZE,
+            name="Test RadioButton")
+
+        self.SetForegroundColour(wx.Colour(150, 160, 170))
+
+        btn_check_xs = RadioButton(self, pos=(25, 10), size=(32, 32), name="yes")
+        btn_check_xs.Check(True)
+        btn_check_xs.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+        btn_check_s = RadioButton(self, label="disabled", pos=(100, 10), size=(128, 64), name="dis")
+        btn_check_s.Enable(False)
+
+        btn_check_m = RadioButton(self, label='The text label', pos=(200, 10), size=(384, 128), name="radio")
+        font = self.GetFont().MakeBold().Scale(1.4)
+        btn_check_m.SetFont(font)
+        btn_check_m.Bind(wx.EVT_BUTTON, self.on_btn_event)
+
+    def on_btn_event(self, event):
+        obj = event.GetEventObject()
+        logging.debug('* * * PANEL: Check Button Event received by {:s} * * *'.format(obj.GetName()))
+
+# ----------------------------------------------------------------------------
+
+
 class TestPanelButtonsInSizer(wx.Panel):
 
     def __init__(self, parent):
@@ -1844,7 +2045,7 @@ class TestPanelButtonsInSizer(wx.Panel):
 # ----------------------------------------------------------------------------
 
 
-class TestPanel(sppasPanel):
+class TestPanel(sppasScrolledPanel):
 
     def __init__(self, parent):
         super(TestPanel, self).__init__(
@@ -1885,8 +2086,11 @@ class TestPanel(sppasPanel):
         sizer.Add(TestPanelButtonsInSizer(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
         sizer.Add(wx.StaticText(self, label="Checked buttons:"), 0, wx.TOP | wx.BOTTOM, 2)
         sizer.Add(TestPanelCheckButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(wx.StaticText(self, label="Radio buttons:"), 0, wx.TOP | wx.BOTTOM, 2)
+        sizer.Add(TestPanelRadioButton(self), 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 2)
 
         self.SetSizer(sizer)
+        self.SetupScrolling()
 
     def on_bg_color(self, event):
         self.SetBackgroundColour(wx.Colour(

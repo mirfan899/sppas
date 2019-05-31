@@ -45,6 +45,7 @@ import sppas.src.ui.phoenix.windows.button
 import sppas.src.ui.phoenix.page_files.filesmanager
 import sppas.src.ui.phoenix.page_files.refsmanager
 import sppas.src.ui.phoenix.page_files.wksmanager
+import sppas.src.ui.phoenix.windows.buttonbox
 
 # ----------------------------------------------------------------------------
 # Panel to test
@@ -60,8 +61,9 @@ class TestPanel(wx.Choicebook):
 
         # Make the bunch of test panels for the choice book
         self.AddPage(sppas.src.ui.phoenix.page_files.refsmanager.TestPanel(self), "References manager")
-        #self.AddPage(sppas.src.ui.phoenix.page_files.filesmanager.TestPanel(self), "Files manager")
-        #self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
+        self.AddPage(sppas.src.ui.phoenix.page_files.filesmanager.TestPanel(self), "Files manager")
+        self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
+        self.AddPage(sppas.src.ui.phoenix.windows.buttonbox.TestPanel(self), "ButtonBox")
         self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "Buttons")
         self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "Lines")
 
