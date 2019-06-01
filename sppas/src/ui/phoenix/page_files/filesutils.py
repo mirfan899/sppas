@@ -1,4 +1,5 @@
 import wx
+import logging
 from sppas.src.files import sppasAttribute
 
 # ----------------------------------------------------------------------------
@@ -38,6 +39,7 @@ class IdentifierTextValidator(wx.Validator):
         try:
             text_ctrl.SetBackgroundColour(wx.GetApp().settings.bg_color)
         except:
+            logging.debug('Error: Application settings not defined.')
             text_ctrl.SetBackgroundColour(wx.SystemSettings.GetColour(wx.SYS_COLOUR_WINDOW))
 
         text_ctrl.Refresh()

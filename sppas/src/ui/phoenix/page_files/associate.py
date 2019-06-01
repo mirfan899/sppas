@@ -372,7 +372,7 @@ class sppasFilesFilterDialog(sppasDialog):
         self._create_buttons()
         self.Bind(wx.EVT_BUTTON, self._process_event)
 
-        self.SetMinSize(wx.Size(480, 320))
+        self.SetSize(wx.Size(480, 320))
         self.LayoutComponents()
         self.CenterOnParent()
         self.FadeIn(deltaN=-8)
@@ -477,45 +477,29 @@ class sppasFilesFilterDialog(sppasDialog):
         event_name = event_obj.GetName()
 
         if event_name == "filter_path":
-            dlg = sppasStringFilterDialog(self)
-            response = dlg.ShowModal()
-            if response == wx.ID_OK:
-                # Name of the method in sppasFileDataFilters,
-                # Name of the function and its value
-                f = dlg.get_data()
-                self.listctrl.AppendItem(["path", f[0], f[1]])
-            dlg.Destroy()
+            self.__append_filter("path")
 
         elif event_name == "filter_file":
-            dlg = sppasStringFilterDialog(self)
-            response = dlg.ShowModal()
-            if response == wx.ID_OK:
-                f = dlg.get_data()
-                self.listctrl.AppendItem(["name", f[0], f[1]])
-            dlg.Destroy()
+            self.__append_filter("name")
 
         elif event_name == "filter_ext":
-            dlg = sppasStringFilterDialog(self)
-            response = dlg.ShowModal()
-            if response == wx.ID_OK:
-                f = dlg.get_data()
-                self.listctrl.AppendItem(["extension", f[0], f[1]])
-            dlg.Destroy()
+            self.__append_filter("extension")
 
         elif event_name == "filter_ref":
-            dlg = sppasStringFilterDialog(self)
-            response = dlg.ShowModal()
-            if response == wx.ID_OK:
-                f = dlg.get_data()
-                self.listctrl.AppendItem(["ref", f[0], f[1]])
-            dlg.Destroy()
+            self.__append_filter("ref")
 
         elif event_name == "filter_att":
             dlg = sppasAttributeFilterDialog(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
+                # Name of the method in sppasFileDataFilters,
+                # Name of the function and its value
                 f = dlg.get_data()
-                self.listctrl.AppendItem(["att", f[0], f[1]])
+                v = f[1].split(':')
+                if len(v[0].strip()) > 1 and len(v[1].strip()) > 0:
+                    self.listctrl.AppendItem(["att", f[0], f[1].strip()])
+                else:
+                    logging.error("Invalid input string for identifier or value.")
             dlg.Destroy()
 
         elif event_name == "cancel":
@@ -533,6 +517,21 @@ class sppasFilesFilterDialog(sppasDialog):
         else:
             event.Skip()
 
+    # ------------------------------------------------------------------------
+
+    def __append_filter(self, fct):
+        dlg = sppasStringFilterDialog(self)
+        response = dlg.ShowModal()
+        if response == wx.ID_OK:
+            # Name of the method in sppasFileDataFilters,
+            # Name of the function and its value
+            f = dlg.get_data()
+            if len(f[1].strip()) > 0:
+                self.listctrl.AppendItem([fct, f[0], f[1].strip()])
+            else:
+                logging.error("Empty input pattern.")
+        dlg.Destroy()
+
 # ---------------------------------------------------------------------------
 
 
@@ -549,18 +548,17 @@ class sppasStringFilterDialog(sppasDialog):
 
     choices = (
                ("exact", "exact"),
-               ("not exact", "exact"),
                ("contains", "contains"),
-               ("not contains", "contains"),
                ("starts with", "startswith"),
-               ("not starts with", "startswith"),
                ("ends with", "endswith"),
-               ("not ends with", "endswith"),
                ("match (regexp)", "regexp"),
+
+               ("not exact", "exact"),
+               ("not contains", "contains"),
+               ("not starts with", "startswith"),
+               ("not ends with", "endswith"),
                ("not match", "regexp")
               )
-
-    DEFAULT_PATTERN = "x1, x2..."
 
     def __init__(self, parent):
         """Create a string filter dialog.
@@ -576,7 +574,7 @@ class sppasStringFilterDialog(sppasDialog):
         self._create_content()
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
 
-        self.SetMinSize(wx.Size(320, 220))
+        self.SetSize(wx.Size(380, 320))
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -592,6 +590,7 @@ class sppasStringFilterDialog(sppasDialog):
 
         """
         idx = self.radiobox.GetSelection()
+        label = self.radiobox.GetStringSelection()
         given_fct = self.choices[idx][1]
 
         # Fill the resulting dict
@@ -599,7 +598,7 @@ class sppasStringFilterDialog(sppasDialog):
 
         if given_fct != "regexp":
             # prepend "not_" if reverse
-            if (idx % 2) != 0:
+            if "not" in label:
                 prepend_fct += "not_"
             # prepend "i" if case-insensitive
             if self.checkbox.GetValue() is False:
@@ -616,15 +615,15 @@ class sppasStringFilterDialog(sppasDialog):
         panel = sppasPanel(self, name="content")
 
         label = sppasStaticText(panel, label="Search for pattern(s): ")
-        self.text = sppasTextCtrl(panel, value=self.DEFAULT_PATTERN)
-        self.text.Bind(wx.EVT_TEXT, self.OnTextChanged)
-        self.text.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
+        self.text = sppasTextCtrl(panel, value="")
 
         choices = [row[0] for row in self.choices]
-        self.radiobox = wx.RadioBox(panel,
-                                    choices=choices,
-                                    majorDimension=2)
-        self.radiobox.SetSelection(2)
+        self.radiobox = sppasRadioBoxPanel(
+            panel,
+            choices=choices,
+            majorDimension=2,
+            style=wx.RA_SPECIFY_COLS)
+        self.radiobox.SetSelection(1)
         self.checkbox = CheckButton(panel, label="Case sensitive")
         self.checkbox.SetValue(False)
 
@@ -639,22 +638,6 @@ class sppasStringFilterDialog(sppasDialog):
         panel.SetMinSize((240, 160))
         panel.SetAutoLayout(True)
         self.SetContent(panel)
-
-    # ------------------------------------------------------------------------
-
-    def OnTextClick(self, event):
-        self.text.SetForegroundColour(wx.BLACK)
-        if self.text.GetValue() == self.DEFAULT_PATTERN:
-            self.OnTextErase(event)
-        event.Skip()
-
-    def OnTextChanged(self, event):
-        self.text.Refresh()
-
-    def OnTextErase(self, event):
-        self.text.SetValue('')
-        self.text.SetFocus()
-        self.text.Refresh()
 
 # ---------------------------------------------------------------------------
 
@@ -672,15 +655,17 @@ class sppasAttributeFilterDialog(sppasDialog):
 
     choices = (
                ("exact", "exact"),
-               ("not exact", "exact"),
                ("contains", "contains"),
-               ("not contains", "contains"),
                ("starts with", "startswith"),
-               ("not starts with", "startswith"),
                ("ends with", "endswith"),
-               ("not ends with", "endswith"),
                ("match (regexp)", "regexp"),
+
+               ("not exact", "exact"),
+               ("not contains", "contains"),
+               ("not starts with", "startswith"),
+               ("not ends with", "endswith"),
                ("not match", "regexp"),
+
                ("equal", "equal"),
                ("greater than", "gt"),
                ("greater or equal", "ge"),
@@ -702,7 +687,7 @@ class sppasAttributeFilterDialog(sppasDialog):
         self._create_content()
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
 
-        self.SetMinSize(wx.Size(320, 220))
+        self.SetMinSize(wx.Size(420, 320))
         self.LayoutComponents()
         self.CenterOnParent()
 
@@ -718,14 +703,15 @@ class sppasAttributeFilterDialog(sppasDialog):
 
         """
         idx = self.radiobox.GetSelection()
+        label = self.radiobox.GetStringSelection()
         given_fct = self.choices[idx][1]
 
         # Fill the resulting dict
         prepend_fct = ""
 
-        if given_fct in sppasAttributeFilterDialog.choices[:8]:
+        if idx < 10 and given_fct != "regexp":
             # prepend "not_" if reverse
-            if (idx % 2) != 0:
+            if "not" in label:
                 prepend_fct += "not_"
             # prepend "i" if case-insensitive
             if self.checkbox.GetValue() is False:
@@ -743,16 +729,18 @@ class sppasAttributeFilterDialog(sppasDialog):
         panel = sppasPanel(self, name="content")
 
         label = sppasStaticText(panel, label="Identifier: ")
-        self.text_ident = sppasTextCtrl(panel, value="",
-                                  validator=IdentifierTextValidator())
-        # self.text_ident.Bind(wx.EVT_TEXT, self.OnTextChanged)
-        # self.text_ident.Bind(wx.EVT_SET_FOCUS, self.OnTextClick)
+        self.text_ident = sppasTextCtrl(
+            panel,
+            value="",
+            validator=IdentifierTextValidator())
 
         choices = [row[0] for row in sppasAttributeFilterDialog.choices]
-        self.radiobox = wx.RadioBox(panel,
-                                    choices=choices,
-                                    majorDimension=2)
-        self.radiobox.SetSelection(2)
+        self.radiobox = sppasRadioBoxPanel(
+            panel,
+            choices=choices,
+            majorDimension=3,
+            style=wx.RA_SPECIFY_COLS)
+        self.radiobox.SetSelection(1)
         self.radiobox.Bind(wx.EVT_RADIOBOX, self._on_radiobox_checked)
         self.checkbox = CheckButton(panel, label="Case sensitive")
         self.checkbox.SetValue(False)

@@ -1665,7 +1665,7 @@ class CheckButton(BaseToggleButton):
                 img = sppasSwissKnife.get_image('choice_checkbox')
 
         sppasSwissKnife.rescale_image(img, img_size)
-        ColorizeImage(img, wx.BLACK, self.GetForegroundColour())
+        ColorizeImage(img, wx.BLACK, self.GetPenForegroundColour())
 
         # Draw image as bitmap
         bmp = wx.Bitmap(img)

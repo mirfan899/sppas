@@ -85,12 +85,6 @@ class sppasRadioBoxPanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def GetItemLabel(self, n):
-        """Return the text of the n'th item in the radio box."""
-        self.GetString(n)
-
-    # ------------------------------------------------------------------------
-
     def GetSelection(self):
         """Return the index of the selected item or -1 if no item is selected.
     
@@ -98,6 +92,28 @@ class sppasRadioBoxPanel(sppasPanel):
         
         """
         return self.__selection
+
+    # ------------------------------------------------------------------------
+
+    def SetSelection(self, n):
+        """Set the selection to the given item.
+
+        :param n: (int) –
+
+        """
+        if n > len(self.__buttons):
+            return
+        # do not re-select the current one
+        if self.__selection == n:
+            return
+
+        btn = self.__buttons[n]
+        # do not select a disabled button
+        if btn.IsEnabled() is True:
+            btn.SetValue(True)
+            # un-select the current selected button
+            self.__buttons[self.__selection].SetValue(False)
+            self.__selection = n
 
     # ------------------------------------------------------------------------
 
@@ -115,6 +131,21 @@ class sppasRadioBoxPanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
+    def GetStringSelection(self):
+        """Return the label of the selected item.
+
+        :return: (str) The label of the selected item
+        """
+        return self.__buttons[self.__selection].GetLabel()
+
+    # ------------------------------------------------------------------------
+
+    def GetItemLabel(self, n):
+        """Return the text of the n'th item in the radio box."""
+        self.GetString(n)
+
+    # ------------------------------------------------------------------------
+
     def IsItemEnabled(self, n):
         """Return True if the item is enabled or False if it was disabled using Enable .
 
@@ -128,42 +159,11 @@ class sppasRadioBoxPanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
-    def IsItemShown(self, n):
-        """Return True if the item is currently shown or False if it was hidden using Show .
-
-        :param n: (int) – The zero-based button position.
-        :return: (bool)
-
-        """
-        if n > len(self.__buttons):
-            return False
-        return self.__buttons[n].IsShown()
-
-    # ------------------------------------------------------------------------
-
     def SetItemLabel(self, n, text):
         """Set the text of the n’th item in the radio box.
 
         """
         raise NotImplementedError
-
-    # ------------------------------------------------------------------------
-
-    def SetSelection(self, n):
-        """Set the selection to the given item.
-
-        :param n: (int) –
-
-        """
-        if self.__selection == n:
-            return
-        if n > len(self.__buttons):
-            return
-        btn = self.__buttons[n]
-        if btn.IsEnabled() is True:
-            btn.SetValue(True)
-            self.__buttons[self.__selection].SetValue(False)
-            self.__selection = n
 
     # ------------------------------------------------------------------------
 
@@ -191,10 +191,23 @@ class sppasRadioBoxPanel(sppasPanel):
 
     # ------------------------------------------------------------------------
 
+    def IsItemShown(self, n):
+        """Return True if the item is currently shown or False if it was hidden using Show .
+
+        :param n: (int) – The zero-based button position.
+        :return: (bool)
+
+        """
+        if n > len(self.__buttons):
+            return False
+        return self.__buttons[n].IsShown()
+
+    # ------------------------------------------------------------------------
+
     def Notify(self):
         """Sends a wx.EVT_RADIOBUTTON event to the listener (if any)."""
         evt = ButtonEvent(wx.EVT_RADIOBOX.typeId, self.GetId())
-        evt.SetButtonObj(self)
+        evt.SetButtonObj(self.__buttons[self.__selection])
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
 
@@ -279,8 +292,10 @@ class sppasRadioBoxPanel(sppasPanel):
         for i, btn in enumerate(self.__buttons):
             if btn is evt_btn:
                 self.__selection = i
-                btn.Enable(True)
-            btn.Enable(False)
+                btn.SetValue(True)
+            else:
+                btn.SetValue(False)
+        self.Notify()
 
 # ----------------------------------------------------------------------------
 # Panels to test
@@ -303,6 +318,10 @@ class TestPanelRadioBox(wx.Panel):
             majorDimension=2,
             style=wx.RA_SPECIFY_COLS)
         rbc.Bind(wx.EVT_RADIOBOX, self.on_btn_event)
+        # disable apples:
+        rbc.EnableItem(3, False)
+        # should do return False:
+        # assert(rbc.EnableItem(50, True) is False), "Enable Item with index 50:"
 
         rbr = sppasRadioBoxPanel(
             self,
@@ -312,6 +331,8 @@ class TestPanelRadioBox(wx.Panel):
             majorDimension=2,
             style=wx.RA_SPECIFY_ROWS)
         rbr.Bind(wx.EVT_RADIOBOX, self.on_btn_event)
+        # disable apples
+        rbr.EnableItem(3, False)
 
     # -----------------------------------------------------------------------
 

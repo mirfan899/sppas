@@ -125,7 +125,7 @@ class sppasBaseSet(object):
     # -----------------------------------------------------------------------
 
     def __iter__(self):
-        for data in list(self._data_set.keys()):
+        for data in self._data_set:  # list(self._data_set.keys()):
             yield data
 
     # -----------------------------------------------------------------------
