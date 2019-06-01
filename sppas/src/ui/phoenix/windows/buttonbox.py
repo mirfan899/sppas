@@ -6,21 +6,6 @@ from .panel import sppasPanel
 # ---------------------------------------------------------------------------
 
 
-class RadioBox(sppasPanel):
-
-    def __init__(self, parent,
-                 id=wx.ID_ANY, label="",
-                 pos=wx.DefaultPosition, size=wx.DefaultSize,
-                 choices=[], majorDimension=0,
-                 name=wx.RadioBoxNameStr):
-
-        content = sppasRadioBoxPanel(self, wx.ID_ANY,
-                             pos, size, choices, majorDimension,
-                             name="content")
-
-# ---------------------------------------------------------------------------
-
-
 class sppasRadioBoxPanel(sppasPanel):
 
     def __init__(self, parent,
@@ -208,7 +193,7 @@ class sppasRadioBoxPanel(sppasPanel):
 
     def Notify(self):
         """Sends a wx.EVT_RADIOBUTTON event to the listener (if any)."""
-        evt = ButtonEvent(wx.EVT_RADIOBUTTON.typeId, self.GetId())
+        evt = ButtonEvent(wx.EVT_RADIOBOX.typeId, self.GetId())
         evt.SetButtonObj(self)
         evt.SetEventObject(self)
         self.GetEventHandler().ProcessEvent(evt)
@@ -225,23 +210,43 @@ class sppasRadioBoxPanel(sppasPanel):
             if majorDimension > 0:
                 if style == wx.RA_SPECIFY_COLS:
                     cols = majorDimension
-                    rows = len(choices) // majorDimension
+                    rows = (len(choices)+1) // majorDimension
                 elif style == wx.RA_SPECIFY_ROWS:
                     rows = majorDimension
-                    cols = len(choices) // majorDimension
+                    cols = (len(choices)+1) // majorDimension
 
         logging.debug('Number of rows: {:d}'.format(rows))
         logging.debug('Number of cols: {:d}'.format(cols))
 
         grid = wx.GridBagSizer(rows, cols)
-        for c in range(cols):
-            logging.debug(' - col nb: {:d}'.format(c))
+        if style == wx.RA_SPECIFY_COLS:
+            for c in range(cols):
+                logging.debug(' - col nb: {:d}'.format(c))
+                for r in range(rows):
+                    logging.debug('   - row nb: {:d}'.format(r))
+                    index = (c*rows)+r
+                    if index < len(choices):
+                        btn = RadioButton(self, label=choices[index])
+                        grid.Add(btn, pos=(r, c), flag=wx.EXPAND)
+                        self.__buttons.append(btn)
+
+        else:
             for r in range(rows):
                 logging.debug(' - row nb: {:d}'.format(r))
-                btn = RadioButton(self, label=choices[(c*r)+r])
-                grid.Add(btn, pos=(r, c), flag=wx.EXPAND)
-                self.__buttons.append(btn)
+                for c in range(cols):
+                    logging.debug('   - col nb: {:d}'.format(c))
+                    index = (r*cols)+c
+                    if index < len(choices):
+                        btn = RadioButton(self, label=choices[index])
+                        grid.Add(btn, pos=(r, c), flag=wx.EXPAND)
+                        self.__buttons.append(btn)
+
+        for c in range(cols):
             grid.AddGrowableCol(c)
+
+        for r in range(rows):
+            grid.AddGrowableRow(r)
+
         self.__buttons[0].SetValue(True)
         self.SetSizer(grid)
 
@@ -260,19 +265,22 @@ class sppasRadioBoxPanel(sppasPanel):
         # self.Bind(wx.EVT_KEY_DOWN, self._process_key_event)
 
         # The user clicked (LeftDown - LeftUp) an action button
-        self.Bind(wx.EVT_BUTTON, self._process_btn_event)
+        self.Bind(wx.EVT_RADIOBUTTON, self._process_btn_event)
 
     # ------------------------------------------------------------------------
 
     def _process_btn_event(self, event):
-        """Respond to a button event."""
+        """Respond to a button event.
+
+        :param event: (wx.Event)
+
+        """
         evt_btn = event.GetButtonObj()
         for i, btn in enumerate(self.__buttons):
             if btn is evt_btn:
                 self.__selection = i
                 btn.Enable(True)
             btn.Enable(False)
-
 
 # ----------------------------------------------------------------------------
 # Panels to test
@@ -287,13 +295,23 @@ class TestPanelRadioBox(wx.Panel):
             style=wx.BORDER_NONE | wx.WANTS_CHARS,
             name="Test RadioBox")
 
-        rb = sppasRadioBoxPanel(
+        rbc = sppasRadioBoxPanel(
             self,
             pos=(10, 10),
+            size=wx.Size(200, 300),
+            choices=["bananas", "pears", "tomatoes", "apples", "pineapples"],
+            majorDimension=2,
+            style=wx.RA_SPECIFY_COLS)
+        rbc.Bind(wx.EVT_RADIOBOX, self.on_btn_event)
+
+        rbr = sppasRadioBoxPanel(
+            self,
+            pos=(220, 10),
             size=wx.Size(300, 200),
             choices=["bananas", "pears", "tomatoes", "apples", "pineapples"],
-            majorDimension=2)
-        rb.Bind(wx.EVT_RADIOBOX, self.on_btn_event)
+            majorDimension=2,
+            style=wx.RA_SPECIFY_ROWS)
+        rbr.Bind(wx.EVT_RADIOBOX, self.on_btn_event)
 
     # -----------------------------------------------------------------------
 

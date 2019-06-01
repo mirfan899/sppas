@@ -50,6 +50,7 @@ from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
 from ..windows.button import BitmapTextButton, CheckButton
+from ..windows.buttonbox import sppasRadioBoxPanel
 
 from .filesevent import DataChangedEvent
 from .filesutils import IdentifierTextValidator
@@ -621,7 +622,6 @@ class sppasStringFilterDialog(sppasDialog):
 
         choices = [row[0] for row in self.choices]
         self.radiobox = wx.RadioBox(panel,
-                                    label="Functions: ",
                                     choices=choices,
                                     majorDimension=2)
         self.radiobox.SetSelection(2)
@@ -750,7 +750,6 @@ class sppasAttributeFilterDialog(sppasDialog):
 
         choices = [row[0] for row in sppasAttributeFilterDialog.choices]
         self.radiobox = wx.RadioBox(panel,
-                                    label="Functions: ",
                                     choices=choices,
                                     majorDimension=2)
         self.radiobox.SetSelection(2)

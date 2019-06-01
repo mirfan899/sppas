@@ -6,6 +6,8 @@ from .button import sppasBitmapTextButton
 from .button import sppasTextButton
 from .button import sppasBitmapButton
 
+from .buttonbox import sppasRadioBoxPanel
+
 from .text import sppasStaticText
 from .text import sppasMessageText
 from .text import sppasTitleText
@@ -23,6 +25,7 @@ __all__ = (
     'sppasBitmapTextButton',
     "sppasTextButton",
     "sppasBitmapButton",
+    "sppasRadioBoxPanel",
     "CheckButton",
     "RadioButton",
     "sppasStaticText",
