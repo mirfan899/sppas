@@ -96,6 +96,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
     # ------------------------------------------------------------------------
 
     def set_data(self, data):
+        """Set the data of the model."""
         self._model.set_data(data)
         self.__refresh()
 
@@ -106,7 +107,7 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         
         The given filenames must include theirs absolute path.
 
-        :param entries: (list of str) Filenames or folder with absolute path.
+        :param entries: (list of str) Filename or folder with absolute path.
 
         """
         items = self._model.add_files(entries)

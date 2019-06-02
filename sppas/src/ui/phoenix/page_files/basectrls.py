@@ -37,10 +37,11 @@ import wx
 import wx.dataview
 import logging
 
-from sppas.src.files import States
+from sppas.src.files.filebase import States
 from sppas.src.files.fileexc import FileAttributeError
-from sppas.src.ui.phoenix import sppasSwissKnife
-from sppas.src.ui.phoenix.windows.image import ColorizeImage
+
+from ..tools import sppasSwissKnife
+from ..windows.image import ColorizeImage
 
 # ----------------------------------------------------------------------------
 

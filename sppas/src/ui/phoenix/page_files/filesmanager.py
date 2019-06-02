@@ -27,7 +27,7 @@
         ---------------------------------------------------------------------
 
     src.ui.phoenix.filespck.filesmanager.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Main panel to manage the tree of files.
 
@@ -37,13 +37,24 @@ import logging
 import os
 import wx
 
-from sppas.src.files import States
+from sppas.src.files.filebase import States
 
 from ..windows.panel import sppasPanel
 from ..dialogs import YesNoQuestion, Information
 from .filestreectrl import FilesTreeViewCtrl
 from .btntxttoolbar import BitmapTextToolbar
 from .filesevent import DataChangedEvent
+
+
+# ---------------------------------------------------------------------------
+# List of displayed messages:
+
+FLS_TITLE = "Files: "
+FLS_ACT_ADD = "Add"
+FLS_ACT_REM = "Remove checked"
+FLS_ACT_DEL = "Delete checked"
+
+FLS_MSG_CONFIRM_DEL = "Are you sure you want to delete {:d} files?"
 
 # ----------------------------------------------------------------------------
 
@@ -117,10 +128,10 @@ class FilesManager(sppasPanel):
         """Create the toolbar."""
         tb = BitmapTextToolbar(self)
         tb.set_focus_color(FilesManager.HIGHLIGHT_COLOUR)
-        tb.AddTitleText("Files: ", FilesManager.HIGHLIGHT_COLOUR)
-        tb.AddButton("files-add", "Add")
-        tb.AddButton("files-remove", "Remove checked")
-        tb.AddButton("files-delete", "Delete checked")
+        tb.AddTitleText(FLS_TITLE, FilesManager.HIGHLIGHT_COLOUR)
+        tb.AddButton("files-add", FLS_ACT_ADD)
+        tb.AddButton("files-remove", FLS_ACT_REM)
+        tb.AddButton("files-delete", FLS_ACT_DEL)
         return tb
 
     # -----------------------------------------------------------------------
@@ -146,7 +157,6 @@ class FilesManager(sppasPanel):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
             data = self.FindWindow("filestree").get_data()
-            logging.debug("Files Manager. Set data state to checked.")
             data.set_state(States().CHECKED)
             evt = DataChangedEvent(data=data)
             evt.SetEventObject(self)
@@ -255,9 +265,8 @@ class FilesManager(sppasPanel):
             return
 
         # User must confirm to really delete files
-        title = "Confirm delete of files?"
-        message = "Are you sure you want to delete {:d} files?" \
-                  "".format(len(checked_files))
+        # title = "Confirm delete of files?"
+        message = FLS_MSG_CONFIRM_DEL.format(len(checked_files))
         response = YesNoQuestion(message)
         if response == wx.ID_NO:
             return

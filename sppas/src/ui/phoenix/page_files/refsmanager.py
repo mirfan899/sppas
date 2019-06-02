@@ -26,8 +26,8 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.refsmanager.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.page_files.refsmanager.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Main panel to manage the references.
 
@@ -37,13 +37,15 @@ import logging
 import wx
 
 from sppas import sg
-from sppas.src.files import FileReference, sppasAttribute, States
+from sppas.src.files.fileref import FileReference, sppasAttribute
+from sppas.src.files.filebase import States
 
 from ..windows import sppasDialog
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
 from ..windows import sppasStaticText
 from ..windows import sppasTextCtrl
+from ..windows import RadioButton
 from ..dialogs import Information
 from ..dialogs import Error
 
@@ -51,6 +53,21 @@ from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
 from .filesevent import DataChangedEvent
 from .filesutils import IdentifierTextValidator
+
+
+# ---------------------------------------------------------------------------
+# List of displayed messages:
+
+REF_TITLE = "References: "
+REF_ACT_CREATE = "Create"
+REF_ACT_EDIT = "Edit"
+REF_ACT_DEL = "Delete"
+
+REF_MSG_CREATE_ERROR = "The reference {:s} has not been created due to " \
+                       "the following error: {:s}"
+REF_MSG_DEL_ERROR = "An error occurred while removing the references: {:s}"
+REF_MSG_DEL_INFO = "{:d} references deleted."
+REF_MSG_NB_CHECKED = "No reference checked."
 
 # ----------------------------------------------------------------------------
 
@@ -115,10 +132,10 @@ class ReferencesManager(sppasPanel):
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self)
         tb.set_focus_color(ReferencesManager.HIGHLIGHT_COLOUR)
-        tb.AddTitleText("References: ", color=ReferencesManager.HIGHLIGHT_COLOUR)
-        tb.AddButton("refs-add", "Create")
-        tb.AddButton("refs-edit", "Edit")
-        tb.AddButton("refs-delete", "Delete")
+        tb.AddTitleText(REF_TITLE, color=ReferencesManager.HIGHLIGHT_COLOUR)
+        tb.AddButton("refs-add", REF_ACT_CREATE)
+        tb.AddButton("refs-edit", REF_ACT_EDIT)
+        tb.AddButton("refs-delete", REF_ACT_DEL)
         return tb
 
     # -----------------------------------------------------------------------
@@ -181,7 +198,6 @@ class ReferencesManager(sppasPanel):
 
         """
         name = event.GetButtonObj().GetName()
-        logging.debug("Event received of button: {:s}".format(name))
 
         if name == "refs-add":
             self._add()
@@ -208,8 +224,7 @@ class ReferencesManager(sppasPanel):
                 self.notify()
             except Exception as e:
                 logging.error(str(e))
-                message = "The reference {:s} has not been created due to " \
-                          "the following error: {:s}".format(rname, str(e))
+                message = REF_MSG_CREATE_ERROR.format(rname, str(e))
                 Error(message)
         dlg.Destroy()
 
@@ -221,17 +236,15 @@ class ReferencesManager(sppasPanel):
         """
         view = self.FindWindow('refsview')
         if view.HasCheckedRefs() is False:
-            Error('No reference checked.')
+            Error(REF_MSG_NB_CHECKED)
         else:
             try:
                 nb = view.RemoveCheckedRefs()
                 if nb > 0:
-                    Information('{:d} references removed.'.format(nb))
+                    Information(REF_MSG_DEL_INFO.format(nb))
                     self.notify()
             except Exception as e:
-                Error(
-                    'An error occurred while removing the references: {:s}'
-                    ''.format(str(e)))
+                Error(REF_MSG_DEL_ERROR.format(str(e)))
 
     # ------------------------------------------------------------------------
 
@@ -240,7 +253,7 @@ class ReferencesManager(sppasPanel):
         logging.debug('Edit attribute.')
         view = self.FindWindow('refsview')
         if view.HasCheckedRefs() is False:
-            Error('No reference checked.')
+            Error(REF_MSG_NB_CHECKED)
         else:
             dlg = sppasEditAttributes(self)
             response = dlg.ShowModal()
@@ -434,14 +447,14 @@ class sppasEditAttributes(sppasDialog):
         st1 = sppasStaticText(panel, label="Required:")
         sizer.Add(st1, pos=(0, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL,  border=2)
 
-        add_btn = wx.RadioButton(
+        add_btn = RadioButton(
             panel,
             label="Add a new value in the checked references",
             name="radio_add")
         add_btn.SetValue(True)
         sizer.Add(add_btn, pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
 
-        del_btn = wx.RadioButton(
+        del_btn = RadioButton(
             panel,
             label="Delete an existing value in the checked references",
             name="radio_del")

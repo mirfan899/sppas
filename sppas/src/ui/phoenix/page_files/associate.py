@@ -59,6 +59,8 @@ from .btntxttoolbar import BitmapTextToolbar
 # ---------------------------------------------------------------------------
 
 MSG_HEADER_FILTER = ui_translation.gettext("Checking files")
+MSG_NB_CHECKED = "{:d} files were matching the given filters and were checked."
+MSG_NO_CHECKED = "None of the files is matching the given filters."
 
 # ---------------------------------------------------------------------------
 
@@ -83,11 +85,11 @@ class AssociatePanel(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
-        # State of the button to check all or none of the filenames
-        self._checkall = False
-
         # The data this page is working on
         self.__data = FileData()
+
+        # State of the button to check all or none of the filenames
+        self._checkall = False
 
         # Construct the panel
         self._create_content()
@@ -189,7 +191,6 @@ class AssociatePanel(sppasPanel):
     def _process_action(self, event):
         """Respond to an association event."""
         name = event.GetButtonObj().GetName()
-        logging.debug("Event received of associate button: {:s}".format(name))
 
         if name == "check_filter":
             self.check_filter()
@@ -219,7 +220,7 @@ class AssociatePanel(sppasPanel):
                 wx.BeginBusyCursor()
                 data_set = self.__process_filter(data_filters, dlg.match_all)
                 if len(data_set) == 0:
-                    Information('None of the files is matching the given filters.')
+                    Information(MSG_NO_CHECKED)
                 else:
                     # Uncheck all files (except the locked ones!) and all references
                     self.__data.set_object_state(States().UNUSED)
@@ -231,9 +232,7 @@ class AssociatePanel(sppasPanel):
                         root = self.__data.get_parent(fn)
                         if root not in roots:
                             roots.append(root)
-                    Information('{:d} files were matching the given filters '
-                                'and checked.'
-                                ''.format(len(data_set)))
+                    Information(MSG_NB_CHECKED.format(len(data_set)))
 
                     # Check references matching the checked files
                     for fr in roots:
@@ -250,6 +249,7 @@ class AssociatePanel(sppasPanel):
         """Perform the filter process.
     
         :param data_filters: list of tuples with (filter name, function name, values)
+        :param match_all: (bool)
         
         """
         logging.info("Check files matching the following filter=sppasFileDataFilters():")

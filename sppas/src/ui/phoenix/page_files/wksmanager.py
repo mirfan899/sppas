@@ -62,10 +62,10 @@ WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEven
 # List of displayed messages:
 
 WKP_TITLE = "Workspaces: "
-WKP_MSG_IMPORT = "Import from"
-WKP_MSG_EXPORT = "Export to"
-WKP_MSG_SAVE = "Pin & Save"
-WKP_MSG_RENAME = "Rename"
+WKP_ACT_IMPORT = "Import from"
+WKP_ACT_EXPORT = "Export to"
+WKP_ACT_SAVE = "Pin & Save"
+WKP_ACT_RENAME = "Rename"
 
 WKP_MSG_ASK_NAME = "New name of the workspace: "
 
@@ -79,18 +79,18 @@ WKP_MSG_CONFIRM = "The current workspace contains not saved work that " \
 
 WKP_MSG_LOAD_ERROR = "Data of the workspace {:s} can't be loaded due to " \
                      "the following error: {:s}.\nDo you want to delete it?"
-WKP_MSG_SAVECURRENT_ERROR = "The current workspace can not be saved due to " \
+WKP_ACT_SAVECURRENT_ERROR = "The current workspace can not be saved due to " \
                      "the following error: {:s}\nAre you sure you want " \
                      "to change workspace?"
-WKP_MSG_SAVE_ERROR = "Workspace '{:s}' can't be saved due to the following " \
+WKP_ACT_SAVE_ERROR = "Workspace '{:s}' can't be saved due to the following " \
                      "error: {!s:s}"
-WKP_MSG_IMPORT_ERROR = "File '{:s}' can't be imported due to the following" \
+WKP_ACT_IMPORT_ERROR = "File '{:s}' can't be imported due to the following" \
                        " error:\n{!s:s}"
-WKP_MSG_EXPORT_ERROR = "File '{:s}' can't be exported due to the following" \
+WKP_ACT_EXPORT_ERROR = "File '{:s}' can't be exported due to the following" \
                        " error: {!s:s}"
 WKP_MSG_PIN_ERROR = "Pin of workspace '{:s}' is not possible due to the " \
                     "following error: {!s:s}"
-WKP_MSG_RENAME_ERROR = "Workspace can't be renamed to '{:s}' due to the " \
+WKP_ACT_RENAME_ERROR = "Workspace can't be renamed to '{:s}' due to the " \
                        "following error: {!s:s}"
 
 # ---------------------------------------------------------------------------
@@ -172,10 +172,10 @@ class WorkspacesManager(sppasPanel):
         tb.set_focus_color(WorkspacesManager.HIGHLIGH_COLOUR)
 
         tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGH_COLOUR)
-        tb.AddButton("workspace_import", WKP_MSG_IMPORT)
-        tb.AddButton("workspace_export", WKP_MSG_EXPORT)
-        tb.AddButton("workspace_pin", WKP_MSG_SAVE)
-        tb.AddButton("workspace_rename", WKP_MSG_RENAME)
+        tb.AddButton("workspace_import", WKP_ACT_IMPORT)
+        tb.AddButton("workspace_export", WKP_ACT_EXPORT)
+        tb.AddButton("workspace_pin", WKP_ACT_SAVE)
+        tb.AddButton("workspace_rename", WKP_ACT_RENAME)
         return tb
 
     # ------------------------------------------------------------------------
@@ -268,7 +268,7 @@ class WorkspacesManager(sppasPanel):
             except Exception as e:
 
                 # User must confirm to really switch
-                message = WKP_MSG_SAVECURRENT_ERROR.format(str(e))
+                message = WKP_ACT_SAVECURRENT_ERROR.format(str(e))
                 response = Confirm(message, WKP_MSG_CONFIRM_SWITCH)
                 if response == wx.ID_CANCEL:
                     # the workspace panel has to switch back to the current
@@ -338,7 +338,7 @@ class WorkspacesManager(sppasPanel):
             try:
                 self.FindWindow("wkpslist").import_from(pathname)
             except Exception as e:
-                message = WKP_MSG_IMPORT_ERROR.format(pathname, str(e))
+                message = WKP_ACT_IMPORT_ERROR.format(pathname, str(e))
                 Error(message, "Import error")
 
     # ------------------------------------------------------------------------
@@ -370,7 +370,7 @@ class WorkspacesManager(sppasPanel):
         try:
             self.FindWindow("wkpslist").export_to(pathname)
         except Exception as e:
-            message = WKP_MSG_EXPORT_ERROR.format(pathname, str(e))
+            message = WKP_ACT_EXPORT_ERROR.format(pathname, str(e))
             Error(message, "Export error")
 
     # ------------------------------------------------------------------------
@@ -407,7 +407,7 @@ class WorkspacesManager(sppasPanel):
             wkps.save(self.__data)
             self.notify()
         except Exception as e:
-            message = WKP_MSG_SAVE_ERROR.format(wkp_name, str(e))
+            message = WKP_ACT_SAVE_ERROR.format(wkp_name, str(e))
             Error(message, "Save error")
 
     # ------------------------------------------------------------------------
@@ -435,7 +435,7 @@ class WorkspacesManager(sppasPanel):
         try:
             self.FindWindow("wkpslist").rename(new_name)
         except Exception as e:
-            message = WKP_MSG_RENAME_ERROR.format(new_name, str(e))
+            message = WKP_ACT_RENAME_ERROR.format(new_name, str(e))
             Error(message, "Rename error")
 
 # ----------------------------------------------------------------------------

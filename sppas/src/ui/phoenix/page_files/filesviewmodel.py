@@ -44,10 +44,10 @@ from sppas.src.ui.trash import sppasTrash
 from sppas.src.anndata import sppasRW
 from sppas.src.files import States, FileName, FileRoot, FilePath, FileData
 
-from sppas.src.ui.phoenix import sppasSwissKnife
+from ..tools import sppasSwissKnife
 from .basectrls import ColumnProperties, StateIconRenderer
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
    
 class FileAnnotIcon(object):
@@ -58,6 +58,8 @@ class FileAnnotIcon(object):
     :contact:      contact@sppas.org
     :license:      GPL, v3
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    All supported file formats of 'anndata' are linked to an icon file.
 
     """
 
@@ -107,6 +109,7 @@ class FileIconRenderer(wx.dataview.DataViewCustomRenderer):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
+
     def __init__(self,
                  varianttype="wxBitmap",
                  mode=wx.dataview.DATAVIEW_CELL_INERT,
@@ -160,15 +163,17 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         1. file:     string
         2. state:    int (one of the States() class)
         3. type:     string
-        4. data:     string
-        5. size:     string
+        4. refs:     string
+        5. data:     string
+        6. size:     string
 
     """
 
     def __init__(self):
         """Constructor of a fileTreeModel.
 
-        :param data: (FileData) Workspace to be managed by the mapper
+        No data is given at the initialization.
+        Use set_data() method.
 
         """
         wx.dataview.PyDataViewModel.__init__(self)
@@ -177,13 +182,13 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         except AttributeError:
             pass
 
-        # The icons to display depending on the file extension
-        self.exticon = FileAnnotIcon()
-
         # The workspace to display
         self.__data = FileData()
 
-        # Map between displayed columns and workspace
+        # The icons to display depending on the file extension
+        self.exticon = FileAnnotIcon()
+
+        # Map between the displayed columns and the workspace data
         self.__mapper = dict()
         self.__mapper[0] = FilesTreeViewModel.__create_col('icon')
         self.__mapper[1] = FilesTreeViewModel.__create_col('file')
@@ -208,7 +213,6 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def set_data(self, data):
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the filesview.')
         self.__data = data
         self.update()
 
@@ -217,21 +221,26 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def GetColumnCount(self):
-        """Override. Report how many columns this model provides data for."""
+        """Overridden. Report how many columns this model provides data for."""
         return len(self.__mapper)
 
     # -----------------------------------------------------------------------
 
     def GetExpanderColumn(self):
-        """Returns column which have to contain the expanders."""
+        """Returns column which have to contain the expanders.
+
+        On MacOS it should be the first one... because of the display of the
+        expander symbol.
+
+        """
         return 1
 
     # -----------------------------------------------------------------------
 
     def GetColumnType(self, col):
-        """Override. Map the data column number to the data type.
+        """Overridden. Map the data column number to the data type.
 
-        :param col: (int)
+        :param col: (int)FileData()
 
         """
         return self.__mapper[col].stype
@@ -241,7 +250,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetColumnName(self, col):
         """Map the data column number to the data name.
 
-        :param col: (int)
+        :param col: (int) Column index.
 
         """
         return self.__mapper[col].name
@@ -251,7 +260,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetColumnMode(self, col):
         """Map the data column number to the cell mode.
 
-        :param col: (int)
+        :param col: (int) Column index.
 
         """
         return self.__mapper[col].mode
@@ -261,7 +270,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetColumnWidth(self, col):
         """Map the data column number to the col width.
 
-        :param col: (int)
+        :param col: (int) Column index.
 
         """
         return self.__mapper[col].width
@@ -271,7 +280,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetColumnRenderer(self, col):
         """Map the data column numbers to the col renderer.
 
-        :param col: (int)
+        :param col: (int) Column index.
 
         """
         return self.__mapper[col].renderer
@@ -281,7 +290,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def GetColumnAlign(self, col):
         """Map the data column numbers to the col alignment.
 
-        :param col: (int)
+        :param col: (int) Column index.
 
         """
         return self.__mapper[col].align
@@ -364,7 +373,6 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         elif isinstance(node, FileRoot):
             for fp in self.__data:
                 if node in fp:
-                    #  if fp.id == node.folder():
                     return self.ObjectToItem(fp)
 
         # A FileName has a FileRoot parent
@@ -381,11 +389,21 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # Manage the values to display
     # -----------------------------------------------------------------------
 
+    def HasValue(self, item, col):
+        """Overridden.
+
+        Return True if there is a value in the given column of this item.
+
+        """
+        return True
+
+    # -----------------------------------------------------------------------
+
     def GetValue(self, item, col):
         """Return the value to be displayed for this item and column.
 
         :param item: (wx.dataview.DataViewItem)
-        :param col: (int)
+        :param col: (int) Column index.
 
         Pull the values from the data objects we associated with the items
         in GetChildren.
@@ -405,6 +423,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
         if self.__mapper[col].id == "refs":
             if isinstance(node, FileRoot) is True:
+                # convert the list of FileReference instances into a string
                 refs_ids = [ref.id for ref in node.get_references()]
                 return " ".join(refs_ids)
             return ""
@@ -414,7 +433,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def HasContainerColumns(self, item):
-        """Override.
+        """Overridden.
 
         :param item: (wx.dataview.DataViewItem)
 
@@ -432,18 +451,8 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
-    def HasValue(self, item, col):
-        """Override.
-
-        Return True if there is a value in the given column of this item.
-
-        """
-        return True
-
-    # -----------------------------------------------------------------------
-
     def SetValue(self, value, item, col):
-        """Override.
+        """Overridden.
 
         :param value:
         :param item: (wx.dataview.DataViewItem)
@@ -470,6 +479,16 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def GetAttr(self, item, col, attr):
+        """Overridden. Indicate that the item has special font attributes.
+
+        This only affects the DataViewTextRendererText renderer.
+
+        :param item: (wx.dataview.DataViewItem) – The item for which the attribute is requested.
+        :param col: (int) – The column of the item for which the attribute is requested.
+        :param attr: (wx.dataview.DataViewItemAttr) – The attribute to be filled in if the function returns True.
+        :returns: (bool) True if this item has an attribute or False otherwise.
+
+        """
         node = self.ItemToObject(item)
 
         # default colors for foreground and background
@@ -499,8 +518,13 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # Manage the data
     # -----------------------------------------------------------------------
 
-    def change_value(self, column, item):
-        """Change state value."""
+    def change_value(self, col, item):
+        """Change state value.
+
+        :param col: (int) Column index.
+        :param item: (wx.dataview.DataViewItem)
+
+        """
         if item is None:
             return
         node = self.ItemToObject(item)
@@ -514,7 +538,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                     self.__item_changed(item)
 
             except Exception as e:
-                logging.debug('Value not modified for node {:s}'.format(node))
+                logging.info('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
 
         elif cur_state == States().CHECKED:
@@ -522,7 +546,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                 self.__data.set_object_state(States().UNUSED, node)
                 self.__item_changed(self.ObjectToItem(node))
             except Exception as e:
-                logging.debug('Value not modified for node {:s}'.format(node))
+                logging.info('Value not modified for node {:s}'.format(node))
                 logging.error(str(e))
 
         else:
@@ -560,7 +584,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     def add_files(self, entries):
         """Add a set of files or folders in the data.
 
-        :param entries: (list of str) Filenames or folder with absolute path.
+        :param entries: (list of str) FileName or folder with absolute path.
 
         """
         added_files = list()
@@ -580,7 +604,11 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def __add(self, entry):
-        """Add a file or a folder in the data."""
+        """Add a file or a folder in the data.
+
+        :param entry: (str)
+
+        """
         fns = list()
         if os.path.isdir(entry):
             for f in os.listdir(entry):
@@ -610,6 +638,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def remove_checked_files(self):
+        """Remove all FileName with state CHECKED."""
         nb_removed = self.__data.remove_files(States().CHECKED)
         if nb_removed > 0:
             self.update()
@@ -618,6 +647,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def delete_checked_files(self):
+        """Delete all FileName with state CHECKED."""
         checked = self.__data.get_filename_from_state(States().CHECKED)
         if len(checked) == 0:
             return
@@ -643,11 +673,17 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
     # -----------------------------------------------------------------------
 
     def get_checked_files(self):
+        """Return the list of FileName with state CHECKED."""
         return self.__data.get_filename_from_state(States().CHECKED)
 
     # -----------------------------------------------------------------------
 
     def lock(self, entries):
+        """Change state to LOCKED of a list of entries.
+
+        :param entries: (list of FileBase)
+
+        """
         for entry in entries:
             if isinstance(entry, FileName) is False:
                 node = self.__data.get_object(entry)

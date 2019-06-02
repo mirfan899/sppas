@@ -26,8 +26,8 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.page_files.refstreectrl.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix..page_files.refstreectrl.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
@@ -37,7 +37,6 @@ import wx.dataview
 
 from .basectrls import BaseTreeViewCtrl
 from .refsviewmodel import ReferencesTreeViewModel
-
 
 # ----------------------------------------------------------------------------
 # Control to store the data matching the model
@@ -152,6 +151,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     def RemoveAttribute(self, identifier):
         """Remove an attribute from the checked references.
 
+        :param identifier: (str)
         :return: Number of references in which the attribute were removed.
 
         """
@@ -167,6 +167,10 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
     def AddAttribute(self, identifier, value, att_type, description):
         """Add an attribute into the checked references.
 
+        :param identifier: (str)
+        :param value: (str)
+        :param att_type: (str)
+        :param description: (str)
         :return: Number of references in which the attribute were added.
 
         """

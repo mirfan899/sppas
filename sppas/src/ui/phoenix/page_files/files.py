@@ -33,10 +33,10 @@
 
     One of the main pages of the wx4-based GUI of SPPAS.
 
-    It manages the workspaces:
-
-        - the list of files,
-        - the list of references, and
+    It manages:
+        - the set of workspaces,
+        - the list of files of a workspace,
+        - the list of references of a workspace, and
         - the actions to perform on both of them.
 
 """
