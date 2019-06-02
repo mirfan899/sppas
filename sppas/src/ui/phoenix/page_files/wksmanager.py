@@ -57,11 +57,43 @@ WkpChangedEvent, EVT_WKP_CHANGED = wx.lib.newevent.NewEvent()
 WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # List of displayed messages:
 
+WKP_TITLE = "Workspaces: "
+WKP_MSG_IMPORT = "Import from"
+WKP_MSG_EXPORT = "Export to"
+WKP_MSG_SAVE = "Pin & Save"
+WKP_MSG_RENAME = "Rename"
 
-# ----------------------------------------------------------------------------
+WKP_MSG_ASK_NAME = "New name of the workspace: "
+
+WKP_MSG_CONFIRM_SWITCH = "Confirm switch of workspace?"
+WKP_MSG_CONFIRM_DELETE = "Confirm delete of workspace?"
+WKP_MSG_CONFIRM_OVERRIDE = "A file with name {:s} is already existing. " \
+                           "Override it?"
+WKP_MSG_CONFIRM_NAME = "Confirm workspace name?"
+WKP_MSG_CONFIRM = "The current workspace contains not saved work that " \
+                  "will be lost. Are you sure you want to change workspace?"
+
+WKP_MSG_LOAD_ERROR = "Data of the workspace {:s} can't be loaded due to " \
+                     "the following error: {:s}.\nDo you want to delete it?"
+WKP_MSG_SAVECURRENT_ERROR = "The current workspace can not be saved due to " \
+                     "the following error: {:s}\nAre you sure you want " \
+                     "to change workspace?"
+WKP_MSG_SAVE_ERROR = "Workspace '{:s}' can't be saved due to the following " \
+                     "error: {!s:s}"
+WKP_MSG_IMPORT_ERROR = "File '{:s}' can't be imported due to the following" \
+                       " error:\n{!s:s}"
+WKP_MSG_EXPORT_ERROR = "File '{:s}' can't be exported due to the following" \
+                       " error: {!s:s}"
+WKP_MSG_PIN_ERROR = "Pin of workspace '{:s}' is not possible due to the " \
+                    "following error: {!s:s}"
+WKP_MSG_RENAME_ERROR = "Workspace can't be renamed to '{:s}' due to the " \
+                       "following error: {!s:s}"
+
+# ---------------------------------------------------------------------------
+
 
 class WorkspacesManager(sppasPanel):
     """Manage the workspaces and actions to perform on them.
@@ -73,6 +105,8 @@ class WorkspacesManager(sppasPanel):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
+
+    HIGHLIGH_COLOUR = wx.Colour(128, 228, 128, 196)   # yellow-green
 
     def __init__(self, parent, name=wx.PanelNameStr):
         super(WorkspacesManager, self).__init__(
@@ -109,7 +143,8 @@ class WorkspacesManager(sppasPanel):
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the workspace.')
+        logging.debug('New data to set in the workspace. '
+                      'Id={:s}'.format(data.id))
         self.__data = data
 
     # ------------------------------------------------------------------------
@@ -133,13 +168,13 @@ class WorkspacesManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self, orient=wx.VERTICAL)
-        tb.set_focus_color(wx.Colour(128, 196, 96, 128))  # yellow-green
+        tb.set_focus_color(WorkspacesManager.HIGHLIGH_COLOUR)
 
-        tb.AddText("Workspaces: ")
-        tb.AddButton("workspace_import", "Import from")
-        tb.AddButton("workspace_export", "Export to")
-        tb.AddButton("workspace_pin", "Pin & Save")
-        tb.AddButton("workspace_rename", "Rename")
+        tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGH_COLOUR)
+        tb.AddButton("workspace_import", WKP_MSG_IMPORT)
+        tb.AddButton("workspace_export", WKP_MSG_EXPORT)
+        tb.AddButton("workspace_pin", WKP_MSG_SAVE)
+        tb.AddButton("workspace_rename", WKP_MSG_RENAME)
         return tb
 
     # ------------------------------------------------------------------------
@@ -155,6 +190,14 @@ class WorkspacesManager(sppasPanel):
 
     # -----------------------------------------------------------------------
     # Events management
+    # -----------------------------------------------------------------------
+
+    def notify(self):
+        """The parent has to be informed of a change of content."""
+        evt = DataChangedEvent(data=self.__data)
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
+
     # -----------------------------------------------------------------------
 
     def _setup_events(self):
@@ -202,15 +245,13 @@ class WorkspacesManager(sppasPanel):
                       'from {:d} to {:d}'.format(event.from_wkp, event.to_wkp))
         wkpslist = event.GetEventObject()
         wkp_name = wkpslist.get_wkp_name(event.to_wkp)
+
         # Save the currently displayed data (they correspond to the previous wkp)
         if self.__data.has_locked_files() or \
                 (event.from_wkp == 0 and self.__data.is_empty() is False):
 
             # User must confirm to really switch
-            title = "Confirm switch of workspace?"
-            message = "The current workspace contains not saved work that " \
-                      "will be lost. Are you sure you want to change workspace?"
-            response = Confirm(message, title)
+            response = Confirm(WKP_MSG_CONFIRM, WKP_MSG_CONFIRM_SWITCH)
             if response == wx.ID_CANCEL:
                 # the workspace panel has to switch back to the current
                 wkpslist.switch_to(event.from_wkp)
@@ -225,11 +266,8 @@ class WorkspacesManager(sppasPanel):
             except Exception as e:
 
                 # User must confirm to really switch
-                title = "Confirm switch of workspace?"
-                message = "The current workspace can not be saved due to " \
-                          "the following error: {:s}\nAre you sure you want " \
-                          "to change workspace?".format(str(e))
-                response = Confirm(message, title)
+                message = WKP_MSG_SAVECURRENT_ERROR.format(str(e))
+                response = Confirm(message, WKP_MSG_CONFIRM_SWITCH)
                 if response == wx.ID_CANCEL:
                     # the workspace panel has to switch back to the current
                     wkpslist.switch_to(event.from_wkp)
@@ -239,22 +277,16 @@ class WorkspacesManager(sppasPanel):
             # Load the data of the workspace from its file
             d = wkpslist.load_data()
             self.__data = d
-
             # the parent has to be informed of this change of content
-            evt = DataChangedEvent(data=self.__data)
-            evt.SetEventObject(self)
-            wx.PostEvent(self.GetParent(), evt)
+            self.notify()
 
         except Exception as e:
             # the workspace panel has to switch back to the current
             wkpslist.switch_to(event.from_wkp)
 
             # Propose to the user to remove the failing wkp
-            title = "Confirm delete of workspace?"
-            message = "Data of the workspace {:s} can't be loaded due to " \
-                      "the following error: {:s}.\nDo you want to delete it?" \
-                      "".format(wkp_name, str(e))
-            response = Confirm(message, title)
+            message = WKP_MSG_LOAD_ERROR.format(wkp_name, str(e))
+            response = Confirm(message, WKP_MSG_CONFIRM_DELETE)
             if response == wx.ID_YES:
                 wkpslist.remove(event.to_wkp)
 
@@ -303,8 +335,7 @@ class WorkspacesManager(sppasPanel):
             try:
                 self.FindWindow("wkpslist").import_from(pathname)
             except Exception as e:
-                message = "File '{:s}' can't be imported due to the following" \
-                          " error:\n{!s:s}".format(pathname, str(e))
+                message = WKP_MSG_IMPORT_ERROR.format(pathname, str(e))
                 Error(message, "Import error")
 
     # ------------------------------------------------------------------------
@@ -328,17 +359,15 @@ class WorkspacesManager(sppasPanel):
             pathname = dlg.GetPath()
 
         if os.path.exists(pathname):
-            message = "A file with name {:s} is already existing. Override it?".format(pathname)
-            title = "Confirm workspace name?"
-            response = Confirm(message, title)
+            message = WKP_MSG_CONFIRM_OVERRIDE.format(pathname)
+            response = Confirm(message, WKP_MSG_CONFIRM_NAME)
             if response == wx.ID_CANCEL:
                 return
 
         try:
             self.FindWindow("wkpslist").export_to(pathname)
         except Exception as e:
-            message = "File '{:s}' can't be exported due to the following" \
-                      " error: {!s:s}".format(pathname, str(e))
+            message = WKP_MSG_EXPORT_ERROR.format(pathname, str(e))
             Error(message, "Export error")
 
     # ------------------------------------------------------------------------
@@ -365,23 +394,15 @@ class WorkspacesManager(sppasPanel):
             try:
                 wkps.pin(wkp_name)
             except Exception as e:
-                message = "Pin of workspace '{:s}' is not possible due to the following error: {!s:s}".format(wkp_name, str(e))
+                message = WKP_MSG_PIN_ERROR.format(wkp_name, str(e))
                 Error(message, "Save error")
         else:
             wkp_name = wkps.get_wkp_name()
 
         try:
-            print('TO BE SAVED DATA, IN WKPSMANAGER.PY:')
-            print(self.__data.id)
-            for fp in self.__data:
-                print(fp)
-                for fr in fp:
-                    print(fr)
-                    for fn in fr:
-                        print(fn)
             wkps.save(self.__data)
         except Exception as e:
-            message = "Workspace '{:s}' can't be saved due to the following error: {!s:s}".format(wkp_name, str(e))
+            message = WKP_MSG_SAVE_ERROR.format(wkp_name, str(e))
             Error(message, "Save error")
 
     # ------------------------------------------------------------------------
@@ -393,7 +414,7 @@ class WorkspacesManager(sppasPanel):
         current_name = self.FindWindow("wkpslist").get_wkp_name()
         dlg = wx.TextEntryDialog(
             self,
-            "New name of the workspace: ",
+            WKP_MSG_ASK_NAME,
             caption=wx.GetTextFromUserPromptStr,
             value=current_name,
             style=wx.OK | wx.CANCEL)
@@ -409,8 +430,7 @@ class WorkspacesManager(sppasPanel):
         try:
             self.FindWindow("wkpslist").rename(new_name)
         except Exception as e:
-            message = "Workspace can't be renamed to '{:s}' due to the " \
-                      "following error: {!s:s}".format(new_name, str(e))
+            message = WKP_MSG_RENAME_ERROR.format(new_name, str(e))
             Error(message, "Rename error")
 
 # ----------------------------------------------------------------------------
@@ -622,9 +642,9 @@ class WorkspacesPanel(sppasPanel):
         # Delete of the list
         self.__wkps.delete(index)
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
     # Private methods to construct the panel.
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _create_content(self):
         """Create the main content."""
@@ -664,15 +684,16 @@ class WorkspacesPanel(sppasPanel):
         button.BorderWidth = 1
         button.BorderColour = self.GetForegroundColour()
         button.BorderStyle = wx.PENSTYLE_SOLID
-        button.FocusColour = wx.Colour(128, 196, 96, 128)  # yellow-green
+        button.FocusColour = WorkspacesManager.HIGHLIGH_COLOUR
 
     # -----------------------------------------------------------------------
 
     def __set_active_btn_style(self, button):
         """Set a special style to the button."""
         button.BorderWidth = 2
-        button.BorderColour = self.GetForegroundColour()
+        button.BorderColour = WorkspacesManager.HIGHLIGH_COLOUR
         button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = self.GetForegroundColour()
 
     # -----------------------------------------------------------------------
     # Events management

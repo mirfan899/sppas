@@ -57,6 +57,8 @@ class FilesManager(sppasPanel):
 
     """
 
+    HIGHLIGHT_COLOUR = wx.Colour(228, 128, 128, 196)
+
     def __init__(self, parent, name=wx.PanelNameStr):
         super(FilesManager, self).__init__(
             parent,
@@ -112,8 +114,8 @@ class FilesManager(sppasPanel):
     def __create_toolbar(self):
         """Create the toolbar."""
         tb = BitmapTextToolbar(self)
-        tb.set_focus_color(wx.Colour(196, 96, 96, 128))
-        tb.AddText("Files: ")
+        tb.set_focus_color(FilesManager.HIGHLIGHT_COLOUR)
+        tb.AddTitleText("Files: ", FilesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("files-add", "Add")
         tb.AddButton("files-remove", "Remove checked")
         tb.AddButton("files-delete", "Delete checked")

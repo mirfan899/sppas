@@ -27,7 +27,7 @@
         ---------------------------------------------------------------------
 
     src.ui.phoenix.filespck.btntxttoolbar.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Toolbar with button/text buttons.
 
@@ -38,6 +38,7 @@ import os
 import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
+from sppas.src.ui.phoenix.windows.text import sppasStaticText, sppasTitleText
 from sppas.src.ui.phoenix.windows.button import BitmapTextButton
 
 # ----------------------------------------------------------------------------
@@ -53,6 +54,7 @@ class BitmapTextToolbar(sppasPanel):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
+
     def __init__(self, parent, orient=wx.HORIZONTAL):
         super(BitmapTextToolbar, self).__init__(
             parent,
@@ -66,6 +68,10 @@ class BitmapTextToolbar(sppasPanel):
         self._fs = wx.PENSTYLE_SOLID
         self._fw = 3
         self._fc = wx.Colour(128, 128, 128, 128)
+
+        # List of children with their own style (color, font)
+        self.__fg = list()
+        self.__ft = list()
 
         self.SetSizer(wx.BoxSizer(orient))
         #self.SetMinSize((-1, 32))
@@ -87,17 +93,29 @@ class BitmapTextToolbar(sppasPanel):
         # btn.SetToolTip(tooltip)
         btn.Enable(activated)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
-            self.GetSizer().Add(btn, 1, wx.LEFT | wx.EXPAND, 0)
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
         else:
-            self.GetSizer().Add(btn, 0, wx.LEFT | wx.EXPAND, 0)
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
         return btn
 
     def AddSpacer(self, proportion=1):
         self.GetSizer().AddStretchSpacer(proportion)
 
-    def AddText(self, text=""):
-        st = wx.StaticText(self, label=text)
+    def AddText(self, text="", color=None):
+        st = sppasStaticText(self, label=text)
+        if color is not None:
+            st.SetForegroundColour(color)
+            self.__fg.append(st)
         self.GetSizer().Add(st, 0, wx.LEFT | wx.TOP | wx.BOTTOM, 6)
+
+    def AddTitleText(self, text="", color=None):
+        st = sppasStaticText(self, label=text)
+        st.SetFont(self.__title_font())
+        self.__ft.append(st)
+        if color is not None:
+            st.SetForegroundColour(color)
+            self.__fg.append(st)
+        self.GetSizer().Add(st, 0, wx.ALL, 6)
 
     # -----------------------------------------------------------------------
 
@@ -129,3 +147,38 @@ class BitmapTextToolbar(sppasPanel):
 
         return btn
 
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        """Override."""
+        wx.Panel.SetForegroundColour(self, colour)
+        for c in self.GetChildren():
+            if c not in self.__fg:
+                c.SetForegroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        """Override."""
+        wx.Panel.SetFont(self, font)
+        for c in self.GetChildren():
+            if c not in self.__ft:
+                c.SetFont(font)
+
+    # -----------------------------------------------------------------------
+
+    def __title_font(self):
+        try:  # wx4
+            font = wx.SystemSettings().GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        except AttributeError:  # wx3
+            font = wx.SystemSettings.GetFont(wx.SYS_DEFAULT_GUI_FONT)
+        s = font.GetPointSize()
+
+        title_font = wx.Font(int(float(s)*1.2),      # point size
+                             wx.FONTFAMILY_DEFAULT,  # family,
+                             wx.FONTSTYLE_NORMAL,    # style,
+                             wx.FONTWEIGHT_BOLD,     # weight,
+                             underline=False,
+                             faceName="Calibri",
+                             encoding=wx.FONTENCODING_SYSTEM)
+        return title_font

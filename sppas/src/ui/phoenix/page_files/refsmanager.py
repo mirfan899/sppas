@@ -66,6 +66,8 @@ class ReferencesManager(sppasPanel):
 
     """
 
+    HIGHLIGHT_COLOUR = wx.Colour(128, 128, 228, 196)  # blue
+
     def __init__(self, parent, name=wx.PanelNameStr):
         super(ReferencesManager, self).__init__(
             parent,
@@ -112,8 +114,8 @@ class ReferencesManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = BitmapTextToolbar(self)
-        tb.set_focus_color(wx.Colour(64, 64, 196, 128))
-        tb.AddText("References: ")
+        tb.set_focus_color(ReferencesManager.HIGHLIGHT_COLOUR)
+        tb.AddTitleText("References: ", color=ReferencesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("refs-add", "Create")
         tb.AddButton("refs-edit", "Edit")
         tb.AddButton("refs-delete", "Delete")
