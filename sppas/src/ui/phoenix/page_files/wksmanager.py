@@ -40,6 +40,7 @@ import wx.lib.newevent
 
 from sppas import sppasTypeError
 from sppas.src.files.filedata import FileData
+from sppas.src.files.filebase import States
 from sppas.src.ui import sppasWorkspaces
 
 from ..dialogs import Confirm, Error
@@ -248,7 +249,8 @@ class WorkspacesManager(sppasPanel):
 
         # Save the currently displayed data (they correspond to the previous wkp)
         if self.__data.has_locked_files() or \
-                (event.from_wkp == 0 and self.__data.is_empty() is False):
+                (event.from_wkp == 0 and self.__data.is_empty() is False) or \
+                self.__data.get_state() != States().UNUSED:
 
             # User must confirm to really switch
             response = Confirm(WKP_MSG_CONFIRM, WKP_MSG_CONFIRM_SWITCH)
@@ -277,6 +279,7 @@ class WorkspacesManager(sppasPanel):
             # Load the data of the workspace from its file
             d = wkpslist.load_data()
             self.__data = d
+            self.__data.set_state(States().UNUSED)
             # the parent has to be informed of this change of content
             self.notify()
 
@@ -400,7 +403,9 @@ class WorkspacesManager(sppasPanel):
             wkp_name = wkps.get_wkp_name()
 
         try:
+            self.__data.set_state(States().UNUSED)
             wkps.save(self.__data)
+            self.notify()
         except Exception as e:
             message = WKP_MSG_SAVE_ERROR.format(wkp_name, str(e))
             Error(message, "Save error")

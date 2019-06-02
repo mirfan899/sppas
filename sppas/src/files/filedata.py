@@ -390,9 +390,6 @@ class FileData(FileBase):
     def set_state(self, value):
         """Set the state of this FileData instance.
 
-        Actually we don't do anything with this state value!
-        It overrides the FileBase method to not raise a NotImplementedError.
-
         :param value: (States)
 
         """

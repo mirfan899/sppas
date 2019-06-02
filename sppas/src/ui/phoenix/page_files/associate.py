@@ -168,6 +168,7 @@ class AssociatePanel(sppasPanel):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
+            self.__data.set_state(States().CHECKED)
             evt = DataChangedEvent(data=self.__data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
@@ -266,7 +267,6 @@ class AssociatePanel(sppasPanel):
             fct = d[1]
 
             if method == "att":
-                logging.debug("ATT FILTER")
                 # identifier:value are separated by a ":" but a tuple is needed
                 values = tuple(d[2].split(":"))
                 logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, str(values)))
@@ -277,10 +277,6 @@ class AssociatePanel(sppasPanel):
             #     it returns f.tag if called like getattr(f, "tag")
             #   - func(**{'x': '3'}) is equivalent to func(x='3')
             else:
-                logging.debug("ANY OTHER FILTER BUT NOT ATT")
-                logging.debug(fct)
-                logging.debug(type(fct))
-
                 # all the possible values are separated by commas
                 values = d[2].split(",")
                 logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, values[0]))

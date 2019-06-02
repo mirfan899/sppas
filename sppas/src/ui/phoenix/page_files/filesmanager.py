@@ -37,7 +37,9 @@ import logging
 import os
 import wx
 
-from sppas.src.ui.phoenix.windows.panel import sppasPanel
+from sppas.src.files import States
+
+from ..windows.panel import sppasPanel
 from ..dialogs import YesNoQuestion, Information
 from .filestreectrl import FilesTreeViewCtrl
 from .btntxttoolbar import BitmapTextToolbar
@@ -143,7 +145,10 @@ class FilesManager(sppasPanel):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
-            evt = DataChangedEvent(data=self.FindWindow("filestree").get_data())
+            data = self.FindWindow("filestree").get_data()
+            logging.debug("Files Manager. Set data state to checked.")
+            data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 

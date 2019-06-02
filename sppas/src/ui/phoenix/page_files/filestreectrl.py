@@ -196,7 +196,9 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
         special key (usually "Enter") when it is focused.
 
         """
-        self._model.change_value(event.GetColumn(), event.GetItem())
+        item = event.GetItem()
+        if item is not None:
+            self._model.change_value(event.GetColumn(), item)
 
     # ------------------------------------------------------------------------
 
@@ -205,7 +207,8 @@ class FilesTreeViewCtrl(BaseTreeViewCtrl):
 
         """
         item = event.GetItem()
-        self._model.change_value(event.GetColumn(), item)
+        if item is not None:
+            self._model.change_value(event.GetColumn(), item)
 
     # ------------------------------------------------------------------------
 

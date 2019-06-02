@@ -37,15 +37,15 @@ import logging
 import wx
 
 from sppas import sg
-from sppas.src.files import FileReference, sppasAttribute
+from sppas.src.files import FileReference, sppasAttribute, States
 
-from sppas.src.ui.phoenix.windows import sppasDialog
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows import sppasStaticLine
-from sppas.src.ui.phoenix.windows import sppasStaticText
-from sppas.src.ui.phoenix.windows import sppasTextCtrl
-
-from sppas.src.ui.phoenix.dialogs.messages import Error, Information
+from ..windows import sppasDialog
+from ..windows import sppasPanel
+from ..windows import sppasStaticLine
+from ..windows import sppasStaticText
+from ..windows import sppasTextCtrl
+from ..dialogs import Information
+from ..dialogs import Error
 
 from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
@@ -143,7 +143,9 @@ class ReferencesManager(sppasPanel):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
-            evt = DataChangedEvent(data=self.FindWindow("refsview").get_data())
+            data = self.FindWindow("refsview").get_data()
+            data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -243,6 +245,7 @@ class ReferencesManager(sppasPanel):
             dlg = sppasEditAttributes(self)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
+                self.notify()
                 if dlg.get_action() == 0:
                     view.RemoveAttribute(dlg.get_id())
                 else:
