@@ -264,22 +264,27 @@ class AssociatePanel(sppasPanel):
             method = d[0]
             # the function to be applied
             fct = d[1]
-            # all the possible values are separated by commas
-            values = d[2].split(",")
-            if fct == "att":
-                v = values[0]
-                values = v.split(":")
-                data_set = getattr(f, method)(**{fct: values[0]})
-                logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, values))
+
+            if method == "att":
+                logging.debug("ATT FILTER")
+                # identifier:value are separated by a ":" but a tuple is needed
+                values = tuple(d[2].split(":"))
+                logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, str(values)))
+                data_set = getattr(f, method)(**{fct: values})
 
             # a little bit of doc:
             #   - getattr() returns the value of the named attributed of object:
             #     it returns f.tag if called like getattr(f, "tag")
             #   - func(**{'x': '3'}) is equivalent to func(x='3')
-            if fct != "att":
+            else:
+                logging.debug("ANY OTHER FILTER BUT NOT ATT")
+                logging.debug(fct)
+                logging.debug(type(fct))
 
-                data_set = getattr(f, method)(**{fct: values[0]})
+                # all the possible values are separated by commas
+                values = d[2].split(",")
                 logging.info(" >>> filter.{:s}({:s}={!s:s})".format(method, fct, values[0]))
+                data_set = getattr(f, method)(**{fct: values[0]})
 
                 # Apply "or" between each data_set matching a value
                 for i in range(1, len(values)):
