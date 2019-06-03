@@ -41,6 +41,10 @@ class sppasNumAsianType(sppasNumBase):
 
     ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
 
+    NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                   11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                   30, 40, 50, 60, 70, 80, 90, 100, 1000, 10000)
+
     # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
@@ -53,6 +57,11 @@ class sppasNumAsianType(sppasNumBase):
             super(sppasNumAsianType, self).__init__(lang, dictionary)
         else:
             raise sppasValueError(lang, sppasNumAsianType.ASIAN_TYPED_LANGUAGES)
+
+        for i in range(len(self._lang_dict)):
+            if self._lang_dict[i][0] != sppasNumAsianType.NUMBER_LIST[i]:
+                raise sppasValueError(sppasNumAsianType.NUMBER_LIST[i],
+                                      self._lang_dict[i][0])
 
     # ---------------------------------------------------------------------------
 

@@ -49,6 +49,10 @@ class sppasNumEuropeanType(sppasNumBase):
 
     EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por")
 
+    NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                   11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                   30, 40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
+
     # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
@@ -61,6 +65,11 @@ class sppasNumEuropeanType(sppasNumBase):
             super(sppasNumEuropeanType, self).__init__(lang, dictionary)
         else:
             raise sppasValueError(lang, sppasNumEuropeanType.EUROPEAN_TYPED_LANGUAGES)
+
+        for i in range(len(self._lang_dict)):
+            if self._lang_dict[i][0] != sppasNumEuropeanType.NUMBER_LIST[i]:
+                raise sppasValueError(sppasNumEuropeanType.NUMBER_LIST[i],
+                                      self._lang_dict[i][0])
 
     # ---------------------------------------------------------------------------
 

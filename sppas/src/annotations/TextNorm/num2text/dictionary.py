@@ -70,3 +70,6 @@ class Dictionary(object):
 
     def __getitem__(self, i):
         return self._lang_dict[i]
+
+    def __len__(self):
+        return len(self._lang_dict)
