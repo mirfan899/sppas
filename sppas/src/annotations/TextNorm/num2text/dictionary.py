@@ -29,7 +29,9 @@
 
         ---------------------------------------------------------------------
 """
+import os
 
+import sppas
 from sppas import sppasValueError, u
 
 # ---------------------------------------------------------------------------
@@ -50,8 +52,7 @@ class Dictionary(object):
 
         if lang is not None:
             self._lang_dict = list()
-            # TODO get a correct path for the num.repl file
-            with open(lang + '_num.repl') as language_dict:
+            with open(os.path.join(sppas.paths.resources, 'num', lang + '_num.repl')) as language_dict:
                 self._lang_dict = language_dict.readlines()
 
             for i in range(len(self._lang_dict)):

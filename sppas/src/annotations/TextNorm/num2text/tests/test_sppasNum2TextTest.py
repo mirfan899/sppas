@@ -16,8 +16,8 @@ class sppasNum2TextTest(unittest.TestCase):
         self.hello = Hello()
 
         # Dictionaries actually created in normalize.py
-        self.dictionaryFra = Dictionary(os.path.join(sppas.paths.resources, 'num', 'fra'))
-        self.dictionaryEng = Dictionary(os.path.join(sppas.paths.resources, 'num', 'eng'))
+        self.dictionaryFra = Dictionary('fra')
+        self.dictionaryEng = Dictionary('eng')
 
         self.sppasConverteurFrench = sppasNumConstructor().construct('fra', self.dictionaryFra)
         self.sppasConverteurEnglish = sppasNumConstructor().construct('eng', self.dictionaryEng)
