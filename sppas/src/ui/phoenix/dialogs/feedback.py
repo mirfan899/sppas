@@ -132,17 +132,17 @@ class sppasFeedbackDialog(sppasDialog):
         grid.AddGrowableCol(1)
         grid.AddGrowableRow(2)
 
-        grid.Add(to, 0)
+        grid.Add(to, 0, wx.LEFT, 4)
         grid.Add(self.to_text, 0, flag=wx.EXPAND)
 
-        grid.Add(subject, 0)
+        grid.Add(subject, 0, wx.LEFT, 4)
         grid.Add(self.subject_text, 0, flag=wx.EXPAND)
 
-        grid.Add(body, 0, flag=wx.TOP)
+        grid.Add(body, 0, wx.TOP | wx.LEFT, 4)
         grid.Add(self.body_text, 2, flag=wx.EXPAND)
 
         s = wx.StaticText(panel, label=MSG_EMAIL_SEND_WITH)
-        grid.Add(s, 0)
+        grid.Add(s, 0, wx.LEFT | wx.BOTTOM, 4)
 
         panel.SetAutoLayout(True)
         panel.SetSizer(grid)

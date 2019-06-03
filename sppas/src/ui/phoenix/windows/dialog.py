@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import wx
 
 from sppas.src.config import sg
@@ -93,6 +94,8 @@ class sppasDialog(wx.Dialog):
         self.opacity_in = 0
         self.opacity_out = 255
         self.deltaN = -10
+        self.timer1 = None
+        self.timer2 = None
 
     # -----------------------------------------------------------------------
 
@@ -102,16 +105,17 @@ class sppasDialog(wx.Dialog):
         Set the title, the icon and the properties of the frame.
 
         """
-        # Fix frame properties
+        settings = wx.GetApp().settings
+
+        # Fix minimum frame size
         self.SetMinSize(wx.Size(320, 200))
-        w = int(wx.GetApp().settings.frame_size[0] * 0.7)
-        h = int(wx.GetApp().settings.frame_size[1] * 0.8)
-        self.SetSize(wx.Size(w, h))
+
+        # Fix frame name
         self.SetName('{:s}-{:d}'.format(sg.__name__, self.GetId()))
 
         # icon
         _icon = wx.Icon()
-        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32)
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=64)
         _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 
@@ -144,29 +148,29 @@ class sppasDialog(wx.Dialog):
     # -----------------------------------------------------------------------
 
     def CreateButtonSizer(self, flags):
-        """Overriden to disable."""
+        """Overridden to disable."""
         pass
 
     def CreateSeparatedButtonSizer(self, flags):
-        """Overriden to disable."""
+        """Overridden to disable."""
         pass
 
     def CreateSeparatedSizer(self, sizer):
-        """Overriden to disable."""
+        """Overridden to disable."""
         pass
 
     def CreateStdDialogButtonSizer(self, flags):
-        """Overriden to disable."""
+        """Overridden to disable."""
         pass
 
     def CreateTextSizer(self, message):
-        """Overriden to disable."""
+        """Overridden to disable."""
         pass
 
     # -----------------------------------------------------------------------
 
     def GetContentWindow(self):
-        """Override.
+        """Overridden.
 
         Return a window containing the main content of the dialog.
 

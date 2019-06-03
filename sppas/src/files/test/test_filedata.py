@@ -67,7 +67,7 @@ class TestReferences(unittest.TestCase):
 
     def testAddKey(self):
         with self.assertRaises(ValueError) as AsciiError:
-            self.micros.add('i*asaà', 'Blue Yeti')
+            self.micros.add('i', 'Blue Yeti')
 
         self.assertTrue(isinstance(AsciiError.exception, ValueError))
 
@@ -93,16 +93,16 @@ class TestFileData(unittest.TestCase):
 
         self.r1 = FileReference('SpeakerAB')
         self.r1.set_type('SPEAKER')
-        self.r1.add('initials', sppasAttribute('AB'))
-        self.r1.add('sex', sppasAttribute('F'))
+        self.r1.append(sppasAttribute('initials', 'AB'))
+        self.r1.append(sppasAttribute('sex', 'F'))
         self.r2 = FileReference('SpeakerCM')
         self.r2.set_type('SPEAKER')
-        self.r2.add('initials', sppasAttribute('CM'))
-        self.r1.add('sex', sppasAttribute('F'))
+        self.r2.append(sppasAttribute('initials', 'CM'))
+        self.r1.append(sppasAttribute('sex', 'F'))
         self.r3 = FileReference('Dialog1')
         self.r3.set_type('INTERACTION')
-        self.r3.add('when', sppasAttribute('2003', 'int', 'Year of recording'))
-        self.r3.add('where', sppasAttribute('Aix-en-Provence', att_descr='Place of recording'))
+        self.r3.append(sppasAttribute('when', '2003', 'int', 'Year of recording'))
+        self.r3.append(sppasAttribute('where', 'Aix-en-Provence', descr='Place of recording'))
 
     def test_init(self):
         data = FileData()

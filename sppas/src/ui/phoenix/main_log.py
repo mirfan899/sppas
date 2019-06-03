@@ -241,15 +241,15 @@ class sppasLogWindow(wx.TopLevelWindow):
         settings = wx.GetApp().settings
 
         # Fix frame properties
-        self.SetMinSize((320, 200))
+        self.SetMinSize(wx.Size(320, 200))
         w = int(settings.frame_size[0] * 0.7)
-        h = int(settings.frame_size[1] * 0.8)
+        h = int(settings.frame_size[1] * 0.7)
         self.SetSize(wx.Size(w, h))
         self.SetName('{:s}-log'.format(sg.__name__))
 
         # icon
         _icon = wx.Icon()
-        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=32)
+        bmp = sppasSwissKnife.get_bmp_icon("sppas_32", height=64)
         _icon.CopyFromBitmap(bmp)
         self.SetIcon(_icon)
 

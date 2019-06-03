@@ -33,6 +33,10 @@
 
 """
 
+from sppas.src.utils import sppasUnicode
+
+# ---------------------------------------------------------------------------
+
 
 class FileBase(object):
     """Represent any type of data linked to a filename.
@@ -53,8 +57,28 @@ class FileBase(object):
         :param identifier: (str) Any un-modifiable string.
 
         """
-        self.__id = identifier
+        self.__id = FileBase.validate_id(identifier)
         self._state = States().UNUSED
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def validate_id(identifier):
+        """Return the given identifier if it matches the requirements.
+
+        An identifier should contain between 3 and 36 characters.
+
+        :param identifier: (str) Key to be validated
+        :raise: ValueError
+        :return: (unicode)
+
+        """
+        su = sppasUnicode(identifier)
+        ide = su.to_strip()
+        if len(ide) < 1:
+            raise ValueError('An identifier must contain at least 2 characters.')
+
+        return ide
 
     # -----------------------------------------------------------------------
 

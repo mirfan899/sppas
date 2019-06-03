@@ -81,13 +81,14 @@ class sppasBaseMessageDialog(sppasDialog):
         self._create_buttons()
 
         # Fix frame properties
-        #self.SetMinSize(wx.Size(320, 200))
-        w = int(wx.GetApp().settings.frame_size[0] * 0.4)
-        h = int(wx.GetApp().settings.frame_size[1] * 0.4)
-        self.SetSize(wx.Size(w, h))
+        self.SetMinSize(wx.Size(320, 200))
+        # w = int(wx.GetApp().settings.frame_size[0] * 0.4)
+        # h = int(wx.GetApp().settings.frame_size[1] * 0.4)
+        # self.SetSize(wx.Size(w, h))
 
         self.LayoutComponents()
         self.CenterOnParent()
+        self.GetSizer().Fit(self)
         self.FadeIn(deltaN=-10)
 
     # -----------------------------------------------------------------------

@@ -131,15 +131,15 @@ class sppasMainWindow(sppasDialog):
     # ------------------------------------------------------------------------
 
     def _init_infos(self):
-        """Initialize the main frame.
+        """Overridden. Initialize the main frame.
 
         Set the title, the icon and the properties of the frame.
 
         """
         sppasDialog._init_infos(self)
 
-        # Fix other frame properties
-        self.SetMinSize(wx.Size(640, 480))
+        # Fix some frame properties
+        self.SetMinSize(wx.Size(640, 480))   # Enlarge compared to the base class
         self.SetSize(wx.GetApp().settings.frame_size)
         self.SetName('{:s}'.format(sg.__name__))
 

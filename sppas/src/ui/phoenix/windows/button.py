@@ -1325,16 +1325,16 @@ class BitmapTextButton(BaseButton):
                     x += (margin // 2)
 
                     if self._labelpos == wx.LEFT:
-                        self.__draw_label(dc, gc, x, h // 2)
+                        self.__draw_label(dc, gc, x, (h - (th//2)) // 2)
                         self.__draw_bitmap(dc, gc, x + tw + self._spacing, y_pos, bmp_size)
 
                     if self._labelpos == wx.RIGHT:
-                        self.__draw_label(dc, gc, w - tw - (margin // 2), h // 2)
+                        self.__draw_label(dc, gc, w - tw - (margin // 2), (h - (th//2)) // 2)
                         self.__draw_bitmap(dc, gc, x, y_pos, bmp_size)
 
                 else:
                     # not enough room for a bitmap. Center the text.
-                    self.__draw_label(dc, gc, (w - tw) // 2, h // 2)
+                    self.__draw_label(dc, gc, (w - tw) // 2, (h - (th//2)) // 2)
 
         if self._borderwidth > 0:
             self.DrawBorder(dc, gc)

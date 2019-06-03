@@ -91,13 +91,8 @@ class sppasAttribute(object):
         :return: (bool)
 
         """
-        def is_restricted_ascii(key_to_test):
-            # change any other character than a to z and underscore in the key
-            ra = re.sub(r'[^a-zA-Z0-9_]', '*', key_to_test)
-            return key_to_test == ra
-
         if 1 < len(identifier) < 13:
-            return is_restricted_ascii(identifier)
+            return True
         return False
 
     # -----------------------------------------------------------------------

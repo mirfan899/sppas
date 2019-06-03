@@ -301,11 +301,14 @@ class sppasCreateReference(sppasDialog):
             title='{:s} Create Reference'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
+        # Fix this frame content
         self._create_content()
         self._create_buttons()
 
-        # self.SetMinSize(wx.Size(480, 320))
+        # Fix this frame properties
         self.LayoutComponents()
+        self.GetSizer().Fit(self)
+        self.SetFocus()
         self.CenterOnParent()
         self.FadeIn(deltaN=-8)
 
@@ -327,7 +330,7 @@ class sppasCreateReference(sppasDialog):
         """Create the content of the message dialog."""
         panel = sppasPanel(self, name="content")
 
-        rname = sppasStaticText(panel, label="Name:")
+        rname = sppasStaticText(panel, label="Identifier:")
         self.to_name = sppasTextCtrl(parent=panel, value="")
 
         rtype = wx.StaticText(panel, label="Type:")
@@ -338,14 +341,13 @@ class sppasCreateReference(sppasDialog):
         grid.AddGrowableCol(0)
         grid.AddGrowableCol(1)
 
-        grid.Add(rname, 0)
-        grid.Add(self.to_name, 1, flag=wx.EXPAND)
+        grid.Add(rname, 0, wx.LEFT, 4)
+        grid.Add(self.to_name, 1, wx.EXPAND | wx.RIGHT, 4)
 
-        grid.Add(rtype, 0)
-        grid.Add(self.choice, 1, flag=wx.EXPAND)
+        grid.Add(rtype, 0, wx.LEFT, 4)
+        grid.Add(self.choice, 1, wx.EXPAND | wx.RIGHT, 4)
 
         panel.SetSizer(grid)
-        panel.SetMinSize(wx.Size(320, 200))
         panel.SetAutoLayout(True)
         grid.FitInside(panel)
         self.SetContent(panel)
@@ -405,6 +407,7 @@ class sppasEditAttributes(sppasDialog):
 
         self.SetMinSize(wx.Size(480, 320))
         self.LayoutComponents()
+        self.GetSizer().Fit(self)
         self.CenterOnParent()
         self.FadeIn(deltaN=-8)
 
@@ -461,7 +464,7 @@ class sppasEditAttributes(sppasDialog):
         add_btn.SetValue(False)
         sizer.Add(del_btn, pos=(2, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
 
-        id_st1 = sppasStaticText(panel, label="Identifier: ")
+        id_st1 = sppasStaticText(panel, label="Identifier for the value: ")
         sizer.Add(id_st1, pos=(3, 0), flag=wx.LEFT, border=12)
         ident = sppasTextCtrl(
             parent=panel,
@@ -473,7 +476,7 @@ class sppasEditAttributes(sppasDialog):
         self.Bind(wx.EVT_SET_FOCUS, self._process_event)
         sizer.Add(ident, pos=(3, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
-        id_st2 = sppasStaticText(panel, label="between 2 and 12 ASCII-only characters")
+        id_st2 = sppasStaticText(panel, label="between 2 and 12 characters")
         sizer.Add(id_st2, pos=(4, 1), flag=wx.EXPAND | wx.LEFT, border=2)
 
         line = sppasStaticLine(panel, orient=wx.LI_HORIZONTAL)

@@ -116,7 +116,7 @@ class FileData(FileBase):
 
     def __init__(self, identifier=sppasGUID().get()):
         """Constructor of a FileData."""
-        super().__init__(identifier)
+        super(FileData, self).__init__(identifier)
         self.__data = list()
         self.__refs = list()
 

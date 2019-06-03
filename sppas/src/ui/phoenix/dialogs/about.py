@@ -281,8 +281,8 @@ class sppasAboutDialog(sppasDialog):
         self.CreateActions([wx.ID_OK])
         self.LayoutComponents()
 
-        w = self.GetFont().GetPixelSize()[1]
-        self.SetSize((w*50, -1))
+        h = self.GetFont().GetPixelSize()[1] * 50
+        self.SetSize(wx.Size(h, h))
         self.FadeIn(deltaN=-8)
 
 # ------------------------------------------------------------------------
@@ -310,8 +310,8 @@ class sppasAboutPluginDialog(sppasDialog):
         self.CreateActions([wx.ID_OK])
         self.LayoutComponents()
 
-        w = self.GetFont().GetPixelSize()[1]
-        self.SetSize((w*50, -1))
+        h = self.GetFont().GetPixelSize()[1] * 50
+        self.SetSize(wx.Size(h, h))
         self.FadeIn(deltaN=-8)
 
 # -------------------------------------------------------------------------
