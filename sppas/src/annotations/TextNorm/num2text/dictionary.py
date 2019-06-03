@@ -32,7 +32,8 @@
 import os
 
 import sppas
-from sppas import sppasValueError, u
+from sppas import sppasValueError, u, sppasTypeError
+
 
 # ---------------------------------------------------------------------------
 
@@ -48,11 +49,11 @@ class Dictionary(object):
         super(Dictionary, self).__init__()
 
         if not isinstance(lang, str):
-            raise sppasValueError(lang, str)
+            raise sppasTypeError(str, lang)
 
         if lang is not None:
             self._lang_dict = list()
-            with open(os.path.join(sppas.paths.resources, 'num', lang + '_num.repl')) as language_dict:
+            with open(os.path.join(sppas.paths.resources, 'num', lang.lower() + '_num.repl')) as language_dict:
                 self._lang_dict = language_dict.readlines()
 
             for i in range(len(self._lang_dict)):
