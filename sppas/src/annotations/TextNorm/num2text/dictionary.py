@@ -49,7 +49,7 @@ class Dictionary(object):
         super(Dictionary, self).__init__()
 
         if not isinstance(lang, str):
-            raise sppasTypeError(str, lang)
+            raise sppasTypeError(lang, str)
 
         if lang is not None:
             self._lang_dict = list()

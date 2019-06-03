@@ -1,7 +1,7 @@
 import os
 import unittest
 
-from sppas import sppasTypeError
+from sppas import sppasTypeError, sppasValueError
 from ..dictionary import Dictionary
 from ..sppasNumConstructor import sppasNumConstructor
 
@@ -31,7 +31,15 @@ class sppasNum2TextTest(unittest.TestCase):
 
         with self.assertRaises(sppasTypeError) as error:
             dictionaryErrorObj = Dictionary(self.hello)
+
+            self.assertTrue(isinstance(error.exception, sppasTypeError))
+
+        with self.assertRaises(sppasTypeError) as error:
             dictionaryErrorInt = Dictionary(18)
+
+            self.assertTrue(isinstance(error.exception, sppasTypeError))
+
+        with self.assertRaises(sppasTypeError) as error:
             dictionaryErrorBool = Dictionary(True)
 
             self.assertTrue(isinstance(error.exception, sppasTypeError))
@@ -40,3 +48,18 @@ class sppasNum2TextTest(unittest.TestCase):
             dictionaryErrorLang = Dictionary('ger')
 
             self.assertTrue(isinstance(error.exception, IOError))
+
+        with self.assertRaises(sppasTypeError) as error:
+            sppasNumConstructor().construct(18, self.dictionaryEng)
+
+            self.assertTrue(isinstance(error.exception, sppasTypeError))
+
+        with self.assertRaises(sppasTypeError) as error:
+            sppasNumConstructor().construct('fra', 18)
+
+            self.assertTrue(isinstance(error.exception, sppasTypeError))
+
+        with self.assertRaises(sppasValueError) as error:
+            sppasNumConstructor().construct('ger')
+
+            self.assertTrue(isinstance(error.exception, sppasValueError))

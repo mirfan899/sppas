@@ -32,7 +32,7 @@
 
 from math import floor
 
-from sppas import sppasValueError
+from sppas import sppasValueError, sppasTypeError
 
 # ---------------------------------------------------------------------------
 from .dictionary import Dictionary
@@ -63,7 +63,7 @@ class sppasNumBase(object):
             self.__lang = lang
 
         if dictionary is None or not isinstance(dictionary, Dictionary):
-            raise sppasValueError(dictionary, Dictionary)
+            raise sppasTypeError(dictionary, Dictionary)
         elif self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
             for item in dictionary:

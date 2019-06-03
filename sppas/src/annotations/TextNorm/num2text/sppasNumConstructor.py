@@ -41,7 +41,8 @@ from sppasNumVietnamese import sppasNumVietnamese
 from sppasNumAsianType import sppasNumAsianType
 from sppasNumUnd import sppasNumUnd
 
-from sppas import sppasValueError
+from sppas import sppasValueError, sppasTypeError
+
 
 # ---------------------------------------------------------------------------
 
@@ -61,7 +62,7 @@ class sppasNumConstructor(object):
 
         """
         if lang is not None and not isinstance(lang, str):
-            raise sppasValueError(lang, str)
+            raise sppasTypeError(lang, str)
 
         ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
 
