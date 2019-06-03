@@ -28,22 +28,29 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.page_files.annotate.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ui.phoenix.page_annotate.annotate.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    One of the main pages of the wx4-based GUI of SPPAS.
 
 """
 
 import logging
 import wx
 
-from sppas.src.ui.phoenix.windows import sppasTitleText
 from sppas.src.ui.phoenix.windows import sppasMessageText
 from sppas.src.ui.phoenix.windows import sppasPanel
+from sppas.src.ui.phoenix.windows import sppasStaticText
+from sppas.src.ui.phoenix.windows import sppasStaticLine
+from ..windows.book import sppasSimplebook
+from ..windows.button import BitmapTextButton, sppasTextButton
+
+from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
 
 # ---------------------------------------------------------------------------
 
 
-class sppasAnnotatePanel(sppasPanel):
+class sppasAnnotatePanel(sppasSimplebook):
     """Create a panel to annotate automatically the selected files.
 
     :author:       Brigitte Bigi
@@ -58,40 +65,193 @@ class sppasAnnotatePanel(sppasPanel):
         super(sppasAnnotatePanel, self).__init__(
             parent=parent,
             name="page_annotate",
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS
+        )
+        self.SetEffectsTimeouts(200, 200)
+
+        # 1st page: the buttons to perform actions
+        self.ShowNewPage(sppasActionAnnotate(self))
+
+        # 2nd: list of standalone annotations
+        self.AddPage(sppasStandaloneAnnotations(self), text="")
+
+        # 3rd: list of speaker annotations
+        self.AddPage(sppasSpeakerAnnotations(self), text="")
+
+        # 4th: list of interaction annotations
+        self.AddPage(sppasInteractionAnnotations(self), text="")
+
+        # Change the displayed page
+        self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
+
+        # self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        # self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        # self.SetFont(wx.GetApp().settings.text_font)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _process_page_change(self, event):
+        """Process a PageChangeEvent.
+
+        :param event: (wx.Event)
+
+        """
+        try:
+            destination = event.to_page
+        except AttributeError:
+            destination = "page_to_annotate"
+
+        self.show_page(destination)
+
+    # -----------------------------------------------------------------------
+
+    def show_page(self, page_name):
+        """Show a page of the book.
+
+        If the page can't be found, the annotate page is shown.
+
+        :param page_name: (str) one of 'page_to_annotate', 'page_...', ...
+
+        """
+        # Find the page number to switch on
+        w = self.FindWindow(page_name)
+        if w is None:
+            w = self.FindWindow("page_to_annotate")
+        p = self.FindPage(w)
+        if p == -1:
+            p = 0
+
+        # current page number
+        c = self.FindPage(self.GetCurrentPage())
+
+        # assign the effect
+        if c < p:
+            self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT)
+        elif c > p:
+            self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT)
+        else:
+            self.SetEffects(showEffect=wx.SHOW_EFFECT_NONE,
+                            hideEffect=wx.SHOW_EFFECT_NONE)
+
+        # then change to the page
+        self.ChangeSelection(p)
+        w.Refresh()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasActionAnnotate(sppasPanel):
+
+    def __init__(self, parent):
+        super(sppasActionAnnotate, self).__init__(
+            parent=parent,
+            name="page_to_annotate",
             style=wx.BORDER_NONE
         )
         self._create_content()
         self._setup_events()
 
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
+        # self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        # self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        # self.SetFont(wx.GetApp().settings.text_font)
 
+        self.Layout()
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """"""
-        # Create a title
-        st = sppasTitleText(
-            parent=self,
-            label="Not implemented...")
-        st.SetName("title")
+        """Create the main content."""
 
-        # Create the welcome message
-        txt = sppasMessageText(
-            self,
-            "In future versions, automatic annotations will be here!."
-        )
+        sta = sppasStaticText(self, label="STEP 1: select the annotations to perform")
 
-        # Organize the title and message
+        # The buttons to select annotations (switch to other pages)
+        self.btn_select1 = self.__create_select_annot_btn("Standalone annotations")
+        self.btn_select2 = self.__create_select_annot_btn("'SPEAKER' annotations")
+        self.btn_select3 = self.__create_select_annot_btn("'INTERACTION' annotations")
+
+        stl = sppasStaticText(self, label="STEP 2: fix the language(s)")
+
+        str = sppasStaticText(self, label="STEP 3: perform the annotations")
+
+        # The button to perform annotations
+        btn = self.__create_select_annot_btn("Let's go!")
+        btn.SetName("wizard")
+        btn.BorderColour = wx.Colour(228, 24, 24, 128)
+
+        # Organize all the objects
+        s1 = wx.BoxSizer(wx.HORIZONTAL)
+        s1.Add(self.btn_select1, 1, wx.EXPAND | wx.ALL, 4)
+        s1.Add(self.btn_select2, 1, wx.EXPAND | wx.ALL, 4)
+        s1.Add(self.btn_select3, 1, wx.EXPAND | wx.ALL, 4)
+
+        s2 = wx.BoxSizer(wx.HORIZONTAL)
+        s2.Add(wx.Panel(self), 0, wx.LEFT, 20)
+
+        s3 = wx.BoxSizer(wx.HORIZONTAL)
+        s3.Add(btn)
+
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
-        sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
-
+        sizer.Add(sta, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
+        sizer.Add(s1, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        # sizer.Add(self.HorizLine(self), 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 4)
+        sizer.Add(stl, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
+        sizer.Add(s2, 2,  wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        # sizer.Add(self.HorizLine(self), 1, wx.EXPAND | wx.LEFT | wx.RIGHT, 4)
+        sizer.Add(str, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
+        sizer.Add(s3, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL | wx.BOTTOM, 20)
         self.SetSizer(sizer)
+
+    # ------------------------------------------------------------------------
+
+    def __create_select_annot_btn(self, label):
+
+        try:
+            w = int(wx.GetApp().settings.size_coeff * 196.)
+            h = int(wx.GetApp().settings.size_coeff * 48.)
+        except Exception as e:
+            logging.error(str(e))
+            h = 64
+            w = 228
+
+        btn = BitmapTextButton(self, name="on-off", label=label)
+        btn.LabelPosition = wx.RIGHT
+        btn.Spacing = 12
+        btn.BorderWidth = 2
+        btn.BorderColour = wx.Colour(128, 128, 128, 128)
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize(wx.Size(w, h))
+        return btn
+
+    # ------------------------------------------------------------------------
+
+    def HorizLine(self, parent, depth=1):
+        """Return an horizontal static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, depth))
+        line.SetSize(wx.Size(-1, depth))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
 
     # -----------------------------------------------------------------------
     # Events management
+    # -----------------------------------------------------------------------
+
+    def notify(self, destination):
+        """Send the EVT_PAGE_CHANGE to the parent."""
+        if self.GetParent() is not None:
+            evt = PageChangeEvent(from_page=self.GetName(),
+                                  to_page=destination)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
     # -----------------------------------------------------------------------
 
     def _setup_events(self):
@@ -101,28 +261,274 @@ class sppasAnnotatePanel(sppasPanel):
         will be called.
 
         """
-        # Capture keys
-        self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
 
     # -----------------------------------------------------------------------
 
-    def _process_key_event(self, event):
-        """Process a key event.
+    def _process_event(self, event):
+        """Process any kind of events.
 
         :param event: (wx.Event)
 
         """
-        key_code = event.GetKeyCode()
-        cmd_down = event.CmdDown()
-        shift_down = event.ShiftDown()
-        logging.debug('Annotate page received a key event. key_code={:d}'.format(key_code))
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+        event_id = event_obj.GetId()
 
-        event.Skip()
+        wx.LogMessage("Received event id {:d} of {:s}"
+                      "".format(event_id, event_name))
+
+        if event_name == "wizard":
+            self._annotate()
+
+        elif event_obj == self.btn_select1:
+            self.notify("page_standalone_annot")
+
+        elif event_obj == self.btn_select2:
+            self.notify("page_speaker_annot")
+
+        elif event_obj == self.btn_select3:
+            self.notify("page_interaction_annot")
 
     # -----------------------------------------------------------------------
 
-    def SetFont(self, font):
-        sppasPanel.SetFont(self, font)
-        self.FindWindow("title").SetFont(wx.GetApp().settings.header_text_font)
+    def _annotate(self):
+        """Perform the selected automatic annotations."""
+        pass
+
+# ---------------------------------------------------------------------------
+
+
+class sppasStandaloneAnnotations(sppasPanel):
+
+    def __init__(self, parent):
+        super(sppasStandaloneAnnotations, self).__init__(
+            parent=parent,
+            name="page_standalone_annot",
+            style=wx.BORDER_NONE
+        )
+        self._create_content()
+        self._setup_events()
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
         self.Layout()
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the main content."""
+
+        # Organize all the objects horizontally
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        btn = BitmapTextButton(self, name="arrow_back")
+        btn.FocusWidth = 0
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize(wx.Size(64, 64))
+
+        sizer.Add(btn, 0)
+
+        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_PAGE_CHANGE to the parent."""
+        if self.GetParent() is not None:
+            evt = PageChangeEvent(from_page=self.GetName(),
+                                  to_page="page_to_annotate")
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "arrow_back":
+            self.notify()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasSpeakerAnnotations(sppasPanel):
+
+    def __init__(self, parent):
+        super(sppasSpeakerAnnotations, self).__init__(
+            parent=parent,
+            name="page_speaker_annot",
+            style=wx.BORDER_NONE
+        )
+        self._create_content()
+        self._setup_events()
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+        self.Layout()
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the main content."""
+
+        # Organize all the objects horizontally
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        btn = BitmapTextButton(self, name="arrow_back")
+        btn.FocusWidth = 0
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize(wx.Size(64, 64))
+
+        sizer.Add(btn, 0)
+
+        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_PAGE_CHANGE to the parent."""
+        if self.GetParent() is not None:
+            evt = PageChangeEvent(from_page=self.GetName(),
+                                  to_page="page_to_annotate")
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "arrow_back":
+            self.notify()
+
+# ---------------------------------------------------------------------------
+
+
+class sppasInteractionAnnotations(sppasPanel):
+
+    def __init__(self, parent):
+        super(sppasInteractionAnnotations, self).__init__(
+            parent=parent,
+            name="page_interaction_annot",
+            style=wx.BORDER_NONE
+        )
+        self._create_content()
+        self._setup_events()
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+        self.Layout()
+
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # ------------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the main content."""
+
+        # Organize all the objects horizontally
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        btn = BitmapTextButton(self, name="arrow_back")
+        btn.FocusWidth = 0
+        btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize(wx.Size(64, 64))
+
+        sizer.Add(btn, 0)
+
+        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_PAGE_CHANGE to the parent."""
+        if self.GetParent() is not None:
+            evt = PageChangeEvent(from_page=self.GetName(),
+                                  to_page="page_to_annotate")
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "arrow_back":
+            self.notify()
+
 

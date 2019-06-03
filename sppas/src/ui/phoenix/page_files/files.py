@@ -171,7 +171,8 @@ class sppasFilesPanel(sppasPanel):
         key_code = event.GetKeyCode()
         cmd_down = event.CmdDown()
         shift_down = event.ShiftDown()
-        logging.debug('Files book page received a key event. key_code={:d}'.format(key_code))
+        logging.debug('Files book page received a key event. '
+                      'key_code={:d}'.format(key_code))
 
         if key_code == wx.WXK_F5 and cmd_down is False and shift_down is False:
             logging.debug(' ... [F5] key pressed')

@@ -26,7 +26,7 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.page_files.filesevent.py
+    src.ui.phoenix.page_annotate.annotevent.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
@@ -36,13 +36,5 @@ import wx.lib.newevent
 # ---------------------------------------------------------------------------
 # Event to be used when the data have changed.
 
-DataChangedEvent, EVT_DATA_CHANGED = wx.lib.newevent.NewEvent()
-DataChangedCommandEvent, EVT_DATA_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-# ---------------------------------------------------------------------------
-# Event to be used when the state of any data of FileData() has changed.
-
-StateChangedEvent, EVT_STATE_CHANGED = wx.lib.newevent.NewEvent()
-StateChangedCommandEvent, EVT_STATE_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-
+PageChangeEvent, EVT_PAGE_CHANGE = wx.lib.newevent.NewEvent()
+PageChangeCommandEvent, EVT_PAGE_CHANGE_COMMAND = wx.lib.newevent.NewCommandEvent()

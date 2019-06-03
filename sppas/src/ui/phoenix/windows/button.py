@@ -706,8 +706,8 @@ class BaseButton(wx.Window):
         self.ReleaseMouse()
         # If the button was down when the mouse was released...
         if self._state[1] == BaseButton.PRESSED:
-            self.Notify()
             self._set_state(self._state[0])
+            self.Notify()
 
     # ------------------------------------------------------------------------
 
@@ -1292,7 +1292,13 @@ class BitmapTextButton(BaseButton):
         # Draw the square bitmap icon at the center with a 5% margin all around
         if self._label is None:
             x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y, w, h)
-            self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+            designed = self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
+            if designed is False:
+                dc.SetPen(self.GetPenForegroundColour())
+                dc.DrawRectangle(self._borderwidth,
+                                 self._borderwidth,
+                                 w - (2 * self._borderwidth),
+                                 h - (2 * self._borderwidth))
 
         else:
             tw, th = self.get_text_extend(dc, gc, self._label)
@@ -1357,19 +1363,28 @@ class BitmapTextButton(BaseButton):
     # ------------------------------------------------------------------------
 
     def __draw_bitmap(self, dc, gc, x, y, btn_size):
-        # get the image from its name
-        img = sppasSwissKnife.get_image(self.GetName())
-        # re-scale the image to the expected size
-        sppasSwissKnife.rescale_image(img, btn_size)
-        # re-colorize
-        ColorizeImage(img, wx.BLACK, self._bitmapcolor)
-        # convert to bitmap
-        bitmap = wx.Bitmap(img)
-        # draw it to the dc or gc
-        if wx.Platform == '__WXGTK__':
-            dc.DrawBitmap(bitmap, x, y)
-        else:
-            gc.DrawBitmap(bitmap, x, y)
+        # if no icon is given
+        if self.GetName() == wx.ButtonNameStr:
+            return False
+        try:
+            # get the image from its name
+            img = sppasSwissKnife.get_image(self.GetName())
+            # re-scale the image to the expected size
+            sppasSwissKnife.rescale_image(img, btn_size)
+            # re-colorize
+            ColorizeImage(img, wx.BLACK, self._bitmapcolor)
+            # convert to bitmap
+            bitmap = wx.Bitmap(img)
+            # draw it to the dc or gc
+            if wx.Platform == '__WXGTK__':
+                dc.DrawBitmap(bitmap, x, y)
+            else:
+                gc.DrawBitmap(bitmap, x, y)
+        except Exception as e:
+            logging.error('Draw image error: {:s}'.format(str(e)))
+            return False
+
+        return True
 
     # ------------------------------------------------------------------------
 
