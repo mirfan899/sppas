@@ -30,12 +30,12 @@ class sppasNum2TextTest(unittest.TestCase):
         res_fra = self.sppasConverterFrench.convert(123456789)
         res_eng = self.sppasConverterEnglish.convert(123456789)
         res_zero_english = self.sppasConverterEnglish.convert('00000123')
-        res_jpn = self.sppasConverterJapanese.convert(23456789)
+        res_jpn = self.sppasConverterJapanese.convert(123456789)
 
         self.assertEqual('cent_vingt_trois_million_quatre_cent_cinquante_six_mille_sept_cent_quatre_vingt_neuf', res_fra)
         self.assertEqual('hundred_twenty_three_million_four_hundred_fifty_six_thousand_seven_hundred_eighty_nine', res_eng)
         self.assertEqual('zero_zero_zero_zero_zero_hundred_twenty_three', res_zero_english)
-        self.assertEqual('二千三百四十五万六千七百八十九', res_jpn)
+        self.assertEqual('億二千三百四十五万六千七百八十九', res_jpn)
 
         with self.assertRaises(sppasTypeError) as error:
             dictionaryErrorObj = Dictionary(self.hello)

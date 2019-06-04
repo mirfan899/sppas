@@ -29,7 +29,7 @@
 
         ---------------------------------------------------------------------
 """
-
+from sppasNumJapanese import sppasNumJapanese
 from sppasNumFrench import sppasNumFrench
 from sppasNumEnglish import sppasNumEnglish
 from sppasNumSpanish import sppasNumSpanish
@@ -64,7 +64,7 @@ class sppasNumConstructor(object):
         if lang is not None and not isinstance(lang, str):
             raise sppasTypeError(lang, str)
 
-        ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
+        ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "pcm")
 
         LANGUAGES_DICT = {
                           "und": sppasNumUnd,
@@ -76,7 +76,7 @@ class sppasNumConstructor(object):
                           "spa": sppasNumSpanish,
                           "khm": sppasNumKhmer,
                           "vie": sppasNumVietnamese,
-                          "jpn": sppasNumAsianType,
+                          "jpn": sppasNumJapanese,
                           "pol": sppasNumPolish,
                           "por": sppasNumPortuguese,
                           "pcm": sppasNumAsianType
