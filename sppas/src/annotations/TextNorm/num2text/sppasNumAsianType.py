@@ -39,11 +39,10 @@ from sppas import sppasValueError
 
 class sppasNumAsianType(sppasNumBase):
 
-    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
+    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "vie")
 
     NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                   11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                   30, 40, 50, 60, 70, 80, 90, 100, 1000, 10000)
+                   20, 30, 40, 50, 60, 70, 80, 90, 100, 1000, 10000)
 
     # ---------------------------------------------------------------------------
 
@@ -128,3 +127,4 @@ class sppasNumAsianType(sppasNumBase):
                         else:
                             return mult + item[1] \
                                    + self._tenth_of_thousands(number % 100000000)
+            return 'toto'

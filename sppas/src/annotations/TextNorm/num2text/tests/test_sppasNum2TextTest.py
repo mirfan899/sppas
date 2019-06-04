@@ -1,3 +1,5 @@
+# -*- coding: UTF-8 -*-
+
 import os
 import unittest
 
@@ -18,16 +20,22 @@ class sppasNum2TextTest(unittest.TestCase):
         # Dictionaries actually created in normalize.py
         self.dictionaryFra = Dictionary('fra')
         self.dictionaryEng = Dictionary('eng')
+        self.dictionaryJpn = Dictionary('jpn')
 
-        self.sppasConverteurFrench = sppasNumConstructor().construct('fra', self.dictionaryFra)
-        self.sppasConverteurEnglish = sppasNumConstructor().construct('eng', self.dictionaryEng)
+        self.sppasConverterFrench = sppasNumConstructor().construct('fra', self.dictionaryFra)
+        self.sppasConverterEnglish = sppasNumConstructor().construct('eng', self.dictionaryEng)
+        self.sppasConverterJapanese = sppasNumConstructor().construct('jpn', self.dictionaryJpn)
 
     def test_convert(self):
-        res_fra = self.sppasConverteurFrench.convert(123456789)
-        res_eng = self.sppasConverteurEnglish.convert(123456789)
+        res_fra = self.sppasConverterFrench.convert(123456789)
+        res_eng = self.sppasConverterEnglish.convert(123456789)
+        res_zero_english = self.sppasConverterEnglish.convert('00000123')
+        res_jpn = self.sppasConverterJapanese.convert(23456789)
 
         self.assertEqual('cent_vingt_trois_million_quatre_cent_cinquante_six_mille_sept_cent_quatre_vingt_neuf', res_fra)
         self.assertEqual('hundred_twenty_three_million_four_hundred_fifty_six_thousand_seven_hundred_eighty_nine', res_eng)
+        self.assertEqual('zero_zero_zero_zero_zero_hundred_twenty_three', res_zero_english)
+        self.assertEqual('二千三百四十五万六千七百八十九', res_jpn)
 
         with self.assertRaises(sppasTypeError) as error:
             dictionaryErrorObj = Dictionary(self.hello)

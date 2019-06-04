@@ -31,13 +31,12 @@
         ---------------------------------------------------------------------
 """
 
-# TODO: change the super class
-from sppasNumEuropeanType import sppasNumEuropeanType
+from sppasNumAsianType import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
 
 
-class sppasNumVietnamese(sppasNumEuropeanType):
+class sppasNumVietnamese(sppasNumAsianType):
     """Return an instance of sppasNumVietnamese
 
     :returns: (sppasNumVietnamese)

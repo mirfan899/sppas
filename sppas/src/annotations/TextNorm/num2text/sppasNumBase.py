@@ -194,13 +194,13 @@ class sppasNumBase(object):
                     else:
                         if int(str(number)[1:]) == 0:
                             if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._tenth(number % 100)
+                                return mult + item[1] + self._tenth(number % 100)
                             else:
                                 return mult + sppasNumBase.SEPARATOR \
                                        + item[1]
                         else:
                             if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._tenth(number % 100)
+                                return mult + item[1] + self._tenth(number % 100)
                             else:
                                 return mult + sppasNumBase.SEPARATOR \
                                        + item[1] + sppasNumBase.SEPARATOR \
@@ -239,13 +239,13 @@ class sppasNumBase(object):
                     else:
                         if int(str(number)[1:]) == 0:
                             if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._hundreds(number % 1000)
+                                return mult + item[1] + self._hundreds(number % 1000)
                             else:
                                 return mult + sppasNumBase.SEPARATOR \
                                        + item[1]
                         else:
                             if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._hundreds(number % 1000)
+                                return mult + item[1] + self._hundreds(number % 1000)
                             else:
                                 return mult + sppasNumBase.SEPARATOR + item[1] \
                                        + sppasNumBase.SEPARATOR \
