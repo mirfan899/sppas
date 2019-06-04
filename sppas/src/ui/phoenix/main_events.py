@@ -26,8 +26,10 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.page_files.filesevent.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    src.ui.phoenix.main_events.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Custom events for the main GUI.
 
 """
 
@@ -38,11 +40,3 @@ import wx.lib.newevent
 
 DataChangedEvent, EVT_DATA_CHANGED = wx.lib.newevent.NewEvent()
 DataChangedCommandEvent, EVT_DATA_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-# ---------------------------------------------------------------------------
-# Event to be used when the state of any data of FileData() has changed.
-
-StateChangedEvent, EVT_STATE_CHANGED = wx.lib.newevent.NewEvent()
-StateChangedCommandEvent, EVT_STATE_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
-
-

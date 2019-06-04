@@ -46,13 +46,12 @@ import logging
 
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
+from ..main_events import DataChangedEvent, EVT_DATA_CHANGED
 
 from .wksmanager import WorkspacesManager
 from .filesmanager import FilesManager
 from .refsmanager import ReferencesManager
 from .associate import AssociatePanel
-
-from .filesevent import EVT_DATA_CHANGED
 
 # ---------------------------------------------------------------------------
 

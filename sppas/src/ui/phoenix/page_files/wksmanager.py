@@ -47,9 +47,9 @@ from ..dialogs import Confirm, Error
 from ..windows import sppasStaticLine
 from ..windows import sppasPanel
 from ..windows.button import CheckButton
+from ..main_events import DataChangedEvent
 
 from .btntxttoolbar import BitmapTextToolbar
-from .filesevent import DataChangedEvent
 
 # ---------------------------------------------------------------------------
 # Internal use of an event, when the workspace has changed.

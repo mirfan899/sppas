@@ -41,10 +41,10 @@ from sppas.src.files.filebase import States
 
 from ..windows.panel import sppasPanel
 from ..dialogs import YesNoQuestion, Information
+from ..main_events import DataChangedEvent
+
 from .filestreectrl import FilesTreeViewCtrl
 from .btntxttoolbar import BitmapTextToolbar
-from .filesevent import DataChangedEvent
-
 
 # ---------------------------------------------------------------------------
 # List of displayed messages:

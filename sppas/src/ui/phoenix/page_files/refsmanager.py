@@ -48,10 +48,10 @@ from ..windows import sppasTextCtrl
 from ..windows import RadioButton
 from ..dialogs import Information
 from ..dialogs import Error
+from ..main_events import DataChangedEvent
 
 from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
-from .filesevent import DataChangedEvent
 from .filesutils import IdentifierTextValidator
 
 

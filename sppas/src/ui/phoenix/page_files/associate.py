@@ -51,8 +51,8 @@ from ..windows import sppasPanel
 from ..windows import sppasDialog
 from ..windows.button import BitmapTextButton, CheckButton
 from ..windows.buttonbox import sppasRadioBoxPanel
+from ..main_events import DataChangedEvent
 
-from .filesevent import DataChangedEvent
 from .filesutils import IdentifierTextValidator
 from .btntxttoolbar import BitmapTextToolbar
 
