@@ -44,6 +44,9 @@
 import wx
 import logging
 
+from sppas.src.files import FileData
+from sppas import sppasTypeError
+
 from ..windows import sppasPanel
 from ..windows import sppasStaticLine
 from ..main_events import DataChangedEvent, EVT_DATA_CHANGED
@@ -83,6 +86,10 @@ class sppasFilesPanel(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE,
             name="page_files"
         )
+
+        # The data this page is working on
+        self.__data = FileData()
+
         self._create_content()
         self._setup_events()
 
@@ -102,8 +109,21 @@ class sppasFilesPanel(sppasPanel):
         :return: (FileData) data of the files-viewer model.
 
         """
-        fm = self.FindWindow("filesview")
-        return fm.get_data()
+        return self.__data
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to display to this panel.
+
+        :param data: (FileData)
+
+        """
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the files page.')
+        # TODO. Notify all children.
+        pass
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -156,7 +176,7 @@ class sppasFilesPanel(sppasPanel):
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
         # The data have changed.
-        # This event is sent by any of the children
+        # This event is sent by any of the children or by the parent
         self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
 
     # -----------------------------------------------------------------------
@@ -217,3 +237,8 @@ class sppasFilesPanel(sppasPanel):
         cm = self.FindWindow("references")
         if emitted != cm:
             cm.set_data(data)
+
+        pm = self.GetParent()
+        if pm is not None and emitted != pm:
+            pass
+            # TODO: send the event to the parent

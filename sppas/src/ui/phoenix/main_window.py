@@ -58,6 +58,7 @@ from .dialogs import YesNoQuestion
 from .dialogs import About
 from .dialogs import Settings
 from .main_log import sppasLogWindow
+from .main_events import DataChangedEvent, EVT_DATA_CHANGED
 
 # ---------------------------------------------------------------------------
 
@@ -217,6 +218,10 @@ class sppasMainWindow(sppasDialog):
         # Bind all events from our buttons (including 'exit')
         self.Bind(wx.EVT_BUTTON, self._process_event)
 
+        # The data have changed.
+        # This event is sent by any of the children
+        self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
+
         # Capture keys
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
@@ -252,6 +257,41 @@ class sppasMainWindow(sppasDialog):
 
         else:
             event.Skip()
+
+    # -----------------------------------------------------------------------
+
+    def _process_data_changed(self, event):
+        """Process a change of data.
+
+        Set the data of the event to the other panels.
+
+        :param event: (wx.Event)
+
+        """
+        emitted = event.GetEventObject()
+        try:
+            data = event.data
+        except AttributeError:
+            logging.error('Data were not sent in the event.')
+            return
+
+        fw = self.FindWindow("files")
+        if emitted != fw:
+            fw.set_data(data)
+
+        aw = self.FindWindow("annotate")
+        if emitted != aw:
+            aw.set_data(data)
+
+        ap = self.FindWindow("analyze")
+        if emitted != ap:
+            pass
+            # ap.set_data(data)
+
+        pw = self.FindWindow("plugins")
+        if emitted != pw:
+            pass
+            # pw.set_data(data)
 
     # -----------------------------------------------------------------------
 

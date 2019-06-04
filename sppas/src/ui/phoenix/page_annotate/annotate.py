@@ -38,6 +38,9 @@
 import logging
 import wx
 
+from sppas.src.files import FileData
+from sppas import sppasTypeError
+
 from sppas.src.ui.phoenix.windows import sppasMessageText
 from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticText
@@ -69,6 +72,9 @@ class sppasAnnotatePanel(sppasSimplebook):
         )
         self.SetEffectsTimeouts(200, 200)
 
+        # The data this page is working on
+        self.__data = FileData()
+
         # 1st page: the buttons to perform actions
         self.ShowNewPage(sppasActionAnnotate(self))
 
@@ -87,6 +93,32 @@ class sppasAnnotatePanel(sppasSimplebook):
         # self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         # self.SetForegroundColour(wx.GetApp().settings.fg_color)
         # self.SetFont(wx.GetApp().settings.text_font)
+
+    # ------------------------------------------------------------------------
+    # Public methods to access the data
+    # ------------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data currently displayed.
+
+        :return: (FileData) data of the files-viewer model.
+
+        """
+        return self.__data
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to this panel.
+
+        :param data: (FileData)
+
+        """
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the annotate page.')
+        self.__data = data
+
 
     # -----------------------------------------------------------------------
     # Events management
