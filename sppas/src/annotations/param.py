@@ -203,10 +203,12 @@ class annotationParam(object):
     # -----------------------------------------------------------------------
 
     def get_lang(self):
-        """Return the language or an empty string."""
+        """Return the language or an empty string or None."""
         if len(self.__resources) > 0:
             return self.__resources[0].get_lang()
-        return ""
+
+        # this annotation does not require a lang to be defined
+        return None
 
     # -----------------------------------------------------------------------
 
@@ -461,7 +463,8 @@ class sppasParam(object):
     def get_lang(self, step=None):
         if step is None:
             for a in self.annotations:
-                if a.get_lang() != UNDETERMINED:
+                lang = a.get_lang()
+                if lang is not None and lang != UNDETERMINED:
                     return a.get_lang()
             return UNDETERMINED
         return self.annotations[step].get_lang()

@@ -98,7 +98,8 @@ class AnnotateProcess(object):
         for i in range(len(activeannot)):
             if activeannot[i]:
                 # if there are languages available and none of them is selected, print an error
-                if len(parameters.get_langlist(i)) > 0 and len(parameters.get_lang(i)) == 0:
+                lang = parameters.get_lang(i)
+                if len(parameters.get_langlist(i)) > 0 and len(lang) == 0:
                     return "A language must be selected for the " \
                            "annotation \"{:s}\"".format(parameters.get_step_name(i))
                 nbsteps += 1
