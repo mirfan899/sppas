@@ -38,15 +38,18 @@
 import logging
 import wx
 
-from sppas.src.files import FileData
 from sppas import sppasTypeError
+from sppas.src.annotations import sppasParam, sppasAnnotationsManager
+from sppas.src.files import FileData, States
 
 from sppas.src.ui.phoenix.windows import sppasMessageText
 from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticText
 from sppas.src.ui.phoenix.windows import sppasStaticLine
+
 from ..windows.book import sppasSimplebook
 from ..windows.button import BitmapTextButton, sppasTextButton
+from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
 
@@ -101,7 +104,7 @@ class sppasAnnotatePanel(sppasSimplebook):
     def get_data(self):
         """Return the data currently displayed.
 
-        :return: (FileData) data of the files-viewer model.
+        :return: (FileData) .
 
         """
         return self.__data
@@ -109,20 +112,30 @@ class sppasAnnotatePanel(sppasSimplebook):
     # ------------------------------------------------------------------------
 
     def set_data(self, data):
-        """Assign new data to this panel.
+        """Assign new data to this page.
 
         :param data: (FileData)
 
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the annotate page.')
+        logging.debug('New data to set in the annotate page. '
+                      'Id={:s}'.format(data.id))
         self.__data = data
-
 
     # -----------------------------------------------------------------------
     # Events management
     # -----------------------------------------------------------------------
+
+    def notify(self):
+        """Send the EVT_DATA_CHANGED to the parent."""
+        if self.GetParent() is not None:
+            self.__data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=self.__data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
+
+    # ------------------------------------------------------------------------
 
     def _process_page_change(self, event):
         """Process a PageChangeEvent.
@@ -245,11 +258,11 @@ class sppasActionAnnotate(sppasPanel):
 
         try:
             w = int(wx.GetApp().settings.size_coeff * 196.)
-            h = int(wx.GetApp().settings.size_coeff * 48.)
+            h = int(wx.GetApp().settings.size_coeff * 42.)
         except Exception as e:
             logging.error(str(e))
-            h = 64
-            w = 228
+            h = 42
+            w = 196
 
         btn = BitmapTextButton(self, name="on-off", label=label)
         btn.LabelPosition = wx.RIGHT

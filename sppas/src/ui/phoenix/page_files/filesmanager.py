@@ -102,8 +102,7 @@ class FilesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        fv = self.FindWindow("filestree")
-        fv.set_data(data)
+        fv = self.FindWindow("filestree").set_data(data)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.

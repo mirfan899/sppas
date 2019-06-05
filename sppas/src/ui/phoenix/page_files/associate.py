@@ -106,7 +106,8 @@ class AssociatePanel(sppasPanel):
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the associate panel.')
+        logging.debug('New data to set in the associate panel. '
+                      'Id={:s}'.format(data.id))
         self.__data = data
 
     # ------------------------------------------------------------------------

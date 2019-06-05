@@ -77,6 +77,8 @@ class annotationParam(object):
         self.__name = ""
         # The description of the annotation
         self.__descr = ""
+        # The types of this annotation can support
+        self.__types = ["NONE"]
         # The status of the annotation
         self.__enabled = False
         self.__invalid = False
@@ -111,6 +113,7 @@ class annotationParam(object):
             self.__key = conf['id']
             self.__name = msg(conf.get('name', ''), "annotations)")  # translate the name
             self.__descr = conf.get('descr', "")
+            self.__types = conf.get('anntype', ["STANDALONE"])
 
             for new_option in conf['options']:
                 opt = sppasOption(new_option['id'])
@@ -178,6 +181,12 @@ class annotationParam(object):
     def get_name(self):
         """Return the name of the annotation (str)."""
         return self.__name
+
+    # -----------------------------------------------------------------------
+
+    def get_types(self):
+        """Return the list of types the annotation can support (list of str)."""
+        return self.__types
 
     # -----------------------------------------------------------------------
 

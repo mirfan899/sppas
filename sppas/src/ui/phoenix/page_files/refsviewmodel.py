@@ -145,6 +145,8 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
     def set_data(self, data):
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the references panel. '
+                      'Id={:s}'.format(data.id))
         self.__data = data
         self.update()
 

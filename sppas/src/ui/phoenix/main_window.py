@@ -219,8 +219,8 @@ class sppasMainWindow(sppasDialog):
         self.Bind(wx.EVT_BUTTON, self._process_event)
 
         # The data have changed.
-        # This event is sent by any of the children
-        self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
+        # This event was sent by any of the children
+        self.FindWindow("content").Bind(EVT_DATA_CHANGED, self._process_data_changed)
 
         # Capture keys
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
@@ -272,26 +272,17 @@ class sppasMainWindow(sppasDialog):
         try:
             data = event.data
         except AttributeError:
-            logging.error('Data were not sent in the event.')
+            logging.error('Data were not sent in the event emitted by {:s}'
+                          '.'.format(emitted.GetName()))
             return
 
-        fw = self.FindWindow("files")
-        if emitted != fw:
-            fw.set_data(data)
-
-        aw = self.FindWindow("annotate")
-        if emitted != aw:
-            aw.set_data(data)
-
-        ap = self.FindWindow("analyze")
-        if emitted != ap:
-            pass
-            # ap.set_data(data)
-
-        pw = self.FindWindow("plugins")
-        if emitted != pw:
-            pass
-            # pw.set_data(data)
+        # Set the data to appropriate children panels
+        book = self.FindWindow('content')
+        for i in range(book.GetPageCount()):
+            page = book.GetPage(i)
+            if page.GetName() in ("page_files", "page_annotate"):  # "page_analyze", "page_plugins"):
+                if emitted != page:
+                    page.set_data(data)
 
     # -----------------------------------------------------------------------
 

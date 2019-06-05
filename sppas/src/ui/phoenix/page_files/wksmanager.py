@@ -144,7 +144,7 @@ class WorkspacesManager(sppasPanel):
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the workspace. '
+        logging.debug('New data to set in the workspace panel. '
                       'Id={:s}'.format(data.id))
         self.__data = data
 

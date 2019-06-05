@@ -87,9 +87,6 @@ class sppasFilesPanel(sppasPanel):
             name="page_files"
         )
 
-        # The data this page is working on
-        self.__data = FileData()
-
         self._create_content()
         self._setup_events()
 
@@ -104,26 +101,27 @@ class sppasFilesPanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def get_data(self):
-        """Return the data currently displayed.
+        """Return the data currently displayed in the list of files.
 
         :return: (FileData) data of the files-viewer model.
 
         """
-        return self.__data
+        return self.FindWindow("filesview").get_data()
 
     # ------------------------------------------------------------------------
 
     def set_data(self, data):
-        """Assign new data to display to this panel.
+        """Assign new data to display to this page.
 
         :param data: (FileData)
 
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
-        logging.debug('New data to set in the files page.')
-        # TODO. Notify all children.
-        pass
+        logging.debug('New data to set in the files page. '
+                      'Id={:s}'.format(data.id))
+        # Notify all children.
+        self.__send_data(self.GetParent(), data)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -219,26 +217,32 @@ class sppasFilesPanel(sppasPanel):
         try:
             data = event.data
         except AttributeError:
-            logging.error('Data were not sent in the event.')
+            logging.error('Data were not sent in the event emitted by {:s}'
+                          '.'.format(emitted.GetName()))
             return
 
-        wp = self.FindWindow("workspaces")
-        if emitted != wp:
-            wp.set_data(data)
+        self.__send_data(emitted, data)
 
-        fm = self.FindWindow("filesview")
-        if emitted != fm:
-            fm.set_data(data)
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
 
-        ap = self.FindWindow("associate")
-        if emitted != ap:
-            ap.set_data(data)
+    def __send_data(self, emitted, data):
+        """Set a change of data to the children, send to the parent.
 
-        cm = self.FindWindow("references")
-        if emitted != cm:
-            cm.set_data(data)
+        :param emitted: (wx.Window) The panel the data are coming from
+        :param data: (FileData)
 
+        """
+        # Set the data to appropriate children panels
+        for panel in self.GetChildren():
+            if panel.GetName() in ("workspaces", "filesview", "associate", "references"):
+                if emitted != panel:
+                    panel.set_data(data)
+
+        # Send the data to the parent
         pm = self.GetParent()
         if pm is not None and emitted != pm:
-            pass
-            # TODO: send the event to the parent
+            evt = DataChangedEvent(data=data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
