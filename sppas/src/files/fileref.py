@@ -280,7 +280,7 @@ class FileReference(FileBase):
 
     """
 
-    REF_TYPES = ('NONE', 'SPEAKER', 'INTERACTION')
+    REF_TYPES = ("STANDALONE", "SPEAKER", "INTERACTION")
 
     def __init__(self, identifier):
         """Constructor of the FileReference class.

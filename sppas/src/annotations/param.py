@@ -77,8 +77,8 @@ class annotationParam(object):
         self.__name = ""
         # The description of the annotation
         self.__descr = ""
-        # The types of this annotation can support
-        self.__types = ["NONE"]
+        # The types this annotation can support
+        self.__types = []
         # The status of the annotation
         self.__enabled = False
         self.__invalid = False
@@ -335,8 +335,8 @@ class sppasParam(object):
 
         # Load annotation configurations
         for ann in dict_cfg["annotate"]:
-            if ann["gui"] is True:
-                self.__load(os.path.join(paths.etc, ann["config"]))
+            #if ann["gui"] is True:
+            self.__load(os.path.join(paths.etc, ann["config"]))
 
     # -----------------------------------------------------------------------
 
@@ -491,6 +491,9 @@ class sppasParam(object):
 
     def get_step_name(self, step):
         return self.annotations[step].get_name()
+
+    def get_step_types(self, step):
+        return self.annotations[step].get_types()
 
     def get_step_descr(self, step):
         return self.annotations[step].get_descr()

@@ -59,6 +59,7 @@ from sppas.src.annotations.Align.sppasalign import sppasAlign
 from sppas.src.annotations.Syll.sppassyll import sppasSyll
 from sppas.src.annotations.TGA.sppastga import sppasTGA
 from sppas.src.annotations.SelfRepet.sppasrepet import sppasSelfRepet
+from sppas.src.annotations.OtherRepet.sppasrepet import sppasOtherRepet
 
 # ----------------------------------------------------------------------------
 
