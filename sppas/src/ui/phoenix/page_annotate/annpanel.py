@@ -240,19 +240,19 @@ class sppasEnableAnnotation(sppasPanel):
         w = int(80. * wx.GetApp().settings.size_coeff)
 
         # choice of the language
-        self.choice = None
+        self.choice = sppasPanel(self)
+        self.choice.SetMinSize(wx.Size(w, -1))
+
         # if there are different languages available, add a choice to the panel
         if len(choicelist) > 0:
             choicelist.append(LANG_NONE)
+            lang = self.__annparam.get_lang()
+            if lang is None or len(lang) == 0:
+                lang = LANG_NONE
             self.choice = wx.ComboBox(self, -1, choices=sorted(choicelist))
-            self.choice.SetSelection(self.choice.GetItems().index(LANG_NONE))
-            self.choice.SetMinSize(wx.Size(w, -1))
+            self.choice.SetSelection(self.choice.GetItems().index(lang))
             self.choice.Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
-            sizer.Add(self.choice, 0, wx.ALIGN_CENTRE | wx.LEFT | wx.RIGHT, 12)
-        else:
-            p = sppasPanel(self)
-            p.SetMinSize(wx.Size(w, -1))
-            sizer.Add(p, 0, wx.ALIGN_CENTRE | wx.LEFT | wx.RIGHT, 12)
+        sizer.Add(self.choice, 0, wx.ALIGN_CENTRE | wx.LEFT | wx.RIGHT, 12)
 
         return sizer
 

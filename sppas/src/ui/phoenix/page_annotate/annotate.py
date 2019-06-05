@@ -53,7 +53,7 @@ from ..windows.button import BitmapTextButton, sppasTextButton
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
-from .annpanel import sppasAnnotations
+from .annpanel import sppasAnnotations, LANG_NONE
 
 # -----------------------------------------------------------------------
 
@@ -235,21 +235,31 @@ class sppasActionAnnotate(sppasPanel):
     def _create_content(self):
         """Create the main content."""
 
-        sta = sppasStaticText(self, label="STEP 1: select the annotations to perform")
+        stl = sppasStaticText(self, label="STEP 1: fix the language(s)")
+
+        sta = sppasStaticText(self, label="STEP 2: select the annotations to perform")
 
         # The buttons to select annotations (switch to other pages)
         self.btn_select1 = self.__create_select_annot_btn("STANDALONE annotations")
         self.btn_select2 = self.__create_select_annot_btn("SPEAKER annotations")
         self.btn_select3 = self.__create_select_annot_btn("INTERACTION annotations")
 
-        stl = sppasStaticText(self, label="STEP 2: fix the language(s)")
-
         str = sppasStaticText(self, label="STEP 3: perform the annotations")
+        self.choice = self.__create_lang_btn()
 
         # The button to perform annotations
         self.btn_run = self.__create_select_annot_btn("Let's go!")
         self.btn_run.SetName("wizard")
+        self.btn_run.Enable(False)
         self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
+
+        stp = sppasStaticText(self, label="STEP 4: save the procedure outcome report")
+
+        # The button to save the POR
+        self.btn_por = self.__create_select_annot_btn("Save report as...")
+        self.btn_por.SetName("save_as")
+        self.btn_por.Enable(False)
+        self.btn_por.BorderColour = wx.Colour(228, 24, 24, 128)
 
         # Organize all the objects
         s1 = wx.BoxSizer(wx.HORIZONTAL)
@@ -257,19 +267,19 @@ class sppasActionAnnotate(sppasPanel):
         s1.Add(self.btn_select2, 1, wx.EXPAND | wx.ALL, 4)
         s1.Add(self.btn_select3, 1, wx.EXPAND | wx.ALL, 4)
 
-        s2 = wx.BoxSizer(wx.HORIZONTAL)
-        s2.Add(wx.Panel(self), 0, wx.LEFT, 20)
-
-        s3 = wx.BoxSizer(wx.HORIZONTAL)
-        s3.Add(self.btn_run)
-
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(sta, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
+        sizer.Add(stl, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(self.choice, 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+
+        sizer.Add(sta, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
         sizer.Add(s1, 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
-        sizer.Add(stl, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
-        sizer.Add(s2, 2,  wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
-        sizer.Add(str, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 20)
-        sizer.Add(s3, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL | wx.BOTTOM, 20)
+
+        sizer.Add(str, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(self.btn_run, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+
+        sizer.Add(stp, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(self.btn_por, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+
         self.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
@@ -292,6 +302,24 @@ class sppasActionAnnotate(sppasPanel):
         btn.BitmapColour = self.GetForegroundColour()
         btn.SetMinSize(wx.Size(w, h))
         return btn
+
+    # ------------------------------------------------------------------------
+
+    def __create_lang_btn(self):
+        w = int(80. * wx.GetApp().settings.size_coeff)
+
+        all_langs = list()
+        for i in range(self.__param.get_step_numbers()):
+            a = self.__param.get_step(i)
+            all_langs.extend(a.get_langlist())
+
+        langlist = list(set(all_langs))
+        langlist.append(LANG_NONE)
+        choice = wx.ComboBox(self, -1, choices=sorted(langlist))
+        choice.SetSelection(choice.GetItems().index(LANG_NONE))
+        choice.SetMinSize(wx.Size(w, -1))
+        choice.Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
+        return choice
 
     # -----------------------------------------------------------------------
     # Events management
@@ -346,6 +374,16 @@ class sppasActionAnnotate(sppasPanel):
 
     # -----------------------------------------------------------------------
 
+    def _on_lang_changed(self, event):
+        lang = self.choice.GetValue()
+        for i in range(self.__param.get_step_numbers()):
+            a = self.__param.get_step(i)
+            if len(a.get_langlist()) > 0:
+                a.set_lang(lang)
+
+    # -----------------------------------------------------------------------
+    # -----------------------------------------------------------------------
+
     def _annotate(self):
         """Perform the selected automatic annotations."""
         pass
@@ -394,8 +432,10 @@ class sppasActionAnnotate(sppasPanel):
 
         # at least one annotation is enabled and language is fixed.
         if lang is False:
+            self.btn_run.Enable(False)
             self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
         else:
+            self.btn_run.Enable(True)
             self.btn_run.BorderColour = wx.Colour(24, 228, 24, 128)
         self.btn_run.Refresh()
 
