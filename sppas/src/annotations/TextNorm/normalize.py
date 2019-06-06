@@ -102,7 +102,7 @@ class TextNormalizer(object):
         self.vocab = vocab
         if vocab is None:
             self.vocab = sppasVocabulary()
-        self.num_dict = Dictionary(lang)
+        self.num_dict = sppasDictRepl(None)
 
         # members
         self.lang = lang
@@ -170,6 +170,16 @@ class TextNormalizer(object):
 
         """
         self.lang = lang
+
+    # -----------------------------------------------------------------------
+
+    def set_num(self, num_dict):
+        """Set the language.
+
+        :param lang: (str) the language code in iso639-3 (fra, eng, vie...).
+
+        """
+        self.num_dict = num_dict
 
     # -----------------------------------------------------------------------
     # Language independent modules (or not!)

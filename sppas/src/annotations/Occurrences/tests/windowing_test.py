@@ -30,7 +30,7 @@ class WindowingTest(unittest.TestCase):
         my_window1 = sppasWindow(self.tiers)
         my_split1 = my_window1.time_split(0.0, 0.9, 0.1, 0.9)
         my_window2 = sppasWindow(self.tiers)
-        my_split2 = my_window2.time_split(1.4, 2.2, 0.1)
+        my_split2 = my_window2.time_split(1.4, 2.2, 0.4)
 
         self.assertNotEqual(my_split1, my_split2)
         self.assertEqual(1, len(my_split1))

@@ -381,3 +381,9 @@ class sppasDictRepl(object):
     def __iter__(self):
         for a in self._dict:
             yield a
+
+    # ------------------------------------------------------------------------
+
+    def __getitem__(self, item):
+        s = sppasDictRepl.format_token(str(item))
+        return self._dict[s]

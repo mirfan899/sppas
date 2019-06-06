@@ -47,7 +47,7 @@ class sppasNumEuropeanType(sppasNumBase):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
     """
 
-    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por")
+    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
 
     NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
@@ -66,10 +66,9 @@ class sppasNumEuropeanType(sppasNumBase):
         else:
             raise sppasValueError(lang, sppasNumEuropeanType.EUROPEAN_TYPED_LANGUAGES)
 
-        for i in range(len(self._lang_dict)):
-            if self._lang_dict[i][0] != sppasNumEuropeanType.NUMBER_LIST[i]:
-                raise sppasValueError(sppasNumEuropeanType.NUMBER_LIST[i],
-                                      self._lang_dict[i][0])
+        for i in sppasNumEuropeanType.NUMBER_LIST:
+            if self._lang_dict.is_unk(str(i)):
+                raise sppasValueError(self._lang_dict, i)
 
     # ---------------------------------------------------------------------------
 
@@ -90,21 +89,22 @@ class sppasNumEuropeanType(sppasNumBase):
             if int(number/1000000)*1000000 != 1000000:
                 mult = self._hundreds(int(number/1000000))
 
-            for item in self._lang_dict:
-                if item[0] == 1000000:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            return item[1] + sppasNumBase.SEPARATOR \
-                                   + self._thousands(number % 1000000)
-                    else:
-                        if int(str(number)[1:]) == 0:
-                            return mult + sppasNumBase.SEPARATOR \
-                                   + item[1]
-                        else:
-                            return mult + '_' + item[1] + sppasNumBase.SEPARATOR \
-                                   + self._thousands(number % 1000000)
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
+                           + self._lang_dict['1000000']
+                else:
+                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR \
+                            + self._lang_dict['1000000'] + sppasNumBase.SEPARATOR \
+                            + self._thousands(number % 1000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + sppasNumBase.SEPARATOR \
+                           + self._lang_dict['1000000']
+                else:
+                    return mult + sppasNumBase.SEPARATOR \
+                           + self._lang_dict['1000000'] + sppasNumBase.SEPARATOR \
+                           + self._thousands(number % 1000000)
 
     # ---------------------------------------------------------------------------
 
@@ -127,21 +127,21 @@ class sppasNumEuropeanType(sppasNumBase):
             if int(number/1000000000)*1000000000 != 1000000000:
                 mult = self._hundreds(int(number/1000000000))
 
-            for item in self._lang_dict:
-                if item[0] == 1000000000:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            return item[1] + sppasNumBase.SEPARATOR \
-                                   + self._millions(number % 1000000000)
-                    else:
-                        if int(str(number)[1:]) == 0:
-                            return mult + sppasNumBase.SEPARATOR \
-                                   + item[1]
-                        else:
-                            return mult + sppasNumBase.SEPARATOR \
-                                   + item[1] + sppasNumBase.SEPARATOR \
-                                   + self._millions(number % 1000000000)
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
+                            + self._lang_dict['1000000000']
+                else:
+                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
+                            + self._lang_dict['1000000000'] + sppasNumBase.SEPARATOR \
+                            + self._millions(number % 1000000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + sppasNumBase.SEPARATOR \
+                            + self._lang_dict['1000000000']
+                else:
+                    return mult + sppasNumBase.SEPARATOR \
+                            + self._lang_dict['1000000000'] + sppasNumBase.SEPARATOR \
+                            + self._millions(number % 1000000000)
 
 # ---------------------------------------------------------------------------

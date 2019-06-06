@@ -65,6 +65,7 @@ class sppasWindow(object):
         args = (start_time, end_time, step, delta)
 
         ann_set = sppasAnnSet()
+        ann_set_list = list()
 
         for item in args:
             if not isinstance(item, float):
@@ -85,11 +86,14 @@ class sppasWindow(object):
                 if dur <= ann.get_location().get_best().get_begin().get_midpoint() < end_time:
                     ann_set.append(ann, list())
 
+            ann_set_list.append(ann_set)
+
             if self.__tier.is_point() is False:
                 if total_time >= start_time:
                     if delta < (total_time - start_time) / curr_dur < 1.0:
                         ann_set.append(ann, list())
-        return ann_set
+
+        return ann_set_list
 
     # ---------------------------------------------------------------------------
 

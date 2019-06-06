@@ -39,7 +39,7 @@ from sppas import sppasValueError
 
 class sppasNumAsianType(sppasNumBase):
 
-    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "vie")
+    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "khm")
 
     NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                    20, 30, 40, 50, 60, 70, 80, 90, 100, 1000, 10000)
@@ -57,10 +57,9 @@ class sppasNumAsianType(sppasNumBase):
         else:
             raise sppasValueError(lang, sppasNumAsianType.ASIAN_TYPED_LANGUAGES)
 
-        for i in range(len(self._lang_dict)):
-            if self._lang_dict[i][0] != sppasNumAsianType.NUMBER_LIST[i]:
-                raise sppasValueError(sppasNumAsianType.NUMBER_LIST[i],
-                                      self._lang_dict[i][0])
+        for i in sppasNumAsianType.NUMBER_LIST:
+            if self._lang_dict.is_unk(str(i)):
+                raise sppasValueError(self._lang_dict, i)
 
     # ---------------------------------------------------------------------------
 
@@ -81,18 +80,20 @@ class sppasNumAsianType(sppasNumBase):
             if int(number/10000)*10000 != 10000:
                 mult = self._thousands(int(number/10000))
 
-            for item in self._lang_dict:
-                if item[0] == 10000:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            return item[1] + self._thousands(number % 10000)
-                    else:
-                        if int(str(number)[1:]) == 0:
-                            return mult + item[1]
-                        else:
-                            return mult + item[1] + self._thousands(number % 10000)
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1'] \
+                           + self._lang_dict['10000']
+                else:
+                    return self._lang_dict['1'] \
+                           + self._lang_dict['10000'] \
+                           + self._thousands(number % 10000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self._lang_dict['10000']
+                else:
+                    return mult + self._lang_dict['10000'] \
+                           + self._thousands(number % 10000)
 
     # ---------------------------------------------------------------------------
 
@@ -113,18 +114,19 @@ class sppasNumAsianType(sppasNumBase):
             if int(number/100000000)*100000000 != 100000000:
                 mult = self._thousands(int(number/100000000))
 
-            for item in self._lang_dict:
-                if item[0] == 100000000:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            return item[1] \
-                                   + self._tenth_of_thousands(number % 100000000)
-                    else:
-                        if int(str(number)[1:]) == 0:
-                            return mult + item[1]
-                        else:
-                            return mult + item[1] \
-                                   + self._tenth_of_thousands(number % 100000000)
-            return 'toto'
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1'] \
+                           + self._lang_dict['100000000']
+                else:
+                    return self._lang_dict['1'] \
+                           + self._lang_dict['100000000'] \
+                           + self._tenth_of_thousands(number % 100000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self._lang_dict['10000']
+                else:
+                    return mult + self._lang_dict['10000'] \
+                            + self._tenth_of_thousands(number % 100000000)
+
+# ---------------------------------------------------------------------------

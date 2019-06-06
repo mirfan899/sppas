@@ -32,7 +32,7 @@
 
 from math import floor
 
-from sppas import sppasValueError, sppasTypeError
+from sppas import sppasValueError, sppasTypeError, sppasDictRepl
 
 # ---------------------------------------------------------------------------
 from .dictionary import Dictionary
@@ -40,8 +40,8 @@ from .dictionary import Dictionary
 
 class sppasNumBase(object):
 
-    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
-    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por")
+    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "khm")
+    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
 
     SEPARATOR = '_'
 
@@ -62,13 +62,12 @@ class sppasNumBase(object):
         else:
             self.__lang = lang
 
-        if dictionary is None or not isinstance(dictionary, Dictionary):
-            raise sppasTypeError(dictionary, Dictionary)
+        if dictionary is None or not isinstance(dictionary, sppasDictRepl):
+            raise sppasTypeError(dictionary, sppasDictRepl)
         elif self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
-            for item in dictionary:
-                if item[0] == 10000:
-                    has_tenth_of_thousand = True
+            if dictionary.is_key('10000'):
+                has_tenth_of_thousand = True
 
             if has_tenth_of_thousand is True\
                     and self.__lang not in sppasNumBase.ASIAN_TYPED_LANGUAGES:
@@ -127,11 +126,9 @@ class sppasNumBase(object):
 
         """
         if number == 0:
-            return self._lang_dict[0][1]
+            return self._lang_dict['0']
         if 0 < number < 10:
-            for item in self._lang_dict:
-                if number == item[0]:
-                    return item[1]
+            return self._lang_dict[str(number)]
 
     # ---------------------------------------------------------------------------
 
@@ -148,18 +145,20 @@ class sppasNumBase(object):
         if number < 10:
             return self._units(number)
         else:
-            for item in self._lang_dict:
-                if item[0] == number:
-                    return item[1]
-            for item in self._lang_dict:
-                if item[0] == int(number/10)*10:
+            if self._lang_dict.is_key(number):
+                return self._lang_dict[str(number)]
+            else:
+                if self._lang_dict.is_key(int(number/10)*10):
                     if int(str(number)[1:]) == 0:
-                        return item[1]
+                        return self._lang_dict[str(number)]
                     else:
                         if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                            return item[1] + self._units(number % 10)
-                        return item[1] + sppasNumBase.SEPARATOR\
-                               + self._units(number % 10)
+                            return self._lang_dict[str(int(number/10)*10)] \
+                                   + self._units(number % 10)
+                        else:
+                            return self._lang_dict[str(int(number/10)*10)] \
+                                   + sppasNumBase.SEPARATOR \
+                                   + self._units(number % 10)
 
     # ---------------------------------------------------------------------------
 
@@ -180,31 +179,34 @@ class sppasNumBase(object):
             if int(str(number)[0])*100 != 100:
                 mult = self._units(int(number/100))
 
-            for item in self._lang_dict:
-                if item[0] == 100:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._tenth(number % 100)
-                            else:
-                                return item[1] + sppasNumBase.SEPARATOR \
-                                       + self._tenth(number % 100)
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['100']
+                else:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return self._lang_dict['100'] \
+                               + self._tenth(number % 100)
                     else:
-                        if int(str(number)[1:]) == 0:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return mult + item[1] + self._tenth(number % 100)
-                            else:
-                                return mult + sppasNumBase.SEPARATOR \
-                                       + item[1]
-                        else:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return mult + item[1] + self._tenth(number % 100)
-                            else:
-                                return mult + sppasNumBase.SEPARATOR \
-                                       + item[1] + sppasNumBase.SEPARATOR \
-                                       + self._tenth(number % 100)
+                        return self._lang_dict['100']\
+                               + sppasNumBase.SEPARATOR \
+                               + self._tenth(number % 100)
+            else:
+                if int(str(number)[1:]) == 0:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return mult + self._lang_dict['100']\
+                               + self._tenth(number % 100)
+                    else:
+                        return mult + sppasNumBase.SEPARATOR \
+                               + self._lang_dict['100']
+                else:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return mult + self._lang_dict['100']\
+                               + self._tenth(number % 100)
+                    else:
+                        return mult + sppasNumBase.SEPARATOR \
+                               + self._lang_dict['100']\
+                               + sppasNumBase.SEPARATOR \
+                               + self._tenth(number % 100)
 
     # ---------------------------------------------------------------------------
 
@@ -225,31 +227,34 @@ class sppasNumBase(object):
             if number/1000*1000 != 1000:
                 mult = self._hundreds(int(number/1000))
 
-            for item in self._lang_dict:
-                if item[0] == 1000:
-                    if mult is None:
-                        if int(str(number)[1:]) == 0:
-                            return item[1]
-                        else:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return item[1] + self._hundreds(number % 1000)
-                            else:
-                                return item[1] + sppasNumBase.SEPARATOR \
-                                       + self._hundreds(number % 1000)
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1000']
+                else:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return self._lang_dict['1000'] \
+                                + self._hundreds(number % 1000)
                     else:
-                        if int(str(number)[1:]) == 0:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return mult + item[1] + self._hundreds(number % 1000)
-                            else:
-                                return mult + sppasNumBase.SEPARATOR \
-                                       + item[1]
-                        else:
-                            if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                                return mult + item[1] + self._hundreds(number % 1000)
-                            else:
-                                return mult + sppasNumBase.SEPARATOR + item[1] \
-                                       + sppasNumBase.SEPARATOR \
-                                       + self._hundreds(number % 1000)
+                        return self._lang_dict['1000'] \
+                                + sppasNumBase.SEPARATOR \
+                                + self._hundreds(number % 1000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return mult + self._lang_dict['1000'] \
+                                + self._hundreds(number % 1000)
+                    else:
+                        return mult + sppasNumBase.SEPARATOR \
+                                + self._lang_dict['1000']
+                else:
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return mult + self._lang_dict['1000'] \
+                                + self._hundreds(number % 1000)
+                    else:
+                        return mult + sppasNumBase.SEPARATOR \
+                                + self._lang_dict['1000'] \
+                                + sppasNumBase.SEPARATOR \
+                                + self._hundreds(number % 1000)
 
     # ---------------------------------------------------------------------------
 
@@ -272,7 +277,7 @@ class sppasNumBase(object):
         if len(stringyfied_number) > 1:
             if stringyfied_number.startswith('0'):
                 while '0' == stringyfied_number[0]:
-                    res += self._lang_dict[0][1] + sppasNumBase.SEPARATOR
+                    res += self._lang_dict['0'] + sppasNumBase.SEPARATOR
                     stringyfied_number = stringyfied_number[1:]
 
         res += self._billions(int(number))
