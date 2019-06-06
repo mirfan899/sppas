@@ -123,6 +123,14 @@ class sppasTextNorm(sppasBaseAnnotation):
             vocab_punct = sppasVocabulary()
         self.__normalizer.set_punct(vocab_punct)
 
+        # Number dictionary
+        number_filename = os.path.join(paths.resources, 'num', lang.lower() + '_num.repl')
+        if os.path.exists(number_filename) is True:
+            numbers = sppasDictRepl(number_filename, nodump=True)
+        else:
+            numbers = sppasDictRepl()
+        self.__normalizer.set_num(numbers)
+
     # -----------------------------------------------------------------------
     # Methods to fix options
     # -----------------------------------------------------------------------
