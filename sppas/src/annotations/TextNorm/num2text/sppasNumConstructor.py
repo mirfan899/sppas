@@ -28,29 +28,44 @@
         This banner notice must not be removed.
 
         ---------------------------------------------------------------------
+
 """
-from sppasNumJapanese import sppasNumJapanese
-from sppasNumFrench import sppasNumFrench
-from sppasNumEnglish import sppasNumEnglish
-from sppasNumSpanish import sppasNumSpanish
-from sppasNumPolish import sppasNumPolish
-from sppasNumItalian import sppasNumItalian
-from sppasNumKhmer import sppasNumKhmer
-from sppasNumPortuguese import sppasNumPortuguese
-from sppasNumVietnamese import sppasNumVietnamese
-from sppasNumAsianType import sppasNumAsianType
-from sppasNumUnd import sppasNumUnd
 
 from sppas import sppasValueError, sppasTypeError
 
+from .sppasNumJapanese import sppasNumJapanese
+from .sppasNumFrench import sppasNumFrench
+from .sppasNumSpanish import sppasNumSpanish
+from .sppasNumItalian import sppasNumItalian
+from .sppasNumKhmer import sppasNumKhmer
+from .sppasNumVietnamese import sppasNumVietnamese
+
+from .sppasNumAsianType import sppasNumAsianType
+from .sppasNumUnd import sppasNumUnd
+from .sppasNumEuropeanType import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
 
 class sppasNumConstructor(object):
 
-    def __init__(self):
-        pass
+    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "pcm")
+
+    LANGUAGES_DICT = {
+        "und": sppasNumUnd,
+        "fra": sppasNumFrench,
+        "ita": sppasNumItalian,
+        "spa": sppasNumSpanish,
+        "khm": sppasNumKhmer,
+        "vie": sppasNumVietnamese,
+        "jpn": sppasNumJapanese,
+        "yue": sppasNumAsianType,
+        "cmn": sppasNumAsianType,
+        "pcm": sppasNumAsianType,
+        "eng": sppasNumEuropeanType,
+        "pol": sppasNumEuropeanType,
+        "por": sppasNumEuropeanType
+    }
 
     # ---------------------------------------------------------------------------
 
@@ -61,35 +76,18 @@ class sppasNumConstructor(object):
         :returns: (sppasNumBase)
 
         """
-        if lang is not None and not isinstance(lang, str):
-            raise sppasTypeError(lang, str)
+        if lang is not None and isinstance(lang, str) is False:  # basestring, str, unicode
+            raise sppasTypeError(lang, "string")
 
-        ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "pcm")
+        if lang is None:
+            return sppasNumUnd()
 
-        LANGUAGES_DICT = {
-                          "und": sppasNumUnd,
-                          "yue": sppasNumAsianType,
-                          "cmn": sppasNumAsianType,
-                          "fra": sppasNumFrench,
-                          "ita": sppasNumItalian,
-                          "eng": sppasNumEnglish,
-                          "spa": sppasNumSpanish,
-                          "khm": sppasNumKhmer,
-                          "vie": sppasNumVietnamese,
-                          "jpn": sppasNumJapanese,
-                          "pol": sppasNumPolish,
-                          "por": sppasNumPortuguese,
-                          "pcm": sppasNumAsianType
-                          }
+        if lang.lower() in sppasNumConstructor.LANGUAGES_DICT.keys():
+            constructor = sppasNumConstructor.LANGUAGES_DICT[lang]
+            try:
+                instance = constructor(dictionary)
+            except:
+                instance = constructor(lang, dictionary)
+            return instance
 
-        if lang is None or lang.lower() in LANGUAGES_DICT.keys():
-            if lang is None:
-                return sppasNumUnd()
-            elif lang not in ASIAN_TYPED_LANGUAGES:
-                return LANGUAGES_DICT[lang](dictionary)
-            else:
-                return LANGUAGES_DICT[lang](lang, dictionary)
-        else:
-            raise sppasValueError(lang, LANGUAGES_DICT.keys())
-
-# ---------------------------------------------------------------------------
+        raise sppasValueError(lang, sppasNumConstructor.LANGUAGES_DICT.keys())

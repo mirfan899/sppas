@@ -60,52 +60,6 @@ from ..TextNorm.sppastextnorm import sppasTextNorm
 
 # ---------------------------------------------------------------------------
 
-ref_es = [
-    u("cero"),
-    u("uno"),
-    u("dos"),
-    u("tres"),
-    u("cuatro"),
-    u("cinco"),
-    u("seis"),
-    u("siete"),
-    u("ocho"),
-    u("nueve"),
-    u("diez"),
-    u("once"),
-    u("doce"),
-    u("trece"),
-    u("catorce"),
-    u("quince"),
-    u("dieciséis"),
-    u("diecisiete"),
-    u("dieciocho"),
-    u("diecinueve"),
-    u("veinte"),
-    u("veintiuno"),
-    u("veintidós"),
-    u("veintitrés"),
-    u("veinticuatro"),
-    u("veinticinco"),
-    u("veintiséis"),
-    u("veintisiete"),
-    u("veintiocho"),
-    u("veintinueve"),
-    u("treinta"),
-    u("treinta-y-uno"),
-    u("treinta-y-dos"),
-    u("treinta-y-tres"),
-    u("treinta-y-cuatro"),
-    u("treinta-y-cinco"),
-    u("treinta-y-seis"),
-    u("treinta-y-siete"),
-    u("treinta-y-ocho"),
-    u("treinta-y-nueve"),
-    u("cuarenta")
-]
-
-# ---------------------------------------------------------------------------
-
 
 class TestOrthoTranscription(unittest.TestCase):
     """Test of the class sppasOrthoTranscription.
@@ -235,54 +189,6 @@ class TestSimpleSplitter(unittest.TestCase):
         result = splitter.split("abc. abc")
         expected = u("abc. abc")
         self.assertEqual(expected.split(), result)
-
-# ---------------------------------------------------------------------------
-
-
-class TestNum2Letter(unittest.TestCase):
-    """Convert number to their written form."""
-
-    def test_init(self):
-        # Unknown language
-        num = sppasNum('zzz')
-        with self.assertRaises(ValueError):
-            num.convert('3')
-        # Known language
-        num = sppasNum('fra')
-        num.convert("03")
-        num.convert("3")
-        with self.assertRaises(ValueError):
-            num.convert('3.0')
-
-    # -----------------------------------------------------------------------
-
-    def test_num2letter_fra(self):
-        """... number to letter in French """
-
-        num = sppasNum('fra')
-        self.assertEquals(u("cent-vingt-trois"),
-                          num.convert("123"))
-
-    # -----------------------------------------------------------------------
-
-    def test_num2letter_spa(self):
-        """... number to letter in Spanish  """
-
-        num = sppasNum('spa')
-        ret = [num.convert(i) for i in range(41)]
-        self.assertEquals(ref_es, ret)
-
-        self.assertEquals(u("mil-doscientos-cuarenta-y-uno"),
-                          num.convert(1241))
-
-        self.assertEquals(u("dos-millones-trescientos-cuarenta-y-seis-mil-veintidós"),
-                          num.convert(2346022))
-
-        self.assertEquals(u("trescientos-ochenta-y-dos-mil-ciento-veintiuno"),
-                          num.convert(382121))
-
-        self.assertEquals(u("setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve"),
-                          num.convert(739499))
 
 # ---------------------------------------------------------------------------
 

@@ -29,22 +29,22 @@
 
         ---------------------------------------------------------------------
 """
-from sppasNumAsianType import sppasNumAsianType
+
+from .sppasNumAsianType import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
 
 
 class sppasNumJapanese(sppasNumAsianType):
-    """Return an instance of sppasNumJapanese
+    """Return an instance of sppasNumJapanese.
 
-    :retruns: (sppasNumJapanese)
+    :returns: (sppasNumJapanese)
 
     """
+
     def __init__(self, dictionary):
         sppasNumAsianType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                          20, 30, 40, 50, 60, 70, 80, 90,
                                          100, 1000, 10000, 100000000)
 
         super(sppasNumJapanese, self).__init__('jpn', dictionary)
-
-# ---------------------------------------------------------------------------

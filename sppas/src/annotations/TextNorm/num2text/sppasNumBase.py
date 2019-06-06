@@ -30,12 +30,9 @@
         ---------------------------------------------------------------------
 """
 
-from math import floor
-
 from sppas import sppasValueError, sppasTypeError, sppasDictRepl
 
 # ---------------------------------------------------------------------------
-from .dictionary import Dictionary
 
 
 class sppasNumBase(object):
@@ -43,12 +40,10 @@ class sppasNumBase(object):
     ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "khm")
     EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
 
-    SEPARATOR = '_'
-
     # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
-        """Return an instance of sppasNumBase
+        """Create an instance of sppasNumBase.
 
         :param lang: (str) name of the language
         :raises: (sppasValueError)
@@ -56,14 +51,16 @@ class sppasNumBase(object):
         """
         self.languages = ("und", "yue", "cmn", "fra", "ita", "eng", "spa",
                           "khm", "vie", "jpn", "pol", "por", "pcm")
+        self.separator = '_'
 
         if lang is None or lang not in self.languages:
             self.__lang = "und"
         else:
             self.__lang = lang
 
-        if dictionary is None or not isinstance(dictionary, sppasDictRepl):
-            raise sppasTypeError(dictionary, sppasDictRepl)
+        if dictionary is None or isinstance(dictionary, sppasDictRepl) is False:
+            raise sppasTypeError(dictionary, "sppasDictRepl")
+
         elif self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
             if dictionary.is_key('10000'):
@@ -81,7 +78,7 @@ class sppasNumBase(object):
     # ---------------------------------------------------------------------------
 
     def get_lang(self):
-        """Return the current language
+        """Return the current language.
 
         :returns: (str)
 
@@ -91,7 +88,7 @@ class sppasNumBase(object):
     # ---------------------------------------------------------------------------
 
     def set_lang(self, lang):
-        """Set the the language to a new one and update the dictionnary
+        """Set the language to a new one and update the dictionary.
 
         :param lang: (str) new language
         :raises: sppasValueError
@@ -99,14 +96,14 @@ class sppasNumBase(object):
         """
         if lang in self.languages:
             self.__lang = lang
-            self._lang_dict = Dictionary(self.__lang)
+            self._lang_dict = sppasDictRepl(self.__lang)
         else:
             raise sppasValueError(lang, self.languages)
 
     # ---------------------------------------------------------------------------
 
     def _get_lang_dict(self):
-        """Return the current language dictionary
+        """Return the current language dictionary.
 
         :returns: (list) current language dictionary
 
@@ -116,7 +113,7 @@ class sppasNumBase(object):
     # ---------------------------------------------------------------------------
 
     def _units(self, number):
-        """Return the "wordified" version of a unit number
+        """Return the "wordified" version of a unit number.
 
         Returns the word corresponding to the given unit within the current
         language dictionary
@@ -133,7 +130,7 @@ class sppasNumBase(object):
     # ---------------------------------------------------------------------------
 
     def _tenth(self, number):
-        """Return the "wordified" version of a tenth number
+        """Return the "wordified" version of a tenth number.
 
         Returns the word corresponding to the given tenth within the current
         language dictionary
@@ -157,13 +154,13 @@ class sppasNumBase(object):
                                    + self._units(number % 10)
                         else:
                             return self._lang_dict[str(int(number/10)*10)] \
-                                   + sppasNumBase.SEPARATOR \
+                                   + self.separator \
                                    + self._units(number % 10)
 
     # ---------------------------------------------------------------------------
 
     def _hundreds(self, number):
-        """Return the "wordified" version of a hundred number
+        """Return the "wordified" version of a hundred number.
 
         Returns the word corresponding to the given hundred number within the
         current language dictionary
@@ -188,7 +185,7 @@ class sppasNumBase(object):
                                + self._tenth(number % 100)
                     else:
                         return self._lang_dict['100']\
-                               + sppasNumBase.SEPARATOR \
+                               + self.separator \
                                + self._tenth(number % 100)
             else:
                 if int(str(number)[1:]) == 0:
@@ -196,22 +193,22 @@ class sppasNumBase(object):
                         return mult + self._lang_dict['100']\
                                + self._tenth(number % 100)
                     else:
-                        return mult + sppasNumBase.SEPARATOR \
+                        return mult + self.separator\
                                + self._lang_dict['100']
                 else:
                     if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
                         return mult + self._lang_dict['100']\
                                + self._tenth(number % 100)
                     else:
-                        return mult + sppasNumBase.SEPARATOR \
+                        return mult + self.separator\
                                + self._lang_dict['100']\
-                               + sppasNumBase.SEPARATOR \
+                               + self.separator\
                                + self._tenth(number % 100)
 
     # ---------------------------------------------------------------------------
 
     def _thousands(self, number):
-        """Return the "wordified" version of a thousand number
+        """Return the "wordified" version of a thousand number.
 
         Returns the word corresponding to the given thousand number within the
         current language dictionary
@@ -236,7 +233,7 @@ class sppasNumBase(object):
                                 + self._hundreds(number % 1000)
                     else:
                         return self._lang_dict['1000'] \
-                                + sppasNumBase.SEPARATOR \
+                                + self.separator\
                                 + self._hundreds(number % 1000)
             else:
                 if int(str(number)[1:]) == 0:
@@ -244,22 +241,36 @@ class sppasNumBase(object):
                         return mult + self._lang_dict['1000'] \
                                 + self._hundreds(number % 1000)
                     else:
-                        return mult + sppasNumBase.SEPARATOR \
+                        return mult + self.separator\
                                 + self._lang_dict['1000']
                 else:
                     if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
                         return mult + self._lang_dict['1000'] \
                                 + self._hundreds(number % 1000)
                     else:
-                        return mult + sppasNumBase.SEPARATOR \
+                        return mult + self.separator\
                                 + self._lang_dict['1000'] \
-                                + sppasNumBase.SEPARATOR \
+                                + self.separator\
                                 + self._hundreds(number % 1000)
 
     # ---------------------------------------------------------------------------
 
+    def _billions(self, number):
+        """Return the "wordified" version of a billion number
+
+        Returns the word corresponding to the given billion number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        raise NotImplementedError
+
+    # ---------------------------------------------------------------------------
+
     def convert(self, number):
-        """Return the whole "wordified" given number
+        """Return the whole "wordified" given number.
 
         Returns the entire number given in parameter in a "wordified" state
         it calls recursively the sub functions within the instance and more
@@ -277,10 +288,8 @@ class sppasNumBase(object):
         if len(stringyfied_number) > 1:
             if stringyfied_number.startswith('0'):
                 while '0' == stringyfied_number[0]:
-                    res += self._lang_dict['0'] + sppasNumBase.SEPARATOR
+                    res += self._lang_dict['0'] + self.separator
                     stringyfied_number = stringyfied_number[1:]
 
         res += self._billions(int(number))
         return res if res is not None else number
-
-# ---------------------------------------------------------------------------

@@ -30,9 +30,9 @@
         ---------------------------------------------------------------------
 """
 
-from sppasNumBase import sppasNumBase
-
 from sppas import sppasValueError
+
+from .sppasNumBase import sppasNumBase
 
 # ---------------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ class sppasNumAsianType(sppasNumBase):
     # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
-        """Return an instance of sppasNumAsianType
+        """Create an instance of sppasNumAsianType
 
         :param lang: (str) name of the language
 

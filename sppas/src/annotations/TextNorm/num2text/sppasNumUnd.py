@@ -30,14 +30,15 @@
         ---------------------------------------------------------------------
 """
 
-from sppasNumBase import sppasNumBase
+from .sppasNumBase import sppasNumBase
 
 # ---------------------------------------------------------------------------
 
 
 class sppasNumUnd(sppasNumBase):
+
     def __init__(self):
-        """Return an instance of sppasNumUnd
+        """Create an instance of sppasNumUnd.
 
         :retruns: (sppasNumUnd)
 
@@ -51,5 +52,3 @@ class sppasNumUnd(sppasNumBase):
 
         """
         return str(number)
-
-# ---------------------------------------------------------------------------

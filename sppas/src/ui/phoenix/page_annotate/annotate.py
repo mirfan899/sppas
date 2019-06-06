@@ -29,9 +29,9 @@
         ---------------------------------------------------------------------
 
     ui.phoenix.page_annotate.annotate.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    One of the main pages of the wx4-based GUI of SPPAS.
+    One of the main pages of the wx4-based GUI of SPPAS: the one to annotate.
 
 """
 
@@ -46,9 +46,8 @@ from sppas import u
 from sppas.src.annotations import sppasParam, sppasAnnotationsManager
 from sppas.src.files import FileData, States
 
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows import sppasStaticText
-
+from ..windows import sppasPanel
+from ..windows import sppasStaticText
 from ..windows.book import sppasSimplebook
 from ..windows.button import BitmapTextButton
 from ..main_events import DataChangedEvent
@@ -89,7 +88,6 @@ class sppasAnnotatePanel(sppasSimplebook):
 
         # The annotations the system can perform
         self.__param = sppasParam()
-
         self.__pages_annot = dict()
 
         # 1st page: the buttons to perform actions
@@ -170,8 +168,6 @@ class sppasAnnotatePanel(sppasSimplebook):
     def show_page(self, page_name):
         """Show a page of the book.
 
-        If the page can't be found, the annotate page is shown.
-
         :param page_name: (str) one of 'page_to_annotate', 'page_...', ...
 
         """
@@ -187,6 +183,10 @@ class sppasAnnotatePanel(sppasSimplebook):
         c = self.FindPage(self.GetCurrentPage())  # current page position
         cur_w = self.GetPage(c)  # Returns the window at the given page position
 
+        # Showing the current page is already done!
+        if c == p:
+            return
+
         # assign the effect
         if c < p:
             self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_TOP,
@@ -194,11 +194,8 @@ class sppasAnnotatePanel(sppasSimplebook):
         elif c > p:
             self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
                             hideEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM)
-        else:
-            self.SetEffects(showEffect=wx.SHOW_EFFECT_NONE,
-                            hideEffect=wx.SHOW_EFFECT_NONE)
 
-        # then change to the page
+        # then change to the destination page
         dest_w.set_param(cur_w.get_param())
         self.ChangeSelection(p)
         dest_w.Refresh()
@@ -228,10 +225,6 @@ class sppasActionAnnotate(sppasPanel):
 
         self._create_content()
         self._setup_events()
-
-        # self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        # self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        # self.SetFont(wx.GetApp().settings.text_font)
 
         self.Layout()
 
@@ -279,17 +272,17 @@ class sppasActionAnnotate(sppasPanel):
 
         # Organize all the objects
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(stl, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(self.choice, 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        sizer.Add(stl, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(self.choice, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
 
-        sizer.Add(sta, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(s1, 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        sizer.Add(sta, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(s1, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
 
-        sizer.Add(str, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(str, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
         sizer.Add(self.btn_run, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
 
-        sizer.Add(stp, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(self.btn_por, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        sizer.Add(stp, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
+        sizer.Add(self.btn_por, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL | wx.BOTTOM, 15)
 
         self.SetSizer(sizer)
 

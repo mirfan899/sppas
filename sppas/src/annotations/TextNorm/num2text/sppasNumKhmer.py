@@ -29,8 +29,9 @@
 
         ---------------------------------------------------------------------
 """
+
 from .sppasNumBase import sppasNumBase
-from sppasNumEuropeanType import sppasNumEuropeanType
+from .sppasNumEuropeanType import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ class sppasNumKhmer(sppasNumEuropeanType):
     :retruns: (sppasNumKhmer)
 
     """
+
     def __init__(self, dictionary):
         sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                          20, 30, 40, 50, 60, 70, 80, 90,
@@ -126,5 +128,3 @@ class sppasNumKhmer(sppasNumEuropeanType):
                            + self._lang_dict['1000000000'] \
                            + sppasNumBase.SEPARATOR \
                            + self._millions(number % 1000000000)
-
-# ---------------------------------------------------------------------------

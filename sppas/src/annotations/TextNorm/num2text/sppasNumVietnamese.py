@@ -29,28 +29,31 @@
         This banner notice must not be removed.
 
         ---------------------------------------------------------------------
+
 """
-from sppasNumEuropeanType import sppasNumEuropeanType
+
+from .sppasNumEuropeanType import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
 
 class sppasNumVietnamese(sppasNumEuropeanType):
-    """Return an instance of sppasNumVietnamese
 
-    :returns: (sppasNumVietnamese)
-
-    """
     def __init__(self):
+        """Create an instance of sppasNumVietnamese.
+
+        :returns: (sppasNumVietnamese)
+
+        """
         sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                          20, 30, 40, 50, 60, 70, 80, 90,
                                          100, 1000, 10000, 100000,)
         super(sppasNumVietnamese, self).__init__('vie')
 
-    # ---------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _tenth_of_thousands(self, number):
-        """Return the "wordified" version of a tenth of a thousand number
+        """Return the "wordified" version of a tenth of a thousand number.
 
         Returns the word corresponding to the given tenth of a thousand number
         within the current language dictionary
@@ -81,16 +84,16 @@ class sppasNumVietnamese(sppasNumEuropeanType):
                     return mult + self._lang_dict['10000'] \
                            + self._thousands(number % 10000)
 
-    # ---------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def _hundreds_of_thousands(self, number):
-        """Return the "wordified" version of a hundred of a thousand number
+        """Return the "wordified" version of a hundred of a thousand number.
 
         Returns the word corresponding to the given hundred of a thousand number
         within the current language dictionary
 
         :param number: (int) number to convert in word
-        :return: (str)
+        :returns: (str)
 
         """
         if number < 100000:
@@ -118,7 +121,7 @@ class sppasNumVietnamese(sppasNumEuropeanType):
     # ---------------------------------------------------------------------------
 
     def _billions(self, number):
-        """Return the "wordified" version of a billion number
+        """Return the "wordified" version of a billion number.
 
         Returns the word corresponding to the given billion number within the
         current language dictionary
@@ -148,5 +151,3 @@ class sppasNumVietnamese(sppasNumEuropeanType):
                 else:
                     return mult + self._lang_dict['10000'] \
                            + self._tenth_of_thousands(number % 100000000)
-
-# ---------------------------------------------------------------------------

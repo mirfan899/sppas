@@ -30,9 +30,7 @@
         ---------------------------------------------------------------------
 """
 
-from sppasNumEuropeanType import sppasNumEuropeanType
-
-from .sppasNumBase import sppasNumBase
+from .sppasNumEuropeanType import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
@@ -44,10 +42,12 @@ class sppasNumFrench(sppasNumEuropeanType):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
     """
+
     def __init__(self, dictionary):
-        """Return an instance of sppasNumFrench
+        """Return an instance of sppasNumFrench.
 
         :returns: (sppasNumFrench)
 
@@ -57,7 +57,7 @@ class sppasNumFrench(sppasNumEuropeanType):
     # ---------------------------------------------------------------------------
 
     def _tenth(self, number):
-        """Return the "wordified" version of a tenth number
+        """Return the "wordified" version of a tenth number.
 
         Returns the word corresponding to the given tenth within the current
         language dictionary
@@ -67,15 +67,15 @@ class sppasNumFrench(sppasNumEuropeanType):
 
         """
         if 70 <= number < 80:
-            return self._tenth(60) + sppasNumBase.SEPARATOR \
+            return self._tenth(60) + self.separator \
                    + self._tenth(number - 60) if number - 60 > 0 else ''
         elif 80 <= number < 90:
-            return self._units(4) + sppasNumBase.SEPARATOR \
-                   + self._tenth(20) + sppasNumBase.SEPARATOR \
+            return self._units(4) + self.separator \
+                   + self._tenth(20) + self.separator \
                    + self._units(int(str(number)[1:]))
         elif 90 <= number < 100:
-            return self._units(4) + sppasNumBase.SEPARATOR \
-                   + self._tenth(20) + sppasNumBase.SEPARATOR \
+            return self._units(4) + self.separator \
+                   + self._tenth(20) + self.separator \
                    + self._tenth(number - 80) if number - 80 > 0 else ''
 
         elif number != 11 and number % 10 == 1:
@@ -84,5 +84,3 @@ class sppasNumFrench(sppasNumEuropeanType):
                     return item[1] + '-et-' + self._units(int(str(number)[1:]))
         else:
             return sppasNumEuropeanType._tenth(self, number)
-
-# ---------------------------------------------------------------------------

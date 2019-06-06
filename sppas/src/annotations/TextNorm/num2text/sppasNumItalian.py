@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 """
 
-from sppasNumEuropeanType import sppasNumEuropeanType
+from .sppasNumEuropeanType import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
@@ -41,7 +41,7 @@ class sppasNumItalian(sppasNumEuropeanType):
     :retruns: (sppasNumItalian)
 
     """
+
     def __init__(self, dictionary):
         super(sppasNumItalian, self).__init__('ita', dictionary)
-
-# ---------------------------------------------------------------------------
+        self.separator = "-"

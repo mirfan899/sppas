@@ -30,9 +30,9 @@
         ---------------------------------------------------------------------
 """
 
-from sppasNumBase import sppasNumBase
-
 from sppas import sppasValueError
+
+from .sppasNumBase import sppasNumBase
 
 # ---------------------------------------------------------------------------
 
@@ -44,7 +44,8 @@ class sppasNumEuropeanType(sppasNumBase):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
     """
 
     EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
@@ -56,7 +57,7 @@ class sppasNumEuropeanType(sppasNumBase):
     # ---------------------------------------------------------------------------
 
     def __init__(self, lang=None, dictionary=None):
-        """Return an instance of sppasNumEuropeanType
+        """Return an instance of sppasNumEuropeanType.
 
         :param lang: (str) name of the language
 
@@ -73,7 +74,7 @@ class sppasNumEuropeanType(sppasNumBase):
     # ---------------------------------------------------------------------------
 
     def _millions(self, number):
-        """Return the "wordified" version of a million number
+        """Return the "wordified" version of a million number.
 
         Returns the word corresponding to the given million number within the
         current language dictionary
@@ -91,25 +92,25 @@ class sppasNumEuropeanType(sppasNumBase):
 
             if mult is None:
                 if int(str(number)[1:]) == 0:
-                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
+                    return self._lang_dict['1'] + self.separator\
                            + self._lang_dict['1000000']
                 else:
-                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR \
-                            + self._lang_dict['1000000'] + sppasNumBase.SEPARATOR \
+                    return self._lang_dict['1'] + self.separator \
+                            + self._lang_dict['1000000'] + self.separator \
                             + self._thousands(number % 1000000)
             else:
                 if int(str(number)[1:]) == 0:
-                    return mult + sppasNumBase.SEPARATOR \
+                    return mult + self.separator \
                            + self._lang_dict['1000000']
                 else:
-                    return mult + sppasNumBase.SEPARATOR \
-                           + self._lang_dict['1000000'] + sppasNumBase.SEPARATOR \
+                    return mult + self.separator \
+                           + self._lang_dict['1000000'] + self.separator \
                            + self._thousands(number % 1000000)
 
     # ---------------------------------------------------------------------------
 
     def _billions(self, number):
-        """Return the "wordified" version of a billion number
+        """Return the "wordified" version of a billion number.
 
         Returns the word corresponding to the given billion number within the
         current language dictionary
@@ -129,19 +130,17 @@ class sppasNumEuropeanType(sppasNumBase):
 
             if mult is None:
                 if int(str(number)[1:]) == 0:
-                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
+                    return self._lang_dict['1'] + self.separator\
                             + self._lang_dict['1000000000']
                 else:
-                    return self._lang_dict['1'] + sppasNumBase.SEPARATOR\
-                            + self._lang_dict['1000000000'] + sppasNumBase.SEPARATOR \
+                    return self._lang_dict['1'] + self.separator\
+                            + self._lang_dict['1000000000'] + self.separator \
                             + self._millions(number % 1000000000)
             else:
                 if int(str(number)[1:]) == 0:
-                    return mult + sppasNumBase.SEPARATOR \
+                    return mult + self.separator \
                             + self._lang_dict['1000000000']
                 else:
-                    return mult + sppasNumBase.SEPARATOR \
-                            + self._lang_dict['1000000000'] + sppasNumBase.SEPARATOR \
+                    return mult + self.separator \
+                            + self._lang_dict['1000000000'] + self.separator \
                             + self._millions(number % 1000000000)
-
-# ---------------------------------------------------------------------------
