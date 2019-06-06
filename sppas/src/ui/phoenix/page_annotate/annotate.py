@@ -39,6 +39,7 @@ import logging
 import wx
 
 from sppas import sppasTypeError
+from sppas import annots
 from sppas import msg
 from sppas import u
 
@@ -65,7 +66,7 @@ def _(message):
 
 
 class sppasAnnotatePanel(sppasSimplebook):
-    """Create a panel to annotate automatically the selected files.
+    """Create a book to annotate automatically the selected files.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -89,17 +90,18 @@ class sppasAnnotatePanel(sppasSimplebook):
         # The annotations the system can perform
         self.__param = sppasParam()
 
+        self.__pages_annot = dict()
+
         # 1st page: the buttons to perform actions
         self.ShowNewPage(sppasActionAnnotate(self, self.__param))
 
         # 2nd: list of standalone annotations
-        self.AddPage(sppasAnnotations(self, self.__param, "STANDALONE"), text="")
-
         # 3rd: list of speaker annotations
-        self.AddPage(sppasAnnotations(self, self.__param, "SPEAKER"), text="")
-
         # 4th: list of interaction annotations
-        self.AddPage(sppasAnnotations(self, self.__param, "INTERACTION"), text="")
+        for ann_type in annots.types:
+            page = sppasAnnotations(self, self.__param, ann_type)
+            self.AddPage(page, text="")
+            self.__pages_annot[ann_type] = page
 
         # Change the displayed page
         self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
@@ -162,6 +164,8 @@ class sppasAnnotatePanel(sppasSimplebook):
         self.show_page(destination)
 
     # -----------------------------------------------------------------------
+    # Public methods to navigate
+    # -----------------------------------------------------------------------
 
     def show_page(self, page_name):
         """Show a page of the book.
@@ -203,6 +207,15 @@ class sppasAnnotatePanel(sppasSimplebook):
 
 
 class sppasActionAnnotate(sppasPanel):
+    """Create a panel to configure then run automatic annotations.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
 
     def __init__(self, parent, param):
         super(sppasActionAnnotate, self).__init__(
@@ -211,6 +224,8 @@ class sppasActionAnnotate(sppasPanel):
             style=wx.BORDER_NONE
         )
         self.__param = param
+        self.__btns_annot = dict()
+
         self._create_content()
         self._setup_events()
 
@@ -235,38 +250,33 @@ class sppasActionAnnotate(sppasPanel):
     def _create_content(self):
         """Create the main content."""
 
+        # The language (if any)
         stl = sppasStaticText(self, label="STEP 1: fix the language(s)")
-
-        sta = sppasStaticText(self, label="STEP 2: select the annotations to perform")
-
-        # The buttons to select annotations (switch to other pages)
-        self.btn_select1 = self.__create_select_annot_btn("STANDALONE annotations")
-        self.btn_select2 = self.__create_select_annot_btn("SPEAKER annotations")
-        self.btn_select3 = self.__create_select_annot_btn("INTERACTION annotations")
-
-        str = sppasStaticText(self, label="STEP 3: perform the annotations")
         self.choice = self.__create_lang_btn()
 
+        # The buttons to select annotations (switch to other pages)
+        sta = sppasStaticText(self, label="STEP 2: select the annotations to perform")
+        s1 = wx.BoxSizer(wx.HORIZONTAL)
+        for ann_type in annots.types:
+            btn = self.__create_select_annot_btn("{:s} annotations".format(ann_type))
+            self.__btns_annot[ann_type] = btn
+            s1.Add(btn, 1, wx.EXPAND | wx.ALL, 4)
+
         # The button to perform annotations
+        str = sppasStaticText(self, label="STEP 3: perform the annotations")
         self.btn_run = self.__create_select_annot_btn("Let's go!")
         self.btn_run.SetName("wizard")
         self.btn_run.Enable(False)
         self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
 
-        stp = sppasStaticText(self, label="STEP 4: save the procedure outcome report")
-
         # The button to save the POR
+        stp = sppasStaticText(self, label="STEP 4: save the procedure outcome report")
         self.btn_por = self.__create_select_annot_btn("Save report as...")
         self.btn_por.SetName("save_as")
         self.btn_por.Enable(False)
         self.btn_por.BorderColour = wx.Colour(228, 24, 24, 128)
 
         # Organize all the objects
-        s1 = wx.BoxSizer(wx.HORIZONTAL)
-        s1.Add(self.btn_select1, 1, wx.EXPAND | wx.ALL, 4)
-        s1.Add(self.btn_select2, 1, wx.EXPAND | wx.ALL, 4)
-        s1.Add(self.btn_select3, 1, wx.EXPAND | wx.ALL, 4)
-
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(stl, 0, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
         sizer.Add(self.choice, 0, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
@@ -360,17 +370,23 @@ class sppasActionAnnotate(sppasPanel):
         wx.LogMessage("Received event id {:d} of {:s}"
                       "".format(event_id, event_name))
 
+        for ann_type in annots.types:
+            if event_obj == self.__btns_annot[ann_type]:
+                self.notify("page_{:s}".format(ann_type))
+
         if event_name == "wizard":
             self._annotate()
+        else:
+            event.Skip()
 
-        elif event_obj == self.btn_select1:
-            self.notify("page_STANDALONE")
-
-        elif event_obj == self.btn_select2:
-            self.notify("page_SPEAKER")
-
-        elif event_obj == self.btn_select3:
-            self.notify("page_INTERACTION")
+        # elif event_obj == self.btn_select1:
+        #     self.notify("page_STANDALONE")
+        #
+        # elif event_obj == self.btn_select2:
+        #     self.notify("page_SPEAKER")
+        #
+        # elif event_obj == self.btn_select3:
+        #     self.notify("page_INTERACTION")
 
     # -----------------------------------------------------------------------
 
@@ -390,7 +406,7 @@ class sppasActionAnnotate(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def Refresh(self):
+    def Refresh(self, eraseBackground=True, rect=None):
         """Overridden."""
         ann_enabled = [False, False, False]
         lang = False
@@ -400,35 +416,18 @@ class sppasActionAnnotate(sppasPanel):
             if a.get_activate() is True:
                 if "STANDALONE" in a.get_types():
                     ann_enabled[0] = True
-                if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
-                    lang = True
-
-            if a.get_activate() is True:
                 if "SPEAKER" in a.get_types():
                     ann_enabled[1] = True
-                if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
-                    lang = True
-
-            if a.get_activate() is True:
                 if "INTERACTION" in a.get_types():
                     ann_enabled[2] = True
                 if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
                     lang = True
 
-        if ann_enabled[0] is True:
-            self.btn_select1.SetName("on-off-on")
-        else:
-            self.btn_select1.SetName("on-off-off")
-
-        if ann_enabled[1] is True:
-            self.btn_select2.SetName("on-off-on")
-        else:
-            self.btn_select2.SetName("on-off-off")
-
-        if ann_enabled[2] is True:
-            self.btn_select3.SetName("on-off-on")
-        else:
-            self.btn_select3.SetName("on-off-off")
+        for i, ann_type in enumerate(annots.types):
+            if ann_enabled[0] is True:
+                self.__btns_annot[ann_type].SetName("on-off-on")
+            else:
+                self.__btns_annot[ann_type].SetName("on-off-off")
 
         # at least one annotation is enabled and language is fixed.
         if lang is False:
