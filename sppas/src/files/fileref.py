@@ -35,6 +35,7 @@ import re
 import logging
 
 from sppas import sppasTypeError, sppasIndexError
+from sppas import annots
 from sppas.src.utils.makeunicode import sppasUnicode
 
 from .filebase import FileBase, States
@@ -280,8 +281,6 @@ class FileReference(FileBase):
 
     """
 
-    REF_TYPES = ("STANDALONE", "SPEAKER", "INTERACTION")
-
     def __init__(self, identifier):
         """Constructor of the FileReference class.
 
@@ -291,7 +290,7 @@ class FileReference(FileBase):
         super(FileReference, self).__init__(identifier)
 
         self.__attributs = list()
-        self.__type = FileReference.REF_TYPES[0]
+        self.__type = annots.types[0]
 
         # A free to use member to expand the class
         self.subjoined = None
@@ -373,19 +372,19 @@ class FileReference(FileBase):
 
     # ------------------------------------------------------------------------
 
-    def set_type(self, ref_type):
+    def set_type(self, ann_type):
         """Set the type of the Reference within the authorized ones."""
-        if ref_type in FileReference.REF_TYPES:
-            self.__type = ref_type
+        if ann_type in annots.types:
+            self.__type = ann_type
         else:
             try:
-                ref_index = int(ref_type)
-                if ref_index in range(0, len(FileReference.REF_TYPES)):
-                    self.__type = FileReference.REF_TYPES[ref_index]
+                ref_index = int(ann_type)
+                if ref_index in range(0, len(annots.types)):
+                    self.__type = annots.types[ref_index]
                 else:
                     raise sppasIndexError(ref_index)
             except:
-                raise sppasTypeError(ref_type, FileReference.REF_TYPES)
+                raise sppasTypeError(ann_type, annots.types)
 
     # -----------------------------------------------------------------------
 

@@ -222,5 +222,6 @@ class sppasAnnotationsSettings(sppasBaseSettings):
             warning=1,
             ignore=2,
             info=3,
-            extension=".xra"
+            extension=".xra",
+            types=("STANDALONE", "SPEAKER", "INTERACTION")
         )

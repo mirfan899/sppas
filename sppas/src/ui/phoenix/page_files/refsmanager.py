@@ -37,6 +37,7 @@ import logging
 import wx
 
 from sppas import sg
+from sppas import annots
 from sppas.src.files.fileref import FileReference, sppasAttribute
 from sppas.src.files.filebase import States
 
@@ -334,7 +335,7 @@ class sppasCreateReference(sppasDialog):
         self.to_name = sppasTextCtrl(parent=panel, value="")
 
         rtype = wx.StaticText(panel, label="Type:")
-        self.choice = wx.Choice(panel, choices=FileReference.REF_TYPES)
+        self.choice = wx.Choice(panel, choices=annots.types)
         self.choice.SetSelection(0)
 
         grid = wx.FlexGridSizer(2, 2, 5, 5)
