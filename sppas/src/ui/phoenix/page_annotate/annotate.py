@@ -50,7 +50,7 @@ from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticText
 
 from ..windows.book import sppasSimplebook
-from ..windows.button import BitmapTextButton, sppasTextButton
+from ..windows.button import BitmapTextButton
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
@@ -242,6 +242,7 @@ class sppasActionAnnotate(sppasPanel):
 
     def set_param(self, param):
         self.__param = param
+        # self.Refresh()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -379,23 +380,16 @@ class sppasActionAnnotate(sppasPanel):
         else:
             event.Skip()
 
-        # elif event_obj == self.btn_select1:
-        #     self.notify("page_STANDALONE")
-        #
-        # elif event_obj == self.btn_select2:
-        #     self.notify("page_SPEAKER")
-        #
-        # elif event_obj == self.btn_select3:
-        #     self.notify("page_INTERACTION")
-
     # -----------------------------------------------------------------------
 
     def _on_lang_changed(self, event):
+        logging.debug('Lang changed:')
         lang = self.choice.GetValue()
         for i in range(self.__param.get_step_numbers()):
             a = self.__param.get_step(i)
             if len(a.get_langlist()) > 0:
                 a.set_lang(lang)
+                logging.debug('  - {:s}'.format(a.get_key()))
 
     # -----------------------------------------------------------------------
     # -----------------------------------------------------------------------
@@ -408,35 +402,33 @@ class sppasActionAnnotate(sppasPanel):
 
     def Refresh(self, eraseBackground=True, rect=None):
         """Overridden."""
-        ann_enabled = [False, False, False]
+        ann_enabled = [False]*len(annots.types)
         lang = False
 
         for i in range(self.__param.get_step_numbers()):
             a = self.__param.get_step(i)
             if a.get_activate() is True:
-                if "STANDALONE" in a.get_types():
-                    ann_enabled[0] = True
-                if "SPEAKER" in a.get_types():
-                    ann_enabled[1] = True
-                if "INTERACTION" in a.get_types():
-                    ann_enabled[2] = True
+                for x, ann_type in enumerate(annots.types):
+                    if ann_type in a.get_types():
+                        ann_enabled[x] = True
+                # at least one annotation can be performed
+                # (no need of the lang or lang is defined)
                 if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
                     lang = True
 
         for i, ann_type in enumerate(annots.types):
-            if ann_enabled[0] is True:
+            if ann_enabled[i] is True:
                 self.__btns_annot[ann_type].SetName("on-off-on")
             else:
                 self.__btns_annot[ann_type].SetName("on-off-off")
 
-        # at least one annotation is enabled and language is fixed.
+        # at least one annotation is enabled and lang is fixed.
         if lang is False:
             self.btn_run.Enable(False)
             self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
         else:
             self.btn_run.Enable(True)
             self.btn_run.BorderColour = wx.Colour(24, 228, 24, 128)
-        self.btn_run.Refresh()
+        # self.btn_run.Refresh()
 
-        wx.Window.Refresh(self)
-
+        wx.Window.Refresh(self, eraseBackground=True, rect=None)

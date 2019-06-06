@@ -38,6 +38,7 @@ import wx
 
 from sppas import msg
 from sppas import u
+from sppas import annots
 
 from sppas.src.ui.phoenix.windows import sppasTextCtrl
 from sppas.src.ui.phoenix.windows import sppasPanel
@@ -45,9 +46,9 @@ from sppas.src.ui.phoenix.windows import sppasScrolledPanel
 from sppas.src.ui.phoenix.windows import sppasStaticLine
 
 from ..windows.button import BitmapTextButton, sppasTextButton
-from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
+from .annotevent import PageChangeEvent
 
-# -----------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 
 LANG_NONE = "---"
 
@@ -59,14 +60,26 @@ def _(message):
 
 
 class sppasAnnotations(sppasScrolledPanel):
+    """Create a panel to .
 
-    def __init__(self, parent, param, anntype="STANDALONE"):
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent, param, anntype=annots.types[0]):
         super(sppasAnnotations, self).__init__(
             parent=parent,
             name="page_"+anntype,
             style=wx.BORDER_NONE
         )
+        # The type of annotations this page is supporting
         self.__anntype = anntype
+
+        # The list of AnnotationParam(); one for each supported annotation
         self.__annparams = list()
         for i in range(param.get_step_numbers()):
             a = param.get_step(i)
@@ -76,19 +89,23 @@ class sppasAnnotations(sppasScrolledPanel):
         self._create_content()
         self._setup_events()
 
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
-
         self.Layout()
 
-    # ------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     def get_param(self):
         return self.__annparams
 
     def set_param(self, param):
+        logging.debug('ANNOTATIONS PAGE: set param')
         self.__annparams = param
+        for i in range(param.get_step_numbers()):
+            annparam = param.get_step(i)
+            w = self.FindWindow("page_" + annparam.get_key())
+            if w is not None:
+                w.set_annparam(annparam)
+            else:
+                logging.error("Panel not found for step: {:s}".format(annparam.get_key()))
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -134,6 +151,7 @@ class sppasAnnotations(sppasScrolledPanel):
         line.SetDepth(depth)
         line.SetForegroundColour(self.GetForegroundColour())
         return line
+
     # -----------------------------------------------------------------------
     # Events management
     # -----------------------------------------------------------------------
@@ -173,9 +191,20 @@ class sppasAnnotations(sppasScrolledPanel):
             self.notify()
 
 # ---------------------------------------------------------------------------
+# Annotation panel to enable and select language.
+# ---------------------------------------------------------------------------
 
 
 class sppasEnableAnnotation(sppasPanel):
+    """Create a panel to enable and select language of an annotation.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+
+    """
 
     def __init__(self, parent, annparam):
         super(sppasEnableAnnotation, self).__init__(
@@ -184,14 +213,18 @@ class sppasEnableAnnotation(sppasPanel):
             style=wx.BORDER_NONE
         )
         self.__annparam = annparam
+
         self._create_content()
         self._setup_events()
 
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
-
         self.Layout()
+
+    # ------------------------------------------------------------------------
+
+    def set_annparam(self, p):
+        """Set a new AnnotationParam()."""
+        self.__annparam = p
+        self.Refresh()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -241,7 +274,6 @@ class sppasEnableAnnotation(sppasPanel):
 
         # choice of the language
         self.choice = sppasPanel(self)
-        self.choice.SetMinSize(wx.Size(w, -1))
 
         # if there are different languages available, add a choice to the panel
         if len(choicelist) > 0:
@@ -252,6 +284,8 @@ class sppasEnableAnnotation(sppasPanel):
             self.choice = wx.ComboBox(self, -1, choices=sorted(choicelist))
             self.choice.SetSelection(self.choice.GetItems().index(lang))
             self.choice.Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
+
+        self.choice.SetMinSize(wx.Size(w, -1))
         sizer.Add(self.choice, 0, wx.ALIGN_CENTRE | wx.LEFT | wx.RIGHT, 12)
 
         return sizer
@@ -338,3 +372,15 @@ class sppasEnableAnnotation(sppasPanel):
         wx.Window.SetBackgroundColour(self, colour)
         for c in self.GetChildren():
             c.SetBackgroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def Refresh(self, eraseBackground=True, rect=None):
+        """Overridden."""
+        if len(self.__annparam.get_langlist()) > 0:
+            lang = self.__annparam.get_lang()
+            if lang is None or len(lang) == 0:
+                lang = LANG_NONE
+            self.choice.SetSelection(self.choice.GetItems().index(lang))
+
+        wx.Window.Refresh(self, eraseBackground=True, rect=None)
