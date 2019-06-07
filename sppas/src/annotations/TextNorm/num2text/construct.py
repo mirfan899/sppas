@@ -33,23 +33,22 @@
 
 from sppas import sppasValueError, sppasTypeError
 
-from .sppasNumJapanese import sppasNumJapanese
-from .sppasNumFrench import sppasNumFrench
-from .sppasNumSpanish import sppasNumSpanish
-from .sppasNumItalian import sppasNumItalian
-from .sppasNumKhmer import sppasNumKhmer
-from .sppasNumVietnamese import sppasNumVietnamese
+from .num_base import sppasNumBase
+from .num_jpn import sppasNumJapanese
+from .num_fra import sppasNumFrench
+from .num_spa import sppasNumSpanish
+from .num_ita import sppasNumItalian
+from .num_khm import sppasNumKhmer
+from .num_vie import sppasNumVietnamese
 
-from .sppasNumAsianType import sppasNumAsianType
-from .sppasNumUnd import sppasNumUnd
-from .sppasNumEuropeanType import sppasNumEuropeanType
+from .num_asian_lang import sppasNumAsianType
+from .num_und import sppasNumUnd
+from .num_europ_lang import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 
 
 class sppasNumConstructor(object):
-
-    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "pcm")
 
     LANGUAGES_DICT = {
         "und": sppasNumUnd,
@@ -59,35 +58,31 @@ class sppasNumConstructor(object):
         "khm": sppasNumKhmer,
         "vie": sppasNumVietnamese,
         "jpn": sppasNumJapanese,
-        "yue": sppasNumAsianType,
-        "cmn": sppasNumAsianType,
-        "pcm": sppasNumAsianType,
-        "eng": sppasNumEuropeanType,
-        "pol": sppasNumEuropeanType,
-        "por": sppasNumEuropeanType
     }
 
     # ---------------------------------------------------------------------------
 
     @staticmethod
-    def construct(lang=None, dictionary=None):
+    def construct(lang="und", dictionary=None):
         """Return an instance of the correct object regarding the given language
 
         :returns: (sppasNumBase)
+        :raises: sppasTypeError, sppasValueError
 
         """
-        if lang is not None and isinstance(lang, str) is False:  # basestring, str, unicode
+        if isinstance(lang, str) is False:  # basestring, str, unicode
             raise sppasTypeError(lang, "string")
 
-        if lang is None:
-            return sppasNumUnd()
+        if lang in sppasNumConstructor.LANGUAGES_DICT:
+            instance = sppasNumConstructor.LANGUAGES_DICT[lang](dictionary)
 
-        if lang.lower() in sppasNumConstructor.LANGUAGES_DICT.keys():
-            constructor = sppasNumConstructor.LANGUAGES_DICT[lang]
-            try:
-                instance = constructor(dictionary)
-            except:
-                instance = constructor(lang, dictionary)
-            return instance
+        elif lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+            instance = sppasNumAsianType(lang, dictionary)
 
-        raise sppasValueError(lang, sppasNumConstructor.LANGUAGES_DICT.keys())
+        elif lang in sppasNumBase.EUROPEAN_TYPED_LANGUAGES:
+            instance = sppasNumEuropeanType(lang, dictionary)
+
+        else:
+            raise sppasValueError(lang, "sppasNumConstructor")
+
+        return instance

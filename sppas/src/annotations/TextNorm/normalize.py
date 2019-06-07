@@ -37,7 +37,7 @@
 """
 import re
 
-from .num2text import sppasNumConstructor
+from .num2text import construct
 from sppas.src.utils.makeunicode import sppasUnicode, u
 from sppas.src.resources.vocab import sppasVocabulary
 from sppas.src.resources.dictrepl import sppasDictRepl
@@ -247,7 +247,7 @@ class TextNormalizer(object):
         :returns: (list)
 
         """
-        num2letter = sppasNumConstructor.construct(self.lang, self.num_dict)
+        num2letter = construct.construct(self.lang, self.num_dict)
 
         _result = list()
         for token in utt:

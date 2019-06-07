@@ -4,13 +4,13 @@ import os
 import unittest
 
 from sppas import sppasTypeError, sppasValueError, sppasDictRepl, paths
-from sppas.src.annotations.TextNorm.num2text.sppasNumConstructor import sppasNumConstructor
+from sppas.src.annotations.TextNorm.num2text.construct import sppasNumConstructor
 from sppas.src.utils.makeunicode import u
 
 # ---------------------------------------------------------------------------
 
 
-ref_es = [
+ref_spa = [
     u("cero"),
     u("uno"),
     u("dos"),
@@ -67,10 +67,10 @@ class sppasNum2TextTest(unittest.TestCase):
         self.hello = Hello()
 
         # Dictionaries actually created in normalize.py
-        self.dict_fra = sppasDictRepl(os.path.join(paths.resources, 'num', 'fra_num.repl'))
-        self.dict_eng = sppasDictRepl(os.path.join(paths.resources, 'num', 'eng_num.repl'))
-        self.dict_jpn = sppasDictRepl(os.path.join(paths.resources, 'num', 'jpn_num.repl'))
-        self.dict_spa = sppasDictRepl(os.path.join(paths.resources, 'num', 'spa_num.repl'))
+        self.dict_fra = sppasDictRepl(os.path.join(paths.resources, 'num', 'fra_num.repl'), nodump=True)
+        self.dict_eng = sppasDictRepl(os.path.join(paths.resources, 'num', 'eng_num.repl'), nodump=True)
+        self.dict_jpn = sppasDictRepl(os.path.join(paths.resources, 'num', 'jpn_num.repl'), nodump=True)
+        self.dict_spa = sppasDictRepl(os.path.join(paths.resources, 'num', 'spa_num.repl'), nodump=True)
 
         self.num_fra = sppasNumConstructor.construct('fra', self.dict_fra)
         self.num_eng = sppasNumConstructor.construct('eng', self.dict_eng)
@@ -128,7 +128,7 @@ class sppasNum2TextTest(unittest.TestCase):
         """... number to letter in Spanish  """
 
         ret = [self.num_spa.convert(i) for i in range(41)]
-        self.assertEquals(ref_es, ret)
+        self.assertEquals(ref_spa, ret)
 
         self.assertEqual(u("mil-doscientos-cuarenta-y-uno"),
                          self.num_spa.convert(1241))

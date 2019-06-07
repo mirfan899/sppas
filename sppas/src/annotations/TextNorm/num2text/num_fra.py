@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 """
 
-from .sppasNumEuropeanType import sppasNumEuropeanType
+from .num_europ_lang import sppasNumEuropeanType
 
 # ---------------------------------------------------------------------------
 

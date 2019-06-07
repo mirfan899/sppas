@@ -30,7 +30,7 @@
         ---------------------------------------------------------------------
 """
 
-from .sppasNumAsianType import sppasNumAsianType
+from .num_asian_lang import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
 

@@ -32,7 +32,7 @@
 
 from sppas import sppasValueError
 
-from .sppasNumBase import sppasNumBase
+from .num_base import sppasNumBase
 
 # ---------------------------------------------------------------------------
 
@@ -47,8 +47,6 @@ class sppasNumEuropeanType(sppasNumBase):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
-
-    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
 
     NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                    11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
