@@ -78,20 +78,21 @@ class sppasWindow(object):
                 yield float(x)
                 x += decimal.Decimal(jump)
 
+        def midpoint(ann):
+            return (ann.get_location().get_best().get_begin().get_midpoint()
+                    + ann.get_location().get_best().get_end().get_midpoint())/2
+
         total_time = 0.0
-        for ann in self.__tier:
-            curr_dur = ann.get_location().get_best().duration().get_value()
-            total_time += curr_dur
-            for dur in drange(start_time, end_time, step):
-                if dur <= ann.get_location().get_best().get_begin().get_midpoint() < end_time:
+        for dur in drange(start_time, end_time, step):
+            print 'dur : ', dur
+            for ann in self.__tier:
+                total_time += ann.get_location().get_best().duration().get_value()
+                print 'midpoint : ', midpoint(ann)
+                print 'overlap : ', ann.get_location().get_best().duration().get_value()/total_time
+                if dur < midpoint(ann) < dur + step:
                     ann_set.append(ann, list())
-
-            ann_set_list.append(ann_set)
-
-            if self.__tier.is_point() is False:
-                if total_time >= start_time:
-                    if delta < (total_time - start_time) / curr_dur < 1.0:
-                        ann_set.append(ann, list())
+                elif ann.get_location().get_best().duration().get_value()/total_time >= delta:
+                    ann_set.append(ann, list())
 
         return ann_set_list
 
