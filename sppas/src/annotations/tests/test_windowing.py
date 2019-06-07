@@ -3,12 +3,12 @@ import unittest
 from sppas import sppasTier, sppasAnnotation, sppasLabel, sppasTag, sppasTypeError
 from sppas import sppasLocation, sppasPoint
 from sppas import sppasInterval
-from ..windowing import sppasWindow
+from sppas.src.annotations.Occurrences.windowing import sppasWindow
 
 
 class WindowingTest(unittest.TestCase):
     def setUp(self):
-        self.tiers = sppasTier()
+        self.tier = sppasTier()
         sentence = ['le', 'petit', 'chat', 'chat', 'tout', 'beau']
         labels1 = list()
         labels2 = list()
@@ -23,13 +23,13 @@ class WindowingTest(unittest.TestCase):
         ann2 = sppasAnnotation(sppasLocation
                                (sppasInterval
                                 (sppasPoint(1.4), sppasPoint(2.2))), labels2)
-        self.tiers.append(ann1)
-        self.tiers.append(ann2)
+        self.tier.append(ann1)
+        self.tier.append(ann2)
 
     def test_time_split(self):
-        my_window1 = sppasWindow(self.tiers)
+        my_window1 = sppasWindow(self.tier)
         my_split1 = my_window1.time_split(0.0, 0.9, 0.4, 0.9)
-        my_window2 = sppasWindow(self.tiers)
+        my_window2 = sppasWindow(self.tier)
         my_split2 = my_window2.time_split(1.4, 2.2, 0.4)
 
         self.assertNotEqual(my_split1, my_split2)
