@@ -42,5 +42,91 @@ class sppasNumSpanish(sppasNumEuropeanType):
 
     """
     def __init__(self, dictionary):
+        NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                       11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+                       21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+                       40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
         super(sppasNumSpanish, self).__init__('spa', dictionary)
         self.separator = "-"
+
+    # ---------------------------------------------------------------------------
+
+    def _tenth(self, number):
+        """Return the "wordified" version of a tenth number.
+
+        Returns the word corresponding to the given tenth within the current
+        language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if 30 < number < 100:
+            if int(str(number)[1:]) == 0:
+                return self._lang_dict[str(number)]
+            else:
+                return self._lang_dict[str(int(number / 10) * 10)] \
+                       + self.separator \
+                       + 'y' \
+                       + self.separator \
+                       + self._units(number % 10)
+
+        return super(sppasNumSpanish, self)._tenth(number)
+
+    # ---------------------------------------------------------------------------
+
+    def _hundreds(self, number):
+        """Return the "wordified" version of a hundred number.
+
+        Returns the word corresponding to the given hundred number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 100:
+            return self._tenth(number)
+        else:
+            mult = None
+            if int(str(number)[0])*100 != 100:
+                mult = self._units(int(number/100))
+
+            if mult is not None:
+                return mult + self._lang_dict['100'] \
+                       + 's' \
+                       + self.separator \
+                       + self._tenth(number % 100)
+
+        return super(sppasNumSpanish, self)._hundreds(number)
+
+    # ---------------------------------------------------------------------------
+
+    def _thousands(self, number):
+        """Return the "wordified" version of a thousand number.
+
+        Returns the word corresponding to the given thousand number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 1000:
+            return self._tenth(number)
+        else:
+            print 'hello'
+            mult = None
+            if number / 1000 * 1000 != 1000:
+                mult = self._hundreds(int(number / 1000))
+
+            print 'mult : ', mult
+
+            if mult is not None:
+                return mult + 'milliones' \
+                       + self.separator \
+                       + self._tenth(number % 1000)
+
+        return super(sppasNumSpanish, self)._thousands(number)
+
+# ---------------------------------------------------------------------------
