@@ -49,17 +49,17 @@ import sppas.src.anndata.aio
 from sppas.src.annotations.infotier import sppasMetaInfoTier
 from sppas.src.annotations.log import sppasLog
 
-from sppas.src.annotations.Momel.sppasmomel import sppasMomel
-from sppas.src.annotations.Intsint.sppasintsint import sppasIntsint
-from sppas.src.annotations.SearchIPUs.sppassearchipus import sppasSearchIPUs
-from sppas.src.annotations.FillIPUs.sppasfillipus import sppasFillIPUs
-from sppas.src.annotations.TextNorm.sppastextnorm import sppasTextNorm
-from sppas.src.annotations.Phon.sppasphon import sppasPhon
-from sppas.src.annotations.Align.sppasalign import sppasAlign
-from sppas.src.annotations.Syll.sppassyll import sppasSyll
-from sppas.src.annotations.TGA.sppastga import sppasTGA
-from sppas.src.annotations.SelfRepet.sppasrepet import sppasSelfRepet
-from sppas.src.annotations.OtherRepet.sppasrepet import sppasOtherRepet
+from sppas.src.annotations.Momel import sppasMomel
+from sppas.src.annotations.Intsint import sppasIntsint
+from sppas.src.annotations.SearchIPUs import sppasSearchIPUs
+from sppas.src.annotations.FillIPUs import sppasFillIPUs
+from sppas.src.annotations.TextNorm import sppasTextNorm
+from sppas.src.annotations.Phon import sppasPhon
+from sppas.src.annotations.Align import sppasAlign
+from sppas.src.annotations.Syll import sppasSyll
+from sppas.src.annotations.TGA import sppasTGA
+from sppas.src.annotations.SelfRepet import sppasSelfRepet
+from sppas.src.annotations.OtherRepet import sppasOtherRepet
 
 # ----------------------------------------------------------------------------
 
@@ -273,7 +273,8 @@ class sppasAnnotationsManager(Thread):
         a = self._create_ann_instance(annotation_key)
         return a.batch_processing(
             self.get_annot_files(pattern=a.get_input_pattern(),
-                                 extensions=a.get_input_extensions()),
+                                 extensions=a.get_input_extensions(),
+                                 types=a.get_types()),
             self._progress,
             self._parameters.get_output_format())
 
@@ -329,9 +330,9 @@ class sppasAnnotationsManager(Thread):
             base_f = f.replace(a.get_input_pattern(), "")
 
             # Get the tokens input file
-            extt = ['-token' + self._parameters.get_output_format()]
+            extt = [a.get_opt_input_pattern() + self._parameters.get_output_format()]
             for e in sppas.src.anndata.aio.extensions_out:
-                extt.append('-token' + e)
+                extt.append(a.get_opt_input_pattern() + e)
             tok = sppasAnnotationsManager._get_filename(base_f, extt)
 
             # Get the audio input file
@@ -429,11 +430,12 @@ class sppasAnnotationsManager(Thread):
     # Manage files:
     # -----------------------------------------------------------------------
 
-    def get_annot_files(self, pattern, extensions):
+    def get_annot_files(self, pattern, extensions, types=[]):
         """Search for annotated files with pattern and extensions.
 
         :param pattern: (str) The pattern to search in the inputs
-        :param extensions: (str) The extension to search
+        :param extensions: (str) The extension to search for
+        :param types: (list of str) The types to search in the references of the workspace
         :returns: List of filenames matching pattern and extensions
 
         """
@@ -449,7 +451,14 @@ class sppasAnnotationsManager(Thread):
         for f in self._parameters.get_sppasinput():
             new_file = sppasAnnotationsManager._get_filename(f, ext)
             if new_file is not None and new_file not in files:
-                files.append(new_file)
+                if len(types) == 0 or "STANDALONE" in types:
+                    files.append(new_file)
+                if "SPEAKER" in types:
+                    logging.error("Annotations of type SPEAKER are not supported yet.")
+                    pass
+                if "INTERACTION" in types:
+                    logging.error("Annotations of type INTERACTION are not supported yet.")
+                    pass
 
         return files
 

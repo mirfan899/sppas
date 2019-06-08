@@ -70,9 +70,6 @@ class sppasNumConstructor(object):
         :raises: sppasTypeError, sppasValueError
 
         """
-        if isinstance(lang, str) is False:  # basestring, str, unicode
-            raise sppasTypeError(lang, "string")
-
         if lang in sppasNumConstructor.LANGUAGES_DICT:
             instance = sppasNumConstructor.LANGUAGES_DICT[lang](dictionary)
 

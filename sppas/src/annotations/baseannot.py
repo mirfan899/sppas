@@ -80,7 +80,8 @@ class sppasBaseAnnotation(object):
         else:
             self.logfile = log
 
-        # Declare other members
+        # Declare members
+        self.__types = list()
         self._options = dict()
         self.name = self.__class__.__name__
 
@@ -114,7 +115,8 @@ class sppasBaseAnnotation(object):
             self._options[opt['id']] = opt['value']
 
         # Extract other members
-        self.name = dict_cfg['name']
+        self.name = dict_cfg.get('name', self.__class__.__name__)
+        self.__types = dict_cfg.get('anntype', [annots.types[0]])
 
     # -----------------------------------------------------------------------
 
@@ -141,6 +143,17 @@ class sppasBaseAnnotation(object):
         pass
 
     # -----------------------------------------------------------------------
+
+    def get_types(self):
+        """Return the list of types this annotation can perform.
+
+        If this annotation is expecting another file, the type allow to
+        find it by using the references of the workspace (if any).
+
+        """
+        return self.__types
+
+    # -----------------------------------------------------------------------
     # Load the linguistic resources
     # -----------------------------------------------------------------------
 
@@ -163,14 +176,9 @@ class sppasBaseAnnotation(object):
         return ''
 
     @staticmethod
-    def get_dependent_reference_type():
-        """Return a type of a reference in a sppasCatalog.
-
-        If this annotation is expecting another file, the type allow to
-        find it by using the references of the catalogs.
-
-        """
-        return None
+    def get_opt_input_pattern():
+        """Pattern that the annotation can optionally use as input."""
+        return ''
 
     # -----------------------------------------------------------------------
 
@@ -210,8 +218,8 @@ class sppasBaseAnnotation(object):
         There's no constraint on the filenames, neither for the inputs nor
         for the outputs.
 
-        :param input_file: (list of str) the required input
-        :param opt_input_file: (list of str) the optional input
+        :param input_file: (list of str) the required input(s)
+        :param opt_input_file: (list of str) the optional input(s)
         :param output_file: (str) the output file name
         :returns: (sppasTranscription)
 
@@ -230,8 +238,8 @@ class sppasBaseAnnotation(object):
         output file, and call the run method.
         Can be overridden.
 
-        :param input_file: (list of str) the required inputs
-        :param opt_input_file: (list of str) the optional inputs
+        :param input_file: (list of str) the required input(s)
+        :param opt_input_file: (list of str) the optional input(s)
         :param output_format: (str) Extension of the output file
         :returns: output file name or None
 
@@ -267,7 +275,7 @@ class sppasBaseAnnotation(object):
                          file_names,
                          progress=None,
                          output_format=annots.extension):
-        """Perform the annotation on a set of files.
+        """Perform the annotation on a bunch of files.
 
         The given list of inputs can be either:
             - a list of the files to be used as a single input:

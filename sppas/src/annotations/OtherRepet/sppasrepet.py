@@ -223,7 +223,7 @@ class sppasOtherRepet(sppasBaseRepet):
         Input file is a tuple with 2 files: the main speaker and the echoing
         speaker.
 
-        :param input_file: (list of str) time-aligned tokens
+        :param input_file: (list of str) (time-aligned token, time-aligned token)
         :param opt_input_file: (list of str) ignored
         :param output_file: (str) the output file name
         :returns: (sppasTranscription)
@@ -285,13 +285,3 @@ class sppasOtherRepet(sppasBaseRepet):
     def get_input_pattern():
         """Pattern this annotation expects for its input filename."""
         return '-palign'
-
-    @staticmethod
-    def get_dependent_reference_type():
-        """Return the type of the reference required in a sppasCatalog.
-
-        This annotation is expecting an echo-ing speaker, i.e. a file with
-        time-aligned tokens of the same interaction as the given one.
-
-        """
-        return "interaction"

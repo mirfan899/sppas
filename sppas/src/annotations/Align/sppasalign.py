@@ -562,3 +562,7 @@ class sppasAlign(sppasBaseAnnotation):
         """Pattern this annotation expects for its input filename."""
         return '-phon'
 
+    @staticmethod
+    def get_opt_input_pattern():
+        """Pattern that the annotation can optionally use as input."""
+        return '-token'

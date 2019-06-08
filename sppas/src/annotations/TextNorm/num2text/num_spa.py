@@ -115,12 +115,9 @@ class sppasNumSpanish(sppasNumEuropeanType):
         if number < 1000:
             return self._tenth(number)
         else:
-            print 'hello'
             mult = None
             if number / 1000 * 1000 != 1000:
                 mult = self._hundreds(int(number / 1000))
-
-            print 'mult : ', mult
 
             if mult is not None:
                 return mult + 'milliones' \

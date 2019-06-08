@@ -1,4 +1,3 @@
-# -*- coding: UTF-8 -*-
 
 import os
 import unittest
@@ -77,12 +76,26 @@ class sppasNum2TextTest(unittest.TestCase):
         self.num_jpn = sppasNumConstructor.construct('jpn', self.dict_jpn)
         self.num_spa = sppasNumConstructor.construct('spa', self.dict_spa)
 
-    def test_init(self):
+    # -----------------------------------------------------------------------
+
+    def test_exc(self):
         # Known language
-        self.num_fra.convert("03")
-        self.num_fra.convert("3")
         with self.assertRaises(ValueError):
             self.num_fra.convert('3.0')
+
+        with self.assertRaises(sppasValueError) as error:
+            sppasNumConstructor.construct(18, self.dict_eng)
+            self.assertTrue(isinstance(error.exception, sppasValueError))
+
+        with self.assertRaises(sppasTypeError) as error:
+            sppasNumConstructor.construct('fra', 18)
+            self.assertTrue(isinstance(error.exception, sppasValueError))
+
+        with self.assertRaises(sppasValueError) as error:
+            sppasNumConstructor.construct('ger')
+            self.assertTrue(isinstance(error.exception, sppasValueError))
+
+    # -----------------------------------------------------------------------
 
     def test_convert(self):
         res_million_fra = self.num_fra.convert(1000000)
@@ -97,28 +110,25 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual('一億二千三百四十五万六千七百八十九', res_jpn)
         self.assertEqual('二十二', res_jpn_twenty)
 
-        with self.assertRaises(sppasTypeError) as error:
-            sppasNumConstructor.construct(18, self.dict_eng)
-            self.assertTrue(isinstance(error.exception, sppasTypeError))
-
-        with self.assertRaises(sppasTypeError) as error:
-            sppasNumConstructor.construct('fra', 18)
-            self.assertTrue(isinstance(error.exception, sppasTypeError))
-
-        with self.assertRaises(sppasValueError) as error:
-            sppasNumConstructor.construct('ger')
-            self.assertTrue(isinstance(error.exception, sppasValueError))
-
     # -----------------------------------------------------------------------
 
     def test_fra(self):
         """... number to letter in French """
+        self.assertEqual(u("trois"),
+                         self.num_fra.convert("3"))
+
+        self.assertEqual(u("zéro_trois"),
+                         self.num_fra.convert("03"))
+
         self.assertEqual(u("douze"),
                          self.num_fra.convert("12"))
+
         self.assertEqual(u("cent_vingt_trois"),
                          self.num_fra.convert("123"))
+
         self.assertEqual(u("cent_vingt-et-un"),
                          self.num_fra.convert("121"))
+
         self.assertEqual('cent_vingt_trois_million_quatre_cent_cinquante_six_mille_sept_cent_quatre-vingt_neuf',
                          self.num_fra.convert(123456789))
 
