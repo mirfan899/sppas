@@ -464,6 +464,17 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
+    def get_fileroot_with_ref(self, ref):
+        """Return every FileRoot with the given reference."""
+        roots = list()
+        for fp in self.__data:
+            for fr in fp:
+                if fr.has_ref(ref) is True:
+                    roots.append(fr)
+        return roots
+
+    # -----------------------------------------------------------------------
+
     def get_filename_from_state(self, state):
         """Return every FileName in the given state.
 

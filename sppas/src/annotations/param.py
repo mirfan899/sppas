@@ -39,6 +39,7 @@ import os
 
 from sppas import paths
 from sppas import annots
+from sppas import sppasTypeError
 
 from sppas.src.config import msg
 from sppas.src.structs.baseoption import sppasOption
@@ -296,7 +297,7 @@ class sppasParam(object):
         self._output_ext = annots.extension
 
         # Input files to annotate
-        self._inputs = FileData()
+        self._workspace = FileData()
 
         # The parameters of all the annotations
         self.annotations = []
@@ -354,12 +355,29 @@ class sppasParam(object):
                           ''.format(cfg_file))
 
     # -----------------------------------------------------------------------
-    # Input entries to annotate: DEPRECATED
+    # Input entries to annotate
+    # -----------------------------------------------------------------------
+
+    def get_workspace(self):
+        """Return the workspace."""
+        return self._workspace
+
+    # -----------------------------------------------------------------------
+
+    def set_workspace(self, wkp):
+        if isinstance(wkp, FileData) is False:
+            raise sppasTypeError("FileData", type(wkp))
+        logging.debug('New data to set in sppasParam. '
+                      'Id={:s}'.format(wkp.id))
+        self._workspace = wkp
+
+    # -----------------------------------------------------------------------
+    # deprecated:
     # -----------------------------------------------------------------------
 
     def get_sppasinput(self):
         """Return the list of entries to annotate."""
-        roots = self._inputs.get_fileroot_from_state(States().CHECKED) + self._inputs.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
+        roots = self._workspace.get_fileroot_from_state(States().CHECKED) + self._workspace.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
         return [r.id for r in roots]
 
     # -----------------------------------------------------------------------
@@ -390,7 +408,7 @@ class sppasParam(object):
         # Create a list with the basename of the files
         for entry_file in initial_files:
             fn, e = os.path.splitext(entry_file)
-            if fn in self._inputs:
+            if fn in self._workspace:
                 continue
 
             if len(e) == 0:
@@ -399,9 +417,9 @@ class sppasParam(object):
 
             elif e.lower() in base_ext:
                 # the entry is a primary file (audio/text/pitch)
-                # self._inputs.append(fn)
-                obj = self._inputs.add_file(entry_file)
-                self._inputs.set_object_state(States().CHECKED, obj)
+                # self._workspace.append(fn)
+                obj = self._workspace.add_file(entry_file)
+                self._workspace.set_object_state(States().CHECKED, obj)
 
             elif e.lower() in ann_ext:
                 # the entry is an annotated file
@@ -409,10 +427,10 @@ class sppasParam(object):
                 if appended is False:
                     # the entry is an annotated file with a pattern
                     fn = self.__remove_pattern(fn)
-                    if fn not in self._inputs:
+                    if fn not in self._workspace:
                         self.__append_input(fn, base_ext)
 
-        for f in self._inputs:
+        for f in self._workspace:
             logging.debug(f)
 
     # -----------------------------------------------------------------------
@@ -420,10 +438,10 @@ class sppasParam(object):
     def __append_input(self, base_fn, base_ext):
         for ae in base_ext:
             if sppasFileUtils(base_fn + ae).exists() \
-                    and base_fn not in self._inputs:
-                # self._inputs.append(base_fn)
-                obj = self._inputs.add_file(base_fn + ae)
-                self._inputs.set_object_state(States().CHECKED, obj)
+                    and base_fn not in self._workspace:
+                # self._workspace.append(base_fn)
+                obj = self._workspace.add_file(base_fn + ae)
+                self._workspace.set_object_state(States().CHECKED, obj)
 
                 return True
         return False

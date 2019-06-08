@@ -41,7 +41,8 @@ import os
 from threading import Thread
 
 from sppas import paths
-from sppas.src.files.fileutils import sppasFileUtils
+from sppas.src.files import sppasFileUtils
+from sppas.src.files import States
 from sppas.src.anndata import sppasTranscription, sppasRW
 
 import sppas.src.audiodata.aio
@@ -440,6 +441,7 @@ class sppasAnnotationsManager(Thread):
 
         """
         files = list()
+        wkp = self._parameters.get_workspace()
 
         if len(pattern) > 0:
             ext = [pattern + self._parameters.get_output_format()]
@@ -448,17 +450,29 @@ class sppasAnnotationsManager(Thread):
         else:
             ext = extensions
 
-        for f in self._parameters.get_sppasinput():
-            new_file = sppasAnnotationsManager._get_filename(f, ext)
-            if new_file is not None and new_file not in files:
-                if len(types) == 0 or "STANDALONE" in types:
-                    files.append(new_file)
-                if "SPEAKER" in types:
-                    logging.error("Annotations of type SPEAKER are not supported yet.")
-                    pass
-                if "INTERACTION" in types:
-                    logging.error("Annotations of type INTERACTION are not supported yet.")
-                    pass
+        roots = wkp.get_fileroot_from_state(States().CHECKED) + \
+                wkp.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
+
+        for root in roots:
+
+            new_file = sppasAnnotationsManager._get_filename(root.id, ext)
+            if new_file is None:
+                continue
+
+            if len(types) == 0 or "STANDALONE" in types:
+                files.append(new_file)
+            if "SPEAKER" in types:
+                logging.error("Annotations of type SPEAKER are not supported yet.")
+                pass
+            if "INTERACTION" in types:
+                logging.debug("Annotation of type INTERACTION.")
+                for ref in root.get_references():
+                    if ref.id == "INTERACTION":
+                        for fr in wkp.get_fileroot_with_ref(ref):
+                            if fr != root:
+                                other_file = sppasAnnotationsManager._get_filename(fr.id, ext)
+                                if other_file is not None:
+                                    files.append((new_file, other_file))
 
         return files
 

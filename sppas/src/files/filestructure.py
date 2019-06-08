@@ -428,13 +428,31 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def add_ref(self, ref):
+    def has_ref(self, ref):
+        """Return True if the root as the given reference.
+
+        :returns: (bool)
+
+        """
         if isinstance(ref, FileReference) is False:
             raise sppasTypeError(ref, 'FileReference')
 
+        if len(self.get_references()) == 0:
+            return False
+
         for r in self.get_references():
             if r.id == ref.id:
-                return False
+                return True
+
+        return False
+
+    # -----------------------------------------------------------------------
+
+    def add_ref(self, ref):
+        has = self.has_ref(ref)
+        if has is True:
+            return False
+
         if self.__references is None:
             self.__references = list()
 
