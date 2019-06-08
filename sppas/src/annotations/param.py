@@ -32,6 +32,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import logging
 import json
 import os
@@ -45,8 +46,10 @@ from sppas.src.structs.lang import sppasLangResource
 from sppas.src.structs.lang import UNDETERMINED
 from sppas.src.anndata.aio import extensions_out as annots_ext
 from sppas.src.audiodata.aio import extensions as audio_ext
-from sppas.src.files.fileutils import sppasDirUtils
-from sppas.src.files.fileutils import sppasFileUtils
+
+from sppas.src.files import sppasDirUtils
+from sppas.src.files import sppasFileUtils
+from sppas.src.files import FileData, States
 
 # ----------------------------------------------------------------------------
 
@@ -293,7 +296,7 @@ class sppasParam(object):
         self._output_ext = annots.extension
 
         # Input files to annotate
-        self._inputs = []
+        self._inputs = FileData()
 
         # The parameters of all the annotations
         self.annotations = []
@@ -337,7 +340,6 @@ class sppasParam(object):
 
         # Load annotation configurations
         for ann in dict_cfg["annotate"]:
-            #if ann["gui"] is True:
             self.__load(os.path.join(paths.etc, ann["config"]))
 
     # -----------------------------------------------------------------------
@@ -352,12 +354,13 @@ class sppasParam(object):
                           ''.format(cfg_file))
 
     # -----------------------------------------------------------------------
-    # Input entries to annotate
+    # Input entries to annotate: DEPRECATED
     # -----------------------------------------------------------------------
 
     def get_sppasinput(self):
         """Return the list of entries to annotate."""
-        return self._inputs
+        roots = self._inputs.get_fileroot_from_state(States().CHECKED) + self._inputs.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
+        return [r.id for r in roots]
 
     # -----------------------------------------------------------------------
 
@@ -396,7 +399,9 @@ class sppasParam(object):
 
             elif e.lower() in base_ext:
                 # the entry is a primary file (audio/text/pitch)
-                self._inputs.append(fn)
+                # self._inputs.append(fn)
+                obj = self._inputs.add_file(entry_file)
+                self._inputs.set_object_state(States().CHECKED, obj)
 
             elif e.lower() in ann_ext:
                 # the entry is an annotated file
@@ -416,7 +421,10 @@ class sppasParam(object):
         for ae in base_ext:
             if sppasFileUtils(base_fn + ae).exists() \
                     and base_fn not in self._inputs:
-                self._inputs.append(base_fn)
+                # self._inputs.append(base_fn)
+                obj = self._inputs.add_file(base_fn + ae)
+                self._inputs.set_object_state(States().CHECKED, obj)
+
                 return True
         return False
 
