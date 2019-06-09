@@ -235,7 +235,7 @@ class sppasActionAnnotate(sppasPanel):
 
     def set_param(self, param):
         self.__param = param
-        # self.Refresh()
+        self.UpdateUI()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -319,7 +319,7 @@ class sppasActionAnnotate(sppasPanel):
 
         langlist = list(set(all_langs))
         langlist.append(LANG_NONE)
-        choice = wx.ComboBox(self, -1, choices=sorted(langlist))
+        choice = wx.ComboBox(self, -1, choices=sorted(langlist), name="lang_choice")
         choice.SetSelection(choice.GetItems().index(LANG_NONE))
         choice.SetMinSize(wx.Size(w, -1))
         choice.Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
@@ -393,10 +393,12 @@ class sppasActionAnnotate(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def Refresh(self, eraseBackground=True, rect=None):
-        """Overridden."""
-        ann_enabled = [False]*len(annots.types)
-        lang = False
+    def UpdateUI(self):
+        """Update the UI depending on the parameters."""
+
+        # search for enabled annotations and fixed languages
+        ann_enabled = [False] * len(annots.types)
+        lang = list()
 
         for i in range(self.__param.get_step_numbers()):
             a = self.__param.get_step(i)
@@ -407,21 +409,38 @@ class sppasActionAnnotate(sppasPanel):
                 # at least one annotation can be performed
                 # (no need of the lang or lang is defined)
                 if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
-                    lang = True
+                    lang.append(a.get_lang())
 
+        # update the button to set the language
+        choice = self.FindWindow("lang_choice")
+        langs = list(set(lang))
+        if None in langs:
+            langs.remove(None)
+        if len(langs) <= 1:
+            mix_item = choice.FindString("MIX")
+            if mix_item != wx.NOT_FOUND:
+                choice.Delete(mix_item)
+            if len(langs) == 0:
+                choice.SetSelection(choice.GetItems().index(LANG_NONE))
+            else:
+                choice.SetSelection(choice.GetItems().index(langs[0]))
+        else:
+            # several languages
+            i = choice.Append("MIX")
+            choice.SetSelection(i)
+
+        # update buttons to fix properties of annotations
         for i, ann_type in enumerate(annots.types):
             if ann_enabled[i] is True:
                 self.__btns_annot[ann_type].SetName("on-off-on")
             else:
                 self.__btns_annot[ann_type].SetName("on-off-off")
 
+        # update the button to perform annotations
         # at least one annotation is enabled and lang is fixed.
-        if lang is False:
+        if len(lang) == 0:
             self.btn_run.Enable(False)
             self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
         else:
             self.btn_run.Enable(True)
             self.btn_run.BorderColour = wx.Colour(24, 228, 24, 128)
-        # self.btn_run.Refresh()
-
-        wx.Window.Refresh(self, eraseBackground=True, rect=None)

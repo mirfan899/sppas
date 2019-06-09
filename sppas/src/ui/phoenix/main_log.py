@@ -435,7 +435,11 @@ class sppasLogWindow(wx.TopLevelWindow):
             'ERROR': wx.LogError,
             'CRITICAL': wx.LogFatalError
         }
-        levels[event.record.levelname](event.record.message)
+        try:
+            levels[event.record.levelname](event.record.message)
+        except AttributeError:
+            # we received a log record without message...
+            pass
         event.Skip()
 
     # -----------------------------------------------------------------------

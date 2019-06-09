@@ -110,6 +110,7 @@ class sppasScrolledPanel(sc.ScrolledPanel):
             size=DefaultSize, style=TAB_TRAVERSAL, name=PanelNameStr)
 
     """
+
     def __init_(self, *args, **kw):
         super(sppasScrolledPanel, self).__init__(*args, **kw)
         s = wx.GetApp().settings
