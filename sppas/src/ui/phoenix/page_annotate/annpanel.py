@@ -40,13 +40,12 @@ from sppas import msg
 from sppas import u
 from sppas import annots
 
-from sppas.src.ui.phoenix.windows import sppasTextCtrl
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows import sppasScrolledPanel
-from sppas.src.ui.phoenix.windows import sppasStaticLine
-from sppas.src.ui.phoenix.windows import sppasTitleText
-
+from ..windows import sppasTextCtrl
+from ..windows import sppasPanel
+from ..windows import sppasScrolledPanel
+from ..windows import sppasStaticLine
 from ..windows.button import BitmapTextButton, sppasTextButton
+
 from .annotevent import PageChangeEvent
 
 # ---------------------------------------------------------------------------
