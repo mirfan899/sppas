@@ -68,6 +68,35 @@ class sppasTierWindow(object):
             raise NotImplementedError('sppasWindow does not support disjoint interval tiers.')
 
     # -----------------------------------------------------------------------
+    # Utilitiy methods
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def drange(x, y, jump):
+        """Mimics 'range' with either float or int values.
+
+        :param x: start value
+        :param y: end value
+        :param jump: step value
+
+        """
+        if isinstance(jump, int):
+            x = int(x)
+            y = int(y)
+            while x < y:
+                yield x
+                x += jump
+
+        elif isinstance(jump, float):
+            x = decimal.Decimal(x)
+            y = decimal.Decimal(y)
+            while x < y:
+                yield float(x)
+                x += decimal.Decimal(jump)
+
+    # -----------------------------------------------------------------------
+    # Split methods
+    # -----------------------------------------------------------------------
 
     def time_split(self, duration, step, delta=0.6):
         """Return a set of annotations within a time window.
@@ -115,62 +144,34 @@ class sppasTierWindow(object):
 
     # -----------------------------------------------------------------------
 
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def drange(x, y, jump):
-        """Mimics 'range' with either float or int values.
-
-        :param x: start value
-        :param y: end value
-        :param jump: step value
-
-        """
-        if isinstance(jump, int):
-            x = int(x)
-            y = int(y)
-            while x < y:
-                yield x
-                x += jump
-
-        elif isinstance(jump, float):
-            x = decimal.Decimal(x)
-            y = decimal.Decimal(y)
-            while x < y:
-                yield float(x)
-                x += decimal.Decimal(jump)
-
-    # -----------------------------------------------------------------------
-
-    def anchor_split(self, separators):
-        """Return set of annotations within a window given by a separator.
+    def continuous_anchor_split(self, separators):
+        """Return all time intervals within a window given by separators.
 
         :param separators: (list) list of separators
-        :returns: (sppasAnnSet) list of sppasAnnotation
+        :returns: (List of intervals)
 
         """
         if isinstance(separators, list) is False:
             raise sppasTypeError(separators, list)
 
-        intervals = sppasAnnSet()
         begin = self.__tier.get_first_point()
         end = begin
         prev_ann = None
+        intervals = list()
+        # is_point = self.__tier.is_point()
 
         for ann in self.__tier:
+
             tag = None
             if ann.label_is_filled():
                 tag = ann.get_best_tag()
 
             if prev_ann is not None:
                 # if no tag or stop tag or hole between prev_ann and ann
-                if tag is None or \
-                        tag.get_typed_content() in separators or \
-                        prev_ann.get_highest_localization() < ann.get_lowest_localization():
+                if tag.get_typed_content() in separators:
+                    # tag is None or prev_ann.get_highest_localization() < ann.get_lowest_localization():
                     if end > begin:
-                        intervals.append(sppasAnnotation(sppasLocation(
-                            sppasInterval(begin,
-                                          prev_ann.get_highest_localization()))), list())
+                        intervals.append((begin, prev_ann.get_highest_localization()))
 
                     if tag is None or tag.get_typed_content() in separators:
                         begin = ann.get_highest_localization()
@@ -178,7 +179,8 @@ class sppasTierWindow(object):
                         begin = ann.get_lowest_localization()
             else:
                 # can start with a non-labelled interval!
-                if tag is None or tag.get_typed_content() in separators:
+                # if tag is None or \
+                if tag.get_typed_content() in separators:
                     begin = ann.get_highest_localization()
 
             end = ann.get_highest_localization()
@@ -187,6 +189,42 @@ class sppasTierWindow(object):
         if end > begin:
             ann = self.__tier[-1]
             end = ann.get_highest_localization()
-            intervals.append(sppasAnnotation(sppasLocation(sppasInterval(begin, end))), list())
+            intervals.append((begin, end))
 
         return intervals
+
+    # -----------------------------------------------------------------------
+
+    def anchor_split(self, duration, step, separators):
+        """Return all time intervals within a window given by separators.
+
+        :param duration: (int) the duration of a window - number of intervals
+        :param step: (int) the step duration - number of intervals
+        :param separators: (list) list of separators
+        :returns: (List of sppasAnnSet)
+
+        """
+        ann_set_list = list()
+        intervals = self.continuous_anchor_split(separators)
+        for i in range(0, len(intervals)+1, step):
+            ann_set = sppasAnnSet()
+            # find annotations on the current time interval
+            end = min(i+duration-1, len(intervals)-1)
+            anns = self.__tier.find(intervals[i][0],
+                                    intervals[end][1],
+                                    overlaps=True)
+            for a in anns:
+                if a.label_is_filled():
+                    tag = a.get_best_tag().get_typed_content()
+                    if tag not in separators:
+                        ann_set.append(a, list())
+                else:
+                    ann_set.append(a, list())
+
+            ann_set_list.append(ann_set)
+
+            if end == len(intervals)-1:
+                break
+
+        return ann_set_list
+
