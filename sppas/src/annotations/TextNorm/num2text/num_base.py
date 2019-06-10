@@ -37,8 +37,8 @@ from sppas import sppasValueError, sppasTypeError, sppasDictRepl
 
 class sppasNumBase(object):
 
-    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm", "khm")
-    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie")
+    ASIAN_TYPED_LANGUAGES = ("yue", "cmn", "jpn", "pcm")
+    EUROPEAN_TYPED_LANGUAGES = ("fra", "ita", "eng", "spa", "pol", "por", "vie", "khm")
 
     # ---------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ class sppasNumBase(object):
 
         elif self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
-            lang_except = ('vie')
+            lang_except = ('vie', 'khm')
             if dictionary.is_key('10000') and lang not in lang_except:
                 has_tenth_of_thousand = True
 

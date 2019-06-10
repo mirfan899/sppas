@@ -207,3 +207,14 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual(u('settemiladuecentoquarantacinque'), self.num_ita.convert(7245))
         self.assertEqual(u('un_milione_duemilaottantadue'), self.num_ita.convert(1002082))
         self.assertEqual(u('un_miliardo_duemilaottantadue'), self.num_ita.convert(1000002082))
+
+    # -----------------------------------------------------------------------
+
+    def test_khm(self):
+        """... number to letter in Khmer"""
+        self.assertEqual(u('ប្រាំបួន'), self.num_khm.convert(9))
+        self.assertEqual(u('ម្ភៃពីរ'), self.num_khm.convert(22))
+        self.assertEqual(u('បួនរយហុកសិបពីរ'), self.num_khm.convert(462))
+        self.assertEqual(u('ប្រាំពីរពាន់ពីររយសែសិបប្រាំ'), self.num_khm.convert(7245))
+        self.assertEqual(u('មួយយលានពីរពាន់ប៉ែតសិបពីរ'), self.num_khm.convert(1002082))
+        self.assertEqual(u('មួយយពាន់លានពីរពាន់ប៉ែតសិបពីរ'), self.num_khm.convert(1000002082))
