@@ -218,3 +218,18 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual(u('ប្រាំពីរពាន់ពីររយសែសិបប្រាំ'), self.num_khm.convert(7245))
         self.assertEqual(u('មួយយលានពីរពាន់ប៉ែតសិបពីរ'), self.num_khm.convert(1002082))
         self.assertEqual(u('មួយយពាន់លានពីរពាន់ប៉ែតសិបពីរ'), self.num_khm.convert(1000002082))
+
+    # -----------------------------------------------------------------------
+
+    def test_pol(self):
+        """... number to letter in Polish"""
+        pol_old_conv_for_tenth = [self.old_num_pol.convert(str(i)) for i in range(2, 20)]
+        pol_new_conv_for_tenth = [self.num_pol.convert(i) for i in range(2, 20)]
+
+        self.assertEqual(pol_old_conv_for_tenth, pol_new_conv_for_tenth)
+
+        self.assertEqual(u('dwadzieścia_dwa'), self.num_pol.convert(22))
+        self.assertEqual(u('czterysta_sześćdziesiąt_dwa'), self.num_pol.convert(462))
+        self.assertEqual(u('siedem_tysięcy_dwieście_czterdzieści_pięć'), self.num_pol.convert(7245))
+        self.assertEqual(u('milion_dwa_tysiące_osiemdziesiąt_dwa'), self.num_pol.convert(1002082))
+        self.assertEqual(u('miliard_dwa_tysiące_osiemdziesiąt_dwa'), self.num_pol.convert(1000002082))

@@ -47,3 +47,167 @@ class sppasNumPolish(sppasNumEuropeanType):
                                             11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
                                             30, 40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
         super(sppasNumPolish, self).__init__('pol', dictionary)
+
+    # ---------------------------------------------------------------------------
+
+    def _hundreds(self, number):
+        """"Return the "wordified" version of a hundred number.
+
+        Returns the word corresponding to the given hundred number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 100:
+            return self._tenth(number)
+        else:
+            mult = None
+            if int(str(number)[0]) * 100 != 100:
+                mult = self._units(int(number / 100))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['100']
+                else:
+                    return self._lang_dict['100'] \
+                           + self.separator \
+                           + self._tenth(number % 100)
+            else:
+                if int(str(number)[1:]) == 0:
+                    if 199 < number < 300:
+                        return 'dwieście'
+                    elif 399 < number < 500:
+                        return mult + 'sta'
+                    else:
+                        return mult + 'set'
+                else:
+                    if 199 < number < 300:
+                        return 'dwieście' \
+                               + self.separator \
+                               + self._tenth(number % 100)
+                    elif 399 < number < 500:
+                        return mult + 'sta' \
+                               + self.separator \
+                               + self._tenth(number % 100)
+                    else:
+                        return mult + 'set' \
+                               + self.separator \
+                               + self._tenth(number % 100)
+
+    # ---------------------------------------------------------------------------
+
+    def _thousands(self, number):
+        if number < 1000:
+            return self._hundreds(number)
+        else:
+            mult = None
+            if number / 1000 * 1000 != 1000:
+                mult = self._hundreds(int(number / 1000))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1000']
+                else:
+                    return self._lang_dict['1000'] \
+                           + self.separator \
+                           + self._hundreds(number % 1000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    if 1000 < number < 2000:
+                        return mult + self.separator \
+                               + self._lang_dict['1000']
+                    elif 1999 < number < 5000:
+                        return mult + self.separator \
+                               + 'tysiące'
+                    else:
+                        return mult + self.separator \
+                               + 'tysięcy'
+                else:
+                    if 1000 < number < 2000:
+                        return mult + self.separator \
+                               + self._lang_dict['1000'] \
+                               + self.separator \
+                               + self._hundreds(number % 1000)
+                    elif 1999 < number < 5000:
+                        return mult + self.separator \
+                               + 'tysiące' \
+                               + self.separator \
+                               + self._hundreds(number % 1000)
+                    else:
+                        return mult + self.separator \
+                               + 'tysięcy' \
+                               + self.separator \
+                               + self._hundreds(number % 1000)
+
+    # ---------------------------------------------------------------------------
+
+    def _millions(self, number):
+        """Return the "wordified" version of a million number.
+
+        Returns the word corresponding to the given million number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 1000000:
+            return self._thousands(number)
+        else:
+            mult = None
+            if int(number / 1000000) * 1000000 != 1000000:
+                mult = self._hundreds(int(number / 1000000))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1000000']
+                else:
+                    return self._lang_dict['1000000'] + self.separator \
+                           + self._thousands(number % 1000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self.separator \
+                           + self._lang_dict['1000000']
+                else:
+                    return mult + self.separator \
+                           + self._lang_dict['1000000'] + self.separator \
+                           + self._thousands(number % 1000000)
+
+    # ---------------------------------------------------------------------------
+
+    def _billions(self, number):
+        """Return the "wordified" version of a billion number.
+
+        Returns the word corresponding to the given billion number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 1000000000:
+            return self._millions(number)
+        elif number > 1000000000000:
+            return None
+        else:
+            mult = None
+            if int(number / 1000000000) * 1000000000 != 1000000000:
+                mult = self._hundreds(int(number / 1000000000))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1000000000']
+                else:
+                    return self._lang_dict['1000000000'] + self.separator \
+                           + self._millions(number % 1000000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self.separator \
+                           + self._lang_dict['1000000000']
+                else:
+                    return mult + self.separator \
+                           + self._lang_dict['1000000000'] + self.separator \
+                           + self._millions(number % 1000000000)
+
