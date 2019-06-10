@@ -1,3 +1,4 @@
+
 # -*- coding: UTF-8 -*-
 """
     ..
@@ -28,6 +29,7 @@
         This banner notice must not be removed.
 
         ---------------------------------------------------------------------
+
 """
 
 from .num_europ_lang import sppasNumEuropeanType
@@ -35,21 +37,23 @@ from .num_europ_lang import sppasNumEuropeanType
 # ---------------------------------------------------------------------------
 
 
-class sppasNumSpanish(sppasNumEuropeanType):
-    """Return an instance of sppasNumSpanish
+class sppasNumPortuguese(sppasNumEuropeanType):
 
-    :returns: (sppasNumSpanish)
-
-    """
     def __init__(self, dictionary):
-        sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                       11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                       21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                       40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
-        super(sppasNumSpanish, self).__init__('spa', dictionary)
-        self.separator = "-"
+        """Create an instance of sppasNumVietnamese.
 
-    # ---------------------------------------------------------------------------
+        :returns: (sppasNumVietnamese)
+
+        """
+        sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                            11, 12, 13, 14, 15, 16, 17, 18, 19,
+                                            20, 30, 40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
+
+        super(sppasNumPortuguese, self).__init__('por', dictionary)
+
+        self.separator = '-'
+
+    # -----------------------------------------------------------------------
 
     def _tenth(self, number):
         """Return the "wordified" version of a tenth number.
@@ -61,17 +65,20 @@ class sppasNumSpanish(sppasNumEuropeanType):
         :returns: (str)
 
         """
-        if 30 < number < 100:
-            if int(str(number)[1:]) == 0:
+        if number > 10:
+            if self._lang_dict.is_key(number):
                 return self._lang_dict[str(number)]
             else:
-                return self._lang_dict[str(int(number / 10) * 10)] \
-                       + self.separator \
-                       + 'y' \
-                       + self.separator \
-                       + self._units(number % 10)
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict[str(int(number / 10) * 10)]
+                else:
+                    return self._lang_dict[str(int(number / 10) * 10)] \
+                           + self.separator \
+                           + 'e' \
+                           + self.separator \
+                           + self._units(number % 10)
 
-        return super(sppasNumSpanish, self)._tenth(number)
+        return super(sppasNumPortuguese, self)._tenth(number)
 
     # ---------------------------------------------------------------------------
 
@@ -88,9 +95,19 @@ class sppasNumSpanish(sppasNumEuropeanType):
         if number < 100:
             return self._tenth(number)
         else:
-            return self._lang_dict[str(int((number / 100)) * 100)] \
-                    + self.separator \
-                    + self._tenth(number % 100)
+            if int(str(number)[1:]) == 0:
+                return self._lang_dict[str(int(number / 10) * 10)]
+            else:
+                if 200 < number < 1000:
+                    return self._lang_dict[str(int((number / 100)) * 100)] \
+                           + self.separator \
+                           + 'e' \
+                           + self.separator \
+                           + self._tenth(number % 100)
+                else:
+                    return self._lang_dict[str(int((number / 100)) * 100)] \
+                            + self.separator \
+                            + self._tenth(number % 100)
 
     # ---------------------------------------------------------------------------
 
@@ -116,24 +133,24 @@ class sppasNumSpanish(sppasNumEuropeanType):
                     return self._lang_dict['1000']
                 else:
                     return self._lang_dict['1000'] \
-                        + self.separator \
-                        + self._hundreds(number % 1000)
+                            + self.separator \
+                            + self._hundreds(number % 1000)
             else:
                 if int(str(number)[1:]) == 0:
                     return mult + self.separator \
-                        + self._lang_dict['1000']
+                            + self._lang_dict['1000']
                 else:
                     return mult + self.separator \
-                        + self._lang_dict['1000'] \
-                        + self.separator \
-                        + self._hundreds(number % 1000)
+                            + self._lang_dict['1000'] \
+                            + self.separator \
+                            + self._hundreds(number % 1000)
 
-    # ---------------------------------------------------------------------------
+        # ---------------------------------------------------------------------------
 
     def _millions(self, number):
         """Return the "wordified" version of a million number.
 
-        Returns the word corresponding to the given thousand number within the
+        Returns the word corresponding to the given million number within the
         current language dictionary
 
         :param number: (int) number to convert in word
@@ -144,15 +161,22 @@ class sppasNumSpanish(sppasNumEuropeanType):
             return self._thousands(number)
         else:
             mult = None
-            if number / 1000000 * 1000000 != 1000000:
+            if int(number / 1000000) * 1000000 != 1000000:
                 mult = self._hundreds(int(number / 1000000))
 
-            if mult is not None:
-                return mult + self.separator \
-                       + 'millones' \
-                       + self.separator \
-                       + self._thousands(number % 1000000)
-
-        return super(sppasNumSpanish, self)._millions(number)
-
-# ---------------------------------------------------------------------------
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1'] + self.separator \
+                            + self._lang_dict['1000000']
+                else:
+                    return self._lang_dict['1'] + self.separator \
+                            + self._lang_dict['1000000'] + self.separator \
+                            + self._thousands(number % 1000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self.separator \
+                            + 'milhões'
+                else:
+                    return mult + self.separator \
+                            + 'milhões' + self.separator \
+                            + self._thousands(number % 1000000)

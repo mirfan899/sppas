@@ -30,12 +30,12 @@
         ---------------------------------------------------------------------
 """
 
-from .num_europ_lang import sppasNumEuropeanType
+from .num_asian_lang import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
 
 
-class sppasNumKhmer(sppasNumEuropeanType):
+class sppasNumKhmer(sppasNumAsianType):
     """Return an instance of sppasNumKhmer
 
     :retruns: (sppasNumKhmer)
@@ -43,7 +43,7 @@ class sppasNumKhmer(sppasNumEuropeanType):
     """
 
     def __init__(self, dictionary):
-        sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        sppasNumAsianType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                          20, 30, 40, 50, 60, 70, 80, 90,
                                          100, 1000, 10000, 100000)
         super(sppasNumKhmer, self).__init__('khm', dictionary)

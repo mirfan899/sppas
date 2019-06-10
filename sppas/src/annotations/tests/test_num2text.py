@@ -3,6 +3,7 @@ import os
 import unittest
 
 from sppas import sppasTypeError, sppasValueError, sppasDictRepl, paths
+from sppas.src.annotations.TextNorm.num2letter import sppasNum
 from sppas.src.annotations.TextNorm.num2text.construct import sppasNumConstructor
 from sppas.src.utils.makeunicode import u
 
@@ -70,11 +71,36 @@ class sppasNum2TextTest(unittest.TestCase):
         self.dict_eng = sppasDictRepl(os.path.join(paths.resources, 'num', 'eng_num.repl'), nodump=True)
         self.dict_jpn = sppasDictRepl(os.path.join(paths.resources, 'num', 'jpn_num.repl'), nodump=True)
         self.dict_spa = sppasDictRepl(os.path.join(paths.resources, 'num', 'spa_num.repl'), nodump=True)
+        self.dict_por = sppasDictRepl(os.path.join(paths.resources, 'num', 'por_num.repl'), nodump=True)
+        self.dict_ita = sppasDictRepl(os.path.join(paths.resources, 'num', 'ita_num.repl'), nodump=True)
+        self.dict_khm = sppasDictRepl(os.path.join(paths.resources, 'num', 'khm_num.repl'), nodump=True)
+        self.dict_pol = sppasDictRepl(os.path.join(paths.resources, 'num', 'pol_num.repl'), nodump=True)
+        self.dict_vie = sppasDictRepl(os.path.join(paths.resources, 'num', 'vie_num.repl'), nodump=True)
+        self.dict_cmn = sppasDictRepl(os.path.join(paths.resources, 'num', 'cmn_num.repl'), nodump=True)
 
+        # new converter
         self.num_fra = sppasNumConstructor.construct('fra', self.dict_fra)
         self.num_eng = sppasNumConstructor.construct('eng', self.dict_eng)
         self.num_jpn = sppasNumConstructor.construct('jpn', self.dict_jpn)
         self.num_spa = sppasNumConstructor.construct('spa', self.dict_spa)
+        self.num_por = sppasNumConstructor.construct('por', self.dict_por)
+        self.num_ita = sppasNumConstructor.construct('ita', self.dict_ita)
+        self.num_khm = sppasNumConstructor.construct('khm', self.dict_khm)
+        self.num_pol = sppasNumConstructor.construct('pol', self.dict_pol)
+        self.num_vie = sppasNumConstructor.construct('vie', self.dict_vie)
+        self.num_cmn = sppasNumConstructor.construct('cmn', self.dict_cmn)
+
+        # old converter
+        self.old_num_fra = sppasNum('fra')
+        self.old_num_eng = sppasNum('eng')
+        self.old_num_jpn = sppasNum('jpn')
+        self.old_num_spa = sppasNum('spa')
+        self.old_num_por = sppasNum('por')
+        self.old_num_ita = sppasNum('ita')
+        self.old_num_khm = sppasNum('khm')
+        self.old_num_pol = sppasNum('pol')
+        self.old_num_vie = sppasNum('vie')
+        self.old_num_cmn = sppasNum('cmn')
 
     # -----------------------------------------------------------------------
 
@@ -151,3 +177,36 @@ class sppasNum2TextTest(unittest.TestCase):
 
         self.assertEqual(u("setecientos-treinta-y-nueve-mil-cuatrocientos-noventa-y-nueve"),
                          self.num_spa.convert(739499))
+
+    # -----------------------------------------------------------------------
+
+    def test_por(self):
+        """... number to letter in portuguese"""
+
+        por_old_conv_for_hundreds = [self.old_num_por.convert(str(i)) for i in range(500)]
+        por_new_conv_for_hundreds = [self.num_por.convert(i) for i in range(500)]
+
+        self.assertEqual(por_old_conv_for_hundreds, por_new_conv_for_hundreds)
+
+        por_old_conv_for_thousand = [self.old_num_por.convert(str(i)) for i in range(1000, 2000)]
+        por_new_conv_for_thousand = [self.num_por.convert(i) for i in range(1000, 2000)]
+
+        self.assertEqual(por_old_conv_for_thousand, por_new_conv_for_thousand)
+
+        self.assertEqual(u('um-milhão-duzentos-e-seis'), self.num_por.convert(1000206))
+
+        self.assertEqual(u('setecentos-milhões-quatrocentos-e-seis'), self.num_por.convert(700000406))
+
+    # -----------------------------------------------------------------------
+
+    def test_ita(self):
+        """... number to letter in italian"""
+        ita_old_conv_for_hundreds = [self.old_num_ita.convert(str(i)) for i in range(500)]
+        ita_new_conv_for_hundreds = [self.num_ita.convert(i) for i in range(500)]
+
+        self.assertEqual(ita_old_conv_for_hundreds, ita_new_conv_for_hundreds)
+
+        ita_old_conv_for_thousand = [self.old_num_ita.convert(str(i)) for i in range(1000, 2000)]
+        ita_new_conv_for_thousand = [self.num_ita.convert(i) for i in range(1000, 2000)]
+
+        self.assertEqual(ita_old_conv_for_thousand, ita_new_conv_for_thousand)

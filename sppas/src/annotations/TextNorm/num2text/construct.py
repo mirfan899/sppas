@@ -40,6 +40,9 @@ from .num_spa import sppasNumSpanish
 from .num_ita import sppasNumItalian
 from .num_khm import sppasNumKhmer
 from .num_vie import sppasNumVietnamese
+from .num_cmn import sppasNumMandarinChinese
+from .por_num import sppasNumPortuguese
+from .num_pol import sppasNumPolish
 
 from .num_asian_lang import sppasNumAsianType
 from .num_und import sppasNumUnd
@@ -58,6 +61,9 @@ class sppasNumConstructor(object):
         "khm": sppasNumKhmer,
         "vie": sppasNumVietnamese,
         "jpn": sppasNumJapanese,
+        "cmn": sppasNumMandarinChinese,
+        "por": sppasNumPortuguese,
+        "pol": sppasNumPolish,
     }
 
     # ---------------------------------------------------------------------------

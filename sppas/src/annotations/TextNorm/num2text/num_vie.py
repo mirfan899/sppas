@@ -39,7 +39,7 @@ from .num_europ_lang import sppasNumEuropeanType
 
 class sppasNumVietnamese(sppasNumEuropeanType):
 
-    def __init__(self):
+    def __init__(self, dictionary):
         """Create an instance of sppasNumVietnamese.
 
         :returns: (sppasNumVietnamese)
@@ -48,7 +48,7 @@ class sppasNumVietnamese(sppasNumEuropeanType):
         sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                          20, 30, 40, 50, 60, 70, 80, 90,
                                          100, 1000, 10000, 100000,)
-        super(sppasNumVietnamese, self).__init__('vie')
+        super(sppasNumVietnamese, self).__init__('vie', dictionary)
 
     # -----------------------------------------------------------------------
 

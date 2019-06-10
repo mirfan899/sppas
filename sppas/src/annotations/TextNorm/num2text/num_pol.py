@@ -35,18 +35,15 @@ from .num_europ_lang import sppasNumEuropeanType
 # ---------------------------------------------------------------------------
 
 
-class sppasNumItalian(sppasNumEuropeanType):
-    """Return an instance of sppasNumItalian
+class sppasNumPolish(sppasNumEuropeanType):
+    """Return an instance of sppasNumPolish
 
-    :retruns: (sppasNumItalian)
+    :retruns: (sppasNumPolish)
 
     """
     def __init__(self, dictionary):
+        # Very important if sppasNumEuropeanType.NUMBER_LIST has been modified before !
         sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
                                             11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                                            21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                                            40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
-        super(sppasNumItalian, self).__init__('ita', dictionary)
-        self.separator = "-"
-
-
+                                            30, 40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
+        super(sppasNumPolish, self).__init__('pol', dictionary)

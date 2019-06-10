@@ -63,7 +63,8 @@ class sppasNumBase(object):
 
         elif self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
-            if dictionary.is_key('10000'):
+            lang_except = ('vie')
+            if dictionary.is_key('10000') and lang not in lang_except:
                 has_tenth_of_thousand = True
 
             if has_tenth_of_thousand is True\

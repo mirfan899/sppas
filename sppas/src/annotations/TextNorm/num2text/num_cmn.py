@@ -28,25 +28,24 @@
         This banner notice must not be removed.
 
         ---------------------------------------------------------------------
+
 """
 
-from .num_europ_lang import sppasNumEuropeanType
+from .num_asian_lang import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
 
 
-class sppasNumItalian(sppasNumEuropeanType):
-    """Return an instance of sppasNumItalian
+class sppasNumMandarinChinese(sppasNumAsianType):
 
-    :retruns: (sppasNumItalian)
-
-    """
     def __init__(self, dictionary):
-        sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-                                            11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
-                                            21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-                                            40, 50, 60, 70, 80, 90, 100, 1000, 1000000, 1000000000)
-        super(sppasNumItalian, self).__init__('ita', dictionary)
-        self.separator = "-"
+        """Create an instance of sppasNumMandarinChinese.
 
+        :returns: (sppasNumMandarinChinese)
 
+        """
+        # Very important if sppasNumAsianType.NUMBER_LIST has been modified before !
+        sppasNumAsianType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                                         20, 30, 40, 50, 60, 70, 80, 90,
+                                         100, 1000, 10000,)
+        super(sppasNumMandarinChinese, self).__init__('cmn', dictionary)
