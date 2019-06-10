@@ -39,80 +39,108 @@ from sppas import sppasLocation, sppasInterval
 # ---------------------------------------------------------------------------
 
 
-class sppasWindow(object):
+class sppasTierWindow(object):
+    """Windowing system on a tier.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2017  Brigitte Bigi
+
+    Support windows in the time domain or with tag separators, both with or
+    with overlaps among windows.
+
+    """
 
     def __init__(self, tier):
-        """Return an instance of a sppaswindow.
+        """Create an instance of a sppaswindow.
 
         :param tier: (sppasTier) Tier to analyze
 
         """
         if isinstance(tier, sppasTier) is False:
-            raise sppasTypeError(tier, sppasTier)
+            raise sppasTypeError(tier, "sppasTier")
 
         self.__tier = tier
 
         if tier.is_disjoint():
             raise NotImplementedError('sppasWindow does not support disjoint interval tiers.')
 
-    # -------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    def time_split(self, start_time, end_time, step, delta=0.5):
-        """Return set of annotations within a time window.
+    def time_split(self, duration, step, delta=0.6):
+        """Return a set of annotations within a time window.
 
-        :param start_time: (float) the time of the beginning of the window
-        :param end_time: (float) the time of the end of the window
-        :param step: (float) time period between two windows
+        :param duration: (float) the duration of a window
+        :param step: (float) the step duration
         :param delta: (float) percentage of confidence for an overlapping label
         :returns: (sppasAnnSet) Set of sppasAnnotation
+        :raises: sppasTypeError, ValueError
 
         """
-        for item in (start_time, end_time, step, delta):
-            if isinstance(item, (int, float)) is False:
-                raise sppasTypeError(item, "float")
+        if self.__tier.is_int() is True and isinstance(duration, int) is False:
+            raise sppasTypeError(duration, "int")
+        if self.__tier.is_float() is True and isinstance(duration, float) is False:
+            raise sppasTypeError(duration, "float")
 
-        ann_set = sppasAnnSet()
+        # todo: test duration > step
+
         ann_set_list = list()
+        start_time = self.__tier.get_first_point().get_midpoint()
+        end_time = self.__tier.get_last_point().get_midpoint()
 
-        for i in sppasWindow.drange(start_time, end_time, step):
-            # find annotations on the current time intervals
-            anns = self.__tier.find(i, i+step, overlaps=True)
+        for i in sppasTierWindow.drange(start_time, end_time, step):
+            #print(i, i+duration)
+            ann_set = sppasAnnSet()
+            # find annotations on the current time interval
+            anns = self.__tier.find(i, i+duration, overlaps=True)
             if len(anns) > 0:
                 # remove overlapping annotations if not overlapping enough
                 if self.__tier.is_interval():
                     for ann in reversed(anns):
                         begin = ann.get_location().get_best().get_begin().get_midpoint()
                         dur = ann.get_location().get_best().duration().get_value()
-                        overlap_point = begin + (dur * delta)
-                        if overlap_point < i or overlap_point > (i+step):
+                        overlap_point = float(begin) + (float(dur) * delta)
+                        if overlap_point < float(i) or overlap_point > float((i+duration)):
                             anns.remove(ann)
 
-                # add annotations in the set
-                for ann in anns:
-                    ann_set.append(ann, list())
+                # add annotations in the set, add the set in the list
+                if len(anns) > 0:
+                    for ann in anns:
+                        ann_set.append(ann, list())
+                    ann_set_list.append(ann_set)
 
         return ann_set_list
 
-    # ---------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
-    # ---------------------------------------------------------------------------
+    # -----------------------------------------------------------------------
 
     @staticmethod
     def drange(x, y, jump):
-        """Mimics 'range' with float values.
+        """Mimics 'range' with either float or int values.
 
         :param x: start value
         :param y: end value
         :param jump: step value
 
         """
-        x = decimal.Decimal(x)
-        y = decimal.Decimal(y)
-        while x < y:
-            yield float(x)
-            x += decimal.Decimal(jump)
+        if isinstance(jump, int):
+            x = int(x)
+            y = int(y)
+            while x < y:
+                yield x
+                x += jump
 
-    # ---------------------------------------------------------------------------
+        elif isinstance(jump, float):
+            x = decimal.Decimal(x)
+            y = decimal.Decimal(y)
+            while x < y:
+                yield float(x)
+                x += decimal.Decimal(jump)
+
+    # -----------------------------------------------------------------------
 
     def anchor_split(self, separators):
         """Return set of annotations within a window given by a separator.

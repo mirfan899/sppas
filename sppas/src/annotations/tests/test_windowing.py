@@ -3,49 +3,126 @@ import unittest
 from sppas import sppasTier, sppasAnnotation, sppasLabel, sppasTag, sppasTypeError
 from sppas import sppasLocation, sppasPoint
 from sppas import sppasInterval
-from sppas.src.annotations.Occurrences.windowing import sppasWindow
+from sppas.src.annotations.Occurrences.windowing import sppasTierWindow
 
 
 class WindowingTest(unittest.TestCase):
     def setUp(self):
-        self.tier = sppasTier()
-        sentence = ['le', 'petit', 'chat', 'chat', 'tout', 'beau']
-        labels1 = list()
-        labels2 = list()
-        for word in sentence[:2]:
-            labels1.append(sppasLabel(sppasTag(word, 'str')))
-        for word in sentence[2:]:
-            labels2.append(sppasLabel(sppasTag(word, 'str')))
 
-        ann1 = sppasAnnotation(sppasLocation
-                               (sppasInterval
-                                (sppasPoint(0.0), sppasPoint(1.2))), labels1)
-        ann2 = sppasAnnotation(sppasLocation
-                               (sppasInterval
-                                (sppasPoint(1.4), sppasPoint(2.2))), labels2)
-        self.tier.append(ann1)
-        self.tier.append(ann2)
+        # A sentence with 119 entries.
+        self.sent = "#" \
+               " David Lightman est plus intéressé par son ordinateur que par ses études +" \
+               " ce qui ne l' inquiète pas puisqu' il se sait capable de modifier lui-même +" \
+               " ses notes en agissant sur l' ordinateur de l'école" \
+               " # " \
+               " Un jour + " \
+               " en cherchant à percer le code d' accès d' un nouveau jeu vidéo +" \
+               " il se branche accidentellement +" \
+               " sur l'ordinateur du département de la Défense +" \
+               " qui prend au sérieux ce qui n' était au départ qu' un jeu" \
+               " #" \
+               " Pour les besoins d' une scène +" \
+               " Matthew Broderick s'est entraîné pendant deux mois +" \
+               " sur les jeux Galaxian et Galaga grâce à des bornes d' arcade +" \
+               " livrées directement chez lui par le studio" \
+               " #"
 
-    def test_time_split(self):
-        my_window1 = sppasWindow(self.tier)
-        my_split1 = my_window1.time_split(0.0, 0.9, 0.4, 0.9)
-        my_window2 = sppasWindow(self.tier)
-        my_split2 = my_window2.time_split(1.4, 2.2, 0.4)
+    # -----------------------------------------------------------------------
 
-        self.assertNotEqual(my_split1, my_split2)
-        self.assertEqual(1, len(my_split1))
-        self.assertEqual(1, len(my_split2))
+    def test_time_split_int_points(self):
+        tier = sppasTier()
+        for i, entry in enumerate(self.sent.split()):
+            tier.create_annotation(
+                sppasLocation(sppasPoint(i)),
+                sppasLabel(sppasTag(entry)))
+        wp = sppasTierWindow(tier)
 
-        class Hello(object):
-            def __init__(self):
-                pass
+        # does not work as expected (11 words in each window)
+        sp10 = wp.time_split(10, 10)
+        self.assertEqual(12, len(sp10))
+        for i in range(11):
+            print(i)
+            for a in sp10[i]:
+                print(a)
+            self.assertEqual(10, len(sp10[i]))
+        self.assertEqual(9, len(sp10[11]))
 
-        with self.assertRaises(sppasTypeError) as error:
-            my_window3 = sppasWindow(Hello())
+    # -----------------------------------------------------------------------
 
-            self.assertTrue(isinstance(error.exception, sppasTypeError))
+    def test_time_split_int_intervals(self):
+        tier = sppasTier()
+        for i, entry in enumerate(self.sent.split()):
+            tier.create_annotation(
+                sppasLocation(sppasInterval(sppasPoint(i), sppasPoint(i+1))),
+                sppasLabel(sppasTag(entry)))
+        wi = sppasTierWindow(tier)
 
-        with self.assertRaises(sppasTypeError) as error:
-            my_split3 = my_window2.time_split('a', Hello(), 12)
+        #with self.assertRaises(sppasTypeError):
+        #    w.time_split(2.1)
 
-            self.assertTrue(isinstance(error.exception, sppasTypeError))
+        # Continuous windows
+
+        si10 = wi.time_split(10, 10)
+        self.assertEqual(12, len(si10))
+        for i in range(11):
+            self.assertEqual(10, len(si10[i]))
+        self.assertEqual(9, len(si10[-1]))
+
+        # Overlapping windows
+
+        si5 = wi.time_split(10, 5)
+        self.assertEqual(24, len(si5))
+        for i in range(22):
+            self.assertEqual(10, len(si5[i]))
+        self.assertEqual(9, len(si5[-2]))
+        self.assertEqual(4, len(si5[-1]))
+
+    # -----------------------------------------------------------------------
+
+    def test_time_split_float_intervals(self):
+        tier = sppasTier()
+        for i, entry in enumerate(self.sent.split()):
+            tier.create_annotation(
+                sppasLocation(sppasInterval(sppasPoint(float(i)), sppasPoint(float(i)+1.))),
+                sppasLabel(sppasTag(entry)))
+        wi = sppasTierWindow(tier)
+
+        # Continuous windows
+
+        si10 = wi.time_split(10., 10.)
+        self.assertEqual(12, len(si10))
+        for i in range(11):
+            self.assertEqual(10, len(si10[i]))
+        self.assertEqual(9, len(si10[-1]))
+
+        # Overlapping windows (no need of delta)
+
+        si5 = wi.time_split(10., 5.)
+        self.assertEqual(24, len(si5))
+        for i in range(22):
+            self.assertEqual(10, len(si5[i]))
+        self.assertEqual(9, len(si5[-2]))
+        self.assertEqual(4, len(si5[-1]))
+
+        # Need of delta
+
+        si10d = wi.time_split(10.5, 5., 0.1)
+        self.assertEqual(24, len(si10d))
+        for i in range(22):
+            self.assertEqual(11, len(si10d[i]))
+        self.assertEqual(9, len(si10d[-2]))
+        self.assertEqual(4, len(si10d[-1]))
+
+        si10d = wi.time_split(10.5, 5.)
+        self.assertEqual(24, len(si10d))
+        for i in range(22):
+            self.assertEqual(10, len(si10d[i]))
+        self.assertEqual(9, len(si10d[-2]))
+        self.assertEqual(4, len(si10d[-1]))
+
+        si10d = wi.time_split(10.5, 5., 0.9)
+        self.assertEqual(24, len(si10d))
+        for i in range(22):
+            self.assertEqual(10, len(si10d[i]))
+        self.assertEqual(9, len(si10d[-2]))
+        self.assertEqual(4, len(si10d[-1]))
