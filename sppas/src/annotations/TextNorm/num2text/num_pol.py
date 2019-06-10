@@ -41,6 +41,7 @@ class sppasNumPolish(sppasNumEuropeanType):
     :retruns: (sppasNumPolish)
 
     """
+    # reference https://www.languagesandnumbers.com/comment-compter-en-polonais/fr/pol/
     def __init__(self, dictionary):
         # Very important if sppasNumEuropeanType.NUMBER_LIST has been modified before !
         sppasNumEuropeanType.NUMBER_LIST = (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10,

@@ -233,3 +233,10 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual(u('siedem_tysięcy_dwieście_czterdzieści_pięć'), self.num_pol.convert(7245))
         self.assertEqual(u('milion_dwa_tysiące_osiemdziesiąt_dwa'), self.num_pol.convert(1002082))
         self.assertEqual(u('miliard_dwa_tysiące_osiemdziesiąt_dwa'), self.num_pol.convert(1000002082))
+
+    # -----------------------------------------------------------------------
+
+    def test_vie(self):
+        """... number to letter in Vietnamese"""
+        vie_old_conv_for_hundreds = [self.old_num_vie.convert(str(i)) for i in range(500)]
+        vie_new_conv_for_hundreds = [self.num_vie.convert(i) for i in range(500)]
