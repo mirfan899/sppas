@@ -238,5 +238,10 @@ class sppasNum2TextTest(unittest.TestCase):
 
     def test_vie(self):
         """... number to letter in Vietnamese"""
-        vie_old_conv_for_hundreds = [self.old_num_vie.convert(str(i)) for i in range(500)]
-        vie_new_conv_for_hundreds = [self.num_vie.convert(i) for i in range(500)]
+        self.assertEqual(u('hai_mươi_hai'), self.num_vie.convert(22))
+        self.assertEqual(u('bốn_trăm_sáu_mươi_hai'), self.num_vie.convert(462))
+        self.assertEqual(u('bảy_nghìn_hai_trăm_bốn_mươi_lăm'), self.num_vie.convert(7245))
+        self.assertEqual(u('một_triệu_hai_nghìn_tám_mươi_hai'), self.num_vie.convert(1002082))
+        self.assertEqual(u('một_tỷ_hai_nghìn_tám_mươi_hai'), self.num_vie.convert(1000002082))
+
+
