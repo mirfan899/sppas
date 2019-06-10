@@ -201,12 +201,9 @@ class sppasNum2TextTest(unittest.TestCase):
 
     def test_ita(self):
         """... number to letter in italian"""
-        ita_old_conv_for_hundreds = [self.old_num_ita.convert(str(i)) for i in range(500)]
-        ita_new_conv_for_hundreds = [self.num_ita.convert(i) for i in range(500)]
-
-        self.assertEqual(ita_old_conv_for_hundreds, ita_new_conv_for_hundreds)
-
-        ita_old_conv_for_thousand = [self.old_num_ita.convert(str(i)) for i in range(1000, 2000)]
-        ita_new_conv_for_thousand = [self.num_ita.convert(i) for i in range(1000, 2000)]
-
-        self.assertEqual(ita_old_conv_for_thousand, ita_new_conv_for_thousand)
+        self.assertEqual(u('nove'), self.num_ita.convert(9))
+        self.assertEqual(u('ventidue'), self.num_ita.convert(22))
+        self.assertEqual(u('quattrocentosessantadue'), self.num_ita.convert(462))
+        self.assertEqual(u('settemiladuecentoquarantacinque'), self.num_ita.convert(7245))
+        self.assertEqual(u('un_milione_duemilaottantadue'), self.num_ita.convert(1002082))
+        self.assertEqual(u('un_miliardo_duemilaottantadue'), self.num_ita.convert(1000002082))
