@@ -393,6 +393,7 @@ class sppasEnableAnnotation(sppasPanel):
         lang = choice.GetValue()
         if lang == LANG_NONE:
             lang = None
+
         self.__annparam.set_lang(lang)
 
     # -----------------------------------------------------------------------
