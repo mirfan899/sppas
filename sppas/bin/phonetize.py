@@ -255,7 +255,7 @@ if __name__ == "__main__":
         # an argument 'unk' must exists (which is in the options).
         # -------------------------------
 
-        if not args.unk:
+        if not args.phonunk:
             print("argparse.py: error: option -unk is required")
             sys.exit(1)
 
@@ -269,4 +269,4 @@ if __name__ == "__main__":
             map_table = sppasMapping(args.m)
         phonetizer = sppasDictPhonetizer(pdict, mapping)
         for line in sys.stdin:
-            print("{:s}".format(phonetizer.phonetize(line, args.unk)))
+            print("{:s}".format(phonetizer.phonetize(line, args.phonunk)))
