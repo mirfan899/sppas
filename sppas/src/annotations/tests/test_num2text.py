@@ -1,4 +1,4 @@
-
+# -*- coding: UTF-8 -*-
 import os
 import unittest
 
@@ -133,8 +133,8 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual('un_million', res_million_fra)
         self.assertEqual('hundred_twenty_three_million_four_hundred_fifty_six_thousand_seven_hundred_eighty_nine', res_eng)
         self.assertEqual('zero_zero_zero_zero_zero_hundred_twenty_three', res_zero_english)
-        self.assertEqual('一億二千三百四十五万六千七百八十九', res_jpn)
-        self.assertEqual('二十二', res_jpn_twenty)
+        self.assertEqual(u('一億二千三百四十五万六千七百八十九'), res_jpn)
+        self.assertEqual(u('二十二'), res_jpn_twenty)
 
     # -----------------------------------------------------------------------
 
