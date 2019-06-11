@@ -162,7 +162,6 @@ class sppasNum2TextTest(unittest.TestCase):
 
     def test_spa(self):
         """... number to letter in Spanish  """
-
         ret = [self.num_spa.convert(i) for i in range(41)]
         self.assertEquals(ref_spa, ret)
 
@@ -182,7 +181,6 @@ class sppasNum2TextTest(unittest.TestCase):
 
     def test_por(self):
         """... number to letter in portuguese"""
-
         por_old_conv_for_hundreds = [self.old_num_por.convert(str(i)) for i in range(500)]
         por_new_conv_for_hundreds = [self.num_por.convert(i) for i in range(500)]
 
@@ -244,4 +242,11 @@ class sppasNum2TextTest(unittest.TestCase):
         self.assertEqual(u('một_triệu_hai_nghìn_tám_mươi_hai'), self.num_vie.convert(1002082))
         self.assertEqual(u('một_tỷ_hai_nghìn_tám_mươi_hai'), self.num_vie.convert(1000002082))
 
+    # -----------------------------------------------------------------------
 
+    def test_cmn(self):
+        """... number to letter in mandarin chinese"""
+        cmn_old_conv_for_hundreds = [self.old_num_cmn.convert(str(i)) for i in range(500)]
+        cmn_new_conv_for_hundreds = [self.num_cmn.convert(i) for i in range(500)]
+
+        self.assertEqual(cmn_old_conv_for_hundreds, cmn_new_conv_for_hundreds)
