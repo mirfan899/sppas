@@ -227,11 +227,18 @@ class sppasNumBase(object):
 
             if mult is None:
                 if int(str(number)[1:]) == 0:
-                    return self._lang_dict['1000']
+                    if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
+                        return self._lang_dict['1']\
+                               + self._lang_dict['1000']
+                    else:
+                        return self._lang_dict['1']\
+                               + self.separator\
+                               + self._lang_dict['1000']
                 else:
                     if self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                        return self._lang_dict['1000'] \
-                                + self._hundreds(number % 1000)
+                        return self._lang_dict['1']\
+                               + self._lang_dict['1000'] \
+                               + self._hundreds(number % 1000)
                     else:
                         return self._lang_dict['1000'] \
                                 + self.separator\

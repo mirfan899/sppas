@@ -109,22 +109,22 @@ class sppasNumAsianType(sppasNumBase):
             return self._tenth_of_thousands(number)
         else:
             mult = None
-            if int(number/100000000)*100000000 != 100000000:
-                mult = self._thousands(int(number/100000000))
+            if int(number/1000000000)*1000000000 != 1000000000:
+                mult = self._thousands(int(number/1000000000))
 
             if mult is None:
                 if int(str(number)[1:]) == 0:
                     return self._lang_dict['1'] \
-                           + self._lang_dict['100000000']
+                           + self._lang_dict['1000000000']
                 else:
                     return self._lang_dict['1'] \
-                           + self._lang_dict['100000000'] \
-                           + self._tenth_of_thousands(number % 100000000)
+                           + self._lang_dict['1000000000'] \
+                           + self._tenth_of_thousands(number % 1000000000)
             else:
                 if int(str(number)[1:]) == 0:
-                    return mult + self._lang_dict['10000']
+                    return mult + self._lang_dict['1000000000']
                 else:
-                    return mult + self._lang_dict['10000'] \
-                            + self._tenth_of_thousands(number % 100000000)
+                    return mult + self._lang_dict['1000000000'] \
+                            + self._tenth_of_thousands(number % 1000000000)
 
 # ---------------------------------------------------------------------------

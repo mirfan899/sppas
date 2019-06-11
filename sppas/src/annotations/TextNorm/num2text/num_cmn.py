@@ -30,7 +30,6 @@
         ---------------------------------------------------------------------
 
 """
-
 from .num_asian_lang import sppasNumAsianType
 
 # ---------------------------------------------------------------------------
@@ -49,3 +48,64 @@ class sppasNumMandarinChinese(sppasNumAsianType):
                                          20, 30, 40, 50, 60, 70, 80, 90,
                                          100, 1000, 10000,)
         super(sppasNumMandarinChinese, self).__init__('cmn', dictionary)
+
+    # ---------------------------------------------------------------------------
+
+    def _hundreds(self, number):
+        """"Return the "wordified" version of a hundred number.
+
+        Returns the word corresponding to the given hundred number within the
+        current language dictionary
+
+        :param number: (int) number to convert in word
+        :returns: (str)
+
+        """
+        if number < 100:
+            return self._tenth(number)
+        else:
+            mult = None
+            if int(str(number)[0])*100 != 100:
+                mult = self._units(int(number/100))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1']\
+                           + self._lang_dict['100']
+                else:
+                    return self._lang_dict['1']\
+                           + self._lang_dict['100'] \
+                           + self._lang_dict['0'] \
+                           + self._tenth(number % 100)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self._lang_dict['100'] \
+                           + self._lang_dict['0'] \
+                           + self._tenth(number % 100)
+                else:
+                    return mult + self._lang_dict['100'] \
+                           + self._lang_dict['0'] \
+                           + self._tenth(number % 100)
+
+    # ---------------------------------------------------------------------------
+
+    def _billions(self, number):
+        if number < 100000000:
+            return self._tenth_of_thousands(number)
+        else:
+            mult = None
+            if int(number/1000000000)*1000000000 != 1000000000:
+                mult = self._thousands(int(number/1000000000))
+
+            if mult is None:
+                if int(str(number)[1:]) == 0:
+                    return self._lang_dict['1000000000']
+                else:
+                    return self._lang_dict['1000000000'] \
+                           + self._tenth_of_thousands(number % 1000000000)
+            else:
+                if int(str(number)[1:]) == 0:
+                    return mult + self._lang_dict['1000000000']
+                else:
+                    return mult + self._lang_dict['1000000000'] \
+                            + self._tenth_of_thousands(number % 1000000000)
