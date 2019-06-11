@@ -246,7 +246,13 @@ class sppasNum2TextTest(unittest.TestCase):
 
     def test_cmn(self):
         """... number to letter in mandarin chinese"""
-        cmn_old_conv_for_hundreds = [self.old_num_cmn.convert(str(i)) for i in range(500)]
-        cmn_new_conv_for_hundreds = [self.num_cmn.convert(i) for i in range(500)]
+        cmn_old_conv_for_hundreds = [self.old_num_cmn.convert(str(i)) for i in range(20, 110)]
+        cmn_new_conv_for_hundreds = [self.num_cmn.convert(i) for i in range(20, 110)]
 
         self.assertEqual(cmn_old_conv_for_hundreds, cmn_new_conv_for_hundreds)
+
+        self.assertEqual(u('二十二'), self.num_cmn.convert(22))
+        self.assertEqual(u('四百零六十二'), self.num_cmn.convert(462))
+        self.assertEqual(u('七千二百零四十五'), self.num_cmn.convert(7245))
+        self.assertEqual(u('一百万二千八十二'), self.num_cmn.convert(1002082))
+        self.assertEqual(u('十亿二千八十二'), self.num_cmn.convert(1000002082))
