@@ -273,6 +273,12 @@ if __name__ == "__main__":
             punct = sppasVocabulary(punct_file, nodump=True)
             normalizer.set_punct(punct)
 
+        # Number dictionary
+        number_filename = os.path.join(paths.resources, 'num', lang.lower() + '_num.repl')
+        if os.path.exists(number_filename) is True:
+            numbers = sppasDictRepl(number_filename, nodump=True)
+            normalizer.set_num(numbers)
+
         # Will output the faked orthography
         for line in sys.stdin:
             tokens = normalizer.normalize(line)

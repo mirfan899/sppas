@@ -227,6 +227,10 @@ class sppasTierWindow(object):
             ann_set = self.search_for_annotations(i, i+duration, delta)
             ann_set_list.append(ann_set)
 
+            # Stop if end!
+            if i+duration > end_time:
+                break
+
         return ann_set_list
 
     # -----------------------------------------------------------------------

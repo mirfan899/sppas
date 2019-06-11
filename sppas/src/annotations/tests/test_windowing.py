@@ -193,11 +193,10 @@ class WindowingTest(unittest.TestCase):
         # Overlapping windows
 
         si5 = wi.time_split(10, 5)
-        self.assertEqual(24, len(si5))
+        self.assertEqual(23, len(si5))
         for i in range(22):
             self.assertEqual(10, len(si5[i]))
-        self.assertEqual(9, len(si5[-2]))
-        self.assertEqual(4, len(si5[-1]))
+        self.assertEqual(9, len(si5[-1]))
 
     # -----------------------------------------------------------------------
 
@@ -222,34 +221,30 @@ class WindowingTest(unittest.TestCase):
         # Overlapping windows (no need of delta)
 
         si5 = wi.time_split(10., 5.)
-        self.assertEqual(24, len(si5))
+        self.assertEqual(23, len(si5))
         for i in range(22):
             self.assertEqual(10, len(si5[i]))
-        self.assertEqual(9, len(si5[-2]))
-        self.assertEqual(4, len(si5[-1]))
+        self.assertEqual(9, len(si5[-1]))
 
         # Need of delta
 
         si10d = wi.time_split(10.5, 5., 0.1)
-        self.assertEqual(24, len(si10d))
+        self.assertEqual(23, len(si10d))
         for i in range(22):
             self.assertEqual(11, len(si10d[i]))
-        self.assertEqual(9, len(si10d[-2]))
-        self.assertEqual(4, len(si10d[-1]))
+        self.assertEqual(9, len(si10d[-1]))
 
         si10d = wi.time_split(10.5, 5.)
-        self.assertEqual(24, len(si10d))
+        self.assertEqual(23, len(si10d))
         for i in range(22):
             self.assertEqual(10, len(si10d[i]))
-        self.assertEqual(9, len(si10d[-2]))
-        self.assertEqual(4, len(si10d[-1]))
+        self.assertEqual(9, len(si10d[-1]))
 
         si10d = wi.time_split(10.5, 5., 0.9)
-        self.assertEqual(24, len(si10d))
+        self.assertEqual(23, len(si10d))
         for i in range(22):
             self.assertEqual(10, len(si10d[i]))
-        self.assertEqual(9, len(si10d[-2]))
-        self.assertEqual(4, len(si10d[-1]))
+        self.assertEqual(9, len(si10d[-1]))
 
     # -----------------------------------------------------------------------
 

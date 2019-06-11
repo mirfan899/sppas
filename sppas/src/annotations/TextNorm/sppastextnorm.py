@@ -36,6 +36,7 @@
 
 """
 import os
+import logging
 
 from sppas.src.config import paths
 from sppas.src.config import symbols
@@ -129,6 +130,7 @@ class sppasTextNorm(sppasBaseAnnotation):
             numbers = sppasDictRepl(number_filename, nodump=True)
         else:
             numbers = sppasDictRepl()
+            logging.warning('Dictionary of numbers not found.')
         self.__normalizer.set_num(numbers)
 
     # -----------------------------------------------------------------------

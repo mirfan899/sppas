@@ -256,7 +256,7 @@ class sppasActionAnnotate(sppasPanel):
 
         # The language (if any)
         stl = sppasStaticText(self, label="STEP 1: fix the language(s)")
-        self.choice = self.__create_lang_btn()
+        choice = self.__create_lang_btn()
 
         # The buttons to select annotations (switch to other pages)
         sta = sppasStaticText(self, label="STEP 2: select the annotations to perform")
@@ -283,7 +283,7 @@ class sppasActionAnnotate(sppasPanel):
         # Organize all the objects
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(stl, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(self.choice, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
+        sizer.Add(choice, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
 
         sizer.Add(sta, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
         sizer.Add(s1, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
@@ -386,8 +386,10 @@ class sppasActionAnnotate(sppasPanel):
     # -----------------------------------------------------------------------
 
     def _on_lang_changed(self, event):
-        logging.debug('Lang changed:')
-        lang = self.choice.GetValue()
+        choice = event.GetEventObject()
+        lang = choice.GetValue()
+        logging.debug('Lang changed: {:s}'.format(lang))
+
         for i in range(self.__param.get_step_numbers()):
             a = self.__param.get_step(i)
             if len(a.get_langlist()) > 0:
@@ -418,7 +420,8 @@ class sppasActionAnnotate(sppasPanel):
                         ann_enabled[x] = True
                 # at least one annotation can be performed
                 # (no need of the lang or lang is defined)
-                if a.get_lang() is None or (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
+                if a.get_lang() is None or \
+                        (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
                     lang.append(a.get_lang())
 
         # update the button to set the language
@@ -426,6 +429,7 @@ class sppasActionAnnotate(sppasPanel):
         langs = list(set(lang))
         if None in langs:
             langs.remove(None)
+
         if len(langs) <= 1:
             mix_item = choice.FindString("MIX")
             if mix_item != wx.NOT_FOUND:
