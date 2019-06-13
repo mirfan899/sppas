@@ -130,7 +130,7 @@ class FilterProcess(object):
 
         # Indicate completed!
         progress.update(1, "Completed.\n")
-        progress.set_header("")
+        # progress.set_header("")
         progress.close()
         wx.EndBusyCursor()
 

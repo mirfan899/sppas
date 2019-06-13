@@ -52,6 +52,9 @@ sys.path.append(SPPAS)
 from sppas import sg
 from sppas import sppasParam
 from sppas import sppasAnnotationsManager
+from sppas import sppasLogSetup
+from sppas import sppasAppConfig
+
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.ui.term.textprogress import ProcessProgressTerminal
 from sppas.src.ui.term.terminalcontroller import TerminalController
@@ -82,6 +85,7 @@ parser.add_argument("-e",
                     help='Output extension. One of: {:s}'
                          ''.format(" ".join(extensions_out)))
 
+# todo: we should read sppasui.json instead...
 parser.add_argument("--momel", action='store_true',
                     help="Activate Momel")
 parser.add_argument("--intsint", action='store_true',
@@ -92,8 +96,6 @@ parser.add_argument("--tok", action='store_true',
                     help="Activate Tokenization")
 parser.add_argument("--phon", action='store_true',
                     help="Activate Phonetization")
-parser.add_argument("--chunks", action='store_true',
-                    help="Activate Chunks alignment")
 parser.add_argument("--align", action='store_true',
                     help="Activate Phones alignment")
 parser.add_argument("--syll", action='store_true',
@@ -113,7 +115,6 @@ if len(sys.argv) <= 1:
     sys.argv.append('-h')
 
 args = parser.parse_args()
-
 
 # ----------------------------------------------------------------------------
 # Automatic Annotations are here:
@@ -137,8 +138,6 @@ if args.tok:
     parameters.activate_annotation("textnorm")
 if args.phon:
     parameters.activate_annotation("phonetize")
-if args.chunks:
-    parameters.activate_annotation("chunks")
 if args.align:
     parameters.activate_annotation("alignment")
 if args.syll:
@@ -159,6 +158,12 @@ try:
     print(term.render('${BLUE} {} ${NORMAL}').format(sg.__copyright__))
     print(term.render('${BLUE} {} ${NORMAL}').format(sg.__url__))
     print(term.render('${GREEN}{:s}${NORMAL}\n').format(sep))
+
+    # Redirect all messages to a quiet logging
+    # ----------------------------------------
+    lgs = sppasLogSetup(50)
+    lgs.null_handler()
+
 except:
     print('{:s}\n'.format(sep))
     print('{}   -  Version {}'.format(sg.__name__, sg.__version__))
@@ -166,6 +171,10 @@ except:
     print(sg.__url__+'\n')
     print('{:s}\n'.format(sep))
 
+    # Redirect all messages to a quiet logging
+    # ----------------------------------------
+    lgs = sppasLogSetup(50)
+    lgs.stream_handler()
 
 # ----------------------------------------------------------------------------
 # Annotation is here

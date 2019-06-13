@@ -283,6 +283,7 @@ class sppasLog(object):
 
     def print_header(self):
         """Print the parameters information in the output file stream."""
+
         sppas_name = sg.__name__ + ' ' + info(1032, "annotations") \
                      + ' ' + sg.__version__
         sppas_copy = sg.__copyright__
@@ -292,6 +293,16 @@ class sppasLog(object):
 
         if self.logfp is not None:
             self.logfp.seek(0, 2)
+
+            self.print_separator()
+            self.print_newline()
+            self.print_message(' ' * 24 + info(1054, "annotations"))
+            self.print_newline()
+            self.print_message(' ' * 24 + info(1035, "annotations"))
+            self.print_newline()
+            self.print_separator()
+            self.print_newline()
+
             self.print_message(sppas_name)
             self.print_message(sppas_copy)
             self.print_message(sppas_url)
@@ -315,12 +326,6 @@ class sppasLog(object):
         """
         if self.parameters is None:
             return
-
-        self.print_message(' '*24 + info(1054, "annotations"))
-        self.print_newline()
-        self.print_message(' '*24 + info(1035, "annotations"))
-        self.print_separator()
-        self.print_newline()
 
         self.print_message(info(1036, "annotations") + ': ' + sppasTime().now)
         self.print_message(info(1037, "annotations") + ': ')

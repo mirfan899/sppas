@@ -47,15 +47,16 @@ from sppas import annots
 from sppas import msg
 from sppas import u
 
-from sppas.src.annotations import sppasParam, sppasAnnotationsManager
+from sppas.src.annotations import sppasParam
 from sppas.src.files import FileData, States
 
 from ..windows.book import sppasSimplebook
 from ..main_events import DataChangedEvent
 
 from .annotevent import EVT_PAGE_CHANGE
-from .annotselect import sppasAnnotations
-from .annotaction import sppasActionAnnotate
+from .annotselect import sppasAnnotationsPanel
+from .annotaction import sppasActionAnnotatePanel
+from .annotlog import sppasLogAnnotatePanel
 
 # -----------------------------------------------------------------------
 
@@ -85,23 +86,22 @@ class sppasAnnotatePanel(sppasSimplebook):
         )
         self.SetEffectsTimeouts(150, 150)
 
-        # The data this page is working on
-        self.__data = FileData()
-
         # The annotations the system can perform
         self.__param = sppasParam()
         self.__pages_annot = dict()
 
         # 1st page: the buttons to perform actions
-        self.ShowNewPage(sppasActionAnnotate(self, self.__param))
+        self.ShowNewPage(sppasActionAnnotatePanel(self, self.__param))
 
         # list of "ann_types" annotations
         for ann_type in annots.types:
-            page = sppasAnnotations(self, self.__param, ann_type)
+            page = sppasAnnotationsPanel(self, self.__param, ann_type)
             self.AddPage(page, text="")
             self.__pages_annot[ann_type] = page
 
         # 5th page: procedure outcome report
+        page = sppasLogAnnotatePanel(self, self.__param)
+        self.AddPage(page, text="")
 
         # Change the displayed page
         self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
@@ -117,24 +117,25 @@ class sppasAnnotatePanel(sppasSimplebook):
     def get_data(self):
         """Return the data currently displayed.
 
-        :return: (FileData) .
+        :return: (FileData) The workspace with files to annotate/annotated
 
         """
-        return self.__data
+        return self.__param.get_workspace()
 
     # ------------------------------------------------------------------------
 
     def set_data(self, data):
         """Assign new data to this page.
 
-        :param data: (FileData)
+        :param data: (FileData) The workspace with files to annotate/annotated
 
         """
         if isinstance(data, FileData) is False:
             raise sppasTypeError("FileData", type(data))
         logging.debug('New data to set in the annotate page. '
                       'Id={:s}'.format(data.id))
-        self.__data = data
+
+        self.__param.set_workspace(data)
 
     # -----------------------------------------------------------------------
     # Events management
@@ -143,8 +144,9 @@ class sppasAnnotatePanel(sppasSimplebook):
     def notify(self):
         """Send the EVT_DATA_CHANGED to the parent."""
         if self.GetParent() is not None:
-            self.__data.set_state(States().CHECKED)
-            evt = DataChangedEvent(data=self.__data)
+            data = self.__param.get_workspace()
+            data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -158,19 +160,22 @@ class sppasAnnotatePanel(sppasSimplebook):
         """
         try:
             destination = event.to_page
+            fct = event.fct
         except AttributeError:
             destination = "page_annot_actions"
+            fct = ""
 
-        self.show_page(destination)
+        self.show_page(destination, fct)
 
     # -----------------------------------------------------------------------
     # Public methods to navigate
     # -----------------------------------------------------------------------
 
-    def show_page(self, page_name):
+    def show_page(self, page_name, fct=""):
         """Show a page of the book.
 
         :param page_name: (str) one of 'page_annot_actions', 'page_...', ...
+        :param fct: (str) a method of the page
 
         """
         # Find the page number to switch on
@@ -181,7 +186,7 @@ class sppasAnnotatePanel(sppasSimplebook):
         if p == -1:
             p = 0
 
-        # current page number
+        # Current page number
         c = self.FindPage(self.GetCurrentPage())  # current page position
         cur_w = self.GetPage(c)  # Returns the window at the given page position
 
@@ -189,7 +194,7 @@ class sppasAnnotatePanel(sppasSimplebook):
         if c == p:
             return
 
-        # assign the effect
+        # Assign the effect
         if c < p:
             self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_TOP,
                             hideEffect=wx.SHOW_EFFECT_SLIDE_TO_TOP)
@@ -197,7 +202,14 @@ class sppasAnnotatePanel(sppasSimplebook):
             self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
                             hideEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM)
 
-        # then change to the destination page
+        # Change to the destination page
         dest_w.set_param(cur_w.get_param())
         self.ChangeSelection(p)
         dest_w.Refresh()
+
+        # Call a method of the class
+        if len(fct) > 0:
+            try:
+                getattr(dest_w, fct)()
+            except AttributeError as e:
+                logging.error("{:s}".format(str(e)))

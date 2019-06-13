@@ -270,7 +270,7 @@ class sppasPluginsManager(Thread):
         # Indicate completed!
         if self._progress is not None:
             self._progress.update(1, info(4020, "plugins") + "\n")
-            self._progress.set_header("")
+            # self._progress.set_header("")
 
         return output_lines
 

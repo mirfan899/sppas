@@ -44,6 +44,7 @@ from ..windows import sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasScrolledPanel
 from ..windows import sppasStaticLine
+from ..windows import sppasStaticText
 from ..windows.button import BitmapTextButton, sppasTextButton
 
 from .annotevent import PageChangeEvent
@@ -59,7 +60,7 @@ def _(message):
 # ---------------------------------------------------------------------------
 
 
-class sppasAnnotations(sppasScrolledPanel):
+class sppasAnnotationsPanel(sppasScrolledPanel):
     """Create a panel to fix properties of all the annotations.
 
     :author:       Brigitte Bigi
@@ -71,7 +72,7 @@ class sppasAnnotations(sppasScrolledPanel):
     """
 
     def __init__(self, parent, param, anntype=annots.types[0]):
-        super(sppasAnnotations, self).__init__(
+        super(sppasAnnotationsPanel, self).__init__(
             parent=parent,
             name="page_annot_"+anntype,
             style=wx.BORDER_NONE
@@ -133,7 +134,7 @@ class sppasAnnotations(sppasScrolledPanel):
         btn_back_top.BitmapColour = self.GetForegroundColour()
         btn_back_top.SetMinSize(wx.Size(btn_size, btn_size))
 
-        title = wx.StaticText(self, label="Annotations of type {:s}".format(self.__anntype), name="title_text")
+        title = sppasStaticText(self, label="Annotations of type {:s}".format(self.__anntype), name="title_text")
 
         sizer_top = wx.BoxSizer(wx.HORIZONTAL)
         sizer_top.Add(btn_back_top, 0, wx.RIGHT, btn_size // 4)
@@ -178,7 +179,8 @@ class sppasAnnotations(sppasScrolledPanel):
         """Send the EVT_PAGE_CHANGE to the parent."""
         if self.GetParent() is not None:
             evt = PageChangeEvent(from_page=self.GetName(),
-                                  to_page="page_annot_actions")
+                                  to_page="page_annot_actions",
+                                  fct="")
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -342,12 +344,10 @@ class sppasEnableAnnotation(sppasPanel):
                      wx.TE_AUTO_URL | \
                      wx.NO_BORDER | \
                      wx.TE_RICH
-        #sizer = wx.BoxSizer(wx.VERTICAL)
         td = sppasTextCtrl(self, value=self.__annparam.get_descr(), style=text_style)
         td.SetMinSize(wx.Size(self.fix_size(256), self.fix_size(64)))
         td.SetMinSize(wx.Size(self.fix_size(512), self.fix_size(64)))
-        #sizer.Add(td, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 12)
-        #return sizer
+
         return td
 
     # ------------------------------------------------------------------------

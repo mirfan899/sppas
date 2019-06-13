@@ -74,7 +74,8 @@ class FileBase(object):
 
         """
         su = sppasUnicode(identifier)
-        ide = su.to_strip()
+        ide = su.unicode().strip()
+
         if len(ide) < 1:
             raise ValueError('An identifier must contain at least 2 characters.')
 

@@ -179,7 +179,7 @@ class sppasUnicode(object):
         self._entry = re.sub("[\s]+", r" ", e)
 
         # Remove whitespace at beginning and end
-        if self._entry.startswith(' '):
+        if self._entry.startswith(" "):
             self._entry = re.sub("^[ ]+", r"", self._entry)
         if self._entry.endswith(' '):
             self._entry = re.sub("[ ]+$", r"", self._entry)

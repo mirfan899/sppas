@@ -38,13 +38,24 @@ import wx
 import codecs
 
 from sppas import sg
+from sppas import msg
+from sppas import u
+from sppas.src.annotations import sppasAnnotationsManager
 
+from sppas.src.ui.logs import sppasLogFile
+from sppas.src.ui.progress import sppasBaseProgress
 from ..windows import sppasScrolledPanel
 from ..windows import BitmapTextButton
+from ..windows import sppasTextCtrl
+from ..windows import sppasStaticText
 
 from .annotevent import PageChangeEvent
 
 # -----------------------------------------------------------------------
+
+
+def _(message):
+    return u(msg(message, "ui"))
 
 
 ERROR_COLOUR = wx.Colour(220, 30, 10)     # red
@@ -56,7 +67,7 @@ OK_COLOUR = wx.Colour(25, 160, 50)        # green
 # ---------------------------------------------------------------------------
 
 
-class sppasLogAnnotate(sppasScrolledPanel):
+class sppasLogAnnotatePanel(sppasScrolledPanel):
     """Create a panel to run automatic annotations and show log.
 
     :author:       Brigitte Bigi
@@ -67,19 +78,50 @@ class sppasLogAnnotate(sppasScrolledPanel):
 
     """
 
-    def __init__(self, parent, param, data):
-        super(sppasLogAnnotate, self).__init__(
+    def __init__(self, parent, param):
+        super(sppasLogAnnotatePanel, self).__init__(
             parent=parent,
             name="page_annot_log",
             style=wx.BORDER_NONE
         )
+        self.__log_report = sppasLogFile()
         self.__param = param
-        self.__data = data
+        self.__manager = sppasAnnotationsManager()
+        self.__manager.set_do_merge(True)
 
         self._create_content()
         self._setup_events()
 
         self.Layout()
+
+    # -----------------------------------------------------------------------
+    # Public methods to manage the data
+    # -----------------------------------------------------------------------
+
+    def get_param(self):
+        return self.__param
+
+    def set_param(self, param):
+        self.__param = param
+
+    # ------------------------------------------------------------------------
+
+    def run(self):
+        """Perform the automatic annotations of param on data."""
+        logging.info('Perform automatic annotations')
+        # The procedure outcome report file.
+        self.__param.set_report_filename(self.__log_report.get_filename())
+        self.__log_report.increment()
+
+        # Create the progress bar then run the annotations
+        wx.BeginBusyCursor()
+        # p = ProcessProgressDialog(parent, self.preferences, "Automatic annotation processing...")
+        self.__manager.annotate(self.__param, sppasBaseProgress())
+        # p.close()
+        wx.EndBusyCursor()
+
+        self.__update_log_text()
+        self.Refresh()
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -89,53 +131,23 @@ class sppasLogAnnotate(sppasScrolledPanel):
         """Create the main content."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        btn_size = int(64. * wx.GetApp().settings.size_coeff)
+        btn_size = self.fix_size(64)
 
-        sizer_top = wx.BoxSizer(wx.HORIZONTAL)
         btn_back_top = BitmapTextButton(self, name="arrow_back")
         btn_back_top.FocusWidth = 0
         btn_back_top.BorderWidth = 0
         btn_back_top.BitmapColour = self.GetForegroundColour()
         btn_back_top.SetMinSize(wx.Size(btn_size, btn_size))
-        sizer_top.Add(btn_back_top, 0, wx.RIGHT, btn_size // 4)
 
-        title = wx.StaticText(self, label="Procedure Outcome Report", name="title_text")
-        sizer_top.Add(title, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
+        title = sppasStaticText(self, label="Procedure Outcome Report", name="title_text")
+
+        sizer_top = wx.BoxSizer(wx.HORIZONTAL)
+        sizer_top.Add(btn_back_top, 0, wx.RIGHT, btn_size // 4)
+        sizer_top.Add(title, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
         sizer.Add(sizer_top, 0, wx.EXPAND)
 
-        self.log_txt = wx.TextCtrl(self, -1,  # size=(620, 480),
-                                   style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.HSCROLL)
-        self.log_txt.SetDefaultStyle(wx.TextAttr(wx.BLACK, wx.WHITE))
-        self.log_txt.SetFont(wx.Font(wx.GetApp().text_font,
-                                     wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL,
-                                     False, u'Courier New'))
-        try:
-            with codecs.open(self.__param.get_report_filename(), 'r', sg.__encoding__) as fp:
-                logcontent = fp.read()
-        except Exception as e:
-            logcontent = "No report is available...\n" \
-                         "Error is: %s" % str(e)
-        self.log_txt.SetValue(logcontent)
-        i = 0
-        oldi = 0
-        while i >= 0:
-            i = logcontent.find("[ ", oldi)
-            if logcontent.find("OK", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(OK_COLOUR))
-
-            elif logcontent.find("ERROR", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(ERROR_COLOUR))
-
-            elif logcontent.find("WARNING", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(WARNING_COLOUR))
-
-            elif logcontent.find("INFO", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(INFO_COLOUR))
-
-            elif logcontent.find("IGNORED", i, i+14) >- 1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(IGNORE_COLOUR))
-
-            oldi = i + 13
+        log_txt = self.__create_log_text()
+        sizer.Add(log_txt, 2, wx.EXPAND | wx.LEFT | wx.RIGHT, btn_size // 4)
 
         btn_back_bottom = BitmapTextButton(self, name="arrow_back")
         btn_back_bottom.FocusWidth = 0
@@ -148,6 +160,67 @@ class sppasLogAnnotate(sppasScrolledPanel):
         self.SetupScrolling(scroll_x=True, scroll_y=True)
 
     # -----------------------------------------------------------------------
+
+    def __create_log_text(self):
+        txtctrl = wx.TextCtrl(self,
+                    style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2,  # | wx.HSCROLL,
+                    name="log_textctrl")
+
+        return txtctrl
+
+    # -----------------------------------------------------------------------
+
+    def __update_log_text(self):
+        """ """
+        logcontent = "This file is " + self.__param.get_report_filename() + "\n\n"
+        try:
+            with codecs.open(self.__param.get_report_filename(), 'r', sg.__encoding__) as fp:
+                logcontent += fp.read()
+        except Exception as e:
+            logcontent += "The report is not available...\n" \
+                          "Error is: %s" % str(e)
+
+        txtctrl = self.FindWindow("log_textctrl")
+        txtctrl.SetValue(logcontent)
+
+        try:
+            # Fix Look&Feel
+            settings = wx.GetApp().settings
+            attr = wx.TextAttr()
+            attr.SetTextColour(settings.fg_color)
+            attr.SetBackgroundColour(settings.bg_color)
+            attr.SetFont(settings.mono_text_font)
+            txtctrl.SetStyle(0, len(logcontent), attr)
+        except:
+            logging.error('Log report TEXTCTRL style error')
+
+        i = logcontent.find("\n", 0)
+        oldi = i
+        txtctrl.SetStyle(0, i, wx.TextAttr(wx.Colour(245, 25, 25, 128)))
+
+        # settings = wx.GetApp().settings
+        # txtctrl.SetStyle(i+1, len(logcontent), wx.TextAttr(settings.fg_color))
+
+        while i >= 0:
+            i = logcontent.find("[ ", oldi)
+            if logcontent.find(_("OK"), i, i + 14) > -1:
+                txtctrl.SetStyle(i, i + 12, wx.TextAttr(OK_COLOUR))
+
+            elif logcontent.find(_("ERROR"), i, i + 14) > -1:
+                txtctrl.SetStyle(i, i + 12, wx.TextAttr(ERROR_COLOUR))
+
+            elif logcontent.find(_("WARNING"), i, i + 14) > -1:
+                txtctrl.SetStyle(i, i + 12, wx.TextAttr(WARNING_COLOUR))
+
+            elif logcontent.find(_("INFO"), i, i + 14) > -1:
+                txtctrl.SetStyle(i, i + 12, wx.TextAttr(INFO_COLOUR))
+
+            elif logcontent.find(_("IGNORED"), i, i + 14) > - 1:
+                txtctrl.SetStyle(i, i + 12, wx.TextAttr(IGNORE_COLOUR))
+
+            oldi = i + 13
+
+    # -----------------------------------------------------------------------
     # Events management
     # -----------------------------------------------------------------------
 
@@ -155,7 +228,8 @@ class sppasLogAnnotate(sppasScrolledPanel):
         """Send the EVT_PAGE_CHANGE to the parent."""
         if self.GetParent() is not None:
             evt = PageChangeEvent(from_page=self.GetName(),
-                                  to_page="page_annot_actions")
+                                  to_page="page_annot_actions",
+                                  fct="")
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)
 
@@ -181,9 +255,46 @@ class sppasLogAnnotate(sppasScrolledPanel):
         """
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
-        event_id = event_obj.GetId()
 
         if event_name == "arrow_back":
             self.notify()
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        wx.Window.SetFont(self, font)
+        for child in self.GetChildren():
+            if child.GetName() not in ("title_text", "log_textctrl"):
+                child.SetFont(font)
+            else:
+                try:
+                    settings = wx.GetApp().settings
+                    child.SetFont(settings.header_text_font)
+                except:
+                    pass
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        wx.Window.SetForegroundColour(self, colour)
+        for child in self.GetChildren():
+            if child.GetName() != "title_text":   # , "log_textctrl"):
+                child.SetForegroundColour(colour)
+            elif child.GetName() == "title_text":
+                try:
+                    settings = wx.GetApp().settings
+                    child.SetForegroundColour(settings.header_fg_color)
+                except:
+                    child.SetForegroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def fix_size(value):
+        try:
+            btn_size = int(float(value) * wx.GetApp().settings.size_coeff)
+        except AttributeError:
+            btn_size = int(value)
+        return btn_size
 
 

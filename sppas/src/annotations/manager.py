@@ -160,7 +160,6 @@ class sppasAnnotationsManager(Thread):
 
         # Run all enabled annotations
         ann_stats = [-1] * self._parameters.get_step_numbers()
-        steps = False
 
         for i in range(self._parameters.get_step_numbers()):
 
@@ -171,11 +170,9 @@ class sppasAnnotationsManager(Thread):
             # ok, this annotation is enabled.
             annotation_key = self._parameters.get_step_key(i)
             self._logfile.print_step(i)
-
-            if steps is False:
-                steps = True
-            elif self._progress:
+            if self._progress:
                 self._progress.set_new()
+                self._progress.set_header(self._parameters.get_step_name(i))
 
             try:
 
@@ -376,8 +373,9 @@ class sppasAnnotationsManager(Thread):
 
     def _merge(self):
         """Merge all annotated files."""
-        self._progress.set_header("Merge all annotations in a file")
-        self._progress.update(0, "")
+        if self._progress:
+            self._progress.set_header("Merge all annotations in a file")
+            self._progress.update(0, "")
 
         # Get the list of files with the ".wav" extension
         filelist = self.get_annot_files(
@@ -394,7 +392,8 @@ class sppasAnnotationsManager(Thread):
             basef = os.path.splitext(f)[0]
 
             self._logfile.print_message("File: " + f, indent=0)
-            self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
+            if self._progress:
+                self._progress.set_text(os.path.basename(f)+" ("+str(i+1)+"/"+str(total)+")")
 
             # Add all files content in the same order than to annotate
             trs = sppasTranscription()
@@ -421,11 +420,13 @@ class sppasAnnotationsManager(Thread):
                 except Exception as e:
                     self._logfile.print_message(str(e), indent=1, status=-1)
 
-            self._progress.set_fraction(float((i+1))/float(total))
+            if self._progress:
+                self._progress.set_fraction(float((i+1))/float(total))
             self._logfile.print_newline()
 
-        self._progress.update(1, "Completed.")
-        self._progress.set_header("")
+        if self._progress:
+            self._progress.update(1, "Completed.")
+            # self._progress.set_header("")
 
     # -----------------------------------------------------------------------
     # Manage files:
