@@ -32,41 +32,32 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     One of the main pages of the wx4-based GUI of SPPAS: the one to annotate.
+    It's content is organized with a wxSimpleBook() with:
+        - a page to fix parameters then run, then save the report,
+        - 3 pages with the lists of annotations to select and configure,
+        - a page with the progress bar and the procedure outcome report.
 
 """
 
 import logging
 import wx
-import codecs
-import os
 
 from sppas import sppasTypeError
 from sppas import annots
 from sppas import msg
 from sppas import u
-from sppas import sg
 
 from sppas.src.annotations import sppasParam, sppasAnnotationsManager
 from sppas.src.files import FileData, States
 
-from ..windows import sppasScrolledPanel
-from ..windows import sppasPanel
-from ..windows import sppasStaticText
 from ..windows.book import sppasSimplebook
-from ..windows.button import BitmapTextButton
 from ..main_events import DataChangedEvent
 
-from .annotevent import PageChangeEvent, EVT_PAGE_CHANGE
-from .annpanel import sppasAnnotations, LANG_NONE
+from .annotevent import EVT_PAGE_CHANGE
+from .annotselect import sppasAnnotations
+from .annotaction import sppasActionAnnotate
 
 # -----------------------------------------------------------------------
-
-
-ERROR_COLOUR = wx.Colour(220, 30, 10)     # red
-INFO_COLOUR = wx.Colour(55, 30, 200)      # blue
-IGNORE_COLOUR = wx.Colour(140, 100, 160)  # gray-violet
-WARNING_COLOUR = wx.Colour(240, 190, 45)  # orange
-OK_COLOUR = wx.Colour(25, 160, 50)        # green
 
 
 def _(message):
@@ -168,7 +159,7 @@ class sppasAnnotatePanel(sppasSimplebook):
         try:
             destination = event.to_page
         except AttributeError:
-            destination = "page_to_annotate"
+            destination = "page_annot_actions"
 
         self.show_page(destination)
 
@@ -179,13 +170,13 @@ class sppasAnnotatePanel(sppasSimplebook):
     def show_page(self, page_name):
         """Show a page of the book.
 
-        :param page_name: (str) one of 'page_to_annotate', 'page_...', ...
+        :param page_name: (str) one of 'page_annot_actions', 'page_...', ...
 
         """
         # Find the page number to switch on
         dest_w = self.FindWindow(page_name)
         if dest_w is None:
-            dest_w = self.FindWindow("page_to_annotate")
+            dest_w = self.FindWindow("page_annot_actions")
         p = self.FindPage(dest_w)
         if p == -1:
             p = 0
@@ -210,410 +201,3 @@ class sppasAnnotatePanel(sppasSimplebook):
         dest_w.set_param(cur_w.get_param())
         self.ChangeSelection(p)
         dest_w.Refresh()
-
-# ---------------------------------------------------------------------------
-
-
-class sppasActionAnnotate(sppasPanel):
-    """Create a panel to configure then run automatic annotations.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    """
-
-    def __init__(self, parent, param):
-        super(sppasActionAnnotate, self).__init__(
-            parent=parent,
-            name="page_to_annotate",
-            style=wx.BORDER_NONE
-        )
-        self.__param = param
-        self.__btns_annot = dict()
-
-        self._create_content()
-        self._setup_events()
-
-        self.Layout()
-
-    # ------------------------------------------------------------------------
-
-    def get_param(self):
-        return self.__param
-
-    def set_param(self, param):
-        self.__param = param
-        self.UpdateUI()
-
-    # ------------------------------------------------------------------------
-    # Private methods to construct the panel.
-    # ------------------------------------------------------------------------
-
-    def _create_content(self):
-        """Create the main content."""
-
-        # The language (if any)
-        stl = sppasStaticText(self, label="STEP 1: fix the language(s)")
-        choice = self.__create_lang_btn()
-
-        # The buttons to select annotations (switch to other pages)
-        sta = sppasStaticText(self, label="STEP 2: select the annotations to perform")
-        s1 = wx.BoxSizer(wx.HORIZONTAL)
-        for ann_type in annots.types:
-            btn = self.__create_select_annot_btn("{:s} annotations".format(ann_type))
-            self.__btns_annot[ann_type] = btn
-            s1.Add(btn, 1, wx.EXPAND | wx.ALL, 4)
-
-        # The button to perform annotations
-        str = sppasStaticText(self, label="STEP 3: perform the annotations")
-        self.btn_run = self.__create_select_annot_btn("Let's go!")
-        self.btn_run.SetName("wizard")
-        self.btn_run.Enable(False)
-        self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
-
-        # The button to save the POR
-        stp = sppasStaticText(self, label="STEP 4: save the procedure outcome report")
-        self.btn_por = self.__create_select_annot_btn("Save report as...")
-        self.btn_por.SetName("save_as")
-        self.btn_por.Enable(False)
-        self.btn_por.BorderColour = wx.Colour(228, 24, 24, 128)
-
-        # Organize all the objects
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(stl, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(choice, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
-
-        sizer.Add(sta, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(s1, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
-
-        sizer.Add(str, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(self.btn_run, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL)
-
-        sizer.Add(stp, 1, wx.ALIGN_CENTRE_HORIZONTAL | wx.TOP | wx.BOTTOM, 15)
-        sizer.Add(self.btn_por, 1, wx.ALIGN_CENTRE_VERTICAL | wx.ALIGN_CENTRE_HORIZONTAL | wx.BOTTOM, 15)
-
-        self.SetSizer(sizer)
-
-    # ------------------------------------------------------------------------
-
-    def __create_select_annot_btn(self, label):
-
-        try:
-            w = int(wx.GetApp().settings.size_coeff * 196.)
-            h = int(wx.GetApp().settings.size_coeff * 42.)
-        except Exception as e:
-            logging.error(str(e))
-            h = 42
-            w = 196
-
-        btn = BitmapTextButton(self, name="on-off-off", label=label)
-        btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
-        btn.BorderWidth = 2
-        btn.BorderColour = wx.Colour(128, 128, 128, 128)
-        btn.BitmapColour = self.GetForegroundColour()
-        btn.SetMinSize(wx.Size(w, h))
-        return btn
-
-    # ------------------------------------------------------------------------
-
-    def __create_lang_btn(self):
-        w = int(80. * wx.GetApp().settings.size_coeff)
-
-        all_langs = list()
-        for i in range(self.__param.get_step_numbers()):
-            a = self.__param.get_step(i)
-            all_langs.extend(a.get_langlist())
-
-        langlist = list(set(all_langs))
-        langlist.append(LANG_NONE)
-        choice = wx.ComboBox(self, -1, choices=sorted(langlist), name="lang_choice")
-        choice.SetSelection(choice.GetItems().index(LANG_NONE))
-        choice.SetMinSize(wx.Size(w, -1))
-        return choice
-
-    # -----------------------------------------------------------------------
-    # Events management
-    # -----------------------------------------------------------------------
-
-    def notify(self, destination):
-        """Send the EVT_PAGE_CHANGE to the parent."""
-        if self.GetParent() is not None:
-            evt = PageChangeEvent(from_page=self.GetName(),
-                                  to_page=destination)
-            evt.SetEventObject(self)
-            wx.PostEvent(self.GetParent(), evt)
-
-    # -----------------------------------------------------------------------
-
-    def _setup_events(self):
-        """Associate a handler function with the events.
-
-        It means that when an event occurs then the process handler function
-        will be called.
-
-        """
-        # Bind all events from our buttons
-        self.Bind(wx.EVT_BUTTON, self._process_event)
-
-        # Language choice changed
-        self.FindWindow("lang_choice").Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
-
-    # -----------------------------------------------------------------------
-
-    def _process_event(self, event):
-        """Process any kind of events.
-
-        :param event: (wx.Event)
-
-        """
-        event_obj = event.GetEventObject()
-        event_name = event_obj.GetName()
-        event_id = event_obj.GetId()
-
-        wx.LogMessage("Received event id {:d} of {:s}"
-                      "".format(event_id, event_name))
-
-        for ann_type in annots.types:
-            if event_obj == self.__btns_annot[ann_type]:
-                self.notify("page_{:s}".format(ann_type))
-
-        if event_name == "wizard":
-            self._annotate()
-
-        else:
-            event.Skip()
-
-    # -----------------------------------------------------------------------
-
-    def _on_lang_changed(self, event):
-        choice = event.GetEventObject()
-        lang = choice.GetValue()
-        if lang == LANG_NONE:
-            lang = None
-
-        for i in range(self.__param.get_step_numbers()):
-            a = self.__param.get_step(i)
-            if len(a.get_langlist()) > 0:
-                if lang in a.get_langlist():
-                    a.set_lang(lang)
-                else:
-                    a.set_lang(None)
-
-        self.UpdateUI(update_lang=False)
-
-    # -----------------------------------------------------------------------
-    # -----------------------------------------------------------------------
-
-    def _annotate(self):
-        """Perform the selected automatic annotations."""
-        pass
-
-    # -----------------------------------------------------------------------
-
-    def UpdateUI(self,
-                 update_lang=True,
-                 update_annot=True,
-                 update_run=True,
-                 update_log=True):
-        """Update the UI depending on the parameters."""
-
-        # search for enabled annotations and fixed languages
-        ann_enabled = [False] * len(annots.types)
-        lang = list()
-
-        for i in range(self.__param.get_step_numbers()):
-            a = self.__param.get_step(i)
-            if a.get_activate() is True:
-                for x, ann_type in enumerate(annots.types):
-                    if ann_type in a.get_types():
-                        ann_enabled[x] = True
-                # at least one annotation can be performed
-                # (no need of the lang or lang is defined)
-                if a.get_lang() is None or \
-                        (len(a.get_langlist()) > 0 and len(a.get_lang()) > 0):
-                    lang.append(a.get_lang())
-
-        # update the button to set the language
-        if update_lang is True:
-            langs = list(set(lang))
-            if None in langs:
-                langs.remove(None)
-            choice = self.FindWindow("lang_choice")
-            if len(langs) <= 1:
-                mix_item = choice.FindString("MIX")
-                if mix_item != wx.NOT_FOUND:
-                    choice.Delete(mix_item)
-                if len(langs) == 0:
-                    choice.SetSelection(choice.GetItems().index(LANG_NONE))
-                else:
-                    choice.SetSelection(choice.GetItems().index(langs[0]))
-            else:
-                # several languages
-                i = choice.Append("MIX")
-                choice.SetSelection(i)
-
-        # update buttons to fix properties of annotations
-        if update_annot is True:
-            for i, ann_type in enumerate(annots.types):
-                if ann_enabled[i] is True:
-                    self.__btns_annot[ann_type].SetName("on-off-on")
-                else:
-                    self.__btns_annot[ann_type].SetName("on-off-off")
-
-        # update the button to perform annotations
-        # at least one annotation is enabled and lang is fixed.
-        if update_run is True:
-            if len(lang) == 0:
-                self.btn_run.Enable(False)
-                self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
-            else:
-                self.btn_run.Enable(True)
-                self.btn_run.BorderColour = wx.Colour(24, 228, 24, 128)
-
-        report = self.__param.get_report_filename()
-        if update_log is True:
-            if report is None or os.path.exists(report) is False:
-                self.btn_por.Enable(False)
-                self.btn_por.BorderColour = wx.Colour(228, 24, 24, 128)
-            else:
-                self.btn_por.Enable(True)
-                self.btn_por.BorderColour = wx.Colour(24, 228, 24, 128)
-
-# ---------------------------------------------------------------------------
-
-
-class sppasLogAnnotate(sppasScrolledPanel):
-    """Create a panel to run automatic annotations and show log.
-
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
-
-    """
-
-    def __init__(self, parent, param, data):
-        super(sppasLogAnnotate, self).__init__(
-            parent=parent,
-            name="page_annotate_log",
-            style=wx.BORDER_NONE
-        )
-        self.__param = param
-        self.__data = data
-
-        self._create_content()
-        self._setup_events()
-
-        self.Layout()
-
-    # ------------------------------------------------------------------------
-    # Private methods to construct the panel.
-    # ------------------------------------------------------------------------
-
-    def _create_content(self):
-        """Create the main content."""
-        sizer = wx.BoxSizer(wx.VERTICAL)
-
-        btn_size = int(64. * wx.GetApp().settings.size_coeff)
-
-        sizer_top = wx.BoxSizer(wx.HORIZONTAL)
-        btn_back_top = BitmapTextButton(self, name="arrow_back")
-        btn_back_top.FocusWidth = 0
-        btn_back_top.BorderWidth = 0
-        btn_back_top.BitmapColour = self.GetForegroundColour()
-        btn_back_top.SetMinSize(wx.Size(btn_size, btn_size))
-        sizer_top.Add(btn_back_top, 0, wx.RIGHT, btn_size // 4)
-
-        title = wx.StaticText(self, label="Procedure Outcome Report", name="title_text")
-        sizer_top.Add(title, 1, wx.EXPAND | wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
-        sizer.Add(sizer_top, 0, wx.EXPAND)
-
-        self.log_txt = wx.TextCtrl(self, -1,  # size=(620, 480),
-                                   style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.HSCROLL)
-        self.log_txt.SetDefaultStyle(wx.TextAttr(wx.BLACK, wx.WHITE))
-        self.log_txt.SetFont(wx.Font(wx.GetApp().text_font,
-                                     wx.FONTFAMILY_SWISS, wx.FONTSTYLE_NORMAL, wx.FONTWEIGHT_NORMAL,
-                                     False, u'Courier New'))
-        try:
-            with codecs.open(self.__param.get_report_filename(), 'r', sg.__encoding__) as fp:
-                logcontent = fp.read()
-        except Exception as e:
-            logcontent = "No report is available...\n" \
-                         "Error is: %s" % str(e)
-        self.log_txt.SetValue(logcontent)
-        i = 0
-        oldi = 0
-        while i >= 0:
-            i = logcontent.find("[ ", oldi)
-            if logcontent.find("OK", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(OK_COLOUR))
-
-            elif logcontent.find("ERROR", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(ERROR_COLOUR))
-
-            elif logcontent.find("WARNING", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(WARNING_COLOUR))
-
-            elif logcontent.find("INFO", i, i+14) > -1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(INFO_COLOUR))
-
-            elif logcontent.find("IGNORED", i, i+14) >- 1:
-                self.log_txt.SetStyle(i, i+12, wx.TextAttr(IGNORE_COLOUR))
-
-            oldi = i + 13
-
-        btn_back_bottom = BitmapTextButton(self, name="arrow_back")
-        btn_back_bottom.FocusWidth = 0
-        btn_back_bottom.BorderWidth = 0
-        btn_back_bottom.BitmapColour = self.GetForegroundColour()
-        btn_back_bottom.SetMinSize(wx.Size(btn_size, btn_size))
-        sizer.Add(btn_back_bottom, 0)
-
-        self.SetSizer(sizer)
-        self.SetupScrolling(scroll_x=True, scroll_y=True)
-
-    # -----------------------------------------------------------------------
-    # Events management
-    # -----------------------------------------------------------------------
-
-    def notify(self):
-        """Send the EVT_PAGE_CHANGE to the parent."""
-        if self.GetParent() is not None:
-            evt = PageChangeEvent(from_page=self.GetName(),
-                                  to_page="page_to_annotate")
-            evt.SetEventObject(self)
-            wx.PostEvent(self.GetParent(), evt)
-
-    # -----------------------------------------------------------------------
-
-    def _setup_events(self):
-        """Associate a handler function with the events.
-
-        It means that when an event occurs then the process handler function
-        will be called.
-
-        """
-        # Bind all events from our buttons (including 'exit')
-        self.Bind(wx.EVT_BUTTON, self._process_event)
-
-    # -----------------------------------------------------------------------
-
-    def _process_event(self, event):
-        """Process any kind of events.
-
-        :param event: (wx.Event)
-
-        """
-        event_obj = event.GetEventObject()
-        event_name = event_obj.GetName()
-        event_id = event_obj.GetId()
-
-        if event_name == "arrow_back":
-            self.notify()
-
-
