@@ -506,6 +506,8 @@ class FileRoot(FileBase):
 
         # Does this filename matches this root
         if fr != self.id:
+            # TODO: Solve the error with python 2.7: UnicodeWarning:
+            # Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
             return None
 
         # Does it match only the root (no file name)
@@ -825,11 +827,15 @@ class FilePath(FileBase):
 
         """
         for fr in self.__roots:
+            # TODO: Solve the error with python 2.7: UnicodeWarning:
+            # Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
             if fr.id == name:
                 return fr
 
         for fr in self.__roots:
             for fn in fr:
+                # TODO: Solve the error with python 2.7: UnicodeWarning:
+                # Unicode equal comparison failed to convert both arguments to Unicode - interpreting them as being unequal
                 if fn.id == name:
                     return fr
 

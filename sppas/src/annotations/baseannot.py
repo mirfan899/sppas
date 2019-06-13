@@ -302,7 +302,6 @@ class sppasBaseAnnotation(object):
             return 0
         files_processed_success = 0
         if progress:
-            progress.set_header(self.name)
             progress.update(0, "")
 
         # Execute the annotation for each file in the list
@@ -311,6 +310,8 @@ class sppasBaseAnnotation(object):
             required_inputs, optional_inputs = self._split_inputs(input_files)
             self.print_diagnosis(*required_inputs)
             self.print_diagnosis(*optional_inputs)
+            if progress:
+                progress.set_text(str(*required_inputs))
 
             out_name = self.run_for_batch_processing(required_inputs,
                                                      optional_inputs,
@@ -330,7 +331,6 @@ class sppasBaseAnnotation(object):
         if progress:
             progress.update(1, (info(9000, "ui").format(files_processed_success,
                                                         total)))
-            progress.set_header("")
 
         return files_processed_success
 
