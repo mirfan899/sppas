@@ -82,7 +82,7 @@ class sppasAnnotatePanel(sppasSimplebook):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -104,13 +104,13 @@ class sppasAnnotatePanel(sppasSimplebook):
         # 1st page: the buttons to perform actions
         self.ShowNewPage(sppasActionAnnotate(self, self.__param))
 
-        # 2nd: list of standalone annotations
-        # 3rd: list of speaker annotations
-        # 4th: list of interaction annotations
+        # list of "ann_types" annotations
         for ann_type in annots.types:
             page = sppasAnnotations(self, self.__param, ann_type)
             self.AddPage(page, text="")
             self.__pages_annot[ann_type] = page
+
+        # 5th page: procedure outcome report
 
         # Change the displayed page
         self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
@@ -221,7 +221,7 @@ class sppasActionAnnotate(sppasPanel):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -544,8 +544,6 @@ class sppasLogAnnotate(sppasScrolledPanel):
                 logcontent = fp.read()
         except Exception as e:
             logcontent = "No report is available...\n" \
-                         "Probably you don't have permission to write in the directory. " \
-                         "Change the access rights to solve the problem.\n" \
                          "Error is: %s" % str(e)
         self.log_txt.SetValue(logcontent)
         i = 0
