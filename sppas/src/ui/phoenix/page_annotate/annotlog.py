@@ -91,7 +91,6 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
 
         self._create_content()
         self._setup_events()
-
         self.Layout()
 
     # -----------------------------------------------------------------------
@@ -109,6 +108,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
     def run(self):
         """Perform the automatic annotations of param on data."""
         logging.info('Perform automatic annotations')
+
         # The procedure outcome report file.
         self.__param.set_report_filename(self.__log_report.get_filename())
         self.__log_report.increment()
@@ -133,7 +133,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
 
         btn_size = self.fix_size(64)
 
-        btn_back_top = BitmapTextButton(self, name="arrow_back")
+        btn_back_top = BitmapTextButton(self, name="arrow_up")
         btn_back_top.FocusWidth = 0
         btn_back_top.BorderWidth = 0
         btn_back_top.BitmapColour = self.GetForegroundColour()
@@ -147,14 +147,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
         sizer.Add(sizer_top, 0, wx.EXPAND)
 
         log_txt = self.__create_log_text()
-        sizer.Add(log_txt, 2, wx.EXPAND | wx.LEFT | wx.RIGHT, btn_size // 4)
-
-        btn_back_bottom = BitmapTextButton(self, name="arrow_back")
-        btn_back_bottom.FocusWidth = 0
-        btn_back_bottom.BorderWidth = 0
-        btn_back_bottom.BitmapColour = self.GetForegroundColour()
-        btn_back_bottom.SetMinSize(wx.Size(btn_size, btn_size))
-        sizer.Add(btn_back_bottom, 0)
+        sizer.Add(log_txt, 2, wx.EXPAND | wx.LEFT, btn_size // 4)
 
         self.SetSizer(sizer)
         self.SetupScrolling(scroll_x=True, scroll_y=True)
@@ -162,10 +155,10 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
     # -----------------------------------------------------------------------
 
     def __create_log_text(self):
-        txtctrl = wx.TextCtrl(self,
-                    style=wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2,  # | wx.HSCROLL,
+        style = wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_AUTO_URL | wx.NO_BORDER
+        txtctrl = sppasTextCtrl(self,
+                    style=style,
                     name="log_textctrl")
-
         return txtctrl
 
     # -----------------------------------------------------------------------
@@ -256,7 +249,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
 
-        if event_name == "arrow_back":
+        if event_name == "arrow_up":
             self.notify()
 
     # -----------------------------------------------------------------------

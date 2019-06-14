@@ -60,7 +60,7 @@ def _(message):
 # ---------------------------------------------------------------------------
 
 
-class sppasAnnotationsPanel(sppasScrolledPanel):
+class sppasAnnotationsPanel(sppasPanel):
     """Create a panel to fix properties of all the annotations.
 
     :author:       Brigitte Bigi
@@ -128,7 +128,7 @@ class sppasAnnotationsPanel(sppasScrolledPanel):
         except AttributeError:
             btn_size = 64
 
-        btn_back_top = BitmapTextButton(self, name="arrow_back")
+        btn_back_top = BitmapTextButton(self, name="arrow_up")
         btn_back_top.FocusWidth = 0
         btn_back_top.BorderWidth = 0
         btn_back_top.BitmapColour = self.GetForegroundColour()
@@ -139,25 +139,23 @@ class sppasAnnotationsPanel(sppasScrolledPanel):
         sizer_top = wx.BoxSizer(wx.HORIZONTAL)
         sizer_top.Add(btn_back_top, 0, wx.RIGHT, btn_size // 4)
         sizer_top.Add(title, 1, wx.ALIGN_CENTER_VERTICAL | wx.ALIGN_CENTER_HORIZONTAL)
-        sizer.Add(sizer_top, 0, wx.EXPAND)
 
+        scrolled = sppasScrolledPanel(self, name="anns_list", style=wx.BORDER_NONE)
+        sizer_anns = wx.BoxSizer(wx.VERTICAL)
         for i in range(self.__param.get_step_numbers()):
             a = self.__param.get_step(i)
             if self.__anntype in a.get_types():
-                pa = sppasEnableAnnotation(self, a)
-                sizer.Add(self.HorizLine(self), 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.TOP, btn_size // 4)
-                sizer.Add(pa, 1, wx.EXPAND | wx.LEFT | wx.RIGHT, btn_size // 4)
-                sizer.Add(self.HorizLine(self), 0, wx.EXPAND | wx.LEFT | wx.RIGHT | wx.BOTTOM, btn_size // 4)
+                pa = sppasEnableAnnotation(scrolled, a)
+                sizer_anns.Add(self.HorizLine(scrolled), 0, wx.EXPAND | wx.TOP | wx.RIGHT, btn_size // 8)
+                sizer_anns.Add(pa, 1, wx.EXPAND | wx.RIGHT, btn_size // 8)
+                sizer_anns.Add(self.HorizLine(scrolled), 0, wx.EXPAND | wx.BOTTOM | wx.RIGHT, btn_size // 8)
+        scrolled.SetSizer(sizer_anns)
+        scrolled.SetupScrolling(scroll_x=True, scroll_y=True)
 
-        btn_back_bottom = BitmapTextButton(self, name="arrow_back")
-        btn_back_bottom.FocusWidth = 0
-        btn_back_bottom.BorderWidth = 0
-        btn_back_bottom.BitmapColour = self.GetForegroundColour()
-        btn_back_bottom.SetMinSize(wx.Size(btn_size, btn_size))
-        sizer.Add(btn_back_bottom, 0)
+        sizer.Add(sizer_top, 0, wx.EXPAND)
+        sizer.Add(scrolled, 1, wx.EXPAND | wx.LEFT, btn_size // 4)
 
         self.SetSizer(sizer)
-        self.SetupScrolling(scroll_x=True, scroll_y=True)
 
     # ------------------------------------------------------------------------
 
@@ -207,7 +205,7 @@ class sppasAnnotationsPanel(sppasScrolledPanel):
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
 
-        if event_name == "arrow_back":
+        if event_name == "arrow_up":
             self.notify()
 
     # -----------------------------------------------------------------------
@@ -264,6 +262,8 @@ class sppasEnableAnnotation(sppasPanel):
 
         self._create_content()
         self._setup_events()
+        self.SetMaxSize(wx.Size(-1, self.fix_size(128)))
+
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -283,11 +283,11 @@ class sppasEnableAnnotation(sppasPanel):
         ls = self.__create_lang_sizer()
         ds = self.__create_description_sizer()
         sizer = wx.BoxSizer(wx.HORIZONTAL)
-        sizer.Add(es, 0, wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
-        sizer.Add(ls, 0, wx.ALIGN_CENTRE)
-        sizer.Add(ds, 1, wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL)
+        sizer.Add(es, 0, wx.ALIGN_CENTRE)
+        sizer.Add(ls, 0, wx.ALIGN_CENTRE | wx.RIGHT | wx.LEFT, 8)
+        sizer.Add(ds, 0, wx.ALIGN_CENTRE)
 
-        self.SetSizerAndFit(sizer)
+        self.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
 
@@ -345,8 +345,7 @@ class sppasEnableAnnotation(sppasPanel):
                      wx.NO_BORDER | \
                      wx.TE_RICH
         td = sppasTextCtrl(self, value=self.__annparam.get_descr(), style=text_style)
-        td.SetMinSize(wx.Size(self.fix_size(256), self.fix_size(64)))
-        td.SetMinSize(wx.Size(self.fix_size(512), self.fix_size(64)))
+        td.SetMinSize(wx.Size(self.fix_size(512), -1))
 
         return td
 
