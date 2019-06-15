@@ -44,7 +44,7 @@
 import wx
 import logging
 
-from sppas.src.files import FileData
+from sppas.src.files import FileData, States
 from sppas import sppasTypeError
 
 from ..windows import sppasPanel
@@ -120,7 +120,7 @@ class sppasFilesPanel(sppasPanel):
             raise sppasTypeError("FileData", type(data))
         logging.debug('New data to set in the files page. '
                       'Id={:s}'.format(data.id))
-        # Notify all children.
+        # Set to all children.
         self.__send_data(self.GetParent(), data)
 
     # ------------------------------------------------------------------------
@@ -243,6 +243,7 @@ class sppasFilesPanel(sppasPanel):
         # Send the data to the parent
         pm = self.GetParent()
         if pm is not None and emitted != pm:
+            data.set_state(States().CHECKED)
             evt = DataChangedEvent(data=data)
             evt.SetEventObject(self)
             wx.PostEvent(self.GetParent(), evt)

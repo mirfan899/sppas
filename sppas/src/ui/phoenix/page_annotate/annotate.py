@@ -51,9 +51,9 @@ from sppas.src.annotations import sppasParam
 from sppas.src.files import FileData, States
 
 from ..windows.book import sppasSimplebook
-from ..main_events import DataChangedEvent
-
+from ..main_events import DataChangedEvent, EVT_DATA_CHANGED
 from .annotevent import EVT_PAGE_CHANGE
+
 from .annotselect import sppasAnnotationsPanel
 from .annotaction import sppasActionAnnotatePanel
 from .annotlog import sppasLogAnnotatePanel
@@ -103,9 +103,7 @@ class sppasAnnotatePanel(sppasSimplebook):
         page = sppasLogAnnotatePanel(self, self.__param)
         self.AddPage(page, text="")
 
-        # Change the displayed page
-        self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
-
+        self._setup_events()
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
@@ -136,19 +134,28 @@ class sppasAnnotatePanel(sppasSimplebook):
                       'Id={:s}'.format(data.id))
 
         self.__param.set_workspace(data)
+        self.__send_data(self.GetParent())
 
     # -----------------------------------------------------------------------
     # Events management
     # -----------------------------------------------------------------------
 
-    def notify(self):
-        """Send the EVT_DATA_CHANGED to the parent."""
-        if self.GetParent() is not None:
-            data = self.__param.get_workspace()
-            data.set_state(States().CHECKED)
-            evt = DataChangedEvent(data=data)
-            evt.SetEventObject(self)
-            wx.PostEvent(self.GetParent(), evt)
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Capture keys
+        # self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+
+        # The data have changed.
+        # This event is sent by any of the children or by the parent
+        self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
+
+        # Change the displayed page
+        self.Bind(EVT_PAGE_CHANGE, self._process_page_change)
 
     # ------------------------------------------------------------------------
 
@@ -158,14 +165,63 @@ class sppasAnnotatePanel(sppasSimplebook):
         :param event: (wx.Event)
 
         """
+        logging.debug('Page changed')
         try:
             destination = event.to_page
             fct = event.fct
         except AttributeError:
+            logging.debug('ERROR ERROR')
             destination = "page_annot_actions"
             fct = ""
 
         self.show_page(destination, fct)
+
+    # -----------------------------------------------------------------------
+
+    def _process_data_changed(self, event):
+        """Process a change of data.
+
+        Set the data of the event to the other panels.
+
+        :param event: (wx.Event)
+
+        """
+        emitted = event.GetEventObject()
+        try:
+            wkp = event.data
+        except AttributeError:
+            logging.error('Data were not sent in the event emitted by {:s}'
+                          '.'.format(emitted.GetName()))
+            return
+        self.__param.set_workspace(wkp)
+        self.__send_data(emitted)
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def __send_data(self, emitted):
+        """Set a change of data to the children, send to the parent.
+
+        :param emitted: (wx.Window) The panel the data are coming from
+
+        """
+        # Set the data to appropriate children panels
+        for panel in self.GetChildren():
+            if emitted != panel:
+                try:
+                    panel.set_param(self.__param)
+                except:
+                    pass
+
+        # Send the data to the parent
+        pm = self.GetParent()
+        if pm is not None and emitted != pm:
+            data = self.__param.get_workspace()
+            data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)
 
     # -----------------------------------------------------------------------
     # Public methods to navigate
@@ -202,8 +258,12 @@ class sppasAnnotatePanel(sppasSimplebook):
             self.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM,
                             hideEffect=wx.SHOW_EFFECT_SLIDE_TO_BOTTOM)
 
+        # update param
+        self.__param = cur_w.get_param()
+        #self.__send_data(cur_w)
+        dest_w.set_param(self.__param)
+
         # Change to the destination page
-        dest_w.set_param(cur_w.get_param())
         self.ChangeSelection(p)
         dest_w.Refresh()
 

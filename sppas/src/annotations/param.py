@@ -81,6 +81,8 @@ class annotationParam(object):
         self.__name = ""
         # The description of the annotation
         self.__descr = ""
+        # Name of the instance class of this annotation
+        self.__api = None
         # The types this annotation can support
         self.__types = []
         # The status of the annotation
@@ -268,6 +270,18 @@ class annotationParam(object):
         raise KeyError("Unknown option {:s} in annotation parameters."
                        "".format(key))
 
+    # -----------------------------------------------------------------------
+
+    def get_api(self):
+        """Return the name of the class to instantiate to perform this annotation."""
+        return self.__api
+
+    # -----------------------------------------------------------------------
+
+    def set_api(self, class_name):
+        """Set the name of the class to instantiate to perform this annotation."""
+        self.__api = class_name
+
 # ---------------------------------------------------------------------------
 
 
@@ -341,7 +355,9 @@ class sppasParam(object):
 
         # Load annotation configurations
         for ann in dict_cfg["annotate"]:
-            self.__load(os.path.join(paths.etc, ann["config"]))
+            a = self.__load(os.path.join(paths.etc, ann["config"]))
+            if a is not None:
+                a.set_api(ann['api'])
 
     # -----------------------------------------------------------------------
 
@@ -351,8 +367,10 @@ class sppasParam(object):
             a = annotationParam(cfg_file)
             self.annotations.append(a)
         except:
+            a = None
             logging.error('Configuration file {:s} not loaded.'
                           ''.format(cfg_file))
+        return a
 
     # -----------------------------------------------------------------------
     # Input entries to annotate
@@ -372,6 +390,19 @@ class sppasParam(object):
         self._workspace = wkp
 
     # -----------------------------------------------------------------------
+
+    def add_to_workspace(self, files):
+        """Add a list of files into the workspace."""
+        if isinstance(files, list) is False:
+            files = list(files)
+
+        for f in files:
+            try:
+                self._workspace.add_file(f)
+            except OSError:
+                logging.error('File {:s} not added into the workspace.')
+
+    # -----------------------------------------------------------------------
     # deprecated:
     # -----------------------------------------------------------------------
 
@@ -384,9 +415,6 @@ class sppasParam(object):
 
     def add_sppasinput(self, entry):
         """Add a new entry to annotate.
-
-        If no report file name was previously fixed, it will be assigned to
-        the given entry with the extension '.log'.
 
         :param entry: (str) Filename or directory
 

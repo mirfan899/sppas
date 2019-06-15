@@ -291,7 +291,7 @@ class sppasBaseAnnotation(object):
         :param file_names: (list) List of inputs
         :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
         :param output_format: (str)
-        :return: (int) Number of files processed with success
+        :return: (list of str) List of created files
 
         """
         if len(self._options) > 0:
@@ -300,7 +300,7 @@ class sppasBaseAnnotation(object):
         total = len(file_names)
         if total == 0:
             return 0
-        files_processed_success = 0
+        files_processed_success = list()
         if progress:
             progress.update(0, "")
 
@@ -311,7 +311,8 @@ class sppasBaseAnnotation(object):
             self.print_diagnosis(*required_inputs)
             self.print_diagnosis(*optional_inputs)
             if progress:
-                progress.set_text(str(*required_inputs))
+                progress.set_fraction(round(float(i)/float(total), 2))
+                progress.set_text("{!s:s}".format(*required_inputs))
 
             out_name = self.run_for_batch_processing(required_inputs,
                                                      optional_inputs,
@@ -321,15 +322,13 @@ class sppasBaseAnnotation(object):
                 self.logfile.print_message(
                     info(1306, "annotations"), indent=1, status=annots.info)
             else:
-                files_processed_success += 1
+                files_processed_success.append(out_name)
                 self.logfile.print_message(out_name, indent=1, status=annots.ok)
             self.logfile.print_newline()
-            if progress:
-                progress.set_fraction(round(float((i+1))/float(total), 2))
 
         # Indicate completed!
         if progress:
-            progress.update(1, (info(9000, "ui").format(files_processed_success,
+            progress.update(1, (info(9000, "ui").format(len(files_processed_success),
                                                         total)))
 
         return files_processed_success

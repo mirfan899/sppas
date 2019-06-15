@@ -36,19 +36,15 @@
 import logging
 import traceback
 import sys
-import json
 import os
 from threading import Thread
 
-from sppas import paths
 from sppas.src.files import sppasFileUtils
 from sppas.src.files import States
 from sppas.src.anndata import sppasTranscription, sppasRW
 
 import sppas.src.audiodata.aio
 import sppas.src.anndata.aio
-from sppas.src.annotations.infotier import sppasMetaInfoTier
-from sppas.src.annotations.log import sppasLog
 
 from sppas.src.annotations.Momel import sppasMomel
 from sppas.src.annotations.Intsint import sppasIntsint
@@ -61,6 +57,9 @@ from sppas.src.annotations.Syll import sppasSyll
 from sppas.src.annotations.TGA import sppasTGA
 from sppas.src.annotations.SelfRepet import sppasSelfRepet
 from sppas.src.annotations.OtherRepet import sppasOtherRepet
+
+from .infotier import sppasMetaInfoTier
+from .log import sppasLog
 
 # ----------------------------------------------------------------------------
 
@@ -94,31 +93,8 @@ class sppasAnnotationsManager(Thread):
         # fix optional members
         self.__do_merge = False
 
-        # fix annotations: key,instance
-        self._annotations = sppasAnnotationsManager.__parse_config_file()
-
         # start threading
         self.start()
-
-    # ------------------------------------------------------------------------
-
-    @staticmethod
-    def __parse_config_file():
-        """Parse the sppasui.json file.
-
-        Parse the file to get the list of annotations.
-
-        """
-        config = os.path.join(paths.etc, "sppasui.json")
-        if os.path.exists(config) is False:
-            raise IOError('Installation error: the file to configure the '
-                          'automatic annotations does not exist.')
-
-        # Read the whole file content
-        with open(config) as cfg:
-            dict_cfg = json.load(cfg)
-
-        return dict_cfg["annotate"]
 
     # -----------------------------------------------------------------------
     # Options of the manager
@@ -205,15 +181,16 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     def _get_instance(self, annotation_key):
-        classname = None
-        for a in self._annotations:
-            if a['id'] == annotation_key:
-                classname = a['api']
+        class_name = None
+        for i in range(self._parameters.get_step_numbers()):
+            a = self._parameters.get_step(i)
+            if a.get_key() == annotation_key:
+                class_name = a.get_api()
                 break
-        if classname is None:
+        if class_name is None:
             raise IOError('Unknown annotation key: {:s}'.format(annotation_key))
 
-        return getattr(sys.modules[__name__], classname)
+        return getattr(sys.modules[__name__], class_name)
 
     # ------------------------------------------------------------------------
 
@@ -269,12 +246,15 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self._create_ann_instance(annotation_key)
-        return a.batch_processing(
+        out_files = a.batch_processing(
             self.get_annot_files(pattern=a.get_input_pattern(),
                                  extensions=a.get_input_extensions(),
                                  types=a.get_types()),
             self._progress,
             self._parameters.get_output_format())
+
+        self._parameters.add_to_workspace(out_files)
+        return len(out_files)
 
     # -----------------------------------------------------------------------
 
@@ -297,10 +277,13 @@ class sppasAnnotationsManager(Thread):
             in_name = os.path.splitext(f)[0] + ".txt"
             files.append((f, in_name))
 
-        return a.batch_processing(
+        out_files = a.batch_processing(
             files,
             self._progress,
             self._parameters.get_output_format())
+
+        self._parameters.add_to_workspace(out_files)
+        return len(out_files)
 
     # ------------------------------------------------------------------------
 
@@ -341,10 +324,13 @@ class sppasAnnotationsManager(Thread):
             # Append all 3 files
             files.append(([f], (audio, tok)))
 
-        return a.batch_processing(
+        out_files = a.batch_processing(
             files,
             self._progress,
             self._parameters.get_output_format())
+
+        self._parameters.add_to_workspace(out_files)
+        return len(out_files)
 
     # -----------------------------------------------------------------------
     # Manage annotations:

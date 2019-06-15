@@ -48,8 +48,10 @@ from ..windows import sppasScrolledPanel
 from ..windows import BitmapTextButton
 from ..windows import sppasTextCtrl
 from ..windows import sppasStaticText
+from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent
+
 
 # -----------------------------------------------------------------------
 
@@ -122,6 +124,11 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
 
         self.__update_log_text()
         self.Refresh()
+
+        # send to parent
+        evt = DataChangedEvent(data=self.__param.get_workspace())
+        evt.SetEventObject(self)
+        wx.PostEvent(self.GetParent(), evt)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.

@@ -198,7 +198,6 @@ class sppasMainWindow(sppasDialog):
         # 5th: plugins
         book.AddPage(sppasPluginsPanel(book), text="")
 
-        book.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
         return book
 
     # -----------------------------------------------------------------------
@@ -223,7 +222,8 @@ class sppasMainWindow(sppasDialog):
         self.FindWindow("content").Bind(EVT_DATA_CHANGED, self._process_data_changed)
 
         # Capture keys
-        self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+        # self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+        #self.FindWindow("content").Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
 
     # -----------------------------------------------------------------------
 
@@ -265,12 +265,12 @@ class sppasMainWindow(sppasDialog):
 
         Set the data of the event to the other panels.
 
-        :param event: (wx.Event)
+        :param event: (wx.Event) An event with a FileData()
 
         """
         emitted = event.GetEventObject()
         try:
-            data = event.data
+            wkp = event.data
         except AttributeError:
             logging.error('Data were not sent in the event emitted by {:s}'
                           '.'.format(emitted.GetName()))
@@ -282,7 +282,7 @@ class sppasMainWindow(sppasDialog):
             page = book.GetPage(i)
             if page.GetName() in ("page_files", "page_annotate"):  # "page_analyze", "page_plugins"):
                 if emitted != page:
-                    page.set_data(data)
+                    page.set_data(wkp)
 
     # -----------------------------------------------------------------------
 

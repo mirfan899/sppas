@@ -278,13 +278,6 @@ class sppasActionAnnotatePanel(sppasPanel):
         logging.debug("New output format is {:s}".format(new_format))
 
     # -----------------------------------------------------------------------
-    # -----------------------------------------------------------------------
-
-    def _annotate(self):
-        """Perform the selected automatic annotations."""
-        pass
-
-    # -----------------------------------------------------------------------
 
     def UpdateUI(self,
                  update_lang=True,
