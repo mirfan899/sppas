@@ -3,7 +3,6 @@
     {
       "id": "momel",
       "config": "momel.json",
-      "api": "sppasMomel",
       "cli": "momel.py",
       "gui": true
     },
@@ -11,7 +10,6 @@
     {
       "id": "intsint",
       "config": "intsint.json",
-      "api": "sppasIntsint",
       "cli": "intsint.py",
       "gui": true
     },
@@ -19,7 +17,6 @@
     {
       "id": "fillipus",
       "config": "fillipus.json",
-      "api": "sppasFillIPUs",
       "cli": "fillipus.py",
       "gui": true
     },
@@ -27,7 +24,6 @@
     {
       "id": "searchipus",
       "config": "searchipus.json",
-      "api": "sppasSearchIPUs",
       "cli": "searchipus.py",
       "gui": true
     },
@@ -35,7 +31,6 @@
     {
       "id": "textnorm",
       "config": "textnorm.json",
-      "api": "sppasTextNorm",
       "cli": "normalize.py",
       "gui": true
     },
@@ -43,7 +38,6 @@
     {
       "id": "phonetize",
       "config": "phonetize.json",
-      "api": "sppasPhon",
       "cli": "phonetize.py",
       "gui": true
     },
@@ -51,7 +45,6 @@
     {
       "id": "alignment",
       "config": "alignment.json",
-      "api": "sppasAlign",
       "cli": "alignment.py",
       "gui": true
     },
@@ -59,7 +52,6 @@
     {
       "id": "syllabify",
       "config": "syllabify.json",
-      "api": "sppasSyll",
       "cli": "syllabify.py",
       "gui": true
     },
@@ -67,7 +59,6 @@
     {
       "id": "tga",
       "config": "tga.json",
-      "api": "sppasTGA",
       "cli": "tga.py",
       "gui": true
     },
@@ -75,7 +66,6 @@
     {
       "id": "selfrepet",
       "config": "selfrepet.json",
-      "api": "sppasSelfRepet",
       "cli": "selfrepetition.py",
       "gui": true
     },
@@ -83,7 +73,6 @@
     {
       "id": "otherrepet",
       "config": "otherrepet.json",
-      "api": "sppasOtherRepet",
       "cli": "otherrepetition.py",
       "gui": false
     }

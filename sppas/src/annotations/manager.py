@@ -246,10 +246,13 @@ class sppasAnnotationsManager(Thread):
 
         """
         a = self._create_ann_instance(annotation_key)
+        files_to_process = self.get_annot_files(
+            pattern=a.get_input_pattern(),
+            extensions=a.get_input_extensions(), types=a.get_types())
+        # logging.debug('{:d} files to process'.format(len(files_to_process)))
+        # logging.debug(files_to_process)
         out_files = a.batch_processing(
-            self.get_annot_files(pattern=a.get_input_pattern(),
-                                 extensions=a.get_input_extensions(),
-                                 types=a.get_types()),
+            files_to_process,
             self._progress,
             self._parameters.get_output_format())
 

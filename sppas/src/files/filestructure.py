@@ -885,8 +885,8 @@ class FilePath(FileBase):
 
             # Append this file to the root
             if file_id not in fr:
-                obj = fr.append(entry)
-                added.append(obj)
+                fn = fr.append(entry)
+                added.append(fn)
 
         if all_root is True and fr is not None:
             # add all files sharing this root on the disk

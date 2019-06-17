@@ -92,13 +92,31 @@ class sppasToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
+    def AddTextButton(self, name="sppasButton", text="", activated=True):
+        """Append a text button into the toolbar.
+
+        :param name: (str) Name of the button
+        :param text: (str) Label of the button
+        :param activated: (bool) Enable or disable the button
+
+        """
+        btn = self.create_button(text, None)
+        btn.SetName(name)
+        btn.Enable(activated)
+        if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
+        else:
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
+        return btn
+
+    # -----------------------------------------------------------------------
+
     def AddButton(self, icon, text="", activated=True):
         """Append a button into the toolbar.
 
         The button can contain either:
             - an icon only;
-            - a text only;
-            - both of them.
+            - an icon with a text.
 
         :param icon: (str) Name of the .png file of the icon or None
         :param text: (str) Label of the button

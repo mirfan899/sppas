@@ -120,6 +120,10 @@ class annotationParam(object):
             self.__name = msg(conf.get('name', ''), "annotations)")  # translate the name
             self.__descr = conf.get('descr', "")
             self.__types = conf.get('anntype', ["STANDALONE"])
+            self.__api = conf.get('api', None)
+            if self.__api is None:
+                self.__enabled = False
+                self.__invalid = True
 
             for new_option in conf['options']:
                 opt = sppasOption(new_option['id'])
@@ -208,6 +212,12 @@ class annotationParam(object):
 
     # -----------------------------------------------------------------------
 
+    def get_api(self):
+        """Return the name of the class to instantiate to perform this annotation."""
+        return self.__api
+
+    # -----------------------------------------------------------------------
+
     def get_lang(self):
         """Return the language or an empty string or None."""
         if len(self.__resources) > 0:
@@ -269,18 +279,6 @@ class annotationParam(object):
         # the option was not found in the list
         raise KeyError("Unknown option {:s} in annotation parameters."
                        "".format(key))
-
-    # -----------------------------------------------------------------------
-
-    def get_api(self):
-        """Return the name of the class to instantiate to perform this annotation."""
-        return self.__api
-
-    # -----------------------------------------------------------------------
-
-    def set_api(self, class_name):
-        """Set the name of the class to instantiate to perform this annotation."""
-        self.__api = class_name
 
 # ---------------------------------------------------------------------------
 
@@ -355,9 +353,7 @@ class sppasParam(object):
 
         # Load annotation configurations
         for ann in dict_cfg["annotate"]:
-            a = self.__load(os.path.join(paths.etc, ann["config"]))
-            if a is not None:
-                a.set_api(ann['api'])
+            self.__load(os.path.join(paths.etc, ann["config"]))
 
     # -----------------------------------------------------------------------
 
@@ -392,15 +388,31 @@ class sppasParam(object):
     # -----------------------------------------------------------------------
 
     def add_to_workspace(self, files):
-        """Add a list of files into the workspace."""
-        if isinstance(files, list) is False:
-            files = list(files)
+        """Add a list of files or directories into the workspace.
 
-        for f in files:
+        The state of all the added files is set to CHECKED.
+
+        :param files: (str or list of str)
+
+        """
+        if isinstance(files, list) is False:
             try:
-                self._workspace.add_file(f)
-            except OSError:
-                logging.error('File {:s} not added into the workspace.')
+                if os.path.isfile(files):
+                    objs = self._workspace.add_file(files)
+                    if objs is not None:
+                        for obj in objs:
+                            self._workspace.set_object_state(States().CHECKED, obj)
+
+                elif os.path.isdir(files):
+                    for f in os.listdir(files):
+                        self.add_to_workspace(os.path.join(files, f))
+
+            except Exception as e:
+                logging.error('File {!s:s} not added into the workspace: {:s}'
+                              ''.format(files, str(e)))
+        else:
+            for f in files:
+                self.add_to_workspace(f)
 
     # -----------------------------------------------------------------------
     # deprecated:
@@ -446,8 +458,9 @@ class sppasParam(object):
             elif e.lower() in base_ext:
                 # the entry is a primary file (audio/text/pitch)
                 # self._workspace.append(fn)
-                obj = self._workspace.add_file(entry_file)
-                self._workspace.set_object_state(States().CHECKED, obj)
+                objs = self._workspace.add_file(entry_file)
+                for obj in objs:
+                    self._workspace.set_object_state(States().CHECKED, obj)
 
             elif e.lower() in ann_ext:
                 # the entry is an annotated file
@@ -468,8 +481,9 @@ class sppasParam(object):
             if sppasFileUtils(base_fn + ae).exists() \
                     and base_fn not in self._workspace:
                 # self._workspace.append(base_fn)
-                obj = self._workspace.add_file(base_fn + ae)
-                self._workspace.set_object_state(States().CHECKED, obj)
+                objs = self._workspace.add_file(base_fn + ae)
+                for obj in objs:
+                    self._workspace.set_object_state(States().CHECKED, obj)
 
                 return True
         return False

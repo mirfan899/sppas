@@ -2,6 +2,7 @@
   "id": "textnorm",
   "name": "Text Normalization",
   "descr": "Converts orthography into a tokenized form: word segmented, numerals converted into words, expanded abbreviations, punctuation removed, etc. Requires IPUs with the orthographic transcription.",
+  "api": "sppasTextNorm",
   "required": "",
 
   "resources": [

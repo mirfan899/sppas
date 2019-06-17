@@ -3,6 +3,7 @@
   "name": "Syllabification",
   "descr": "Uses of rules to group aligned phonemes into syllables. Requires time-aligned phonemes.",
   "required": "alignment",
+  "api": "sppasSyll",
 
   "resources": [
     {

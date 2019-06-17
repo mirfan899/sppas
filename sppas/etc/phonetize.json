@@ -3,6 +3,7 @@
   "name": "Phonetization",
   "descr": "Converts a tokenized text into phonetic signs from a pronunciation dictionary. Requires Text Normalization.",
   "required": "textnorm",
+  "api": "sppasPhon",
 
   "resources": [
     {

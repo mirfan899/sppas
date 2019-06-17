@@ -299,7 +299,7 @@ class sppasBaseAnnotation(object):
 
         total = len(file_names)
         if total == 0:
-            return 0
+            return list()
         files_processed_success = list()
         if progress:
             progress.update(0, "")

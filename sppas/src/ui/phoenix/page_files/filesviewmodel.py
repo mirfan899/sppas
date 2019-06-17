@@ -427,7 +427,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
             if isinstance(node, FileRoot) is True:
                 # convert the list of FileReference instances into a string
                 refs_ids = [ref.id for ref in node.get_references()]
-                return " ".join(refs_ids)
+                return " ".join(sorted(refs_ids))
             return ""
 
         return self.__mapper[col].get_value(node)
@@ -802,7 +802,7 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         if name == "type":
             col = ColumnProperties("Type", name)
             col.add_fct_name(FileName, "get_extension")
-            col.width = 120
+            col.width = 100
             return col
 
         if name == "refs":

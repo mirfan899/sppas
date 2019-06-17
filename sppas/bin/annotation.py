@@ -53,7 +53,6 @@ from sppas import sg
 from sppas import sppasParam
 from sppas import sppasAnnotationsManager
 from sppas import sppasLogSetup
-from sppas import sppasAppConfig
 
 from sppas.src.anndata.aio import extensions_out
 from sppas.src.ui.term.textprogress import ProcessProgressTerminal
@@ -122,7 +121,7 @@ args = parser.parse_args()
 
 sep = "-"*72
 
-parameters.add_sppasinput(os.path.abspath(args.w))
+parameters.add_to_workspace(os.path.abspath(args.w))
 
 if args.l:
     parameters.set_lang(args.l)

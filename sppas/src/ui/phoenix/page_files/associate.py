@@ -411,7 +411,7 @@ class sppasFilesFilterDialog(sppasDialog):
         sizer.Add(self.listctrl, proportion=1, flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=5)
         panel.SetSizer(sizer)
 
-        self.SetMinSize((320, 200))
+        self.SetMinSize(wx.Size(320, 200))
         panel.SetAutoLayout(True)
         self.SetContent(panel)
 
@@ -421,13 +421,13 @@ class sppasFilesFilterDialog(sppasDialog):
         """Create the toolbar."""
         tb = sppasToolbar(parent)
         tb.set_focus_color(wx.Colour(196, 196, 96, 128))
-        tb.AddButton(None, "+ Path")
-        tb.AddButton(None, "+ Name")
-        tb.AddButton(None, "+ Type")
-        tb.AddButton(None, "+ Ref.")
-        tb.AddButton(None, "+ Value")
+        tb.AddTextButton("filter_path", "+ Path")
+        tb.AddTextButton("filter_name", "+ Name")
+        tb.AddTextButton("filter_ext", "+ Type")
+        tb.AddTextButton("filter_ref", "+ Ref.")
+        tb.AddTextButton("filter_att", "+ Value")
         tb.AddSpacer()
-        tb.AddButton(None, "- Remove")
+        #tb.AddTextButton(None, "- Remove")
         return tb
 
     # -----------------------------------------------------------------------
@@ -435,7 +435,7 @@ class sppasFilesFilterDialog(sppasDialog):
     def _create_buttons(self):
         """Create the buttons and bind events."""
         panel = sppasPanel(self, name="actions")
-        panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
+        # panel.SetMinSize(wx.Size(-1, wx.GetApp().settings.action_height))
         sizer = wx.BoxSizer(wx.HORIZONTAL)
 
         # Create the buttons
@@ -458,10 +458,11 @@ class sppasFilesFilterDialog(sppasDialog):
     def __create_action_button(self, parent, text, icon):
         btn = BitmapTextButton(parent, label=text, name=icon)
         btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
+        btn.Spacing = sppasDialog.fix_size(12)
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
-        btn.SetMinSize((32, 32))
+        btn.SetMinSize(wx.Size(sppasDialog.fix_size(32),
+                               sppasDialog.fix_size(32)))
 
         return btn
 
@@ -481,7 +482,7 @@ class sppasFilesFilterDialog(sppasDialog):
         if event_name == "filter_path":
             self.__append_filter("path")
 
-        elif event_name == "filter_file":
+        elif event_name == "filter_name":
             self.__append_filter("name")
 
         elif event_name == "filter_ext":

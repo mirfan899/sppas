@@ -3,6 +3,7 @@
   "name": "Alignment",
   "descr": "Time aligns the phonetization to audio, and also the tokenizetion if available.",
   "required": "phonetize",
+  "api": "sppasAlign",
 
   "anntype": [
     "STANDALONE"

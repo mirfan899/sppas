@@ -111,7 +111,7 @@ class AnnotateProcess(object):
             return "No annotation selected or annotations not properly selected"
 
         for entry in filelist:
-            parameters.add_sppasinput(entry)
+            parameters.add_to_workspace(entry)
         parameters.set_output_format(self.preferences.GetValue('M_OUTPUT_EXT'))
 
         # Create the progress bar then run the annotations
