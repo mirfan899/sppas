@@ -26,20 +26,19 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.btntxttoolbar.py
+    src.ui.phoenix.page_files.btntxttoolbar.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Toolbar with button/text buttons.
+    Horizontal toolbar with button/text buttons.
 
 """
 
 import logging
-import os
 import wx
 
 from sppas.src.ui.phoenix.windows.panel import sppasPanel
-from sppas.src.ui.phoenix.windows.text import sppasStaticText, sppasTitleText
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton
+from sppas.src.ui.phoenix.windows.text import sppasStaticText
+from sppas.src.ui.phoenix.windows.button import BitmapTextButton, TextButton
 
 # ----------------------------------------------------------------------------
 
@@ -80,6 +79,12 @@ class BitmapTextToolbar(sppasPanel):
     # -----------------------------------------------------------------------
 
     def get_button(self, name):
+        """Return the button matching the given name or None.
+
+        :param name: (str) Name of the object
+        :returns: (wx.Window) a button or None
+
+        """
         for b in self.GetSizer().GetChildren():
             if b.GetName() == name:
                 return b
@@ -88,9 +93,20 @@ class BitmapTextToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def AddButton(self, icon, text="", tooltip=None, activated=True):
+    def AddButton(self, icon, text="", activated=True):
+        """Append a button into the toolbar.
+
+        The button can contain either:
+            - an icon only;
+            - a text only;
+            - both of them.
+
+        :param icon: (str) Name of the .png file of the icon or None
+        :param text: (str) Label of the button
+        :param activated: (bool) Enable or disable the button
+
+        """
         btn = self.create_button(text, icon)
-        # btn.SetToolTip(tooltip)
         btn.Enable(activated)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
             self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
@@ -98,17 +114,40 @@ class BitmapTextToolbar(sppasPanel):
             self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
         return btn
 
+    # -----------------------------------------------------------------------
+
     def AddSpacer(self, proportion=1):
+        """Append a stretch space into the toolbar.
+
+        :param proportion: (int)
+
+        """
         self.GetSizer().AddStretchSpacer(proportion)
 
+    # -----------------------------------------------------------------------
+
     def AddText(self, text="", color=None):
+        """Append a colored static text into the toolbar.
+
+        :param text: (str)
+        :param color: (wx.Colour)
+
+        """
         st = sppasStaticText(self, label=text)
         if color is not None:
             st.SetForegroundColour(color)
             self.__fg.append(st)
         self.GetSizer().Add(st, 0, wx.LEFT | wx.TOP | wx.BOTTOM, 6)
 
+    # -----------------------------------------------------------------------
+
     def AddTitleText(self, text="", color=None):
+        """Append a colored static text with an higher font into the toolbar.
+
+        :param text: (str)
+        :param color: (wx.Colour)
+
+        """
         st = sppasStaticText(self, label=text)
         st.SetFont(self.__title_font())
         self.__ft.append(st)
@@ -133,17 +172,19 @@ class BitmapTextToolbar(sppasPanel):
     def create_button(self, text, icon):
         if icon is not None:
             btn = BitmapTextButton(self, label=text, name=icon)
+            btn.LabelPosition = wx.RIGHT
+
         else:
-            btn = BitmapTextButton(self, label=text)
+            btn = TextButton(self, label=text)
+            btn.LabelPosition = wx.CENTRE
 
         btn.FocusStyle = self._fs
         btn.FocusWidth = self._fw
         btn.FocusColour = self._fc
-        btn.LabelPosition = wx.RIGHT
-        btn.Spacing = 12
+        btn.Spacing = sppasPanel.fix_size(12)
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
-        btn.SetMinSize((32, 32))
+        btn.SetMinSize((sppasPanel.fix_size(32), sppasPanel.fix_size(32)))
 
         return btn
 
@@ -182,3 +223,4 @@ class BitmapTextToolbar(sppasPanel):
                              faceName="Calibri",
                              encoding=wx.FONTENCODING_SYSTEM)
         return title_font
+

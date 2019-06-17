@@ -138,7 +138,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
         """Create the main content."""
         sizer = wx.BoxSizer(wx.VERTICAL)
 
-        btn_size = self.fix_size(64)
+        btn_size = sppasScrolledPanel.fix_size(64)
 
         btn_back_top = BitmapTextButton(self, name="arrow_up")
         btn_back_top.FocusWidth = 0
@@ -286,15 +286,5 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
                     child.SetForegroundColour(settings.header_fg_color)
                 except:
                     child.SetForegroundColour(colour)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def fix_size(value):
-        try:
-            btn_size = int(float(value) * wx.GetApp().settings.size_coeff)
-        except AttributeError:
-            btn_size = int(value)
-        return btn_size
 
 

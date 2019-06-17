@@ -152,8 +152,8 @@ class sppasActionAnnotatePanel(sppasPanel):
 
     def __create_select_annot_btn(self, label):
 
-        w = self.fix_size(196)
-        h = self.fix_size(42)
+        w = sppasPanel.fix_size(196)
+        h = sppasPanel.fix_size(42)
 
         btn = BitmapTextButton(self, name="wizard", label=label)
         btn.LabelPosition = wx.RIGHT
@@ -167,7 +167,7 @@ class sppasActionAnnotatePanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def __create_format_btn(self):
-        w = self.fix_size(80)
+        w = sppasPanel.fix_size(80)
         all_formats = ['.xra', '.TextGrid', '.eaf', '.antx', '.mrk', '.csv']
         default = self.__param.get_output_format()
         logging.debug("Default output format is {:s}".format(default))
@@ -180,7 +180,7 @@ class sppasActionAnnotatePanel(sppasPanel):
     # ------------------------------------------------------------------------
 
     def __create_lang_btn(self):
-        w = self.fix_size(80)
+        w = sppasPanel.fix_size(80)
 
         all_langs = list()
         for i in range(self.__param.get_step_numbers()):
@@ -347,13 +347,3 @@ class sppasActionAnnotatePanel(sppasPanel):
             else:
                 self.btn_por.Enable(True)
                 self.btn_por.BorderColour = wx.Colour(24, 228, 24, 128)
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def fix_size(value):
-        try:
-            btn_size = int(float(value) * wx.GetApp().settings.size_coeff)
-        except AttributeError:
-            btn_size = int(value)
-        return btn_size

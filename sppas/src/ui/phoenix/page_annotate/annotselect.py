@@ -262,7 +262,7 @@ class sppasEnableAnnotation(sppasPanel):
 
         self._create_content()
         self._setup_events()
-        self.SetMaxSize(wx.Size(-1, self.fix_size(128)))
+        self.SetMaxSize(wx.Size(-1, sppasPanel.fix_size(128)))
 
         self.Layout()
 
@@ -293,8 +293,8 @@ class sppasEnableAnnotation(sppasPanel):
 
     def __create_enable_sizer(self):
         sizer = wx.BoxSizer(wx.VERTICAL)
-        w = self.fix_size(128)
-        h = self.fix_size(32)
+        w = sppasPanel.fix_size(128)
+        h = sppasPanel.fix_size(32)
 
         btn_enable = BitmapTextButton(self, label=self.__annparam.get_name(), name="on-off-off")
         btn_enable.LabelPosition = wx.RIGHT
@@ -330,7 +330,7 @@ class sppasEnableAnnotation(sppasPanel):
             choice.SetSelection(choice.GetItems().index(lang))
             choice.Bind(wx.EVT_COMBOBOX, self._on_lang_changed)
 
-        choice.SetMinSize(wx.Size(self.fix_size(80), -1))
+        choice.SetMinSize(wx.Size(sppasPanel.fix_size(80), -1))
 
         return choice
 
@@ -345,7 +345,7 @@ class sppasEnableAnnotation(sppasPanel):
                      wx.NO_BORDER | \
                      wx.TE_RICH
         td = sppasTextCtrl(self, value=self.__annparam.get_descr(), style=text_style)
-        td.SetMinSize(wx.Size(self.fix_size(512), -1))
+        td.SetMinSize(wx.Size(sppasPanel.fix_size(512), -1))
 
         return td
 
@@ -428,13 +428,3 @@ class sppasEnableAnnotation(sppasPanel):
             choice = self.FindWindow("lang_choice")
             choice.SetSelection(choice.GetItems().index(lang))
             choice.Refresh()
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def fix_size(value):
-        try:
-            btn_size = int(float(value) * wx.GetApp().settings.size_coeff)
-        except AttributeError:
-            btn_size = int(value)
-        return btn_size

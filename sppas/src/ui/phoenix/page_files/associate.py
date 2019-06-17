@@ -368,7 +368,7 @@ class sppasFilesFilterDialog(sppasDialog):
             style=wx.DEFAULT_FRAME_STYLE)
 
         self.match_all = True
-        self.CreateHeader(title="Check files with the following filters:",
+        self.CreateHeader(title="Define filters to check files",
                           icon_name="check_filter")
         self._create_content()
         self._create_buttons()
@@ -421,13 +421,13 @@ class sppasFilesFilterDialog(sppasDialog):
         """Create the toolbar."""
         tb = BitmapTextToolbar(parent)
         tb.set_focus_color(wx.Colour(196, 196, 96, 128))
-        tb.AddButton("filter_path", "Path")
-        tb.AddButton("filter_file", "Name")
-        tb.AddButton("filter_ext", "Type")
-        tb.AddButton("filter_ref", "Ref.")
-        tb.AddButton("filter_att", "Value")
+        tb.AddButton(None, "+ Path")
+        tb.AddButton(None, "+ Name")
+        tb.AddButton(None, "+ Type")
+        tb.AddButton(None, "+ Ref.")
+        tb.AddButton(None, "+ Value")
         tb.AddSpacer()
-        tb.AddButton("remove", "Remove")
+        tb.AddButton(None, "- Remove")
         return tb
 
     # -----------------------------------------------------------------------
