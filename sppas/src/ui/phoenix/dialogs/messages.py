@@ -60,7 +60,7 @@ class sppasBaseMessageDialog(sppasDialog):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -83,11 +83,8 @@ class sppasBaseMessageDialog(sppasDialog):
         self._create_buttons()
 
         # Fix frame properties
-        self.SetMinSize(wx.Size(320, 200))
-        # w = int(wx.GetApp().settings.frame_size[0] * 0.4)
-        # h = int(wx.GetApp().settings.frame_size[1] * 0.4)
-        # self.SetSize(wx.Size(w, h))
-
+        self.SetMinSize(wx.Size(sppasDialog.fix_size(256),
+                                sppasDialog.fix_size(164)))
         self.LayoutComponents()
         self.CenterOnParent()
         self.GetSizer().Fit(self)
@@ -130,7 +127,7 @@ class sppasBaseMessageDialog(sppasDialog):
         s.Add(txt, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 10)
         p.SetSizer(s)
         p.SetName("content")
-        p.SetMinSize(wx.Size(-1, 128))
+        p.SetMinSize(wx.Size(-1, sppasDialog.fix_size(96)))
 
     # -----------------------------------------------------------------------
 

@@ -49,7 +49,7 @@ from ..dialogs import Information
 from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
-from ..windows import sppasHToolbar
+from ..windows import sppasToolbar
 from ..windows import BitmapTextButton, CheckButton
 from ..windows import sppasRadioBoxPanel
 from ..main_events import DataChangedEvent
@@ -419,7 +419,7 @@ class sppasFilesFilterDialog(sppasDialog):
 
     def __create_toolbar(self, parent):
         """Create the toolbar."""
-        tb = sppasHToolbar(parent)
+        tb = sppasToolbar(parent)
         tb.set_focus_color(wx.Colour(196, 196, 96, 128))
         tb.AddButton(None, "+ Path")
         tb.AddButton(None, "+ Name")

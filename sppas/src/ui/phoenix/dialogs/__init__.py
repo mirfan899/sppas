@@ -9,6 +9,7 @@ from .about import AboutPlugin
 from .feedback import Feedback
 from .file import sppasFileDialog
 from .settings import Settings
+from .entries import sppasTextEntryDialog
 
 __all__ = (
     'YesNoQuestion',
@@ -19,5 +20,6 @@ __all__ = (
     'About',
     'AboutPlugin',
     'Settings',
-    'sppasFileDialog'
+    'sppasFileDialog',
+    "sppasTextEntryDialog"
 )

@@ -44,9 +44,11 @@ from sppas.src.files.filebase import States
 from sppas.src.ui import sppasWorkspaces
 
 from ..dialogs import Confirm, Error
+from ..dialogs import sppasTextEntryDialog
+from ..dialogs import sppasFileDialog
 from ..windows import sppasStaticLine
 from ..windows import sppasPanel
-from ..windows import sppasHToolbar
+from ..windows import sppasToolbar
 from ..windows import CheckButton
 from ..main_events import DataChangedEvent
 
@@ -59,6 +61,8 @@ WkpChangedCommandEvent, EVT_WKP_CHANGED_COMMAND = wx.lib.newevent.NewCommandEven
 
 # ---------------------------------------------------------------------------
 # List of displayed messages:
+
+WKP = "Workspace"
 
 WKP_TITLE = "Workspaces: "
 WKP_ACT_IMPORT = "Import from"
@@ -167,7 +171,7 @@ class WorkspacesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = sppasHToolbar(self, orient=wx.VERTICAL)
+        tb = sppasToolbar(self, orient=wx.VERTICAL)
         tb.set_focus_color(WorkspacesManager.HIGHLIGHT_COLOUR)
 
         tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGHT_COLOUR)
@@ -323,14 +327,11 @@ class WorkspacesManager(sppasPanel):
     def import_wkp(self):
         """Import a file and append into the list of workspaces."""
         # get the name of the file to be imported
-        with wx.FileDialog(
-            self,
-            "Import workspace",
-            wildcard="Workspace files (*.wjson)|*.wjson",
-            style=wx.FD_OPEN | wx.FD_FILE_MUST_EXIST) \
-                as dlg:
-            if dlg.ShowModal() == wx.ID_CANCEL:
-                return
+        dlg = sppasFileDialog(self, title=WKP_ACT_IMPORT,
+                              style=wx.FC_OPEN | wx.FC_NOSHOWHIDDEN)
+        dlg.SetWildcard(WKP + " (*.wjson)|*.wjson")
+        if dlg.ShowModal() == wx.ID_OK:
+            # Get the selected file name
             pathname = dlg.GetPath()
 
             # import the selected file in the workspaces
@@ -339,6 +340,8 @@ class WorkspacesManager(sppasPanel):
             except Exception as e:
                 message = WKP_ACT_IMPORT_ERROR.format(pathname, str(e))
                 Error(message, "Import error")
+
+        dlg.Destroy()
 
     # ------------------------------------------------------------------------
 
@@ -349,16 +352,15 @@ class WorkspacesManager(sppasPanel):
         not the currently displayed data.
 
         """
-        # get the name of the file to be exported in
-        with wx.FileDialog(
-            self,
-            "Export workspace",
-            wildcard="Workspace files (*.wjson)|*.wjson",
-            style=wx.FD_SAVE) \
-                as dlg:
+        # get the name of the file to be exported to
+        with sppasFileDialog(self, title=WKP_ACT_IMPORT,
+                              style=wx.FD_SAVE) as dlg:
+            dlg.SetWildcard(WKP + " (*.wjson)|*.wjson")
             if dlg.ShowModal() == wx.ID_CANCEL:
                 return
             pathname = dlg.GetPath()
+            if pathname.lower().endswith(".wjson") is False:
+                pathname += ".wjson"
 
         if os.path.exists(pathname):
             message = WKP_MSG_CONFIRM_OVERRIDE.format(pathname)
@@ -381,13 +383,8 @@ class WorkspacesManager(sppasPanel):
         # Ask for a name if current is the Blank one
         wkps = self.FindWindow("wkpslist")
         if wkps.get_wkp_current_index() == 0:
-            dlg = wx.TextEntryDialog(
-                self,
-                "New name of the workspace: ",
-                caption=wx.GetTextFromUserPromptStr,
-                value="Corpus",
-                style=wx.OK | wx.CANCEL)
-            dlg.SetMaxLength(24)
+            dlg = sppasTextEntryDialog(
+                self, WKP_MSG_ASK_NAME, caption=WKP_ACT_SAVE, value="Corpus")
             if dlg.ShowModal() == wx.ID_CANCEL:
                 return
             wkp_name = dlg.GetValue()
@@ -398,6 +395,7 @@ class WorkspacesManager(sppasPanel):
             except Exception as e:
                 message = WKP_MSG_PIN_ERROR.format(wkp_name, str(e))
                 Error(message, "Save error")
+                return
         else:
             wkp_name = wkps.get_wkp_name()
 
@@ -416,13 +414,8 @@ class WorkspacesManager(sppasPanel):
 
         """
         current_name = self.FindWindow("wkpslist").get_wkp_name()
-        dlg = wx.TextEntryDialog(
-            self,
-            WKP_MSG_ASK_NAME,
-            caption=wx.GetTextFromUserPromptStr,
-            value=current_name,
-            style=wx.OK | wx.CANCEL)
-        dlg.SetMaxLength(24)
+        dlg = sppasTextEntryDialog(
+            self, WKP_MSG_ASK_NAME, caption=WKP_ACT_RENAME, value=current_name)
         if dlg.ShowModal() == wx.ID_CANCEL:
             return
         new_name = dlg.GetValue()
@@ -669,9 +662,9 @@ class WorkspacesPanel(sppasPanel):
 
         """
         btn = CheckButton(self, label=name, name=name)
-        btn.SetSpacing(12)
+        btn.SetSpacing(sppasPanel.fix_size(12))
         btn.SetMinSize(wx.Size(-1, sppasPanel.fix_size(32)))
-        btn.SetSize(wx.Size(-1, 32))
+        btn.SetSize(wx.Size(-1, sppasPanel.fix_size(32)))
         i = self.__wkps.index(name)
         if i == self.__current:
             self.__set_active_btn_style(btn)

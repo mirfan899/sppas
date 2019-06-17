@@ -22,7 +22,7 @@ from .panel import sppasScrolledPanel
 
 from .dialog import sppasDialog
 
-from .toolbar import sppasHToolbar
+from .toolbar import sppasToolbar
 
 __all__ = (
     "sppasStaticLine",
@@ -42,5 +42,5 @@ __all__ = (
     "sppasPanel",
     "sppasScrolledPanel",
     "sppasDialog",
-    "sppasHToolbar"
+    "sppasToolbar"
 )

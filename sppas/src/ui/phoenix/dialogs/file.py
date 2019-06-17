@@ -51,25 +51,34 @@ class sppasFileDialog(sppasDialog):
 
     """
 
-    def __init__(self, parent, style=wx.FC_OPEN):
+    def __init__(self, parent,
+                 title="Files and directories selection",
+                 style=wx.FC_OPEN | wx.FC_MULTIPLE | wx.FC_NOSHOWHIDDEN):
         """Create a dialog with a file chooser.
 
         :param parent: (wx.Window)
-        :param style: wx.FC_OPEN is the only supported style
+        :param style: (int)
 
-        todo: sppasFileDialog support of wx.FC_SAVE
+        This class supports the following styles:
+
+            - wx.FC_DEFAULT_STYLE: The default style: wx.FC_OPEN
+            - wx.FC_OPEN: Creates an file control suitable for opening files. Cannot be combined with wx.FC_SAVE.
+            - wx.FC_SAVE: Creates an file control suitable for saving files. Cannot be combined with wx.FC_OPEN.
+            - wx.FC_MULTIPLE: For open control only, Allows selecting multiple files. Cannot be combined with wx.FC_SAVE
+            - wx.FC_NOSHOWHIDDEN: Hides the "Show Hidden Files" checkbox (Generic only)
 
         """
         super(sppasFileDialog, self).__init__(
             parent=parent,
-            title="Files and directories selection",
+            title=title,
             style=wx.DEFAULT_DIALOG_STYLE | wx.STAY_ON_TOP)
 
-        self._create_content()
+        self._create_content(style)
         self._create_buttons()
 
         # Fix frame properties
-        self.SetMinSize(wx.Size(320, 200))
+        self.SetMinSize(wx.Size(sppasDialog.fix_size(320),
+                                sppasDialog.fix_size(200)))
         self.LayoutComponents()
         self.CenterOnParent()
         self.GetSizer().Fit(self)
@@ -109,6 +118,11 @@ class sppasFileDialog(sppasDialog):
 
     # -----------------------------------------------------------------------
 
+    def SetWildcard(self, wild_card):
+        return self.FindWindow("content").SetWildcard(wild_card)
+
+    # -----------------------------------------------------------------------
+
     def SetDirectory(self, directory):
         """Set (change) the current directory displayed in the control."""
         return self.FindWindow("content").SetDirectory(directory)
@@ -123,10 +137,10 @@ class sppasFileDialog(sppasDialog):
     # Construct the GUI
     # -----------------------------------------------------------------------
 
-    def _create_content(self):
+    def _create_content(self, style):
         """Create the content of the file dialog."""
         fc = wx.FileCtrl(self,  # defaultDirectory="", defaultFilename="", wildCard="",
-                         style=wx.FC_OPEN | wx.FC_MULTIPLE | wx.FC_NOSHOWHIDDEN)
+                         style=style)  # wx.FC_OPEN | wx.FC_MULTIPLE | wx.FC_NOSHOWHIDDEN)
         fc.SetMinSize(wx.Size(sppasDialog.fix_size(480),
                               sppasDialog.fix_size(320)))
         fc.SetBackgroundColour(self.GetBackgroundColour())

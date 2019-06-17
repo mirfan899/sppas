@@ -47,7 +47,7 @@ from ..windows import sppasStaticLine
 from ..windows import sppasStaticText
 from ..windows import sppasTextCtrl
 from ..windows import RadioButton
-from ..windows import sppasHToolbar
+from ..windows import sppasToolbar
 from ..dialogs import Information
 from ..dialogs import Error
 from ..main_events import DataChangedEvent
@@ -133,8 +133,9 @@ class ReferencesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = sppasHToolbar(self)
+        tb = sppasToolbar(self)
         tb.set_focus_color(ReferencesManager.HIGHLIGHT_COLOUR)
+
         tb.AddTitleText(REF_TITLE, color=ReferencesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("refs-add", REF_ACT_CREATE)
         tb.AddButton("refs-edit", REF_ACT_EDIT)

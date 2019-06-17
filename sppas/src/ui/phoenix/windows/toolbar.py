@@ -43,7 +43,7 @@ from .button import BitmapTextButton, TextButton
 # ----------------------------------------------------------------------------
 
 
-class sppasHToolbar(sppasPanel):
+class sppasToolbar(sppasPanel):
     """Panel imitating the behaviors of an horizontal toolbar.
 
     :author:       Brigitte Bigi
@@ -55,7 +55,7 @@ class sppasHToolbar(sppasPanel):
     """
 
     def __init__(self, parent, orient=wx.HORIZONTAL):
-        super(sppasHToolbar, self).__init__(
+        super(sppasToolbar, self).__init__(
             parent,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,

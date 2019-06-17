@@ -40,7 +40,7 @@ import wx
 from sppas.src.files import States
 
 from ..windows import sppasPanel
-from ..windows import sppasHToolbar
+from ..windows import sppasToolbar
 from ..dialogs import YesNoQuestion, Information
 from ..dialogs import sppasFileDialog
 from ..main_events import DataChangedEvent
@@ -127,7 +127,7 @@ class FilesManager(sppasPanel):
 
     def __create_toolbar(self):
         """Create the toolbar."""
-        tb = sppasHToolbar(self)
+        tb = sppasToolbar(self)
         tb.set_focus_color(FilesManager.HIGHLIGHT_COLOUR)
         tb.AddTitleText(FLS_TITLE, FilesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("files-add", FLS_ACT_ADD)
