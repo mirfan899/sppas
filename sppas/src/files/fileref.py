@@ -329,8 +329,8 @@ class FileReference(FileBase):
             raise sppasTypeError(att, "sppasAttribute")
 
         if att in self:
-            raise KeyError('An attribute with id {:s} is already existing in'
-                           'the reference {:s}.'.format(att.get_id(), self.id))
+            raise KeyError("The identifier '{:s}' is already existing in the "
+                           "reference '{:s}'.".format(att.get_id(), self.id))
 
         self.__attributs.append(att)
 
@@ -447,15 +447,22 @@ class FileReference(FileBase):
         for att in self.__attributs:
             yield att
 
-    def __contains__(self, identifier):
-        if isinstance(identifier, sppasAttribute) is False:
-            su = sppasUnicode(identifier)
-            identifier = su.unicode()
+    def __contains__(self, att):
+        """Return true if self contains the given attribute/identifier.
+
+        :param att: (str or sppasAttribute)
+
+        """
+        if isinstance(att, sppasAttribute) is False:
+            try:
+                att = sppasAttribute(att)
+            except:
+                return False
+
         for a in self.__attributs:
-            if isinstance(identifier, sppasAttribute):
-                if a is identifier:
-                    return True
-            else:
-                if a.get_id() == identifier:
-                    return True
+            # if a is identifier:
+            #     return True
+            if a.get_id() == att.get_id():
+                return True
+
         return False
