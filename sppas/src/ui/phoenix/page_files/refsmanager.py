@@ -74,7 +74,7 @@ REF_MSG_NB_CHECKED = "No reference checked."
 
 
 class ReferencesManager(sppasPanel):
-    """Manage a catalogue of references and actions on perform on them.
+    """Manage references and actions on perform on them.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -84,7 +84,9 @@ class ReferencesManager(sppasPanel):
 
     """
 
-    HIGHLIGHT_COLOUR = wx.Colour(128, 128, 228, 196)  # blue
+    HIGHLIGHT_COLOUR = wx.Colour(128, 128, 250, 196)  # blue
+
+    # ------------------------------------------------------------------------
 
     def __init__(self, parent, name=wx.PanelNameStr):
         super(ReferencesManager, self).__init__(
@@ -144,7 +146,7 @@ class ReferencesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def _setup_events(self):
-        """Associate a handler function with the events.
+        """Associate an handler function with the events.
 
         It means that when an event occurs then the process handler function
         will be called.
@@ -232,9 +234,7 @@ class ReferencesManager(sppasPanel):
     # ------------------------------------------------------------------------
 
     def _delete(self):
-        """Delete the selected references.
-
-        """
+        """Delete the selected references."""
         view = self.FindWindow('refsview')
         if view.HasCheckedRefs() is False:
             Error(REF_MSG_NB_CHECKED)
@@ -251,7 +251,6 @@ class ReferencesManager(sppasPanel):
 
     def _edit(self):
         # add/remove/modify attributes of the selected references
-        logging.debug('Edit attribute.')
         view = self.FindWindow('refsview')
         if view.HasCheckedRefs() is False:
             Error(REF_MSG_NB_CHECKED)
@@ -261,10 +260,12 @@ class ReferencesManager(sppasPanel):
             if response == wx.ID_OK:
                 self.notify()
                 if dlg.get_action() == 0:
+                    # The user choose to delete an attribute
                     view.RemoveAttribute(dlg.get_id())
                 else:
+                    # The user choose to add/edit an attribute
                     try:
-                        view.AddAttribute(
+                        view.EditAttribute(
                             dlg.get_id(),
                             dlg.get_value_type()[0],
                             dlg.get_value_type()[1],
@@ -377,7 +378,7 @@ class sppasCreateReference(sppasDialog):
             event.Skip()
 
 # ----------------------------------------------------------------------------
-# Panel to create a reference
+# Dialog to edit a reference
 # ----------------------------------------------------------------------------
 
 
@@ -388,7 +389,7 @@ class sppasEditAttributes(sppasDialog):
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
     :contact:      develop@sppas.org
     :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     """
 
@@ -400,13 +401,17 @@ class sppasEditAttributes(sppasDialog):
         """
         super(sppasEditAttributes, self).__init__(
             parent=parent,
-            title='{:s} Manage Reference Values'.format(sg.__name__),
+            title='{:s} Edit References'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
+        self.CreateHeader(title="Edit values of checked references",
+                          icon_name="refs-edit")
         self._create_content()
         self._create_buttons()
+        self._setup_events()
 
-        self.SetMinSize(wx.Size(480, 320))
+        self.SetMinSize(wx.Size(sppasPanel.fix_size(480),
+                                sppasPanel.fix_size(320)))
         self.LayoutComponents()
         self.GetSizer().Fit(self)
         self.CenterOnParent()
@@ -446,68 +451,57 @@ class sppasEditAttributes(sppasDialog):
     def _create_content(self):
         """Create the content of the message dialog."""
         panel = sppasPanel(self, name="content")
-        sizer = wx.GridBagSizer(9, 3)
+        sizer = wx.GridBagSizer(6, 3)
 
-        st1 = sppasStaticText(panel, label="Required:")
-        sizer.Add(st1, pos=(0, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL,  border=2)
+        # 1st row: the action to perform: add/edit or del
+        s = wx.BoxSizer(wx.HORIZONTAL)
+        add_btn = self.__create_radio_button(
+            panel, label="Add or modify", name="radio_add", activate=True)
+        s.Add(add_btn, 3, wx.EXPAND | wx.RIGHT, 4)
+        del_btn = self.__create_radio_button(
+            panel, label="Delete", name="radio_del", activate=False)
+        s.Add(del_btn, 2, wx.EXPAND)
+        sizer.Add(s, pos=(0, 0), span=(1, 3), flag=wx.EXPAND | wx.ALL, border=12)
 
-        add_btn = RadioButton(
-            panel,
-            label="Add a new value in the checked references",
-            name="radio_add")
-        add_btn.SetValue(True)
-        sizer.Add(add_btn, pos=(1, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
-
-        del_btn = RadioButton(
-            panel,
-            label="Delete an existing value in the checked references",
-            name="radio_del")
-        add_btn.SetValue(False)
-        sizer.Add(del_btn, pos=(2, 0), span=(1, 2), flag=wx.EXPAND | wx.ALL, border=12)
-
-        id_st1 = sppasStaticText(panel, label="Identifier for the value: ")
-        sizer.Add(id_st1, pos=(3, 0), flag=wx.LEFT, border=12)
+        # 2nd/3rd rows: the identifier
+        id_st1 = sppasStaticText(panel, label="Identifier of the value: ")
+        sizer.Add(id_st1, pos=(1, 0), flag=wx.LEFT, border=12)
         ident = sppasTextCtrl(
-            parent=panel,
-            value="",
-            validator=IdentifierTextValidator(),
-            name="text_id"
-        )
-        self.Bind(wx.EVT_TEXT, self._process_event)
-        self.Bind(wx.EVT_SET_FOCUS, self._process_event)
-        sizer.Add(ident, pos=(3, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+            parent=panel, value="", validator=IdentifierTextValidator(),
+            name="text_id")
+        sizer.Add(ident, pos=(1, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
         id_st2 = sppasStaticText(panel, label="between 2 and 12 characters")
-        sizer.Add(id_st2, pos=(4, 1), flag=wx.EXPAND | wx.LEFT, border=2)
+        sizer.Add(id_st2, pos=(2, 1), flag=wx.EXPAND | wx.LEFT, border=2)
 
+        # 4th row: a line to separate required/optional fields
         line = sppasStaticLine(panel, orient=wx.LI_HORIZONTAL)
         line.SetMinSize(wx.Size(-1, 4))
         line.SetSize(wx.Size(-1, 4))
-        line.SetPenStyle(wx.PENSTYLE_SOLID)
-        sizer.Add(line, pos=(5, 0), span=(1, 3), flag=wx.EXPAND, border=2)
+        line.SetPenStyle(wx.PENSTYLE_SHORT_DASH)
+        sizer.Add(line, pos=(3, 0), span=(1, 3), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
-        st2 = sppasStaticText(panel, label="Optional: ")
-        sizer.Add(st2, pos=(6, 0), span=(1, 2), flag=wx.ALL,  border=2)
-
+        # 5th row: the attribute value
         value_st = sppasStaticText(panel, label="Value: ")
-        sizer.Add(value_st, pos=(7, 0), flag=wx.LEFT, border=12)
+        sizer.Add(value_st, pos=(4, 0), flag=wx.LEFT, border=12)
         value = sppasTextCtrl(parent=panel, value="", name="text_value")
-        sizer.Add(value, pos=(7, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+        sizer.Add(value, pos=(4, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
         choice = wx.Choice(panel, choices=sppasAttribute.VALUE_TYPES, name='choice_type')
         choice.SetSelection(0)
-        sizer.Add(choice, pos=(7, 2), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+        sizer.Add(choice, pos=(4, 2), flag=wx.EXPAND | wx.RIGHT, border=12)
 
+        # 6th row: the attribute description
         descr_st = sppasStaticText(panel, label="Description: ")
-        sizer.Add(descr_st, pos=(8, 0), flag=wx.LEFT, border=12)
+        sizer.Add(descr_st, pos=(5, 0), flag=wx.LEFT, border=12)
         descr = sppasTextCtrl(parent=panel, value="", name="text_descr")
-        sizer.Add(descr, pos=(8, 1), span=(2, 2), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
+        sizer.Add(descr, pos=(5, 1), flag=wx.EXPAND | wx.LEFT | wx.RIGHT, border=2)
 
+        # Properties of the sizer
         sizer.AddGrowableCol(1)
-        sizer.AddGrowableRow(8, proportion=0)
+        sizer.AddGrowableRow(5, proportion=0)
         panel.SetSizer(sizer)
         panel.SetAutoLayout(True)
         self.SetContent(panel)
-        self.Bind(wx.EVT_RADIOBUTTON, self._process_event)
 
     # -----------------------------------------------------------------------
 
@@ -515,6 +509,23 @@ class sppasEditAttributes(sppasDialog):
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
         self.Bind(wx.EVT_BUTTON, self._process_event)
         self.SetAffirmativeId(wx.ID_OK)
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate an handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        self.Bind(wx.EVT_TEXT, self._process_event)
+        self.Bind(wx.EVT_SET_FOCUS, self._process_event)
+
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+        self.Bind(wx.EVT_RADIOBUTTON, self._process_event)
 
     # -----------------------------------------------------------------------
 
@@ -539,12 +550,12 @@ class sppasEditAttributes(sppasDialog):
                 event.Skip()
 
         elif event_name == "radio_add":
-            #self.FindWindow("radio_add").SetValue(True)
-            self.FindWindow("radio_del").SetValue(False)
+            self.__radio_set_state(self.FindWindow("radio_add"), True)
+            self.__radio_set_state(self.FindWindow("radio_del"), False)
 
         elif event_name == "radio_del":
-            self.FindWindow("radio_add").SetValue(False)
-            #self.FindWindow("radio_del").SetValue(True)
+            self.__radio_set_state(self.FindWindow("radio_add"), False)
+            self.__radio_set_state(self.FindWindow("radio_del"), True)
 
         elif event_name == "text_id":
             text = self.FindWindow("text_id")
@@ -552,6 +563,50 @@ class sppasEditAttributes(sppasDialog):
 
         else:
             event.Skip()
+
+    # -----------------------------------------------------------------------
+    # Private methods
+    # -----------------------------------------------------------------------
+
+    def __create_radio_button(self, parent, name, label, activate):
+        btn = RadioButton(parent, label=label, name=name)
+        btn.SetSpacing(sppasPanel.fix_size(12))
+        btn.SetMinSize(wx.Size(-1, sppasPanel.fix_size(32)))
+        if activate is True:
+            self.__set_active_radio_style(btn)
+            btn.SetValue(True)
+        else:
+            self.__set_normal_radio_style(btn)
+            btn.SetValue(False)
+        return btn
+
+    # -----------------------------------------------------------------------
+
+    def __set_normal_radio_style(self, button):
+        """Set a normal style to a button."""
+        button.BorderWidth = 1
+        button.BorderColour = self.GetForegroundColour()
+        button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = ReferencesManager.HIGHLIGHT_COLOUR
+
+    # -----------------------------------------------------------------------
+
+    def __set_active_radio_style(self, button):
+        """Set a special style to a button."""
+        button.BorderWidth = 2
+        button.BorderColour = ReferencesManager.HIGHLIGHT_COLOUR
+        button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = self.GetForegroundColour()
+
+    # -----------------------------------------------------------------------
+
+    def __radio_set_state(self, btn, state):
+        if state is True:
+            self.__set_active_radio_style(btn)
+        else:
+            self.__set_normal_radio_style(btn)
+        btn.SetValue(state)
+        btn.Refresh()
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

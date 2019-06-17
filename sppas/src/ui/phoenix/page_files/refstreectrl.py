@@ -164,8 +164,8 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
-    def AddAttribute(self, identifier, value, att_type, description):
-        """Add an attribute into the checked references.
+    def EditAttribute(self, identifier, value, att_type, description):
+        """Add or modify an attribute into the checked references.
 
         :param identifier: (str)
         :param value: (str)
@@ -174,7 +174,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         :return: Number of references in which the attribute were added.
 
         """
-        nb = self._model.add_attribute(identifier, value, att_type, description)
+        nb = self._model.edit_attribute(identifier, value, att_type, description)
         logging.info('Identifier {:s} added into {:d} references.'
                      ''.format(identifier, nb))
         if nb > 0:

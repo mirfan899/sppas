@@ -510,8 +510,8 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
-    def add_attribute(self, identifier, value, att_type, description):
-        """Create an attribute and add it into the checked references.
+    def edit_attribute(self, identifier, value, att_type, description):
+        """Append or modify an attribute of the checked references.
 
         :param identifier: (str)
         :param value: (str)
@@ -526,10 +526,19 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
             description = None
         for ref in self.__data.get_refs():
             if ref.state == States().CHECKED:
-                att = sppasAttribute(identifier, value, att_type, description)
-                ref.append(att)
-                item = self.ObjectToItem(att)
-                self.ItemAdded(self.ObjectToItem(ref), item)
+                att = ref.att(identifier)
+                if att is None:
+                    att = sppasAttribute(identifier, value, att_type, description)
+                    ref.append(att)
+                    item = self.ObjectToItem(att)
+                    self.ItemAdded(self.ObjectToItem(ref), item)
+                else:
+                    item = self.ObjectToItem(att)
+                    att.set_value(value)
+                    att.set_value_type(att_type)
+                    att.set_description(description)
+                    self.ItemChanged(item)
+
                 nb += 1
                 if ref.subjoined is None:
                     ref.subjoined = dict()

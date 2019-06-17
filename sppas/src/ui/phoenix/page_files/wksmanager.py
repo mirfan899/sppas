@@ -106,7 +106,7 @@ class WorkspacesManager(sppasPanel):
 
     """
 
-    HIGHLIGH_COLOUR = wx.Colour(128, 228, 128, 196)   # yellow-green
+    HIGHLIGHT_COLOUR = wx.Colour(128, 228, 128, 196)   # yellow-green
 
     def __init__(self, parent, name=wx.PanelNameStr):
         super(WorkspacesManager, self).__init__(
@@ -168,9 +168,9 @@ class WorkspacesManager(sppasPanel):
 
     def __create_toolbar(self):
         tb = sppasHToolbar(self, orient=wx.VERTICAL)
-        tb.set_focus_color(WorkspacesManager.HIGHLIGH_COLOUR)
+        tb.set_focus_color(WorkspacesManager.HIGHLIGHT_COLOUR)
 
-        tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGH_COLOUR)
+        tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("workspace_import", WKP_ACT_IMPORT)
         tb.AddButton("workspace_export", WKP_ACT_EXPORT)
         tb.AddButton("workspace_pin", WKP_ACT_SAVE)
@@ -656,7 +656,8 @@ class WorkspacesPanel(sppasPanel):
         self.SetSizer(sizer)
         for w in self.__wkps:
             self.__append_wkp(w)
-        self.SetMinSize(wx.Size(128, 32*len(self.__wkps)))
+        self.SetMinSize(wx.Size(sppasPanel.fix_size(128),
+                                sppasPanel.fix_size(32)*len(self.__wkps)))
 
     # -----------------------------------------------------------------------
 
@@ -669,7 +670,7 @@ class WorkspacesPanel(sppasPanel):
         """
         btn = CheckButton(self, label=name, name=name)
         btn.SetSpacing(12)
-        btn.SetMinSize(wx.Size(-1, 32))
+        btn.SetMinSize(wx.Size(-1, sppasPanel.fix_size(32)))
         btn.SetSize(wx.Size(-1, 32))
         i = self.__wkps.index(name)
         if i == self.__current:
@@ -688,14 +689,14 @@ class WorkspacesPanel(sppasPanel):
         button.BorderWidth = 1
         button.BorderColour = self.GetForegroundColour()
         button.BorderStyle = wx.PENSTYLE_SOLID
-        button.FocusColour = WorkspacesManager.HIGHLIGH_COLOUR
+        button.FocusColour = WorkspacesManager.HIGHLIGHT_COLOUR
 
     # -----------------------------------------------------------------------
 
     def __set_active_btn_style(self, button):
         """Set a special style to the button."""
         button.BorderWidth = 2
-        button.BorderColour = WorkspacesManager.HIGHLIGH_COLOUR
+        button.BorderColour = WorkspacesManager.HIGHLIGHT_COLOUR
         button.BorderStyle = wx.PENSTYLE_SOLID
         button.FocusColour = self.GetForegroundColour()
 
@@ -753,7 +754,7 @@ class WorkspacesPanel(sppasPanel):
             wkp_btn.SetValue(True)
 
     # -----------------------------------------------------------------------
-    # Private methods to manage the data/displayed button
+    # Private methods
     # -----------------------------------------------------------------------
 
     def __btn_set_state(self, btn, state):

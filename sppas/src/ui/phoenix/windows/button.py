@@ -703,11 +703,12 @@ class BaseButton(wx.Window):
         if not self.HasCapture():
             return
 
+        s = self._state[0]
         self.ReleaseMouse()
         # If the button was down when the mouse was released...
         if self._state[1] == BaseButton.PRESSED:
-            self._set_state(self._state[0])
             self.Notify()
+            self._set_state(s)
 
     # ------------------------------------------------------------------------
 
