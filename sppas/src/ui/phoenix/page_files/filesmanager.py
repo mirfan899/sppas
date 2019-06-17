@@ -37,14 +37,14 @@ import logging
 import os
 import wx
 
-from sppas.src.files.filebase import States
+from sppas.src.files import States
 
-from ..windows.panel import sppasPanel
+from ..windows import sppasPanel
+from ..windows import sppasHToolbar
 from ..dialogs import YesNoQuestion, Information
 from ..main_events import DataChangedEvent
 
 from .filestreectrl import FilesTreeViewCtrl
-from .btntxttoolbar import BitmapTextToolbar
 
 # ---------------------------------------------------------------------------
 # List of displayed messages:
@@ -125,7 +125,7 @@ class FilesManager(sppasPanel):
 
     def __create_toolbar(self):
         """Create the toolbar."""
-        tb = BitmapTextToolbar(self)
+        tb = sppasHToolbar(self)
         tb.set_focus_color(FilesManager.HIGHLIGHT_COLOUR)
         tb.AddTitleText(FLS_TITLE, FilesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("files-add", FLS_ACT_ADD)

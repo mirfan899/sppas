@@ -47,11 +47,11 @@ from ..windows import sppasStaticLine
 from ..windows import sppasStaticText
 from ..windows import sppasTextCtrl
 from ..windows import RadioButton
+from ..windows import sppasHToolbar
 from ..dialogs import Information
 from ..dialogs import Error
 from ..main_events import DataChangedEvent
 
-from .btntxttoolbar import BitmapTextToolbar
 from .refstreectrl import ReferencesTreeViewCtrl
 from .filesutils import IdentifierTextValidator
 
@@ -131,7 +131,7 @@ class ReferencesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = BitmapTextToolbar(self)
+        tb = sppasHToolbar(self)
         tb.set_focus_color(ReferencesManager.HIGHLIGHT_COLOUR)
         tb.AddTitleText(REF_TITLE, color=ReferencesManager.HIGHLIGHT_COLOUR)
         tb.AddButton("refs-add", REF_ACT_CREATE)

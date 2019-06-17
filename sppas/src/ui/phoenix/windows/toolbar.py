@@ -11,6 +11,7 @@
         http://www.sppas.org/
 
         Use of this software is governed by the GNU Public License, version 3.
+
         SPPAS is free software: you can redistribute it and/or modify
         it under the terms of the GNU General Public License as published by
         the Free Software Foundation, either version 3 of the License, or
@@ -23,28 +24,27 @@
 
         You should have received a copy of the GNU General Public License
         along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
         This banner notice must not be removed.
+
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.page_files.btntxttoolbar.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    Horizontal toolbar with button/text buttons.
+    src.ui.phoenix.windows.toolbar.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
-import logging
 import wx
 
-from sppas.src.ui.phoenix.windows.panel import sppasPanel
-from sppas.src.ui.phoenix.windows.text import sppasStaticText
-from sppas.src.ui.phoenix.windows.button import BitmapTextButton, TextButton
+from .panel import sppasPanel
+from .text import sppasStaticText
+from .button import BitmapTextButton, TextButton
 
 # ----------------------------------------------------------------------------
 
 
-class BitmapTextToolbar(sppasPanel):
-    """Panel imitating the behaviors of a toolbar.
+class sppasHToolbar(sppasPanel):
+    """Panel imitating the behaviors of an horizontal toolbar.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -55,7 +55,7 @@ class BitmapTextToolbar(sppasPanel):
     """
 
     def __init__(self, parent, orient=wx.HORIZONTAL):
-        super(BitmapTextToolbar, self).__init__(
+        super(sppasHToolbar, self).__init__(
             parent,
             id=wx.ID_ANY,
             pos=wx.DefaultPosition,
@@ -73,7 +73,6 @@ class BitmapTextToolbar(sppasPanel):
         self.__ft = list()
 
         self.SetSizer(wx.BoxSizer(orient))
-        #self.SetMinSize((-1, 32))
         self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------

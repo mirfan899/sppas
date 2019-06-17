@@ -1,4 +1,5 @@
 from .line import sppasStaticLine
+
 from .button import BitmapTextButton
 from .button import CheckButton
 from .button import RadioButton
@@ -15,9 +16,13 @@ from .text import sppasTextCtrl
 from .text import NotEmptyTextValidator
 
 from .image import sppasStaticBitmap
+
 from .panel import sppasPanel
 from .panel import sppasScrolledPanel
+
 from .dialog import sppasDialog
+
+from .toolbar import sppasHToolbar
 
 __all__ = (
     "sppasStaticLine",
@@ -36,5 +41,6 @@ __all__ = (
     "sppasStaticBitmap",
     "sppasPanel",
     "sppasScrolledPanel",
-    "sppasDialog"
+    "sppasDialog",
+    "sppasHToolbar"
 )

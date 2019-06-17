@@ -46,10 +46,9 @@ from sppas.src.ui import sppasWorkspaces
 from ..dialogs import Confirm, Error
 from ..windows import sppasStaticLine
 from ..windows import sppasPanel
-from ..windows.button import CheckButton
+from ..windows import sppasHToolbar
+from ..windows import CheckButton
 from ..main_events import DataChangedEvent
-
-from .btntxttoolbar import BitmapTextToolbar
 
 # ---------------------------------------------------------------------------
 # Internal use of an event, when the workspace has changed.
@@ -168,7 +167,7 @@ class WorkspacesManager(sppasPanel):
     # -----------------------------------------------------------------------
 
     def __create_toolbar(self):
-        tb = BitmapTextToolbar(self, orient=wx.VERTICAL)
+        tb = sppasHToolbar(self, orient=wx.VERTICAL)
         tb.set_focus_color(WorkspacesManager.HIGHLIGH_COLOUR)
 
         tb.AddTitleText(WKP_TITLE, color=WorkspacesManager.HIGHLIGH_COLOUR)
