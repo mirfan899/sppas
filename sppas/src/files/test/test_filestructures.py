@@ -34,15 +34,16 @@
 
 """
 import unittest
-import json
+import os
 from os.path import dirname
 
-from ..filebase import FileBase, States
-from ..filestructure import FileName
-from ..filestructure import FileRoot
-from ..filestructure import FilePath
+from sppas import paths
+from sppas.src.files.filebase import FileBase, States
+from sppas.src.files.filestructure import FileName
+from sppas.src.files.filestructure import FileRoot
+from sppas.src.files.filestructure import FilePath
 
-from ..fileexc import FileOSError, FileTypeError, PathTypeError, FileLockedError
+from sppas.src.files.fileexc import FileOSError, FileTypeError, PathTypeError, FileLockedError
 
 # ---------------------------------------------------------------------------
 
@@ -99,7 +100,7 @@ class TestFileName(unittest.TestCase):
 
     def test_mime(self):
         fn = FileName(__file__)
-        self.assertEqual("text/x-python", fn.get_mime())
+        self.assertIn(fn.get_mime(), ["text/x-python", "text/plain"])
 
     def test_parse(self):
         d = {'id': __file__, 'state': 0}
@@ -191,8 +192,12 @@ class TestFilePath(unittest.TestCase):
             fp.append("toto")
 
         # Normal situation
-        fn = fp.append(__file__)
-        self.assertIsNotNone(fn)
+        fns = fp.append(__file__)
+        self.assertIsNotNone(fns)
+        self.assertEqual(len(fns), 2)
+        fr = fns[0]
+        fn = fns[1]
+        self.assertIsInstance(fr, FileRoot)
         self.assertIsInstance(fn, FileName)
         self.assertEqual(__file__, fn.id)
 
@@ -205,22 +210,25 @@ class TestFilePath(unittest.TestCase):
         self.assertEqual(1, len(fr))
 
         # Attempt to add again the same file
-        fn2 = fp.append(__file__)
+        fns2 = fp.append(__file__)
+        self.assertIsNone(fns2)
         self.assertEqual(1, len(fp))
-        self.assertEqual(fn, fn2)
-        fn3 = fp.append(FileName(__file__))
+
+        fns3 = fp.append(FileName(__file__))
+        self.assertIsNone(fns3)
         self.assertEqual(1, len(fp))
-        self.assertEqual(fn, fn3)
 
         # Remove the file from its name
         fp.remove(fp.get_root(FileRoot.root(__file__)))
         self.assertEqual(0, len(fp))
 
         # Append an instance of FileName
+        fp = FilePath(d)
+
         fn = FileName(__file__)
-        rfn = fp.append(fn)
-        self.assertIsNotNone(rfn)
-        self.assertEqual(fn, rfn)
+        rfns = fp.append(fn)
+        self.assertIsNotNone(rfns)
+        self.assertEqual(fn, rfns[1])
         self.assertEqual(1, len(fp))
 
         # Attempt to add again the same file
@@ -238,6 +246,23 @@ class TestFilePath(unittest.TestCase):
         # Remove a file not in the list!
         i = fp.remove(FileName(__file__))
         self.assertEqual(-1, i)
+
+    def test_append_with_brothers(self):
+        d = dirname(__file__)
+        fp = FilePath(d)
+
+        # Normal situation
+        fn = fp.append(__file__, all_root=True)
+        self.assertIsNotNone(fn)
+        self.assertIsInstance(fn, FileName)
+        self.assertEqual(__file__, fn.id)
+        self.assertEqual(1, len(fp))
+
+        # with brothers
+        fn = fp.append(os.path.join(paths.samples, "samples-eng", "oriana1.wav"), all_root=True)
+        self.assertIsNotNone(fn)
+        self.assertIsInstance(fn, FileName)
+        self.assertEqual(2, len(fp))   # .wav/.txt
 
     def test_serialize(self):
         #print(json.dumps(d, indent=4, separators=(',', ': '), sort_keys=True))

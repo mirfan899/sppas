@@ -3,7 +3,7 @@ from os import *
 from os.path import dirname
 from random import randint
 
-from sppas.src.files import FileName, FileRoot, FilePath, FileReference
+from sppas.src.files import FileName, FileRoot, FilePath, FileReference, sppasAttribute
 from sppas.src.files.filedatacompare import sppasFileBaseCompare
 from sppas.src.files.filedatacompare import sppasFileNameCompare
 from sppas.src.files.filedatacompare import sppasFileExtCompare

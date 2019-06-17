@@ -613,22 +613,22 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
         """
         fns = list()
         if os.path.isdir(entry):
-            for f in os.listdir(entry):
+            for f in sorted(os.listdir(entry)):
                 fullname = os.path.join(entry, f)
                 try:
-                    fn = self.__data.add_file(fullname)
-                    if fn is not None:
-                        fns.append(fn)
-                        logging.debug('{:s} added.'.format(entry))
+                    new_fns = self.__data.add_file(fullname)
+                    if new_fns is not None:
+                        fns.extend(new_fns)
+                        logging.debug('{:s} added. '.format(entry))
                 except OSError:
                     logging.error('{:s} not added.'.format(fullname))
 
         elif os.path.isfile(entry):
             try:
-                fn = self.__data.add_file(entry)
-                if fn is not None:
-                    fns.append(fn)
-                    logging.debug('{:s} added.'.format(entry))
+                new_fns = self.__data.add_file(entry, brothers=True)
+                if new_fns is not None:
+                    fns.extend(new_fns)
+                    logging.debug('{:s} added. {:d} brother files added'.format(entry, len(new_fns)))
             except OSError:
                 logging.error('{:s} not added.'.format(entry))
 

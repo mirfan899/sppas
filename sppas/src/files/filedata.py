@@ -143,10 +143,11 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def add_file(self, filename):
-        """Add a file in the list from its file name.
+    def add_file(self, filename, brothers=False):
+        """Add file(s) in the list from a file name.
 
         :param filename: (str) Absolute or relative name of a file
+        :param brothers: (bool) Add also all files sharing the same root as the given file
         :return: (FileName)
         :raises: OSError
 
@@ -160,7 +161,7 @@ class FileData(FileBase):
             # this is a new path to add
             self.__data.append(new_fp)
 
-        return new_fp.append(filename)
+        return new_fp.append(filename, brothers)
 
     # -----------------------------------------------------------------------
 
