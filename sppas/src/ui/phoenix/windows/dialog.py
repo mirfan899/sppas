@@ -470,3 +470,18 @@ class sppasDialog(wx.Dialog):
 
         self.SetTransparent(self.opacity_out)
 
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def fix_size(value):
+        """Return a proportional size value.
+
+        :param value: (int)
+        :returns: (int)
+
+        """
+        try:
+            obj_size = int(float(value) * wx.GetApp().settings.size_coeff)
+        except AttributeError:
+            obj_size = int(value)
+        return obj_size

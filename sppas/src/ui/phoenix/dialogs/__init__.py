@@ -2,9 +2,12 @@ from .messages import YesNoQuestion
 from .messages import Information
 from .messages import Confirm
 from .messages import Error
-from .feedback import Feedback
+
 from .about import About
 from .about import AboutPlugin
+
+from .feedback import Feedback
+from .file import sppasFileDialog
 from .settings import Settings
 
 __all__ = (
@@ -15,5 +18,6 @@ __all__ = (
     'Feedback',
     'About',
     'AboutPlugin',
-    'Settings'
+    'Settings',
+    'sppasFileDialog'
 )

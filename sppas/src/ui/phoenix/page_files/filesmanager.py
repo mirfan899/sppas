@@ -26,7 +26,7 @@
         This banner notice must not be removed.
         ---------------------------------------------------------------------
 
-    src.ui.phoenix.filespck.filesmanager.py
+    src.ui.phoenix.page_files.filesmanager.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Main panel to manage the tree of files.
@@ -42,6 +42,7 @@ from sppas.src.files import States
 from ..windows import sppasPanel
 from ..windows import sppasHToolbar
 from ..dialogs import YesNoQuestion, Information
+from ..dialogs import sppasFileDialog
 from ..main_events import DataChangedEvent
 
 from .filestreectrl import FilesTreeViewCtrl
@@ -81,6 +82,7 @@ class FilesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
+        self.__current_dir = None
         self._create_content()
         self._setup_events()
         self.Layout()
@@ -213,27 +215,16 @@ class FilesManager(sppasPanel):
     def _add(self):
         """Add user-selected files into the files viewer."""
         filenames = list()
-        with wx.Dialog(self, style=wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.STAY_ON_TOP, size=(640, 480)) as dlg:
-            fc = wx.FileCtrl(dlg,  # defaultDirectory="", defaultFilename="", wildCard="",
-                             style=wx.FC_OPEN | wx.FC_MULTIPLE | wx.FC_NOSHOWHIDDEN)
-            fc.SetSize((500, 350))
-            # fc.SetBackgroundColour(self.GetBackgroundColour())
-            # fc.SetForegroundColour(self.GetForegroundColour())
-            fc.SetFont(self.GetFont())
-
-            ok = wx.Button(dlg, id=wx.ID_OK, label='OK')
-            dlg.SetAffirmativeId(wx.ID_OK)
-            sizer = wx.BoxSizer(wx.VERTICAL)
-            sizer.Add(fc, 1, wx.EXPAND, 0)
-            sizer.Add(ok, 0, wx.ALL | wx.EXPAND, 4)
-            dlg.SetSizer(sizer)
-
-            if dlg.ShowModal() == wx.ID_OK:
-                filenames = fc.GetPaths()
+        dlg = sppasFileDialog(self)
+        if self.__current_dir is not None:
+            dlg.SetDirectory(self.__current_dir)
+        if dlg.ShowModal() == wx.ID_OK:
+            filenames = dlg.GetPaths()
 
         if len(filenames) > 0:
             added = self.FindWindow("filestree").AddFiles(filenames)
             if added:
+                self.__current_dir = os.path.dirname(filenames[0])
                 self.notify()
 
     # ------------------------------------------------------------------------

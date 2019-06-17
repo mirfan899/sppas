@@ -63,6 +63,7 @@ class sppasBaseMessageDialog(sppasDialog):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
     def __init__(self, parent, message, title=None, style=wx.ICON_INFORMATION):
         """Create a dialog with a message.
 
@@ -75,9 +76,10 @@ class sppasBaseMessageDialog(sppasDialog):
         super(sppasBaseMessageDialog, self).__init__(
             parent=parent,
             title="Message",
-            style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
+            style=wx.FRAME_TOOL_WINDOW | wx.RESIZE_BORDER | wx.CLOSE_BOX | wx.STAY_ON_TOP)  # | wx.DIALOG_NO_PARENT)
 
-        self._create_content(style, message, title)
+        self._create_header(style, title)
+        self._create_content(message)
         self._create_buttons()
 
         # Fix frame properties
@@ -93,8 +95,8 @@ class sppasBaseMessageDialog(sppasDialog):
 
     # -----------------------------------------------------------------------
 
-    def _create_content(self, style, message, title):
-        """Create the content of the message dialog."""
+    def _create_header(self, style, title):
+        """Create the header of the message dialog."""
         # Create the header
         if style == wx.ICON_ERROR:
             icon = "error"
@@ -118,7 +120,10 @@ class sppasBaseMessageDialog(sppasDialog):
 
         self.CreateHeader(title, icon_name=icon)
 
-        # Create the message content
+    # -----------------------------------------------------------------------
+
+    def _create_content(self, message):
+        """Create the content of the message dialog."""
         p = sppasPanel(self)
         s = wx.BoxSizer(wx.HORIZONTAL)
         txt = sppasMessageText(p, message)

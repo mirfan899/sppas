@@ -708,7 +708,9 @@ class BaseButton(wx.Window):
         # If the button was down when the mouse was released...
         if self._state[1] == BaseButton.PRESSED:
             self.Notify()
-            self._set_state(s)
+            # if we haven't been destroyed by this notify...
+            if self:
+                self._set_state(s)
 
     # ------------------------------------------------------------------------
 
