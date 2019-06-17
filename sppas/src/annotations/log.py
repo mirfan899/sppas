@@ -338,7 +338,7 @@ class sppasLog(object):
         self.print_newline()
 
         self.print_message(info(1038, "annotations") + ': ')
-        for sinput in self.parameters.get_sppasinput():
+        for sinput in self.parameters.get_checked_roots():
             self.print_item(sinput)
         self.print_newline()
 

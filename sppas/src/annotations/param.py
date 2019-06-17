@@ -418,86 +418,10 @@ class sppasParam(object):
     # deprecated:
     # -----------------------------------------------------------------------
 
-    def get_sppasinput(self):
+    def get_checked_roots(self):
         """Return the list of entries to annotate."""
         roots = self._workspace.get_fileroot_from_state(States().CHECKED) + self._workspace.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
         return [r.id for r in roots]
-
-    # -----------------------------------------------------------------------
-
-    def add_sppasinput(self, entry):
-        """Add a new entry to annotate.
-
-        :param entry: (str) Filename or directory
-
-        """
-        base_ext = ['.txt', '.hz', '.pitchtier']
-        for e in audio_ext:
-            base_ext.append(e.lower())
-        ann_ext = [e.lower() for e in annots_ext]
-
-        # Create a full list of files to add, without any kind of filter
-        initial_files = list()
-        if os.path.isdir(entry):
-            # Get the list of files from the input directory
-            for ae in base_ext:
-                initial_files.extend(sppasDirUtils(entry).get_files(ae))
-        else:
-            initial_files.append(entry)
-
-        # Create a list with the basename of the files
-        for entry_file in initial_files:
-            fn, e = os.path.splitext(entry_file)
-            if fn in self._workspace:
-                continue
-
-            if len(e) == 0:
-                # the entry is already the basename
-                self.__append_input(fn, base_ext)
-
-            elif e.lower() in base_ext:
-                # the entry is a primary file (audio/text/pitch)
-                # self._workspace.append(fn)
-                objs = self._workspace.add_file(entry_file)
-                for obj in objs:
-                    self._workspace.set_object_state(States().CHECKED, obj)
-
-            elif e.lower() in ann_ext:
-                # the entry is an annotated file
-                appended = self.__append_input(fn, base_ext)
-                if appended is False:
-                    # the entry is an annotated file with a pattern
-                    fn = self.__remove_pattern(fn)
-                    if fn not in self._workspace:
-                        self.__append_input(fn, base_ext)
-
-        for f in self._workspace:
-            logging.debug(f)
-
-    # -----------------------------------------------------------------------
-
-    def __append_input(self, base_fn, base_ext):
-        for ae in base_ext:
-            if sppasFileUtils(base_fn + ae).exists() \
-                    and base_fn not in self._workspace:
-                # self._workspace.append(base_fn)
-                objs = self._workspace.add_file(base_fn + ae)
-                for obj in objs:
-                    self._workspace.set_object_state(States().CHECKED, obj)
-
-                return True
-        return False
-
-    # -----------------------------------------------------------------------
-
-    @staticmethod
-    def __remove_pattern(entry):
-        minus = entry.rfind('-')
-        if minus != -1:
-            sep = entry.rfind(os.path.sep)
-            if minus > sep:
-                return entry[:minus]
-        return entry
 
     # -----------------------------------------------------------------------
     # Procedure Outcome Report file name

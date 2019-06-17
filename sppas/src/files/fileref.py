@@ -31,9 +31,6 @@
 
 """
 
-import re
-import logging
-
 from sppas import sppasTypeError, sppasIndexError
 from sppas import annots
 from sppas.src.utils.makeunicode import sppasUnicode
@@ -391,6 +388,7 @@ class FileReference(FileBase):
     def serialize(self):
         """Return a dict representing this instance for json format."""
         d = FileBase.serialize(self)
+        d['type'] = self.__type
         d['attributes'] = list()
         for att in self.__attributs:
             a = att.serialize()
@@ -409,6 +407,10 @@ class FileReference(FileBase):
             raise KeyError("Reference 'id' is missing of the dictionary to parse.")
 
         ref = FileReference(d['id'])
+
+        # Parse the type of reference
+        if 'type' in d:
+            ref.set_type(d['type'])
 
         # Parse the list of attributes
         if 'attributes' in d:

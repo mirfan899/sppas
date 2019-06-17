@@ -258,12 +258,10 @@ class FilesManager(sppasPanel):
         # title = "Confirm delete of files?"
         message = FLS_MSG_CONFIRM_DEL.format(len(checked_files))
         response = YesNoQuestion(message)
-        if response == wx.ID_NO:
-            return
-
-        deleted = self.FindWindow("filestree").DeleteCheckedFiles()
-        if deleted:
-            self.notify()
+        if response == wx.ID_YES:
+            deleted = self.FindWindow("filestree").DeleteCheckedFiles()
+            if deleted:
+                self.notify()
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py
