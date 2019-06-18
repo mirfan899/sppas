@@ -248,7 +248,8 @@ class sppasAnnotationsManager(Thread):
         a = self._create_ann_instance(annotation_key)
         files_to_process = self.get_annot_files(
             pattern=a.get_input_pattern(),
-            extensions=a.get_input_extensions(), types=a.get_types())
+            extensions=a.get_input_extensions(),
+            types=a.get_types())
         # logging.debug('{:d} files to process'.format(len(files_to_process)))
         # logging.debug(files_to_process)
         out_files = a.batch_processing(
@@ -311,7 +312,8 @@ class sppasAnnotationsManager(Thread):
         # Get optional files
         files = list()
         for f in phon_files:
-            base_f = f.replace(a.get_input_pattern(), "")
+            base_f = os.path.splitext(f)[0]
+            base_f = base_f.replace(a.get_input_pattern(), "")
 
             # Get the tokens input file
             extt = [a.get_opt_input_pattern() + self._parameters.get_output_format()]
@@ -433,19 +435,20 @@ class sppasAnnotationsManager(Thread):
         files = list()
         wkp = self._parameters.get_workspace()
 
+        # create a list with the pattern followed by each possible extension
         if len(pattern) > 0:
-            ext = [pattern + self._parameters.get_output_format()]
+            pat_ext = [pattern + self._parameters.get_output_format()]
             for e in extensions:
-                ext.append(pattern + e)
+                pat_ext.append(pattern + e)
         else:
-            ext = extensions
+            pat_ext = extensions
 
         roots = wkp.get_fileroot_from_state(States().CHECKED) + \
                 wkp.get_fileroot_from_state(States().AT_LEAST_ONE_CHECKED)
 
         for root in roots:
 
-            new_file = sppasAnnotationsManager._get_filename(root.id, ext)
+            new_file = sppasAnnotationsManager._get_filename(root.id, pat_ext)
             if new_file is None:
                 continue
 
@@ -455,12 +458,12 @@ class sppasAnnotationsManager(Thread):
                 logging.error("Annotations of type SPEAKER are not supported yet.")
                 pass
             if "INTERACTION" in types:
-                logging.debug("Annotation of type INTERACTION.")
                 for ref in root.get_references():
-                    if ref.id == "INTERACTION":
+                    if ref.get_type() == "INTERACTION":
                         for fr in wkp.get_fileroot_with_ref(ref):
                             if fr != root:
-                                other_file = sppasAnnotationsManager._get_filename(fr.id, ext)
+                                other_file = sppasAnnotationsManager._get_filename(fr.id, pat_ext)
+
                                 if other_file is not None:
                                     files.append((new_file, other_file))
 
@@ -469,18 +472,18 @@ class sppasAnnotationsManager(Thread):
     # ------------------------------------------------------------------------
 
     @staticmethod
-    def _get_filename(filename, extensions):
+    def _get_filename(rootname, extensions):
         """Return a filename corresponding to one of extensions.
 
-        :param filename: input file name
+        :param rootname: input file name
         :param extensions: the list of expected extension
         :returns: a file name of the first existing file with an expected
         extension or None
 
         """
-        base_name = os.path.splitext(filename)[0]
+        #base_name = os.path.splitext(filename)[0]
         for ext in extensions:
-            ext_filename = base_name + ext
+            ext_filename = rootname + ext
             new_filename = sppasFileUtils(ext_filename).exists()
             if new_filename is not None and os.path.isfile(new_filename):
                 return new_filename
