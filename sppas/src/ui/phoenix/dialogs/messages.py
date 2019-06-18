@@ -184,8 +184,7 @@ class sppasYesNoDialog(sppasBaseMessageDialog):
         event_obj = event.GetEventObject()
         event_id = event_obj.GetId()
         if event_id == wx.ID_NO:
-            self.SetReturnCode(wx.ID_NO)
-            self.Close()
+            self.EndModal(wx.ID_NO)
         else:
             event.Skip()
 
@@ -237,8 +236,7 @@ class sppasConfirm(sppasBaseMessageDialog):
         event_obj = event.GetEventObject()
         event_id = event_obj.GetId()
         if event_id == wx.ID_CANCEL:
-            self.SetReturnCode(wx.ID_CANCEL)
-            self.Close()
+            self.EndModal(wx.ID_CANCEL)
         else:
             event.Skip()
 

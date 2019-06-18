@@ -262,6 +262,8 @@ class FilesManager(sppasPanel):
             deleted = self.FindWindow("filestree").DeleteCheckedFiles()
             if deleted:
                 self.notify()
+        elif response == wx.ID_NO:
+            logging.info('Response is no. No file deleted.')
 
 # ----------------------------------------------------------------------------
 # Panel tested by test_glob.py

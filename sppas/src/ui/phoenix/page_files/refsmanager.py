@@ -253,10 +253,11 @@ class ReferencesManager(sppasPanel):
     def _edit(self):
         # add/remove/modify attributes of the selected references
         view = self.FindWindow('refsview')
-        if view.HasCheckedRefs() is False:
+        refs = view.GetCheckedRefs()
+        if len(refs) == 0:
             Error(REF_MSG_NB_CHECKED)
         else:
-            dlg = sppasEditAttributes(self)
+            dlg = sppasEditAttributes(self, refs)
             response = dlg.ShowModal()
             if response == wx.ID_OK:
                 self.notify()
@@ -394,10 +395,11 @@ class sppasEditAttributes(sppasDialog):
 
     """
 
-    def __init__(self, parent):
+    def __init__(self, parent, refs=list()):
         """Create a dialog to manage attributes of references.
 
         :param parent: (wx.Window)
+        :param refs: (list of sppasReferences) won't be modified!
 
         """
         super(sppasEditAttributes, self).__init__(
@@ -405,6 +407,7 @@ class sppasEditAttributes(sppasDialog):
             title='{:s} Edit References'.format(sg.__name__),
             style=wx.DEFAULT_FRAME_STYLE)
 
+        self.__refs = refs
         self.CreateHeader(title="Edit values of checked references",
                           icon_name="refs-edit")
         self._create_content()
@@ -560,6 +563,7 @@ class sppasEditAttributes(sppasDialog):
 
         elif event_name == "text_id":
             text = self.FindWindow("text_id")
+            self.__fill_att(text.GetValue())
             text.GetValidator().Validate()
 
         else:
@@ -567,6 +571,33 @@ class sppasEditAttributes(sppasDialog):
 
     # -----------------------------------------------------------------------
     # Private methods
+    # -----------------------------------------------------------------------
+
+    def __fill_att(self, att_id):
+        """Fill the fields depending on the given identifier."""
+        matching_att = list()
+        for r in self.__refs:
+            for a in r:
+                if a.id == att_id:
+                    matching_att.append(a)
+                    logging.debug(' is matching: {:s}'.format(str(a)))
+
+        if len(matching_att) > 0:
+            d = set([a.get_description() for a in matching_att])
+            if len(d) == 1:
+                descr_obj = self.FindWindow("text_descr")
+                descr_obj.SetValue(matching_att[0].get_description())
+
+            v = set([a.get_value() for a in matching_att])
+            if len(v) == 1:
+                value_obj = self.FindWindow("text_value")
+                value_obj.SetValue(matching_att[0].get_value())
+
+            t = set([a.get_value_type() for a in matching_att])
+            if len(t) == 1:
+                type_obj = self.FindWindow("choice_type")
+                type_obj.SetSelection(type_obj.GetItems().index(matching_att[0].get_value_type()))
+
     # -----------------------------------------------------------------------
 
     def __create_radio_button(self, parent, name, label, activate):

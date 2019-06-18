@@ -484,6 +484,12 @@ class ReferencesTreeViewModel(wx.dataview.PyDataViewModel):
 
     # -----------------------------------------------------------------------
 
+    def get_checked_refs(self):
+        """Return checked references."""
+        return self.__data.get_reference_from_state(States().CHECKED)
+
+    # -----------------------------------------------------------------------
+
     def remove_checked_refs(self):
         """Remove all FileReference with state CHECKED."""
         nb_removed = self.__data.remove_refs(States().CHECKED)

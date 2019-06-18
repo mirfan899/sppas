@@ -1209,7 +1209,7 @@ class sppasAttributeCompare(sppasBaseCompare):
         if isinstance(att, sppasAttribute) is False:
             raise sppasTypeError(att, "sppasAttribute")
         if isinstance(value, (int, float)) is False:
-            raise sppasTypeError(value, "number")
+            raise sppasTypeError(value, "int, float")
 
         return att.get_typed_value() == value
 
@@ -1267,7 +1267,7 @@ class sppasAttributeCompare(sppasBaseCompare):
         if isinstance(att, sppasAttribute) is False:
             raise sppasTypeError(att, "sppasAttribute")
         if isinstance(value, (int, float)) is False:
-            raise sppasTypeError(value, "number")
+            raise sppasTypeError(value, "int, float")
 
         return att.get_typed_value() > value
 
@@ -1286,7 +1286,7 @@ class sppasAttributeCompare(sppasBaseCompare):
         if isinstance(att, sppasAttribute) is False:
             raise sppasTypeError(att, "sppasAttribute")
         if isinstance(value, (int, float)) is False:
-            raise sppasTypeError(value, "number")
+            raise sppasTypeError(value, "int, float")
 
         return att.get_typed_value() >= value
 
@@ -1305,7 +1305,7 @@ class sppasAttributeCompare(sppasBaseCompare):
         if isinstance(att, sppasAttribute) is False:
             raise sppasTypeError(att, "sppasAttribute")
         if isinstance(value, (int, float)) is False:
-            raise sppasTypeError(value, "number")
+            raise sppasTypeError(value, "int, float")
 
         return att.get_typed_value() < value
 
@@ -1324,7 +1324,7 @@ class sppasAttributeCompare(sppasBaseCompare):
         if isinstance(att, sppasAttribute) is False:
             raise sppasTypeError(att, "sppasAttribute")
         if isinstance(value, (int, float)) is False:
-            raise sppasTypeError(value, "number")
+            raise sppasTypeError(value, "int, float")
 
         return att.get_typed_value() <= value
 

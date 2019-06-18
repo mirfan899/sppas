@@ -102,6 +102,12 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
 
     # ------------------------------------------------------------------------
 
+    def GetCheckedRefs(self):
+        """Return checked references."""
+        return self._model.get_checked_refs()
+
+    # ------------------------------------------------------------------------
+
     def HasCheckedRefs(self):
         """Return True if at least one reference is checked."""
         return self._model.has_checked_refs()

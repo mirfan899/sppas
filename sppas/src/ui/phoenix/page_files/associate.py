@@ -45,7 +45,7 @@ from sppas.src.files import FileData
 from sppas.src.files import States
 from sppas.src.files import sppasFileDataFilters
 
-from ..dialogs import Information
+from ..dialogs import Information, Error
 from ..windows import sppasStaticText, sppasTextCtrl
 from ..windows import sppasPanel
 from ..windows import sppasDialog
@@ -61,6 +61,9 @@ from .filesutils import IdentifierTextValidator
 MSG_HEADER_FILTER = ui_translation.gettext("Checking files")
 MSG_NB_CHECKED = "{:d} files were matching the given filters and were checked."
 MSG_NO_CHECKED = "None of the files is matching the given filters."
+
+ASS_ACT_CHECK_ERROR = "Files can't be filtered due to the following" \
+                       " error:\n{!s:s}"
 
 # ---------------------------------------------------------------------------
 
@@ -219,29 +222,35 @@ class AssociatePanel(sppasPanel):
             data_filters = dlg.get_filters()
             if len(data_filters) > 0:
                 wx.BeginBusyCursor()
-                data_set = self.__process_filter(data_filters, dlg.match_all)
-                if len(data_set) == 0:
-                    Information(MSG_NO_CHECKED)
-                else:
-                    # Uncheck all files (except the locked ones!) and all references
-                    self.__data.set_object_state(States().UNUSED)
+                try:
+                    data_set = self.__process_filter(data_filters, dlg.match_all)
+                    if len(data_set) == 0:
+                        Information(MSG_NO_CHECKED)
+                    else:
+                        # Uncheck all files (except the locked ones!) and all references
+                        self.__data.set_object_state(States().UNUSED)
 
-                    roots = list()
-                    # Check files of the filtered data_set
-                    for fn in data_set:
-                        self.__data.set_object_state(States().CHECKED, fn)
-                        root = self.__data.get_parent(fn)
-                        if root not in roots:
-                            roots.append(root)
-                    Information(MSG_NB_CHECKED.format(len(data_set)))
+                        roots = list()
+                        # Check files of the filtered data_set
+                        for fn in data_set:
+                            self.__data.set_object_state(States().CHECKED, fn)
+                            root = self.__data.get_parent(fn)
+                            if root not in roots:
+                                roots.append(root)
+                        Information(MSG_NB_CHECKED.format(len(data_set)))
 
-                    # Check references matching the checked files
-                    for fr in roots:
-                        for ref in fr.get_references():
-                            ref.set_state(States().CHECKED)
+                        # Check references matching the checked files
+                        for fr in roots:
+                            for ref in fr.get_references():
+                                ref.set_state(States().CHECKED)
 
-                    self.notify()
-                wx.EndBusyCursor()
+                        self.notify()
+                    wx.EndBusyCursor()
+
+                except Exception as e:
+                    wx.EndBusyCursor()
+                    Error(ASS_ACT_CHECK_ERROR.format(str(e)), "Check error")
+
         dlg.Destroy()
 
     # ------------------------------------------------------------------------
@@ -253,7 +262,8 @@ class AssociatePanel(sppasPanel):
         :param match_all: (bool)
         
         """
-        logging.info("Check files matching the following filter=sppasFileDataFilters():")
+        logging.info("Check files matching the following: ")
+        logging.info(" >>> filter = sppasFileDataFilters()")
         f = sppasFileDataFilters(self.__data)
         data_sets = list()
 
@@ -690,7 +700,8 @@ class sppasAttributeFilterDialog(sppasDialog):
         self._create_content()
         self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
 
-        self.SetMinSize(wx.Size(420, 320))
+        self.SetMinSize(wx.Size(sppasDialog.fix_size(420),
+                                sppasDialog.fix_size(320)))
         self.LayoutComponents()
         self.CenterOnParent()
 
