@@ -1,4 +1,38 @@
+# -*- coding:utf-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
 
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    src.files.tests.test_filedata.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
 import unittest
 import os
 import json
@@ -18,7 +52,7 @@ class TestsppasAttribute(unittest.TestCase):
         self.valint = sppasAttribute('age', '12', 'int', 'speaker\'s age')
         self.valfloat = sppasAttribute('freq', '0.002', 'float', 'word appearance frequency')
         self.valbool = sppasAttribute('adult', 'false', 'bool', 'speaker is minor')
-        self.valstr = sppasAttribute('utf', 'Hi everyone !', None, 'первый токен')
+        self.valstr = sppasAttribute('utf', 'Hi everyone !', None, u('первый токен'))
 
     def testInt(self):
         self.assertTrue(isinstance(self.valint.get_typed_value(), int))
@@ -98,7 +132,7 @@ class TestFileData(unittest.TestCase):
         self.r2 = FileReference('SpeakerCM')
         self.r2.set_type('SPEAKER')
         self.r2.append(sppasAttribute('initials', 'CM'))
-        self.r1.append(sppasAttribute('sex', 'F'))
+        self.r2.append(sppasAttribute('sex', 'F'))
         self.r3 = FileReference('Dialog1')
         self.r3.set_type('INTERACTION')
         self.r3.append(sppasAttribute('when', '2003', 'int', 'Year of recording'))

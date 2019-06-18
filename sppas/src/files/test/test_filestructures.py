@@ -35,7 +35,6 @@
 """
 import unittest
 import os
-from os.path import dirname
 
 from sppas import paths
 from sppas.src.files.filebase import FileBase, States
@@ -87,7 +86,7 @@ class TestFileName(unittest.TestCase):
 
         # Attempt to instantiate with a directory
         with self.assertRaises(FileTypeError):
-            FileName(dirname(__file__))
+            FileName(os.path.dirname(__file__))
 
         # Normal situation
         fn = FileName(__file__)
@@ -131,16 +130,27 @@ class TestFileRoot(unittest.TestCase):
         self.assertEqual("toto", fr.id)
 
     def test_pattern(self):
+        # Primary file
         self.assertEqual('', FileRoot.pattern('filename.wav'))
-        self.assertEqual('', FileRoot.pattern('filename-unk.xra'))
+
+        # Annotated file (sppas or other...)
         self.assertEqual('-phon', FileRoot.pattern('filename-phon.xra'))
+        self.assertEqual('-unk', FileRoot.pattern('filename-unk.xra'))
+
+        # pattern is too short
+        self.assertEqual("", FileRoot.pattern('F_F_B003-P8.xra'))
+
+        # pattern is too long
+        self.assertEqual("", FileRoot.pattern('F_F_B003-P1234567890123.xra'))
 
     def test_root(self):
         self.assertEqual('filename', FileRoot.root('filename.wav'))
         self.assertEqual('filename', FileRoot.root('filename-phon.xra'))
-        self.assertEqual('filename-unk', FileRoot.root('filename-unk.xra'))
-        self.assertEqual('filename-unk-unk', FileRoot.root('filename-unk-unk.xra'))
-        self.assertEqual('filename.unk-unk', FileRoot.root('filename.unk-unk.xra'))
+        self.assertEqual('filename', FileRoot.root('filename-unk.xra'))
+        self.assertEqual('filename_unk', FileRoot.root('filename_unk.xra'))
+        self.assertEqual('filename-unk', FileRoot.root('filename-unk-unk.xra'))
+        self.assertEqual('filename-unk_unk', FileRoot.root('filename-unk_unk.xra'))
+        self.assertEqual('filename.unk', FileRoot.root('filename.unk-unk.xra'))
         self.assertEqual(
             'e:\\bigi\\__pycache__\\filedata.cpython-37',
             FileRoot.root('e:\\bigi\\__pycache__\\filedata.cpython-37.pyc'))
@@ -173,7 +183,7 @@ class TestFilePath(unittest.TestCase):
             FilePath(__file__)
 
         # Normal situation
-        d = dirname(__file__)
+        d = os.path.dirname(__file__)
         fp = FilePath(d)
         self.assertEqual(d, fp.id)
         self.assertFalse(fp.state is States().CHECKED)
@@ -184,7 +194,7 @@ class TestFilePath(unittest.TestCase):
             fp.id = "toto"
 
     def test_append_remove(self):
-        d = dirname(__file__)
+        d = os.path.dirname(__file__)
         fp = FilePath(d)
 
         # Attempt to append an unexisting file
@@ -248,20 +258,21 @@ class TestFilePath(unittest.TestCase):
         self.assertEqual(-1, i)
 
     def test_append_with_brothers(self):
-        d = dirname(__file__)
+        d = os.path.dirname(__file__)
         fp = FilePath(d)
 
         # Normal situation
-        fn = fp.append(__file__, all_root=True)
-        self.assertIsNotNone(fn)
-        self.assertIsInstance(fn, FileName)
-        self.assertEqual(__file__, fn.id)
-        self.assertEqual(1, len(fp))
+        fns = fp.append(__file__, all_root=True)
+        self.assertIsNotNone(fns)
+        self.assertEqual(FileRoot.root(__file__), fns[0].id)
+        self.assertIsInstance(fns[1], FileName)
+        self.assertEqual(1, len(fp))  # the root of all 4 tests files
 
         # with brothers
-        fn = fp.append(os.path.join(paths.samples, "samples-eng", "oriana1.wav"), all_root=True)
-        self.assertIsNotNone(fn)
-        self.assertIsInstance(fn, FileName)
+        fns = fp.append(os.path.join(paths.samples, "samples-eng", "oriana1.wav"), all_root=True)
+        self.assertIsNotNone(fns)
+        self.assertIsInstance(fns[0], FileRoot)
+        self.assertIsInstance(fns[1], FileName)
         self.assertEqual(2, len(fp))   # .wav/.txt
 
     def test_serialize(self):

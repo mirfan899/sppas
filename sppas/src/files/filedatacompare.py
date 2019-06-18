@@ -121,7 +121,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         # perhaps we should test with all systems separators ( '/' or '\' )
@@ -141,7 +141,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fb.id.lower() == value.lower()
@@ -160,7 +160,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fb.id.startswith(value)
@@ -179,7 +179,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fb.id.lower().startswith(value.lower())
@@ -198,7 +198,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fb.id.endswith(value)
@@ -217,7 +217,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fb.id.lower().endswith(value.lower())
@@ -236,7 +236,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value in fb.id
@@ -255,7 +255,7 @@ class sppasFileBaseCompare(sppasBaseCompare):
         """
         if isinstance(fb, FileBase) is False:
             raise sppasTypeError(fb, "FileBase")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value.lower() in fb.id.lower()
@@ -410,7 +410,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         # perhaps we should test with all systems separators ( '/' or '\' )
@@ -430,7 +430,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.name.lower() == value.lower()
@@ -449,7 +449,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.name.startswith(value)
@@ -468,7 +468,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.name.lower().startswith(value.lower())
@@ -487,7 +487,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.name.endswith(value)
@@ -506,7 +506,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.name.lower().endswith(value.lower())
@@ -525,7 +525,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value in fn.name
@@ -544,7 +544,7 @@ class sppasFileNameCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value.lower() in fn.name.lower()
@@ -618,7 +618,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         # perhaps we should test with all systems separators ( '/' or '\' )
@@ -638,7 +638,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.extension.lower() == value.lower()
@@ -657,7 +657,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.extension.startswith(value)
@@ -676,7 +676,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.extension.lower().startswith(value.lower())
@@ -695,7 +695,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.extension.endswith(value)
@@ -714,7 +714,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return fn.extension.lower().endswith(value.lower())
@@ -733,7 +733,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value in fn.extension
@@ -752,7 +752,7 @@ class sppasFileExtCompare(sppasBaseCompare):
         """
         if isinstance(fn, FileName) is False:
             raise sppasTypeError(fn, "FileName")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value.lower() in fn.extension.lower()
@@ -819,7 +819,7 @@ class sppasFileRefCompare(sppasBaseCompare):
     def exact(cat, value):
         """Test if the id strictly matches value.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
@@ -827,7 +827,7 @@ class sppasFileRefCompare(sppasBaseCompare):
         """
         if isinstance(cat, FileReference) is False:
             raise sppasTypeError(cat, "Reference")
-        if not isinstance(value, text_type):
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         # perhaps we should test with all systems separators ( '/' or '\' )
@@ -839,15 +839,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def iexact(cat, value):
         """Test if the id matches value without case sensitive.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return cat.id.lower() == value.lower()
@@ -858,15 +858,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def startswith(cat, value):
         """Test if the id starts with the characters of the value.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return cat.id.startswith(value)
@@ -877,15 +877,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def istartswith(cat, value):
         """Case-insensitive startswith.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return cat.id.lower().startswith(value.lower())
@@ -896,15 +896,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def endswith(cat, value):
         """Test if the id ends with the characters of the value.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return cat.id.endswith(value)
@@ -915,15 +915,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def iendswith(cat, value):
         """Case-insensitive endswith.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return cat.id.lower().endswith(value.lower())
@@ -934,15 +934,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def contains(cat, value):
         """Test if the id contains the value.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value in cat.id
@@ -953,15 +953,15 @@ class sppasFileRefCompare(sppasBaseCompare):
     def icontains(cat, value):
         """Case-insensitive contains.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError
 
         """
         if isinstance(cat, FileReference) is False:
-            raise sppasTypeError(cat, "Category")
-        if not isinstance(value, text_type):
+            raise sppasTypeError(cat, "Reference")
+        if isinstance(value, text_type) is False:
             raise sppasTypeError(value, text_type)
 
         return value.lower() in cat.id.lower()
@@ -972,7 +972,7 @@ class sppasFileRefCompare(sppasBaseCompare):
     def regexp(cat, pattern):
         """Test if id matches pattern.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param pattern: (unicode) Pattern to search.
         :returns: (bool)
         :raises: sppasTypeError
@@ -1125,7 +1125,7 @@ class sppasAttributeCompare(sppasBaseCompare):
     def iendswith(att, value):
         """Case-insensitive endswith.
 
-        :param cat: (Category) 
+        :param cat: (FileReference) 
         :param value: (unicode) Unicode string to be compared with.
         :returns: (bool)
         :raises: sppasTypeError

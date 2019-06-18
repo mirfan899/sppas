@@ -314,15 +314,30 @@ class FileRoot(FileBase):
     def pattern(filename):
         """Return the pattern of the given filename.
 
+        A pattern is the end of the filename, after the '-'.
+        It can't contain '_' and must be between 3 and 12 characters
+        (not including the '-').
+
+        Notice that the '_' can't be supported (too many side effects).
+
         :param filename: (str) Name of a file (absolute or relative)
-        :returns: (str) Root pattern
+        :returns: (str) Root pattern or an empty string if no pattern is detected
 
         """
         fn = os.path.basename(filename)
-        fn = os.path.splitext(fn)[0]
-        for pattern in ANNOT_PATTERNS:
-            if fn.endswith(pattern) is True:
-                return pattern
+        base = os.path.splitext(fn)[0]
+
+        pos = 0
+        if '-' in base:
+            pos = base.rindex('-')
+
+            # check if pattern is ok.
+            p = base[pos:]
+            if '_' in p or len(p) < 4 or len(p) > 13:
+                pos = 0
+
+        if pos > 0:
+            return base[pos:]
         return ""
 
     # -----------------------------------------------------------------------
@@ -335,11 +350,9 @@ class FileRoot(FileBase):
         :returns: (str) Root
 
         """
-        fn = os.path.splitext(filename)[0]
-        for pattern in ANNOT_PATTERNS:
-            if fn.endswith(pattern) is True:
-                fn = fn[:len(fn) - len(pattern)]
-        return fn
+        p = FileRoot.pattern(filename)
+        base_file, ext_file = os.path.splitext(filename)
+        return filename[:(len(filename)-len(p)-len(ext_file))]
 
     # -----------------------------------------------------------------------
 
