@@ -37,6 +37,7 @@ import logging
 import os
 import wx
 
+from sppas import paths
 from sppas.src.files import States
 
 from ..windows import sppasPanel
@@ -82,7 +83,7 @@ class FilesManager(sppasPanel):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS | wx.NO_FULL_REPAINT_ON_RESIZE | wx.CLIP_CHILDREN,
             name=name)
 
-        self.__current_dir = None
+        self.__current_dir = paths.samples
         self._create_content()
         self._setup_events()
         self.Layout()
@@ -216,7 +217,7 @@ class FilesManager(sppasPanel):
         """Add user-selected files into the files viewer."""
         filenames = list()
         dlg = sppasFileDialog(self)
-        if self.__current_dir is not None:
+        if os.path.exists(self.__current_dir):
             dlg.SetDirectory(self.__current_dir)
         if dlg.ShowModal() == wx.ID_OK:
             filenames = dlg.GetPaths()

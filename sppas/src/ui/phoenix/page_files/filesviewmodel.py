@@ -628,8 +628,9 @@ class FilesTreeViewModel(wx.dataview.PyDataViewModel):
                 new_fns = self.__data.add_file(entry, brothers=True)
                 if new_fns is not None:
                     fns.extend(new_fns)
-                    logging.debug('{:s} added. {:d} brother files added'.format(entry, len(new_fns)))
-            except OSError:
+                    logging.debug('{:s} added. {:d} brother files added.'
+                                  ''.format(entry, len(new_fns)))
+            except:
                 logging.error('{:s} not added.'.format(entry))
 
         else:

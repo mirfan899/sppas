@@ -289,11 +289,14 @@ class FileRoot(FileBase):
     def __init__(self, name):
         """Constructor of a FileRoot.
 
-        :param name: (str) Filename or rootname
+        :param name: (str) Filename or root name
         :raise: OSError if filepath does not match a directory (not file/link)
 
         """
-        root_name = FileRoot.root(name)
+        if os.path.exists(name):
+            root_name = FileRoot.root(name)
+        else:
+            root_name = name
         super(FileRoot, self).__init__(root_name)
 
         # A list of FileName instances, i.e. files sharing this root.
@@ -879,6 +882,7 @@ class FilePath(FileBase):
             # Get or create the corresponding FileRoot
             fr = self.get_root(root_id)
             if fr is None:
+                # logging.debug('fr is None. ')
                 fr = FileRoot(root_id)
                 self.__roots.append(fr)
                 added.append(fr)
