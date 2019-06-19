@@ -37,11 +37,14 @@ import logging
 import wx
 import os
 
-from sppas import annots
+from sppas import annots, paths
 
+from ..windows import sppasStaticLine
+from ..windows import sppasToolbar
 from ..windows import sppasPanel
+from ..windows import sppasScrolledPanel
 from ..windows import sppasStaticText
-from ..windows import BitmapTextButton
+from ..windows import BitmapTextButton, CheckButton
 
 from .annotevent import PageChangeEvent
 from .annotselect import LANG_NONE
@@ -87,8 +90,38 @@ class sppasActionAnnotatePanel(sppasPanel):
     # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
+    def __create_vline(self):
+        """Create an horizontal line, used to separate the panels."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(-1, 20))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(1)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
+
+    # ------------------------------------------------------------------------
+
     def _create_content(self):
         """Create the main content."""
+        reports = list()
+        for f in os.listdir(paths.logs):
+            if os.path.isfile(os.path.join(paths.logs, f)) and f.endswith('.txt'):
+                reports.append(f)
+                logging.debug('Found report: {:s}'.format(f))
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        action_sizer = self._create_action_content()
+        report_panel = ReportsPanel(self, reports)
+
+        sizer.Add(action_sizer, 1, wx.EXPAND)
+        sizer.Add(self.__create_vline(), 0, wx.EXPAND)
+        sizer.Add(report_panel, 0, wx.EXPAND)
+        self.SetSizer(sizer)
+
+    # ------------------------------------------------------------------------
+
+    def _create_action_content(self):
+        """Create the left content with actions."""
 
         # The output file format
         stf = sppasStaticText(self, label="STEP 1: choose an output file format")
@@ -146,7 +179,7 @@ class sppasActionAnnotatePanel(sppasPanel):
         sizer.Add(sizer_run, 2, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
         sizer.Add(sizer_log, 1, wx.EXPAND | wx.TOP | wx.BOTTOM, 5)
 
-        self.SetSizer(sizer)
+        return sizer
 
     # ------------------------------------------------------------------------
 
@@ -347,3 +380,153 @@ class sppasActionAnnotatePanel(sppasPanel):
             else:
                 self.btn_por.Enable(True)
                 self.btn_por.BorderColour = wx.Colour(24, 228, 24, 128)
+
+# ----------------------------------------------------------------------------
+# Panel to display the existing log reports
+# ----------------------------------------------------------------------------
+
+
+class ReportsPanel(sppasScrolledPanel):
+    """Manager of the list of available reports in the software.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      contact@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    todo: The parent has to handle EVT_REPORT_CHANGED event to be informed that a report changed.
+
+    """
+    def __init__(self, parent, reports, name=wx.PanelNameStr):
+        super(ReportsPanel, self).__init__(
+            parent,
+            id=wx.ID_ANY,
+            pos=wx.DefaultPosition,
+            size=wx.DefaultSize,
+            style=wx.BORDER_NONE | wx.NO_FULL_REPAINT_ON_RESIZE,
+            name=name)
+
+        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
+        self.SetForegroundColour(wx.GetApp().settings.fg_color)
+        self.SetFont(wx.GetApp().settings.text_font)
+
+        self.__reports = reports
+        self.__current = -1
+
+        self._create_content()
+        # self._setup_events()
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+
+    def switch_to(self, name):
+        """Set the current report at the given name.
+
+        :param name: (str) Name of the report to switch on
+
+        """
+        if name not in self.__reports:
+            raise Exception('No report with name {:s}'.format(name))
+
+        index = self.__reports.index(name)
+
+        # the currently displayed button
+        cur_btn = None
+        if self.__current != -1:
+            cur_btn = self.GetSizer().GetItem(self.__current).GetWindow()
+
+        # the one we want to switch on
+        idx_btn = self.GetSizer().GetItem(index).GetWindow()
+
+        # set the current button in a normal state
+        if cur_btn is not None:
+            self.__btn_set_state(cur_btn, False)
+
+        # assign the new report
+        self.__current = index
+        self.__btn_set_state(idx_btn, True)
+
+    # -----------------------------------------------------------------------
+
+    def append_report(self, name):
+        """Add a button corresponding to the name of a report.
+
+        :param name: (str)
+        :return: index of the newly created workspace
+
+        """
+        btn = CheckButton(self, label=name, name=name)
+        btn.SetSpacing(sppasPanel.fix_size(12))
+        btn.SetMinSize(wx.Size(-1, sppasPanel.fix_size(32)))
+        btn.SetSize(wx.Size(-1, sppasPanel.fix_size(32)))
+        i = self.__reports.index(name)
+        if i == self.__current:
+            self.__set_active_btn_style(btn)
+            btn.SetValue(True)
+        else:
+            self.__set_normal_btn_style(btn)
+            btn.SetValue(False)
+
+        btn.Enable(False)   # ================================
+
+        self.GetSizer().Add(btn, 0, wx.EXPAND | wx.ALL, 2)
+        return i
+
+    # -----------------------------------------------------------------------
+    # Private methods to construct the panel.
+    # -----------------------------------------------------------------------
+
+    def __create_toolbar(self):
+        tb = sppasToolbar(self, orient=wx.VERTICAL)
+        tb.set_focus_color(wx.Colour(196, 196, 24, 128))
+
+        tb.AddTitleText("Reports: ", color=wx.Colour(228, 24, 24, 128))
+        return tb
+
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the main content."""
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(self.__create_toolbar(), 0, wx.EXPAND, 0)
+        self.SetSizer(sizer)
+
+        for r in self.__reports:
+            self.append_report(r)
+        self.SetMinSize(wx.Size(sppasPanel.fix_size(196),
+                                sppasPanel.fix_size(32)*len(self.__reports)))
+        self.SetupScrolling(scroll_x=True, scroll_y=True)
+
+    # -----------------------------------------------------------------------
+
+    def __set_normal_btn_style(self, button):
+        """Set a normal style to a button."""
+        button.BorderWidth = 1
+        button.BorderColour = self.GetForegroundColour()
+        button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = wx.Colour(128, 128, 128, 128)
+
+    # -----------------------------------------------------------------------
+
+    def __set_active_btn_style(self, button):
+        """Set a highlight style to the button."""
+        button.BorderWidth = 2
+        button.BorderColour = wx.Colour(24, 228, 24, 128)
+        button.BorderStyle = wx.PENSTYLE_SOLID
+        button.FocusColour = self.GetForegroundColour()
+
+    # -----------------------------------------------------------------------
+    # Private methods
+    # -----------------------------------------------------------------------
+
+    def __btn_set_state(self, btn, state):
+        if state is True:
+            self.__set_active_btn_style(btn)
+        else:
+            self.__set_normal_btn_style(btn)
+        btn.SetValue(state)
+        btn.Refresh()
+        logging.debug('Report {:s} is checked: {:s}'
+                      ''.format(btn.GetLabel(), str(state)))
+
