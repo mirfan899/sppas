@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from distutils.util import strtobool
 from sppas.src.utils.makeunicode import u, text_type, binary_type
 

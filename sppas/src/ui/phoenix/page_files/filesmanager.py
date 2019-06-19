@@ -221,6 +221,7 @@ class FilesManager(sppasPanel):
             dlg.SetDirectory(self.__current_dir)
         if dlg.ShowModal() == wx.ID_OK:
             filenames = dlg.GetPaths()
+        dlg.Destroy()
 
         if len(filenames) > 0:
             added = self.FindWindow("filestree").AddFiles(filenames)

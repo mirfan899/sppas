@@ -133,7 +133,7 @@ class AssociatePanel(sppasPanel):
         sizer.Add(unlink, 1, wx.BOTTOM | wx.ALIGN_CENTRE, 0)
         sizer.AddStretchSpacer(4)
 
-        self.SetMinSize(wx.Size(32, -1))
+        self.SetMinSize(wx.Size(sppasPanel.fix_size(32), -1))
         self.SetSizer(sizer)
 
     # ------------------------------------------------------------------------
@@ -149,7 +149,8 @@ class AssociatePanel(sppasPanel):
         btn.Spacing = 4
         btn.BorderWidth = 0
         btn.BitmapColour = self.GetForegroundColour()
-        btn.SetMinSize(wx.Size(24, 24))
+        btn.SetMinSize(wx.Size(sppasPanel.fix_size(24),
+                               sppasPanel.fix_size(24)))
         return btn
 
     # -----------------------------------------------------------------------
