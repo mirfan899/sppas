@@ -38,21 +38,6 @@
       "type": "bool",
       "value": true,
       "text": "Remove working directory"
-    },
-
-    {
-      "id": "activity",
-      "type": "bool",
-      "value": true,
-      "text": "Create the Activity tier"
-    },
-
-    {
-      "id": "activityduration",
-      "type": "bool",
-      "value": false,
-      "text": "Create the ActivityDuration tier"
     }
-
   ]
 }

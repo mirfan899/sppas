@@ -3,78 +3,73 @@
     {
       "id": "momel",
       "config": "momel.json",
-      "cli": "momel.py",
-      "gui": true
+      "cli": "momel.py"
     },
 
     {
       "id": "intsint",
       "config": "intsint.json",
-      "cli": "intsint.py",
-      "gui": true
+      "cli": "intsint.py"
     },
 
     {
       "id": "fillipus",
       "config": "fillipus.json",
-      "cli": "fillipus.py",
-      "gui": true
+      "cli": "fillipus.py"
     },
 
     {
       "id": "searchipus",
       "config": "searchipus.json",
-      "cli": "searchipus.py",
-      "gui": true
+      "cli": "searchipus.py"
     },
 
     {
       "id": "textnorm",
       "config": "textnorm.json",
-      "cli": "normalize.py",
-      "gui": true
+      "cli": "normalize.py"
     },
 
     {
       "id": "phonetize",
       "config": "phonetize.json",
-      "cli": "phonetize.py",
-      "gui": true
+      "cli": "phonetize.py"
     },
 
     {
       "id": "alignment",
       "config": "alignment.json",
-      "cli": "alignment.py",
-      "gui": true
+      "cli": "alignment.py"
     },
 
     {
       "id": "syllabify",
       "config": "syllabify.json",
-      "cli": "syllabify.py",
-      "gui": true
+      "cli": "syllabify.py"
     },
 
     {
       "id": "tga",
       "config": "tga.json",
-      "cli": "tga.py",
-      "gui": true
+      "cli": "tga.py"
+    },
+
+    {
+      "id": "activity",
+      "config": "activity.json",
+      "cli": ""
     },
 
     {
       "id": "selfrepet",
       "config": "selfrepet.json",
-      "cli": "selfrepetition.py",
-      "gui": true
+      "cli": "selfrepetition.py"
     },
 
     {
       "id": "otherrepet",
       "config": "otherrepet.json",
-      "cli": "otherrepetition.py",
-      "gui": false
+      "cli": "otherrepetition.py"
     }
   ],
 

@@ -50,6 +50,7 @@ from .Syll import sppasSyll
 from .TGA import sppasTGA
 from .Align import sppasAlign
 from .SelfRepet import sppasSelfRepet
+from .Activity import sppasActivity
 from .OtherRepet import sppasOtherRepet
 
 from .searchtier import sppasFindTier
@@ -69,6 +70,7 @@ __all__ = (
     'sppasSyll',
     'sppasTGA',
     'sppasSelfRepet',
+    'sppasActivity',
     'sppasOtherRepet',
     'sppasFindTier',
     'sppasParam',

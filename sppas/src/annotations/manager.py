@@ -55,6 +55,7 @@ from sppas.src.annotations.Phon import sppasPhon
 from sppas.src.annotations.Align import sppasAlign
 from sppas.src.annotations.Syll import sppasSyll
 from sppas.src.annotations.TGA import sppasTGA
+from sppas.src.annotations.Activity import sppasActivity
 from sppas.src.annotations.SelfRepet import sppasSelfRepet
 from sppas.src.annotations.OtherRepet import sppasOtherRepet
 

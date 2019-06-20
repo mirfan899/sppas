@@ -28,10 +28,11 @@
 
         ---------------------------------------------------------------------
 
-    src.annotations.Align.activity.py
+    src.annotations.Activity.activity.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 from sppas.src.config import symbols
 
 from sppas.src.anndata import sppasTier
@@ -41,12 +42,10 @@ from sppas.src.anndata import sppasLabel, sppasTag
 from sppas.src.anndata.aio.aioutils import fill_gaps, unfill_gaps
 from sppas.src.utils.makeunicode import sppasUnicode
 
-from ..searchtier import sppasFindTier
-
 # ---------------------------------------------------------------------------
 
 
-class sppasActivity(object):
+class Activity(object):
     """Create an activity tier from time-aligned tokens.
 
     :author:       Brigitte Bigi
@@ -108,22 +107,19 @@ class sppasActivity(object):
 
     # -----------------------------------------------------------------------
 
-    def get_tier(self, trs):
+    def get_tier(self, tokens_tier, tmin, tmax):
         """Create and return the activity tier.
 
-        :param trs: (sppasTranscription) a Transcription containing a tier
-        with exactly the name 'TokensAlign'.
+        :param tokens_tier: (sppasTier) a tier with time-aligned tokens
         :returns: sppasTier
-        :raises: NoInputError
 
         """
         new_tier = sppasTier('Activity')
         activity = "<INIT>"  # initial activity
 
-        tokens_tier = sppasFindTier.aligned_tokens(trs)
         if tokens_tier.is_empty():
             return new_tier
-        tokens = fill_gaps(tokens_tier, trs.get_min_loc(), trs.get_max_loc())
+        tokens = fill_gaps(tokens_tier, tmin, tmax)
 
         if len(tokens) == 0:
             return new_tier
