@@ -296,6 +296,8 @@ class WorkspacesManager(sppasPanel):
             if response == wx.ID_YES:
                 wkpslist.remove(event.to_wkp)
 
+        self.Refresh()
+
     # ------------------------------------------------------------------------
 
     def _process_action(self, event):
