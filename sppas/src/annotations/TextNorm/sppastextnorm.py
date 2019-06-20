@@ -156,6 +156,8 @@ class sppasTextNorm(sppasBaseAnnotation):
                 self.set_std(opt.get_value())
             elif key == "custom":
                 self.set_custom(opt.get_value())
+            elif key == "occ_dur":
+                self.set_occ_dur(opt.get_value())
 
             else:
                 raise AnnotationOptionError(key)
@@ -189,6 +191,16 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         """
         self._options['custom'] = value
+
+    # -----------------------------------------------------------------------
+
+    def set_occ_dur(self, value):
+        """Fix the occurrences and duration tiers generation option.
+
+        :param value: (bool) Create a tier with nb of tokens and duration
+
+        """
+        self._options['occ_dur'] = value
 
     # -----------------------------------------------------------------------
     # Methods to tokenize series of data
@@ -237,6 +249,29 @@ class sppasTextNorm(sppasBaseAnnotation):
         return tokens_faked, tokens_std, tokens_custom
 
     # ------------------------------------------------------------------------
+
+    def occ_dur(self, tier):
+        """Create a tier with labels and duration of each annotation.
+
+        :param tier:
+
+        """
+        occ = sppasTier('Occ-%s' % tier.get_name())
+        dur = sppasTier('Dur-%s' % tier.get_name())
+        for ann in tier:
+            labels = ann.get_labels()
+            duration = ann.get_location().get_best().duration().get_value()
+            occ.create_annotation(
+                ann.get_location().copy(),
+                sppasLabel(sppasTag(len(labels), tag_type="int"))
+            )
+            dur.create_annotation(
+                ann.get_location().copy(),
+                sppasLabel(sppasTag(round(duration, 4), tag_type="float"))
+            )
+        return occ, dur
+
+    # ------------------------------------------------------------------------
     # Apply the annotation on one given file
     # -----------------------------------------------------------------------
 
@@ -265,6 +300,16 @@ class sppasTextNorm(sppasBaseAnnotation):
             trs_output.append(tier_std_tokens)
         if tier_custom is not None:
             trs_output.append(tier_custom)
+
+        if len(trs_output) > 0:
+            if self._options["occ_dur"] is True:
+                tier_occ, tier_dur = self.occ_dur(trs_output[0])
+                trs_output.append(tier_occ)
+                trs_output.append(tier_dur)
+                trs_output.add_hierarchy_link(
+                    "TimeAssociation", trs_output[0], tier_occ)
+                trs_output.add_hierarchy_link(
+                    "TimeAssociation", trs_output[0], tier_dur)
 
         trs_output.set_meta('text_normalization_result_of', input_file[0])
         trs_output.set_meta('text_normalization_vocab',

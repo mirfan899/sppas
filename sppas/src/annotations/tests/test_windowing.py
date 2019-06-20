@@ -37,7 +37,7 @@ import unittest
 from sppas import u
 from sppas import sppasTier, sppasLabel, sppasTag
 from sppas.src.anndata import sppasLocation, sppasPoint, sppasInterval
-from sppas.src.annotations.Occurrences.windowing import sppasTierWindow
+from sppas.src.annotations.windowing import sppasTierWindow
 
 # ---------------------------------------------------------------------------
 
