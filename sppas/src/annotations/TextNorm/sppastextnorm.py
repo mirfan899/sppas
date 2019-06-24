@@ -260,11 +260,12 @@ class sppasTextNorm(sppasBaseAnnotation):
         dur = sppasTier('Dur-%s' % tier.get_name())
         for ann in tier:
             labels = ann.get_labels()
+            nb_occ = len(labels)
             location = ann.get_location()
             duration = location.get_best().duration().get_value()
             occ.create_annotation(
                 location.copy(),
-                sppasLabel(sppasTag(len(labels), tag_type="int"))
+                sppasLabel(sppasTag(nb_occ, tag_type="int"))
             )
             dur.create_annotation(
                 ann.get_location().copy(),

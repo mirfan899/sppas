@@ -63,11 +63,11 @@ class sppasNumEuropeanType(sppasNumBase):
         if lang in self.EUROPEAN_TYPED_LANGUAGES:
             super(sppasNumEuropeanType, self).__init__(lang, dictionary)
         else:
-            raise sppasValueError(lang, sppasNumEuropeanType.EUROPEAN_TYPED_LANGUAGES)
+            raise sppasValueError(lang, str(sppasNumEuropeanType.EUROPEAN_TYPED_LANGUAGES))
 
         for i in sppasNumEuropeanType.NUMBER_LIST:
-            if self._lang_dict.is_unk(str(i)):
-                raise sppasValueError(self._lang_dict, i)
+            if self._lang_dict.is_unk(str(i)) is True:
+                raise sppasValueError(self._lang_dict, str(i))
 
     # ---------------------------------------------------------------------------
 

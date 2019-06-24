@@ -35,7 +35,9 @@
     Multilingual text normalization system.
 
 """
+
 import re
+import logging
 
 from .num2text import sppasNumConstructor
 from sppas.src.utils.makeunicode import sppasUnicode, u
@@ -247,16 +249,21 @@ class TextNormalizer(object):
         :returns: (list)
 
         """
-        num2letter = sppasNumConstructor.construct(self.lang, self.num_dict)
+        try:
+            num2letter = sppasNumConstructor.construct(self.lang, self.num_dict)
+            _result = list()
+            for token in utt:
+                if token.isdigit():
+                    _result.append(num2letter.convert(token))
+                else:
+                    _result.append(token)
 
-        _result = list()
-        for token in utt:
-            if token.isdigit():
-                _result.append(num2letter.convert(token))
-            else:
-                _result.append(token)
+            return _result
 
-        return _result
+        except Exception as e:
+            logging.error('Conversion of numbers disabled due to the '
+                          'following error: {:s}'.format(str(e)))
+            return utt
 
     # -----------------------------------------------------------------------
 

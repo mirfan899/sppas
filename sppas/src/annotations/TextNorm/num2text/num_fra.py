@@ -81,8 +81,9 @@ class sppasNumFrench(sppasNumEuropeanType):
                    + self._tenth(20) + self.separator \
                    + self._tenth(number - 80) if number - 80 > 0 else ''
 
-        elif number != 11 and number % 10 == 1:
+        elif number > 11 and number % 10 == 1:
             return sppasNumEuropeanType._get_lang_dict(self)[int(str(number)[0])*10] \
                     + '-et-' + self._units(int(str(number)[1:]))
+
         else:
             return sppasNumEuropeanType._tenth(self, number)

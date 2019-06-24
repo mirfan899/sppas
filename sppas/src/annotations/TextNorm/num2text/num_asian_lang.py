@@ -53,11 +53,11 @@ class sppasNumAsianType(sppasNumBase):
         if lang in self.ASIAN_TYPED_LANGUAGES:
             super(sppasNumAsianType, self).__init__(lang, dictionary)
         else:
-            raise sppasValueError(lang, sppasNumAsianType.ASIAN_TYPED_LANGUAGES)
+            raise sppasValueError(lang, str(sppasNumBase.ASIAN_TYPED_LANGUAGES))
 
         for i in sppasNumAsianType.NUMBER_LIST:
             if self._lang_dict.is_unk(str(i)):
-                raise sppasValueError(self._lang_dict, i)
+                raise sppasValueError(self._lang_dict, str(i))
 
     # ---------------------------------------------------------------------------
 
@@ -126,5 +126,3 @@ class sppasNumAsianType(sppasNumBase):
                 else:
                     return mult + self._lang_dict['1000000000'] \
                             + self._tenth_of_thousands(number % 1000000000)
-
-# ---------------------------------------------------------------------------

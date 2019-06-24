@@ -61,7 +61,8 @@ class sppasNumBase(object):
         if dictionary is None or isinstance(dictionary, sppasDictRepl) is False:
             raise sppasTypeError(dictionary, "sppasDictRepl")
 
-        elif self.__lang is not "und" and dictionary is not None:
+        self._lang_dict = sppasDictRepl()
+        if self.__lang is not "und" and dictionary is not None:
             has_tenth_of_thousand = False
             lang_except = ('vie', 'khm')
             if dictionary.is_key('10000') and lang not in lang_except:
@@ -69,10 +70,10 @@ class sppasNumBase(object):
 
             if has_tenth_of_thousand is True\
                     and self.__lang not in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                raise sppasValueError(dictionary, sppasNumBase.ASIAN_TYPED_LANGUAGES)
+                raise sppasValueError(dictionary, str(sppasNumBase.ASIAN_TYPED_LANGUAGES))
             elif has_tenth_of_thousand is False\
                     and self.__lang in sppasNumBase.ASIAN_TYPED_LANGUAGES:
-                raise sppasValueError(dictionary, sppasNumBase.EUROPEAN_TYPED_LANGUAGES)
+                raise sppasValueError(dictionary, str(sppasNumBase.EUROPEAN_TYPED_LANGUAGES))
 
             self._lang_dict = dictionary
 
@@ -99,7 +100,7 @@ class sppasNumBase(object):
             self.__lang = lang
             self._lang_dict = sppasDictRepl(self.__lang)
         else:
-            raise sppasValueError(lang, self.languages)
+            raise sppasValueError(lang, str(self.languages))
 
     # ---------------------------------------------------------------------------
 
@@ -290,7 +291,7 @@ class sppasNumBase(object):
         """
         stringyfied_number = str(number)
         if stringyfied_number.isdigit() is False:
-            raise sppasValueError(number, int)
+            raise sppasValueError(number, "int")
 
         res = ''
         if len(stringyfied_number) > 1:
