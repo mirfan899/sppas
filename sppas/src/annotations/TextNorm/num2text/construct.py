@@ -31,7 +31,7 @@
 
 """
 
-from sppas import sppasValueError
+from sppas import sppasKeyError
 
 from .num_base import sppasNumBase
 from .num_jpn import sppasNumJapanese
@@ -86,6 +86,6 @@ class sppasNumConstructor(object):
             instance = sppasNumEuropeanType(lang, dictionary)
 
         else:
-            raise sppasValueError(lang, "sppasNumConstructor")
+            raise sppasKeyError(lang, "sppasNumConstructor")
 
         return instance

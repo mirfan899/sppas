@@ -43,7 +43,7 @@ from sppas import u
 from sppas.src.annotations import sppasAnnotationsManager
 
 from sppas.src.ui.logs import sppasLogFile
-from sppas.src.ui.progress import sppasBaseProgress
+
 from ..windows import sppasScrolledPanel
 from ..windows import BitmapTextButton
 from ..windows import sppasTextCtrl
@@ -51,7 +51,7 @@ from ..windows import sppasStaticText
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent
-
+from .annotprogress import sppasAnnotProgressDialog
 
 # -----------------------------------------------------------------------
 
@@ -117,9 +117,9 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
 
         # Create the progress bar then run the annotations
         wx.BeginBusyCursor()
-        # p = ProcessProgressDialog(parent, self.preferences, "Automatic annotation processing...")
-        self.__manager.annotate(self.__param, sppasBaseProgress())
-        # p.close()
+        p = sppasAnnotProgressDialog()
+        self.__manager.annotate(self.__param, p)
+        p.close()
         wx.EndBusyCursor()
 
         self.__update_log_text()
@@ -286,5 +286,3 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
                     child.SetForegroundColour(settings.header_fg_color)
                 except:
                     child.SetForegroundColour(colour)
-
-

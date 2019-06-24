@@ -100,7 +100,11 @@ class sppasTextNorm(sppasBaseAnnotation):
         :param lang: (str) the language code
 
         """
-        voc = sppasVocabulary(vocab_filename)
+        if os.path.isfile(vocab_filename) is True:
+            voc = sppasVocabulary(vocab_filename)
+        else:
+            voc = sppasVocabulary()
+            logging.warning('Vocabulary file {:s} for language {:s} not found.'.format(vocab_filename, lang))
         self.__normalizer = TextNormalizer(voc, lang)
         self.logfile.print_message(
             (info(1164, "annotations")).format(len(voc)),
@@ -108,17 +112,18 @@ class sppasTextNorm(sppasBaseAnnotation):
 
         # Replacement dictionary
         replace_filename = os.path.join(paths.resources, "repl", lang + ".repl")
-        if os.path.exists(replace_filename) is True:
+        if os.path.isfile(replace_filename) is True:
             dict_replace = sppasDictRepl(replace_filename, nodump=True)
         else:
             dict_replace = sppasDictRepl()
+            logging.warning('Replacement vocabulary not found.')
         self.__normalizer.set_repl(dict_replace)
         self.logfile.print_message(
             (info(1166, "annotations")).format(len(dict_replace)), indent=0)
 
         # Punctuations dictionary
         punct_filename = os.path.join(paths.resources, "vocab", "Punctuations.txt")
-        if os.path.exists(punct_filename) is True:
+        if os.path.isfile(punct_filename) is True:
             vocab_punct = sppasVocabulary(punct_filename, nodump=True)
         else:
             vocab_punct = sppasVocabulary()

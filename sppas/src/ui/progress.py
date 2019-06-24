@@ -52,7 +52,7 @@ class sppasBaseProgress(object):
 
     """
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Create a sppasBaseProgress instance."""
         self._percent = 0
         self._text = ""
@@ -60,17 +60,18 @@ class sppasBaseProgress(object):
 
     # ------------------------------------------------------------------
 
-    def update(self, percent, message):
+    def update(self, percent=None, message=None):
         """Update the progress.
 
         :param message: (str) progress bar value (default: 0)
         :param percent: (float) progress bar text  (default: None)
 
         """
-        logging.info('  => ' + message)
-
-        self._percent = percent
-        self._text = message
+        if percent is not None:
+            self._percent = percent
+        if message is not None:
+            logging.info('  => ' + message)
+            self._text = message
 
     # ------------------------------------------------------------------
 
@@ -86,7 +87,7 @@ class sppasBaseProgress(object):
         :param percent: (float) new progress value
 
         """
-        self.update(percent, self._text)
+        self.update(percent=percent)
 
     # ------------------------------------------------------------------
 
@@ -96,7 +97,7 @@ class sppasBaseProgress(object):
         :param text: (str) new progress text
 
         """
-        self.update(self._percent, text.strip())
+        self.update(message=text.strip())
 
     # ------------------------------------------------------------------
 
@@ -106,16 +107,18 @@ class sppasBaseProgress(object):
         :param header: (str) new progress header text.
 
         """
-        self._header = "          * * *  " + header + "  * * *  "
+        if len(header) > 0:
+            self._header = "          * * *  " + header + "  * * *  "
+        else:
+            self._header = ""
         logging.info(self._header)
 
     # ------------------------------------------------------------------
 
     def set_new(self):
         """Initialize a new progress line."""
-        self._text = ""
-        self._percent = 0
-        self._header = ""
+        self.set_header("")
+        self.update(percent=0, message="")
 
     # ------------------------------------------------------------------
 

@@ -181,6 +181,13 @@ class TextNormalizer(object):
 
         """
         self.num_dict = num_dict
+        try:
+            sppasNumConstructor.construct(self.lang, self.num_dict)
+            logging.info('Conversion of numbers enabled for language {:s}'
+                         ''.format(self.lang))
+        except Exception as e:
+            logging.error('Conversion of numbers will be disabled due to the '
+                          'following error: {:s}'.format(str(e)))
 
     # -----------------------------------------------------------------------
     # Language independent modules (or not!)
@@ -251,6 +258,10 @@ class TextNormalizer(object):
         """
         try:
             num2letter = sppasNumConstructor.construct(self.lang, self.num_dict)
+        except:
+            return utt
+
+        try:
             _result = list()
             for token in utt:
                 if token.isdigit():
