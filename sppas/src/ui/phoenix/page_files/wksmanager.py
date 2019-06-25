@@ -660,7 +660,7 @@ class WorkspacesPanel(sppasPanel):
         """Add a button corresponding to the name of a workspace.
 
         :param name: (str)
-        :return: index of the newly created workspace
+        :returns: index of the newly created workspace
 
         """
         btn = CheckButton(self, label=name, name=name)

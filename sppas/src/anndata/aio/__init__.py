@@ -41,6 +41,7 @@
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
 """
+
 from .annotationpro import sppasANT
 from .annotationpro import sppasANTX
 from .anvil import sppasAnvil

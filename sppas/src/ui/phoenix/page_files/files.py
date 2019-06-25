@@ -103,7 +103,7 @@ class sppasFilesPanel(sppasPanel):
     def get_data(self):
         """Return the data currently displayed in the list of files.
 
-        :return: (FileData) data of the files-viewer model.
+        :returns: (FileData) data of the files-viewer model.
 
         """
         return self.FindWindow("filesview").get_data()

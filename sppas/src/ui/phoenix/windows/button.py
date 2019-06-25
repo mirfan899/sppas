@@ -282,7 +282,7 @@ class ToggleButtonEvent(ButtonEvent):
     def GetIsDown(self):
         """Return the button toggle status as ``True`` if the button is down.
 
-        :return: (bool)
+        :returns: (bool)
 
         """
         return self.__isdown
@@ -386,7 +386,7 @@ class BaseButton(wx.Window):
         native class wx.Button, but for this custom button we use the
         parent ones.
 
-        :return: an instance of wx.VisualAttributes.
+        :returns: an instance of wx.VisualAttributes.
 
         """
         return self.GetParent().GetClassDefaultAttributes()
@@ -463,7 +463,7 @@ class BaseButton(wx.Window):
     def GetFocusWidth(self):
         """Return the width of the focus at bottom of the button.
 
-        :return: (int)
+        :returns: (int)
 
         """
         return self._focuswidth
@@ -491,7 +491,7 @@ class BaseButton(wx.Window):
     def GetBorderWidth(self):
         """Return the width of the border all around the button.
 
-        :return: (int)
+        :returns: (int)
 
         """
         return self._borderwidth
@@ -523,7 +523,7 @@ class BaseButton(wx.Window):
     def GetBorderColour(self):
         """Return the colour of the border all around the button.
 
-        :return: (int)
+        :returns: (int)
 
         """
         return self._borderwidth
@@ -869,7 +869,7 @@ class BaseButton(wx.Window):
     def GetBackgroundBrush(self, dc):
         """Get the brush for drawing the background of the button.
 
-        :return: (wx.Brush)
+        :returns: (wx.Brush)
 
         """
         color = self.GetParent().GetBackgroundColour()
@@ -903,7 +903,7 @@ class BaseButton(wx.Window):
     def PrepareDraw(self):
         """Prepare the DC to draw the button.
 
-        :return: (tuple) dc, gc
+        :returns: (tuple) dc, gc
 
         """
         # Create the Graphic Context
@@ -1070,7 +1070,7 @@ class BaseToggleButton(BaseButton):
     def IsPressed(self):
         """Return if button is pressed.
 
-        :return: (bool)
+        :returns: (bool)
 
         """
         return self._pressed
@@ -1579,7 +1579,7 @@ class CheckButton(BaseToggleButton):
     def IsChecked(self):
         """Return if button is checked.
 
-        :return: (bool)
+        :returns: (bool)
 
         """
         return self._pressed
@@ -1752,7 +1752,7 @@ class CheckButton(BaseToggleButton):
     def GetBackgroundBrush(self, dc):
         """Get the brush for drawing the background of the button.
 
-        :return: (wx.Brush)
+        :returns: (wx.Brush)
 
         """
         color = self.GetParent().GetBackgroundColour()

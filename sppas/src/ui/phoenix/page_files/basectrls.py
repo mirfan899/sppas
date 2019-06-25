@@ -379,7 +379,7 @@ class BaseTreeViewCtrl(wx.dataview.DataViewCtrl):
         :param model:
         :param index: (int) Index of the column to create. It must match an
         existing column number of the model.
-        :return: (wx.dataview.DataViewColumn)
+        :returns: (wx.dataview.DataViewColumn)
 
         """
         logging.debug('Create column: {:d} {:s}'

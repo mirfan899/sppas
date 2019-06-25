@@ -450,7 +450,7 @@ class ReportsPanel(sppasScrolledPanel):
         Add the button at the top of the list.
 
         :param name: (str)
-        :return: (bool) the button was inserted or not
+        :returns: (bool) the button was inserted or not
 
         """
         # Do not insert the same report twice

@@ -295,7 +295,7 @@ class sppasInterval(sppasBaseLocalization):
 
         :param begin: any kind of data
         :param end: any kind of data
-        :return: Boolean
+        :returns: Boolean
 
         """
         try:

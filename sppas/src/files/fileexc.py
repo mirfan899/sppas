@@ -51,7 +51,7 @@ except ImportError:
 
         :param index: (int) Index of the error.
         :param domain: (str) Translation domain [not used]
-        :return: (str) Error message. 
+        :returns: (str) Error message. 
 
         """          
         if domain is not None:

@@ -31,7 +31,7 @@ class sppasRadioBoxPanel(sppasPanel):
 
         :param n: (int) – The zero-based button to enable or disable.
         :param enable: (bool) – True to enable, False to disable.
-        :return: (bool)
+        :returns: (bool)
 
         """
         if n > len(self.__buttons):
@@ -51,7 +51,7 @@ class sppasRadioBoxPanel(sppasPanel):
         :param string: (string) – The string to find.
         :param bCase: (bool) – Should the search be case-sensitive?
 
-        :return: (int) the position if found, or -1 if not found.
+        :returns: (int) the position if found, or -1 if not found.
 
         """
         found = -1
@@ -88,7 +88,7 @@ class sppasRadioBoxPanel(sppasPanel):
     def GetSelection(self):
         """Return the index of the selected item or -1 if no item is selected.
     
-        :return: (int) The position of the current selection.
+        :returns: (int) The position of the current selection.
         
         """
         return self.__selection
@@ -121,7 +121,7 @@ class sppasRadioBoxPanel(sppasPanel):
         """Return the label of the item with the given index.
 
         :param n: (int) – The zero-based index.
-        :return: (str) The label of the item or an empty string if the position
+        :returns: (str) The label of the item or an empty string if the position
         was invalid.
 
         """
@@ -134,7 +134,7 @@ class sppasRadioBoxPanel(sppasPanel):
     def GetStringSelection(self):
         """Return the label of the selected item.
 
-        :return: (str) The label of the selected item
+        :returns: (str) The label of the selected item
         """
         return self.__buttons[self.__selection].GetLabel()
 
@@ -150,7 +150,7 @@ class sppasRadioBoxPanel(sppasPanel):
         """Return True if the item is enabled or False if it was disabled using Enable .
 
         :param n: (int) – The zero-based button position.
-        :return: (bool)
+        :returns: (bool)
 
         """
         if n > len(self.__buttons):
@@ -183,7 +183,7 @@ class sppasRadioBoxPanel(sppasPanel):
 
         :param item: (int) – The zero-based position of the button to show or hide.
         :param show: (bool) – True to show, False to hide.
-        :return: (bool) True if the item has been shown or hidden or False
+        :returns: (bool) True if the item has been shown or hidden or False
         if nothing was done because it already was in the requested state.
 
         """
@@ -195,7 +195,7 @@ class sppasRadioBoxPanel(sppasPanel):
         """Return True if the item is currently shown or False if it was hidden using Show .
 
         :param n: (int) – The zero-based button position.
-        :return: (bool)
+        :returns: (bool)
 
         """
         if n > len(self.__buttons):

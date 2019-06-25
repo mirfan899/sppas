@@ -33,8 +33,9 @@
     ~~~~~~~~~~~~~~~~
 
 """
-from sppas.src.files.fileutils import sppasGUID
-from sppas.src.utils.makeunicode import sppasUnicode
+
+from sppas.src.files import sppasGUID
+from sppas.src.utils import sppasUnicode
 
 from .anndataexc import AnnDataTypeError
 from .anndataexc import AnnDataIndexError

@@ -42,14 +42,10 @@ from sppas import annots
 from sppas import sppasTypeError
 
 from sppas.src.config import msg
-from sppas.src.structs.baseoption import sppasOption
-from sppas.src.structs.lang import sppasLangResource
-from sppas.src.structs.lang import UNDETERMINED
+from sppas.src.structs import sppasOption
+from sppas.src.structs import sppasLangResource
 from sppas.src.anndata.aio import extensions_out as annots_ext
-from sppas.src.audiodata.aio import extensions as audio_ext
 
-from sppas.src.files import sppasDirUtils
-from sppas.src.files import sppasFileUtils
 from sppas.src.files import FileData, States
 
 # ----------------------------------------------------------------------------
@@ -456,9 +452,9 @@ class sppasParam(object):
         if step is None:
             for a in self.annotations:
                 lang = a.get_lang()
-                if lang is not None and lang != UNDETERMINED:
+                if lang is not None and lang != annots.UNDETERMINED:
                     return a.get_lang()
-            return UNDETERMINED
+            return annots.UNDETERMINED
         return self.annotations[step].get_lang()
 
     def get_langresource(self, step):

@@ -39,8 +39,8 @@ import logging
 from sppas.src.config import sg
 from sppas.src.config import annots
 from sppas.src.config import info
-from sppas.src.utils.datatype import sppasTime
-from sppas.src.utils.makeunicode import u
+from sppas.src.utils import sppasTime
+from sppas.src.utils import u
 
 # ---------------------------------------------------------------------------
 

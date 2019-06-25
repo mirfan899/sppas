@@ -86,7 +86,7 @@ class sppasAttribute(object):
         letters a-z, letters A-Z and numbers 0-9.
 
         :param identifier: (str) Key to be validated
-        :return: (bool)
+        :returns: (bool)
 
         """
         if 1 < len(identifier) < 13:
@@ -172,7 +172,7 @@ class sppasAttribute(object):
     def get_typed_value(self):
         """Return the current typed value.
 
-        :return: (any type) the current typed value.
+        :returns: (any type) the current typed value.
 
         """
         if self.__valuetype is not None or self.__valuetype != 'str':
@@ -194,7 +194,7 @@ class sppasAttribute(object):
     def get_description(self):
         """Return current description.
 
-        :return: (str)
+        :returns: (str)
 
         """
         if self.__descr is None:

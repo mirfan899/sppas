@@ -58,7 +58,7 @@ class sppasNumKhmer(sppasNumEuropeanType):
         within the current language dictionary
 
         :param number: (int) number to convert in word
-        :return: (str)
+        :returns: (str)
 
         """
         if number < 100000:

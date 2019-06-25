@@ -81,15 +81,13 @@
 
 """
 
-import logging
 import json
+import os
 
-from os.path import exists
-from os.path import dirname
+from sppas import sppasTypeError
+from sppas.src.config import sg
 
-from sppas import sppasTypeError, sg
 from .fileutils import sppasGUID
-
 from .filebase import FileBase, States
 from .fileref import FileReference
 from .filestructure import FileName, FileRoot, FilePath
@@ -148,11 +146,11 @@ class FileData(FileBase):
 
         :param filename: (str) Absolute or relative name of a file
         :param brothers: (bool) Add also all files sharing the same root as the given file
-        :return: (FileName)
+        :returns: (FileName)
         :raises: OSError
 
         """
-        new_fp = FilePath(dirname(filename))
+        new_fp = FilePath(os.path.dirname(filename))
         for fp in self.__data:
             if fp.id == new_fp.id:
                 new_fp = fp
@@ -169,11 +167,11 @@ class FileData(FileBase):
         """Remove a file in the list from its file name.
 
         :param filename: (str) Absolute or relative name of a file
-        :return: (FileName)
+        :returns: (FileName)
         :raises: OSError
 
         """
-        given_fp = FilePath(dirname(filename))
+        given_fp = FilePath(os.path.dirname(filename))
         for fp in self.__data:
             if fp.id == given_fp.id:
                 for fr in fp:
@@ -243,7 +241,7 @@ class FileData(FileBase):
         for fp in self.__data:
             for fr in reversed(fp):
                 for fn in reversed(fr):
-                    if exists(fn.id):
+                    if os.path.exists(fn.id):
                         fn.update_properties()
                     else:
                         fr.remove(fn)
@@ -289,7 +287,7 @@ class FileData(FileBase):
         """Return the list of file names of the given state.
 
         :param value: (bool) Toggle state
-        :return: (list of str)
+        :returns: (list of str)
 
         """
         checked = list()
@@ -306,7 +304,7 @@ class FileData(FileBase):
         """Return the file object matching the given identifier.
 
         :param identifier: (str)
-        :return: (FileData, FilePath, FileRoot, FileName, FileReference)
+        :returns: (FileData, FilePath, FileRoot, FileName, FileReference)
 
         """
         if self.id == identifier:
@@ -335,7 +333,7 @@ class FileData(FileBase):
         """Return the state of any FileBase within the FileData.
 
         :param file_obj: (FileBase) The object which one enquire the state
-        :return: States
+        :returns: States
 
         """
         if not isinstance(file_obj, FilePath)\
@@ -563,7 +561,7 @@ class FileData(FileBase):
     def serialize(self):
         """Convert this FileData() into a serializable data structure.
 
-        :return: (dict) a dictionary that can be serialized (without classes).
+        :returns: (dict) a dictionary that can be serialized (without classes).
 
         """
         d = dict()
@@ -641,7 +639,7 @@ class FileData(FileBase):
         """Load a saved FileData object from a save file.
 
         :param filename: (str) the name of the save file.
-        :return: FileData
+        :returns: FileData
 
         """
         with open(filename, "r") as fd:

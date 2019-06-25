@@ -36,9 +36,10 @@
 
 import decimal
 
-from sppas import symbols
-from sppas import sppasTier, sppasTypeError
-from sppas import sppasAnnSet
+from sppas import sppasTypeError
+from sppas.src.config import symbols
+from sppas.src.anndata import sppasTier
+from sppas.src.anndata import sppasAnnSet
 
 # ---------------------------------------------------------------------------
 
@@ -112,7 +113,7 @@ class sppasTierWindow(object):
         :param end_time: (int/float)
         :param delta: (float) Rate of time the annotation must overlap
         :param ignore: (list of str) List of tag contents to ignore -- currently applied only on the best tag
-        :return: (sppasAnnSet) The annotations matching all the requirements
+        :returns: (sppasAnnSet) The annotations matching all the requirements
 
         """
         ann_set = sppasAnnSet()

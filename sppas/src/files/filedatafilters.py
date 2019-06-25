@@ -78,8 +78,8 @@
 
 """
 
-from sppas.src.structs.basefilters import sppasBaseFilters
-from sppas.src.structs.basefset import sppasBaseSet
+from sppas.src.structs import sppasBaseFilters
+from sppas.src.structs import sppasBaseSet
 
 from .fileref import sppasAttribute
 from .filedatacompare import sppasFileBaseCompare

@@ -57,7 +57,7 @@ ref_spa = [
 # ---------------------------------------------------------------------------
 
 
-class sppasNum2TextTest(unittest.TestCase):
+class TestNum2Text(unittest.TestCase):
 
     def setUp(self):
 

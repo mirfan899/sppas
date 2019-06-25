@@ -115,7 +115,7 @@ class sppasAnnotatePanel(sppasSimplebook):
     def get_data(self):
         """Return the data currently displayed.
 
-        :return: (FileData) The workspace with files to annotate/annotated
+        :returns: (FileData) The workspace with files to annotate/annotated
 
         """
         return self.__param.get_workspace()

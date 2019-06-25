@@ -29,14 +29,29 @@
 
         ---------------------------------------------------------------------
 
-annotations: SPPAS Automatic annotations.
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
-:author:       Brigitte Bigi
-:organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-:contact:      develop@sppas.org
-:license:      GPL, v3
-:copyright:    Copyright (C) 2011-2018  Brigitte Bigi
+*****************************************************************************
+annotations: automatic annotations.
+*****************************************************************************
+
+This package includes all the automatic annotations, each one in a
+package and classes to manage the data to be annotated and the resulting
+annotated data.
+
+Requires the following other packages:
+
+* config
+* utils
+* files
+* anndata
+* audiodata
+* resources
+* structs
 
 """
 

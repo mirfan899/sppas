@@ -33,13 +33,14 @@
     ~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import json
 import os
 import platform
 import shlex
 from subprocess import Popen
 
-from sppas import sppasOption
+from sppas.src.structs import sppasOption
 from sppas import IOExtensionException
 
 from .pluginsexc import PluginConfigFileError
@@ -229,7 +230,7 @@ class sppasPluginParam(object):
         command_args = shlex.split(command)
         test_command = command_args[0]
 
-        NULL = open(os.devnull, 'w')
+        NULL = open(os.path.devnull, 'w')
         try:
             p = Popen([test_command], shell=False, stdout=NULL, stderr=NULL)
             NULL.close()

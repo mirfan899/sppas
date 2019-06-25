@@ -29,8 +29,6 @@
     src.files.filebase.py
     ~~~~~~~~~~~~~~~~~~~~~
 
-    Base class for any type of files.
-
 """
 
 from sppas.src.utils import sppasUnicode
@@ -70,7 +68,7 @@ class FileBase(object):
 
         :param identifier: (str) Key to be validated
         :raise: ValueError
-        :return: (unicode)
+        :returns: (unicode)
 
         """
         su = sppasUnicode(identifier)
@@ -155,7 +153,7 @@ class FileBase(object):
         """Allow to show the class at a given format.
 
         :param fmt: (str) the wanted format of string
-        :return: (str)
+        :returns: (str)
 
         """
         return str(self).__format__(fmt)
@@ -163,7 +161,7 @@ class FileBase(object):
     def __str__(self):
         """The string conversion of the object.
 
-        :return: (str)
+        :returns: (str)
 
         """
         return '{!s:s}'.format(self.__id)
@@ -171,7 +169,7 @@ class FileBase(object):
     def __repr__(self):
         """Function called by print.
 
-        :return: (str) Printed representation of the object.
+        :returns: (str) Printed representation of the object.
 
         """
         return 'File: {!s:s}'.format(self.__id)

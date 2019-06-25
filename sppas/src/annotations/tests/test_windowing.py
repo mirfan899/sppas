@@ -42,7 +42,7 @@ from sppas.src.annotations.windowing import sppasTierWindow
 # ---------------------------------------------------------------------------
 
 
-class WindowingTest(unittest.TestCase):
+class TestWindowing(unittest.TestCase):
     """Test of the windowing system on a sppasTier.
 
     """

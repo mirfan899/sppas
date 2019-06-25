@@ -158,7 +158,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         """Remove an attribute from the checked references.
 
         :param identifier: (str)
-        :return: Number of references in which the attribute were removed.
+        :returns: Number of references in which the attribute were removed.
 
         """
         nb = self._model.remove_attribute(identifier)
@@ -177,7 +177,7 @@ class ReferencesTreeViewCtrl(BaseTreeViewCtrl):
         :param value: (str)
         :param att_type: (str)
         :param description: (str)
-        :return: Number of references in which the attribute were added.
+        :returns: Number of references in which the attribute were added.
 
         """
         nb = self._model.edit_attribute(identifier, value, att_type, description)

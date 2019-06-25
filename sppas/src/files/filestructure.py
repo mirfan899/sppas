@@ -170,7 +170,7 @@ class FileName(FileBase):
         UNUSED state.
 
         :param value: (States)
-        :return: (bool) True if the state changed
+        :returns: (bool) True if the state changed
         :raise: sppasTypeError
 
         """
@@ -546,7 +546,7 @@ class FileRoot(FileBase):
         of FileName.
 
         :param filename: (str, FileName) Absolute name of a file
-        :return: (FileName) the appended FileName or None
+        :returns: (FileName) the appended FileName or None
 
         """
         # Get or create the FileName instance
@@ -578,7 +578,7 @@ class FileRoot(FileBase):
         of FileName.
 
         :param filename: (str, FileName) Absolute name of a file
-        :return: (int) Index of the removed FileName or -1 if nothing removed.
+        :returns: (int) Index of the removed FileName or -1 if nothing removed.
 
         """
         idx = -1
@@ -819,7 +819,7 @@ class FilePath(FileBase):
         """Return the identifier, i.e. the full name of the file.
 
         :param filename: (str) Absolute or relative name of a file
-        :return: (str) Identifier for this filename
+        :returns: (str) Identifier for this filename
         :raise: FileOSError if filename does not match a regular file
 
         """
@@ -839,7 +839,7 @@ class FilePath(FileBase):
         """Return the FileRoot matching the given id (root or file).
 
         :param name: (str) Identifier name of a root or a file.
-        :return: FileRoot or None
+        :returns: FileRoot or None
 
         """
         for fr in self.__roots:
@@ -867,7 +867,7 @@ class FilePath(FileBase):
 
         :param entry: (str, FileName, FileRoot) Absolute or relative name of a file
         :param all_root: (bool) Add also all files sharing the same root as the given one, or all files of the given root
-        :return: (FileName, FileRoot) the list of appended objects or None
+        :returns: (FileName, FileRoot) the list of appended objects or None
 
         """
         added = list()
@@ -934,7 +934,7 @@ class FilePath(FileBase):
         TODO: REMOVE IF ENTRY is FILENAME
 
         :param entry: (str or FileRoot)
-        :return: (int) Index of the removed FileRoot or -1 if nothing removed.
+        :returns: (int) Index of the removed FileRoot or -1 if nothing removed.
 
         """
         if isinstance(entry, FileRoot):

@@ -59,7 +59,7 @@ class sppasSwissKnife:
 
         :param name: (str) Name of an icon.
         :param height: (int) Height of the bitmap. Width=height.
-        :return: (wx.Bitmap)
+        :returns: (wx.Bitmap)
 
         """
         # fix the icon file name with the current theme
@@ -128,7 +128,7 @@ class sppasSwissKnife:
 
         :param name: (str) Name of an image or an icon.
         :param height: (int) Height of the bitmap, Width is proportional.
-        :return: (wx.Bitmap)
+        :returns: (wx.Bitmap)
 
         """
         img = sppasSwissKnife.get_image(name)

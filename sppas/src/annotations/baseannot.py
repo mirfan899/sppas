@@ -41,7 +41,7 @@ import sppas.src.anndata.aio
 from sppas.src.config import annots
 from sppas.src.config import paths
 from sppas.src.config import info
-from sppas.src.files.fileutils import sppasFileUtils
+from sppas.src.files import sppasFileUtils
 
 from .diagnosis import sppasDiagnosis
 from .log import sppasLog
@@ -291,7 +291,7 @@ class sppasBaseAnnotation(object):
         :param file_names: (list) List of inputs
         :param progress: ProcessProgressTerminal() or ProcessProgressDialog()
         :param output_format: (str)
-        :return: (list of str) List of created files
+        :returns: (list of str) List of created files
 
         """
         if len(self._options) > 0:
@@ -400,7 +400,6 @@ class sppasBaseAnnotation(object):
         """Print the annotation name applied on a filename in the user log.
 
         :param filename: (str) Name of the file to annotate.
-        :param status: (int) 1-4 value or None
 
         """
         if self.logfile:
@@ -413,7 +412,9 @@ class sppasBaseAnnotation(object):
     # -----------------------------------------------------------------------
 
     def print_options(self):
-        """Print the list of options in the user log."""
+        """Print the list of options in the user log.
+
+        """
         self.logfile.print_message(info(1050, "annotations") + ": ",
                                    indent=0, status=None)
 
@@ -448,8 +449,7 @@ class sppasBaseAnnotation(object):
 
         :param filename: input file name
         :param extensions: the list of expected extension
-        :returns: a file name of the first existing file with an expected
-        extension or None
+        :returns: a file name of the first existing file with an expected extension or None
 
         """
         base_name = os.path.splitext(filename)[0]
