@@ -41,62 +41,39 @@ from sppas.src.ui.progress import sppasBaseProgress
 from sppas.src.ui.cfg import sppasAppConfig
 
 from sppas.src.ui.phoenix.main_settings import WxAppSettings
-from sppas.src.ui.phoenix.windows import sppasDialog
+from sppas.src.ui.phoenix.windows import sppasTopFrame
 from sppas.src.ui.phoenix.windows import sppasPanel
 from sppas.src.ui.phoenix.windows import sppasStaticText
 
 # ---------------------------------------------------------------------------
 
 
-class sppasAnnotProgressDialog(sppasDialog, sppasBaseProgress):
-    """Progress dialog for the annotations.
+class sppasProgressPanel(sppasPanel, sppasBaseProgress):
 
-    :author:       Brigitte Bigi
-    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
-    :contact:      develop@sppas.org
-    :license:      GPL, v3
-    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+    def __init__(self, parent):
+        super(sppasProgressPanel, self).__init__(parent)
 
-    """
-
-    def __init__(self):
-        """Create a dialog with a progress for the annotations."""
-        super(sppasAnnotProgressDialog, self).__init__(parent=None)
-
-        self.SetTitle("Automatic annotations")
-        self.SetWindowStyle(wx.DEFAULT_FRAME_STYLE | wx.STAY_ON_TOP | wx.DIALOG_NO_PARENT)
-        self.SetName("annot_progress_dialog")
+        self.SetName("annot_progress_panel")
         self._create_content()
-
-        # Fix frame properties
-        self.SetMinSize(wx.Size(sppasDialog.fix_size(400),
-                                sppasDialog.fix_size(128)))
-        self.LayoutComponents()
-        self.CenterOnParent()
-        self.GetSizer().Fit(self)
-        self.Raise()
-        self.SetFocus()
-        self.Show(True)
+        self.Layout()
 
     # -----------------------------------------------------------------------
 
     def _create_content(self):
         """Create the content of the progress dialog."""
-        panel = sppasPanel(self, name="content")
-
         # an header text used to print the annotation step
-        self.header = sppasStaticText(panel, label="HEADER IS HERE", style=wx.ALIGN_CENTRE)
+        self.header = sppasStaticText(self, label="HEADER IS HERE", style=wx.ALIGN_CENTRE)
         # the gauge
-        self.gauge = wx.Gauge(panel, range=100, size=(400, 24))
+        self.gauge = wx.Gauge(self, range=100, size=(400, 24))
         # a bottom text used to print the current file name
-        self.text = sppasStaticText(panel, label="BOTTOM IS HERE", style=wx.ALIGN_CENTRE)
+        self.text = sppasStaticText(self, label="BOTTOM IS HERE", style=wx.ALIGN_CENTRE)
 
         sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(self.header, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
         sizer.Add(self.gauge, 0, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
         sizer.Add(self.text, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
 
-        panel.SetSizer(sizer)
+        self.SetSizer(sizer)
 
     # -----------------------------------------------------------------------
 
@@ -134,13 +111,98 @@ class sppasAnnotProgressDialog(sppasDialog, sppasBaseProgress):
 
         self.Refresh()
         self.Update()
-        time.sleep(0.5)
+        time.sleep(0.2)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasProgressDialog(wx.GenericProgressDialog, sppasBaseProgress):
+    """Progress dialog for the annotations.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    def __init__(self):
+        """Create a dialog with a progress for the annotations."""
+        super(sppasProgressDialog, self).__init__(
+            title="Automatic annotations",
+            message="",
+            style=wx.PD_SMOOTH)
+
+        self.SetTitle("Automatic annotations")
+        self.SetWindowStyle(wx.CAPTION | wx.RESIZE_BORDER)
+        self.SetName("annot_progress_dialog")
+        self.SetRange(101)
+
+        # Fix frame properties
+        self.SetMinSize(wx.Size(self.fix_size(400),
+                                self.fix_size(128)))
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+
+    @staticmethod
+    def fix_size(value):
+        """Return a proportional size value.
+
+        :param value: (int)
+        :returns: (int)
+
+        """
+        try:
+            obj_size = int(float(value) * wx.GetApp().settings.size_coeff)
+        except AttributeError:
+            obj_size = int(value)
+        return obj_size
+
+    # -----------------------------------------------------------------------
+
+    def set_header(self, header):
+        """Overridden. Set a new progress header text.
+
+        :param header: (str) new progress header text.
+
+        """
+        self.SetTitle(header)
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
+
+    def update(self, percent=None, message=None):
+        """Overridden. Update the progress box.
+
+        :param message: (str) progress bar value (default: 0)
+        :param percent: (float) progress bar text  (default: None)
+
+        """
+        if percent is not None:
+            fraction = float(percent)
+            # convert fraction to a percentage (if necessary)
+            if fraction < 1:
+                fraction = int(fraction * 100.)
+            if fraction > 100:
+                fraction = 100
+        else:
+            fraction = self.GetValue()
+
+        if message is not None:
+            self.SetLabel(message)
+            self.Refresh()
+        else:
+            message = self.GetMessage()
+
+        self.Update(fraction, message)
+        time.sleep(0.2)
 
     # -----------------------------------------------------------------------
 
     def close(self):
         """Close the progress box."""
-        #self.DestroyFadeOut()
         self.Destroy()
 
 # ----------------------------------------------------------------------------
@@ -165,49 +227,48 @@ class TestApp(wx.App):
         self.settings = WxAppSettings()
 
         # create the frame
-        self.frm = sppasDialog(None, title='Progress test', size=(128, 128), name="main")
+        self.frm = wx.Frame(None, title='Progress test', size=(256, 128), name="main")
         self.SetTopWindow(self.frm)
 
         # create a panel in the frame
-        sizer = wx.BoxSizer()
+        sizer = wx.BoxSizer(wx.VERTICAL)
         sizer.Add(wx.Button(self.frm, label="start"), 1, wx.EXPAND, 0)
         self.frm.SetSizer(sizer)
 
         self.Bind(wx.EVT_BUTTON, self._on_start)
 
         # show result
-        self.frm.Show()
+        self.frm.Show(True)
+
 
     def _on_start(self, event):
-        wx.BeginBusyCursor()
-        p = sppasAnnotProgressDialog()
-        logging.debug('progress name={:s}'.format(p.GetName()))
 
-        p.set_new()
-        p.set_header("Annotation number 1")
-        p.set_fraction(0)
-        p.set_text("file one")
-        time.sleep(1)
-        p.set_fraction(34)
-        p.set_text("file two")
-        time.sleep(1)
-        p.set_fraction(70)
-        p.set_text("file three")
-        time.sleep(1)
-        p.set_fraction(100)
+        self.progress = sppasProgressDialog()
 
-        p.set_new()
-        p.set_header("Another annotation")
-        p.set_fraction(0)
-        p.set_text("one file")
+        self.progress.set_new()
+        self.progress.set_header("Annotation number 1")
+        self.progress.set_fraction(0)
+        self.progress.set_text("file one")
         time.sleep(1)
-        p.set_fraction(50)
-        p.set_text("two files")
+        self.progress.set_fraction(34)
+        self.progress.set_text("file two")
         time.sleep(1)
-        p.set_fraction(100)
+        self.progress.set_fraction(70)
+        self.progress.set_text("file three")
+        time.sleep(1)
+        self.progress.set_fraction(100)
 
-        p.close()
-        wx.EndBusyCursor()
+        self.progress.set_new()
+        self.progress.set_header("Another annotation")
+        self.progress.set_fraction(0)
+        self.progress.set_text("one file")
+        time.sleep(1)
+        self.progress.set_fraction(50)
+        self.progress.set_text("two files")
+        time.sleep(1)
+        self.progress.set_fraction(100)
+
+        self.progress.close()
 
 # ----------------------------------------------------------------------------
 

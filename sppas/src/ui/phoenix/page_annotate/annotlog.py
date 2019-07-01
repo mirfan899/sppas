@@ -51,7 +51,7 @@ from ..windows import sppasStaticText
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent
-from .annotprogress import sppasAnnotProgressDialog
+from .annotprogress import sppasProgressDialog
 
 # -----------------------------------------------------------------------
 
@@ -110,20 +110,20 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
     def run(self):
         """Perform the automatic annotations of param on data."""
         logging.info('Perform automatic annotations')
+        self.progress = sppasProgressDialog()
+        self.progress.Show(True)
+        self.progress.set_new()
 
         # The procedure outcome report file.
         self.__param.set_report_filename(self.__log_report.get_filename())
         self.__log_report.increment()
 
         # Create the progress bar then run the annotations
-        wx.BeginBusyCursor()
-        p = sppasAnnotProgressDialog()
-        self.__manager.annotate(self.__param, p)
-        p.close()
-        wx.EndBusyCursor()
+        self.__manager.annotate(self.__param, self.progress)
 
         self.__update_log_text()
         self.Refresh()
+        self.progress.close()
 
         # send to parent
         evt = DataChangedEvent(data=self.__param.get_workspace())

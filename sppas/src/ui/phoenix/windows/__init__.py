@@ -21,6 +21,8 @@ from .panel import sppasPanel
 from .panel import sppasScrolledPanel
 
 from .dialog import sppasDialog
+from .frame import sppasTopFrame
+from .frame import sppasFrame
 
 from .toolbar import sppasToolbar
 
@@ -42,5 +44,7 @@ __all__ = (
     "sppasPanel",
     "sppasScrolledPanel",
     "sppasDialog",
+    "sppasTopFrame",
+    "sppasFrame",
     "sppasToolbar"
 )
