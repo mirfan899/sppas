@@ -485,3 +485,5 @@ class sppasDialog(wx.Dialog):
         except AttributeError:
             obj_size = int(value)
         return obj_size
+
+

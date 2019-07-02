@@ -51,7 +51,7 @@ from ..windows import sppasStaticText
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent
-from .annotprogress import sppasProgressDialog
+from sppas.src.ui.phoenix.windows.progress import sppasProgressDialog
 
 # -----------------------------------------------------------------------
 

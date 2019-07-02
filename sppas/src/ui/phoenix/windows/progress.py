@@ -28,96 +28,22 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.page_annotate.annotprogress.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ui.phoenix.windows.progress.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 import wx
 import time
-import logging
 
 from sppas.src.ui.progress import sppasBaseProgress
 from sppas.src.ui.cfg import sppasAppConfig
-
-from sppas.src.ui.phoenix.main_settings import WxAppSettings
-from sppas.src.ui.phoenix.windows import sppasTopFrame
-from sppas.src.ui.phoenix.windows import sppasPanel
-from sppas.src.ui.phoenix.windows import sppasStaticText
-
-# ---------------------------------------------------------------------------
-
-
-class sppasProgressPanel(sppasPanel, sppasBaseProgress):
-
-    def __init__(self, parent):
-        super(sppasProgressPanel, self).__init__(parent)
-
-        self.SetName("annot_progress_panel")
-        self._create_content()
-        self.Layout()
-
-    # -----------------------------------------------------------------------
-
-    def _create_content(self):
-        """Create the content of the progress dialog."""
-        # an header text used to print the annotation step
-        self.header = sppasStaticText(self, label="HEADER IS HERE", style=wx.ALIGN_CENTRE)
-        # the gauge
-        self.gauge = wx.Gauge(self, range=100, size=(400, 24))
-        # a bottom text used to print the current file name
-        self.text = sppasStaticText(self, label="BOTTOM IS HERE", style=wx.ALIGN_CENTRE)
-
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.header, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
-        sizer.Add(self.gauge, 0, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
-        sizer.Add(self.text, 1, wx.ALL | wx.EXPAND | wx.ALIGN_CENTER_VERTICAL, 4)
-
-        self.SetSizer(sizer)
-
-    # -----------------------------------------------------------------------
-
-    def set_header(self, header):
-        """Overridden. Set a new progress header text.
-
-        :param header: (str) new progress header text.
-
-        """
-        self.header.SetLabel(header)
-        self.Refresh()
-        self.Update()
-
-    # -----------------------------------------------------------------------
-
-    def update(self, percent=None, message=None):
-        """Overridden. Update the progress box.
-
-        :param message: (str) progress bar value (default: 0)
-        :param percent: (float) progress bar text  (default: None)
-
-        """
-        if percent is not None:
-            fraction = float(percent)
-            # convert fraction to a percentage (if necessary)
-            if fraction < 1:
-                fraction = int(fraction * 100.)
-            if fraction > 100:
-                fraction = 100
-            self.gauge.SetValue(fraction)
-
-        if message is not None:
-            self.text.SetLabel(message)
-            self.text.Refresh()
-
-        self.Refresh()
-        self.Update()
-        time.sleep(0.2)
 
 # ---------------------------------------------------------------------------
 
 
 class sppasProgressDialog(wx.GenericProgressDialog, sppasBaseProgress):
-    """Progress dialog for the annotations.
+    """Customized progress dialog.
 
     :author:       Brigitte Bigi
     :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
@@ -130,20 +56,50 @@ class sppasProgressDialog(wx.GenericProgressDialog, sppasBaseProgress):
     def __init__(self):
         """Create a dialog with a progress for the annotations."""
         super(sppasProgressDialog, self).__init__(
-            title="Automatic annotations",
+            title="In progress...",
             message="",
             style=wx.PD_SMOOTH)
 
-        self.SetTitle("Automatic annotations")
-        self.SetWindowStyle(wx.CAPTION | wx.RESIZE_BORDER)
-        self.SetName("annot_progress_dialog")
-        self.SetRange(101)
-
         # Fix frame properties
-        self.SetMinSize(wx.Size(self.fix_size(400),
-                                self.fix_size(128)))
+        self._init_infos()
+
+        # To fade-out the opacity
+        self.opacity_out = 255
+        self.timer2 = None
+
+        self.SetAutoLayout(True)
         self.Layout()
 
+    # -----------------------------------------------------------------------
+
+    def _init_infos(self):
+        """Initialize the main frame.
+
+        Set the title, the icon and the properties of the frame.
+
+        """
+        self.SetName("progress_dialog")
+        self.SetRange(101)
+
+        # Fix minimum frame size
+        self.SetMinSize(wx.Size(self.fix_size(256),
+                                self.fix_size(128)))
+
+        # colors & font
+        try:
+            settings = wx.GetApp().settings
+            self.SetBackgroundColour(settings.bg_color)
+            self.SetForegroundColour(settings.fg_color)
+            self.SetFont(settings.text_font)
+            for c in self.GetChildren():
+                c.SetBackgroundColour(settings.bg_color)
+                c.SetForegroundColour(settings.fg_color)
+                c.SetFont(settings.text_font)
+        except AttributeError:
+            pass
+
+    # -----------------------------------------------------------------------
+    # Fade-in at start-up and Fade-out at close
     # -----------------------------------------------------------------------
 
     @staticmethod
@@ -190,20 +146,35 @@ class sppasProgressDialog(wx.GenericProgressDialog, sppasBaseProgress):
         else:
             fraction = self.GetValue()
 
-        if message is not None:
-            self.SetLabel(message)
-            self.Refresh()
-        else:
+        if message is None:
             message = self.GetMessage()
 
         self.Update(fraction, message)
-        time.sleep(0.2)
+        wx.MilliSleep(200)
 
     # -----------------------------------------------------------------------
 
     def close(self):
         """Close the progress box."""
-        self.Destroy()
+        self.timer2 = wx.Timer(self, -1)
+        self.timer2.Start(1)
+        self.Bind(wx.EVT_TIMER, self.__alpha_cycle_out, self.timer2)
+
+    # ---------------------------------------------------------------------------
+    # Private
+    # ---------------------------------------------------------------------------
+
+    def __alpha_cycle_out(self, *args):
+        """Fade-out opacity of the dialog."""
+        self.opacity_out -= 5
+
+        if self.opacity_out > 0:
+            self.SetTransparent(self.opacity_out)
+        else:
+            self.opacity_out = 0
+            self.timer2.Stop()
+            self.timer2 = None
+            wx.CallAfter(self.Destroy)
 
 # ----------------------------------------------------------------------------
 # App to test
@@ -224,7 +195,6 @@ class TestApp(wx.App):
         # Fix language and translation
         self.locale = wx.Locale(wx.LANGUAGE_DEFAULT)
         self.__cfg = sppasAppConfig()
-        self.settings = WxAppSettings()
 
         # create the frame
         self.frm = wx.Frame(None, title='Progress test', size=(256, 128), name="main")
@@ -244,11 +214,11 @@ class TestApp(wx.App):
     def _on_start(self, event):
 
         self.progress = sppasProgressDialog()
-
         self.progress.set_new()
         self.progress.set_header("Annotation number 1")
         self.progress.set_fraction(0)
         self.progress.set_text("file one")
+
         time.sleep(1)
         self.progress.set_fraction(34)
         self.progress.set_text("file two")
