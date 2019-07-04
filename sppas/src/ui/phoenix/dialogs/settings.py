@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import wx
 
 from sppas.src.config import ui_translation

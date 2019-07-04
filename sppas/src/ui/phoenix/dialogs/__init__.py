@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 from .messages import YesNoQuestion
 from .messages import Information
 from .messages import Confirm
