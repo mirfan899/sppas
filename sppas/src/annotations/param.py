@@ -472,21 +472,27 @@ class sppasParam(object):
         return -1
 
     def activate_step(self, step):
+        step = self.__check_step(step)
         self.annotations[step].set_activate(True)
 
     def disable_step(self, step):
+        step = self.__check_step(step)
         self.annotations[step].set_activate(False)
 
     def get_step_status(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_activate()
 
     def get_step_name(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_name()
 
     def get_step_types(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_types()
 
     def get_step_descr(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_descr()
 
     # ------------------------------------------------------------------------
@@ -507,7 +513,18 @@ class sppasParam(object):
 
     # ------------------------------------------------------------------------
 
+    @staticmethod
+    def __check_step(step):
+        try:
+            step = int(step)
+        except TypeError:
+            raise sppasTypeError(step, "int")
+        return step
+
+    # ------------------------------------------------------------------------
+
     def get_step_key(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_key()
 
     def get_step_numbers(self):
@@ -520,16 +537,20 @@ class sppasParam(object):
         return steps
 
     def get_langlist(self, step=2):
+        step = self.__check_step(step)
         return self.annotations[step].get_langlist()
 
     def get_step(self, step):
         """Return the 'sppasParam' instance of the annotation."""
+        step = self.__check_step(step)
         return self.annotations[step]
 
     def get_options(self, step):
+        step = self.__check_step(step)
         return self.annotations[step].get_options()
 
     def set_option_value(self, step, key, value):
+        step = self.__check_step(step)
         self.annotations[step].set_option_value(key, value)
 
     # -----------------------------------------------------------------------

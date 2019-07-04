@@ -77,7 +77,7 @@ class ProcessProgressTerminal(sppasBaseProgress):
             self._bar = self._term.render(BAR)
         except:
             print('[WARNING] The progress bar is disabled because this terminal'
-                  ' does not support colors, EOL, UP, etc...')
+                  ' does not support colors, EOL, UP, etc.')
             self._term = None
             self._bar = ""
 
@@ -85,13 +85,18 @@ class ProcessProgressTerminal(sppasBaseProgress):
 
     # ------------------------------------------------------------------
 
-    def update(self, percent, message):
+    def update(self, percent=None, message=None):
         """Update the progress.
 
         :param message: (str) progress bar value (default: 0)
-        :param percent: (float) progress bar text  (default: None)
+        :param percent: (float) progress bar text (default: None)
 
         """
+        if percent is None:
+            percent = self._percent
+        if message is None:
+            message = self._text
+
         if self._term:
             n = int((WIDTH - 10) * percent)
             if self._cleared is True:
