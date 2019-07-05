@@ -289,7 +289,7 @@ class PluginsList(sppasScrolledPanel):
         # Get the name of the file to be imported
         dlg = sppasFileDialog(self, title=PGS_ACT_ADD,
                               style=wx.FC_OPEN | wx.FC_NOSHOWHIDDEN)
-        dlg.SetWildcard("ZIP files|*.zip")  # |*.[zZ][iI][pP]")
+        dlg.SetWildcard("ZIP files|*.zip")  #  |*.[zZ][iI][pP]")
         if dlg.ShowModal() == wx.ID_OK:
             # Get the selected file name
             filename = dlg.GetPath()

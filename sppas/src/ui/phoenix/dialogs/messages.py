@@ -348,10 +348,15 @@ class sppasChoiceDialog(sppasBaseMessageDialog):
     # -----------------------------------------------------------------------
 
     def _create_content(self, message, **kwargs):
-        """Create the content of the message dialog."""
+        """Overridden. Create the content of the message dialog."""
+        logging.debug(" *********** DANS CREATE CONTENT **************** ")
+        for k, v in kwargs.items():
+            logging.debug("KEY={:s} VALUE={:s}".format(k, v))
         c = [""]
         if "choices" in kwargs:
+            logging.debug("Found choices into the args")
             c = kwargs["choices"]
+            logging.debug(c)
 
         p = sppasPanel(self)
         txt = sppasMessageText(p, message)
