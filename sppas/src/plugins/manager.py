@@ -130,9 +130,9 @@ class sppasPluginsManager(Thread):
             try:
                 self.append(plugin_folder)
             except Exception as e:
-                logging.info("Plugin {:s} loading error: {:s}"
-                             "".format(plugin_folder, str(e)))
-                logging.error(traceback.format_exc())
+                logging.error("Plugin {:s} loading error: {:s}"
+                              "".format(plugin_folder, str(e)))
+                logging.debug(traceback.format_exc())
 
     # ------------------------------------------------------------------------
 

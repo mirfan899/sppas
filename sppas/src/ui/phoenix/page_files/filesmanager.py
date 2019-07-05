@@ -105,7 +105,7 @@ class FilesManager(sppasPanel):
         :param data: (FileData)
 
         """
-        fv = self.FindWindow("filestree").set_data(data)
+        self.FindWindow("filestree").set_data(data)
 
     # ------------------------------------------------------------------------
     # Private methods to construct the panel.
@@ -121,7 +121,8 @@ class FilesManager(sppasPanel):
         sizer.Add(fv, proportion=1, flag=wx.EXPAND, border=0)
         self.SetSizer(sizer)
 
-        self.SetMinSize((320, 200))
+        self.SetMinSize(wx.Size(sppasPanel.fix_size(320),
+                                sppasPanel.fix_size(200)))
         self.SetAutoLayout(True)
 
     # -----------------------------------------------------------------------

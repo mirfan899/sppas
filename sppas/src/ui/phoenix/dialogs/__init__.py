@@ -3,6 +3,7 @@ from .messages import YesNoQuestion
 from .messages import Information
 from .messages import Confirm
 from .messages import Error
+from .messages import sppasChoiceDialog
 
 from .about import About
 from .about import AboutPlugin
@@ -22,5 +23,6 @@ __all__ = (
     'AboutPlugin',
     'Settings',
     'sppasFileDialog',
+    'sppasChoiceDialog',
     "sppasTextEntryDialog"
 )
