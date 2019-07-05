@@ -553,6 +553,8 @@ class sppasLogTextCtrl(wx.LogTextCtrl):
         Display the message with colors.
 
         """
+        if not self:
+            return
         # Display time with the default color
         self.textctrl.SetDefaultStyle(self.textctrl.default)
         self.textctrl.write("{:s} ".format(sppasTime().now[:-6]))

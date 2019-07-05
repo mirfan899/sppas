@@ -56,6 +56,7 @@ from .image import sppasStaticBitmap
 from .panel import sppasPanel
 from .panel import sppasScrolledPanel
 
+from .progress import sppasProgressDialog
 from .dialog import sppasDialog
 from .frame import sppasTopFrame
 from .frame import sppasFrame
@@ -77,6 +78,7 @@ __all__ = (
     "sppasTextCtrl",
     "NotEmptyTextValidator",
     "sppasStaticBitmap",
+    "sppasProgressDialog",
     "sppasPanel",
     "sppasScrolledPanel",
     "sppasDialog",

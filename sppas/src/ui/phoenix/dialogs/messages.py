@@ -88,7 +88,7 @@ class sppasBaseMessageDialog(sppasDialog):
         self.LayoutComponents()
         self.CenterOnParent()
         self.GetSizer().Fit(self)
-        self.FadeIn(deltaN=-10)
+        self.FadeIn(deltaN=-5)
 
     # -----------------------------------------------------------------------
 
@@ -322,7 +322,7 @@ class sppasChoiceDialog(sppasBaseMessageDialog):
     wx.ID_OK is returned if the button is clicked.
     wx.ID_CANCEL is returned if the dialog is destroyed.
 
-    >>> dialog = sppasErrorDialog("a message", choices=["apples", "pears"])
+    >>> dialog = sppasChoiceDialog("a message", choices=["apples", "pears"])
     >>> dialog.ShowModal()
     >>> dialog.Destroy()
 
@@ -333,7 +333,8 @@ class sppasChoiceDialog(sppasBaseMessageDialog):
             parent=None,
             message=message,
             title=title,
-            style=wx.ICON_QUESTION)
+            style=wx.ICON_QUESTION,
+            **kwargs)
 
     # -----------------------------------------------------------------------
 
@@ -349,14 +350,9 @@ class sppasChoiceDialog(sppasBaseMessageDialog):
 
     def _create_content(self, message, **kwargs):
         """Overridden. Create the content of the message dialog."""
-        logging.debug(" *********** DANS CREATE CONTENT **************** ")
-        for k, v in kwargs.items():
-            logging.debug("KEY={:s} VALUE={:s}".format(k, v))
-        c = [""]
+        c = ["None"]
         if "choices" in kwargs:
-            logging.debug("Found choices into the args")
             c = kwargs["choices"]
-            logging.debug(c)
 
         p = sppasPanel(self)
         txt = sppasMessageText(p, message)
@@ -374,9 +370,9 @@ class sppasChoiceDialog(sppasBaseMessageDialog):
     # -----------------------------------------------------------------------
 
     def _create_buttons(self):
-        self.CreateActions([wx.ID_CANCEL, wx.ID_YES])
+        self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
         self.Bind(wx.EVT_BUTTON, self._process_event)
-        self.SetAffirmativeId(wx.ID_YES)
+        self.SetAffirmativeId(wx.ID_OK)
 
     # -----------------------------------------------------------------------
 

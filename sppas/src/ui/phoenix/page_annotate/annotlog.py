@@ -49,10 +49,10 @@ from ..windows import sppasScrolledPanel
 from ..windows import BitmapTextButton
 from ..windows import sppasTextCtrl
 from ..windows import sppasStaticText
+from ..windows import sppasProgressDialog
 from ..main_events import DataChangedEvent
 
 from .annotevent import PageChangeEvent
-from sppas.src.ui.phoenix.windows.progress import sppasProgressDialog
 
 # -----------------------------------------------------------------------
 

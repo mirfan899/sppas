@@ -1,0 +1,344 @@
+# -*- coding: UTF-8 -*-
+"""
+    ..
+        ---------------------------------------------------------------------
+         ___   __    __    __    ___
+        /     |  \  |  \  |  \  /              the automatic
+        \__   |__/  |__/  |___| \__             annotation and
+           \  |     |     |   |    \             analysis
+        ___/  |     |     |   | ___/              of speech
+
+        http://www.sppas.org/
+
+        Use of this software is governed by the GNU Public License, version 3.
+
+        SPPAS is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        SPPAS is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with SPPAS. If not, see <http://www.gnu.org/licenses/>.
+
+        This banner notice must not be removed.
+
+        ---------------------------------------------------------------------
+
+    ui.phoenix.page_plugins.plug_list.py
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+"""
+
+import logging
+import wx
+import os
+
+from sppas import msg
+from sppas import u
+from sppas import sppasTypeError
+from sppas.src.plugins import sppasPluginsManager
+from sppas.src.files import FileData, States
+
+from ..dialogs import Error, Information
+from ..windows import sppasDialog
+from ..windows import sppasScrolledPanel
+from ..windows import sppasProgressDialog
+from ..windows import sppasPanel
+from ..panels import sppasOptionsPanel
+from ..main_events import DataChangedEvent
+
+# ---------------------------------------------------------------------------
+# List of displayed messages:
+
+def _(message):
+    return u(msg(message, "ui"))
+
+
+MSG_CONFIG = _("Configure")
+
+# -----------------------------------------------------------------------
+
+
+class sppasPluginsList(sppasScrolledPanel):
+    """Create the list of panels with plugins.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    No data is given at the initialization.
+    Use set_data() method.
+
+    """
+
+    def __init__(self, parent, name="page_plugins_list"):
+        super(sppasPluginsList, self).__init__(
+            parent=parent,
+            style=wx.BORDER_NONE,
+            name=name
+        )
+
+        # The workspace to work with
+        self.__data = FileData()
+
+        # The manager for the plugins
+        try:
+            self._manager = sppasPluginsManager()
+        except Exception as e:
+            self._manager = None
+            Error("Plugin manager initialization: {:s}".format(str(e)))
+
+        self._create_content()
+        self.Layout()
+
+    # ------------------------------------------------------------------------
+    # Public methods to access the data
+    # ------------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data currently displayed in the list of files.
+
+        :returns: (FileData) data of the files-viewer model.
+
+        """
+        return self.__data
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to this page.
+
+        :param data: (FileData)
+
+        """
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the plugins page. '
+                      'Id={:s}'.format(data.id))
+        self.__data = data
+
+    # -----------------------------------------------------------------------
+    # Actions to perform with plugins
+    # -----------------------------------------------------------------------
+
+    def get_plugins(self):
+        """Return the list of plugin identifiers."""
+        return list(self._manager.get_plugin_ids())
+
+    # ------------------------------------------------------------------------
+
+    def delete(self, plugin_id):
+        """Ask for the plugin to be removed, remove of the list.
+
+        :returns: plugin identifier of the plugin to be deleted.
+
+        """
+        # Destroy the panel and remove of the sizer
+        panel_name = plugin_id + "_panel"
+        panel = None
+        for i, child in enumerate(self.GetChildren()):
+            if child.GetName() == panel_name:
+                panel = child
+                self.GetSizer().Remove(i)
+                break
+        if panel is None:
+            return
+        panel.Destroy()
+
+        # Delete of the manager
+        self._manager.delete(plugin_id)
+
+        # Re-organize the UI
+        self.Layout()
+        self.Refresh()
+
+    # ------------------------------------------------------------------------
+
+    def install(self, filename):
+        """Import and install a plugin.
+
+        :param filename: (str) ZIP file of the plugin content
+
+        """
+        # fix a name for the plugin directory
+        plugin_folder = os.path.splitext(os.path.basename(filename))[0]
+        plugin_folder.replace(' ', "_")
+
+        # install the plugin and display it in the list
+        plugin_id = self._manager.install(filename, plugin_folder)
+        self._append(self._manager.get_plugin(plugin_id))
+
+        # Update the UI
+        self.Layout()
+        self.Refresh()
+        return plugin_folder
+
+    # ------------------------------------------------------------------------
+
+    def Apply(self, plugin_id):
+        """Apply the plugin on the data."""
+        # Get the list of files
+        checked = self.__data.get_filename_from_state(States().CHECKED)
+        if len(checked) == 0:
+            Information("No file(s) selected to apply the plugin on!")
+            return
+        logging.info("Apply plugin {:s} on {:d} files."
+                      "".format(plugin_id, len(checked)))
+
+        dlg = sppasPluginConfigureDialog(self, self._manager.get_plugin(plugin_id))
+        if dlg.ShowModal() == wx.ID_OK:
+            try:
+                progress = sppasProgressDialog()
+                progress.Show(True)
+                progress.set_new()
+                self._manager.set_progress(progress)
+                log_text = self._manager.run_plugin(plugin_id, checked)
+                progress.close()
+
+                # Show the output message
+                if len(log_text) == 0:
+                    Information(log_text)
+
+                # Notify the data changed (if any)
+                nb_cur = len(self.__data)
+                self.__data.update()
+                nb_new = len(self.__data)
+                if nb_cur != nb_new:
+                    evt = DataChangedEvent(data=self.__data)
+                    evt.SetEventObject(self)
+                    wx.PostEvent(self.GetParent(), evt)
+
+            except Exception as e:
+                Error(str(e))
+
+        dlg.Destroy()
+
+    # ------------------------------------------------------------------------
+    # Create and manage the GUI
+    # ------------------------------------------------------------------------
+
+    def _create_content(self):
+        """"""
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        self.SetSizer(sizer)
+
+        if self._manager is not None:
+            for plugin_id in self._manager.get_plugin_ids():
+                plugin = self._manager.get_plugin(plugin_id)
+                self._append(plugin)
+
+        self.SetupScrolling(scroll_x=True, scroll_y=True)
+
+    # -----------------------------------------------------------------------
+
+    def _append(self, plugin):
+        """Append a plugin into the panel.
+
+        :param plugin (sppasPluginParam) The plugin to append
+
+        """
+        plugin_id = plugin.get_key()
+
+        p = sppasPanel(self, name=plugin_id + "_panel")
+        s = wx.BoxSizer(wx.VERTICAL)
+        s.Add(wx.StaticText(p, label=plugin_id), proportion=0, flag=wx.LEFT | wx.EXPAND, border=2)
+        p.SetSizer(s)
+        self.GetSizer().Add(p)
+
+# ---------------------------------------------------------------------------
+
+
+class sppasPluginConfigureDialog(sppasDialog):
+    """Dialog to configure the given plugin.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    Returns either wx.ID_CANCEL or wx.ID_OK if ShowModal().
+
+    """
+    def __init__(self, parent, plugin):
+        """Create a dialog to fix an annotation config.
+
+        :param parent: (wx.Window)
+
+        """
+        super(sppasPluginConfigureDialog, self).__init__(
+            parent=parent,
+            title="plugin_configure",
+            style=wx.DEFAULT_FRAME_STYLE | wx.DIALOG_NO_PARENT)
+
+        self.plugin = plugin
+        self.items = []
+        self._options_key = []
+
+        self.CreateHeader(MSG_CONFIG + " {:s}".format(plugin.get_name()),
+                          "wizard-config")
+        self._create_content()
+        self._create_buttons()
+
+        # Bind events
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+        self.LayoutComponents()
+        self.GetSizer().Fit(self)
+        self.CenterOnParent()
+        self.FadeIn(deltaN=-8)
+
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """Create the content of the dialog."""
+        all_options = self.plugin.get_options()
+        selected_options = []
+        for option in all_options:
+            if option.get_key() != "input" and option.get_value() != "input":
+                self._options_key.append(option.get_key())
+                selected_options.append(option)
+
+        options_panel = sppasOptionsPanel(self, selected_options)
+        options_panel.SetAutoLayout(True)
+        self.items = options_panel.GetItems()
+        self.SetContent(options_panel)
+
+    # -----------------------------------------------------------------------
+
+    def _create_buttons(self):
+        self.CreateActions([wx.ID_CANCEL, wx.ID_OK])
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+        self.SetAffirmativeId(wx.ID_OK)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_id = event_obj.GetId()
+
+        if event_id == wx.ID_CANCEL:
+            self.SetReturnCode(wx.ID_CANCEL)
+            self.Close()
+
+        elif event_id == wx.ID_OK:
+            # Set the list of "Option" instances to the plugin
+            for i, item in enumerate(self.items):
+                new_value = item.GetValue()
+                key = self._options_key[i]
+                option = self.plugin.get_option_from_key(key)
+                option.set_value(str(new_value))
+            # OK. Close the dialog and return wxID_OK
+            self.EndModal(wx.ID_OK)
