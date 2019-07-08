@@ -52,7 +52,7 @@ from .pluginsexc import PluginConfigFileError
 from .pluginsexc import PluginIdError
 from .pluginsexc import PluginFolderError
 from .pluginsexc import PluginKeyError
-from .param import sppasPluginParam
+from .plugin import sppasPluginParam
 from .process import sppasPluginProcess
 
 # ----------------------------------------------------------------------------
@@ -267,7 +267,6 @@ class sppasPluginsManager(Thread):
         # Indicate completed!
         if self._progress is not None:
             self._progress.update(1, info(4020, "plugins") + "\n")
-            # self._progress.set_header("")
 
         return output_lines
 

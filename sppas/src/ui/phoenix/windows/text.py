@@ -94,21 +94,55 @@ class sppasTextCtrl(wx.TextCtrl):
 
     """
 
-    def __init__(self, *args, **kw):
-        super(sppasTextCtrl, self).__init__(*args, **kw)
+    def __init__(self, parent, id=wx.ID_ANY, value="", pos=wx.DefaultPosition,
+                 size=wx.DefaultSize, style=0, validator=wx.DefaultValidator,
+                 name=wx.TextCtrlNameStr):
+        super(sppasTextCtrl, self).__init__(
+            parent, id, value="", pos=pos, size=size, style=style,
+            validator=validator, name=name)
 
         # Fix Look&Feel
-        settings = wx.GetApp().settings
-        self.SetFont(settings.text_font)
-        self.SetBackgroundColour(settings.bg_color)
-        self.SetForegroundColour(settings.fg_color)
+        try:
+            settings = wx.GetApp().settings
+            self.SetFont(settings.text_font)
+            self.SetBackgroundColour(settings.bg_color)
+            self.SetForegroundColour(settings.fg_color)
+        except:
+            pass
 
-        # Fix Look&Feel for the new text to be added
+        # the message is not send to the base class when init but after
+        # in order to apply the appropriate colors&font
+        self.SetValue(value)
+
+    def SetForegroundColour(self, colour):
+        wx.Window.SetForegroundColour(self, colour)
+
         attr = wx.TextAttr()
-        attr.SetTextColour(settings.fg_color)
-        attr.SetBackgroundColour(settings.bg_color)
-        attr.SetFont(settings.text_font)
+        attr.SetTextColour(colour)
+        attr.SetBackgroundColour(self.GetBackgroundColour())
+        attr.SetFont(self.GetFont())
         self.SetDefaultStyle(attr)
+        self.SetStyle(0, len(self.GetValue()), attr)
+
+    def SetBackgroundColour(self, colour):
+        wx.Window.SetBackgroundColour(self, colour)
+
+        attr = wx.TextAttr()
+        attr.SetTextColour(self.GetForegroundColour())
+        attr.SetBackgroundColour(colour)
+        attr.SetFont(self.GetFont())
+        self.SetDefaultStyle(attr)
+        self.SetStyle(0, len(self.GetValue()), attr)
+
+    def SetFont(self, font):
+        wx.Window.SetFont(self, font)
+
+        attr = wx.TextAttr()
+        attr.SetTextColour(self.GetForegroundColour())
+        attr.SetBackgroundColour(self.GetBackgroundColour())
+        attr.SetFont(font)
+        self.SetDefaultStyle(attr)
+        self.SetStyle(0, len(self.GetValue()), attr)
 
 # ---------------------------------------------------------------------------
 

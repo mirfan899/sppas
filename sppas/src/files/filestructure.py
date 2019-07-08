@@ -624,7 +624,8 @@ class FileRoot(FileBase):
             d['refids'].append(r.id)
 
         # subjoined data are simply added as-it (it's risky)
-        d['subjoin'] = self.subjoined
+        if self.subjoined is not None:
+            d['subjoin'] = self.subjoined
 
         return d
 
@@ -993,7 +994,9 @@ class FilePath(FileBase):
         d['roots'] = list()
         for r in self.__roots:
             d['roots'].append(r.serialize())
-        d['subjoin'] = self.subjoined
+
+        if self.subjoined is not None:
+            d['subjoin'] = self.subjoined
 
         return d
 

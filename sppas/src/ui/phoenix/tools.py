@@ -95,20 +95,23 @@ class sppasSwissKnife:
 
     @staticmethod
     def get_image(name):
-        # fix the image file name
-        img_name = os.path.join(paths.etc, "images", name + ".png")
-
-        # instead, use the logo of SPPAS!
-        if os.path.exists(img_name) is False:
-            # fix the image file name with the current icon's theme
-            img_name = os.path.join(
-                paths.etc, "icons",
-                wx.GetApp().settings.icons_theme,
-                name + ".png")
-            # ... not found in the icons....
+        # Given "name" is already a filename
+        if os.path.exists(name):
+            img_name = name
+        else:
+            # search in the images file names
+            img_name = os.path.join(paths.etc, "images", name + ".png")
             if os.path.exists(img_name) is False:
-                logging.info('Image {:s} not found.'.format(img_name))
-                img_name = os.path.join(paths.etc, "images", "sppas.png")
+                # fix the image file name with the current icon's theme
+                img_name = os.path.join(
+                    paths.etc, "icons",
+                    wx.GetApp().settings.icons_theme,
+                    name + ".png")
+                # ... not found in the icons ...
+                # instead, use the logo of SPPAS!
+                if os.path.exists(img_name) is False:
+                    logging.warning('Image {:s} not found.'.format(img_name))
+                    img_name = os.path.join(paths.etc, "images", "sppas.png")
 
         return wx.Image(img_name, wx.BITMAP_TYPE_ANY)
 

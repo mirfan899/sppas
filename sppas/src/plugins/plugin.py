@@ -29,8 +29,8 @@
 
         ---------------------------------------------------------------------
 
-    src.plugins.param.py
-    ~~~~~~~~~~~~~~~~~~~~
+    src.plugins.plugin.py
+    ~~~~~~~~~~~~~~~~~~~~~
 
 """
 
@@ -38,6 +38,7 @@ import json
 import os
 import platform
 import shlex
+import signal
 from subprocess import Popen
 
 from sppas.src.structs import sppasOption
@@ -134,7 +135,7 @@ class sppasPluginParam(object):
 
             # get the command
             command = self.__get_command(conf['commands'])
-            if not self.__check_command(command):
+            if self.__check_command(command) is False:
                 raise CommandExecError(command)
             self._command = command
 
@@ -233,9 +234,21 @@ class sppasPluginParam(object):
         NULL = open(os.path.devnull, 'w')
         try:
             p = Popen([test_command], shell=False, stdout=NULL, stderr=NULL)
-            NULL.close()
         except OSError:
+            NULL.close()
             return False
-        else:
+
+        # Get the process id & try to terminate it gracefully
+        pid = p.pid
+        p.terminate()
+
+        # Check if the process has really terminated & force kill if not.
+        try:
+            os.kill(pid, signal.SIGINT)
             p.kill()
-            return True
+            # print("Forced kill")
+        except OSError:
+            # print("Terminated gracefully")
+            pass
+        NULL.close()
+        return True

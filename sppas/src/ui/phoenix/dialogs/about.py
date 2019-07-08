@@ -237,7 +237,8 @@ class AboutPluginPanel(sppasBaseAbout):
         super(AboutPluginPanel, self).__init__(parent)
 
         self.program = plugin.get_name()
-        # self.logo = os.path.join(plugin.get_directory(), plugin.get_icon())
+        if len(plugin.get_icon()) > 0:
+            self.logo = os.path.join(plugin.get_directory(), plugin.get_icon())
 
         self.brief = ""
         self.version = ""

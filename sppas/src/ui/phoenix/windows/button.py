@@ -607,7 +607,6 @@ class BaseButton(wx.Window):
         Do not accept the event if the button is disabled.
 
         """
-
         if self.IsEnabled() is True:
 
             if event.Entering():
@@ -949,8 +948,8 @@ class BaseButton(wx.Window):
 
             1. Prepare the Drawing Context
             2. Draw the background
-            3. Draw the border (if border > 0)
-            4. Draw focus indicator (if state is 'HIGHLIGHT')
+            3. Draw focus indicator (if state is 'HIGHLIGHT')
+            4. Draw the border (if border > 0)
 
         :returns: dc, gc
 
@@ -1185,10 +1184,10 @@ class BitmapTextButton(BaseButton):
         :param size: the size;
         :param name: the name of the bitmap.
 
-        The name of the button is the name of its bitmap (required).
+        By default, the name of the button is the name of its bitmap.
 
         The label is optional.
-        The label is under the bitmap.
+        By default, the label is under the bitmap.
 
         """
         super(BitmapTextButton, self).__init__(
@@ -1198,6 +1197,21 @@ class BitmapTextButton(BaseButton):
         self._labelpos = wx.BOTTOM
         self._spacing = 4
         self._bitmapcolor = self.GetParent().GetForegroundColour()
+
+        # The icon image
+        self._image = None
+        if name != wx.ButtonNameStr:
+            self.SetImage(name)
+
+    # -----------------------------------------------------------------------
+
+    def SetImage(self, image_name):
+        """Set a new image.
+
+        :param image_name: (str) Name of the image or full filename
+
+        """
+        self._image = image_name
 
     # -----------------------------------------------------------------------
 
@@ -1297,7 +1311,8 @@ class BitmapTextButton(BaseButton):
             x_pos, y_pos, bmp_size = self.__get_bitmap_properties(x, y, w, h)
             designed = self.__draw_bitmap(dc, gc, x_pos, y_pos, bmp_size)
             if designed is False:
-                dc.SetPen(self.GetPenForegroundColour())
+                pen = wx.Pen(self.GetPenForegroundColour(), 1, self._borderstyle)
+                dc.SetPen(pen)
                 dc.DrawRectangle(self._borderwidth,
                                  self._borderwidth,
                                  w - (2 * self._borderwidth),
@@ -1366,12 +1381,13 @@ class BitmapTextButton(BaseButton):
     # ------------------------------------------------------------------------
 
     def __draw_bitmap(self, dc, gc, x, y, btn_size):
-        # if no icon is given
-        if self.GetName() == wx.ButtonNameStr:
+        # if no image was given
+        if self._image is None:
             return False
+
         try:
             # get the image from its name
-            img = sppasSwissKnife.get_image(self.GetName())
+            img = sppasSwissKnife.get_image(self._image)
             # re-scale the image to the expected size
             sppasSwissKnife.rescale_image(img, btn_size)
             # re-colorize

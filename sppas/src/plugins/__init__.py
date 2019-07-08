@@ -65,7 +65,7 @@ Requires the following other packages:
 """
 
 from .manager import sppasPluginsManager
-from .param import sppasPluginParam
+from .plugin import sppasPluginParam
 from .process import sppasPluginProcess
 
 __all__ = (

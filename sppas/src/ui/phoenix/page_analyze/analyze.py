@@ -30,12 +30,13 @@
         ---------------------------------------------------------------------
 
     ui.phoenix.page_files.analyze.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
 import logging
 import wx
+from sppas.src.files import FileData
 
 from sppas.src.ui.phoenix.windows import sppasTitleText
 from sppas.src.ui.phoenix.windows import sppasMessageText
@@ -61,12 +62,36 @@ class sppasAnalyzePanel(sppasPanel):
             name="page_analyze",
             style=wx.BORDER_NONE
         )
+        self.__data = FileData()
+
         self._create_content()
         self._setup_events()
 
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+
+    # ------------------------------------------------------------------------
+    # Public methods to access the data
+    # ------------------------------------------------------------------------
+
+    def get_data(self):
+        """Return the data currently displayed in the list of files.
+
+        :returns: (FileData) data of the files-viewer model.
+
+        """
+        return self.__data  # self.FindWindow("pluginslist").get_data()
+
+    # ------------------------------------------------------------------------
+
+    def set_data(self, data):
+        """Assign new data to this page.
+
+        :param data: (FileData)
+
+        """
+        self.__data = data  # self.FindWindow("pluginslist").set_data(data)
 
     # ------------------------------------------------------------------------
 

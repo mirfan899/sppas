@@ -270,21 +270,24 @@ class sppasMainWindow(sppasDialog):
         :param event: (wx.Event) An event with a FileData()
 
         """
+        # Names of the page panels which are requiring the workspace
+        pages = ("page_files", "page_annotate", "page_analyze", "page_plugins")
+
+        # The object the event comes from
         emitted = event.GetEventObject()
         try:
             wkp = event.data
         except AttributeError:
-            logging.error('Data were not sent in the event emitted by {:s}'
-                          '.'.format(emitted.GetName()))
+            logging.error("Workspace wasn't sent in the event emitted by {:s}"
+                          "".format(emitted.GetName()))
             return
 
         # Set the data to appropriate children panels
         book = self.FindWindow('content')
         for i in range(book.GetPageCount()):
             page = book.GetPage(i)
-            if page.GetName() in ("page_files", "page_annotate"):  # "page_analyze", "page_plugins"):
-                if emitted != page:
-                    page.set_data(wkp)
+            if emitted != page and page.GetName() in pages:
+                page.set_data(wkp)
 
     # -----------------------------------------------------------------------
 
@@ -387,7 +390,6 @@ class sppasMainWindow(sppasDialog):
 
         # then change to the page
         book.ChangeSelection(p)
-        # w.Refresh()
         self.Refresh()
 
 # ---------------------------------------------------------------------------

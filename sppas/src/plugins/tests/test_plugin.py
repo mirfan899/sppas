@@ -28,15 +28,16 @@
 
         ---------------------------------------------------------------------
 
-    src.plugins.tests.test_param.py
+    src.plugins.tests.test_plugin.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import unittest
 import os
 
 from sppas import u
-from ..param import sppasPluginParam
+from ..plugin import sppasPluginParam
 
 # ---------------------------------------------------------------------------
 

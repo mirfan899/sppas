@@ -44,22 +44,28 @@ from sppas import sppasTypeError
 from sppas.src.plugins import sppasPluginsManager
 from sppas.src.files import FileData, States
 
-from ..dialogs import Error, Information
+from ..dialogs import Error, Information, AboutPlugin
 from ..windows import sppasDialog
 from ..windows import sppasScrolledPanel
 from ..windows import sppasProgressDialog
 from ..windows import sppasPanel
+from ..windows import sppasTextCtrl, sppasTitleText
+from ..windows import sppasStaticLine
+from ..windows import BitmapTextButton, sppasTextButton
+
 from ..panels import sppasOptionsPanel
 from ..main_events import DataChangedEvent
 
 # ---------------------------------------------------------------------------
 # List of displayed messages:
 
+
 def _(message):
     return u(msg(message, "ui"))
 
 
 MSG_CONFIG = _("Configure")
+MSG_ABOUT = _("About")
 
 # -----------------------------------------------------------------------
 
@@ -74,7 +80,7 @@ class sppasPluginsList(sppasScrolledPanel):
     :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
 
     No data is given at the initialization.
-    Use set_data() method.
+    Use set_data() method instead.
 
     """
 
@@ -96,6 +102,7 @@ class sppasPluginsList(sppasScrolledPanel):
             Error("Plugin manager initialization: {:s}".format(str(e)))
 
         self._create_content()
+        self._setup_events()
         self.Layout()
 
     # ------------------------------------------------------------------------
@@ -165,11 +172,12 @@ class sppasPluginsList(sppasScrolledPanel):
         """Import and install a plugin.
 
         :param filename: (str) ZIP file of the plugin content
+        :return: (str) folder in which the plugin is installed
 
         """
         # fix a name for the plugin directory
         plugin_folder = os.path.splitext(os.path.basename(filename))[0]
-        plugin_folder.replace(' ', "_")
+        plugin_folder = plugin_folder.replace(' ', "_")
 
         # install the plugin and display it in the list
         plugin_id = self._manager.install(filename, plugin_folder)
@@ -182,25 +190,34 @@ class sppasPluginsList(sppasScrolledPanel):
 
     # ------------------------------------------------------------------------
 
-    def Apply(self, plugin_id):
-        """Apply the plugin on the data."""
-        # Get the list of files
+    def apply(self, plugin_id):
+        """Apply the plugin on the data.
+
+        :param plugin_id: (str)
+
+        """
+        # Get the list of checked FileName() instances
         checked = self.__data.get_filename_from_state(States().CHECKED)
+        logging.info("Apply plugin {:s} on {:d} files."
+                     "".format(plugin_id, len(checked)))
         if len(checked) == 0:
             Information("No file(s) selected to apply the plugin on!")
             return
-        logging.info("Apply plugin {:s} on {:d} files."
-                      "".format(plugin_id, len(checked)))
 
+        # Convert the list of FileName() instances into a list of filenames
+        checked_fns = [f.get_id() for f in checked]
+
+        # Apply the plugin
         dlg = sppasPluginConfigureDialog(self, self._manager.get_plugin(plugin_id))
         if dlg.ShowModal() == wx.ID_OK:
+            progress = sppasProgressDialog()
             try:
-                progress = sppasProgressDialog()
                 progress.Show(True)
                 progress.set_new()
                 self._manager.set_progress(progress)
-                log_text = self._manager.run_plugin(plugin_id, checked)
+                log_text = self._manager.run_plugin(plugin_id, checked_fns)
                 progress.close()
+                progress = None
 
                 # Show the output message
                 if len(log_text) == 0:
@@ -216,6 +233,8 @@ class sppasPluginsList(sppasScrolledPanel):
                     wx.PostEvent(self.GetParent(), evt)
 
             except Exception as e:
+                if progress is not None:
+                    progress.close()
                 Error(str(e))
 
         dlg.Destroy()
@@ -244,13 +263,214 @@ class sppasPluginsList(sppasScrolledPanel):
         :param plugin (sppasPluginParam) The plugin to append
 
         """
-        plugin_id = plugin.get_key()
+        border = sppasPanel.fix_size(64) // 8
 
-        p = sppasPanel(self, name=plugin_id + "_panel")
+        pp = sppasPluginDescription(self, plugin)
+        self.GetSizer().Add(self.HorizLine(self), 0, wx.EXPAND | wx.TOP | wx.RIGHT | wx.LEFT, border)
+        self.GetSizer().Add(pp, 1, wx.EXPAND | wx.RIGHT | wx.LEFT, border)
+        self.GetSizer().Add(self.HorizLine(self), 0, wx.EXPAND | wx.BOTTOM | wx.RIGHT | wx.LEFT, border)
+
+    # -----------------------------------------------------------------------
+
+    def HorizLine(self, parent, depth=1):
+        """Return an horizontal static line."""
+        line = sppasStaticLine(parent, orient=wx.LI_HORIZONTAL)
+        line.SetMinSize(wx.Size(-1, depth))
+        line.SetSize(wx.Size(-1, depth))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(depth)
+        line.SetForegroundColour(self.GetForegroundColour())
+        return line
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        for plugin_id in self._manager.get_plugin_ids():
+            if event_name == plugin_id:
+                logging.debug("User clicked plugin {:s}".format(plugin_id))
+                self.apply(plugin_id)
+                event.Skip()
+                break
+
+# ---------------------------------------------------------------------------
+
+
+class sppasPluginDescription(sppasPanel):
+    """Panel to describe the given plugin.
+
+    :author:       Brigitte Bigi
+    :organization: Laboratoire Parole et Langage, Aix-en-Provence, France
+    :contact:      develop@sppas.org
+    :license:      GPL, v3
+    :copyright:    Copyright (C) 2011-2019  Brigitte Bigi
+
+    """
+
+    def __init__(self, parent, plugin):
+        super(sppasPluginDescription, self).__init__(
+            parent=parent,
+            style=wx.BORDER_NONE,
+            name=plugin.get_key() + "_panel"
+        )
+
+        # The plugin to work with
+        self.__plugin = plugin
+
+        self._create_content()
+        self._setup_events()
+        self.Layout()
+
+    # -----------------------------------------------------------------------
+
+    def _create_content(self):
+        """"""
+        apply = self.__create_enable_btn()
+        about = self.__create_about_text()
+        descr = self.__create_description_sizer()
+
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(apply, 0, wx.ALIGN_CENTRE | wx.LEFT, 8)
+        sizer.Add(about, 0, wx.ALIGN_CENTRE | wx.RIGHT | wx.LEFT, 8)
+        sizer.Add(descr, 1, wx.ALIGN_CENTRE_VERTICAL | wx.RIGHT, 8)
+
+        self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def __create_enable_btn(self):
+
+        w = sppasPanel.fix_size(64)
+        h = sppasPanel.fix_size(48)
+
+        btn_enable = BitmapTextButton(
+            self, label=self.__plugin.get_key(),
+            name=self.__plugin.get_key())
+
+        btn_enable.SetImage(
+            os.path.join(self.__plugin.get_directory(),
+                         self.__plugin.get_icon()))
+        btn_enable.LabelPosition = wx.BOTTOM
+        btn_enable.Spacing = 6
+        btn_enable.FocusWidth = 0
+        btn_enable.BorderWidth = 0
+        btn_enable.BitmapColour = self.GetForegroundColour()
+        btn_enable.SetMinSize(wx.Size(w, h))
+
+        return btn_enable
+
+    # -----------------------------------------------------------------------
+
+    def __create_about_text(self):
+        w = sppasPanel.fix_size(96)
+        h = sppasPanel.fix_size(32)
+
+        btn_about = sppasTextButton(
+            self, label=MSG_ABOUT + "...", name="about_plugin")
+        btn_about.SetForegroundColour(wx.Colour(80, 100, 220))
+        btn_about.SetMinSize(wx.Size(w, h))
+
+        return btn_about
+
+    # -----------------------------------------------------------------------
+
+    def __create_description_sizer(self):
         s = wx.BoxSizer(wx.VERTICAL)
-        s.Add(wx.StaticText(p, label=plugin_id), proportion=0, flag=wx.LEFT | wx.EXPAND, border=2)
-        p.SetSizer(s)
-        self.GetSizer().Add(p)
+        tt = sppasTitleText(self, label=self.__plugin.get_name(), name="text_title")
+
+        text_style = wx.TAB_TRAVERSAL | \
+                     wx.TE_MULTILINE | \
+                     wx.TE_READONLY | \
+                     wx.TE_BESTWRAP | \
+                     wx.TE_AUTO_URL | \
+                     wx.NO_BORDER | \
+                     wx.TE_RICH
+        td = sppasTextCtrl(self, value=self.__plugin.get_descr(), style=text_style)
+
+        s.Add(tt, 0, wx.ALIGN_CENTRE_VERTICAL, wx.ALL, 4)
+        s.Add(td, 1, wx.EXPAND | wx.ALIGN_CENTRE_VERTICAL | wx.ALL, 4)
+        return s
+
+    # -----------------------------------------------------------------------
+    # Events management
+    # -----------------------------------------------------------------------
+
+    def _setup_events(self):
+        """Associate a handler function with the events.
+
+        It means that when an event occurs then the process handler function
+        will be called.
+
+        """
+        # Bind all events from our buttons (including 'exit')
+        self.Bind(wx.EVT_BUTTON, self._process_event)
+
+    # -----------------------------------------------------------------------
+
+    def _process_event(self, event):
+        """Process any kind of events.
+
+        :param event: (wx.Event)
+
+        """
+        event_obj = event.GetEventObject()
+        event_name = event_obj.GetName()
+
+        if event_name == "about_plugin":
+            AboutPlugin(self, self.__plugin)
+
+        event.Skip()
+
+    # -----------------------------------------------------------------------
+
+    def SetFont(self, font):
+        wx.Window.SetFont(self, font)
+        for c in self.GetChildren():
+            if c.GetName() != "text_title":
+                c.SetFont(font)
+
+    # -----------------------------------------------------------------------
+
+    def SetForegroundColour(self, colour):
+        wx.Window.SetForegroundColour(self, colour)
+        for c in self.GetChildren():
+            if c.GetName() != "about_plugin":
+                c.SetForegroundColour(colour)
+
+    # -----------------------------------------------------------------------
+
+    def SetBackgroundColour(self, colour):
+        r, g, b = colour.Red(), colour.Green(), colour.Blue()
+        delta = 10
+        if (r + g + b) > 384:
+            colour = wx.Colour(r, g, b, 50).ChangeLightness(100 - delta)
+        else:
+            colour = wx.Colour(r, g, b, 50).ChangeLightness(100 + delta)
+
+        wx.Window.SetBackgroundColour(self, colour)
+        for c in self.GetChildren():
+            c.SetBackgroundColour(colour)
 
 # ---------------------------------------------------------------------------
 

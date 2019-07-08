@@ -71,7 +71,6 @@ class sppasActionAnnotatePanel(sppasPanel):
             style=wx.BORDER_NONE
         )
         self.__param = param
-        self.__btns_annot = dict()
 
         self._create_content()
         self._setup_events()
@@ -145,7 +144,8 @@ class sppasActionAnnotatePanel(sppasPanel):
         s1 = wx.BoxSizer(wx.HORIZONTAL)
         for ann_type in annots.types:
             btn = self.__create_select_annot_btn("{:s} annotations".format(ann_type))
-            self.__btns_annot[ann_type] = btn
+            btn.SetName("btn_annot_" + ann_type)
+            btn.SetImage("on-off-off")
             s1.Add(btn, 1, wx.EXPAND | wx.ALL, 4)
 
         sizer_select = wx.BoxSizer(wx.VERTICAL)
@@ -155,7 +155,8 @@ class sppasActionAnnotatePanel(sppasPanel):
         # The button to perform annotations
         str = sppasStaticText(self, label="STEP 4: perform the annotations")
         self.btn_run = self.__create_select_annot_btn("Let's go!")
-        # self.btn_run.SetName("wizard")
+        self.btn_run.SetName("wizard")
+        self.btn_run.SetImage("wizard")
         self.btn_run.Enable(False)
         self.btn_run.BorderColour = wx.Colour(228, 24, 24, 128)
         sizer_run = wx.BoxSizer(wx.VERTICAL)
@@ -166,6 +167,7 @@ class sppasActionAnnotatePanel(sppasPanel):
         stp = sppasStaticText(self, label="STEP 5: read the procedure outcome report")
         self.btn_por = self.__create_select_annot_btn("Show it...")
         self.btn_por.SetName("save_as")
+        self.btn_por.SetImage("save_as")
         self.btn_por.Enable(False)
         self.btn_por.BorderColour = wx.Colour(228, 24, 24, 128)
         sizer_log = wx.BoxSizer(wx.VERTICAL)
@@ -189,7 +191,7 @@ class sppasActionAnnotatePanel(sppasPanel):
         w = sppasPanel.fix_size(196)
         h = sppasPanel.fix_size(42)
 
-        btn = BitmapTextButton(self, name="wizard", label=label)
+        btn = BitmapTextButton(self, label=label)
         btn.LabelPosition = wx.RIGHT
         btn.Spacing = 12
         btn.BorderWidth = 2
@@ -270,7 +272,7 @@ class sppasActionAnnotatePanel(sppasPanel):
         event_name = event_obj.GetName()
 
         for ann_type in annots.types:
-            if event_obj == self.__btns_annot[ann_type]:
+            if event_name == "btn_annot_" + ann_type:
                 self.notify("page_annot_{:s}".format(ann_type))
                 event.Skip()
                 return
@@ -358,10 +360,11 @@ class sppasActionAnnotatePanel(sppasPanel):
         # update buttons to fix properties of annotations
         if update_annot is True:
             for i, ann_type in enumerate(annots.types):
+                btn = self.FindWindow("btn_annot_" + ann_type)
                 if ann_enabled[i] is True:
-                    self.__btns_annot[ann_type].SetName("on-off-on")
+                    btn.SetImage("on-off-on")
                 else:
-                    self.__btns_annot[ann_type].SetName("on-off-off")
+                    btn.SetImage("on-off-off")
 
         # update the button to perform annotations
         # at least one annotation is enabled and lang is fixed.

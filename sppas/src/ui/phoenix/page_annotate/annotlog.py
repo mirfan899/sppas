@@ -164,9 +164,7 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
 
     def __create_log_text(self):
         style = wx.TE_MULTILINE | wx.TE_READONLY | wx.TE_RICH2 | wx.TE_AUTO_URL | wx.NO_BORDER
-        txtctrl = sppasTextCtrl(self,
-                    style=style,
-                    name="log_textctrl")
+        txtctrl = sppasTextCtrl(self, style=style, name="log_textctrl")
         return txtctrl
 
     # -----------------------------------------------------------------------
@@ -184,23 +182,10 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
         txtctrl = self.FindWindow("log_textctrl")
         txtctrl.SetValue(logcontent)
 
-        try:
-            # Fix Look&Feel
-            settings = wx.GetApp().settings
-            attr = wx.TextAttr()
-            attr.SetTextColour(settings.fg_color)
-            attr.SetBackgroundColour(settings.bg_color)
-            attr.SetFont(settings.mono_text_font)
-            txtctrl.SetStyle(0, len(logcontent), attr)
-        except:
-            logging.error('Log report TEXTCTRL style error')
-
+        # Highlight the name of the file.
         i = logcontent.find("\n", 0)
         oldi = i
         txtctrl.SetStyle(0, i, wx.TextAttr(wx.Colour(245, 25, 25, 128)))
-
-        # settings = wx.GetApp().settings
-        # txtctrl.SetStyle(i+1, len(logcontent), wx.TextAttr(settings.fg_color))
 
         while i >= 0:
             i = logcontent.find("[ ", oldi)
@@ -265,21 +250,27 @@ class sppasLogAnnotatePanel(sppasScrolledPanel):
     def SetFont(self, font):
         wx.Window.SetFont(self, font)
         for child in self.GetChildren():
-            if child.GetName() not in ("title_text", "log_textctrl"):
-                child.SetFont(font)
-            else:
+            if child.GetName() == "title_text":
                 try:
                     settings = wx.GetApp().settings
                     child.SetFont(settings.header_text_font)
                 except:
                     pass
+            elif child.GetName() == "log_textctrl":
+                try:
+                    settings = wx.GetApp().settings
+                    child.SetFont(settings.mono_text_font)
+                except:
+                    pass
+            else:
+                child.SetFont(font)
 
     # -----------------------------------------------------------------------
 
     def SetForegroundColour(self, colour):
         wx.Window.SetForegroundColour(self, colour)
         for child in self.GetChildren():
-            if child.GetName() != "title_text":   # , "log_textctrl"):
+            if child.GetName() != "title_text":
                 child.SetForegroundColour(colour)
             elif child.GetName() == "title_text":
                 try:

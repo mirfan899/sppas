@@ -130,10 +130,7 @@ class sppasAnnotationsPanel(sppasPanel):
     def _create_content(self):
         """Create the main content."""
         sizer = wx.BoxSizer(wx.VERTICAL)
-        try:
-            btn_size = int(64. * wx.GetApp().settings.size_coeff)
-        except AttributeError:
-            btn_size = 64
+        btn_size = sppasPanel.fix_size(64)
 
         btn_back_top = BitmapTextButton(self, name="arrow_up")
         btn_back_top.FocusWidth = 0
@@ -294,7 +291,7 @@ class sppasEnableAnnotation(sppasPanel):
         sizer = wx.BoxSizer(wx.HORIZONTAL)
         sizer.Add(es, 0, wx.ALIGN_CENTRE)
         sizer.Add(ls, 0, wx.ALIGN_CENTRE | wx.RIGHT | wx.LEFT, 8)
-        sizer.Add(ds, 0, wx.ALIGN_CENTRE)
+        sizer.Add(ds, 1, wx.ALIGN_CENTRE)
 
         self.SetSizer(sizer)
 
@@ -358,7 +355,7 @@ class sppasEnableAnnotation(sppasPanel):
                      wx.TE_RICH
         td = sppasTextCtrl(
             self, value=self.__annparam.get_descr(), style=text_style)
-        td.SetMinSize(wx.Size(sppasPanel.fix_size(512), -1))
+        #td.SetMinSize(wx.Size(sppasPanel.fix_size(512), -1))
 
         return td
 
@@ -389,10 +386,12 @@ class sppasEnableAnnotation(sppasPanel):
 
         if event_name == "on-off-off":
             event_obj.SetName("on-off-on")
+            event_obj.SetImage("on-off-on")
             self.__annparam.set_activate(True)
 
         elif event_name == "on-off-on":
             event_obj.SetName("on-off-off")
+            event_obj.SetImage("on-off-off")
             self.__annparam.set_activate(False)
 
         elif event_name == "configure":
