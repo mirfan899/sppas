@@ -141,25 +141,30 @@ class FileData(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def add_file(self, filename, brothers=False):
+    def add_file(self, filename, brothers=False, ctime=0.):
         """Add file(s) in the list from a file name.
 
         :param filename: (str) Absolute or relative name of a file
         :param brothers: (bool) Add also all files sharing the same root as the given file
-        :returns: (FileName)
+        :param ctime: (float) Add files only if created/modified after time in seconds since the epoch
+        :returns: (list of FileName or None)
         :raises: OSError
 
         """
+        # get or create the corresponding FilePath()
         new_fp = FilePath(os.path.dirname(filename))
         for fp in self.__data:
             if fp.id == new_fp.id:
                 new_fp = fp
-        
-        if new_fp not in self.__data:
-            # this is a new path to add
+
+        # add the file(s) into the FilePath() structure
+        added = new_fp.append(filename, brothers, ctime)
+
+        # this is a new path to add into the workspace
+        if added is not None and new_fp not in self.__data:
             self.__data.append(new_fp)
 
-        return new_fp.append(filename, brothers)
+        return added
 
     # -----------------------------------------------------------------------
 

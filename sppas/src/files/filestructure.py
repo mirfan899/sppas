@@ -540,7 +540,7 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def append(self, filename, all_root=False):
+    def append(self, filename, all_root=False, ctime=0.):
         """Append a filename in the list of files.
 
         Given filename must be the absolute name of a file or an instance
@@ -548,6 +548,7 @@ class FileRoot(FileBase):
 
         :param filename: (str, FileName) Absolute name of a file
         :param all_root: (bool) Add all files sharing the same root
+        :param ctime: (float) Add files only if created/modified after time in seconds since the epoch
         :returns: (list of FileName) the appended FileName() instances or None
 
         """
@@ -565,19 +566,23 @@ class FileRoot(FileBase):
 
             # Check if this filename is not already in the list
             if all_root is False and fn not in self:
-                self.__files.append(fn)
-                fns.append(fn)
+                if os.path.getmtime(fn.get_id()) > ctime:
+                    self.__files.append(fn)
+                    fns.append(fn)
 
         if all_root is True:
-            # add all files sharing this root on the disk
+            # add all files sharing this root on the disk,
+            # except if a ctime value is given and file is too old.
             for new_filename in sorted(glob.glob(self.id+"*")):
                 if os.path.isfile(new_filename) is True:
                     fn = FileName(new_filename)
                     if fn.get_id() not in self:
-                        self.__files.append(fn)
-                        fns.append(fn)
+                        if os.path.getmtime(fn.get_id()) > ctime:
+                            self.__files.append(fn)
+                            fns.append(fn)
 
-        self.update_state()
+        if len(fns) > 0:
+            self.update_state()
 
         return fns
 
@@ -872,7 +877,7 @@ class FilePath(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def append(self, entry, all_root=False):
+    def append(self, entry, all_root=False, ctime=0.):
         """Append a filename in the list of files.
 
         Given filename can be either an absolute or relative name of a file
@@ -880,6 +885,7 @@ class FilePath(FileBase):
 
         :param entry: (str, FileName, FileRoot) Absolute or relative name of a file
         :param all_root: (bool) Add also all files sharing the same root as the given one, or all files of the given root
+        :param ctime: (float) Add files only if created/modified after time in seconds since the epoch
         :returns: (FileName, FileRoot) the list of appended objects or None
 
         """
@@ -903,7 +909,7 @@ class FilePath(FileBase):
 
             # add all files of this root (if asked)
             if all_root is True:
-                new_files = entry.append(None, all_root=all_root)
+                new_files = entry.append(None, all_root=all_root, ctime=ctime)
 
         else:
             # Given entry is a filename or FileName instance
@@ -921,13 +927,14 @@ class FilePath(FileBase):
                 self.__roots.append(fr)
                 new_objs.append(fr)
 
-            new_files = fr.append(entry, all_root=all_root)
+            new_files = fr.append(entry, all_root=all_root, ctime=ctime)
 
         if len(new_files) > 0:
             new_objs.extend(new_files)
         if len(new_objs) > 0:
             self.update_state()
             return new_objs
+
         return None
 
     # -----------------------------------------------------------------------

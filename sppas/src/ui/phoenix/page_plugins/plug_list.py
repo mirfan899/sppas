@@ -37,6 +37,7 @@
 import logging
 import wx
 import os
+import time
 
 from sppas import msg
 from sppas import u
@@ -206,6 +207,7 @@ class sppasPluginsList(sppasScrolledPanel):
 
         # Convert the list of FileName() instances into a list of filenames
         checked_fns = [f.get_id() for f in checked]
+        start_time = time.time()
 
         # Apply the plugin
         dlg = sppasPluginConfigureDialog(self, self._manager.get_plugin(plugin_id))
@@ -220,14 +222,20 @@ class sppasPluginsList(sppasScrolledPanel):
                 progress = None
 
                 # Show the output message
-                if len(log_text) == 0:
+                if len(log_text) > 0:
                     Information(log_text)
 
+                # Add new data into the list
+                added = 0
+                for f in checked_fns:
+                    a = self.__data.add_file(f, brothers=True, ctime=start_time)
+                    if a is not None:
+                        added += len(a)
+
                 # Notify the data changed (if any)
-                nb_cur = len(self.__data)
-                self.__data.update()
-                nb_new = len(self.__data)
-                if nb_cur != nb_new:
+                if added > 0:
+                    logging.info("{:d} files added into the workspace"
+                                 "".format(added))
                     evt = DataChangedEvent(data=self.__data)
                     evt.SetEventObject(self)
                     wx.PostEvent(self.GetParent(), evt)
