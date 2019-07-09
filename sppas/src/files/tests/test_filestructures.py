@@ -30,9 +30,10 @@
         ---------------------------------------------------------------------
 
     src.files.tests.test_filestructures.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import unittest
 import os
 
@@ -161,7 +162,6 @@ class TestFileRoot(unittest.TestCase):
         self.assertEqual(d['id'], fr.id)
         self.assertEqual(list(), d['files'])
         self.assertEqual(list(), d['refids'])
-        self.assertIsNone(d['subjoin'])
 
         fr.append(__file__)
         d = fr.serialize()
@@ -259,21 +259,34 @@ class TestFilePath(unittest.TestCase):
 
     def test_append_with_brothers(self):
         d = os.path.dirname(__file__)
+
+        # Normal situation (1)
         fp = FilePath(d)
-
-        # Normal situation
-        fns = fp.append(__file__, all_root=True)
+        fns = fp.append(__file__, all_root=False)
         self.assertIsNotNone(fns)
+        self.assertEqual(2, len(fns))
         self.assertEqual(FileRoot.root(__file__), fns[0].id)
-        self.assertIsInstance(fns[1], FileName)
-        self.assertEqual(1, len(fp))  # the root of all 4 tests files
-
-        # with brothers
-        fns = fp.append(os.path.join(paths.samples, "samples-eng", "oriana1.wav"), all_root=True)
-        self.assertIsNotNone(fns)
         self.assertIsInstance(fns[0], FileRoot)
         self.assertIsInstance(fns[1], FileName)
-        self.assertEqual(2, len(fp))   # .wav/.txt
+
+        # Normal situation (2)
+        fp = FilePath(d)
+        fns = fp.append(__file__, all_root=True)
+        self.assertIsNotNone(fns)
+        self.assertEqual(2, len(fns))
+        self.assertEqual(FileRoot.root(__file__), fns[0].id)
+        self.assertIsInstance(fns[0], FileRoot)
+        self.assertIsInstance(fns[1], FileName)
+
+        # with brothers
+        fp = FilePath(d)
+        fns = fp.append(os.path.join(paths.samples, "samples-eng", "ENG_M15_ENG_T02.PitchTier"), all_root=True)
+        self.assertIsNotNone(fns)
+        self.assertEqual(1, len(fp))   # 1 root
+        self.assertEqual(3, len(fns))   # root + .wav + .pitchter
+        self.assertIsInstance(fns[0], FileRoot)
+        self.assertIsInstance(fns[1], FileName)
+        self.assertIsInstance(fns[2], FileName)
 
     def test_serialize(self):
         #print(json.dumps(d, indent=4, separators=(',', ': '), sort_keys=True))

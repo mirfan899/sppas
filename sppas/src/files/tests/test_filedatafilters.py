@@ -33,6 +33,7 @@
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import unittest
 import os
 
@@ -41,7 +42,7 @@ from sppas import u
 from ..filedata import FileData
 from ..filedatacompare import *
 from ..filedatafilters import sppasFileDataFilters
-
+from ..filestructure import FileRoot
 
 class TestsFileDataFilter (unittest.TestCase):
 

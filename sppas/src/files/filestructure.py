@@ -34,6 +34,7 @@
 import mimetypes
 import logging
 import os
+import glob
 from datetime import datetime
 
 from sppas import sppasTypeError
@@ -539,35 +540,46 @@ class FileRoot(FileBase):
 
     # -----------------------------------------------------------------------
 
-    def append(self, filename):
+    def append(self, filename, all_root=False):
         """Append a filename in the list of files.
 
         Given filename must be the absolute name of a file or an instance
         of FileName.
 
         :param filename: (str, FileName) Absolute name of a file
-        :returns: (FileName) the appended FileName or None
+        :param all_root: (bool) Add all files sharing the same root
+        :returns: (list of FileName) the appended FileName() instances or None
 
         """
+        fns = list()
+
         # Get or create the FileName instance
-        fn = filename
-        if isinstance(filename, FileName) is False:
-            fn = FileName(filename)
+        if filename is not None:
+            fn = filename
+            if isinstance(filename, FileName) is False:
+                fn = FileName(filename)
 
-        # Check if root is ok
-        if self.id != FileRoot.root(fn.id):
-            raise FileRootValueError(fn.id, self.id)
+            # Check if root is ok
+            if self.id != FileRoot.root(fn.id):
+                raise FileRootValueError(fn.id, self.id)
 
-        # Check if this filename is not already in the list
-        for efn in self.__files:
-            if efn.id == fn.id:
-                return efn
+            # Check if this filename is not already in the list
+            if all_root is False and fn not in self:
+                self.__files.append(fn)
+                fns.append(fn)
 
-        # Nothings wrong. filename is appended
-        self.__files.append(fn)
+        if all_root is True:
+            # add all files sharing this root on the disk
+            for new_filename in sorted(glob.glob(self.id+"*")):
+                if os.path.isfile(new_filename) is True:
+                    fn = FileName(new_filename)
+                    if fn.get_id() not in self:
+                        self.__files.append(fn)
+                        fns.append(fn)
+
         self.update_state()
 
-        return fn
+        return fns
 
     # -----------------------------------------------------------------------
 
@@ -871,8 +883,13 @@ class FilePath(FileBase):
         :returns: (FileName, FileRoot) the list of appended objects or None
 
         """
-        added = list()
+        # list of new objects added to the data
+        new_objs = list()
+        new_files = list()
+
         if isinstance(entry, FileRoot):
+            # Given entry is a FileRoot instance
+
             # test if root is matching this path
             abs_name = os.path.dirname(entry.id)
             if abs_name != self.id:
@@ -882,8 +899,12 @@ class FilePath(FileBase):
             obj = self.get_root(entry.id)
             if obj is None:
                 self.__roots.append(entry)
-            fr = entry
-            added.append(fr)
+                new_objs.append(entry)
+
+            # add all files of this root (if asked)
+            if all_root is True:
+                new_files = entry.append(None, all_root=all_root)
+
         else:
             # Given entry is a filename or FileName instance
             if isinstance(entry, FileName):
@@ -896,32 +917,17 @@ class FilePath(FileBase):
             # Get or create the corresponding FileRoot
             fr = self.get_root(root_id)
             if fr is None:
-                # logging.debug('fr is None. ')
                 fr = FileRoot(root_id)
                 self.__roots.append(fr)
-                added.append(fr)
+                new_objs.append(fr)
 
-            # Append this file to the root
-            if file_id not in fr:
-                fn = fr.append(entry)
-                added.append(fn)
+            new_files = fr.append(entry, all_root=all_root)
 
-        if all_root is True and fr is not None:
-            # add all files sharing this root on the disk
-            for new_filename in os.listdir(self.id):
-                new_filename = os.path.join(self.id, new_filename)
-                if os.path.isfile(new_filename) is True:
-                    new_file_id = self.identifier(new_filename)
-                    new_fileroot = FileRoot.root(new_file_id)
-                    if new_fileroot == fr.id:
-                        # this file is sharing the same root
-                        if new_file_id not in fr:
-                            fn = fr.append(new_file_id)
-                            added.append(fn)
-
-        if len(added) > 0:
+        if len(new_files) > 0:
+            new_objs.extend(new_files)
+        if len(new_objs) > 0:
             self.update_state()
-            return added
+            return new_objs
         return None
 
     # -----------------------------------------------------------------------

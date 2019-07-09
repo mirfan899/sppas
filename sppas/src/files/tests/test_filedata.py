@@ -149,13 +149,13 @@ class TestFileData(unittest.TestCase):
         self.data.add_ref(self.r3)
         current_file_list = list()
         saved_file_list = list()
-        self.data.save(os.path.join(sppas.paths.sppas, 'src', 'files', 'test', 'save.json'))
+        self.data.save(os.path.join(sppas.paths.sppas, 'src', 'files', 'tests', 'save.json'))
         for fp in self.data:
             for fr in fp:
                 for fn in fr:
                     current_file_list.append(fn)
 
-        data = FileData.load(os.path.join(sppas.paths.sppas, 'src', 'files', 'test', 'save.json'))
+        data = FileData.load(os.path.join(sppas.paths.sppas, 'src', 'files', 'tests', 'save.json'))
         for fp in data:
             for fr in fp:
                 for fn in fr:

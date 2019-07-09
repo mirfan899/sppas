@@ -177,7 +177,7 @@ class TestFileDataCompare(unittest.TestCase):
         self.assertFalse(fp.match([(self.cmpPath.check, True, False)]))
 
         # fp.id ends with 'files' (the name of the package)!
-        self.assertTrue(fp.match([(self.cmpPath.endswith, u("test"), False)]))
+        self.assertTrue(fp.match([(self.cmpPath.endswith, u("tests"), False)]))
 
     def test_exact_fr(self):
         d = u(os.path.splitext(__file__)[0])

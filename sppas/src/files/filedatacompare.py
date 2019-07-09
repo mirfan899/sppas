@@ -57,13 +57,13 @@ import re
 
 from sppas import sppasTypeError
 
+from sppas.src.utils.makeunicode import text_type
+from sppas.src.structs import sppasBaseCompare
+
 from .filebase import FileBase
 from .filestructure import FilePath, FileName
 from .fileref import FileReference, sppasAttribute
 from .filebase import States
-
-from ..utils.makeunicode import text_type
-from ..structs.basecompare import sppasBaseCompare
 
 # ---------------------------------------------------------------------------
 
