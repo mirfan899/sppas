@@ -36,11 +36,27 @@
 
 import logging
 import wx
+
+from sppas import msg
+from sppas import u
 from sppas.src.files import FileData
 
-from sppas.src.ui.phoenix.windows import sppasTitleText
-from sppas.src.ui.phoenix.windows import sppasMessageText
-from sppas.src.ui.phoenix.windows import sppasPanel
+from ..windows import sppasTitleText
+from ..windows import sppasMessageText
+from ..windows import sppasPanel
+from ..windows import sppasToolbar
+
+# ---------------------------------------------------------------------------
+# List of displayed messages:
+
+
+def _(message):
+    return u(msg(message, "ui"))
+
+
+ANZ_ACT_OPEN = "Open files"
+ANZ_ACT_NEW_TAB = "New tab"
+ANZ_ACT_CLOSE_TAB = "Close tab"
 
 # ---------------------------------------------------------------------------
 
@@ -55,6 +71,8 @@ class sppasAnalyzePanel(sppasPanel):
     :copyright:    Copyright (C) 2011-2018  Brigitte Bigi
 
     """
+
+    HIGHLIGHT_COLOUR = wx.Colour(96, 196, 196, 196)
 
     def __init__(self, parent):
         super(sppasAnalyzePanel, self).__init__(
@@ -97,6 +115,8 @@ class sppasAnalyzePanel(sppasPanel):
 
     def _create_content(self):
         """"""
+        tb = self.__create_toolbar()
+
         # Create a title
         st = sppasTitleText(
             parent=self,
@@ -111,10 +131,25 @@ class sppasAnalyzePanel(sppasPanel):
 
         # Organize the title and message
         sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
+
         sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
         sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
 
         self.SetSizer(sizer)
+
+    # -----------------------------------------------------------------------
+
+    def __create_toolbar(self):
+        """Create the toolbar."""
+        tb = sppasToolbar(self)
+        tb.set_focus_color(sppasAnalyzePanel.HIGHLIGHT_COLOUR)
+        tb.AddButton("files-edit-file", ANZ_ACT_OPEN)
+        tb.AddButton("tab-add", ANZ_ACT_NEW_TAB)
+        tb.AddButton("tab-del", ANZ_ACT_CLOSE_TAB)
+        tb.AddSpacer()
+
+        return tb
 
     # -----------------------------------------------------------------------
     # Events management

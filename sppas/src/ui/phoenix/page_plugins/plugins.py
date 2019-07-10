@@ -62,6 +62,7 @@ from .plug_list import sppasPluginsList
 def _(message):
     return u(msg(message, "ui"))
 
+
 PGS_TITLE = "Plugins: "
 PGS_ACT_ADD = "Install"
 PGS_ACT_DEL = "Delete"
