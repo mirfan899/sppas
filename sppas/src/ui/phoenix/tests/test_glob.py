@@ -30,9 +30,10 @@
         ---------------------------------------------------------------------
 
     src.ui.phoenix.tests.test_glob.py
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
+
 import wx
 import logging
 
@@ -40,6 +41,7 @@ from sppas.src.ui.cfg import sppasAppConfig
 from sppas.src.ui.phoenix.main_settings import WxAppSettings
 
 # Tested files are the ones with a TestPanel class:
+import sppas.src.ui.phoenix.windows.toolbar
 import sppas.src.ui.phoenix.windows.line
 import sppas.src.ui.phoenix.windows.button
 import sppas.src.ui.phoenix.panels.option
@@ -65,6 +67,7 @@ class TestPanel(wx.Choicebook):
         self.AddPage(sppas.src.ui.phoenix.page_files.filesmanager.TestPanel(self), "Files manager")
         self.AddPage(sppas.src.ui.phoenix.page_files.wksmanager.TestPanel(self), "Workspaces manager")
         self.AddPage(sppas.src.ui.phoenix.panels.option.TestPanel(self), "Configure options")
+        self.AddPage(sppas.src.ui.phoenix.windows.toolbar.TestPanel(self), "Toolbar")
         self.AddPage(sppas.src.ui.phoenix.windows.buttonbox.TestPanel(self), "ButtonBox")
         self.AddPage(sppas.src.ui.phoenix.windows.button.TestPanel(self), "Buttons")
         self.AddPage(sppas.src.ui.phoenix.windows.line.TestPanel(self), "Lines")

@@ -35,10 +35,11 @@
 """
 
 import wx
+import logging
 
 from .panel import sppasPanel
 from .text import sppasStaticText
-from .button import BitmapTextButton, TextButton
+from .button import BitmapTextButton, TextButton, ToggleButton
 
 # ----------------------------------------------------------------------------
 
@@ -72,8 +73,13 @@ class sppasToolbar(sppasPanel):
         self.__fg = list()
         self.__ft = list()
 
+        # Dictionary with all toggle groups
+        self.__tg = dict()
+
         self.SetSizer(wx.BoxSizer(orient))
         self.SetAutoLayout(True)
+
+        self.Bind(wx.EVT_TOGGLEBUTTON, self.__on_tg_btn_event)
 
     # -----------------------------------------------------------------------
 
@@ -92,17 +98,15 @@ class sppasToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def AddTextButton(self, name="sppasButton", text="", activated=True):
+    def AddTextButton(self, name="sppasButton", text=""):
         """Append a text button into the toolbar.
 
         :param name: (str) Name of the button
         :param text: (str) Label of the button
-        :param activated: (bool) Enable or disable the button
 
         """
         btn = self.create_button(text, None)
         btn.SetName(name)
-        btn.Enable(activated)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
             self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
         else:
@@ -111,7 +115,40 @@ class sppasToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def AddButton(self, icon, text="", activated=True):
+    def AddToggleButton(self, icon, text="", value=False, group_name=None):
+        """Append a toggle button into the toolbar.
+
+        The button can contain either:
+            - an icon only;
+            - an icon with a text.
+
+        :param icon: (str) Name of the .png file of the icon or None
+        :param text: (str) Label of the button
+        :param value: (bool) Toggle value of the button
+        :param group_name: (str) Name of a toggle group
+
+        """
+        btn = self.create_toggle_button(text, icon)
+
+        if group_name is not None:
+            if group_name not in self.__tg:
+                self.__tg[group_name] = list()
+            else:
+                for b in self.__tg[group_name]:
+                    b.SetValue(not value)
+            self.__tg[group_name].append(btn)
+        btn.SetValue(value)
+
+        if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
+        else:
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
+
+        return btn
+
+    # -----------------------------------------------------------------------
+
+    def AddButton(self, icon, text=""):
         """Append a button into the toolbar.
 
         The button can contain either:
@@ -120,11 +157,9 @@ class sppasToolbar(sppasPanel):
 
         :param icon: (str) Name of the .png file of the icon or None
         :param text: (str) Label of the button
-        :param activated: (bool) Enable or disable the button
 
         """
         btn = self.create_button(text, icon)
-        btn.Enable(activated)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
             self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
         else:
@@ -154,7 +189,7 @@ class sppasToolbar(sppasPanel):
         if color is not None:
             st.SetForegroundColour(color)
             self.__fg.append(st)
-        self.GetSizer().Add(st, 0, wx.LEFT | wx.TOP | wx.BOTTOM, 6)
+        self.GetSizer().Add(st, 0, wx.ALIGN_CENTRE | wx.ALL, 6)
 
     # -----------------------------------------------------------------------
 
@@ -171,7 +206,7 @@ class sppasToolbar(sppasPanel):
         if color is not None:
             st.SetForegroundColour(color)
             self.__fg.append(st)
-        self.GetSizer().Add(st, 0, wx.ALL, 6)
+        self.GetSizer().Add(st, 0, wx.ALIGN_CENTRE | wx.ALL, 6)
 
     # -----------------------------------------------------------------------
 
@@ -200,6 +235,26 @@ class sppasToolbar(sppasPanel):
         btn.FocusColour = self._fc
         btn.Spacing = sppasPanel.fix_size(12)
         btn.BorderWidth = 0
+        btn.BitmapColour = self.GetForegroundColour()
+        btn.SetMinSize((sppasPanel.fix_size(32), sppasPanel.fix_size(32)))
+
+        return btn
+
+    # -----------------------------------------------------------------------
+
+    def create_toggle_button(self, text, icon):
+        if icon is not None:
+            btn = ToggleButton(self, label=text, name=icon)
+            btn.LabelPosition = wx.RIGHT
+        else:
+            btn = ToggleButton(self, label=text)
+            btn.LabelPosition = wx.CENTRE
+
+        btn.FocusStyle = self._fs
+        btn.FocusWidth = self._fw
+        btn.FocusColour = self._fc
+        btn.Spacing = sppasPanel.fix_size(12)
+        btn.BorderWidth = 1
         btn.BitmapColour = self.GetForegroundColour()
         btn.SetMinSize((sppasPanel.fix_size(32), sppasPanel.fix_size(32)))
 
@@ -241,3 +296,65 @@ class sppasToolbar(sppasPanel):
                              encoding=wx.FONTENCODING_SYSTEM)
         return title_font
 
+    # -----------------------------------------------------------------------
+
+    def __on_tg_btn_event(self, event):
+        obj = event.GetEventObject()
+        logging.debug('toolbar received toogle event for btn {:s}'.format(obj.GetName()))
+        group = None
+        for gp in self.__tg:
+            for btn in self.__tg[gp]:
+                if btn is obj:
+                    group = gp
+                    break
+
+        if group is not None:
+            value = obj.GetValue()
+            if value is False:
+                obj.SetValue(True)
+                return
+
+            for btn in self.__tg[group]:
+                if btn is not obj:
+                    btn.SetValue(False)
+
+        event.Skip()
+
+# ----------------------------------------------------------------------------
+# Panels to test
+# ----------------------------------------------------------------------------
+
+
+class TestPanel(wx.Panel):
+
+    def __init__(self, parent):
+        super(TestPanel, self).__init__(
+            parent,
+            style=wx.BORDER_NONE | wx.WANTS_CHARS,
+            name="Test Toolbar")
+
+        self.SetForegroundColour(wx.Colour(150, 160, 170))
+
+        tbh = sppasToolbar(self, orient=wx.HORIZONTAL)
+        tbh.AddTitleText("title:", wx.Colour(128, 196, 228))
+        tbh.AddButton("sppas_32", "icon")
+        tbh.AddButton("sppas_32")
+        tbh.AddText("Text")
+        tbh.AddSpacer()
+        b1 = tbh.AddToggleButton("wifi", text="Wifi")
+        b1.Enable(True)
+        tbh.AddSpacer()
+        tbh.AddToggleButton("at", text="xxx", value=False, group_name="mail")
+        tbh.AddToggleButton("gmail", text="yyy", value=True, group_name="mail")
+
+        sizer = wx.BoxSizer(wx.VERTICAL)
+        sizer.Add(tbh, 0, wx.EXPAND, 2)
+        sizer.Add(sppasPanel(self), 1, wx.EXPAND, 2)
+        self.SetSizer(sizer)
+
+        self.Bind(wx.EVT_BUTTON, self.__on_btn_event)
+        self.Bind(wx.EVT_TOGGLEBUTTON, self.__on_btn_event)
+
+    def __on_btn_event(self, event):
+        btn = event.GetEventObject()
+        logging.info('Event button {:s}'.format(btn.GetName()))
