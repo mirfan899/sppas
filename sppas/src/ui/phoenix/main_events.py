@@ -40,3 +40,11 @@ import wx.lib.newevent
 
 DataChangedEvent, EVT_DATA_CHANGED = wx.lib.newevent.NewEvent()
 DataChangedCommandEvent, EVT_DATA_CHANGED_COMMAND = wx.lib.newevent.NewCommandEvent()
+
+
+# ---------------------------------------------------------------------------
+# Event to be used when a change has to be done on a tab.
+# the event must contain 3 members: "action, "cur_tab", "dest_tab"
+
+TabChangeEvent, EVT_TAB_CHANGE = wx.lib.newevent.NewEvent()
+TabChangeCommandEvent, EVT_TAB_CHANGE_COMMAND = wx.lib.newevent.NewCommandEvent()

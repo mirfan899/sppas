@@ -459,10 +459,6 @@ class WorkspacesPanel(sppasPanel):
             style=wx.BORDER_NONE | wx.NO_FULL_REPAINT_ON_RESIZE,
             name=name)
 
-        self.SetBackgroundColour(wx.GetApp().settings.bg_color)
-        self.SetForegroundColour(wx.GetApp().settings.fg_color)
-        self.SetFont(wx.GetApp().settings.text_font)
-
         self.__wkps = sppasWorkspaces()
         self.__current = 0
 

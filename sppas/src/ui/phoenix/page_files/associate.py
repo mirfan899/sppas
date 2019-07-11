@@ -452,7 +452,7 @@ class sppasFilesFilterDialog(sppasDialog):
 
         # Create the buttons
         cancel_btn = self.__create_action_button(panel, "Cancel", "cancel")
-        apply_or_btn = self.__create_action_button(panel, "Apply - OR", "apply")
+        apply_or_btn = self.__create_action_button(panel, "Apply - OR", "window-apply")
         apply_and_btn = self.__create_action_button(panel, "Apply - AND", "ok")
         apply_and_btn.SetFocus()
 
@@ -521,7 +521,7 @@ class sppasFilesFilterDialog(sppasDialog):
             self.SetReturnCode(wx.ID_CANCEL)
             self.Close()
 
-        elif event_name == "apply":
+        elif event_name == "window-apply":
             self.match_all = False
             self.EndModal(wx.ID_APPLY)
 

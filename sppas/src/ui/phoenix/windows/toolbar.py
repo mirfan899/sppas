@@ -108,9 +108,9 @@ class sppasToolbar(sppasPanel):
         btn = self.create_button(text, None)
         btn.SetName(name)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
-            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 2)
         else:
-            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 2)
         return btn
 
     # -----------------------------------------------------------------------
@@ -129,20 +129,21 @@ class sppasToolbar(sppasPanel):
 
         """
         btn = self.create_toggle_button(text, icon)
+        btn.SetValue(value)
 
         if group_name is not None:
             if group_name not in self.__tg:
                 self.__tg[group_name] = list()
             else:
-                for b in self.__tg[group_name]:
-                    b.SetValue(not value)
+                if value is True:
+                    for b in self.__tg[group_name]:
+                        b.SetValue(False)
             self.__tg[group_name].append(btn)
-        btn.SetValue(value)
 
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
-            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 2)
         else:
-            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 2)
 
         return btn
 
@@ -161,9 +162,9 @@ class sppasToolbar(sppasPanel):
         """
         btn = self.create_button(text, icon)
         if self.GetSizer().GetOrientation() == wx.HORIZONTAL:
-            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.LEFT | wx.RIGHT | wx.EXPAND, 2)
         else:
-            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 1)
+            self.GetSizer().Add(btn, 1, wx.TOP | wx.BOTTOM | wx.EXPAND, 2)
         return btn
 
     # -----------------------------------------------------------------------
@@ -178,26 +179,28 @@ class sppasToolbar(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def AddText(self, text="", color=None):
+    def AddText(self, text="", color=None, align=wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL):
         """Append a colored static text into the toolbar.
 
         :param text: (str)
         :param color: (wx.Colour)
+        :param align: (int) alignment style
 
         """
         st = sppasStaticText(self, label=text)
         if color is not None:
             st.SetForegroundColour(color)
             self.__fg.append(st)
-        self.GetSizer().Add(st, 0, wx.ALIGN_CENTRE | wx.ALL, 6)
+        self.GetSizer().Add(st, 0, align | wx.ALL, 6)
 
     # -----------------------------------------------------------------------
 
-    def AddTitleText(self, text="", color=None):
+    def AddTitleText(self, text="", color=None, align=wx.ALIGN_LEFT | wx.ALIGN_CENTER_VERTICAL):
         """Append a colored static text with an higher font into the toolbar.
 
         :param text: (str)
         :param color: (wx.Colour)
+        :param align: (int) alignment style
 
         """
         st = sppasStaticText(self, label=text)
@@ -206,7 +209,7 @@ class sppasToolbar(sppasPanel):
         if color is not None:
             st.SetForegroundColour(color)
             self.__fg.append(st)
-        self.GetSizer().Add(st, 0, wx.ALIGN_CENTRE | wx.ALL, 6)
+        self.GetSizer().Add(st, 0, align | wx.ALL, 6)
 
     # -----------------------------------------------------------------------
 

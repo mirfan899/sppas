@@ -29,34 +29,26 @@
 
         ---------------------------------------------------------------------
 
-    ui.phoenix.page_files.analyze.py
+    ui.phoenix.page_analyze.analyze.py
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 """
 
+import random
 import logging
 import wx
 
-from sppas import msg
-from sppas import u
-from sppas.src.files import FileData
+from sppas import sppasTypeError
+from sppas.src.files import FileData, States
 
-from ..windows import sppasTitleText
-from ..windows import sppasMessageText
+from ..main_events import DataChangedEvent, EVT_DATA_CHANGED
+from ..main_events import EVT_TAB_CHANGE
+
 from ..windows import sppasPanel
-from ..windows import sppasToolbar
+from ..windows import sppasStaticLine
+from ..windows.book import sppasSimplebook
 
-# ---------------------------------------------------------------------------
-# List of displayed messages:
-
-
-def _(message):
-    return u(msg(message, "ui"))
-
-
-ANZ_ACT_OPEN = "Open files"
-ANZ_ACT_NEW_TAB = "New tab"
-ANZ_ACT_CLOSE_TAB = "Close tab"
+from .tabs import TabsManager
 
 # ---------------------------------------------------------------------------
 
@@ -72,15 +64,12 @@ class sppasAnalyzePanel(sppasPanel):
 
     """
 
-    HIGHLIGHT_COLOUR = wx.Colour(96, 196, 196, 196)
-
     def __init__(self, parent):
         super(sppasAnalyzePanel, self).__init__(
             parent=parent,
             name="page_analyze",
             style=wx.BORDER_NONE
         )
-        self.__data = FileData()
 
         self._create_content()
         self._setup_events()
@@ -88,6 +77,8 @@ class sppasAnalyzePanel(sppasPanel):
         self.SetBackgroundColour(wx.GetApp().settings.bg_color)
         self.SetForegroundColour(wx.GetApp().settings.fg_color)
         self.SetFont(wx.GetApp().settings.text_font)
+
+        self.Layout()
 
     # ------------------------------------------------------------------------
     # Public methods to access the data
@@ -99,7 +90,7 @@ class sppasAnalyzePanel(sppasPanel):
         :returns: (FileData) data of the files-viewer model.
 
         """
-        return self.__data  # self.FindWindow("pluginslist").get_data()
+        return self.FindWindow("tabsview").get_data()
 
     # ------------------------------------------------------------------------
 
@@ -109,47 +100,53 @@ class sppasAnalyzePanel(sppasPanel):
         :param data: (FileData)
 
         """
-        self.__data = data  # self.FindWindow("pluginslist").set_data(data)
+        if isinstance(data, FileData) is False:
+            raise sppasTypeError("FileData", type(data))
+        logging.debug('New data to set in the analyze page. '
+                      'Id={:s}'.format(data.id))
+        self.__send_data(self.GetParent(), data)
 
+    # ------------------------------------------------------------------------
+    # Private methods to construct the panel.
     # ------------------------------------------------------------------------
 
     def _create_content(self):
-        """"""
-        tb = self.__create_toolbar()
+        """Create the main content."""
+        # Create all the panels
+        tm = TabsManager(self, name="tabsview")
+        book = sppasSimplebook(self, name="content")
 
-        # Create a title
-        st = sppasTitleText(
-            parent=self,
-            label="Not implemented...")
-        st.SetName("title")
-
-        # Create the welcome message
-        txt = sppasMessageText(
-            self,
-            "In future versions, analyzing annotated data will be here!"
-        )
-
-        # Organize the title and message
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(tb, proportion=0, flag=wx.EXPAND, border=0)
-
-        sizer.Add(st, 0, wx.TOP | wx.BOTTOM | wx.ALIGN_CENTER_HORIZONTAL, 15)
-        sizer.Add(txt, 6, wx.LEFT | wx.RIGHT | wx.EXPAND, 10)
+        # Organize all the panels vertically, separated by 2px grey lines.
+        sizer = wx.BoxSizer(wx.HORIZONTAL)
+        sizer.Add(tm, 0, wx.EXPAND, 0)
+        sizer.Add(self.__create_vline(), 0, wx.EXPAND, 0)
+        sizer.Add(book, 2, wx.EXPAND, 0)
 
         self.SetSizer(sizer)
 
+    # ------------------------------------------------------------------------
+
+    def __create_vline(self):
+        """Create a vertical line, used to separate the panels."""
+        line = sppasStaticLine(self, orient=wx.LI_VERTICAL)
+        line.SetMinSize(wx.Size(2, -1))
+        line.SetSize(wx.Size(2, -1))
+        line.SetPenStyle(wx.PENSTYLE_SOLID)
+        line.SetDepth(2)
+        line.SetForegroundColour(wx.Colour(128, 128, 128, 128))
+        return line
+
     # -----------------------------------------------------------------------
 
-    def __create_toolbar(self):
-        """Create the toolbar."""
-        tb = sppasToolbar(self)
-        tb.set_focus_color(sppasAnalyzePanel.HIGHLIGHT_COLOUR)
-        tb.AddButton("files-edit-file", ANZ_ACT_OPEN)
-        tb.AddButton("tab-add", ANZ_ACT_NEW_TAB)
-        tb.AddButton("tab-del", ANZ_ACT_CLOSE_TAB)
-        tb.AddSpacer()
-
-        return tb
+    def __create_book(self):
+        """Create the simple book to manage the opened files in tabs."""
+        book = sppasSimplebook(
+            parent=self,
+            style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS,
+            name="content"
+        )
+        book.SetEffectsTimeouts(100, 150)
+        return book
 
     # -----------------------------------------------------------------------
     # Events management
@@ -164,6 +161,13 @@ class sppasAnalyzePanel(sppasPanel):
         """
         # Capture keys
         self.Bind(wx.EVT_CHAR_HOOK, self._process_key_event)
+
+        # The data have changed.
+        # This event is sent by the tabs manager or by the parent
+        self.Bind(EVT_DATA_CHANGED, self._process_data_changed)
+
+        # Tabs have changed. The book must do the same.
+        self.Bind(EVT_TAB_CHANGE, self._process_tab_change)
 
     # -----------------------------------------------------------------------
 
@@ -182,7 +186,128 @@ class sppasAnalyzePanel(sppasPanel):
 
     # -----------------------------------------------------------------------
 
-    def SetFont(self, font):
-        sppasPanel.SetFont(self, font)
-        self.FindWindow("title").SetFont(wx.GetApp().settings.header_text_font)
-        self.Layout()
+    def _process_data_changed(self, event):
+        """Process a change of data.
+
+        Set the data of the event to the other panels.
+
+        :param event: (wx.Event)
+
+        """
+        emitted = event.GetEventObject()
+        try:
+            data = event.data
+        except AttributeError:
+            logging.error('Data were not sent in the event emitted by {:s}'
+                          '.'.format(emitted.GetName()))
+            return
+
+        self.__send_data(emitted, data)
+
+    # -----------------------------------------------------------------------
+
+    def _process_tab_change(self, event):
+        """Process a change of page.
+
+        :param event: (wx.Event)
+
+        """
+        emitted = event.GetEventObject()
+        try:
+            action = event.action
+            cur_page_name = event.cur_tab
+            dest_page_name = event.dest_tab
+        except:
+            logging.error('Malformed event emitted by {:s}'
+                          '.'.format(emitted.GetName()))
+            return
+
+        book = self.FindWindow("content")
+
+        # Append a page to the book
+        if action == "append":
+            new_page = sppasPanel(book, name=cur_page_name)
+            new_page.SetBackgroundColour(
+                wx.Colour(random.randint(50, 255), random.randint(50, 255), random.randint(50, 255))
+
+            )
+            book.AddPage(new_page, text="")
+
+        # Delete the page, without deleting the associated window
+        if action == "remove":
+            w = book.FindWindow(cur_page_name)
+            if w is None:
+                return
+            book.RemovePage(w)
+
+        if action == "open":
+            w = book.FindWindow(cur_page_name)
+            if w is None:
+                return
+            # TODO: implement the opening of files in pages...
+            # set checked files as locked
+            # send data to the parent
+
+        # Show a page of the book
+        if dest_page_name is not None:
+            w = book.FindWindow(dest_page_name)
+            self.show_page(w)
+
+    # -----------------------------------------------------------------------
+    # Management of the book
+    # -----------------------------------------------------------------------
+
+    def show_page(self, page):
+        """Show a page of the content panel.
+
+        :param page:
+
+        """
+        book = self.FindWindow("content")
+
+        # the page number to switch on
+        p = book.FindPage(page)
+        if p == wx.NOT_FOUND:
+            return
+
+        # the current page number
+        c = book.FindPage(book.GetCurrentPage())
+
+        # assign the effect
+        if c < p:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_LEFT)
+        elif c > p:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT,
+                            hideEffect=wx.SHOW_EFFECT_SLIDE_TO_RIGHT)
+        else:
+            book.SetEffects(showEffect=wx.SHOW_EFFECT_NONE,
+                            hideEffect=wx.SHOW_EFFECT_NONE)
+
+        # then change the current tab
+        book.ChangeSelection(p)
+        self.Refresh()
+
+    # -----------------------------------------------------------------------
+    # Private
+    # -----------------------------------------------------------------------
+
+    def __send_data(self, emitted, data):
+        """Set a change of data to the children, send to the parent.
+
+        :param emitted: (wx.Window) The panel the data are coming from
+        :param data: (FileData)
+
+        """
+        # Set the data to appropriate children panels
+        panel = self.FindWindow("tabsview")
+        if emitted != panel:
+            panel.set_data(data)
+
+        # Send the data to the parent
+        pm = self.GetParent()
+        if pm is not None and emitted != pm:
+            data.set_state(States().CHECKED)
+            evt = DataChangedEvent(data=data)
+            evt.SetEventObject(self)
+            wx.PostEvent(self.GetParent(), evt)

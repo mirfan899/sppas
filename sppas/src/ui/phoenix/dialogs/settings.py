@@ -234,7 +234,7 @@ class WxSettingsPanel(sppasPanel):
         sizer.Add(sizer_top, 0, wx.EXPAND)
         # btn = sppasBitmapTextButton(
         #     parent=self,
-        #     name="apply",
+        #     name="window-apply",
         #     label="Test on this window",
         #     style=wx.BORDER_SIMPLE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS)
         # btn.SetSize((-1, wx.GetApp().settings.action_height))

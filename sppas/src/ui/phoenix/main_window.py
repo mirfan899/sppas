@@ -183,7 +183,7 @@ class sppasMainWindow(sppasDialog):
             style=wx.BORDER_NONE | wx.TAB_TRAVERSAL | wx.WANTS_CHARS,
             name="content"
         )
-        book.SetEffectsTimeouts(200, 200)
+        book.SetEffectsTimeouts(100, 200)
 
         # 1st page: a panel with a welcome message
         book.ShowNewPage(sppasHomePanel(book))
@@ -365,13 +365,14 @@ class sppasMainWindow(sppasDialog):
         :param page_name: (str) one of 'page_home', 'page_files', ...
 
         """
-        # Find the page number to switch on
         book = self.FindWindow("content")
+
+        # Find the page number to switch on
         w = book.FindWindow(page_name)
         if w is None:
             w = book.FindWindow("page_home")
         p = book.FindPage(w)
-        if p == -1:
+        if p == wx.NOT_FOUND:
             p = 0
 
         # current page number

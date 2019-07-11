@@ -158,9 +158,9 @@ class sppasFeedbackDialog(sppasDialog):
 
         # Create the buttons
         gmail_btn = sppasBitmapTextButton(panel, "Gmail", name="gmail")
-        default_btn = sppasBitmapTextButton(panel, "E-mail", name="email-window")
+        default_btn = sppasBitmapTextButton(panel, "E-mail", name="window-email")
         other_btn = sppasBitmapTextButton(panel, MSG_ACTION_OTHER, name="at")
-        close_btn = sppasBitmapTextButton(panel, MSG_ACTION_CLOSE, name="close-window")
+        close_btn = sppasBitmapTextButton(panel, MSG_ACTION_CLOSE, name="window-close")
 
         # Create vertical lines to separate buttons
         vertical_line_1 = wx.StaticLine(panel, style=wx.LI_VERTICAL)
@@ -193,11 +193,11 @@ class sppasFeedbackDialog(sppasDialog):
         event_obj = event.GetEventObject()
         event_name = event_obj.GetName()
 
-        if event_name == "close-window":
+        if event_name == "window-close":
             self.SetReturnCode(wx.ID_CLOSE)
             self.Close()
 
-        elif event_name == "email-window":
+        elif event_name == "window-email":
             self.SendWithDefault()
 
         elif event_name == "gmail":
